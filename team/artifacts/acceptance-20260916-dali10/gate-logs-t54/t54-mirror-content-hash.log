@@ -1,0 +1,16 @@
+前置：生成器语法 OK（12440 B）
+  已加 mirroredContentSha256 → 12937 B
+后置：语法 OK
+顺带写入 exit=0 ; 保留他方命名空间: setupArchitectFreezeAnchors
+
+=== 自证 ===
+  子键 = ['anchors', 'ledgerNote', 'mirrorOf', 'mirrorSizeAtMirrorTime', 'mirrorSizeNote', 'mirrorAt', 'mirroredContentSha256']
+  mirroredContentSha256 = acee857ed8501427357579a0bb03def2 …
+  mirrorSizeAtMirrorTime = 261246 | mirrorAt = 2026-09-17T03:38:47+08:00
+  旧键 mirrorSize 已移除 = True
+  镜像现盘 = 261246 B ｜ **记录的内容哈希 == 现盘 = True**
+  （size 记录 175,358 vs 现盘 261246 ⇒ **误差符号不定、不能作比较基准** → 故补内容哈希）
+
+=== 规则入册 ===
+  已并入 → 58605 B
+  登记 = 58605 B ｜ 标题 46 ｜ 唯一 46 ｜ 重复 无

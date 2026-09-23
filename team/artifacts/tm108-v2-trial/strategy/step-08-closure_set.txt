@@ -1,0 +1,14 @@
+TM108 relay workflow STEP8 CLOSURE-SET OUTPUT (step 8/8) - owner=test-strategy-architect run=tm108-v2-trial
+flow: knowledge/references/L3-method/relay-design-flow.md:39-75
+closure-set source: proof required_on + full proof relay chain
+
+final closure-set output belongs to the contract (tm108-resource-config-contract.md/.json,
+relayGroups[]). The actuation call form (cbite.SetOn(...) with -1 terminator and the
+full-set semantics) is implementation-side; this step records only the set and the
+keep-open set, plus the divergence rule that the gate must be re-issued per group
+(relay-design-flow.md:115 - merging two groups into one SetOn parallels them).
+
+DTEST0 independent re-scan (this run):
+  project/DALI/SCH-Connect-Map.txt hits(DTEST)=0
+  project/DALI/Component-Statistic.txt hits(DTEST)=0
+  project/DALI/schematic-ir.json hits(DTEST)=0

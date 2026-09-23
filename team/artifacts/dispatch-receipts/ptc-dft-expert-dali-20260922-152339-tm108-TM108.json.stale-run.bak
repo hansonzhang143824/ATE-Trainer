@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "dispatchId": "ptc-dft-expert-dali-20260922-152339-tm108-TM108",
+  "runId": "dali-20260922-152339-tm108",
+  "profileId": "ptc-dft-expert",
+  "profileVersion": "v5",
+  "executionClass": "input-dft",
+  "personaSha256": "7b47ab144d13b6b52004cb6803b06769db77b283924242e807a3e29a3669e082",
+  "contractSha256": "00b8f2bfcf6a5e4f531be83ee9b48c4a213feee5dededa226cc166544f895a4a",
+  "policySha256": "1e6be182a3fd6507e2e2af71efd475609b8db1c150f57f30e51c68025adc2301",
+  "targetTms": [
+    "TM108"
+  ],
+  "createdAt": "2026-09-22T07:23:39.619Z",
+  "label": "PTC dft expert [TM108]",
+  "digest": "2c48e63b47702303d783a1ff9eaba46232851e37223d4c395cd87d70a19cc930",
+  "stage": "INPUT_SYNC",
+  "trialDirs": [
+    "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260922-152339-tm108\\tm108"
+  ],
+  "registryOwnership": {
+    "ok": true,
+    "stage": "INPUT_SYNC",
+    "registryOwner": "captain",
+    "ownershipNote": "registry owner for INPUT_SYNC is captain; the profile's ownerRole is dispatched as a source role of that stage"
+  },
+  "manifestDigest": "1d979ac50ab13bce92414fe19b4dd7d7ceea5905a8525cd2d8ca17f4aede7673",
+  "childSessionId": "d7362c65-f07d-40da-b713-dd97faaba2af",
+  "task": "Work only on these requested test items: TM108.\nYour isolated trial directories are: [\"D:\\\\Newtest\\\\DSH\\\\ATE-Coding-Flow\\\\team\\\\artifacts\\\\dali-20260922-152339-tm108\\\\tm108\"].\nThis is batch dali-20260922-152339-tm108, the enforced INPUT_SYNC stage.\nFollow your installed role contract and material boundary. Do not read Captain status, old trial records, or files outside your authorized input/output paths.\nProduce the required source-stage artifacts and report the result to the Captain.\nYour runtime label is: PTC dft expert [TM108]",
+  "dispatchedAt": "2026-09-22T07:23:39.641Z"
+}

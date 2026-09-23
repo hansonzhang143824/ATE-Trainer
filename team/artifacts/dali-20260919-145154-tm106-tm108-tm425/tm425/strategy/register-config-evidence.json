@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "tm": "TM425",
+  "status": "verified",
+  "source": {
+    "path": "project/DALI/reg_config/tm425.sv",
+    "sha256": "16500415e4769c4175305682368b3bf64d3b423d52bd6b0268f03eb55d962c4d",
+    "testItem": "TM425"
+  },
+  "dftBinding": {
+    "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM425\\dft-meta.json",
+    "code2Fields": [
+      "(WAKE_UP,1),(EN_ATEST1,1),(ATEST1_MUX,2),(DIS_NTC_DETECTION_ANALOG,1)"
+    ],
+    "verifiedAgainstDftCode2": true
+  },
+  "orderedWrites": [
+    {
+      "sourceLine": 14,
+      "sourceText": "I2CWriteSameData(DEV_ADDR, 0x10, 0x43);  // Write reg 0x10 = 67",
+      "address": "0X10",
+      "value": "0X43"
+    },
+    {
+      "sourceLine": 15,
+      "sourceText": "I2CWriteSameData(DEV_ADDR, 0x57, 0x04);  // Write reg 0x57 = 4",
+      "address": "0X57",
+      "value": "0X04"
+    },
+    {
+      "sourceLine": 16,
+      "sourceText": "I2CWriteSameData(DEV_ADDR, 0x58, 0x02);  // Write reg 0x58 = 2",
+      "address": "0X58",
+      "value": "0X02"
+    }
+  ],
+  "implementation": {
+    "renderer": "scripts/render_register_writes.py",
+    "rule": "Copy sourceText verbatim in order after signed entertestmode()."
+  }
+}

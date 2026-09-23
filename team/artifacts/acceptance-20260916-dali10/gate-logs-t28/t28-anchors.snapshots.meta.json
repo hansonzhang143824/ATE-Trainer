@@ -1,0 +1,9 @@
+{
+  "appendOnly": true,
+  "rule": "**任何对本账本的整篇重写视为违规，须登记**；只允许追加行。每行须含 lineCount / prevLineSha256 / ledger_self_sha256 以链式自证。",
+  "existingRowsAtDeclaration": 2,
+  "existingRowsSha256": "69b741d22b3cf7152488b0fe0890dd980f6c26ab24bf61dfd22d36f796036681",
+  "declaredAt": "2026-09-16T22:55:34+08:00",
+  "note": "按 rule-reviewer 建议补\"自完整性\"：账本给出**可复核性**，链式自证给出**不可篡改性**，两者都要。既有 2 行保持原样（回头改写会破坏\"只增不改\"）；自第 3 行起采用带链字段的新格式。",
+  "hashPolicy": "同一内容跨换行策略可比：除 `sha256(bytes)` 外另记 `sha256(LF-normalized)`（`bytes.replace(b\"\\r\\n\", b\"\\n\")`）。换行是**序列化产物、不是内容**；实算哈希保留\"字节级不同\"，归一化哈希判定\"同一内容\"。两者并列。"
+}

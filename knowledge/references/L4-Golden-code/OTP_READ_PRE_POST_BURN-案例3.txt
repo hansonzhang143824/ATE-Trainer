@@ -1,0 +1,731 @@
+DUT_API int OTP_Read_Pre(short funcindex, LPCTSTR funclabel)
+{
+//{{AFX_STS_PARAM_PROTOTYPES
+    CParam *VBG_PreRd = StsGetParam(funcindex, "VBG_PreRd");
+    CParam *VREF_V1P2_PreRd = StsGetParam(funcindex, "VREF_V1P2_PreRd");
+    CParam *IBIAS_ZTC_PreRd = StsGetParam(funcindex, "IBIAS_ZTC_PreRd");
+    CParam *IBP_OSC_PreRd = StsGetParam(funcindex, "IBP_OSC_PreRd");
+    CParam *OSC_64K_PreRd = StsGetParam(funcindex, "OSC_64K_PreRd");
+    CParam *OSC_4P5M_PreRd = StsGetParam(funcindex, "OSC_4P5M_PreRd");
+    CParam *IZTC_NTC1_PreRd = StsGetParam(funcindex, "IZTC_NTC1_PreRd");
+    CParam *VBAT_EA_LOOP_PreRd = StsGetParam(funcindex, "VBAT_EA_LOOP_PreRd");
+    CParam *IBUS_MNT_VOS_PreRd = StsGetParam(funcindex, "IBUS_MNT_VOS_PreRd");
+    CParam *IBUS_TERM_VOS_PreRd = StsGetParam(funcindex, "IBUS_TERM_VOS_PreRd");
+    CParam *IBAT_VOS_CM_PreRd = StsGetParam(funcindex, "IBAT_VOS_CM_PreRd");
+    CParam *IBAT_VOS_PreRd = StsGetParam(funcindex, "IBAT_VOS_PreRd");
+    CParam *IBAT_LOW_VOS_PreRd = StsGetParam(funcindex, "IBAT_LOW_VOS_PreRd");
+    CParam *IBAT_CHG_GAIN_PreRd = StsGetParam(funcindex, "IBAT_CHG_GAIN_PreRd");
+    CParam *IBAT_DCHG_GAIN_PreRd = StsGetParam(funcindex, "IBAT_DCHG_GAIN_PreRd");
+    CParam *IBAT_TERM_VOS_PreRd = StsGetParam(funcindex, "IBAT_TERM_VOS_PreRd");
+    CParam *AMUX_EA_POS_PreRd = StsGetParam(funcindex, "AMUX_EA_POS_PreRd");
+    CParam *AMUX_EA_NOS_PreRd = StsGetParam(funcindex, "AMUX_EA_NOS_PreRd");
+    CParam *OVPAGTE_VGS_PreRd = StsGetParam(funcindex, "OVPAGTE_VGS_PreRd");
+    CParam *OSC_VINVO_OPT_PreRd = StsGetParam(funcindex, "OSC_VINVO_OPT_PreRd");
+    CParam *EN_GATE_10V_OPT_PreRd = StsGetParam(funcindex, "EN_GATE_10V_OPT_PreRd");
+    CParam *RVS_IPEAKMIN_OPT_PreRd = StsGetParam(funcindex, "RVS_IPEAKMIN_OPT_PreRd");
+    CParam *LIMIT_OPT_PreRd = StsGetParam(funcindex, "LIMIT_OPT_PreRd");
+    CParam *ZCS_OPT_PreRd = StsGetParam(funcindex, "ZCS_OPT_PreRd");
+    CParam *IBAT_NPN_COMPOFF_OPT_PreRd = StsGetParam(funcindex, "IBAT_NPN_COMPOFF_OPT_PreRd");
+    CParam *NEG_LOOP_OPT_PreRd = StsGetParam(funcindex, "NEG_LOOP_OPT_PreRd");
+    CParam *VBAT_LP_RVS_OPT_PreRd = StsGetParam(funcindex, "VBAT_LP_RVS_OPT_PreRd");
+    CParam *VBUS_LP_OPT_PreRd = StsGetParam(funcindex, "VBUS_LP_OPT_PreRd");
+    CParam *Duty_95_OPT_PreRd = StsGetParam(funcindex, "Duty_95_OPT_PreRd");
+    CParam *SEL_LFCSR_OPT_PreRd = StsGetParam(funcindex, "SEL_LFCSR_OPT_PreRd");
+    CParam *SSFM_DIG_EN_OPT_PreRd = StsGetParam(funcindex, "SSFM_DIG_EN_OPT_PreRd");
+    CParam *CFG_FW_DCHG_OPT_PreRd = StsGetParam(funcindex, "CFG_FW_DCHG_OPT_PreRd");
+    CParam *MODE_OS_OPT_PreRd = StsGetParam(funcindex, "MODE_OS_OPT_PreRd");
+    CParam *IBUS_SNS_CM_OPT_PreRd = StsGetParam(funcindex, "IBUS_SNS_CM_OPT_PreRd");
+    CParam *VBUSN_IND_OPT_PreRd = StsGetParam(funcindex, "VBUSN_IND_OPT_PreRd");
+    CParam *BFET_BLANK_OPT_PreRd = StsGetParam(funcindex, "BFET_BLANK_OPT_PreRd");
+    CParam *PWM_BLANK_OPT_PreRd = StsGetParam(funcindex, "PWM_BLANK_OPT_PreRd");
+    CParam *SSFM_CLK_HI_OPT_PreRd = StsGetParam(funcindex, "SSFM_CLK_HI_OPT_PreRd");
+    CParam *DIS_TRKL_FPWM_OPT_PreRd = StsGetParam(funcindex, "DIS_TRKL_FPWM_OPT_PreRd");
+    CParam *RVS_PFM_PEAK_OPT_PreRd = StsGetParam(funcindex, "RVS_PFM_PEAK_OPT_PreRd");
+    CParam *DIS_CLKRVS_OPT_PreRd = StsGetParam(funcindex, "DIS_CLKRVS_OPT_PreRd");
+    CParam *RVSPFM_IPEAK_OPT_PreRd = StsGetParam(funcindex, "RVSPFM_IPEAK_OPT_PreRd");
+    CParam *DIS_BILIM_WAKE_OPT_PreRd = StsGetParam(funcindex, "DIS_BILIM_WAKE_OPT_PreRd");
+    CParam *DIS_SMART_OFF_OPT_PreRd = StsGetParam(funcindex, "DIS_SMART_OFF_OPT_PreRd");
+    CParam *DIS_RVS_PFM_OPT_PreRd = StsGetParam(funcindex, "DIS_RVS_PFM_OPT_PreRd");
+    CParam *RESEVERD_OPT_PreRd = StsGetParam(funcindex, "RESEVERD_OPT_PreRd");
+    CParam *ADD_TRIM_OPT_PreRd = StsGetParam(funcindex, "ADD_TRIM_OPT_PreRd");
+    CParam *PART_ID_TRIM_OPT_PreRd = StsGetParam(funcindex, "PART_ID_TRIM_OPT_PreRd");
+    CParam *OPT_LOCK_PreRd = StsGetParam(funcindex, "OPT_LOCK_PreRd");
+//}}AFX_STS_PARAM_PROTOTYPES
+	// TODO: Add your function code here
+
+	DOUBLE VBG_Pre[SITE_NUM] = { 0 };
+	DOUBLE VREF_V1P2_Pre[SITE_NUM] = { 0 };
+	DOUBLE IBIAS_ZTC_Pre[SITE_NUM] = { 0 };
+	DOUBLE IBP_OSC_Pre[SITE_NUM] = { 0 };
+	DOUBLE OSC_64K_Pre[SITE_NUM] = { 0 };
+	DOUBLE OSC_4P5M_Pre[SITE_NUM] = { 0 };
+	DOUBLE IZTC_NTC1_Pre[SITE_NUM] = { 0 };
+	DOUBLE VBAT_EA_LOOP_Pre[SITE_NUM] = { 0 };
+	DOUBLE IBUS_SNS_EA_OS_Pre[SITE_NUM] = { 0 };
+	DOUBLE IBUS_MNT_VOS_Pre[SITE_NUM] = { 0 };
+	DOUBLE IBUS_TERM_VOS_Pre[SITE_NUM] = { 0 };
+	DOUBLE IBAT_VOS_CM_Pre[SITE_NUM] = { 0 };
+	DOUBLE IBAT_VOS_Pre[SITE_NUM] = { 0 };
+	DOUBLE IBAT_LOW_VOS_Pre[SITE_NUM] = { 0 };
+	DOUBLE IBAT_CHG_GAIN_Pre[SITE_NUM] = { 0 };
+	DOUBLE IBAT_DCHG_GAIN_Pre[SITE_NUM] = { 0 };
+	DOUBLE IBAT_TERM_VOS_Pre[SITE_NUM] = { 0 };
+	DOUBLE AMUX_EA_POS_Pre[SITE_NUM] = { 0 };
+	DOUBLE AMUX_EA_NOS_Pre[SITE_NUM] = { 0 };
+	DOUBLE OVPAGTE_VGS_Pre[SITE_NUM] = { 0 };
+	//----------------OPT 
+	DOUBLE OSC_VINVO_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE EN_GATE_10V_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE RVS_IPEAKMIN_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE LIMIT_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE ZCS_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE IBAT_NPN_COMPOFF_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE NEG_LOOP_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE VBAT_LP_RVS_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE VBUS_LP_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE Duty_95_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE SEL_LFCSR_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE SSFM_DIG_EN_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE CFG_FW_DCHG_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE MODE_OS_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE IBUS_SNS_CM_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE VBUSN_IND_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE BFET_BLANK_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE PWM_BLANK_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE SSFM_CLK_HI_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE DIS_TRKL_FPWM_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE RVS_PFM_PEAK_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE DIS_CLKRVS_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE RVSPFM_IPEAK_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE DIS_BILIM_WAKE_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE DIS_SMART_OFF_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE DIS_RVS_PFM_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE RESEVERD_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE ADDR_TRIM_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE Part_ID_Trim_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE Add_Trim_OPT_Pre[SITE_NUM] = { 0 };
+	DOUBLE OTP_Lock_Pre[SITE_NUM] = { 0 };
+	
+
+	ULONG REG_F0_PRE_READ[SITE_NUM] = { 0 };
+	ULONG REG_F1_PRE_READ[SITE_NUM] = { 0 };
+	ULONG REG_F2_PRE_READ[SITE_NUM] = { 0 };
+	ULONG REG_F3_PRE_READ[SITE_NUM] = { 0 };
+	ULONG REG_F4_PRE_READ[SITE_NUM] = { 0 };
+	ULONG REG_F5_PRE_READ[SITE_NUM] = { 0 };
+	ULONG REG_F6_PRE_READ[SITE_NUM] = { 0 };
+	ULONG REG_F7_PRE_READ[SITE_NUM] = { 0 };
+	ULONG REG_F8_PRE_READ[SITE_NUM] = { 0 };
+	ULONG REG_F9_PRE_READ[SITE_NUM] = { 0 };
+	ULONG REG_FA_PRE_READ[SITE_NUM] = { 0 };
+	ULONG REG_FB_PRE_READ[SITE_NUM] = { 0 };
+	ULONG REG_FC_PRE_READ[SITE_NUM] = { 0 };
+	ULONG REG_FD_PRE_READ[SITE_NUM] = { 0 };
+	ULONG REG_FE_PRE_READ[SITE_NUM] = { 0 };
+	ULONG REG_FF_PRE_READ[SITE_NUM] = { 0 };
+
+	DWORD working_value2[SITE_NUM] = { 0 };
+	FOR_EACH_VALID_SITE(site)
+	{
+		working_value2[site] = (DWORD)trim_reg.assy("EFUSE_REG_FF").get_working(site);
+	}
+
+	//-------------------------------OTP READ FUNCTION--------------------------//
+	dcm.I2CConnect();
+	cbite.SetOn(K_VBAT_Cap, K58_SDA_PU, -1);
+	delay_ms(3);
+	VBAT_ACM.Set(FV, V_TYP_VBAT, ACM200_20V, ACM200_100MA, ACM200_RELAY_ON);//VBAT
+	VCC_FOVI.Set(FV, 5, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);//VBAT
+	delay_ms(2);
+	entertestmode();
+	I2C_READ_BYTE(DEV_ADDR, 0xF0, REG_F0_PRE_READ);
+	I2C_READ_BYTE(DEV_ADDR, 0xF1, REG_F1_PRE_READ);
+	I2C_READ_BYTE(DEV_ADDR, 0xF2, REG_F2_PRE_READ);
+	I2C_READ_BYTE(DEV_ADDR, 0xF3, REG_F3_PRE_READ);
+	I2C_READ_BYTE(DEV_ADDR, 0xF4, REG_F4_PRE_READ);
+	I2C_READ_BYTE(DEV_ADDR, 0xF5, REG_F5_PRE_READ);
+	I2C_READ_BYTE(DEV_ADDR, 0xF6, REG_F6_PRE_READ);
+	I2C_READ_BYTE(DEV_ADDR, 0xF7, REG_F7_PRE_READ);
+	I2C_READ_BYTE(DEV_ADDR, 0xF8, REG_F8_PRE_READ);
+	I2C_READ_BYTE(DEV_ADDR, 0xF9, REG_F9_PRE_READ);
+	I2C_READ_BYTE(DEV_ADDR, 0xFA, REG_FA_PRE_READ);
+	I2C_READ_BYTE(DEV_ADDR, 0xFB, REG_FB_PRE_READ);
+	I2C_READ_BYTE(DEV_ADDR, 0xFC, REG_FC_PRE_READ);
+	I2C_READ_BYTE(DEV_ADDR, 0xFD, REG_FD_PRE_READ);
+	I2C_READ_BYTE(DEV_ADDR, 0xFE, REG_FE_PRE_READ);
+	I2C_READ_BYTE(DEV_ADDR, 0xFF, REG_FF_PRE_READ);
+
+
+	VBAT_ACM.Set(FV, 0, ACM200_20V, ACM200_100MA, ACM200_RELAY_ON);//VBAT
+	VCC_FOVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);//VCC
+	delay_ms(1);
+	VBAT_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);//VBAT
+	VCC_FOVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);//VCC
+	//-------------Read all register and set into readback
+	FOR_EACH_VALID_SITE(site)
+	{
+		trim_reg.assy("EFUSE_REG_F0").set_read_back((INT)REG_F0_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_F1").set_read_back((INT)REG_F1_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_F2").set_read_back((INT)REG_F2_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_F3").set_read_back((INT)REG_F3_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_F4").set_read_back((INT)REG_F4_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_F5").set_read_back((INT)REG_F5_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_F6").set_read_back((INT)REG_F6_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_F7").set_read_back((INT)REG_F7_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_F8").set_read_back((INT)REG_F8_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_F9").set_read_back((INT)REG_F9_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_FA").set_read_back((INT)REG_FA_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_FB").set_read_back((INT)REG_FB_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_FC").set_read_back((INT)REG_FC_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_FD").set_read_back((INT)REG_FD_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_FE").set_read_back((INT)REG_FE_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_FF").set_read_back((INT)REG_FF_PRE_READ[site], site);
+	}
+
+	INT64 a = 0;
+
+	FOR_EACH_VALID_SITE(site)
+	{
+		if (trim_reg.assy("EFUSE_REG_REGISTER").comp_read(a, site))
+		{
+			BURN_FLAG[site] = FRESH; // Means device of this site is Fresh
+		}
+		else
+		{
+			BURN_FLAG[site] = BURNNED;// Means device of this site have been burned
+			trim_reg.assy("EFUSE_REG_REGISTER").copy_read_to_work(site);// make sure all read value set in work
+			if (TEST_FLOW == QA || TEST_FLOW == QUAL || TEST_FLOW == TempChar)
+			{
+				trim_reg.assy("EFUSE_REG_REGISTER").copy_read_to_prog(site);// make sure all read value set in work
+			}
+		}
+	}
+
+	FOR_EACH_VALID_SITE(site)
+	{
+		VBG_Pre[site] = trim_reg.trim("bandgap").get_read_back(site);//check,1
+		VREF_V1P2_Pre[site] = trim_reg.trim("vref_v1p2").get_read_back(site);//check,2
+		IBIAS_ZTC_Pre[site] = trim_reg.trim("ibias_ztc").get_read_back(site);//check,3
+		IBP_OSC_Pre[site] = trim_reg.trim("ibp_osc").get_read_back(site);//check,4	
+		OSC_64K_Pre[site] = trim_reg.trim("osc_64k").get_read_back(site);//check,5
+		OSC_4P5M_Pre[site] = trim_reg.trim("osc_4p5m").get_read_back(site);//check,6
+		IZTC_NTC1_Pre[site] = trim_reg.trim("iztc_ntc1").get_read_back(site);//check,7
+		VBAT_EA_LOOP_Pre[site] = trim_reg.trim("vbat_ea_loop").get_read_back(site);//check,8
+		IBUS_MNT_VOS_Pre[site] = trim_reg.trim("ibus_mnt_vos").get_read_back(site);//check,10
+		IBUS_TERM_VOS_Pre[site] = trim_reg.trim("ibus_term_vos").get_read_back(site);//check,11
+		IBAT_VOS_CM_Pre[site] = trim_reg.trim("ibat_vos_cm").get_read_back(site);//check,12	
+		IBAT_VOS_Pre[site] = trim_reg.trim("ibat_vos").get_read_back(site);//check,13
+		IBAT_LOW_VOS_Pre[site] = trim_reg.trim("ibat_low_vos").get_read_back(site);//check,14
+		IBAT_CHG_GAIN_Pre[site] = trim_reg.trim("ibat_chg_gain").get_read_back(site);//check,15
+		IBAT_DCHG_GAIN_Pre[site] = trim_reg.trim("ibat_dischg_gain").get_read_back(site);//check,16
+		IBAT_TERM_VOS_Pre[site] = trim_reg.trim("ibat_term_vos").get_read_back(site);//check,17
+		AMUX_EA_POS_Pre[site] = trim_reg.trim("amux_ea_pos").get_read_back(site);//check,18
+		AMUX_EA_NOS_Pre[site] = trim_reg.trim("amux_ea_nos").get_read_back(site);//check,19
+		OVPAGTE_VGS_Pre[site] = trim_reg.trim("ovpgate_vgs").get_read_back(site);//check,20
+		//--------------OPT
+		OSC_VINVO_OPT_Pre[site] = trim_reg.sel("osc_vinvout_opt").get_read_back(site);//check,1
+		EN_GATE_10V_OPT_Pre[site] = trim_reg.sel("en_ovpgate_10v_opt").get_read_back(site);//check,2
+		RVS_IPEAKMIN_OPT_Pre[site] = trim_reg.sel("rvs_ipeakmin").get_read_back(site);//check,3
+		LIMIT_OPT_Pre[site] = trim_reg.sel("limit_opt").get_read_back(site);//check,4
+		ZCS_OPT_Pre[site] = trim_reg.sel("zcs_opt").get_read_back(site);//check,5
+		IBAT_NPN_COMPOFF_OPT_Pre[site] = trim_reg.sel("ibat_npn_comp_off_opt").get_read_back(site);//check,6
+		NEG_LOOP_OPT_Pre[site] = trim_reg.sel("neg_loop_opt").get_read_back(site);//check,7
+		VBAT_LP_RVS_OPT_Pre[site] = trim_reg.sel("vbat_loop_rvs_opt").get_read_back(site);//check,8
+		VBUS_LP_OPT_Pre[site] = trim_reg.sel("vbus_loop_opt").get_read_back(site);//check,9
+		Duty_95_OPT_Pre[site] = trim_reg.sel("duty_95_width_opt").get_read_back(site);//check,10
+		SEL_LFCSR_OPT_Pre[site] = trim_reg.sel("sel_lfcsr_opt").get_read_back(site);//check,11
+		SSFM_DIG_EN_OPT_Pre[site] = trim_reg.sel("ssfm_dig_en_opt").get_read_back(site);//check,12
+		CFG_FW_DCHG_OPT_Pre[site] = trim_reg.sel("cfg_fw_dischg_opt").get_read_back(site);//check,13
+		MODE_OS_OPT_Pre[site] = trim_reg.sel("mode_os_opt").get_read_back(site);//check,14
+		IBUS_SNS_CM_OPT_Pre[site] = trim_reg.sel("ibus_sns_cm_opt").get_read_back(site);//check,15
+		VBUSN_IND_OPT_Pre[site] = trim_reg.sel("vbusn_indicator_opt").get_read_back(site);//check,16
+		BFET_BLANK_OPT_Pre[site] = trim_reg.sel("bfet_blank_opt").get_read_back(site);//check,17
+		PWM_BLANK_OPT_Pre[site] = trim_reg.sel("pwm_blank_opt").get_read_back(site);//check,18
+		SSFM_CLK_HI_OPT_Pre[site] = trim_reg.sel("ssfm_clk_hi_opt").get_read_back(site);//check,19
+		DIS_TRKL_FPWM_OPT_Pre[site] = trim_reg.sel("dis_trickle_fpwm_opt").get_read_back(site);//check,20
+		RVS_PFM_PEAK_OPT_Pre[site] = trim_reg.sel("rvs_pfm_ipeak_opt").get_read_back(site);//check,21
+		DIS_CLKRVS_OPT_Pre[site] = trim_reg.sel("dis_clkrvs_opt").get_read_back(site);//check,22
+		RVSPFM_IPEAK_OPT_Pre[site] = trim_reg.sel("rvspfm_hys_opt").get_read_back(site);//check,23
+		DIS_BILIM_WAKE_OPT_Pre[site] = trim_reg.sel("dis_bilim_wake_opt").get_read_back(site);//check,24
+		DIS_SMART_OFF_OPT_Pre[site] = trim_reg.sel("dis_smart_off_opt").get_read_back(site);//check,25
+		DIS_RVS_PFM_OPT_Pre[site] = trim_reg.sel("dis_rvs_pfm_opt").get_read_back(site);//check,26
+		RESEVERD_OPT_Pre[site] = trim_reg.sel("reserved").get_read_back(site);//check,27
+		Add_Trim_OPT_Pre[site] = trim_reg.sel("add_trim").get_read_back(site);//check,28
+		Part_ID_Trim_OPT_Pre[site] = trim_reg.sel("part_id_trim").get_read_back(site);//check,29
+		OTP_Lock_Pre[site] = trim_reg.sel("otp_lock").get_read_back(site);//check,30
+	}
+
+	FOR_EACH_VALID_SITE(site)
+	{
+		VBG_PreRd->SetTestResult(site, 0,VBG_Pre[site]);
+		VREF_V1P2_PreRd->SetTestResult(site, 0, VREF_V1P2_Pre[site]);
+		IBIAS_ZTC_PreRd->SetTestResult(site, 0, IBIAS_ZTC_Pre[site]);
+		IBP_OSC_PreRd->SetTestResult(site, 0, IBP_OSC_Pre[site]);
+		OSC_64K_PreRd->SetTestResult(site, 0, OSC_64K_Pre[site]);
+		OSC_4P5M_PreRd->SetTestResult(site, 0, OSC_4P5M_Pre[site]);
+		IZTC_NTC1_PreRd->SetTestResult(site, 0, IZTC_NTC1_Pre[site]);
+		VBAT_EA_LOOP_PreRd->SetTestResult(site, 0, VBAT_EA_LOOP_Pre[site]);
+		IBUS_MNT_VOS_PreRd->SetTestResult(site, 0, IBUS_MNT_VOS_Pre[site]);
+		IBUS_TERM_VOS_PreRd->SetTestResult(site, 0, IBUS_TERM_VOS_Pre[site]);
+		IBAT_VOS_CM_PreRd->SetTestResult(site, 0, IBAT_VOS_CM_Pre[site]);
+		IBAT_VOS_PreRd->SetTestResult(site, 0, IBAT_VOS_Pre[site]);
+		IBAT_LOW_VOS_PreRd->SetTestResult(site, 0, IBAT_LOW_VOS_Pre[site]);
+		IBAT_CHG_GAIN_PreRd->SetTestResult(site, 0, IBAT_CHG_GAIN_Pre[site]);
+		IBAT_DCHG_GAIN_PreRd->SetTestResult(site, 0, IBAT_DCHG_GAIN_Pre[site]);
+		IBAT_TERM_VOS_PreRd->SetTestResult(site, 0, IBAT_TERM_VOS_Pre[site]);
+		AMUX_EA_POS_PreRd->SetTestResult(site, 0, AMUX_EA_POS_Pre[site]);
+		AMUX_EA_NOS_PreRd->SetTestResult(site, 0, AMUX_EA_NOS_Pre[site]);
+		OVPAGTE_VGS_PreRd->SetTestResult(site, 0, OVPAGTE_VGS_Pre[site]);
+		OSC_VINVO_OPT_PreRd->SetTestResult(site, 0, OSC_VINVO_OPT_Pre[site]);
+		EN_GATE_10V_OPT_PreRd->SetTestResult(site, 0, EN_GATE_10V_OPT_Pre[site]);
+		RVS_IPEAKMIN_OPT_PreRd->SetTestResult(site, 0, RVS_IPEAKMIN_OPT_Pre[site]);
+		LIMIT_OPT_PreRd->SetTestResult(site, 0, LIMIT_OPT_Pre[site]);
+		ZCS_OPT_PreRd->SetTestResult(site, 0, ZCS_OPT_Pre[site]);
+		IBAT_NPN_COMPOFF_OPT_PreRd->SetTestResult(site, 0, IBAT_NPN_COMPOFF_OPT_Pre[site]);
+		NEG_LOOP_OPT_PreRd->SetTestResult(site, 0, NEG_LOOP_OPT_Pre[site]);
+		VBAT_LP_RVS_OPT_PreRd->SetTestResult(site, 0, VBAT_LP_RVS_OPT_Pre[site]);
+		VBUS_LP_OPT_PreRd->SetTestResult(site, 0, VBUS_LP_OPT_Pre[site]);
+		Duty_95_OPT_PreRd->SetTestResult(site, 0, Duty_95_OPT_Pre[site]);
+		SEL_LFCSR_OPT_PreRd->SetTestResult(site, 0, SEL_LFCSR_OPT_Pre[site]);
+		SSFM_DIG_EN_OPT_PreRd->SetTestResult(site, 0, SSFM_DIG_EN_OPT_Pre[site]);
+		CFG_FW_DCHG_OPT_PreRd->SetTestResult(site, 0, CFG_FW_DCHG_OPT_Pre[site]);
+		MODE_OS_OPT_PreRd->SetTestResult(site, 0, MODE_OS_OPT_Pre[site]);
+		IBUS_SNS_CM_OPT_PreRd->SetTestResult(site, 0, IBUS_SNS_CM_OPT_Pre[site]);
+		VBUSN_IND_OPT_PreRd->SetTestResult(site, 0, VBUSN_IND_OPT_Pre[site]);
+		BFET_BLANK_OPT_PreRd->SetTestResult(site, 0, BFET_BLANK_OPT_Pre[site]);
+		PWM_BLANK_OPT_PreRd->SetTestResult(site, 0, PWM_BLANK_OPT_Pre[site]);
+		SSFM_CLK_HI_OPT_PreRd->SetTestResult(site, 0, SSFM_CLK_HI_OPT_Pre[site]);
+		DIS_TRKL_FPWM_OPT_PreRd->SetTestResult(site, 0, DIS_TRKL_FPWM_OPT_Pre[site]);
+		RVS_PFM_PEAK_OPT_PreRd->SetTestResult(site, 0, RVS_PFM_PEAK_OPT_Pre[site]);
+		DIS_CLKRVS_OPT_PreRd->SetTestResult(site, 0, DIS_CLKRVS_OPT_Pre[site]);
+		RVSPFM_IPEAK_OPT_PreRd->SetTestResult(site, 0, RVSPFM_IPEAK_OPT_Pre[site]);
+		DIS_BILIM_WAKE_OPT_PreRd->SetTestResult(site, 0, DIS_BILIM_WAKE_OPT_Pre[site]);
+		DIS_SMART_OFF_OPT_PreRd->SetTestResult(site, 0, DIS_SMART_OFF_OPT_Pre[site]);
+		DIS_RVS_PFM_OPT_PreRd->SetTestResult(site, 0, DIS_RVS_PFM_OPT_Pre[site]);
+		RESEVERD_OPT_PreRd->SetTestResult(site, 0, RESEVERD_OPT_Pre[site]);
+		ADD_TRIM_OPT_PreRd->SetTestResult(site, 0, Add_Trim_OPT_Pre[site]);
+		PART_ID_TRIM_OPT_PreRd->SetTestResult(site, 0, Part_ID_Trim_OPT_Pre[site]);
+		OPT_LOCK_PreRd->SetTestResult(site, 0, OTP_Lock_Pre[site]);
+	}
+	return 0;
+}
+
+DUT_API int OTP_BURN(short funcindex, LPCTSTR funclabel)
+{
+//{{AFX_STS_PARAM_PROTOTYPES
+    CParam *Burn_Done = StsGetParam(funcindex, "Burn_Done");
+//}}AFX_STS_PARAM_PROTOTYPES
+	// TODO: Add your function code here
+
+	DWORD  REG_F0_BestCode[SITE_NUM] = { 0 };
+	DWORD  REG_F1_BestCode[SITE_NUM] = { 0 };
+	DWORD  REG_F2_BestCode[SITE_NUM] = { 0 };
+	DWORD  REG_F3_BestCode[SITE_NUM] = { 0 };
+	DWORD  REG_F4_BestCode[SITE_NUM] = { 0 };
+	DWORD  REG_F5_BestCode[SITE_NUM] = { 0 };
+	DWORD  REG_F6_BestCode[SITE_NUM] = { 0 };
+	DWORD  REG_F7_BestCode[SITE_NUM] = { 0 };
+	DWORD  REG_F8_BestCode[SITE_NUM] = { 0 };
+	DWORD  REG_F9_BestCode[SITE_NUM] = { 0 };
+	DWORD  REG_FA_BestCode[SITE_NUM] = { 0 };
+	DWORD  REG_FB_BestCode[SITE_NUM] = { 0 };
+	DWORD  REG_FC_BestCode[SITE_NUM] = { 0 };
+	DWORD  REG_FD_BestCode[SITE_NUM] = { 0 };
+	DWORD  REG_FE_BestCode[SITE_NUM] = { 0 };
+	DWORD  REG_FF_BestCode[SITE_NUM] = { 0 };
+
+	//=================================Get All Best Code Need to Burn into OTP
+	FOR_EACH_VALID_SITE(site)
+	{
+		//if(Part_Num == 3326)
+		//{
+		//	trim_reg.sel("part_id_trim").set_working(3, site);// ziyuan for converter
+		//}
+		REG_F0_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_F0").get_working(site);
+		REG_F1_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_F1").get_working(site);
+		REG_F2_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_F2").get_working(site);
+		REG_F3_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_F3").get_working(site);
+		REG_F4_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_F4").get_working(site);
+		REG_F5_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_F5").get_working(site);
+		REG_F6_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_F6").get_working(site);
+		REG_F7_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_F7").get_working(site);
+		REG_F8_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_F8").get_working(site);
+		REG_F9_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_F9").get_working(site);
+		REG_FA_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_FA").get_working(site);
+		REG_FB_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_FB").get_working(site);
+		REG_FC_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_FC").get_working(site);
+		REG_FD_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_FD").get_working(site);
+		REG_FE_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_FE").get_working(site);
+		REG_FF_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_FF").get_working(site);
+	}
+
+	DWORD BurnKey[SITE_NUM] = { 0 };
+	FOR_EACH_VALID_SITE(site)
+	{
+		if (BURN_FLAG[site] == FRESH)
+		{
+			BurnKey[site] = 0x01;// field[(NVM_PROG_ALL, 1)]
+		}                                 
+		else
+		{
+			BurnKey[site] = 0x00;
+		}
+	}
+
+	if (TEST_FLOW == FT || TEST_FLOW == CP || TEST_FLOW == HTOL_Burn)
+	{
+		//-------------------------------OTP BURN FUNCTION--------------------------//
+		dcm.I2CConnect();
+		cbite.SetOn(K_VBAT_Cap, K_VCC_Cap, K58_SDA_PU,-1);
+		delay_ms(5);
+		VBAT_ACM.Set(FV, 3.7, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);//VBAT
+		VBUS_ACM.Set(FV, 8.5, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);//VBUS
+		delay_ms(5);
+		entertestmode_trim();
+		I2CWriteSameData(DEV_ADDRESS, 0x65, 0x06);//D2A_EN_MNT = 1
+		I2CWriteSameData(DEV_ADDRESS, 0x66, 0x31);//D2A_EN_MNT = 1
+		I2CWriteSameData(DEV_ADDRESS, 0x57, 0x8D);//TM_MUX_ATEST0<13> = 1 
+		dcm.I2CWriteData(DEV_ADDRESS, 0xF0, 1, REG_F0_BestCode);
+		dcm.I2CWriteData(DEV_ADDRESS, 0xF1, 1, REG_F1_BestCode);
+		dcm.I2CWriteData(DEV_ADDRESS, 0xF2, 1, REG_F2_BestCode);
+		dcm.I2CWriteData(DEV_ADDRESS, 0xF3, 1, REG_F3_BestCode);
+		dcm.I2CWriteData(DEV_ADDRESS, 0xF4, 1, REG_F4_BestCode);
+		dcm.I2CWriteData(DEV_ADDRESS, 0xF5, 1, REG_F5_BestCode);
+		dcm.I2CWriteData(DEV_ADDRESS, 0xF6, 1, REG_F6_BestCode);
+		dcm.I2CWriteData(DEV_ADDRESS, 0xF7, 1, REG_F7_BestCode);
+		dcm.I2CWriteData(DEV_ADDRESS, 0xF8, 1, REG_F8_BestCode);
+		dcm.I2CWriteData(DEV_ADDRESS, 0xF9, 1, REG_F9_BestCode);
+		dcm.I2CWriteData(DEV_ADDRESS, 0xFA, 1, REG_FA_BestCode);
+		dcm.I2CWriteData(DEV_ADDRESS, 0xFB, 1, REG_FB_BestCode);
+		dcm.I2CWriteData(DEV_ADDRESS, 0xFC, 1, REG_FC_BestCode);
+		dcm.I2CWriteData(DEV_ADDRESS, 0xFD, 1, REG_FD_BestCode);
+		dcm.I2CWriteData(DEV_ADDRESS, 0xFE, 1, REG_FE_BestCode);
+		dcm.I2CWriteData(DEV_ADDRESS, 0xFF, 1, REG_FF_BestCode);
+		dcm.I2CWriteData(DEV_ADDRESS, 0x53, 1, BurnKey);//NVM_PROG_ALL = 1
+		delay_ms(20);
+		VBAT_ACM.Set(FV, 0, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);//VBAT
+		VBUS_ACM.Set(FV, 0, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);//VBUS
+		delay_ms(1);
+		VBAT_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);//VBAT
+		VBUS_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);//VBUS
+	}
+
+
+	FOR_EACH_VALID_SITE(site)
+	{
+		if (TEST_FLOW == FT || TEST_FLOW == CP || TEST_FLOW == HTOL_Burn)
+		{
+			trim_reg.assy("EFUSE_REG_REGISTER").copy_work_to_prog(site);
+		}
+		Burn_Done->SetTestResult(site, 0, 1);
+	}
+
+
+	return 0;
+}
+
+DUT_API int OTP_Read_Post(short funcindex, LPCTSTR funclabel)
+{
+//{{AFX_STS_PARAM_PROTOTYPES
+    CParam *VBG_PosRd = StsGetParam(funcindex, "VBG_PosRd");
+    CParam *VREF_V1P2_PosRd = StsGetParam(funcindex, "VREF_V1P2_PosRd");
+    CParam *IBIAS_ZTC_PosRd = StsGetParam(funcindex, "IBIAS_ZTC_PosRd");
+    CParam *IBP_OSC_PosRd = StsGetParam(funcindex, "IBP_OSC_PosRd");
+    CParam *OSC_64K_PosRd = StsGetParam(funcindex, "OSC_64K_PosRd");
+    CParam *OSC_4P5M_PosRd = StsGetParam(funcindex, "OSC_4P5M_PosRd");
+    CParam *IZTC_NTC1_PosRd = StsGetParam(funcindex, "IZTC_NTC1_PosRd");
+    CParam *VBAT_EA_LOOP_PosRd = StsGetParam(funcindex, "VBAT_EA_LOOP_PosRd");
+    CParam *IBUS_MNT_VOS_PosRd = StsGetParam(funcindex, "IBUS_MNT_VOS_PosRd");
+    CParam *IBUS_TERM_VOS_PosRd = StsGetParam(funcindex, "IBUS_TERM_VOS_PosRd");
+    CParam *IBAT_VOS_CM_PosRd = StsGetParam(funcindex, "IBAT_VOS_CM_PosRd");
+    CParam *IBAT_VOS_PosRd = StsGetParam(funcindex, "IBAT_VOS_PosRd");
+    CParam *IBAT_LOW_VOS_PosRd = StsGetParam(funcindex, "IBAT_LOW_VOS_PosRd");
+    CParam *IBAT_CHG_GAIN_PosRd = StsGetParam(funcindex, "IBAT_CHG_GAIN_PosRd");
+    CParam *IBAT_DCHG_GAIN_PosRd = StsGetParam(funcindex, "IBAT_DCHG_GAIN_PosRd");
+    CParam *IBAT_TERM_VOS_PosRd = StsGetParam(funcindex, "IBAT_TERM_VOS_PosRd");
+    CParam *AMUX_EA_POS_PosRd = StsGetParam(funcindex, "AMUX_EA_POS_PosRd");
+    CParam *AMUX_EA_NOS_PosRd = StsGetParam(funcindex, "AMUX_EA_NOS_PosRd");
+    CParam *OVPAGTE_VGS_PosRd = StsGetParam(funcindex, "OVPAGTE_VGS_PosRd");
+    CParam *OSC_VINVO_OPT_PosRd = StsGetParam(funcindex, "OSC_VINVO_OPT_PosRd");
+    CParam *EN_GATE_10V_OPT_PosRd = StsGetParam(funcindex, "EN_GATE_10V_OPT_PosRd");
+    CParam *RVS_IPEAKMIN_OPT_PosRd = StsGetParam(funcindex, "RVS_IPEAKMIN_OPT_PosRd");
+    CParam *LIMIT_OPT_PosRd = StsGetParam(funcindex, "LIMIT_OPT_PosRd");
+    CParam *ZCS_OPT_PosRd = StsGetParam(funcindex, "ZCS_OPT_PosRd");
+    CParam *IBAT_NPN_COMPOFF_OPT_PosRd = StsGetParam(funcindex, "IBAT_NPN_COMPOFF_OPT_PosRd");
+    CParam *NEG_LOOP_OPT_PosRd = StsGetParam(funcindex, "NEG_LOOP_OPT_PosRd");
+    CParam *VBAT_LP_RVS_OPT_PosRd = StsGetParam(funcindex, "VBAT_LP_RVS_OPT_PosRd");
+    CParam *VBUS_LP_OPT_PosRd = StsGetParam(funcindex, "VBUS_LP_OPT_PosRd");
+    CParam *Duty_95_OPT_PosRd = StsGetParam(funcindex, "Duty_95_OPT_PosRd");
+    CParam *SEL_LFCSR_OPT_PosRd = StsGetParam(funcindex, "SEL_LFCSR_OPT_PosRd");
+    CParam *SSFM_DIG_EN_OPT_PosRd = StsGetParam(funcindex, "SSFM_DIG_EN_OPT_PosRd");
+    CParam *CFG_FW_DCHG_OPT_PosRd = StsGetParam(funcindex, "CFG_FW_DCHG_OPT_PosRd");
+    CParam *MODE_OS_OPT_PosRd = StsGetParam(funcindex, "MODE_OS_OPT_PosRd");
+    CParam *IBUS_SNS_CM_OPT_PosRd = StsGetParam(funcindex, "IBUS_SNS_CM_OPT_PosRd");
+    CParam *VBUSN_IND_OPT_PosRd = StsGetParam(funcindex, "VBUSN_IND_OPT_PosRd");
+    CParam *BFET_BLANK_OPT_PosRd = StsGetParam(funcindex, "BFET_BLANK_OPT_PosRd");
+    CParam *PWM_BLANK_OPT_PosRd = StsGetParam(funcindex, "PWM_BLANK_OPT_PosRd");
+    CParam *SSFM_CLK_HI_OPT_PosRd = StsGetParam(funcindex, "SSFM_CLK_HI_OPT_PosRd");
+    CParam *DIS_TRKL_FPWM_OPT_PosRd = StsGetParam(funcindex, "DIS_TRKL_FPWM_OPT_PosRd");
+    CParam *RVS_PFM_PEAK_OPT_PosRd = StsGetParam(funcindex, "RVS_PFM_PEAK_OPT_PosRd");
+    CParam *DIS_CLKRVS_OPT_PosRd = StsGetParam(funcindex, "DIS_CLKRVS_OPT_PosRd");
+    CParam *RVSPFM_IPEAK_OPT_PosRd = StsGetParam(funcindex, "RVSPFM_IPEAK_OPT_PosRd");
+    CParam *DIS_BILIM_WAKE_OPT_PosRd = StsGetParam(funcindex, "DIS_BILIM_WAKE_OPT_PosRd");
+    CParam *DIS_SMART_OFF_OPT_PosRd = StsGetParam(funcindex, "DIS_SMART_OFF_OPT_PosRd");
+    CParam *DIS_RVS_PFM_OPT_PosRd = StsGetParam(funcindex, "DIS_RVS_PFM_OPT_PosRd");
+    CParam *RESEVERD_OPT_PosRd = StsGetParam(funcindex, "RESEVERD_OPT_PosRd");
+    CParam *ADD_TRIM_OPT_PosRd = StsGetParam(funcindex, "ADD_TRIM_OPT_PosRd");
+    CParam *PART_ID_TRIM_OPT_PosRd = StsGetParam(funcindex, "PART_ID_TRIM_OPT_PosRd");
+    CParam *PART_ID_3326_PosRd = StsGetParam(funcindex, "PART_ID_3326_PosRd");
+    CParam *OPT_LOCK_PosRd = StsGetParam(funcindex, "OPT_LOCK_PosRd");
+    CParam *Burn_Check_Pass = StsGetParam(funcindex, "Burn_Check_Pass");
+//}}AFX_STS_PARAM_PROTOTYPES
+	// TODO: Add your function code here
+
+	DOUBLE VBG_Post[SITE_NUM] = { 0 };
+	DOUBLE VREF_V1P2_Post[SITE_NUM] = { 0 };
+	DOUBLE IBIAS_ZTC_Post[SITE_NUM] = { 0 };
+	DOUBLE IBP_OSC_Post[SITE_NUM] = { 0 };
+	DOUBLE OSC_64K_Post[SITE_NUM] = { 0 };
+	DOUBLE OSC_4P5M_Post[SITE_NUM] = { 0 };
+	DOUBLE IZTC_NTC1_Post[SITE_NUM] = { 0 };
+	DOUBLE VBAT_EA_LOOP_Post[SITE_NUM] = { 0 };
+	DOUBLE IBUS_SNS_EA_OS_Post[SITE_NUM] = { 0 };
+	DOUBLE IBUS_MNT_VOS_Post[SITE_NUM] = { 0 };
+	DOUBLE IBUS_TERM_VOS_Post[SITE_NUM] = { 0 };
+	DOUBLE IBAT_VOS_CM_Post[SITE_NUM] = { 0 };
+	DOUBLE IBAT_VOS_Post[SITE_NUM] = { 0 };
+	DOUBLE IBAT_LOW_VOS_Post[SITE_NUM] = { 0 };
+	DOUBLE IBAT_CHG_GAIN_Post[SITE_NUM] = { 0 };
+	DOUBLE IBAT_DCHG_GAIN_Post[SITE_NUM] = { 0 };
+	DOUBLE IBAT_TERM_VOS_Post[SITE_NUM] = { 0 };
+	DOUBLE AMUX_EA_POS_Post[SITE_NUM] = { 0 };
+	DOUBLE AMUX_EA_NOS_Post[SITE_NUM] = { 0 };
+	DOUBLE OVPAGTE_VGS_Post[SITE_NUM] = { 0 };
+	//----------------OPT 
+	DOUBLE OSC_VINVO_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE EN_GATE_10V_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE RVS_IPEAKMIN_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE LIMIT_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE ZCS_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE IBAT_NPN_COMPOFF_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE NEG_LOOP_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE VBAT_LP_RVS_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE VBUS_LP_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE Duty_95_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE SEL_LFCSR_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE SSFM_DIG_EN_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE CFG_FW_DCHG_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE MODE_OS_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE IBUS_SNS_CM_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE VBUSN_IND_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE BFET_BLANK_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE PWM_BLANK_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE SSFM_CLK_HI_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE DIS_TRKL_FPWM_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE RVS_PFM_PEAK_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE DIS_CLKRVS_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE RVSPFM_IPEAK_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE DIS_BILIM_WAKE_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE DIS_SMART_OFF_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE DIS_RVS_PFM_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE RESEVERD_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE ADDR_TRIM_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE Part_ID_Trim_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE Add_Trim_OPT_Post[SITE_NUM] = { 0 };
+	DOUBLE OTP_Lock_Post[SITE_NUM] = { 0 };
+
+
+	ULONG REG_F0_POS_READ[SITE_NUM] = { 0 };
+	ULONG REG_F1_POS_READ[SITE_NUM] = { 0 };
+	ULONG REG_F2_POS_READ[SITE_NUM] = { 0 };
+	ULONG REG_F3_POS_READ[SITE_NUM] = { 0 };
+	ULONG REG_F4_POS_READ[SITE_NUM] = { 0 };
+	ULONG REG_F5_POS_READ[SITE_NUM] = { 0 };
+	ULONG REG_F6_POS_READ[SITE_NUM] = { 0 };
+	ULONG REG_F7_POS_READ[SITE_NUM] = { 0 };
+	ULONG REG_F8_POS_READ[SITE_NUM] = { 0 };
+	ULONG REG_F9_POS_READ[SITE_NUM] = { 0 };
+	ULONG REG_FA_POS_READ[SITE_NUM] = { 0 };
+	ULONG REG_FB_POS_READ[SITE_NUM] = { 0 };
+	ULONG REG_FC_POS_READ[SITE_NUM] = { 0 };
+	ULONG REG_FD_POS_READ[SITE_NUM] = { 0 };
+	ULONG REG_FE_POS_READ[SITE_NUM] = { 0 };
+	ULONG REG_FF_POS_READ[SITE_NUM] = { 0 };
+	BOOL Check_pass[SITE_NUM] = { 0 };
+	//-------------------------------OTP READ FUNCTION--------------------------//
+	dcm.I2CConnect();
+	cbite.SetOn(K_VBAT_Cap, K58_SDA_PU, -1);
+	delay_ms(3);
+	VBAT_ACM.Set(FV, V_TYP_VBAT, ACM200_20V, ACM200_100MA, ACM200_RELAY_ON);//VBAT
+	VCC_FOVI.Set(FV, 5, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);//VBAT
+	delay_ms(2);
+	entertestmode();
+	I2C_READ_BYTE(DEV_ADDRESS, 0xF0, REG_F0_POS_READ);
+	I2C_READ_BYTE(DEV_ADDRESS, 0xF1, REG_F1_POS_READ);
+	I2C_READ_BYTE(DEV_ADDRESS, 0xF2, REG_F2_POS_READ);
+	I2C_READ_BYTE(DEV_ADDRESS, 0xF3, REG_F3_POS_READ);
+	I2C_READ_BYTE(DEV_ADDRESS, 0xF4, REG_F4_POS_READ);
+	I2C_READ_BYTE(DEV_ADDRESS, 0xF5, REG_F5_POS_READ);
+	I2C_READ_BYTE(DEV_ADDRESS, 0xF6, REG_F6_POS_READ);
+	I2C_READ_BYTE(DEV_ADDRESS, 0xF7, REG_F7_POS_READ);
+	I2C_READ_BYTE(DEV_ADDRESS, 0xF8, REG_F8_POS_READ);
+	I2C_READ_BYTE(DEV_ADDRESS, 0xF9, REG_F9_POS_READ);
+	I2C_READ_BYTE(DEV_ADDRESS, 0xFA, REG_FA_POS_READ);
+	I2C_READ_BYTE(DEV_ADDRESS, 0xFB, REG_FB_POS_READ);
+	I2C_READ_BYTE(DEV_ADDRESS, 0xFC, REG_FC_POS_READ);
+	I2C_READ_BYTE(DEV_ADDRESS, 0xFD, REG_FD_POS_READ);
+	I2C_READ_BYTE(DEV_ADDRESS, 0xFE, REG_FE_POS_READ);
+	I2C_READ_BYTE(DEV_ADDRESS, 0xFF, REG_FF_POS_READ);
+	VBAT_ACM.Set(FV, 0, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);//VBAT
+	VCC_FOVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);//VBAT
+	delay_ms(1);
+	VBAT_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);//VBAT
+	VCC_FOVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_OFF);//VBAT
+	//-------------Read all register and set into readback
+	FOR_EACH_VALID_SITE(site)
+	{
+		trim_reg.assy("EFUSE_REG_F0").set_read_back((INT)REG_F0_POS_READ[site], site);
+		trim_reg.assy("EFUSE_REG_F1").set_read_back((INT)REG_F1_POS_READ[site], site);
+		trim_reg.assy("EFUSE_REG_F2").set_read_back((INT)REG_F2_POS_READ[site], site);
+		trim_reg.assy("EFUSE_REG_F3").set_read_back((INT)REG_F3_POS_READ[site], site);
+		trim_reg.assy("EFUSE_REG_F4").set_read_back((INT)REG_F4_POS_READ[site], site);
+		trim_reg.assy("EFUSE_REG_F5").set_read_back((INT)REG_F5_POS_READ[site], site);
+		trim_reg.assy("EFUSE_REG_F6").set_read_back((INT)REG_F6_POS_READ[site], site);
+		trim_reg.assy("EFUSE_REG_F7").set_read_back((INT)REG_F7_POS_READ[site], site);
+		trim_reg.assy("EFUSE_REG_F8").set_read_back((INT)REG_F8_POS_READ[site], site);
+		trim_reg.assy("EFUSE_REG_F9").set_read_back((INT)REG_F9_POS_READ[site], site);
+		trim_reg.assy("EFUSE_REG_FA").set_read_back((INT)REG_FA_POS_READ[site], site);
+		trim_reg.assy("EFUSE_REG_FB").set_read_back((INT)REG_FB_POS_READ[site], site);
+		trim_reg.assy("EFUSE_REG_FC").set_read_back((INT)REG_FC_POS_READ[site], site);
+		trim_reg.assy("EFUSE_REG_FD").set_read_back((INT)REG_FD_POS_READ[site], site);
+		trim_reg.assy("EFUSE_REG_FE").set_read_back((INT)REG_FE_POS_READ[site], site);
+		trim_reg.assy("EFUSE_REG_FF").set_read_back((INT)REG_FF_POS_READ[site], site);
+		if (trim_reg.assy("EFUSE_REG_REGISTER_BURN").comp_prog_to_read(site))
+		{
+			Check_pass[site]=true; // Means Read value same as program
+		}
+		else
+		{
+			Check_pass[site] = false;
+		}
+	}
+
+	FOR_EACH_VALID_SITE(site)
+	{
+		VBG_Post[site] = trim_reg.trim("bandgap").get_read_back(site);//check,1
+		VREF_V1P2_Post[site] = trim_reg.trim("vref_v1p2").get_read_back(site);//check,2
+		IBIAS_ZTC_Post[site] = trim_reg.trim("ibias_ztc").get_read_back(site);//check,3
+		IBP_OSC_Post[site] = trim_reg.trim("ibp_osc").get_read_back(site);//check,4	
+		OSC_64K_Post[site] = trim_reg.trim("osc_64k").get_read_back(site);//check,5
+		OSC_4P5M_Post[site] = trim_reg.trim("osc_4p5m").get_read_back(site);//check,6
+		IZTC_NTC1_Post[site] = trim_reg.trim("iztc_ntc1").get_read_back(site);//check,7
+		VBAT_EA_LOOP_Post[site] = trim_reg.trim("vbat_ea_loop").get_read_back(site);//check,8
+		IBUS_MNT_VOS_Post[site] = trim_reg.trim("ibus_mnt_vos").get_read_back(site);//check,10
+		IBUS_TERM_VOS_Post[site] = trim_reg.trim("ibus_term_vos").get_read_back(site);//check,11
+		IBAT_VOS_CM_Post[site] = trim_reg.trim("ibat_vos_cm").get_read_back(site);//check,12	
+		IBAT_VOS_Post[site] = trim_reg.trim("ibat_vos").get_read_back(site);//check,13
+		IBAT_LOW_VOS_Post[site] = trim_reg.trim("ibat_low_vos").get_read_back(site);//check,14
+		IBAT_CHG_GAIN_Post[site] = trim_reg.trim("ibat_chg_gain").get_read_back(site);//check,15
+		IBAT_DCHG_GAIN_Post[site] = trim_reg.trim("ibat_dischg_gain").get_read_back(site);//check,16
+		IBAT_TERM_VOS_Post[site] = trim_reg.trim("ibat_term_vos").get_read_back(site);//check,17
+		AMUX_EA_POS_Post[site] = trim_reg.trim("amux_ea_pos").get_read_back(site);//check,18
+		AMUX_EA_NOS_Post[site] = trim_reg.trim("amux_ea_nos").get_read_back(site);//check,19
+		OVPAGTE_VGS_Post[site] = trim_reg.trim("ovpgate_vgs").get_read_back(site);//check,20
+		//--------------OPT
+		OSC_VINVO_OPT_Post[site] = trim_reg.sel("osc_vinvout_opt").get_read_back(site);//check,1
+		EN_GATE_10V_OPT_Post[site] = trim_reg.sel("en_ovpgate_10v_opt").get_read_back(site);//check,2
+		RVS_IPEAKMIN_OPT_Post[site] = trim_reg.sel("rvs_ipeakmin").get_read_back(site);//check,3
+		LIMIT_OPT_Post[site] = trim_reg.sel("limit_opt").get_read_back(site);//check,4
+		ZCS_OPT_Post[site] = trim_reg.sel("zcs_opt").get_read_back(site);//check,5
+		IBAT_NPN_COMPOFF_OPT_Post[site] = trim_reg.sel("ibat_npn_comp_off_opt").get_read_back(site);//check,6
+		NEG_LOOP_OPT_Post[site] = trim_reg.sel("neg_loop_opt").get_read_back(site);//check,7
+		VBAT_LP_RVS_OPT_Post[site] = trim_reg.sel("vbat_loop_rvs_opt").get_read_back(site);//check,8
+		VBUS_LP_OPT_Post[site] = trim_reg.sel("vbus_loop_opt").get_read_back(site);//check,9
+		Duty_95_OPT_Post[site] = trim_reg.sel("duty_95_width_opt").get_read_back(site);//check,10
+		SEL_LFCSR_OPT_Post[site] = trim_reg.sel("sel_lfcsr_opt").get_read_back(site);//check,11
+		SSFM_DIG_EN_OPT_Post[site] = trim_reg.sel("ssfm_dig_en_opt").get_read_back(site);//check,12
+		CFG_FW_DCHG_OPT_Post[site] = trim_reg.sel("cfg_fw_dischg_opt").get_read_back(site);//check,13
+		MODE_OS_OPT_Post[site] = trim_reg.sel("mode_os_opt").get_read_back(site);//check,14
+		IBUS_SNS_CM_OPT_Post[site] = trim_reg.sel("ibus_sns_cm_opt").get_read_back(site);//check,15
+		VBUSN_IND_OPT_Post[site] = trim_reg.sel("vbusn_indicator_opt").get_read_back(site);//check,16
+		BFET_BLANK_OPT_Post[site] = trim_reg.sel("bfet_blank_opt").get_read_back(site);//check,17
+		PWM_BLANK_OPT_Post[site] = trim_reg.sel("pwm_blank_opt").get_read_back(site);//check,18
+		SSFM_CLK_HI_OPT_Post[site] = trim_reg.sel("ssfm_clk_hi_opt").get_read_back(site);//check,19
+		DIS_TRKL_FPWM_OPT_Post[site] = trim_reg.sel("dis_trickle_fpwm_opt").get_read_back(site);//check,20
+		RVS_PFM_PEAK_OPT_Post[site] = trim_reg.sel("rvs_pfm_ipeak_opt").get_read_back(site);//check,21
+		DIS_CLKRVS_OPT_Post[site] = trim_reg.sel("dis_clkrvs_opt").get_read_back(site);//check,22
+		RVSPFM_IPEAK_OPT_Post[site] = trim_reg.sel("rvspfm_hys_opt").get_read_back(site);//check,23
+		DIS_BILIM_WAKE_OPT_Post[site] = trim_reg.sel("dis_bilim_wake_opt").get_read_back(site);//check,24
+		DIS_SMART_OFF_OPT_Post[site] = trim_reg.sel("dis_smart_off_opt").get_read_back(site);//check,25
+		DIS_RVS_PFM_OPT_Post[site] = trim_reg.sel("dis_rvs_pfm_opt").get_read_back(site);//check,26
+		RESEVERD_OPT_Post[site] = trim_reg.sel("reserved").get_read_back(site);//check,27
+		Add_Trim_OPT_Post[site] = trim_reg.sel("add_trim").get_read_back(site);//check,28
+		Part_ID_Trim_OPT_Post[site] = trim_reg.sel("part_id_trim").get_read_back(site);//check,29
+		OTP_Lock_Post[site] = trim_reg.sel("otp_lock").get_read_back(site);//check,30
+	}
+
+	FOR_EACH_VALID_SITE(site)
+	{
+		VBG_PosRd->SetTestResult(site, 0, VBG_Post[site]);
+		VREF_V1P2_PosRd->SetTestResult(site, 0, VREF_V1P2_Post[site]);
+		IBIAS_ZTC_PosRd->SetTestResult(site, 0, IBIAS_ZTC_Post[site]);
+		IBP_OSC_PosRd->SetTestResult(site, 0, IBP_OSC_Post[site]);
+		OSC_64K_PosRd->SetTestResult(site, 0, OSC_64K_Post[site]);
+		OSC_4P5M_PosRd->SetTestResult(site, 0, OSC_4P5M_Post[site]);
+		IZTC_NTC1_PosRd->SetTestResult(site, 0, IZTC_NTC1_Post[site]);
+		VBAT_EA_LOOP_PosRd->SetTestResult(site, 0, VBAT_EA_LOOP_Post[site]);
+		IBUS_MNT_VOS_PosRd->SetTestResult(site, 0, IBUS_MNT_VOS_Post[site]);
+		IBUS_TERM_VOS_PosRd->SetTestResult(site, 0, IBUS_TERM_VOS_Post[site]);
+		IBAT_VOS_CM_PosRd->SetTestResult(site, 0, IBAT_VOS_CM_Post[site]);
+		IBAT_VOS_PosRd->SetTestResult(site, 0, IBAT_VOS_Post[site]);
+		IBAT_LOW_VOS_PosRd->SetTestResult(site, 0, IBAT_LOW_VOS_Post[site]);
+		IBAT_CHG_GAIN_PosRd->SetTestResult(site, 0, IBAT_CHG_GAIN_Post[site]);
+		IBAT_DCHG_GAIN_PosRd->SetTestResult(site, 0, IBAT_DCHG_GAIN_Post[site]);
+		IBAT_TERM_VOS_PosRd->SetTestResult(site, 0, IBAT_TERM_VOS_Post[site]);
+		AMUX_EA_POS_PosRd->SetTestResult(site, 0, AMUX_EA_POS_Post[site]);
+		AMUX_EA_NOS_PosRd->SetTestResult(site, 0, AMUX_EA_NOS_Post[site]);
+		OVPAGTE_VGS_PosRd->SetTestResult(site, 0, OVPAGTE_VGS_Post[site]);
+		OSC_VINVO_OPT_PosRd->SetTestResult(site, 0, OSC_VINVO_OPT_Post[site]);
+		EN_GATE_10V_OPT_PosRd->SetTestResult(site, 0, EN_GATE_10V_OPT_Post[site]);
+		RVS_IPEAKMIN_OPT_PosRd->SetTestResult(site, 0, RVS_IPEAKMIN_OPT_Post[site]);
+		LIMIT_OPT_PosRd->SetTestResult(site, 0, LIMIT_OPT_Post[site]);
+		ZCS_OPT_PosRd->SetTestResult(site, 0, ZCS_OPT_Post[site]);
+		IBAT_NPN_COMPOFF_OPT_PosRd->SetTestResult(site, 0, IBAT_NPN_COMPOFF_OPT_Post[site]);
+		NEG_LOOP_OPT_PosRd->SetTestResult(site, 0, NEG_LOOP_OPT_Post[site]);
+		VBAT_LP_RVS_OPT_PosRd->SetTestResult(site, 0, VBAT_LP_RVS_OPT_Post[site]);
+		VBUS_LP_OPT_PosRd->SetTestResult(site, 0, VBUS_LP_OPT_Post[site]);
+		Duty_95_OPT_PosRd->SetTestResult(site, 0, Duty_95_OPT_Post[site]);
+		SEL_LFCSR_OPT_PosRd->SetTestResult(site, 0, SEL_LFCSR_OPT_Post[site]);
+		SSFM_DIG_EN_OPT_PosRd->SetTestResult(site, 0, SSFM_DIG_EN_OPT_Post[site]);
+		CFG_FW_DCHG_OPT_PosRd->SetTestResult(site, 0, CFG_FW_DCHG_OPT_Post[site]);
+		MODE_OS_OPT_PosRd->SetTestResult(site, 0, MODE_OS_OPT_Post[site]);
+		IBUS_SNS_CM_OPT_PosRd->SetTestResult(site, 0, IBUS_SNS_CM_OPT_Post[site]);
+		VBUSN_IND_OPT_PosRd->SetTestResult(site, 0, VBUSN_IND_OPT_Post[site]);
+		BFET_BLANK_OPT_PosRd->SetTestResult(site, 0, BFET_BLANK_OPT_Post[site]);
+		PWM_BLANK_OPT_PosRd->SetTestResult(site, 0, PWM_BLANK_OPT_Post[site]);
+		SSFM_CLK_HI_OPT_PosRd->SetTestResult(site, 0, SSFM_CLK_HI_OPT_Post[site]);
+		DIS_TRKL_FPWM_OPT_PosRd->SetTestResult(site, 0, DIS_TRKL_FPWM_OPT_Post[site]);
+		RVS_PFM_PEAK_OPT_PosRd->SetTestResult(site, 0, RVS_PFM_PEAK_OPT_Post[site]);
+		DIS_CLKRVS_OPT_PosRd->SetTestResult(site, 0, DIS_CLKRVS_OPT_Post[site]);
+		RVSPFM_IPEAK_OPT_PosRd->SetTestResult(site, 0, RVSPFM_IPEAK_OPT_Post[site]);
+		DIS_BILIM_WAKE_OPT_PosRd->SetTestResult(site, 0, DIS_BILIM_WAKE_OPT_Post[site]);
+		DIS_SMART_OFF_OPT_PosRd->SetTestResult(site, 0, DIS_SMART_OFF_OPT_Post[site]);
+		DIS_RVS_PFM_OPT_PosRd->SetTestResult(site, 0, DIS_RVS_PFM_OPT_Post[site]);
+		RESEVERD_OPT_PosRd->SetTestResult(site, 0, RESEVERD_OPT_Post[site]);
+		ADD_TRIM_OPT_PosRd->SetTestResult(site, 0, Add_Trim_OPT_Post[site]);
+		//if (Part_Num == 3326)
+		//{
+		//	PART_ID_3326_PosRd->SetTestResult(site, 0, Part_ID_Trim_OPT_Post[site]);
+		//}
+		//else
+		//{
+		//	PART_ID_TRIM_OPT_PosRd->SetTestResult(site, 0, Part_ID_Trim_OPT_Post[site]);
+		//}
+
+		PART_ID_TRIM_OPT_PosRd->SetTestResult(site, 0, Part_ID_Trim_OPT_Post[site]);
+		OPT_LOCK_PosRd->SetTestResult(site, 0, OTP_Lock_Post[site]);
+		Burn_Check_Pass->SetTestResult(site, 0, Check_pass[site]);
+	}
+
+	return 0;
+}

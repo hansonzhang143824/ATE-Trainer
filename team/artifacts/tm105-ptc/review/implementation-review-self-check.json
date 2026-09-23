@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 2,
+  "artifactId": "tm105-implementation-review-self-check",
+  "taskId": "TM105-PTC-RULE_REVIEW_IMPLEMENTATION",
+  "trial": "tm105-ptc",
+  "tm": "TM105",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_IMPLEMENTATION",
+  "signedInputs": {
+    "implementationManifestSha256": "49fef734b6898fabb66b368d9c4291599555148037859e306a826e7514e29319"
+  },
+  "checks": [
+    {
+      "id": "SC-1",
+      "result": "PASS",
+      "detail": "确定性实现门禁已通过。"
+    },
+    {
+      "id": "SC-2",
+      "result": "PASS",
+      "detail": "本次审查未修改 test.cpp 或实现清单。"
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+=== FILES ===
+  D:\PROJECT6-DALI\ForCodexDebug\source\BoardCheck.h  bytes=32536 sha256=ad562c1c14929bbf71f5549269ce6c44c16352eb4d4299a130952f714d5d83ea bom=False crlf=798
+  D:\PROJECT6-DALI\ForCodexDebug\source\treg.h  bytes=51157 sha256=e10c2ac7e2b53b043467ed1579e76de9c41bde2b6e7d5b787a3e0d8ccc262bbc bom=False crlf=1033
+
+=== BoardCheck.h  class CBC_log and log()/test_log() declarations ===
+    214| class CBC_log
+    217| 	CBC_log(void) {}
+    218| 	~CBC_log(void) {}
+    759| 	BOOL log(DWORD tnum, const char* component, double* result, double lolim, double hilim, const char* unit);
+    760| 	BOOL test_log(DWORD tnum, const char* component, double lolim, double hilim, const char* unit, double *result1 = NULL);
+    778| 	CBC_log bc_log;
+
+=== BoardCheck.h : any global/singleton instance of CBC_log ===
+    214| class CBC_log
+    217| 	CBC_log(void) {}
+    218| 	~CBC_log(void) {}
+    778| 	CBC_log bc_log;
+
+=== treg.h : lines 100-200 (callbacks, log_data, treg_error_log) ===
+    100| 
+    101| #ifdef ETS_VERSION_MAJOR
+    102| #   define TREG_ETS364
+    103| #endif
+    104| 
+    105| #ifdef TREG_ETS364
+    106| typedef int(*get_limits_t)(int tnum, double *lolim, double *hilim, char *text, int len,
+    107| 	char *unit, int unit_len, double *sc);
+    108| typedef void(*log_data_t)(int site, char *label, double lolim, double hilim, double val,
+    109| 	char *unitbase, int no_scaling);
+    110| typedef void(*test_t)(int tnum, double res, int site, int alarm_log);
+    111| #endif
+    112| 
+    113| enum TREG_FOUND_FLAG {
+    114| 	FOUND_NOWEHRE,  // 0 = not found
+    115| 	FOUND_ASSY_GRP, // 1 = found in ASSY_GRP
+    116| 	FOUND_ASSY,     // 2 = found in ASSY
+    117| 	FOUND_TRIM_GRP, // 3 = found in TRIM_GRP
+    118| 	FOUND_TRIM,     // 4 = found in TRIM
+    119| 	FOUND_SEL       // 5 = found in SEL
+    120| };
+    121| 
+    122| extern int BURN_FLAG[SITE_NUM];
+    123| 
+    124| enum TREG_MEASURE_FLAG {
+    125| 	TREG_MEASURE_NONE = -1,
+    126| 	TREG_MEASURE_CHAR,
+    127| 	TREG_MEASURE_PRE,
+    128| 	TREG_MEASURE_POST,
+    129| 	TREG_MEASURE_RETRY
+    130| };
+    131| 
+    132| enum TREG_LOGLEVEL {
+    133| 	TREG_LOG_STD = 0x0000,    // standard datalogging
+    134| 	TREG_LOG_DELTA = 0x0001,    // log delta to target absolute and in %
+    135| 	TREG_LOG_DEBUG = 0x0002,    // debug print output of trim table on screen
+    136| 	TREG_LOG_TABLE = 0x0004     // log trim table during characterization
+    137| };
+    138| 
+    139| extern bool dll_active_sites[];
+    140| 
+    141| ///////////////////////////////////////////////////////////////////////////////
+    142| // Global defines
+    143| #define MAX_TRIM                    512     // maximum number of trim steps
+    144| #define STEP_STR_BUF_SIZE           3 + 1   // size of buffer for string conversion of the variable 'steps'. Has to be 'number of digits"(MAX_TRIM) + 1
+    145| #define TRIM_STEP_ADJ_DEPTH         400     // number of units for running average of trim step learning
+    146| #define TRIM_START_ADJ_DEPTH        100     // max value of histogram / maximum number of trims to swap over from one default to an other one
+    147| #define PREDICTABILITY_BUFFER_SIZE  (TREG::num_sites() * (4 + 1)) // make sure predictability buffer size is large enough (quartile > NUM_SITES)
+    148| 
+    149| #define _DEFAULT                    "DEFAULT"
+    150| 
+    151| #define TRIM_START_LEARN_DEFAULT    20
+    152| #define TRIM_STEP_LEARN_DEFAULT     50
+    153| #define TRIM_STEP_CHAR_DEFAULT      30
+    154| 
+    155| class TRIM_GRP_NODE;
+    156| typedef double(*TrimGrpErrorFunc)(TRIM_GRP_NODE &trim_grp, unsigned site);
+    157| 
+    158| using namespace std;
+    159| 
+    160| ///////////////////////////////////////////////////////////////////////////////
+    161| // TREG_RESULTS 2-dimensional array used in TRIM_GRP_NODE::execute()
+    162| typedef vector<vector<double> > TREG_RESULTS;
+    163| 
+    164| #if defined( _MSC_VER ) && (_MSC_VER <= 1200)    // 1200 = MSVC 6.0.
+    165| #   define copy copy2    // define it back as in 'util.h'
+    166| #endif
+    167| 
+    168| ///////////////////////////////////////////////////////////////////////////////
+    169| // TREG_ERROR class
+    170| class TREG_ERROR {
+    171| 	friend class TREG;
+    172| public:
+    173| 	TREG_ERROR();
+    174| 	~TREG_ERROR();
+    175| 	static void error(const char *msg, ...);
+    176| 	static int treg_error_log(const char *format, ...);
+    177| 	static int vprintf_s(char *buffer, size_t bufferSize, const char *format, va_list args);
+    178| private:
+    179| 	void register_error_func(void(*func)(const char *));
+    180| 	static void(*error_func)(const char *);
+    181| 	static int error_count;
+    182| };
+    183| 
+    184| ///////////////////////////////////////////////////////////////////////////////
+    185| // TREG_LOG class
+    186| class TREG_LOG {
+    187| 	friend class TREG;
+    188| 	friend class TRIM_NODE;
+    189| 	friend class TRIM_GRP_NODE;
+    190| public:
+    191| 	TREG_LOG();
+    192| 	~TREG_LOG();
+    193| 
+    194| private:
+    195| 	static void log_data(unsigned tnum, unsigned index, double value, int site, bool use_mslogdata, bool allow_mslogdata,
+    196| 		string testname = "", double ll = FLT_MAX, double ul = FLT_MAX, const char *unit = NULL);
+    197| 	void register_dlog_func(void(*func)(unsigned tnum, double value, int site));
+    198| 	static void(*datalog_func)(unsigned tnum, double value, int site);
+    199| };
+    200| 
+
+=== treg.h : every line mentioning log ===
+    108| typedef void(*log_data_t)(int site, char *label, double lolim, double hilim, double val,
+    110| typedef void(*test_t)(int tnum, double res, int site, int alarm_log);
+    132| enum TREG_LOGLEVEL {
+    133| 	TREG_LOG_STD = 0x0000,    // standard datalogging
+    134| 	TREG_LOG_DELTA = 0x0001,    // log delta to target absolute and in %
+    135| 	TREG_LOG_DEBUG = 0x0002,    // debug print output of trim table on screen
+    136| 	TREG_LOG_TABLE = 0x0004     // log trim table during characterization
+    176| 	static int treg_error_log(const char *format, ...);
+    185| // TREG_LOG class
+    186| class TREG_LOG {
+    191| 	TREG_LOG();
+    192| 	~TREG_LOG();
+    195| 	static void log_data(unsigned tnum, unsigned index, double value, int site, bool use_mslogdata, bool allow_mslogdata,
+    197| 	void register_dlog_func(void(*func)(unsigned tnum, double value, int site));
+    198| 	static void(*datalog_func)(unsigned tnum, double value, int site);
+    559| 		int tnum_prod, int tnum_char = -1, int log_level = TREG_LOG_STD, double trim_hysteresis_pcnt = 0.0,
+    562| 	//	SPEC& paraname, short funcindex, LPCTSTR funclabel, double unit_scale = 1, int log_level = 0, string trimname = "");
+    565| 		SPEC& paraname, short funcindex, LPCTSTR funclabel, double unit_scale, int log_level, int max_retry_cnt, int GRP=1);
+    641| 	bool        use_msLogData;
+    742| 		TREG_RESULTS &meas_results), int log_level = TREG_LOG_STD,
+   1019| 	void        register_dlog_func(void(*func)(unsigned tnum, double value, int site)); // registers a datalog function for execute() methods
+   1024| 	TREG_LOG    dlog;

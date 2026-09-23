@@ -1,0 +1,53 @@
+=== 参数列表 ===
+   ['--check-extra', '--contract', '--list', '--list-scope', '--skip-contract-closures', '--src', '--tm-alias', '--tm-scope']
+  含 --test-cpp : False
+  含 --src      : True
+
+=== test.cpp / test_cpp 相关行 ===
+  L13   python verify_bst_sw_sequence.py [--src <test.cpp>] [--config <json>] [--list]
+  L39   """扫描 test.cpp → [{'name','block'}]（按函数体花括号配平切分）。"""
+  L455  "payload locator: test.cpp:%d; 该函数实际闭合=%s)"
+  L465  "(payload locator: test.cpp:%d) —— --check-extra 已开启"
+  L479  src = cfg["derived"]["test_cpp"]
+  L498  print("[scan] test.cpp 无 rampi_capv 电流斜坡测试项 (非 ZCD/OCP 家族), 空 PASS")
+  L530  errors.append(f"{name}: 函数不存在于 test.cpp")
+
+=== target 是怎么取到的（看 main 附近）===
+def main() -> int:
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except AttributeError:
+        pass
+    args = sys.argv[1:]
+    cfg = proj_config.load(proj_config.config_from_argv(args))
+    src = cfg["derived"]["test_cpp"]
+    if '--src' in args:
+        i = args.index('--src')
+        if i + 1 < len(args):
+            src = args[i + 1]
+
+    if not os.path.exists(src):
+        print(f'*** FAIL: 源文件不存在 {src}')
+        return 1
+
+    text, _enc = read_enc(src)
+    targets = derive_targets(iter_functions(text))
+
+    if '--list' in args:
+        for name, topo, irange in targets:
+            print(f"{name}\t{topo}\t{irange}")
+        return 0
+
+    if not targets:
+        print("[scan] test.cpp 无 rampi_capv 电流斜坡测试项 (非 ZCD/OCP 家族), 空 PASS")
+        return 0
+    errors: list[str] = []
+
+    # ---- t30: 契约闭合集合断言（致命通道: 与既有 FAIL 同一出口）----
+    contract_path = resolve_contract_path(cfg, args)
+    contract = _load_contract(contract_path)
+    if contract is None:
+        errors.append("t30 契约断言无法执行: 读不到 setup-contract.json (path=%r) —— "
+                      "契约是高电流路线闭合集合的权威, 缺失必须红而不是静默跳过" % (contract_path,))
+    elif '--skip-contract-closures' in args:
+       

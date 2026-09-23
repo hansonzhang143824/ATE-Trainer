@@ -1,0 +1,14 @@
+{
+  "caseId": "TM106",
+  "canonicalInput": "project/DALI/Output_Global_Material/dft/TM106/dft-meta.json",
+  "expectedReadSources": [
+    "project/DALI/Output_Global_Material/dft/TM106/dft-meta.json",
+    "project/DALI/Output_Global_Material/schematic/Path-Proofs.json"
+  ],
+  "expectedOutputs": [
+    "<run>/strategy/TM106-resource-config-contract.json",
+    "<run>/strategy/deliverable-ready.json"
+  ],
+  "semanticTruthStatus": "PENDING_DOMAIN_INPUT",
+  "semanticTruthNote": "TM106 strategy contract semantic truth (relay combination and register source choice) awaits domain-owner confirmation against the signed DFT interpretation; the mechanical checks of validate_strategy_contract.py are the only gate asserted today."
+}

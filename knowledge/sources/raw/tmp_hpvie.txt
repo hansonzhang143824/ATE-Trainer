@@ -1,0 +1,1504 @@
+--- PAGE 714 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 713 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedhvie0.Set(FV,0,HVIe_N10P1000V,HVIe_1MA,HVIe_RELAY_OFF);//setoutputrelaytoRELAY_OFF
+delay_ms(1);
+--- PAGE 715 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 714 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved6.7HPVIe
+6.7.1HPVIe()
+HPVIe(char*channelList,char*chName=NULL);
+Parameters
+channelList
+HPVIe绑定通道字符串。形如“S4_0”，其中“S4”表示槽位号4（S即Slot），
+“0”表示板内序号。
+注意：
+HPVIe一块板卡最多1个通道，因此板内序号最大值为0。
+chName
+通道的自定义名称。
+该参数可不写，默认为NULL，系统将该通道命名为HPVIe_xx。
+Remarks
+定义一路HPVIe通道，并指定其包含的实际通道信息（“槽位号+板内序号”）。
+Example
+例1：假设系统配置为2块HPVIe（分别位于Slot4和Slot12），两工位并行工作，
+定义可使用的HPVIe。。
+HPVIehpvie0("S4_0,S12_0");
+对应的工位绑定如下：
+STSSetMultiSiteBind(MD_HPVIe,SITE_1,"S4_0");//setSlot4ch0toSITE1
+STSSetMultiSiteBind(MD_HPVIe,SITE_2,"S12_0");//setSlot12ch0toSITE2
+--- PAGE 716 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 715 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved6.7.2Set()
+intSet(
+VIModeviMode,
+doublesetValue,
+HPVIe_VRNGvRange,
+HPVIe_IRNGiRange,
+HPVIe_OUT_RELAYrelayStatus=HPVIe_RELAY_HOLD,
+doublerisingTime=0.2);
+Parameters
+viMode
+HPVIe工作模式，有两种模式：
+FV：选择恒压模式
+FI：选择恒流模式
+setValue
+double型变量，设置恒压或者恒流值。
+选择恒压模式时，该参数为恒压值，单位为V。最大范围为-100~100。
+选择恒流模式时，该参数为恒流值，单位为A。最大范围为-100~100。
+vRange
+HPVIe电压量程。
+HPVIe_100V
+HPVIe_40V
+HPVIe_20V
+HPVIe_10V
+HPVIe_5V
+HPVIe_2V
+iRange
+HPVIe电流量程。
+--- PAGE 717 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 716 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedHPVIe_100A
+HPVIe_50A
+HPVIe_20A
+HPVIe_10A
+HPVIe_2A
+HPVIe_1A
+HPVIe_100MA
+HPVIe_10MA
+HPVIe_1MA
+HPVIe_100UA
+HPVIe_10UA
+relayStatus
+设置输出继电器如何动作，分为以下几种情况：
+HPVIe_RELAY_ON：打开输出继电器；
+HPVIe_RELAY_FANOUT_ON：打开该通道的FANOUT输出继电器；
+HPVIe_RELAY_ALL_ON：以HPVIe_RELAY_ON的输出继电器为基础，同时输出
+HPVIe_RELAY_FANOUT_ON的Force继电器，该选择用于100A测试连接，减少传
+输损耗；
+HPVIe_RELAY_OFF：关闭输出继电器；
+HPVIe_RELAY_SENSE_ON：启动独立测量模式。只打开SENSE线输出继电器，
+关闭FORCE线输出继电器。此时HPVIe处于独立电压表模式。
+HPVIe_RELAY_SENSE_FANOUT_ON：启动独立测量模式。只打开SENSE线
+FANOUT输出继电器，关闭FORCE线输出继电器。此时HPVIe处于独立电压表模
+式。
+HPVIe_RELAY_HOLD：输出继电器保持上一个状态。
+risingTime
+double型变量，设置积分时间。单位为mS，分辨率为0.1mS(设定值大于0.5mS
+时)。该参数不写，则默认为0.2mS；
+--- PAGE 718 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 717 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved1)该参数设置小于等于0.1mS时，risingTime=0.1mS，为Fast模式；
+2)该参数设置小于等于0.2mS时，risingTime=0.2mS，为Normal模式；
+3)该参数设置小于等于0.5mS时，risingTime=0.5mS，为Slow模式；
+4)该参数设置大于0.5mS时，自动启动Capload功能，risingTime为Capload上升
+或下降的时间。使用Capload功能可以得到更加平滑的上升沿和下降沿，并且上升或
+者下降时间可以根据需要来设定，Capload的最大值为65mS。
+Remarks
+设置HPVIe的状态，包括工作模式、恒压或恒流值、电压量程或电流量程、输出
+继电器状态及Capload时间。
+Example
+例1：设置hpvie0电压输出5V，risingTime不填则默认为0.2mS。
+hpvie0.Set(FV,5,HPVIe_10V,HPVIe_100MA,HPVIe_RELAY_ON);
+例2：设置hpvie0电压输出5V，risingTime设置为3mS。
+hpvie0.Set(FV,0,HPVIe_10V,HPVIe_100MA,HPVIe_RELAY_ON);
+delay_ms(1);
+hpvie0.Set(FV,5,HPVIe_10V,HPVIe_100MA,HPVIe_RELAY_ON,3);
+
+--- PAGE 719 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 718 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved6.7.3SetSyn()
+intSetSyn(
+VIModeviMode,
+constdouble*setValue,
+UINTsiteSize,
+HPVIe_VRNGvRange,
+HPVIe_IRNGiRange,
+HPVIe_OUT_RELAYrelayStatus=HPVIe_RELAY_HOLD,
+doublerisingTime=0.2);
+Parameters
+viMode
+HPVIe工作模式，有两种模式：
+FV：选择恒压模式
+FI：选择恒流模式
+setValue
+存放每个工位设定的恒压值或者恒流值的数组。
+选择恒压模式时，数组中的元素为恒压值，单位为V。最大范围为-100~100。
+选择恒流模式时，数组中的元素为恒流值，单位为A。最大范围为-100~100。
+siteSize
+UINT型变量，设置执行同步操作的工位数。若该数值为4，则执行同步操作的
+工位为SITE1、SITE2、SITE3、SITE4。
+注意：
+1)setValue数组长度必须大于siteSize的值，否则可能会发生不可预期的错误；
+2)若siteSize值小于当前有效工位数，则用户未设定的工位状态不做处理，即保持
+其原来的状态；
+3)若siteSize值大于当前有效工位数，则按当前有效工位数来处理各工位的状态。
+--- PAGE 720 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 719 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedvRange
+HPVIe电压量程。
+HPVIe_100V
+HPVIe_40V
+HPVIe_20V
+HPVIe_10V
+HPVIe_5V
+HPVIe_2V
+iRange
+HPVIe电流量程。
+HPVIe_100A
+HPVIe_50A
+HPVIe_20A
+HPVIe_10A
+HPVIe_2A
+HPVIe_1A
+HPVIe_100MA
+HPVIe_10MA
+HPVIe_1MA
+HPVIe_100UA
+HPVIe_10UA
+relayStatus
+设置输出继电器如何动作，分为以下几种情况：
+HPVIe_RELAY_ON：打开输出继电器；
+HPVIe_RELAY_FANOUT_ON：打开该通道的FANOUT输出继电器；
+HPVIe_RELAY_ALL_ON：以HPVIe_RELAY_ON的输出继电器为基础，同时输出
+HPVIe_RELAY_FANOUT_ON的Force继电器，该选择用于100A测试连接，减少传
+输损耗；
+HPVIe_RELAY_OFF：关闭输出继电器；
+HPVIe_RELAY_SENSE_ON：启动独立测量模式。只打开SENSE线输出继电器，
+--- PAGE 721 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 720 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved关闭FORCE线输出继电器。此时HPVIe处于独立电压表模式。
+HPVIe_RELAY_SENSE_FANOUT_ON：启动独立测量模式。只打开SENSE线
+FANOUT输出继电器，关闭FORCE线输出继电器。此时HPVIe处于独立电压表模
+式。
+HPVIe_RELAY_HOLD：输出继电器保持上一个状态。
+risingTime
+double型变量，设置积分时间。单位为mS，分辨率为0.1mS(设定值大于0.5mS
+时)。该参数不写，则默认为0.2mS；
+1)该参数设置小于等于0.1mS时，risingTime=0.1mS，为Fast模式；
+2)该参数设置小于等于0.2mS时，risingTime=0.2mS，为Normal模式；
+3)该参数设置小于等于0.5mS时，risingTime=0.5mS，为Slow模式；
+4)该参数设置大于0.5mS时，自动启动Capload功能，risingTime为Capload上升或下降
+的时间。使用Capload功能可以得到更加平滑的上升沿和下降沿，并且上升或者下降时
+间可以根据需要来设定，Capload的最大值为65mS。
+Remarks
+对不同的工位设定不同的电压值或电流值，且该操作对不同工位完全同步。
+Example
+例1：hpvie0通道的SITE1设置其输出3V，SITE2设置其输出5V，且要求SITE1
+和SITE2同步输出。同时设置risingTime为默认值。
+doublesetValue[2]={3,5};
+intsiteSize=2;
+hpvie0.SetSyn(FV,setValue,siteSize,HPVIe_10V,HPVIe_100MA,HPVIe_RELAY_ON);
+--- PAGE 722 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 721 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved
+例2：hpvie0通道的SITE1设置其输出3V，SITE2设置其输出5V，且要求SITE1
+和SITE2同步输出。同时设置risingTime为3mS。
+doublesetValue[2]={3,5};
+intsiteSize=2;
+hpvie0.Set(FV,0,HPVIe_10V,HPVIe_100MA,HPVIe_RELAY_ON);
+delay_ms(1);
+hpvie0.SetSyn(FV,setValue,siteSize,HPVIe_10V,HPVIe_100MA,HPVIe_RELAY_ON,3);
+6.7.4SetClamp()
+intSetClamp(
+doublepercent_PFS,
+doublepercent_NFS);
+Parameters
+percent_PFS
+--- PAGE 723 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 722 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved输出正箝位值，此处指占正箝位满量程的百分比，单位%。范围：10~110。
+percent_NFS
+输出负箝位值，此处指占负箝位满量程的百分比，单位%。范围：10~110。
+ReturnValues
+返回3：正负箝位皆发生变化；
+返回2：负箝位变化；
+返回1：正箝位变化；
+返回0：正负箝位皆未发生变化；
+返回-1：函数调用失败。
+Remarks
+设置HPVIe的正负箝位值。
+注意：
+SetClamp函数与模式相关，切换FV、FI模式时会清除箝位设置，箝位值会自动
+还原成110%。未切换FV和FI状态时，箝位设置会保持不变。
+Example
+例1：设置hpvie1为FI=0模式，箝位到(50,20)，然后切换hpvie1为FV=1V模式，
+箝位到(25,25)。
+hpvie1.Set(FI,0,HPVIe_10V,HPVIe_10MA,HPVIe_RELAY_ON);
+//positiveclampto50%offullrange(HPVIe_10V),negativeclampto20%offullrange
+hpvie1.SetClamp(50,20);
+//switchfromFItoFVmode,thenpositive/negativeclampsrecoverbackto110%offullrange
+hpvie1.Set(FV,0,HPVIe_10V,HPVIe_100MA,HPVIe_RELAY_ON);
+//resetpositiveclampto25%offullrange(HPVIe_100MA),negativeclampto25%offullrange
+hpvie1.SetClamp(25,25);
+//SetFV=1V
+hpvie1.Set(FV,1,HPVIe_10V,HPVIe_100MA,HPVIe_RELAY_ON);
+例2：设置hpvie1为FV=1V模式，箝位到(50,25)，然后切换hpvie1为FV=35V，
+--- PAGE 724 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 723 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved测量结束后设置hpvie1为FV=0，箝位到(100,100)。
+hpvie1.Set(FV,0,HPVIe_10V,HPVIe_100MA,HPVIe_RELAY_ON);
+//positiveclampto50%offullrange(HPVIe_100MA),negativeclampto25%offullrange
+hpvie1.SetClamp(50,25);
+hpvie1.Set(FV,1,HPVIe_10V,HPVIe_100MA,HPVIe_RELAY_ON);
+delay_ms(1);
+//stillinFVmode,clampsettingwillkeepunchanged
+hpvie1.Set(FV,35,HPVIe_40V,HPVIe_100MA,HPVIe_RELAY_ON);
+hpvie1.MeasureVI(100,20);
+hpvie1.Set(FV,0,HPVIe_40V,HPVIe_100MA,HPVIe_RELAY_ON);
+//afterFV=0,setclampsbackto100%
+hpvie1.SetClamp(100,100);
+6.7.5MeasureVI()
+intMeasureVI(
+UINTsampleTimes,
+doublesamplePeriod,
+HPVIe_MV_GAINmvGain=HPVIe_MV_X1,
+HPVIe_MI_GAINmiGain=HPVIe_MI_X1,
+FLOATMEASMODEmeasMode=MEAS_NORMAL,
+UINTT1=0,
+UINTT2=0,
+UINTT3=0,
+UINTT4=0);
+Parameters
+sampleTimes
+设置AD采样次数。范围1~4096。
+注意：
+当sampleTimes<1时，sampleTimes=1；
+当sampleTimes>4096时，sampleTimes=4096。
+samplePeriod
+设置每次采样之间的时间间隔，单位uS。最小采样间隔为1uS，分辨率1uS。范
+--- PAGE 725 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 724 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved围：1~30000。
+注意：
+当samplePeriod<1时，samplePeriod=1；
+当samplePeriod>30000时，samplePeriod=30000。
+mvGain
+HPVIe测压增益。
+HPVIe_MV_X1
+HPVIe_MV_X2
+HPVIe_MV_X5
+HPVIe_MV_X10
+该参数可以不写，默认值为HPVIe_MV_X1。
+miGain
+HPVIe测流增益。
+HPVIe_MI_X1
+HPVIe_MI_X2
+HPVIe_MI_X5
+HPVIe_MI_X10
+该参数可以不写，默认值为HPVIe_MI_X1。
+measMode
+测量模式选择，可设置为：
+MEAS_NORMAL普通测量模式。调用函数后完成测量。
+MEAS_AWG AWG测量模式。只做设置，运行AWG时启动。
+该参数可以不写，默认值为MEAS_NORMAL模式
+T1、T2、T3、T4
+单位uS。分辨率10uS，范围：0~(T1+T2+T3+T4)~600000。
+AWG测量模式下，设置测量启动时刻。一次AWG中，可以启动四次测量。四个
+--- PAGE 726 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 725 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved参数均可以不写，默认启动一次，启动时刻为0。对于这种测量模式，建议跟同步启
+动测量配合使用。
+注意：
+T1、T2、T3、T4为相对时间。即T2的启动时间为相对T1的启动时间，T3的启
+动时间为相对T2的启动时间，T4的启动时间为相对T3的启动时间。
+Remarks
+设置HPVIe的测量次数、测量间隔、测压增益、测流增益、测量模式以及AWG
+测量模式下的四次测量启动时刻。
+Example
+例1：设置hpvie0为普通模式测量，采样20次，间隔5uS。
+hpvie0.MeasureVI(20,5);
+6.7.6GetMeasResult()
+doubleGetMeasResult(
+UINTsiteCount,
+MeasRetretType=MVRET,
+intsampleNumber=AVERAGE_RESULT,
+BYTEtriggerNum=0);
+Parameters
+siteCount
+UINT型变量，选择测量数据工位。0代表Site1，1代表Site2……
+注意：
+当获取结果的通道定义为NO_SITE时，siteCount可以为任意值。
+retType
+--- PAGE 727 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 726 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved选择测量读回的数据类型，可设置为
+MVRET回读电压测量数据
+MIRET回读电流测量数据
+该参数可以不写，默认值为MVRET。
+sampleNumber
+AVERAGE_RESULT平均值
+MAX_RESULT 最大值
+MIN_RESULT 最小值
+TRIG_RESULT触发值。AWG同步测量时，跳变触发的位置。即MeasureVI
+中第几个采样点发生跳变，最多支持两次触发。
+非负值N： 返回的是第N+1个采样点的测量值。假设MeasureVI的采样
+次数为sam，则0≤N≤sam-1。
+该参数可以不写，默认值为AVERAGE_RESULT。
+triggerNum
+触发次数设置。
+仅当sampleNumber选择TRIG_RESULT时，该参数有效，最多支持两次触发。
+该参数可以不写，默认值为0，表示回读第一次发生触发的位置。该参数设置为1，
+表示回读第二次发生触发的位置。
+Remarks
+获取MeasureVI()函数的测量结果。
+1)如果选择MVRET测压模式，则回读的结果为电压值，单位为V；
+2)如果选择MIRET测流模式，则回读的结果为电流值，单位为A。
+注意：
+1)HPVIe每次测量时，电压和电流是同时测量的，用户只需要选择读回MVRET
+或者MIRET即可。
+2)当参数sampleNumber选择TRIG_RESULT时，如果没有发生触发，则函数返回
+--- PAGE 728 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 727 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved值为-3，如果测量模式与回读模式不符，则函数返回值为-5。
+Example
+例1：返回hpvie0电流测量结果平均值。
+//hpvie0sampleTimes=20,samplePeriod=5uS
+hpvie0.MeasureVI(20,5);
+for(i=0;i<SITENUM;i++)
+{
+//theparameterofsampleNumberisdefaultvalueAVERAGE_RESULT,sotheresultisaveragevalue
+ofcurrent
+adresult[i]=hpvie0.GetMeasResult(i,MIRET);
+}
+例2：返回hpvie0电压测量结果第15个点的值。
+//hpvie0sampleTimes=20,samplePeriod=5uS
+hpvie0.MeasureVI(20,5);
+for(i=0;i<SITENUM;i++)
+{
+//theresultisfifteenthvoltagevalue
+adresult[i]=hpvie0.GetMeasResult(i,MVRET,14);
+}
+例3：AWG同步测量时，返回hpvie0两次跳变触发的位置。
+//hpvie1sampleTime=50,samplePeriod=20uS,miGainisX1,measuremodeisMEAS_AWG
+hpvie1.MeasureVI(50,20,HPVIe_MV_X1,HPVIe_MI_X1,MEAS_AWG);
+//thehpvie0’sparametersofMeasureVIfunctionaresamewithhpvie1
+hpvie0.MeasureVI(50,20,HPVIe_MV_X1,HPVIe_MI_X1,MEAS_AWG);
+//thetriggervalueis2V,fallingedge
+hpvie0.SetMeasVTrig(2,TRIG_FALLING);
+//hpvie1AWGenable
+STSEnableAWG(&hpvie1);
+//hpvie0andhpvie1measureenable
+STSEnableMeas(&hpvie1,&hpvie0);
+STSAWGRun();
+for(i=0;i<SITENUM;i++)
+{
+//Getthevoltagepositionoffirsttrigger
+Trig_Point0[i]=hpvie1.GetMeasResult(0,MVRET,TRIG_RESULT,0);
+//Getthevoltagepositionofsecondtrigger
+Trig_Point1[i]=hpvie1.GetMeasResult(0,MVRET,TRIG_RESULT,1);
+}
+6.7.7BlockRead()
+intBlockRead(
+--- PAGE 729 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 728 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedUINTsiteCount,
+UINTstart,
+UINTsize,
+double*buffer,
+MeasRetretType=MVRET);
+Parameters
+siteCount
+UINT型变量，选择测量数据工位。0代表Site1，1代表Site2……
+start
+UINT型变量，数据块的起始地址，非负整数。参数范围：0~（MeasureVI函数中
+设置的采样次数-1）
+size
+UINT型变量，数据块的大小，正整数。参数范围：1~（MeasureVI函数中设置的
+采样次数-start）
+buffer
+存放数据结果的数组，由用户定义，如：doubleresult[1000]={0.0};
+注意：
+1)buffer数组长度需不小于size的值，否则可能会发生不可预期的错误；
+2)建议把该数组定义成全局变量。
+retType
+选择测量读回的数据类型，默认为MVRET。
+MVRET读回电压测量数据
+MIRET读回电流测量数据
+Remarks
+此函数读取一个数据块的测量结果，数据块的起始地址和大小由用户定义。
+--- PAGE 730 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 729 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedExample
+doubleresult[SITENUM][200]={0.0};
+hpvie0.MeasureVI(200,10);
+for(i=0;i<SITENUM;i++)
+{
+//start=0;size=200;GetMVRET,savedtoresult.
+hpvie0.BlockRead(i,0,200,result[i],MVRET);
+}
+6.7.8Pulse()
+intPulse(
+doublepulseValue,
+UINTpulseTime=300,
+IntmeasStartTime=0,
+UINTsampleTimes=10,
+doublesampleInterval=30,
+HPVIe_MV_GAINmvGain=HPVIe_MV_X1,
+HPVIe_MI_GAINmiGain=HPVIe_MI_X1););
+Parameters
+pulseValue
+double型变量，设置脉冲幅值。
+选择FV模式时，单位V。最大范围为-100~100；
+选择FI模式时，单位A。最大范围为-100~100。
+pulseTime
+UINT型变量，设置脉冲时间。单位uS。
+分辨率：10uS。范围：300~40000。
+实际脉冲建立速度受限于积分时间和电压档位，电压档位越大积分时间越长，设
+置脉冲时间的最小值需要根据积分时间和电压档位做适当调整。0.2mS积分时间下，
+10V档满量程建立时间为200uS，100V档满量程建立时间为500uS。各电流档位脉
+冲最大时间受限于HPVIe输出功率曲线，需要根据HPVIe输出功率曲线进行设置。
+--- PAGE 731 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 730 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved可以不写，默认为300uS。
+measStartTime
+int型变量，设置启动测量时间，单位uS。范围：-60000~60000。
+可以不写，默认为0。
+sampleTimes
+UINT型变量，设置采样次数。范围1~4096。
+可以不写，默认为10。
+sampleInterval
+UINT型变量，设置采样间隔时间，单位uS。最小采样间隔为1uS，分辨率1uS。
+可以不写，默认为30uS。
+Remarks
+输出幅度、脉宽可调的电压或电流脉冲。
+注意：
+Pulse函数之前，需先调用Set函数来设置量程等信息。Pulse脉冲的起始值和终止
+值均为Set语句设置值。
+Example
+例1：设置hpvie0起始状态FV为0。设置hpvie0输出1mS的8V脉冲；采样次
+数200次，采样间隔时间10uS，脉冲生成前500uS开始启动测量。
+//useset()functiontosetthestateofhpvie0
+hpvie0.Set(FV,0,HPVIe_10V,HPVIe_10MA,HPVIe_RELAY_ON);
+hpvie0.Pulse(8,1000,-500,200,10);
+使用SoftView软件抓取的波形如下：
+--- PAGE 732 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 731 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved
+6.7.9AwgLoader()
+intAwgLoader(
+char*awgName,
+VIModeviMode,
+HPVIe_VRNGvRange,
+HPVIe_IRNGiRange,
+double*awgData,
+UINTawgSize);
+Parameters
+awgName
+char型变量，AWG波形名称。命名不区分大小写。
+viMode
+HPVIe工作模式，有两种模式：
+FV选择恒压模式
+FI选择恒流模式
+--- PAGE 733 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 732 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedvRange
+HPVIe电压量程。
+HPVIe_100V
+HPVIe_40V
+HPVIe_20V
+HPVIe_10V
+HPVIe_5V
+HPVIe_2V
+iRange
+HPVIe电流量程。
+HPVIe_100A
+HPVIe_50A
+HPVIe_20A
+HPVIe_10A
+HPVIe_2A
+HPVIe_1A
+HPVIe_100MA
+HPVIe_10MA
+HPVIe_1MA
+HPVIe_100UA
+HPVIe_10UA
+awgData
+double型指针，存储AWG波形数据。
+awgSize
+UINT型变量，设置AWG波形数据的大小。该参数范围为1~4096。
+Remarks
+导入AWG波形数据。设置导入的AWG波形的名称、导入数据的长度及档位信
+--- PAGE 734 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 733 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved息。
+注意：
+1)档位信息不涉及档位的切换，仅用于波形数据换算；
+2)同一路HPVIe通道可以导入多个AWG波形，但不同AWG波形的命名必须不
+同。对于相同名称的AWG波形，只写入第一次调用AwgLoader函数中设置的波形；
+3)启动AwgLoader函数会把本次的AWG波形写入RAM中，因此执行该语句会
+占用测试时间。一次性写入4096个点的数组，执行AwgLoader函数需要5mS左右
+的时间，写入时间与写入点数成正比；
+4)同一个测试程序中，同一路HPVIe通道每次导入的AWG波形总长度必须小于
+等于4096，超出4096以后的数据不会写入RAM；
+5)同一个测试程序中，建议同一路HPVIe通道导入的多个AWG波形总长度小于
+4096。此时，同一个AWG波形数据不会被重复导入，仅第一次执行AwgLoader函
+数时占用测试时间；
+6)同一个测试程序中，如果同一路HPVIe通道导入的多个AWG波形总长度大于
+4096。此时，每次会重新写入新的AWG数据到RAM中，增加了测试时间。
+Example
+例1：建立一个波形数据组，hpvie0从16.5V上升到21.5V，步距0.1V。
+intsam=50;//AWGwaveformdatalength
+intinterval=200;//AWGdataintervaltime,unitisuS
+doubleawg_pattern[100]={0.0};
+STSAWGCreateRampData(&awg_pattern[0],sam,1,16.5,21.5);
+//patternarraysavedin‘awg_pattern’,startfrom16.5to21.5
+hpvie0.AwgLoader("Vst",FV,HPVIe_40V,HPVIe_100MA,awg_pattern,sam);
+//patternnamedas‘Vst’,FVmode
+例2：建立一个波形数据组，hpvie0输出频率为100Hz、幅值为2V、直流偏置为
+10V的正弦波。
+intsam=1000;//AWGwaveformdatalength
+intinterval=10;//AWGdataintervaltime,unitisuS
+doubleawg_pattern[2000]={0.0};
+STSAWGCreateSineData(&awg_pattern[0],sam,1,4,10,0);
+//setasinewavedataarrayof100HZ,Vpp=4,DCOffset=10
+hpvie0.AwgLoader("Sine",FV,HPVIe_10V,HPVIe_1MA,awg_pattern,sam);
+--- PAGE 735 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 734 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved//patternnamedas‘SINE’,FVmode
+6.7.10AwgSelect()
+intAwgSelect(
+char*awgName,
+UINTstartAddr,
+UINTstopAddr,
+intloopBackAddr,
+doubleawgInterval=10.0);
+Parameters
+awgName
+char型变量，AWG波形名称。应与之前通过AwgLoader函数导入的AWG波形
+名称保持一致。
+startAddr
+UINT型变量，设置AWG波形起始点。
+数据范围0~sam-1。其中sam为AWG波形的点数。
+stopAddr
+UINT型变量，设置AWG波形结束点。
+数据范围0~sam-1。其中sam为AWG波形的点数。
+loopBackAddr
+int型变量，设置AWG波形回转点，即AWG执行结束后停止的位置。
+当该值小于0时，AWG波形保持在运行结束的位置；当该值在0~sam-1时，AWG
+波形运行结束后，会保持在设定点的位置。
+awgInterval
+--- PAGE 736 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 735 www.AccoTEST.com
+©2020AccoTESTAllrightsreserveddouble型变量，设置AWG数据间隔时间，单位uS。分辨率为1uS。数据范围为
+10~60000。默认值为10uS。
+Remarks
+选择将要运行的AWG波形，同时设置该AWG波形的起始点、结束点、回转点
+以及AWG启动间隔时间。
+注意：
+1)同一个测试程序中每一路HPVIe通道可以导入多个AWG波形，每个AWG波
+形必须有自己的独立名称，通过AwgSelect函数来选择将要运行的AWG波形。
+2)AwgSelect之前需要设置Set语句，该Set语句的量程档位必须与所选择的
+AwgLoader中的量程档位一致。
+3)AwgSelect函数需配合AWG同步启动函数使用。执行AwgSelect并没有AWG
+输出，只有运行同步启动函数STSAWGRun才会有AWG波形输出。
+Example
+例1：建立两个波形数据组，分别为AWG_Vst和AWG_Vuvlo。仅运行AWG_Vst
+波形。
+doubleinterval=200;//intervaltimeforAWGpattern,unitisuS
+intsam1=1000;//datasizeforAWGpattern
+intsam2=500;//datasizeforAWGpattern
+doubleawg_pattern1[1000]={0.0};//defineAWG_Vstdataarray
+doubleawg_pattern2[500]={0.0};//defineAWG_Vuvlodataarray
+//setwaveformdataarrayforAWG_Vst
+STSAWGCreateRampData(&awg_pattern1[0],sam1,1,16.5,21.5);
+//setAWG_Vuvlowaveformdataarray
+STSAWGCreateRampData(&awg_pattern2[0],sam2,1,16.5,10.5);
+//patternnamedas‘AWG_Vst’,FVmode
+hpvie0.AwgLoader("AWG_Vst",FV,HPVIe_40V,HPVIe_100MA,awg_pattern1,sam1);
+//patternnamedas‘AWG_Vuvlo’,FVmode
+hpvie0.AwgLoader("AWG_Vuvlo",FV,HPVIe_20V,HPVIe_100MA,awg_pattern2,sam2);
+//Call‘Set()’tomakesurethatthemodeandrangesareexactlythesamewith‘AWG_Vst’of
+its‘AwgLoader()’
+hpvie0.Set(FV,16.5,HPVIe_40V,HPVIe_100MA,HPVIe_RELAY_ON);
+//Selectpatternof‘AWG_Vst’,startstep=0,stop=sam-1;loop=0;intervaltime=200uS
+hpvie0.AwgSelect("AWG_Vst",0,sam1-1,0,interval);
+--- PAGE 737 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 736 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved……….
+STSAWGRun();//AWGsynchronousrunningstartedforpatternof‘AWG_Vst’
+6.7.11AwgRun()
+intAwgRun(
+char*awgName,
+UINTstartAddr,
+UINTstopAddr,
+intloopBackAddr,
+doubleawgInterval=10.0,
+BOOLrunMode=AWG_SINGLE,
+UINTdelayTime_ms=0);
+Parameters
+awgName
+char型变量，AWG波形名称。应与之前通过AwgLoader函数导入的AWG波形
+名称保持一致。
+startAddr
+UINT型变量，设置AWG波形起始点。
+数据范围0~sam-1。其中sam为AWG波形的点数。
+stopAddr
+UINT型变量，设置AWG波形结束点。
+数据范围0~sam-1。其中sam为AWG波形的点数。
+loopBackAddr
+int型变量，设置AWG波形回转点。
+当该值小于0时，AWG波形保持在运行结束的位置；当该值在0~sam-1时，AWG
+波形运行结束后，会保持在设定点的位置。
+--- PAGE 738 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 737 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedawgInterval
+double型变量，设置AWG数据间隔时间，单位uS。分辨率为1uS。数据范围为
+10~60000。
+该参数可以不写，默认10uS。
+runMode
+运行模式选择，可以设定为：
+AWG_SINGLE运行一次AWG波形。
+AWG_LOOP循环运行AWG波形，使用AwgStop()函数停止。
+默认值为AWG_SINGLE。
+delayTime_ms
+UINT型变量，单位mS。范围：0~60000。设置延时时间。
+AWG输出delayTime_ms之后，系统允许AwgRun之后的操作开始运行。
+delayTime_ms不填的时候，delayTime_ms默认为AWG扫描时间，只有在AWG扫描
+完毕之后，系统才允许AwgRun之后的操作开始运行。
+注意：
+建议不填该参数！
+Remarks
+某一路HPVIe通道AWG单独启动函数。
+注意：
+1)AwgRun之前需要设置Set语句，该Set语句的量程档位必须与所选择的
+AwgLoader中的量程档位一致。
+2)此函数设置了波形的起始点、结束点、回转点以及时间间隔，不需要配合
+AwgSelect函数使用。
+3)使用该函数不能与其它源同步测量，需要同步测量时，请使用AwgSelect配合
+同步函数STSAWGRun。
+--- PAGE 739 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 738 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedExample
+例1：hpvie0连续输出120Hz正弦波，幅值0.33V，直流偏置为3.3V。
+intsam=830;//sizeofAWGpattern
+doubleinterval=10;//intervaltimeofAWGpattern,unitisuS
+doubleawg_pattern[1000]={0.0};
+//setwaveformdataarrayforSin_AWG
+STSAWGCreateSineData(&awg_pattern[0],sam,1,0.66,3.3,0);
+//patternnamedas‘Sin_AWG,FVmode
+hpvie0.AwgLoader("Sin_AWG",FV,HPVIe_5V,HPVIe_1A,awg_pattern,sam);
+//Call‘Set()’tomakesurethatthemodeandrangesareexactlythesamewith‘Sin_AWG’ofits
+‘AwgLoader()’
+hpvie0.Set(FV,0,HPVIe_5V,HPVIe_1A,HPVIe_RELAY_ON);
+//Selectpatternof‘Sin_AWG’,startstep=0,stop=sam-1;loop=0;intervaltime=10uS,loopmode
+hpvie0.AwgRun("Sin_AWG",0,(sam-1),0,interval,AWG_LOOP);
+6.7.12AwgStop()
+intAwgStop(void);
+Remarks
+停止某一路HPVIe通道的AWG循环运行。
+6.7.13AwgClear()
+intAwgClear(void);
+Remarks
+一般用于AwgLoader函数之前，清除该HPVIe通道的AWG数据。
+Example
+--- PAGE 740 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 739 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved例1：Load波形之前清除hpvie0通道的AWG数据。
+hpvie0.AwgClear();//clearAWGdataofhpvie0
+hpvie0.AwgLoader("P1",FV,HPVIe_40V,HPVIe_100MA,awg_pattern1,sam);
+6.7.14SetMeasVTrig()
+intSetMeasVTrig(
+doublevTrig,
+TRIG_MODEtrigMode=TRIG_FALLING,
+doublehysteresisValue=0.0);
+Parameters
+vTrig
+double型变量，设置触发电压。单位V。
+注意：
+该参数的值与其对应通道所调用的Set()函数的电压档位相关。
+trigMode
+触发模式设置，可设置为：
+TRIG_FALLING下降沿触发
+TRIG_RISING 上升沿触发
+该参数可以不写，默认为TRIG_FALLING下降沿触发。
+hysteresisValue
+double型变量，设置触发电压的滞回值。单位V。
+在默认条件下等于0。
+注意：
+1)滞回参数hysteresisValue仅可设置为非负值；
+2)在上升沿(TRIG_RISING)触发的情况下，当判定到测量结果先小于
+(vTrig-hysteresisValue)值之后又大于vTrig值时，此时在vTrig处判定为触发；
+--- PAGE 741 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 740 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved3)在下降沿(TRIG_FALLING)触发的情况下，当判定到测量结果先大于(vTrig
++hysteresisValue)值之后又小于vTrig值时，此时在vTrig处判定为触发。
+电压上升沿触发
+电压下降沿触发
+Remarks
+电压测量触发设置。
+注意：
+SetMeasureVTrig函数与MeasureVI函数运行时，对应的电压电流档位、测量增益
+状态必须一致。二者之间不允许插入改变电压电流量程档位及测量增益状态的函数。
+Example
+例1：建立一个波形数据组，hpvie0从10.5V下降到8V，步距0.1V。设置hpvie1
+下降沿触发，触发电平2V。
+hpvie1.Set(FI,0,HPVIe_10V,HPVIe_10MA,HPVIe_RELAY_ON);
+//setthestateofhpvie1
+doubleTrig=2;//triggeringvoltage
+doubleTrig_Point[4]={0.0};
+doubleresult[4]={0.0};
+intsam=25;//datasizeofAWGpattern
+doubleinterval=200;//intervaltimeofAWGpattern,unitisuS
+doubleawg_pattern[100]={0.0};
+STSAWGCreateRampData(&awg_pattern[0],sam,1,10.5,8);
+//Setarampwavedataarray,datasizeis25,periodis1,from10.5to8.
+--- PAGE 742 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 741 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedhpvie0.AwgLoader("Uvlo",FV,HPVIe_40V,HPVIe_100MA,awg_pattern,sam);
+//importtheawg_patternarrayintohpvie0channel,nameditas‘Uvlo’.SettoFVmode.
+hpvie0.Set(FV,10.5,HPVIe_40V,HPVIe_100MA,HPVIe_RELAY_ON);
+//Call‘Set()’tomakesurethatthemodeandrangesareexactlythesamewith‘Uvlo’ofits‘AwgLoader()’
+hpvie0.AwgSelect("Uvlo",0,sam-1,sam-1,interval);
+//Selectpatternof‘Uvlo’,startstep=0,stop=sam-1;loop=sam-1;intervaltime=200uS
+设置触发电平的正确做法是：
+hpvie0.MeasureVI(sam,interval,HPVIe_MV_X1,HPVIe_MI_X1,MEAS_AWG);
+hpvie1.MeasureVI(sam,interval,HPVIe_MV_X1,HPVIe_MI_X1,MEAS_AWG);
+hpvie1.SetMeasVTrig(Trig,TRIG_FALLING);//triggervalueis2V,fallingedge
+STSEnableAWG(&hpvie0);//enableAWGpatternforhpvie0
+STSEnableMeas(&hpvie0,&hpvie1);//enablemeasurementforhpvie0andhpvie1
+STSAWGRun(); //EnableAWGandmeasurementsynchronously
+设置触发电平的错误做法是：
+hpvie0.MeasureVI(sam,interval,HPVIe_MV_X1,HPVIe_MI_X1,MEAS_AWG);
+hpvie1.MeasureVI(sam,interval,HPVIe_MV_X1,HPVIe_MI_X1,MEAS_AWG);
+hpvie1.Set(FI,0,HPVIe_5V,HPVIe_10MA,HPVIe_RELAY_ON);
+//insertaSet()call,changeitsvoltagerangefromHPVIe_10VtoHPVIe_5V,itwillcauseautilityerror.
+hpvie1.SetMeasVTrig(Trig,TRIG_FALLING);//triggervalueis2V,fallingedge
+STSEnableAWG(&hpvie0); //enableAWGpatternforhpvie0
+STSEnableMeas(&hpvie0,&hpvie1);//enablemeasurementforhpvie0andhpvie1
+STSAWGRun(); //EnableAWGandmeasurementsynchronously
+6.7.15SetMeasITrig()
+intSetMeasITrig(
+doubleiTrig,
+TRIG_MODEtrigMode=TRIG_FALLING,
+doublehysteresisValue=0.0);
+Parameters
+iTrig
+double型变量，设置触发电流。单位A。
+注意：
+该参数的值与其对应通道所调用的Set()函数的电流档位相关。
+--- PAGE 743 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 742 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedtrigMode
+触发模式设置，可设置为：
+TRIG_FALLING下降沿触发
+TRIG_RISING 上升沿触发
+该参数可以不写，默认为TRIG_FALLING下降沿触发。
+hysteresisValue
+double型变量，设置触发电流的滞回值。单位A。
+在默认条件下等于0。
+注意：
+1)滞回参数hysteresisValue仅可设置为非负值；
+2)在上升沿(TRIG_RISING)触发的情况下，当判定到测量结果先小于
+(iTrig-hysteresisValue)值之后又大于iTrig值时，此时在iTrig处判定为触发；
+3)在下降沿(TRIG_FALLING)触发的情况下，当判定到测量结果先大于(iTrig
++hysteresisValue)值之后又小于iTrig值时，此时在iTrig处判定为触发。
+电流上升沿触发
+电流下降沿触发
+Remarks
+--- PAGE 744 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 743 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved电流测量触发设置。
+注意：
+SetMeasITrig函数与MeasureVI函数运行时，对应的电压电流档位、测量增益状态
+必须一致。二者之间不允许插入改变电压电流量程档位及测量增益状态的函数。
+Example
+例1：建立一个波形数据组，hpvie0从16.5V上升到21.5V，步距0.1V。设置hpvie0
+上升沿触发，触发电流值200uA。
+doubleTrig=200e-6;//triggercurrentlevel
+doubleTrig_Point[4]={0.0};
+doubleresult[4]={0.0};
+intsam=50; //datasizeofAWGpattern
+intinterval=200; //intervaltimeofAWGpattern,unitisuS
+doubleawg_pattern[100]={0.0};
+//Setarampwavedataarray,datasizeis50,periodis1,from16.5to21.5.
+STSAWGCreateRampData(&awg_pattern[0],sam,1,16.5,21.5);
+//importtheawg_patternarrayintohpvie0channel,nameditas‘Vst’.SettoFVmode.
+hpvie0.AwgLoader("Vst",FV,HPVIe_40V,HPVIe_100MA,awg_pattern,sam);
+//Call‘Set()’tomakesurethatthemodeandrangesareexactlythesamewith‘Vst’ofits‘AwgLoader()’
+hpvie0.Set(FV,16.5,HPVIe_40V,HPVIe_100MA,HPVIe_RELAY_ON);
+//Selectpatternof‘Vst’,startstep=0,stop=sam-1;loop=sam-1;intervaltime=200uS
+hpvie0.AwgSelect("Vst",0,sam-1,sam-1,interval);
+设置触发电平的正确做法是：
+hpvie0.MeasureVI(sam,interval,HPVIe_MV_X1,HPVIe_MI_X1,MEAS_AWG);
+hpvie0.SetMeasITrig(Trig,TRIG_RISING);//triggervalueis200uA,risingedge
+STSEnableAWG(&hpvie0);//enableAWGpatternforhpvie0
+STSEnableMeas(&hpvie0);//enablemeasurementforhpvie0
+STSAWGRun(); //EnableAWGandmeasurementsynchronously
+设置触发电平的错误做法是：
+hpvie0.MeasureVI(sam,interval,HPVIe_MV_X1,HPVIe_MI_X1,MEAS_AWG);
+//insertaSet()call,changeitscurrentrangefromHPVIe_100MAtoHPVIe_10MA,itwillcauseautility
+error.
+hpvie0.Set(FV,16.5,HPVIe_40V,HPVIe_10MA,HPVIe_RELAY_ON);
+hpvie0.SetMeasITrig(Trig,TRIG_RISING);//triggervalueis200uA,risingedge
+STSEnableAWG(&hpvie0);//enableAWGpatternforhpvie0
+STSEnableMeas(&hpvie0);//enablemeasurementforhpvie0
+STSAWGRun(); //EnableAWGandmeasurementsynchronously
+--- PAGE 745 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 744 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved6.7.16KelvinCheck()
+intKelvinCheck(
+HPVIe_KELVINMODEcheckMode,
+HPVIe_KELVINCHcheckCh,
+UINTsampleTimes=200);
+Parameters
+checkMode
+开尔文测试的模式，可设置为：
+HPVIe_HIGH_SIDE检测高端电路的连接
+HPVIe_LOW_SIDE检测低端电路的连接
+HPVIe_HIGH_LOW_SIDE_QUICK串行检测高端和低端电路的连接
+checkCh
+开尔文测试的通道，可设置为：
+HPVIe_CHA仅HPVIe_RELAY_ON连接进行kelvin检测
+HPVIe_CHB仅HPVIe_RELAY_FANOUT_ON连接进行kelvin检测
+HPVIe_CHABHPVIe_RELAY_ALL_ON连接进行kelvin检测
+sampleTimes
+Kelvin检测过程中，设置AD采样次数。范围50~500。默认值为200。
+注意：
+当sampleTimes<50时，sampleTimes=50；
+当sampleTimes>500时，sampleTimes=500。
+Remarks
+设置HPVIe的Kelvin检测模式并进行Kelvin检测。
+注意：
+1)通过该函数对高端或低端电路进行kelvin检测，检测结束后，VI源DA值为0，
+其它将恢复至检测之前的状态；
+2)该函数不支持Group操作。
+--- PAGE 746 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 745 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedExample
+例1：对hpvie0的CHA进行High端Kelvin检测，采样次数为200。
+hpvie0.Set(FV,1,HPVIe_10V,HPVIe_1MA,HPVIe_RELAY_OFF);
+hpvie0.KelvinCheck(HPVIe_HIGH_SIDE,HPVIe_CHA);
+6.7.17GetKelvinCheckResult()
+intGetKelvinCheckResult(
+UINTsiteCount,
+HPVIe_KELVINCHcheckCh,
+double&highRes,
+double&lowRes);
+Parameters
+siteCount
+UINT型变量，选择读取开尔文检测结果的工位。0代表Site1，1代表Site2……
+checkCh
+选择读取开尔文检测结果的通道，可设置为：
+HPVIe_CHACHA连接的kelvin检测结果
+HPVIe_CHBCHB连接的kelvin检测结果
+HPVIe_CHABCHAB连接的kelvin检测结果
+highRes
+double型变量，输出高端检测的电阻值。
+lowRes
+double型变量，输出低端检测的电阻值。
+ReturnValues
+返回值小于0：工位无效；
+返回值为32bit数据，其中低16bit表示低端测量异常，高16bit表示高端测量异常，
+每bit位为1则表示异常，为0则表示正常，具体各bit位的含义见下表：
+--- PAGE 747 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 746 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedBit位 测试端 异常描述
+0
+LOW计算电阻超[0Ohm,8Ohm]范围
+1 SLS连接异常
+2 FLS连接异常
+3 SLS或FLS连接异常
+4 SL连接异常
+5 恒流1异常
+6 FL或SL连接异常
+7 恒流2异常
+8 FLB连接异常
+9 恒流3异常
+10~15 均为0
+16
+HIGH计算电阻超[0Ohm,8Ohm]范围
+17 SHS连接异常
+18 FHS连接异常
+19 SHS或FHS连接异常
+20 SL连接异常
+21 恒流1异常
+22 FH或SH连接异常
+23 恒流2异常
+24 FHB连接异常
+25 恒流3异常
+26~31 均为0
+Remarks
+读取该工位对应检测通道下的kelvin检测结果。
+Example
+例1：对hpvie0的CHA进行High端kelvin检测并获取检测结果。
+hpvie0.Set(FV,0,HPVIe_10V,HPVIe_1MA,HPVIe_RELAY_OFF);
+hpvie0.KelvinCheck(HPVIe_HIGH_SIDE,HPVIe_CHA); //HighSidecheck
+intresult[STS_SITE_NUM]={0};
+doublehighRes=0;
+doublelowRes=0;
+for(iSite=0;iSite<STS_SITE_NUM;iSite++)
+{
+result[iSite]=hpvie0.GetKelvinCheckResult(iSite,HPVIe_CHA,highRes,lowRes);
+//GetKelvincheckresult
+}
+--- PAGE 748 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 747 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved6.7.18SetAlarmMask()
+voidSetAlarmMask(
+UINTsiteCount,
+boolstatus=true);
+Parameters
+siteCount
+UINT型变量，选择设置屏蔽Alarm信息的工位。0代表Site1，1代表Site2……
+status
+bool型变量，可设置为：
+true屏蔽该工位的Alarm信息。
+false输出该工位的Alarm信息。
+默认值为true。
+Remarks
+设置屏蔽某一工位的Alarm信息。
+注意：
+通过该函数设置的Alarm屏蔽信息会在InitBeforeTestFlow()函数中被重新初始化。
+Example
+hpvie0.SetAlarmMask(0); //masktheAlarminformationofSITE_1
+//Thealarminformationaboutoverrangingvoltagescaleisnotoutput
+hpvie0.Set(FV,5,HPVIe_2V,HPVIe_10MA,HPVIe_RELAY_ON);
+6.7.19GetAlarmMask()
+boolGetAlarmMask(UINTsiteCount);
+--- PAGE 749 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 748 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedParameters
+siteCount
+UINT型变量，选择读取Alarm状态的工位。0代表Site1，1代表Site2……
+ReturnValues
+返回true：该工位状态为屏蔽Alarm信息；
+返回false：该工位状态为输出Alarm信息。
+Remarks
+读取该工位的Alarm状态。
+Example
+boolstatus=hpvie0.GetAlarmMask(0); //GetAlarmstatusofSITE_1
+6.7.20SiteBindModify()
+intSiteBindModify(char*modifySiteList);
+Parameters
+modifySiteList
+工位重配置的字符串，格式为：“原工位号1:目标工位号1,原工位号2:目标工位
+号2，…”，原工位和目标工位之间用冒号分隔，多组修改工位间用逗号分隔。
+原工位号和目标工位号最小为0（SITE_1），最大为250（SITE_251）.
+例如，将SITE_1的通道修改到SITE_3，SITE_2的通道修改到SITE_4，对应的字
+符串格式为“0:2,1:3”。
+ReturnValues
+--- PAGE 750 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 749 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved返回0：工位重配置成功；
+返回非0：工位重配置失败。
+注意：
+以下情况会导致工位重配置失败：
+(8)多组重配置工位之间必须以逗号分隔，第一个字符和最后一个字符不能为逗
+号，两个逗号间必须有工位修改信息；
+(9)原工位号和目标工位号之间必须以冒号分隔，只能有一个冒号，且冒号前后必
+须都是数字，不能包含其它字符；
+(10)原工位号和目标工位号必须大于等于0且小于系统最大工位数251；
+(11)不可以对定义为NO_SITE的通道进行工位重配置；
+(12)同一次修改时（调用一次函数），同一个工位不能被修改两次，如“0:1,0:2”；
+(13)同一次修改时（调用一次函数），不同工位不能被修改到同一个工位上，如
+“0:2,1:2”；
+(14)目标工位如果已经进行过通道配置，此次也必须被修改。示例如下：
+HPVIehpvie0("S4_0,S12_0");
+初始的工位配置如下：
+STSSetMultiSiteBind(MD_HPVIe,SITE_1,"S4_0");
+STSSetMultiSiteBind(MD_HPVIe,SITE_2,"S12_0");
+工位重配置的正确做法（将SITE_1重配置为SITE_3，SITE_2重配置为SITE_4）：
+hpvie0.SiteBindModify("0:2,1:3")
+工位重配置的错误做法（仅将SITE_1重配置为SITE_2）：
+hpvie0.SiteBindModify("0:1")
+Remarks
+对通道的工位配置信息进行重配置，未进行工位重配置的通道工位信息保持不
+变。
+注意：
+该函数的重配置过程不受工位有效性信息的影响，例如将SITE_1重配置成
+--- PAGE 751 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 750 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedSITE_2，无论当前SITE_1是否无效，都会将SITE_1对应的物理通道配置到SITE_2。
+Example
+通道定义和初始工位配置如下：
+HPVIehpvie0("S4_0,S12_0");
+HPVIehpvie1("S5_0,S13_0");
+HPVIegphpvie0("S4_0,S12_0,S5_0,S13_0");
+STSSetMultiSiteBind(MD_HPVIe,SITE_1,"S4_0,S5_0");
+STSSetMultiSiteBind(MD_HPVIe,SITE_2,"S12_0,S13_0");
+例1：设置hpvie0的SITE_1重配置为SITE_3，SITE_2重配置为SITE_4。
+hpvie0.SiteBindModify("0:2,1:3");
+注：由于hpvie0工位信息重新进行了配置，gphpvie0由原来的GroupPin变为了MultisitePin。
+例2：设置hpvie0的SITE_1重配置为SITE_2，SITE_2重配置为SITE_3。
+hpvie0.SiteBindModify("0:1,1:2");
+例3：设置hpvie0的SITE_1重配置为SITE_3，SITE_2保持不变。
+hpvie0.SiteBindModify("0:2");
+例4：设置gphpvie0的SITE_1重配置为SITE_3，SITE_2重配置SITE_4。
+gphpvie0.SiteBindModify("0:2,1:3");
+注：由于gphpvie0由hpvie0和hpvie1组成，因此hpvie0和hpvie1对应的工位信息都发生了
+变化。
+6.7.21获取板卡固有信息函数
+6.7.21.1GetBoardSN()
+intGetBoardSN(
+UINTsiteCount,
+char*boardSN,
+UINTsnSize);
+Parameters
+--- PAGE 752 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 751 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedsiteCount
+UINT型变量，选择读取板卡序列号信息的工位。0代表Site1，1代表Site2……
+boardSN
+char型变量，存储板卡的序列号。未存储或工位无效返回空值。
+由用户定义，如：charboardSN[255]={0}。
+snSize
+UINT型变量，数组boardSN的大小。
+ReturnValues
+返回0：读取成功；
+返回非零：读取失败。
+Remarks
+获取板卡的SN号。
+Example
+charboardSN[255]={0};
+hpvie0.GetBoardSN(0,boardSN,255);//Gettheboardserialnumber
+6.7.21.2GetBoardHDRev()
+intGetBoardHDRev(
+UINTsiteCount,
+char*hardRev,
+UINTrevSize);
+Parameters
+siteCount
+--- PAGE 753 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 752 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedUINT型变量，选择读取板卡序列号信息的工位。0代表Site1，1代表Site2……
+hardRev
+char型变量，存储板卡的硬件版本号。未存储返回N/A。
+由用户定义，如：charhardRev[255]={0}。
+revSize
+UINT型变量，数组hardRev的大小。
+ReturnValues
+返回0：读取成功；
+返回非零：读取失败。
+Remarks
+获取板卡硬件版本号。。
+Example
+charhardRev[255]={0};
+hpvie0.GetBoardHDRev(0,hardRev,255);//Gettheboardhardwarerevision
+6.7.22获取校准信息函数
+6.7.22.1GetCalibrationTime()
+SYSTEMTIMEGetCalibrationTime(UINTsiteCount)const;
+Parameters
+siteCount
+UINT型变量，选择读取校准日期信息的工位。0代表Site1，1代表Site2……
+--- PAGE 754 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 753 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedReturnValues
+正常则返回该通道校准发生的日期，异常返回的时间为1970-1-18:0:0。
+注意：
+异常情况发生的原因可能有：(1)该通道未进行校准；(2)该工位无效。
+Remarks
+获取该通道校准发生的日期。
+Example
+SYSTEMTIMEcalDate;
+calDate=hpvie0.GetCalibrationTime(0);//GetcalibrationdateofSITE_1
+6.7.22.2GetCalibrationTemperature()
+doubleGetCalibrationTemperature(UINTsiteCount)const;
+Parameters
+siteCount
+UINT型变量，选择读取校准时温度信息的工位。0代表Site1，1代表Site2……
+ReturnValues
+正常则返回该通道校准时的温度，异常返回0。
+注意：
+异常情况发生的原因可能有：(1)该通道未进行校准；(2)该工位无效。
+Remarks
+--- PAGE 755 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 754 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved获取该通道校准时的温度。
+Example
+doublecalTemperature=0.0;
+calTemperature=hpvie0.GetCalibrationTemperature(0);//GetcalibrationtemperatureofSITE_1
+6.7.22.3GetCalibrationHumidity()
+doubleGetCalibrationHumidity(UINTsiteCount)const;
+Parameters
+siteCount
+UINT型变量，选择读取校准时湿度信息的工位。0代表Site1，1代表Site2……
+ReturnValues
+正常则返回该通道校准时的湿度，异常返回0。
+注意：
+异常情况发生的原因可能有：(1)该通道未进行校准；(2)该工位无效。
+Remarks
+获取该通道校准时的湿度。
+Example
+doublecalHumidity=0.0;
+calHumidity=hpvie0.GetCalibrationHumidity(0);//GetcalibrationhumidityofSITE_1
+6.7.22.4GetCalibrationResult()
+CAL_RESULTGetCalibrationResult(UINTsiteCount)const;
+--- PAGE 756 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 755 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedParameters
+siteCount
+UINT型变量，选择读取校准结果的工位。0代表Site1，1代表Site2……
+ReturnValues
+返回该通道的校准结果为枚举值：
+CAL_PASS 校准PASS；
+CAL_FAIL 校准FAIL；
+STS_NO_RESULT_RECORD读取校准结果异常。
+注意：
+异常情况发生的原因可能有：(1)该通道未进行校准；(2)该工位无效。
+Remarks
+获取该通道的校准结果。
+Example
+CAL_RESULTcalResult;
+calResult=hpvie0.GetCalibrationResult(0);//GetcalibrationresultofSITE_1
+6.7.22.5GetCalibrationLogicRev()
+intGetCalibrationLogicRev(UINTsiteCount)const;
+Parameters
+siteCount
+UINT型变量，选择读取校准时逻辑版本信息的工位。0代表Site1，1代表Site2……
+--- PAGE 757 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 756 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedReturnValues
+正常返回逻辑版本号；异常返回255。
+注意：
+异常情况发生的原因可能有：(1)该通道未进行校准；(2)该工位无效。
+Remarks
+获取该通道的校准时的逻辑版本号。
+Example
+intcalLogicRev=0;
+calLogicRev=hpvie0.GetCalibrationLogicRev(0);//GetcalibrationlogicVersionofSITE_1
+6.7.22.6GetCalibrationMeter()
+CAL_METERGetCalibrationMeter(
+UINTsiteCount,
+char*meterSN=NULL,
+UINTsnSize=0);
+Parameters
+siteCount
+UINT型变量，选择读取校准表相关信息的工位。0代表Site1，1代表Site2……
+meterSN
+char型变量，存储校准表序列号。异常返回“N/A”。
+由用户定义，如：charmeterSN[255]={0}。
+默认为NULL，不读取校准表的序列号。
+snSize
+UINT型变量，数组meterSN的大小。
+--- PAGE 758 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 757 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved默认为0。
+ReturnValues
+返回校准时使用的校准表类型，枚举值：
+STS_KEITHLEY2000 Keithley2000
+STS_AGILENT34401 Agilent34401
+STS_AGILENT3458A Agilent3458A
+STS_NO_METER_RECORD读取校准表信息异常。
+注意：
+异常情况发生的原因可能有：(1)该通道未进行校准；(2)该工位无效。
+Remarks
+获取该通道校准时使用的校准表类型及表的序列号。
+Example
+CAL_METERcalMeterType;
+charcalMeterSN[255]={0};//thebufferforsavingSerialNO.ofcalibrationmeter
+//Gettheinformationofcalibrationmeter
+calMeterType=hpvie0.GetCalibrationMeter(0,calMeterSN,255);
+6.7.22.7GetCalibrationCalBoardInfo()
+intGetCalibrationCalBoardInfo(
+UINTsiteCount,
+char*boardSN=NULL,
+UINTsnSize=0,
+char*boardHdRev=NULL,
+UINTrevSize=0);
+Parameters
+--- PAGE 759 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 758 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedsiteCount
+UINT型变量，选择读取校准时使用的校准板的相关信息的工位。0代表Site1，1
+代表Site2……
+boardSN
+char型变量，存储校准板的序列号。异常返回“N/A”。
+由用户定义，如：charboardSN[255]={0}。
+默认为NULL，不读取校准时使用的校准板的序列号。
+snSize
+UINT型变量，数组boardSN的大小。
+默认为0。
+boardHdRev
+char型变量，存储校准时使用的校准板的硬件版本信息。异常返回“N/A”。
+由用户定义，如：charboardHdRev[255]={0}。
+默认为NULL，不读取校准时使用的校准板的硬件版本信息。
+revSize
+UINT型变量，数组boardHdRev的大小。
+默认为0。
+ReturnValues
+正常返回校准时使用的校准板的逻辑版本号，异常返回255。
+注意：
+异常情况发生的原因可能有：(1)该通道未进行校准；(2)该工位无效。
+Remarks
+获取该通道校准时使用的校准板相关信息。
+--- PAGE 760 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 759 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedExample
+//Getthelogicversion,serialnumberandhardwareversionofcalibrationboard
+intlogicRev=0;
+charboardSN[255]={0}; //thebufferforsavingSerialNO.ofcalibrationboard
+charboardHdRev[255]={0};//thebufferforsavinghardwareversionofcalibrationboard
+logicRev=hpvie0.GetCalibrationCalBoardInfo(0,boardSN,255,boardHdRev,255);
+6.7.22.8GetCalibrationSoftRev()
+intGetCalibrationSoftRev(
+UINTsiteCount,
+char*softRev,
+UINTrevSize);
+Parameters
+siteCount
+UINT型变量，选择读取校准时使用的软件版本信息的工位。0代表Site1，1代表
+Site2……
+softRev
+char型变量，存储校准使用的软件版本。异常返回“N/A”。
+由用户定义，如：charsoftRev[255]={0}。
+revSize
+UINT型变量，数组softRev的大小。
+ReturnValues
+正常返回0，异常返回非零。
+注意：
+异常情况发生的原因可能有：(1)该通道未进行校准；(2)该工位无效。
+--- PAGE 761 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 760 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedRemarks
+获取该通道校准时使用的软件版本信息。
+Example
+charsoftRev[255]={0};//thebufferforsavingsoftwareversion
+//Gettheversionofcalibrationsoftware
+hpvie0.GetCalibrationSoftRev(0,softRev,255);
+6.7.22.9GetCalibrationSlotID()
+intGetCalibrationSlotID(UINTsiteCount)const;
+Parameters
+siteCount
+UINT型变量，选择读取校准时板卡所处的槽位信息的工位。0代表Site1，1代表
+Site2……
+ReturnValues
+正常返回板卡校准时所处的槽位信息，异常返回0。
+注意：
+异常情况发生的原因可能有：(1)该通道未进行校准；(2)该工位无效。
+Remarks
+获取该通道校准时所处的槽位信息。
+Example
+intslotID=hpvie0.GetCalibrationSlotID(0);//GettheslotIDofcalibration
+--- PAGE 762 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 761 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved6.7.23编程范例
+6.7.23.1设置一组波形数据组的拼接。
+测试条件：
+第一组：设置一个正弦波数据组，首地址从0开始，数据长度为100；
+第二组：设置一个三角波数据组，首地址从100开始，数据长度为100；
+第三组：设置一个方波数据组，首地址从200开始，数据长度为100；
+第四组：设置一个斜波数据组，首地址从300开始，数据长度为100。
+intsam=400;//AWGwaveformdatalength
+intinterval=200;//AWGdataintervaltime,unitisuS
+doubleawg_pattern[1000]={0.0};
+STSAWGCreateSineData(&awg_pattern[0],100,1,-5,0,180);
+//Setasinewavedataarray,thestartaddressstartsfrom0,datasizeis100.
+STSAWGCreateTriangleData(&awg_pattern[100],100,4,-5,0,0);
+//Setatrianglewavedataarray,thestartaddressstartsfrom100,datasizeis100.
+STSAWGCreateSquareData(&awg_pattern[200],100,4,-5,0,50);
+//Setasquarewavedataarray,thestartaddressstartsfrom200,datasizeis100.
+STSAWGCreateRampData(&awg_pattern[300],100,1,1,5);
+//Setanrampdataarray,thestartaddressstartsfrom300,datasizeis100.
+hpvie0.AwgLoader("Vcc_awg",FV,HPVIe_10V,HPVIe_10MA,awg_pattern,sam);
+//importtheawg_patternarrayintohpvie0channel,nameditas‘Vcc_awg’.SettoFVmode.
+hpvie0.Set(FV,0,HPVIe_10V,HPVIe_10MA,HPVIe_RELAY_ON);
+//Call‘Set()’tomakesurethatthemodeandrangesareexactlythesamewith‘Vcc_awg’ofits
+‘AwgLoader()’
+hpvie0.AwgSelect("Vcc_awg",0,sam-1,sam-1,interval);
+//Selectpatternof‘Vcc_awg’,startstep=0,stop=sam-1;loop=sam-1;intervaltime=200uS
+hpvie0.MeasureVI(sam,interval,HPVIe_MV_X1,HPVIe_MI_X1,MEAS_AWG);
+STSEnableAWG(&hpvie0);//enableAWGpatternforhpvie0
+STSEnableMeas(&hpvie0);//enablemeasurementforhpvie0
+STSAWGRun();//EnableAWGandmeasurementsynchronously
+组合之后的波形如下：
+--- PAGE 763 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 762 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved
+6.7.23.2同一路源生成AWG且作为触发源
+测试条件：
+建立一个波形数据组，hpvie0从16.5V上升到21.5V，步距0.1V。测试hpvie0电
+流大于200uA时的跳变点的电压值。
+doubleTrig=200e-6;//triggerlevel
+doubleTrig_Point[4]={0};
+doubleresult[4]={0};
+--- PAGE 764 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 763 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedintsam=50; //awgSize
+intinterval=200; //awgInterval，unit=us
+doubleawg_pattern[100]={0.0};
+inti=0;
+//Rampwave,awgData=0,awgSize=50,wavecycle=1,startValue=16.5V,stopValue=21.5V
+STSAWGCreateRampData(&awg_pattern[0],sam,1,16.5,21.5);
+//loadthedataof"awg_pattern"(sam=50),named"Vst"
+hpvie0.AwgLoader("Vst",FV,HPVIe_40V,HPVIe_100MA,awg_pattern,sam);
+//theV_range(HPVIe_40V)andI_range(HPVIe_100MA)shouldbethesamewithAwgLoader
+hpvie0.Set(FV,16.5,HPVIe_40V,HPVIe_100MA,HPVIe_RELAY_ON);
+//selectAWGpatternof"Vst",startAddr=0,stopAddr=sam-1,loopBackAddr=sam-1,awgInterval=200us
+hpvie0.AwgSelect("Vst",0,sam-1,sam-1,interval);
+//AWGMode,SampleTimes=sam,samplePeriod=interval.
+hpvie0.MeasureVI(sam,interval,HPVIe_MV_X1,HPVIe_MI_X1,MEAS_AWG);
+//setI_triggerlevelto200uA,Risingedge
+hpvie0.SetMeasITrig(Trig,TRIG_RISING);
+STSEnableAWG(&hpvie0);//hpvie0enableAWG
+STSEnableMeas(&hpvie0);//hpvie0enableAWGmeasure
+STSAWGRun(); //AWGsynchronousstarting
+for(i=0;i<STS_SITE_NUM;i++)
+{
+Trig_Point[i]=hpvie0.GetMeasResult(i,MIRET,TRIG_RESULT);
+//readthetriggerpoint
+result[i]=hpvie0.GetMeasResult(i,MVRET,Trig_Point[i]);
+//readtheV_valueoftriggerpoint
+Vst->SetTestResult(i,0,result[i]);
+}
+6.7.23.3一路源生成AWG另一路源作为触发源
+测试条件：
+建立一个波形数据组，hpvie0从0.35V上升0.45V，步距0.001V。测试hpvie1端
+的电压小于2V时，hpvie0跳变点的电压值。
+--- PAGE 765 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 764 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved
+doubleTrig=2;//triggervoltage
+doubleTrig_Point[4]={0.0};
+doubleresult[4]={0.0};
+intsam=100;//datasizeofAWGpattern
+intinterval=200;//intervaltimeofAWGpattern,unitisuS
+doubleawg_pattern[100]={0.0};
+inti=0;
+hpvie1.Set(FI,0,HPVIe_10V,HPVIe_1MA,HPVIe_RELAY_ON);//OUTMeasure
+delay_ms(1);
+STSAWGCreateRampData(&awg_pattern[0],sam,1,0.35,0.45);
+//Setanrampdataarray,thestartaddressstartsfrom0,datasizeis50.
+hpvie0.AwgLoader("Vcspre_AWG",FV,HPVIe_2V,HPVIe_100MA,awg_pattern,sam);
+//importtheawg_patternarrayintohpvie0channel,nameditas‘Vcspre_AWG’.SettoFVmode.
+hpvie0.Set(FV,0.30,HPVIe_2V,HPVIe_100MA,HPVIe_RELAY_ON);
+//Call‘Set()’tomakesurethatthemodeandrangesareexactlythesamewith‘Vcspre_AWG’ofits
+‘AwgLoader()’
+hpvie0.AwgSelect("Vcspre_AWG",0,sam-1,sam-1,interval);
+//Selectpatternof‘Vcspre_AWG’,startstep=0,stop=sam-1;loop=sam-1;intervaltime=200uS
+hpvie0.MeasureVI(sam,interval,HPVIe_MV_X1,HPVIe_MI_X1,MEAS_AWG);
+hpvie1.MeasureVI(sam,interval,HPVIe_MV_X1,HPVIe_MI_X1,MEAS_AWG);
+hpvie1.SetMeasVTrig(Trig,TRIG_FALLING);//triggervalueis2V,Fallingedge
+STSEnableAWG(&hpvie0);//enableAWGpatternforhpvie0
+STSEnableMeas(&hpvie0,&hpvie1);//enablemeasurementforhpvie0andhpvie1
+STSAWGRun();//EnableAWGandmeasurementsynchronously
+for(i=0;i<SITENUM;i++)
+{
+Trig_Point[i]=hpvie1.GetMeasResult(i,MVRET,TRIG_RESULT);
+//Getthepositionoftriggerpointforhpvie1
+result[i]=hpvie0.GetMeasResult(i,MVRET,Trig_Point[i]);
+//Readthevoltagevalueofhpvie0ontriggerposition
+Vcspre->SetTestResult(i,0,result[i]);
+}
+--- PAGE 766 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 765 www.AccoTEST.com
+©2020AccoTESTAllrightsreserved6.7.23.4AWG方式扫描极限电流
+测试条件：
+AWG硬件扫描测试极限电流。hpvie1从0向下扫描到-4A，步距40mA，测试hpvie1
+电压小于0.5V时的跳变点的电流值。
+doubleTrig_Point[4]={0.0};
+doubleresult[4]={0.0};
+intsam=100;//datasizeofAWGpattern
+intinterval=200;//intervaltimeofAWGpattern,unitisuS
+doubleawg_pattern[200]={0.0};//defineanAWGwaveformdataarray
+inti=0;
+STSAWGCreateRampData(&awg_pattern[0],sam,1,0,-4);
+//Setanrampdataarray,thestartaddressstartsfrom0,datasizeis100.
+hpvie1.AwgLoader("IOut",FI,HPVIe_5V,HPVIe_10A,awg_pattern,sam);
+//importtheawg_patternarrayintohpvie1channel,nameditas‘IOut’.SettoFImode.
+hpvie1.Set(FI,0,HPVIe_5V,HPVIe_10A,HPVIe_RELAY_ON);
+//Call‘Set()’tomakesurethatthemodeandrangesareexactlythesamewith‘IOut’ofits‘AwgLoader()’
+hpvie1.AwgSelect("IOut",0,sam-1,0,interval);
+//Selectpatternof‘IOut’,startstep=0,stop=sam-1;loop=0;intervaltime=200uS
+hpvie1.MeasureVI(sam,interval,HPVIe_MV_X1,HPVIe_MI_X1,MEAS_AWG);
+hpvie1.SetMeasVTrig(0.5,TRIG_FALLING);//triggervalueis0.5V,falingedge
+STSEnableAWG(&hpvie1);//enableAWGpatternforhpvie1
+STSEnableMeas(&hpvie1);//enablemeasurementforhpvie1
+STSAWGRun();//EnableAWGandmeasurementsynchronously
+for(i=0;i<SITENUM;i++)
+{
+--- PAGE 767 ---
+MakeTestingMoreValuable
+BeijingHuafengTest&ControlTechnologyCo.,Ltd. 766 www.AccoTEST.com
+©2020AccoTESTAllrightsreservedTrig_Point[i]=hpvie1.GetMeasResult(i,MVRET,TRIG_RESULT);
+//Getthepositionoftriggerpointforhpvie1
+result[i]=hpvie1.GetMeasResult(i,MIRET,Trig_Point[i]);
+//Readthecurrentvalueontriggerpositionforhpvie1
+IPeak->SetTestResult(i,0,result[i]);
+}
+6.7.23.5AWG生成正弦波测试纹波抑制比
+测试条件：
+hpvie0连续输出120Hz正弦波，幅值0.33V，直流偏置为3.3V。测试hpvie1输出
+纹波抑制比。
+intDatacount=0;
+doubleAD_SAMPLE=500;//samplingpoints
+doublesum[4]={0.0};
+doubletemp[4]={0.0};
+doubletemp2[4]={0};
+intsam=830;//datasizeofAWGpattern
+intinterval=10;//intervaltimeofAWGpattern,unitisuS
+doubleawg_pattern[1000]={0.0};
+doubledata[5000]={0.0};
+doubleresult[4]={0.0};
+STSAWGCreateSineData(&awg_pattern[0],sam,1,0.66,3.3,0);
+//setwaveformdataarrayforSin_AWG,Vpp=0.66,DC=3.3
+hpvie0.AwgLoader("Sin_AWG",FV,HPVIe_5V,HPVIe_1A,awg_pattern,sam);
+//patternnamedas‘Sin_AWG,FVmode
+hpvie0.Set(FV,0,HPVIe_5V,HPVIe_1A,HPVIe_RELAY_ON);
+//Call‘Set()’tomakesurethatthemodeandrangesareexactlythesamewith‘Sin_AWG’ofits
+‘AwgLoader()’
+hpvie0.AwgRun("Sin_AWG",0,(sam-1),0,interval,AWG_LOOP);
+//Selectpatternof‘Sin_AWG’,startstep=0,stop=sam-1;loop=0;intervaltime=10uS,loopmode
+delay_ms(1);
+hpvie1.Set(FI,-100e-3,HPVIe_5V,HPVIe_100MA,HPVIe_RELAY_ON);
+//VoutFImode,preparestomeasure
+delay_ms(2);
+hpvie1.MeasureVI(AD_SAMPLE,20);//hpvie1measurement
+for(i=0;i<SITENUM;i++)
+{
+for(Datacount=0;Datacount<AD_SAMPLE;Datacount++)
+{
+data[Datacount]=hpvie1.GetMeasResult(i,MVRET,Datacount);
+//hpvie1acquireseveryvoltagevaluesfrom500samplingpoints
+result[i]=hpvie1.GetMeasResult(i,MVRET);

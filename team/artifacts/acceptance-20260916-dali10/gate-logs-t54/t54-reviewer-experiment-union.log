@@ -1,0 +1,28 @@
+=== rule-reviewer 裁定的对照实验（严格版）===
+at      : 2026-09-16T23:58:53+08:00
+副本路径: D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10\gate-logs-t28\t28-anchors.json
+设计要点: 探针键前缀 = **qaProbeAnchors**（非 setupArchitect-）⇒ 走"他方键 ⇒ 并集累积"路径
+
+--- 放入前 ---
+  setupArchitectFreezeAnchors.anchors = 1 条
+--- 放入后（写入副本）---
+  qaProbeAnchors.anchors = 3 条：['PROBE-1.json', 'PROBE-2.json', 'PROBE-3.json']
+
+--- 跑生成器 ---
+  exit=0
+  保留他方命名空间: qaProbeAnchors, setupArchitectFreezeAnchors
+  WROTE D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10\gate-logs-t28\t28-anchors.json (12204 B / 77842d64c54b31ccf52aca9bccacb58c29371f382e603d75f92f7620bf67b1f8)
+  锚点条目: 32
+
+--- 跑后（现算）---
+  qaProbeAnchors.anchors = 3 条 ⇒ 3 条全在 = True
+  setupArchitectFreezeAnchors.anchors = 1 条 ⇒ 未被清除 = True
+  现盘 12204 B / 77842d64c54b31ccf52aca9b
+
+--- 判据 ---
+  (ii) 不丢当前内容：**成立**
+  (iii) 恢复历史：**原理上不可测** ⇒ 本实验**不得**被引作其证据（8 条无字节副本）
+  额外结论：第三方前缀（非 setupArchitect-）同样走并集路径 ⇒ 该机制**不限于**受保护前缀
+
+--- 已还原活档（实验不改变真源）---
+  11941 B / entries=32 / 含 PROBE=False / 他方条数=1

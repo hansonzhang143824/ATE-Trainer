@@ -1,0 +1,14 @@
+前置：语法 OK（47132 B）
+  已插入 _known_bodies 声明
+  已插入身份收集
+  已改为条件追加 + reason
+  已写入 → 47759 B
+后置：语法 OK
+
+=== 自证：连跑三次，行数应不再随每次运行膨胀 ===
+  run1: 54 → 54 行 ｜ RECEIPT-HISTORY skipped (routine re-verify; identity unchanged)
+  run2: 54 → 54 行 ｜ RECEIPT-HISTORY skipped (routine re-verify; identity unchanged)
+  run3: 54 → 54 行 ｜ RECEIPT-HISTORY skipped (routine re-verify; identity unchanged)
+
+  行数 = 54 ｜ 不同 body 哈希 = 5
+  末行 reason = None

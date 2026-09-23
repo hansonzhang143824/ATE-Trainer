@@ -1,0 +1,85 @@
+{
+  "_note": "t25 review read-only verification (rule-reviewer); objects inspected must be unchanged",
+  "checkedAt": "2026-09-16 18:48:06",
+  "rows": {
+    "scripts/run_gates.ps1": {
+      "size": 9763,
+      "sha256_plaintext": "dd2a4337f22d339a4a0f866c43d1843413db8f1d9e726c07bf8fbcaa5ab310b9",
+      "mtime": "2026-09-16 18:43:41"
+    },
+    "scripts/verify_relay_trace.py": {
+      "size": 21068,
+      "sha256_plaintext": "65e0c67f827bf4ff6e6d1b3a45bf3b76058815f8d4df501b19a3271f06410f9c",
+      "mtime": "2026-09-16 18:40:43"
+    },
+    "scripts/gate_baseline.json": {
+      "size": 28,
+      "sha256_plaintext": "021015da84e6fd4c54a595796e1bad73e18c57db94f856871d5667044302cb1d",
+      "mtime": "2026-09-13 22:45:34"
+    },
+    "project/DALI/meta/dali_tm_meta.json": {
+      "size": 146180,
+      "sha256_plaintext": "1c8496645492f7b75abf3a89f95679291490399d62f4a1a34d6cc5d8b1aa2693",
+      "mtime": "2026-09-16 18:26:37"
+    },
+    "gate-logs-t25/relay-trace.log": {
+      "size": 799,
+      "sha256_plaintext": "af1bf602e220b442e5edc6b72f24cc5aa6f6c1b2b85981ca5978e55b3ad7c943",
+      "mtime": "2026-09-16 18:44:56"
+    },
+    "gate-logs-t25/relay-trace-after-f2.log": {
+      "size": 797,
+      "sha256_plaintext": "81c891bc48f3a77777117769e4442b1759ec9c02151b4bee7445e582dbc4a9a3",
+      "mtime": "2026-09-16 18:41:55"
+    },
+    "gate-logs-t25/t25-f3-sandbox.json": {
+      "size": 2618,
+      "sha256_plaintext": "6dee7d737ddc7ca6a7ff7dcafe20c57c817e54339572ad9e04eccb44e4e729b3",
+      "mtime": "2026-09-16 18:44:38"
+    },
+    "gate-logs-t25/sandbox-f3/dali_tm_meta.t25proposal.json": {
+      "size": 146558,
+      "sha256_plaintext": "70067538b3c6dbf06af1ee8f4ed13ba03ab4271c40a57799f4240347a268f7dd",
+      "mtime": "2026-09-16 18:44:37"
+    },
+    "ForCodexDebug/source/test.cpp": {
+      "size": 462848,
+      "sha256_plaintext": "3dbceb496d79d7d08631713b98e46c0c2ba6163eaf5356a87dded677e35ba479",
+      "mtime": "2026-09-16 18:23:31"
+    },
+    "ForCodexDebug/source/StdAfx.h": {
+      "size": 56968,
+      "sha256_plaintext": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+      "mtime": "2026-08-30 11:20:05"
+    },
+    "devel/source/test.cpp": {
+      "size": 434629,
+      "sha256_plaintext": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+      "mtime": "2026-09-13 22:40:01"
+    }
+  },
+  "expectedMatch": [
+    {
+      "object": "scripts/run_gates.ps1",
+      "expectedSize": 9763,
+      "actualSize": 9763,
+      "hashMatches": true
+    },
+    {
+      "object": "scripts/verify_relay_trace.py",
+      "expectedSize": 21068,
+      "actualSize": 21068,
+      "hashMatches": true
+    },
+    {
+      "object": "scripts/gate_baseline.json",
+      "expectedSize": 28,
+      "actualSize": 28,
+      "hashMatches": true
+    }
+  ],
+  "develBaselineIntact": true,
+  "reviewerWrites": [
+    "review/t25-independent-opinion.md"
+  ]
+}

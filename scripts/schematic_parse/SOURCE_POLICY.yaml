@@ -1,0 +1,32 @@
+# 源表策略（V2 通路解析）。字段对应 csv_pathproof_v2 的 source_meta / scarce / 配对逻辑。
+# kelvin: true  → 该源强制 Force/Sense 双线配对，禁止单线。
+# allow_single_path: true → 该源允许单线通路（不做 Kelvin 配对）。
+# scarce: true  → 稀缺源，豁免 bus 域剪枝（必须能穿 bus 域到达目标）。
+
+FPVIe:
+  kelvin: true
+  scarce: true
+ACM200:
+  kelvin: true
+  scarce: false
+FXVIe_PLUS:
+  kelvin: true
+  scarce: false
+FXVIe:
+  kelvin: true
+  scarce: false
+QVM:
+  kelvin: true
+  allow_single_path: true
+  scarce: true
+QTMU:
+  kelvin: false
+  allow_single_path: true
+  scarce: true
+DCM:
+  kelvin: false
+  allow_single_path: true
+  scarce: false
+CH0:
+  # CH0 是通道选择 token，不是独立源表；出现在 port 名里时按 scarce 豁免 bus 域剪枝。
+  scarce: true

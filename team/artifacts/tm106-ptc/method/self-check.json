@@ -1,0 +1,28 @@
+{
+  "tm": "TM106",
+  "stage": "METHOD",
+  "status": "PASS",
+  "strategySha256": "68bce392e8d197fca137c53457e48e78942fd55363561f24cba093008a5306a2",
+  "contractSha256": "0ab56462d87b479b23934d3cf25841e4a8fb9f9a1b57b5e0876f57591f6e52a9",
+  "checks": {
+    "signedStrategyHandoffHashMatches": true,
+    "canonicalDftHashMatchesManifest": true,
+    "sourceTablesAndRelaysUnchanged": true,
+    "requiredK13AndK65Present": true,
+    "upSweepTriggerFalling": true,
+    "downSweepTriggerRising": true,
+    "riseFallHysPerSite": true,
+    "numericPassFailNotSpecified": true,
+    "bstSwNotApplicableWithEndpointProof": true,
+    "allCommandsWithinSignedRelayUnion": true,
+    "safeZeroBeforeDisconnect": true,
+    "oldResolvedK13K65FindingsNotReopened": true,
+    "scanRangeRuleVerified": true,
+    "scanRangeSourcesVerified": true
+  },
+  "evidence": [
+    "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm106-ptc\\method\\tm106-test-method-contract.json",
+    "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm106-ptc\\strategy\\tm106-resource-config-contract.json",
+    "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-meta.json"
+  ]
+}

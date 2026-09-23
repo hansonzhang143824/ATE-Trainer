@@ -1,0 +1,10 @@
+① 前置检查：生成器语法 OK（41646 B）
+  已写入 → 42306 B
+② 后置检查：生成器语法 OK
+  run1 末行: RECEIPT-HISTORY D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-2026091
+  run2 末行: RECEIPT-HISTORY D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-2026091
+
+=== 收据核对 ===
+  键 = ['subject', 'at', 'size', 'sha256', 'sha256_lf_normalized', 'topLevelEntries', 'reproducibleBodySha256', 'reproducibleNote', 'projectionSpec', 'hashInvariance', 'isFrozen', 'note']
+  projectionSpec = {"exclude": ["generatedAt"], "version": 1, "note": "跨秒不变；跨版本不可混用 —— 排除表一变就必须换版本号（v2），不得沿用同名键"}
+  hashInvariance = {"sha256": "逐字节同盘身份（含 generatedAt ⇒ 跨次重生成会变）", "sha256_lf_normalized": "行尾不变（跨编辑器 / CRLF-LF 可比）", "reproducibleBodySha256": "时间戳不变（跨秒/跨次可比；用于判内容是否变）"}

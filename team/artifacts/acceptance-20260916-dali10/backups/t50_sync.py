@@ -1,0 +1,21 @@
+import sys,io,os,re,hashlib,json,time
+sys.stdout=io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8',errors='replace')
+base=r'D:\Newtest\DSH\ATE-Coding-Plat'
+d=os.path.join(base,'team','artifacts','acceptance-20260916-dali10')
+p=os.path.join(d,'implementation-payload-TM600-TM601.cpp')
+r=open(p,'rb').read(); u=r.decode('utf-8-sig'); code=re.sub(r'//.*$','',u,flags=re.M)
+print('=== FACT: current payload (66abc088...) ===')
+print('  %d B / %s @%s'%(len(r),hashlib.sha256(r).hexdigest(),time.strftime('%H:%M:%S',time.localtime(os.stat(p).st_mtime))))
+print('  executable: K48=%d K76=%d K109=%d K110=%d K46=%d'%(code.count('K48_ACM5_AMP_REF'),code.count('K76_ACM_BST'),code.count('K109_BUSL1_PB0'),code.count('K110_ACM18_BST'),code.count('K46')))
+print('  -> t4 measured 2d0984d9 (38,147 era) where the union held: K48=1 K76=1 K109=1 K110=1')
+print('  -> captain then authorised REMOVAL of K109/K110; that is the current state')
+print()
+print('=== FACT: gate state on disk ===')
+J=json.loads(open(os.path.join(d,'setup-contract.json'),'rb').read().decode('utf-8-sig'))
+print('  contract revision:',J.get('revision'))
+M=json.loads(open(os.path.join(d,'implementation-manifest.json'),'rb').read().decode('utf-8-sig'))
+lg=M['handoffCitationRisk']['landingGate']
+print('  my manifest landingGate.status:',lg['status'][:90])
+print('  my manifest gates field:',lg['gates'])
+print('  my manifest gateHistoryNote:',lg['gateHistoryNote'][:110])
+print('  verifiedCounts:',json.dumps(lg['verifiedCounts'],ensure_ascii=False)[:260])

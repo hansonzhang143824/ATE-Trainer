@@ -1,0 +1,47 @@
+{
+  "tm": "TM108",
+  "verdict": "PASS",
+  "reviewer": "ptc-dft-expert v3 (executionClass input-dft)",
+  "reviewedAtUtc": "2026-09-21T02:58:31.106Z",
+  "batchId": "dali-20260921-080849-tm106-tm108-tm425",
+  "sourceSha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+  "readSources": [
+    {
+      "path": "project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx",
+      "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "withinInputRoot": true
+    }
+  ],
+  "reviewedArtifacts": [
+    {
+      "path": "project/DALI/Output_Global_Material/dft/TM108/dft-meta.json",
+      "sha256": "d9ebf5886c23e650d7b5363f72efe69d8dc5869014e3367286f5102f547e9ceb"
+    },
+    {
+      "path": "project/DALI/Output_Global_Material/dft/TM108/dft-conditions.yaml",
+      "sha256": "19852fcef05c474f683eba92e46b6ce817ffc830cc1a06ee5114d913cae4461c"
+    }
+  ],
+  "checksPerformed": [
+    "meta.tm==TM108",
+    "meta.sourceSha256==workbook plaintext sha256 (hash_ate_plaintext form1 output matches gate record)",
+    "meta.rawIntent is the field-for-field OVERVIEW row copy (29 fields); raw source text preserved verbatim",
+    "testCondition carries all 20 required condition fields (identity..notes)",
+    "reviewedArtifacts bind current artifact byte hashes; values cross-checked identical between refresh/render stdout (metaSha256/outputSha256) and run_code fs sha256",
+    "meta and yaml accepted by validate_dft_outputs (form4) in this session; review binding rejected by the same gate (see ErrorLog)"
+  ],
+  "findingsSummary": "Semantic review re-performed against current artifacts. Electrical facts consistent with rawIntent: TM106 ExpectValue 'rising vth 3.9V, hys 0.2V' (3.9V rising threshold, 0.2V hysteresis), direct power-on via vset[...,100e-6,...], ramp vbus 3->5->3; TM108 ExpectValue 'rising vth 4.4V, hys 0.35V'; TM425 ExpectValue 1.2 with isTrim=true (Trim=Y) and bench reference 1.197V preserved verbatim. Deterministic scripts own all numbers.",
+  "unknownsMarked": [
+    "helper commands en_tm[]/delay[]/finish[] appear in Code columns without codeExplain definitions; intent inferred (enter test mode / settle wait / end-of-test) and raw text preserved verbatim in rawIntent",
+    "source-text conflict preserved verbatim: HELPER/Notes say ramp vac1 3~5V while Code2 vset sequence is 10V->0V; acceptance limit remains ExpectValue 'rising vth 4.4V, hys 0.35V' (raw text not altered)"
+  ],
+  "gateStatus": {
+    "installedGates": "RUN in this session via approved pwsh whitelist (forms 1-4); exit codes and hashes in project/DALI/ErrorLog/dft-expert.log",
+    "commands": [
+      "hash_ate_plaintext.py",
+      "refresh_dft_meta_from_source.py",
+      "render_dft_conditions_yaml.py",
+      "validate_dft_outputs.py"
+    ]
+  }
+}

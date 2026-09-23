@@ -1,0 +1,27 @@
+{
+  "tm": "TM425",
+  "stage": "METHOD",
+  "status": "PASS",
+  "strategySha256": "b5de503e74efa5dd051f2c57a23ec0a23e409e6452498ab1d78c83c8d1b19009",
+  "contractSha256": "81408a784f65f179e86bd04eb405e91abb085ddb73d6d12ee6e4b52041463b6b",
+  "checks": {
+    "signedStrategyHandoffHashMatches": true,
+    "dftAndStrategyBindingsRetained": true,
+    "trimExecutionDeclared": true,
+    "trimNodeReferenceExact": true,
+    "trimExecuteReferenceExact": true,
+    "resultPublisherDeclared": true,
+    "resultPublisherMatchesSignedLogPlan": true,
+    "minimumPublicationCountDeclared": true,
+    "methodFamilyMatchesDftTrim": true,
+    "methodFamilyMatchesTrimPublisher": true,
+    "trimTregF8CallbackDeclared": true,
+    "trimTregF8CallbackEvidenceComplete": true
+  },
+  "evidence": [
+    "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm425-ptc\\method\\tm425-test-method-contract.json",
+    "D:\\PROJECT6-DALI\\ForCodexDebug\\source\\test.cpp",
+    "D:/PROJECT6-DALI/ForCodexDebug/source/sub.cpp",
+    "D:/PROJECT6-DALI/ForCodexDebug/NU1201.treg:[mnt_v1p2_buf],[_EFUSE_REG_F8]"
+  ]
+}

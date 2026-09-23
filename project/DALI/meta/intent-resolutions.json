@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "projectId": "DALI",
+  "purpose": "Project-owned adjudications for DFT source conflicts. A resolution is required before strategy can choose a source, route, relay, register, or limit affected by a conflict.",
+  "resolutions": {
+    "TM109": {
+      "status": "resolved",
+      "authority": "accepted project baseline",
+      "decision": {
+        "item": "VAC2_PRST",
+        "staticSupplies": [
+          {
+            "pin": "VBAT",
+            "voltageV": 3.0
+          }
+        ],
+        "sweptPin": "VAC2",
+        "registerWrites": [
+          {
+            "address": "0x56",
+            "value": "0x15"
+          },
+          {
+            "address": "0x57",
+            "value": "0x08"
+          }
+        ],
+        "monitorIntent": "DTEST0/nQON logic toggle",
+        "monitorDutPin": "nQON"
+      },
+      "conflict": {
+        "source": "project/DALI/input/DFT.csv",
+        "record": "TM109",
+        "fact": "The CSV row names VAC3 in Dynamic/monitor fields although the item, OVERVIEW and reg_config identify VAC2.",
+        "handling": "Do not use the copied VAC3 field as a stimulus or route authority."
+      },
+      "evidence": [
+        "team/artifacts/acceptance-20260916-dali10/dft-ir.json:1092-1228",
+        "team/artifacts/acceptance-20260916-dali10/review/t6-review-checklist.md:17,176",
+        "project/DALI/reg_config/tm109.sv"
+      ],
+      "scope": "This resolution adjudicates only the DFT source contradiction. Relay and instrument selection remain the strategy architect's job and must use project schematic/CBIT evidence."
+    },
+    "TM103": {
+      "status": "resolved",
+      "authority": "accepted project baseline",
+      "recordedBy": "captain, PTC INPUT_SYNC gate: transcribed from the governing DFT workbook; no new electrical value was decided here",
+      "decision": {
+        "item": "LP_HR_0P5U",
+        "staticSupplies": [
+          {
+            "pin": "VBAT",
+            "voltageV": 4.0
+          }
+        ],
+        "sweptPin": "VDM",
+        "registerWrites": [
+          {
+            "address": "0x57",
+            "value": "0x02"
+          },
+          {
+            "address": "0x5E",
+            "value": "0x04"
+          }
+        ],
+        "monitorIntent": "I(ATEST0) IBP_HR 0.5 uA current, forced/measured on the VDM pin",
+        "monitorDutPin": "VDM"
+      },
+      "conflict": {
+        "source": "project/DALI/input/DFT.csv",
+        "record": "TM103",
+        "fact": "The DFT.csv row carries a legacy copy of the same test (Hardware_initial vset[vbat,4.2,100e-6,0] + vset[amux,1,100e-6,0]; Software_initial I2CWriteSameData(0x56,0x22)), while the governing workbook OVERVIEW row 7, dali_tm_meta.json and reg_config/tm103.sv all specify vset[vbat,4,...] + field[(EN_ATEST0,1),(ATEST0_MUX,4)] + vset[vdm,1,...].",
+        "handling": "Do not use the copied DFT.csv Hardware_initial/Software_initial fields as stimulus, route or register authority. VBAT=4 V, VDM=1 V and EN_ATEST0=1/ATEST0_MUX=4 (0x57=0x02, 0x5E=0x04) govern. The current implementation in test.cpp already follows the governing values."
+      },
+      "evidence": [
+        "project/DALI/Dali_testmode.xlsx!/OVERVIEW row 7 (read directly: Code1 vset[vbat,4,100e-6,0]; Code2 field[(EN_ATEST0,1),(ATEST0_MUX,4)] + vset[vdm,1,100e-6,0]; Check I(ATEST0); ExpectValue 0.5 uA)",
+        "project/DALI/meta/dali_tm_meta.json (functions[item=TM103], source=Dali_testmode.xlsx)",
+        "project/DALI/reg_config/tm103.sv (vsrcVBAT ramp to 4 V; I2CWriteSameData 0x57=0x02; 0x5E=0x04; vsrcVDM ramp to 1 V)",
+        "team/artifacts/acceptance-20260916-dali10/dft-ir.json:2669 (registered: TM103 has three register/observation stories)"
+      ],
+      "scope": "This resolution adjudicates only the DFT source contradiction. Relay and instrument selection remain the strategy architect's job and must use project schematic/CBIT evidence."
+    },
+    "TM106": {
+      "status": "resolved",
+      "authority": "accepted project baseline",
+      "recordedBy": "captain, PTC INPUT_SYNC gate: transcribed from the governing DFT workbook; no new electrical value was decided here",
+      "decision": {
+        "item": "VBUS_PRST",
+        "staticSupplies": [
+          {
+            "pin": "VBAT",
+            "voltageV": 3.0
+          }
+        ],
+        "sweptPin": "VBUS",
+        "registerWrites": [
+          {
+            "address": "0x56",
+            "value": "0x13"
+          },
+          {
+            "address": "0x57",
+            "value": "0x08"
+          }
+        ],
+        "monitorIntent": "DTEST0/nQON logic toggle",
+        "monitorDutPin": "nQON"
+      },
+      "conflict": {
+        "source": "project/DALI/input/DFT.csv",
+        "record": "TM106",
+        "fact": "The DFT.csv row diverges from the governing workbook OVERVIEW row 10 on four fields: VBAT (4.2 V vs 3 V), register encoding (0x55=0x94 with legacy field names EN_DTEST0/DTEST0_MUX=20 vs field[(DMUX_EN,1),(DMUX_SEL,19)] = 0x56=0x13 + 0x57=0x08), the VBUS sweep (3.5/4.5/4.3/3.3 V vs 3 -> 5 -> 3 V) and ExpectValue (3.91 V vs 3.9 V, hys 0.2 V in both).",
+        "handling": "Do not use the copied DFT.csv Hardware_initial/Software_initial/Dynamic/ExpectValue fields as stimulus, route, register or limit authority. VBAT=3 V, DMUX_EN=1/DMUX_SEL=19 and the 3 -> 5 -> 3 V VBUS ramp govern; the threshold is the workbook's 3.9 V rising / 0.2 V hysteresis."
+      },
+      "evidence": [
+        "project/DALI/Dali_testmode.xlsx!/OVERVIEW row 10 (read directly: Code1 vset[vbat,3,100e-6,0]; Code2 field[(DMUX_EN,1),(DMUX_SEL,19)] + vset[vbus,3,100e-6,1] + vset[vbus,5,1e-3,0] + vset[vbus,3,1e-3,0]; Check V(DTEST0); ExpectValue 'rising vth 3.9V, hys 0.2V')",
+        "project/DALI/meta/dali_tm_meta.json (functions[item=TM106], source=Dali_testmode.xlsx)",
+        "project/DALI/reg_config/tm106.sv (vsrcVBAT ramp to 3 V; I2CWriteSameData 0x56=0x13; 0x57=0x08; vsrcVBUS 3 -> 5 -> 3 V)"
+      ],
+      "scope": "This resolution adjudicates only the DFT source contradiction. Relay and instrument selection remain the strategy architect's job and must use project schematic/CBIT evidence."
+    },
+    "TM110": {
+      "status": "resolved",
+      "authority": "accepted project baseline",
+      "recordedBy": "captain, PTC INPUT_SYNC gate: transcribed from the governing DFT workbook; no new electrical value was decided here",
+      "decision": {
+        "item": "VAC3_PRST",
+        "staticSupplies": [
+          {
+            "pin": "VBAT",
+            "voltageV": 3.0
+          }
+        ],
+        "sweptPin": "VAC3",
+        "registerWrites": [
+          {
+            "address": "0x56",
+            "value": "0x14"
+          },
+          {
+            "address": "0x57",
+            "value": "0x08"
+          }
+        ],
+        "monitorIntent": "DTEST0/nQON logic toggle",
+        "monitorDutPin": "nQON"
+      },
+      "conflict": {
+        "source": "project/DALI/input/DFT.csv",
+        "record": "TM110",
+        "fact": "The DFT.csv row diverges from the governing workbook OVERVIEW row 13 on four fields: VBAT (4.2 V vs 3 V), register encoding (0x55=0x95 with legacy field names EN_DTEST0/DTEST0_MUX=21 vs field[(DMUX_EN,1),(DMUX_SEL,20)] = 0x56=0x14 + 0x57=0x08), the VAC3 sweep (3.8/4.4/4.1/3.5 V vs 10 -> 0 V) and ExpectValue (4.15 V vs 4.4 V, hys 0.35 V in both).",
+        "handling": "Do not use the copied DFT.csv Hardware_initial/Software_initial/Dynamic/ExpectValue fields as stimulus, route, register or limit authority. VBAT=3 V, DMUX_EN=1/DMUX_SEL=20 and the VAC3 ramp govern; the threshold is the workbook's 4.4 V rising / 0.35 V hysteresis. The workbook Notes text says 'ramp up/down vac1' for this VAC3 item: that is a copy-paste in the note only and does not change the swept pin, which the workbook Code2, the item name and the A2D_VAC3_PRST mux identify as VAC3."
+      },
+      "evidence": [
+        "project/DALI/Dali_testmode.xlsx!/OVERVIEW row 13 (read directly: Code1 vset[vbat,3,100e-6,0]; Code2 field[(DMUX_EN,1),(DMUX_SEL,20)] + vset[vac3,10,1e-3,0] + vset[vac3,0,1e-3,0]; Check V(DTEST0); ExpectValue 'rising vth 4.4V, hys 0.35V')",
+        "project/DALI/meta/dali_tm_meta.json (functions[item=TM110], source=Dali_testmode.xlsx)",
+        "project/DALI/reg_config/tm110.sv (vsrcVBAT ramp to 3 V; I2CWriteSameData 0x56=0x14; 0x57=0x08; vsrcVAC3 10 -> 0 V)"
+      ],
+      "scope": "This resolution adjudicates only the DFT source contradiction. Relay and instrument selection remain the strategy architect's job and must use project schematic/CBIT evidence."
+    }
+  }
+}

@@ -1,0 +1,29 @@
+=== ① 现盘契约里各别名的闭集（来源标注）===
+  pmid2sw    closed=[83, 60, 61]           usedByTm=['TM600']
+  sw2pgnd    closed=[154, 155, 60, 61]     usedByTm=['TM601']
+  pgnd2sw    closed=[154, 155, 60, 61]     usedByTm=['TM108', 'TM109']
+  bst2sw     closed=[110, 61]              usedByTm=['TM1205', 'TM600']
+
+=== ② TM600 期望并集（aliasesUsed ∪ usedByTm 命中项）===
+  期望并集 = [60, 61, 83, 110]
+     K60   来源 = ['pmid2sw', 'sw2pgnd', 'pgnd2sw']
+     K61   来源 = ['pmid2sw', 'sw2pgnd', 'pgnd2sw', 'bst2sw']
+     K83   来源 = ['pmid2sw']
+     K110  来源 = ['bst2sw']
+
+=== ③ Captain 给的 BST–SW 闭集 [48,60,61,76] 与推导的对照 ===
+  Captain 值 = [48, 60, 61, 76]
+  现盘推导值 = [60, 61, 83, 110]
+  一致 = False
+  Captain 多出 = [48, 76]
+  现在推导多出 = [83, 110]
+
+=== ④ 部署态 TM600 已闭 / 缺失 ===
+  已闭 = [13, 57, 60, 61, 83, 85, 126]
+  相对 Captain 值 [48,60,61,76]: 已闭 = [60, 61] ; **缺 = [48, 76]**
+  ⇒ **红色叙事的目标应写成"缺 [48, 76]"**
+
+=== ⑤ 三情形表（Captain 定的最终口径）核对 ===
+  · rev 24 + t29 payload ⇒ 契约期望 [60, 61, 83, 110] ⇒ 补 110 后缺失=[] ⇒ GREEN
+  · rev 25 而 payload 未同批 ⇒ TM600 缺 [48, 76] ⇒ 仍 NEW-RED（第二处真缺陷）
+  · rev 25 + payload 同批 ⇒ payload 补 [48, 76] ⇒ 期望 GREEN（本 run 实际分支）

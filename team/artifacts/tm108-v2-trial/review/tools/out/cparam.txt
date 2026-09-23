@@ -1,0 +1,84 @@
+=== 1. search whole ForCodexDebug tree for a CParam declaration ===
+  source\test.cpp                                      CParam=668   decl=-
+  source\src\treg.cpp                                  CParam=2     decl=-
+  source\Shmoo.h                                       CParam=1     decl=-
+  source\Test_Method.cpp                               CParam=1     decl=-
+
+=== 2. contexts around the first "SetTestResult" declaration seen anywhere ===
+  --- source\test.cpp around line 1145 ---
+   1132|     CParam *Part_No = StsGetParam(funcindex, "Part_No");
+   1133|     CParam *QC_flag = StsGetParam(funcindex, "QC_flag");
+   1134|     CParam *X_Coordinate = StsGetParam(funcindex, "X_Coordinate");
+   1135|     CParam *Y_Coordinate = StsGetParam(funcindex, "Y_Coordinate");
+   1136|     CParam *Wafer_ID = StsGetParam(funcindex, "Wafer_ID");
+   1137|     CParam *VBAT = StsGetParam(funcindex, "VBAT");
+   1138|     CParam *VBUS = StsGetParam(funcindex, "VBUS");
+   1139|     CParam *VAC = StsGetParam(funcindex, "VAC");
+   1140| //}}AFX_STS_PARAM_PROTOTYPES
+   1141| 	// TODO: Add your function code here
+   1142| 
+   1143| 	FOR_EACH_VALID_SITE(site)
+   1144| 	{
+   1145| 		Part_No->SetTestResult(site, 0, Part_Num);
+   1146| 		QC_flag->SetTestResult(site, 0, TEST_FLOW);
+   1147| 		if (Relay_Off_Check)
+   1148| 		{
+   1149| 			X_Coordinate->SetTestResult(site, 0, 1);
+   1150| 		}
+   1151| 		else
+   1152| 		{
+
+  --- source\src\treg.cpp around line 72 ---
+     59| }
+     60| 
+     61| 
+     62| void stslogdata(int Func_Index, string Func_Label, double*meas_results)
+     63| {
+     64| 	LPCTSTR funclabel = "Logdata";
+     65| 	short funcindex = Func_Index;
+     66| 	funclabel = Func_Label.c_str();
+     67| 	CParam *LOG_TREG_RESULT = StsGetParam(funcindex, "Func_Label");
+     68| 	for(int site = 0; site < STS_SITE_NUM; site++)
+     69| 	{
+     70| 		if (msSiteStat(site) == 1)
+     71| 		{
+     72| 			LOG_TREG_RESULT->SetTestResult(site, 0, meas_results[site]);
+     73| 		}
+     74| 	}
+     75| }
+     76| 
+     77| //void sts_logdata(int funcindex, string funclabel, unsigned int*meas_results)
+     78| void stslogdata(int Func_Index, string Func_Label, unsigned int *meas_results)
+     79| {
+
+  --- source\Test_Method.cpp around line 65 ---
+     52| 		}
+     53| 	}
+     54| 
+     55| 	SERIAL    //judge some open or all open
+     56| 	{
+     57| 		if (SHORT_FLAG[SITE] != 1 && open_count[SITE] == (OS_NUM - vec_exclude.size()))
+     58| 		ALL_OPEN_FLAG[SITE] = 1;
+     59| 		else if (SHORT_FLAG[SITE] != 1 && open_count[SITE] < (int)(OS_NUM - vec_exclude.size()) && open_count[SITE] > 0)
+     60| 			SOME_OPEN_FLAG[SITE] = 1;
+     61| 		if (ALAM_FLAG[SITE] == 1)
+     62| 			SHORT_FLAG[SITE] = 0;
+     63| 	}
+     64| 
+     65| 	SERIAL	StsGetParam(funcindex, "OS_SHORT")->SetTestResult(SITE, 0, SHORT_FLAG[SITE]);
+     66| 	SERIAL	StsGetParam(funcindex, "OS_SOME_OPEN")->SetTestResult(SITE, 0, SOME_OPEN_FLAG[SITE]);
+     67| 	SERIAL	StsGetParam(funcindex, "OS_ALL_OPEN")->SetTestResult(SITE, 0, ALL_OPEN_FLAG[SITE]);
+     68| 	SERIAL	StsGetParam(funcindex, "OS_ALAM")->SetTestResult(SITE, 0, ALAM_FLAG[SITE]);
+     69| 	if (LEAK_NUM != 0)
+     70| 	{
+     71| 		SERIAL	StsGetParam(funcindex, "OS_LEAK")->SetTestResult(SITE, 0, LEAK_FLAG[SITE]);
+     72| 	}
+
+=== 3. Test_Method.h : members whose name matches log/print/record/label ===
+  file: D:\PROJECT6-DALI\ForCodexDebug\source\Test_Method.h
+  bytes=23381 lines=123 sha256=a432f2b602f550a29dd6b76b78ac37245622a71efdcaa42d91ae77a40dc0ba56
+     20| 02   10/31/18  Fix "Enable log" alarm issue  Alan
+
+=== 4. sub.h : members matching log/print/record ===
+  file: D:\PROJECT6-DALI\ForCodexDebug\source\sub.h
+  lines=153  hits=0

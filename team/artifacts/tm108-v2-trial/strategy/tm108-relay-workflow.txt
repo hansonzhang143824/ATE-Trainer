@@ -1,0 +1,338 @@
+TM108 mandatory eight-step relay workflow - evidence output
+owner=test-strategy-architect run=tm108-v2-trial
+flow source: knowledge/references/L3-method/relay-design-flow.md:39-75 (steps 1-8)
+closure-set source: proof required_on + full proof relay chain (NOT pins[].requiredRelays, NOT relays[].state)
+proof file: D:/Newtest/DSH/ATE-Coding-Plat/team/artifacts/tm108-v2-trial/schematic/tm108-paths-proofs.json
+proof source: project/DALI/path_proofs.json.txt (engine=n/a status=PASS)
+counts: {"sources": 112, "raw_best_paths": 1004, "accepted_path_proofs": 669, "rejected_paths": 335, "kelvin_pairs": 219, "kelvin_pair_failures": 0}
+
+===== STEP1 FIND-PIN =====
+DFT intent endpoints for TM108:
+  VBAT   power / static supply rail -> DFT Power column "VBAT"
+  VAC1   dynamic / scanned input -> DFT Dynamic column "VAC1"
+  DTEST0 check / observation -> DFT Check column "V(DTEST0)"
+board reference endpoints considered:
+  AGND   reference return (board-level; not a DFT column)
+  KLV1   NOT required by this TM (no DFT column, no ramp, no measurement)
+  KLV2   NOT required by this TM (no DFT column, no ramp, no measurement)
+basis: DFT Power='VBAT' / Dynamic='VAC1' / Check='V(DTEST0)' at project/DALI/meta/dali_tm_meta.json:1400-1402
+basis: DFT raw row team/artifacts/acceptance-20260916-dali10/dft-raw/overview-dump.txt:159-161
+basis: DFT conditions project/DALI/meta/test_conditions.yaml:255/259/260/267
+
+proof-backed terminals carrying those endpoints:
+  VAC1_F_S1  -> VAC1 force side                          accepted proofs=5
+  VAC1_S_S1  -> VAC1 sense side                          accepted proofs=4
+  VBAT_F_S1  -> VBAT force side                          accepted proofs=5
+  VBAT_S_S1  -> VBAT sense side                          accepted proofs=4
+  nQON_F_S1  -> observation candidate (nQON, force side) accepted proofs=6
+  nQON_S_S1  -> observation candidate (nQON, sense side) accepted proofs=4
+  AGND_F_S1  -> reference, force side                    accepted proofs=4
+  AGND_S_S1  -> reference, sense side                    accepted proofs=10
+
+===== STEP2 FIND-PATH =====
+candidate source ports per terminal, with the FULL proof relay chain
+(state=NC means the contact is default-conducting and is NOT in required_on):
+
+-- VAC1_F_S1
+   S10_CH0_B              type=QTMU       role=-  side=-   req=[17, 142]
+       net=NetCap1_VAC1_S1_1 terminal_stop=True
+       K142_QTMU_BUSB#142(ON) -> K17_BUSL_VAC#17(ON) -> K18_VAC3#18(NC) -> K19_VAC2#19(NC)
+   S1_FPVIe_FH0           type=FPVIe      role=F  side=FH  req=[70, 87, 90]
+       net=NetCap1_VAC1_S1_1 terminal_stop=True
+       K87_KELVIN0#87(ON) -> K90_PC0_Force#90(ON) -> K82_R_CS#82(NC) -> K70_VAC_F#70(ON) -> K18_VAC3#18(NC) -> K19_VAC2#19(NC)
+   S1_FPVIe_FL0           type=FPVIe      role=F  side=FL  req=[17]
+       net=NetCap1_VAC1_S1_1 terminal_stop=True
+       K89_KELVIN0#89(NC) -> K17_BUSL_VAC#17(ON) -> K18_VAC3#18(NC) -> K19_VAC2#19(NC)
+   S1_FPVIe_FL1           type=FPVIe      role=F  side=FL  req=[17, 145, 146]
+       net=NetCap1_VAC1_S1_1 terminal_stop=True
+       K133_KELVIN1#133(NC) -> K146_DCM_BUS1_L#146(ON) -> K145_DCM_BUS0_L#145(ON) -> K17_BUSL_VAC#17(ON) -> K18_VAC3#18(NC) -> K19_VAC2#19(NC)
+   S5_ACM200_FH0          type=ACM200     role=F  side=FH  req=[]
+       net=NetCap1_VAC1_S1_1 terminal_stop=True
+       K18_VAC3#18(NC) -> K19_VAC2#19(NC)
+   REJECTED S1_FPVIe_SH0           net=NetCap1_VAC1_S1_1          {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+   REJECTED S1_FPVIe_SL0           net=NetCap1_VAC1_S1_1          {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+
+-- VAC1_S_S1
+   S1_FPVIe_SL0           type=FPVIe      role=S  side=SL  req=[17]
+       net=NetK19_VAC2_S1_7 terminal_stop=True
+       K88_KELVIN0#88(NC) -> K17_BUSL_VAC#17(ON) -> K18_VAC3#18(NC) -> K19_VAC2#19(NC)
+   S1_FPVIe_SL1           type=FPVIe      role=S  side=SL  req=[17, 138, 139]
+       net=NetK19_VAC2_S1_7 terminal_stop=True
+       K132_KELVIN1#132(NC) -> K139_QVML_BUS1#139(ON) -> K138_QVML_BUS0#138(ON) -> K17_BUSL_VAC#17(ON) -> K18_VAC3#18(NC) -> K19_VAC2#19(NC)
+   S5_ACM200_SH0          type=ACM200     role=S  side=SH  req=[]
+       net=NetK19_VAC2_S1_7 terminal_stop=True
+       K18_VAC3#18(NC) -> K19_VAC2#19(NC)
+   S8_QVM_CH0-            type=QVM        role=S  side=-   req=[17, 138]
+       net=NetK19_VAC2_S1_7 terminal_stop=True
+       K138_QVML_BUS0#138(ON) -> K17_BUSL_VAC#17(ON) -> K18_VAC3#18(NC) -> K19_VAC2#19(NC)
+   REJECTED S1_FPVIe_FL0           net=NetK19_VAC2_S1_7           {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+
+-- VBAT_F_S1
+   S10_CH0_A              type=QTMU       role=-  side=-   req=[7]
+       net=NetCap1_VBAT_S1_1 terminal_stop=True
+       K141_QTMU_BUSA#141(NC) -> K7_BUSH_VBAT#7(ON) -> K8_PD3#8(NC)
+   S1_FPVIe_FH0           type=FPVIe      role=F  side=FH  req=[7, 143, 144]
+       net=NetCap1_VBAT_S1_1 terminal_stop=True
+       K87_KELVIN0#87(NC) -> K143_DCM_BUS0_H#143(ON) -> K144_DCM_BUS1_H#144(ON) -> K7_BUSH_VBAT#7(ON) -> K8_PD3#8(NC)
+   S1_FPVIe_FH1           type=FPVIe      role=F  side=FH  req=[7]
+       net=NetCap1_VBAT_S1_1 terminal_stop=True
+       K131_KELVIN1#131(NC) -> K7_BUSH_VBAT#7(ON) -> K8_PD3#8(NC)
+   S3_FXVIe_PLUS_FH5      type=FXVIe_PLUS role=F  side=FH  req=[]
+       net=NetCap1_VBAT_S1_1 terminal_stop=True
+       K8_PD3#8(NC)
+   S8_QVM_CH0+            type=QVM        role=F  side=+   req=[7, 130, 136]
+       net=NetCap1_VBAT_S1_1 terminal_stop=True
+       K136_QVMH_BUS0#136(ON) -> K132_KELVIN1#132(NC) -> K130_KELVIN1_F#130(ON) -> K131_KELVIN1#131(NC) -> K7_BUSH_VBAT#7(ON) -> K8_PD3#8(NC)
+   REJECTED S1_FPVIe_SH0           net=NetCap1_VBAT_S1_1          {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+   REJECTED S1_FPVIe_SH1           net=NetCap1_VBAT_S1_1          {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+
+-- VBAT_S_S1
+   S10_CH0_A              type=QTMU       role=-  side=-   req=[7, 130]
+       net=NetK8_PD3_S1_2 terminal_stop=True
+       K141_QTMU_BUSA#141(NC) -> K131_KELVIN1#131(NC) -> K130_KELVIN1_F#130(ON) -> K132_KELVIN1#132(NC) -> K7_BUSH_VBAT#7(ON) -> K8_PD3#8(NC)
+   S1_FPVIe_SH0           type=FPVIe      role=S  side=SH  req=[7, 136, 137]
+       net=NetK8_PD3_S1_2 terminal_stop=True
+       K88_KELVIN0#88(NC) -> K137_QVMH_BUS1#137(ON) -> K136_QVMH_BUS0#136(ON) -> K7_BUSH_VBAT#7(ON) -> K8_PD3#8(NC)
+   S1_FPVIe_SH1           type=FPVIe      role=S  side=SH  req=[7]
+       net=NetK8_PD3_S1_2 terminal_stop=True
+       K132_KELVIN1#132(NC) -> K7_BUSH_VBAT#7(ON) -> K8_PD3#8(NC)
+   S3_FXVIe_PLUS_SH5      type=FXVIe_PLUS role=S  side=SH  req=[]
+       net=NetK8_PD3_S1_2 terminal_stop=True
+       K8_PD3#8(NC)
+   REJECTED S1_FPVIe_FH0           net=NetK8_PD3_S1_2             {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+   REJECTED S1_FPVIe_FH1           net=NetK8_PD3_S1_2             {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+   REJECTED S8_QVM_CH0+            net=NetK8_PD3_S1_2             {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+
+-- nQON_F_S1
+   S10_CH0_A              type=QTMU       role=-  side=-   req=[66]
+       net=NetK64_HG1_S1_7 terminal_stop=True
+       K66_TMU_nQON#66(ON)
+   S1_FPVIe_FH0           type=FPVIe      role=F  side=FH  req=[62]
+       net=NetK64_HG1_S1_7 terminal_stop=True
+       K87_KELVIN0#87(NC) -> K62_BUS_FH_QON#62(ON) -> K64_HG1#64(NC)
+   S1_FPVIe_FH1           type=FPVIe      role=F  side=FH  req=[66]
+       net=NetK64_HG1_S1_7 terminal_stop=True
+       K131_KELVIN1#131(NC) -> K141_QTMU_BUSA#141(NC) -> K66_TMU_nQON#66(ON)
+   S24_P0                 type=DCM        role=F  side=-   req=[]
+       net=NetK64_HG1_S1_7 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+   S5_ACM200_FH9          type=ACM200     role=F  side=FH  req=[]
+       net=NetK64_HG1_S1_7 terminal_stop=True
+       K64_HG1#64(NC)
+   S8_QVM_CH0+            type=QVM        role=F  side=+   req=[66, 130, 136]
+       net=NetK64_HG1_S1_7 terminal_stop=True
+       K136_QVMH_BUS0#136(ON) -> K132_KELVIN1#132(NC) -> K130_KELVIN1_F#130(ON) -> K131_KELVIN1#131(NC) -> K141_QTMU_BUSA#141(NC) -> K66_TMU_nQON#66(ON)
+   REJECTED S1_FPVIe_SH0           net=NetK64_HG1_S1_7            {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+   REJECTED S1_FPVIe_SH1           net=NetK64_HG1_S1_7            {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+
+-- nQON_S_S1
+   S10_CH0_A              type=QTMU       role=-  side=-   req=[62, 86, 141]
+       net=NetK64_HG1_S1_2 terminal_stop=True
+       K141_QTMU_BUSA#141(ON) -> K87_KELVIN0#87(NC) -> K86_KELVIN0_F#86(ON) -> K88_KELVIN0#88(NC) -> K62_BUS_SH_QON#62(ON) -> K64_HG1#64(NC)
+   S1_FPVIe_SH0           type=FPVIe      role=S  side=SH  req=[62]
+       net=NetK64_HG1_S1_2 terminal_stop=True
+       K88_KELVIN0#88(NC) -> K62_BUS_SH_QON#62(ON) -> K64_HG1#64(NC)
+   S1_FPVIe_SH1           type=FPVIe      role=S  side=SH  req=[62, 136, 137]
+       net=NetK64_HG1_S1_2 terminal_stop=True
+       K132_KELVIN1#132(NC) -> K136_QVMH_BUS0#136(ON) -> K137_QVMH_BUS1#137(ON) -> K62_BUS_SH_QON#62(ON) -> K64_HG1#64(NC)
+   S5_ACM200_SH9          type=ACM200     role=S  side=SH  req=[]
+       net=NetK64_HG1_S1_2 terminal_stop=True
+       K64_HG1#64(NC)
+   REJECTED S1_FPVIe_FH0           net=NetK64_HG1_S1_2            {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+   REJECTED S1_FPVIe_FH1           net=NetK64_HG1_S1_2            {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+   REJECTED S8_QVM_CH0+            net=NetK64_HG1_S1_2            {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+
+-- AGND_F_S1
+   S3_FXVIe_PLUS_FL(0-3)  type=FXVIe_PLUS role=-  side=-   req=[]
+       net=AGND_F_S1 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+   S3_FXVIe_PLUS_FL(4-7)  type=FXVIe_PLUS role=-  side=-   req=[]
+       net=AGND_F_S1 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+   S5_ACM200_FL(0-11)     type=ACM200     role=-  side=-   req=[]
+       net=AGND_F_S1 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+   S5_ACM200_FL(12-23)    type=ACM200     role=-  side=-   req=[]
+       net=AGND_F_S1 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+
+-- AGND_S_S1
+   S10_CH0_B              type=QTMU       role=-  side=-   req=[130, 139, 140]
+       net=NetK92_AGND_F2S_S1_2 terminal_stop=True
+       K142_QTMU_BUSB#142(NC) -> K133_KELVIN1#133(NC) -> K130_KELVIN1_S#130(ON) -> K132_KELVIN1#132(NC) -> K139_QVML_BUS1#139(ON) -> K140_QVML_AGND#140(ON)
+   S1_FPVIe_SL0           type=FPVIe      role=S  side=SL  req=[138, 140]
+       net=NetK92_AGND_F2S_S1_2 terminal_stop=True
+       K88_KELVIN0#88(NC) -> K138_QVML_BUS0#138(ON) -> K140_QVML_AGND#140(ON)
+   S1_FPVIe_SL1           type=FPVIe      role=S  side=SL  req=[139, 140]
+       net=NetK92_AGND_F2S_S1_2 terminal_stop=True
+       K132_KELVIN1#132(NC) -> K139_QVML_BUS1#139(ON) -> K140_QVML_AGND#140(ON)
+   S3_FXVIe_PLUS_SL(0-3)  type=FXVIe_PLUS role=-  side=-   req=[]
+       net=NetK92_AGND_F2S_S1_2 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+   S3_FXVIe_PLUS_SL(4-7)  type=FXVIe_PLUS role=-  side=-   req=[]
+       net=NetK92_AGND_F2S_S1_2 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+   S5_ACM200_SL(0-5)      type=ACM200     role=-  side=-   req=[]
+       net=NetK92_AGND_F2S_S1_2 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+   S5_ACM200_SL(12-17)    type=ACM200     role=-  side=-   req=[]
+       net=NetK92_AGND_F2S_S1_2 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+   S5_ACM200_SL(18-23)    type=ACM200     role=-  side=-   req=[]
+       net=NetK92_AGND_F2S_S1_2 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+   S5_ACM200_SL(6-11)     type=ACM200     role=-  side=-   req=[]
+       net=NetK92_AGND_F2S_S1_2 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+   S8_QVM_CH0-            type=QVM        role=S  side=-   req=[140]
+       net=NetK92_AGND_F2S_S1_2 terminal_stop=True
+       K140_QVML_AGND#140(ON)
+   REJECTED S1_FPVIe_FL0           net=NetK92_AGND_F2S_S1_2       {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+   REJECTED S1_FPVIe_FL1           net=NetK92_AGND_F2S_S1_2       {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+
+===== STEP3 SOURCE-SPLIT =====
+branch rule (relay-design-flow.md:43-48 / path-principles.md:6): differential pin pair or
+heavy current -> scarce source (FPVIe/QVMe); otherwise the non-scarce families (ACM/FXVIe...).
+TM108 condition = voltage threshold toggle, no differential pair, no heavy current:
+  DFT Check is a single-ended digital observation V(DTEST0), not a two-pin differential
+  (project/DALI/meta/dali_tm_meta.json:1402); no iset[] current force appears in TM108
+  (project/DALI/meta/dali_tm_meta.json:1494 currentStimuli=[]).
+=> take the non-scarce branch (K): ACM200 / FXVIe_PLUS. FPVIe/QVMe remain second-choice and
+   the FPVIe capacity is preserved for the differential / high-current items as required by
+   the frozen baseline.
+
+===== STEP4 SHORTEST-PATH =====
+shortest path is ranked by the UNION SIZE of relays that must be actuated (required_on),
+which is the set the closure set is actuated from (setup-contract relayStatePolicy,
+locator team/artifacts/acceptance-20260916-dali10/setup-contract.json:3899-3902).
+
+-- VAC1_F_S1
+   rank1 union=0  S5_ACM200_FH0            req_on=[]               path_steps=2
+   rank2 union=1  S1_FPVIe_FL0             req_on=[17]             path_steps=4
+   rank3 union=2  S10_CH0_B                req_on=[17, 142]        path_steps=4
+   rank4 union=3  S1_FPVIe_FH0             req_on=[70, 87, 90]     path_steps=6
+   rank5 union=3  S1_FPVIe_FL1             req_on=[17, 145, 146]   path_steps=6
+
+-- VAC1_S_S1
+   rank1 union=0  S5_ACM200_SH0            req_on=[]               path_steps=2
+   rank2 union=1  S1_FPVIe_SL0             req_on=[17]             path_steps=4
+   rank3 union=2  S8_QVM_CH0-              req_on=[17, 138]        path_steps=4
+   rank4 union=3  S1_FPVIe_SL1             req_on=[17, 138, 139]   path_steps=6
+
+-- VBAT_F_S1
+   rank1 union=0  S3_FXVIe_PLUS_FH5        req_on=[]               path_steps=1
+   rank2 union=1  S10_CH0_A                req_on=[7]              path_steps=3
+   rank3 union=1  S1_FPVIe_FH1             req_on=[7]              path_steps=3
+   rank4 union=3  S1_FPVIe_FH0             req_on=[7, 143, 144]    path_steps=5
+   rank5 union=3  S8_QVM_CH0+              req_on=[7, 130, 136]    path_steps=6
+
+-- VBAT_S_S1
+   rank1 union=0  S3_FXVIe_PLUS_SH5        req_on=[]               path_steps=1
+   rank2 union=1  S1_FPVIe_SH1             req_on=[7]              path_steps=3
+   rank3 union=2  S10_CH0_A                req_on=[7, 130]         path_steps=6
+   rank4 union=3  S1_FPVIe_SH0             req_on=[7, 136, 137]    path_steps=5
+
+-- nQON_F_S1
+   rank1 union=0  S24_P0                   req_on=[]               path_steps=0
+   rank2 union=0  S5_ACM200_FH9            req_on=[]               path_steps=1
+   rank3 union=1  S10_CH0_A                req_on=[66]             path_steps=1
+   rank4 union=1  S1_FPVIe_FH0             req_on=[62]             path_steps=3
+   rank5 union=1  S1_FPVIe_FH1             req_on=[66]             path_steps=3
+   rank6 union=3  S8_QVM_CH0+              req_on=[66, 130, 136]   path_steps=6
+
+-- nQON_S_S1
+   rank1 union=0  S5_ACM200_SH9            req_on=[]               path_steps=1
+   rank2 union=1  S1_FPVIe_SH0             req_on=[62]             path_steps=3
+   rank3 union=3  S1_FPVIe_SH1             req_on=[62, 136, 137]   path_steps=5
+   rank4 union=3  S10_CH0_A                req_on=[62, 86, 141]    path_steps=6
+
+-- AGND_F_S1
+   rank1 union=0  S3_FXVIe_PLUS_FL(0-3)    req_on=[]               path_steps=0
+   rank2 union=0  S3_FXVIe_PLUS_FL(4-7)    req_on=[]               path_steps=0
+   rank3 union=0  S5_ACM200_FL(0-11)       req_on=[]               path_steps=0
+   rank4 union=0  S5_ACM200_FL(12-23)      req_on=[]               path_steps=0
+
+-- AGND_S_S1
+   rank1 union=0  S3_FXVIe_PLUS_SL(0-3)    req_on=[]               path_steps=0
+   rank2 union=0  S3_FXVIe_PLUS_SL(4-7)    req_on=[]               path_steps=0
+   rank3 union=0  S5_ACM200_SL(0-5)        req_on=[]               path_steps=0
+   rank4 union=0  S5_ACM200_SL(12-17)      req_on=[]               path_steps=0
+   rank5 union=0  S5_ACM200_SL(18-23)      req_on=[]               path_steps=0
+   rank6 union=0  S5_ACM200_SL(6-11)       req_on=[]               path_steps=0
+   rank7 union=1  S8_QVM_CH0-              req_on=[140]            path_steps=1
+   rank8 union=2  S1_FPVIe_SL0             req_on=[138, 140]       path_steps=3
+   rank9 union=2  S1_FPVIe_SL1             req_on=[139, 140]       path_steps=3
+   rank10 union=3  S10_CH0_B                req_on=[130, 139, 140]  path_steps=6
+
+===== STEP5 LOCAL-CONFLICT =====
+-- LC-1 VAC1 f/s pairing
+   VAC1_F and VAC1_S share ONE branch: the FPVIe CH0 Low pair (K17 -> K18(NC) -> K19(NC)) lands FL0 on VAC1_F and SL0 on VAC1_S (SCH-Connect-Map.txt:193-194). Closing K17 therefore reaches BOTH sides with one actuation and no extra union: no conflict.
+-- LC-2 VAC1 CH0 High vs CH0 Low branch
+   the CH0 High branch needs K70/K87/K90 (SCH-Connect-Map.txt:190) while the Low branch needs only K17 (SCH-Connect-Map.txt:193); they join at VAC_FORCE_S1 (proof from_net/to_net in tm108-paths-proofs.txt). Selecting the Low branch avoids K70/K87/K90/K82 entirely: the High branch is DROPPED, it is not merged.
+-- LC-3 VBAT vs PD3 share
+   K8_PD3_S1 is the VBAT<->PD3 two-way selector: VBAT needs K8 default-conducting (SCH-Connect-Map.txt:832-834) while PD3 needs K8(Relay-ON) (SCH-Connect-Map.txt:814-816). TM108 uses VBAT only, so K8 stays at its un-actuated state; PD3 is not used by this TM.
+-- LC-4 nQON vs HG1 share
+   K64_HG1_S1 pin7 = nQON net, pin2 = NetK62_BUS_FH_QON_S1_2 (tm108-paths-proofs.txt nQON_F_S1 chains). nQON needs K64 un-actuated (SCH-Connect-Map.txt:242-244) while HG1 needs K64(Relay-ON) (SCH-Connect-Map.txt:469-470). TM108 observes nQON, so K64 must stay un-actuated.
+-- LC-5 observation both sides
+   the DFT check is ONE single-ended pin. Reading nQON_F and nQON_S at the same time is not permitted as a measurement, but the F-side chain (K62) and the S-side chain (K62_BUS_SH_QON) are two different relays on the same node group; only the side the resolved observation endpoint needs may be actuated. This is carried as an open item (OI-T4-02) until the DTEST0<->nQON relation is proven.
+-- LC-6 time-division candidate
+   VAC1 (ramp) and VBAT (static) are DIFFERENT nets with disjoint relay chains in the selected allocation, so no time-division is needed: one closure set covers the whole item.
+degrade chain used: none (no shortest path was in conflict, so no second-shortest, no
+differential-drop and no 定点补证-on-conflict branch was triggered) - relay-design-flow.md:54-61.
+
+===== STEP6 GLOBAL-CONFLICT =====
+-- GC-1 BUS sharing on K17
+   K17_BUSL_VAC_S1 is a [BUS] relay shared by VAC1/VAC2/VAC3, AMUX and VAC_WL (Component-Statistic.txt:441; SCH-Connect-Map.txt:192/198/204/36). Closing it excludes those other functions at the same time; TM108 needs exactly one VAC branch, so K18/K19 stay un-actuated and no other VACn branch can be reached.
+-- GC-2 BUS sharing on K62
+   K62_BUS_FH_QON_S1 / K62_BUS_SH_QON_S1 are [BUS] relays shared with HG1 (Component-Statistic.txt:441/457; SCH-Connect-Map.txt:469-470). K64 selects between nQON and HG1, so the exclusion is discharged by LC-4.
+-- GC-3 QTMU bridge must stay open
+   K141_QTMU_BUSA_S1S2 / K142_QTMU_BUSB_S1S2 bridge the FPVIe0 and FPVIe1 BUS wires; the frozen baseline requires them OPEN whenever an FPVIe channel owns a pin (setup-contract.json:8158 safetyInvariants). The selected allocation uses neither, so the requirement is met and the QTMU alternates for VAC1/VBAT/nQON remain unacceptable for this item.
+-- GC-4 cap gates
+   K21_VAC_Cap must stay OPEN while VAC1 is the scanned input (SCH-Connect-Map.txt:913; setup-contract.json:3953-3958 globalInitialization order 4) and K13_VBAT_Cap is required for the VBAT static supply (SCH-Connect-Map.txt:914; knowledge/standards/relay-checklist.md:27-40). No conflict: they are different pins.
+-- GC-5 anti-short / P2P
+   K14_VAC1_P2P (SCH-Connect-Map.txt:877), K38_KLV1_2_short (SCH-Connect-Map.txt:882), K39/K40 (SCH-Connect-Map.txt:872-873) and K92_AGND_F2S (Component-Statistic.txt:453) must stay at their un-actuated default (setup-contract.json:3920-3937 globalInitialization order 2). TM108 closes none of them.
+-- GC-6 non-target pins fed back
+   no terminal_stop violation: every accepted proof used here reports terminal_stop=true and role_match=true (tm108-paths-proofs.txt per-proof validation blocks). The rejected proofs for these terminals are role mismatches only (Force port terminating on a Sense terminal), not topology gaps (schematic-fact-audit.md section 3.3 item 5).
+-- GC-7 site-joint relays
+   K13 and K21 are _S1S2 joint relays (setup-contract.json:8167 safetyInvariants), so re-configuring them disturbs the other site: recorded as a scheduling constraint, not a resource conflict.
+-- GC-8 resource budget
+   the FPVIe family has exactly 2 channels per site and the mOhm items consume both (setup-contract.json:8165 safetyInvariants). The selected allocation uses ZERO FPVIe channels, so TM108 does not compete with them for FPVIe.
+=> no global conflict remained after local handling; the flow therefore reaches step 7
+   without an M-branch (second-shortest for non-composite relays).
+
+===== STEP7 CLOSURE-GROUPING =====
+groups are split by CONFLICT, not by stage bookkeeping. After step 5/6 the selected
+allocation has no relay whose required state differs between the rising and the falling
+sweep, so the item needs exactly ONE closure set. The stage split that DOES exist is the
+static-supply group versus the scanned-input group, recorded as two groups so the method
+owner can order them:
+
+group G1 (static supply + observation path, valid before and during both sweeps):
+  actuate      : K13_VBAT_Cap (VBAT cap gate), K65_nQON_PU (nQON 5V pull-up)
+  keep-open    : K21_VAC_Cap (VAC1 is the scanned input), K8_PD3 (VBAT side),
+                 K64_HG1 (nQON side), K141/K142 (QTMU bridge), K14/K15/K16 (P2P)
+  evidence     : SCH-Connect-Map.txt:891 (K65), :914 (K13), :913 (K21), :832-834 (K8)
+
+group G2 (VAC1 scanned input, VAC1=0-10V ramp, both directions):
+  actuate      : K18_VAC3/K19_VAC2 are NOT actuated (default-conducting, 0 union)
+  keep-open    : K70_VAC_F, K87_KELVIN0, K90_PC0_Force, K82_R_CS (the CH0 High branch),
+                 K17 as the shared BUS entry point must be in the selected state
+  evidence     : tm108-paths-proofs.txt S5_ACM200_FH0/SH0 chains (req=[]),
+                 SCH-Connect-Map.txt:192-194, SCH-Connect-Map.txt:190
+
+group G3 (optional alternate, only if the ACM200 VAC123_AMUX_ACM channel is occupied):
+  actuate      : K17 (VAC1), K13, K65
+  keep-open    : K18/K19/K21/K70/K87/K90/K82/K141/K142/K86/K130
+  evidence     : tm108-paths-proofs.txt S1_FPVIe_FL0 (req=[17]) + S1_FPVIe_SL0 (req=[17])
+
+===== STEP8 CLOSURE-SET OUTPUT =====
+final closure-set output belongs to the contract (tm108-resource-config-contract.md/.json,
+relayGroups[]). The actuation call form (cbite.SetOn(...) with -1 terminator and the
+full-set semantics) is implementation-side; this step records only the set and the
+keep-open set, plus the divergence rule that the gate must be re-issued per group
+(relay-design-flow.md:115 - merging two groups into one SetOn parallels them).
+
+DTEST0 independent re-scan (this run):
+  project/DALI/SCH-Connect-Map.txt hits(DTEST)=0
+  project/DALI/Component-Statistic.txt hits(DTEST)=0
+  project/DALI/schematic-ir.json hits(DTEST)=0

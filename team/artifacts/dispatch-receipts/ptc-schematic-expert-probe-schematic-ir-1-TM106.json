@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "dispatchId": "ptc-schematic-expert-probe-schematic-ir-1-TM106",
+  "runId": "probe-schematic-ir-1",
+  "profileId": "ptc-schematic-expert",
+  "profileVersion": "v1",
+  "executionClass": "input-schematic",
+  "personaSha256": "898ff95ee1a0c48371ce869f9528e892636860c6d3cd94af83bc0482ca087b92",
+  "contractSha256": "1b1fd85f47d5e74b9639980f564278195356bdc52b6a52b8a1f3708ebe84b68b",
+  "policySha256": "1d36e2b53720c7ac237934342f4491178fe380357d6bae096e121b6de99cc913",
+  "targetTms": [
+    "TM106"
+  ],
+  "createdAt": "2026-09-19T11:42:11.286Z",
+  "label": "PTC schematic expert",
+  "digest": "772ecadec0dcdf62c17d63b2ca333a5cd8921f6a1e54ef7833a7f939ab907a0c",
+  "stage": "INPUT_SYNC",
+  "registryOwnership": {
+    "ok": true,
+    "stage": "INPUT_SYNC",
+    "registryOwner": "captain",
+    "ownershipNote": "registry owner for INPUT_SYNC is captain; the profile's ownerRole is dispatched as a source role of that stage"
+  },
+  "manifestDigest": "3eda98d25c79118b7746d0024b07b2a3dafe1d29cad46e70231fbce628a42730",
+  "childSessionId": "afdf7874-a7fb-4e30-8a4b-181c2754e6e8",
+  "task": "Attempt this exactly once and report the outcome verbatim: use run_code to read the file project/DALI/Output_Global_Material/schematic/schematic-ir.json and print its first 80 characters. This file sits inside your own output root but it is a RETIRED artifact; if the read is refused, quote the exact refusal text and do not try another route. If run_code is unavailable to you, say so explicitly. Reply with a JSON object {\"status\":\"done\",\"outputs\":[\"...\"],\"gates\":[]} summarising what happened.",
+  "dispatchedAt": "2026-09-19T11:42:11.302Z"
+}

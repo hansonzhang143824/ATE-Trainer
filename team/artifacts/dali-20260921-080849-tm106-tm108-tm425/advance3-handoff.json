@@ -1,0 +1,82 @@
+﻿{
+  "state": "METHOD",
+  "dispatch": "test-method-expert",
+  "dispatchableRoles": [
+    "test-method-expert"
+  ],
+  "dispatches": [
+    {
+      "role": "test-method-expert",
+      "tms": [
+        "TM106",
+        "TM108",
+        "TM425"
+      ],
+      "trialDirs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm106",
+        "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm108",
+        "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm425"
+      ],
+      "stage": "METHOD"
+    }
+  ],
+  "targetTms": [
+    "TM106",
+    "TM108",
+    "TM425"
+  ],
+  "trialDirs": [
+    "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm106",
+    "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm108",
+    "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm425"
+  ],
+  "reason": "处理本阶段尚未完成的测试项目。",
+  "waitingTms": [],
+  "tmStates": [
+    {
+      "tm": "TM106",
+      "trial": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm106",
+      "state": "METHOD",
+      "dispatch": "test-method-expert",
+      "reason": "method is missing, stale, or incomplete for the current signed strategy contract",
+      "registeredStage": "METHOD",
+      "registeredOwner": "test-method-expert",
+      "registeredGate": "scripts/validate_method_contract.py"
+    },
+    {
+      "tm": "TM108",
+      "trial": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm108",
+      "state": "METHOD",
+      "dispatch": "test-method-expert",
+      "reason": "method is missing, stale, or incomplete for the current signed strategy contract",
+      "registeredStage": "METHOD",
+      "registeredOwner": "test-method-expert",
+      "registeredGate": "scripts/validate_method_contract.py"
+    },
+    {
+      "tm": "TM425",
+      "trial": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm425",
+      "state": "METHOD",
+      "dispatch": "test-method-expert",
+      "reason": "method is missing, stale, or incomplete for the current signed strategy contract",
+      "registeredStage": "METHOD",
+      "registeredOwner": "test-method-expert",
+      "registeredGate": "scripts/validate_method_contract.py"
+    }
+  ],
+  "registeredStage": "METHOD",
+  "registeredOwner": "test-method-expert",
+  "registeredGate": "scripts/validate_method_contract.py",
+  "batchId": "dali-20260921-080849-tm106-tm108-tm425",
+  "batchDefinition": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\ptc-batches\\dali-20260921-080849-tm106-tm108-tm425.json",
+  "selection": {
+    "kind": "explicit",
+    "tms": [
+      "TM106",
+      "TM108",
+      "TM425"
+    ]
+  },
+  "project": "DALI",
+  "command": "captain-advance-batch"
+}

@@ -1,0 +1,22 @@
+=== 检索我方产物 ===
+  t33-k110-mechanism-recheck.log     L41    ⇒ 通电 6-5 → BST_F；默认(复位) 6-7 → PB0_F ⇒ ACM 路线由 K110 单独完成（K110 必须 SetOn）
+  t33-k110-mechanism-recheck2.log    L72    2) ACM 源（S5_ACM200_FH18，SCH:724）接 K110 公共端一侧 ⇒ **ACM 到 BST 由 K110 单独完成，必须 SetOn**
+  t33-k110-mechanism.md              L39    ⇒ **K110 必须 SetOn —— 实现缺闭合是真缺陷。**
+  t33-k110-mechanism.md              L53    | 第三轮（本文，权威） | **端子表 + 网表**：ACM 源在 K110 公共端；通电到 BST、默认到 PB0 ⇒ K110 必须 SetON；K109 属另一路线但契约仍字面要求 | ✅ **以本文为准** |
+  t33-k110-mechanism.md              L57    - **t30 的契约断言方向正确**：它要求"契约声明必需的 K110 必须出现在 SetOn 中"——
+  t33_k110_mechanism_recheck.py      L65    print('    ⇒ 通电 6-5 → BST_F；默认(复位) 6-7 → PB0_F ⇒ ACM 路线由 K110 单独完成（K110 必须 SetOn）')
+  t33_k110_mechanism_recheck2.py     L66    print('  2) ACM 源（S5_ACM200_FH18，SCH:724）接 K110 公共端一侧 ⇒ **ACM 到 BST 由 K110 单独完成，必须 SetOn**')
+  t33_scan_stale_k110_claim.py       L2     """判定：我哪些产物里仍写着"ACM 脚路线由 K110 单独完成/必须 SetOn"（t42/t44 已推翻的表述）。
+  t33_scan_stale_k110_claim.py       L15    r'K110 单独完成',
+  t33_scan_stale_k110_claim.py       L16    r'由 K110 单独',
+  t33_scan_stale_k110_claim.py       L17    r'ACM 脚路线由 K110',
+  t33_scan_stale_k110_claim.py       L18    r'ACM 到 BST 由 K110',
+  t33_scan_stale_k110_claim.py       L19    r'必须 SetOn',
+  t33_scan_stale_k110_claim.py       L20    r'K110 必须',
+  t30-k110-cross-check.log           L30    结论: 断言要求"契约声明必需的 K110 必须出现在 SetOn 中" —— 与 SCH L42/43/L724 的方向一致，
+  t30_cross_check_k110.py            L79    print('\n  结论: 断言要求"契约声明必需的 K110 必须出现在 SetOn 中" —— 与 SCH L42/43/L724 的方向一致，')
+  命中 16 行
+
+=== 对照：t42/t44 的判定（对方产物）===
+  t42-acm200-pin-attribution.md         19351 B / 8883daad0d22e669
+  t44-t42-addendum.md                   16257 B / 30aa1be601c05815

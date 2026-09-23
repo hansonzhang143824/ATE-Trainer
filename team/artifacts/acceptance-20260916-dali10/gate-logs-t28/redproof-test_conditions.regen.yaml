@@ -1,0 +1,341 @@
+# test_conditions.yaml — DFT 极简摘要（给人看；与 meta 互相不派生，同为 DFT 解析产物）
+# 摘要行: power / rampv·rampi / measure(normal·trim) / monitor(toggle)；monitor pin 语义由 agent 按黄金补
+source: Dali_testmode.xlsx (OVERVIEW)
+_sync:
+  metaSha256: 1c8496645492f7b75abf3a89f95679291490399d62f4a1a34d6cc5d8b1aa2693
+  dftSha256: d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e
+tms:
+  TM000_IQ_STANDBY:
+    power: VBAT=4.4V
+    measure: VBAT (MI)
+  TM001_IIN_SUSPEND:
+    power: VBAT=3.7V
+    measure: VBAT (MI)
+  TM001_2_IQ_SHIPMODE:
+    power: VBAT=3.7V, VAC1=5V, VAC1=0V
+    measure: VBAT (MI)
+  TM001_3_IQ_OPERATION:
+    power: VBAT=3.7V, VAC1=5V
+    measure: VBAT (MI)
+  TM100_HSKP_ATEST0:
+    power: VBAT=4V
+    measure: ATEST0 (MV)
+  TM101_HSKP_LP_ATEST0:
+    power: VBAT=4V, VDM=1.2V
+    measure: ATEST0 (MV)
+  TM102_HSKP_LP_ATEST0:
+    power: VBAT=4V, VDM=1.2V
+    measure: ATEST0 (MV)
+  TM103_HSKP_LP_HR_0P5U:
+    power: VBAT=4V, VDM=1V
+    measure: ATEST0 (MI)
+  TM104_HSKP_LP_PTAT_0P5U:
+    power: VBAT=4V, VDM=1V
+    measure: ATEST0 (MI)
+  TM105_HSKP_VSPRE_MAX_CMP:
+    power: VBAT=4V, VAC1=10V, VAC1=0V
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM106_HSKP_VBUS_PRST:
+    power: VBAT=3V
+    rampv: VBUS
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM107_HSKP_VBUS_HT_VBAT:
+    power: VBAT=4V
+    rampv: VBUS
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM108_HSKP_VAC1_PRST:
+    power: VBAT=3V, VAC1=10V, VAC1=0V
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM109_HSKP_VAC2_PRST:
+    power: VBAT=3V, VAC2=10V, VAC2=0V
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM110_HSKP_VAC3_PRST:
+    power: VBAT=3V, VAC3=10V, VAC3=0V
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM111_HSKP_VBAT_UV:
+    power: VAC1=5V, VBAT=5V, VBAT=0V
+    monitor:  (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM112_HSKP_VBAT_HT_3P1V:
+    power: VBAT=2.5V, VAC1=5V, VBAT=4V, VBAT=0V
+    monitor:  (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM113_VCC_UV:
+    power: VBAT=3V, VCC=2.5V, VCC=0V
+    monitor: VBAT (toggleI)   # agent 补: checkPin→实际 pad/bias
+  TM114_VCC_VBUS_PATH_ACC:
+    power: VBUS=5V, VBAT=3.7V, VAC1=5.2V
+    rampi: VCC   # agent 补 PIN1-PIN2（ZCD 类）
+    measure: VCC (MV)
+  TM115_VCC_VAC_PATH_ACC:
+    power: VBAT=2.5V, VAC1=5V
+    rampi: VCC   # agent 补 PIN1-PIN2（ZCD 类）
+    measure: VCC (MV)
+  TM116_VCC_VBAT_PATH_ACC:
+    power: VBAT=3.7V
+    rampi: VCC   # agent 补 PIN1-PIN2（ZCD 类）
+    measure: VCC (MV)
+  TM117_VCC_CUR_LIMIT_VBAT_PATH:
+    power: VBAT=4V, VCC=1V
+    measure: VCC (MI)
+  TM118_VCC_CUR_LIMIT_VBUS_PATH:
+    power: VBAT=3V, VBUS=5V, VCC=1V
+    measure: VCC (MI)
+  TM121_VAC_PATH_ON:
+    power: VBAT=3V, VAC1=5V, VAC1=0V
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM122_VMCU_VBAT_PATH_ACC1:
+    power: VBAT=3.7V
+    rampi: VMCU   # agent 补 PIN1-PIN2（ZCD 类）
+    measure: VMCU (MV)
+  TM123_VMCU_VBAT_PATH_ACC2:
+    power: VBAT=3.7V
+    rampi: VMCU   # agent 补 PIN1-PIN2（ZCD 类）
+    measure: VMCU (MV)
+  TM124_VMCU_VCC_PATH_ACC:
+    power: VBAT=3.7V, VBUS=5V
+    rampi: VMCU   # agent 补 PIN1-PIN2（ZCD 类）
+    measure: VMCU (MV)
+  TM125_VMCU_CUR_LIMIT_VBAT_PATH:
+    power: VBAT=3.7V, VMCU=0.5V
+    measure: VMCU (MI)
+  TM126_VMCU_CUR_LIMIT_VCC_PATH:
+    power: VBAT=3.7V, VBUS=5V, VMCU=0.5V
+    measure: VMCU (MI)
+  TM127_VBAT_PATH_ON_VMCU:
+    power: VBAT=2.5V, VBUS=5V, VBAT=4V, VBAT=0V
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM128_VBAT_PATH_ON_VCC:
+    power: VBAT=3.4V, VAC1=5V, VBUS=5V, VBAT=4V, VBAT=0V
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM129_VCC_VBAT_HT_2P8:
+    power: VAC1=5V, VBAT=3V, VBAT=0V
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM130_VCC_VBAT_HT_3P7:
+    power: VAC1=5V
+    rampv: VBAT
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM131_IRPPO_EA_FB:
+    power: VBAT=5V
+    measure: ATEST0 (MV)
+  TM132_IHR_P_1UA:
+    power: VBAT=5V, AMUX=1V, VDM=1V
+    measure: ATEST0 (MI)
+  Trim_IZTC_RES:
+    power: VBAT=5V, AMUX=1V, VDM=1V
+    measure: ATEST0 (MI, trim)
+  TM134_IPTAT_1UA:
+    power: VBAT=5V, AMUX=1V, VDM=1V
+    measure: ATEST0 (MI)
+  Trim_BG_RES_DIV:
+    power: VBAT=5V
+    measure: ATEST0 (MV, trim)
+  TM136_AVSS_BG:
+    power: VBAT=5V
+    measure: ATEST0 (MV)
+  TM137_TSD_TM:
+    power: VBAT=5V
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM138_TDIE_WARM_TM:
+    power: VBAT=5V
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  Trim_VBG:
+    power: VBAT=5V
+    measure: ATEST0 (MV, trim)
+  TM200_VTH_SCL_IN:
+    power: VBAT=5V, SCL=3V, SCL=0V
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM201_VTH_SDA_IN:
+    power: VBAT=5V, SDA=3V, SDA=0V
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM202_R_INT:
+    power: VBAT=4V
+    measure: INT (MV)
+  TM203_R_SDA:
+    power: VBAT=4V
+    measure: SDA (MV)
+  TM204_IPD_VBUS:
+    power: VBAT=4V, VBUS=5V
+    measure: VBUS (MI)
+  TM207_IPD_VAC3:
+    power: VBAT=4V, VAC3=1V, VAC3=4V
+    measure: VAC3 (MI)
+  TM210_VAC1_SNK_DET_VTH_RELMODE:
+    power: VBAT=4V
+    rampv: VAC1
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM211_VAC2_SNK_DET_VTH_RELMODE:
+    power: VBAT=4V
+    rampv: VAC2
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM212_VAC1_SNK_DET_VTH_ABSMODE:
+    power: VBAT=4V, VAC1=3V, VAC1=0V
+    monitor: VAC1 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM213_VAC2_SNK_DET_VTH_ABSMODE:
+    power: VBAT=4V, VAC2=3V, VAC2=0V
+    monitor: VAC2 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM214_PWM1_Vth:
+    power: VBAT=4V, PWM1=4V, PWM1=0V
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM215_PWM2_Vth:
+    power: VBAT=4V, PWM2=4V, PWM2=0V
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM216_PWM1_Current:
+    power: []
+    measure: PWM1 (MI)
+  TM217_PWM2_Current:
+    power: []
+    measure: PWM2 (MI)
+  TM220_DMO_PD_R:
+    power: VBAT=4V, VAC1=0V
+    measure: []
+  TM222_DMA_PD_R:
+    power: VBAT=4V, VAC1=0V
+    measure: []
+  TM300_OSC_64K:
+    power: VBAT=4V
+    measure: DTEST0 (MV, trim)
+  TM301_OSC_4P5M:
+    power: VBAT=5V
+    measure: DTEST0 (MV, trim)
+  TM400_VBUS_OVP_VTH1:
+    power: VBAT=4V
+    rampv: VBUS
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM401_VBUS_OVP_VTH2:
+    power: VBAT=4V
+    rampv: VBUS
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM402_VBUS_OVP_VTH3:
+    power: VBAT=4V
+    rampv: VBUS
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM403_VBUS_REVI_VTH:
+    power: VBAT=4V
+    rampv: VBUS
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM406_VBAT_LOW_VTH:
+    power: VAC1=5V, VBAT=5V, VBAT=0V
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM408_VBAT_OVP:
+    power: VAC1=5V, VBAT=5V, VBAT=0V
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM409_VBUS_HT_4P8V:
+    power: VBAT=4V
+    rampv: VBUS
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM410_VTRIKLE_VTH1:
+    power: VAC1=5V, VBAT=5V, VBAT=0V
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM411_VTRIKLE_VTH2:
+    power: VAC1=5V, VBAT=5V, VBAT=0V
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM412_VRE_CHG_VTH1:
+    power: VAC1=5V, VBAT=5V, VBAT=0V
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM413_VRE_CHG_VTH2:
+    power: VAC1=5V, VBAT=5V, VBAT=0V
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM418_VAC1_FB:
+    power: VBAT=4V, VAC1=5V
+    measure: ATEST0 (MV)
+  TM419_VAC2_FB:
+    power: VBAT=4V, VAC2=10V
+    measure: ATEST0 (MV)
+  TM420_VAC3_FB:
+    power: VBAT=4V, VAC3=15V
+    measure: ATEST0 (MV)
+  TM421_VBUS_FB:
+    power: VBAT=4V, VBUS=4V, VBUS=10V
+    measure: ATEST0 (MV)
+  TM422_VBAT_FB:
+    power: VBAT=4V, VBAT=5V
+    measure: ATEST0 (MV, trim)
+  TM424_VREF_TRIM:
+    power: VBAT=4.4V
+    measure: ATEST0 (MV, trim)
+  TM425_VREF_1P2V_BUF:
+    power: VBAT=4.4V
+    measure: ATEST1 (MV, trim)
+  TM600_HS_RDSON:
+    power: VBAT=4.2V, PMID=15V, BST_SW=5V, VDRV=5V
+    rampi: SW   # agent 补 PIN1-PIN2（ZCD 类）
+    measure: []
+  TM601_LS_RDSON:
+    power: VBAT=4.2V, PMID=9V, VDRV=5V
+    rampi: PMID_SW   # agent 补 PIN1-PIN2（ZCD 类）
+    measure: []
+  TM607_BUCK_LS_ZCD:
+    power: VBAT=3.5V, PMID=5V, VDRV=5V
+    rampi: PGND_SW   # agent 补 PIN1-PIN2（ZCD 类）
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM608_BOOST_HS_ZCD:
+    power: VBAT=3.5V, PMID=5V, BST_SW=5V
+    rampi: PMID_SW, SW   # agent 补 PIN1-PIN2（ZCD 类）
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM609_BOOST_HS_NEG:
+    power: VBAT=3.5V, PMID=5V, BST_SW=5V, VDRV=5V
+    rampi: PMID_SW   # agent 补 PIN1-PIN2（ZCD 类）
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM614_VC_CLAMP_LOW:
+    power: VBAT=5V, PMID=5V
+    measure: COMP (MV)
+  TM615_PSM_THREHOLD:
+    power: VBAT=3.5V, PMID=5V
+    rampv: AMUX
+    monitor:  (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM616_VC_OFFSET:
+    power: VBAT=3.5V, PMID=5V, VDM=2V
+    rampv: AMUX
+    monitor: ATEST0 (toggleI)   # agent 补: checkPin→实际 pad/bias
+  TM640_BOOST_HS_OCP:
+    power: VBAT=3.5V, PMID=5V, BST_SW=5V, VDRV=5V, VDM=1V
+    rampi: SW   # agent 补 PIN1-PIN2（ZCD 类）
+    monitor: ATEST0 (toggleI)   # agent 补: checkPin→实际 pad/bias
+  TM641_BST_UV:
+    power: VBAT=3.5V, PMID=5V, BST_SW=5V, VDRV=5V, SW=3V, BST_SW=2.5V, BST_SW=4V
+    monitor:  (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM643_VBAT_LOOP_INDICTOR:
+    power: VBAT=5V, PMID=5V, BST_SW=5V, VDRV=5V, VBAT=3V, VBAT=5V
+    monitor:  (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM700_IBUS_SNS_ACC_BU:
+    power: VBAT=4.4V, VBUS=5V
+    rampi: VBUS_PMID   # agent 补 PIN1-PIN2（ZCD 类）
+    measure: []
+  TM701_IBUS_SNS_ACC_BO:
+    power: VBAT=4.4V, PMID=5V
+    rampi: PIMD_VBUS   # agent 补 PIN1-PIN2（ZCD 类）
+    measure: []
+  TM702_IBUS_SNS_GAIN_TRIM:
+    power: VBAT=4.4V, PMID=5V
+    rampi: VBUS_PMID   # agent 补 PIN1-PIN2（ZCD 类）
+    measure: []
+  TM702_1_IBUS_SNS_GAIN_TEST_BUCK:
+    power: VBAT=4.4V, VBUS=5V
+    rampi: VBUS_PMID   # agent 补 PIN1-PIN2（ZCD 类）
+    measure: []
+  TM703_IBUS_SNS_VOS_TRIM:
+    power: VBAT=4.4V, PMID=5V
+    rampi: VBUS_PMID   # agent 补 PIN1-PIN2（ZCD 类）
+    measure: []
+  TM1004_QDT_VTH_COMP:
+    power: VBAT=4V
+    rampv: VCP
+    monitor: VCP (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM1006_QDT_ZCD_COMP:
+    power: VBAT=4V
+    rampv: VCP
+    monitor: DTEST0 (toggleV)   # agent 补: checkPin→实际 pad/bias
+  TM1007_QDT_IBP_ZTC_1UA_TEST:
+    power: VBAT=4V, VDM=1V
+    measure: ATEST0 (MI)
+  TM1008_QDT_VREF_VTH_CMP:
+    power: VBAT=4V
+    measure: ATEST0 (MV)
+  TM1009_QDT_VPCHG_SHORT_CURRENT:
+    power: VBAT=4V, SW1=1.2V, SW1=0V
+    measure: SW1 (MI)
+  TM1100_DEMO_VREF_1P65:
+    power: VBAT=4V
+    measure: ATEST0 (MV)
+  TM1205_TRX_BST_UV_GD:
+    power: VBAT=4V, BST1_SW1=4V, BST1_SW1=0V, BST2_SW2=4V, BST2_SW2=0V
+    monitor:  (toggleV)   # agent 补: checkPin→实际 pad/bias

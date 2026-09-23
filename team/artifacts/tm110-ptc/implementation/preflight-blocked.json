@@ -1,0 +1,22 @@
+{
+  "tm": "TM110",
+  "stage": "IMPLEMENTATION",
+  "role": "ate-implementer",
+  "status": "blocked",
+  "verdict": "blocked",
+  "noSourceWritten": true,
+  "preflight": {
+    "artifact": "implementation/preflight-capability.json",
+    "command": "python scripts/verify_t7_preflight.py team/artifacts/tm110-ptc/implementation/preflight-capability.json",
+    "result": "BLOCKED: 4 requirements; method hash and target hashes verified"
+  },
+  "blocker": {
+    "id": "TM110-IMPLEMENTATION-REGMAP-001",
+    "fact": "The signed method authorizes DMUX_EN=1 and DMUX_SEL=20, but explicitly forbids inferring register addresses or bytes from the DFT field names.",
+    "requiredDecision": "Add a signed field-to-register-byte mapping for DMUX_EN=1 and DMUX_SEL=20, or amend the signed method to authorize the cited project mapping.",
+    "evidence": [
+      "method/tm110-test-method-contract.json methodPhases[test_mode_mux]",
+      "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp:2024-2028"
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "caseId": "TM106",
+  "canonicalInput": "<run>/implementation/deliverable-ready.json",
+  "expectedReadSources": [
+    "<run>/implementation/implementation-manifest.json",
+    "<run>/implementation/deliverable-ready.json",
+    "<run>/review/implementation-review.json",
+    "<run>/review/implementation-review-deliverable-ready.json",
+    "<run>/method/TM106-test-method-contract.json"
+  ],
+  "expectedOutputs": [
+    "<run>/compile/build-report.json",
+    "<run>/compile/deliverable-ready.json"
+  ],
+  "boundedCommand": "python scripts/run_ptc_incremental_compile.py --project <F12011.sln or source directory> --source <test.cpp> --report <trial>/compile/incremental-build.json",
+  "currentSourceBinding": "build-report.json sourceSha256 must be the test.cpp hash from the build just run; an older build cannot be reused after implementation changes",
+  "semanticTruthStatus": "PENDING_DOMAIN_INPUT",
+  "semanticTruthNote": "The golden case asserts the report schema, current-source hash binding and the bounded command only; pass/fail semantics of the real VS build are recorded from the actual build output, not asserted here."
+}

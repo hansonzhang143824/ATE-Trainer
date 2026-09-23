@@ -1,0 +1,563 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "TM106-test-method-contract",
+  "tm": "TM106",
+  "trial": "tm106-ptc",
+  "role": "test-method-expert",
+  "stage": "METHOD",
+  "verdict": "deliverable_ready",
+  "signedInputBoundary": [
+    {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm106-ptc\\strategy\\tm106-resource-config-contract.json",
+      "sha256": "68bce392e8d197fca137c53457e48e78942fd55363561f24cba093008a5306a2"
+    },
+    {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm106-ptc\\strategy\\deliverable-ready.json",
+      "sha256": "f85c7bf567589e30f64e625c92e43389abf2d53acf1b628cebc5793d49f4cdff"
+    },
+    {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-meta.json",
+      "sourceSha256": "84c2d7cfe619a5a397b5f779514d43c9248ccd039a50cf8c91a637dcc1fc10cd"
+    }
+  ],
+  "classification": {
+    "projectType": {
+      "value": "general test project",
+      "flowLocator": "knowledge/standards/test-types.md: project structure type table #7; threshold-test AWG rules 76-83",
+      "indexLocator": "knowledge/references/func_type_index.md:20,36",
+      "evidenceLocator": "project/DALI/Output_Global_Material/dft/TM106/dft-meta.json rawIntent Name/Notes/Check/Trim"
+    },
+    "parameterType": {
+      "value": "UVLO/PRST threshold AWG",
+      "flowLocator": "knowledge/standards/test-types.md:36,76-83",
+      "indexLocator": "knowledge/references/param_type_index.md:42,61,71",
+      "evidenceLocator": "project/DALI/Output_Global_Material/dft/TM106/dft-meta.json rawIntent Name/Description/ExpectValue/Notes"
+    }
+  },
+  "methodFamily": "PRST voltage-threshold two-way AWG capture",
+  "resourceBoundary": {
+    "sourceTablesByEndpoint": {
+      "VBAT": "VBAT_PD3_FXVI",
+      "VBUS": "VBUS_DRVH1_ACM",
+      "nQON": "NQON_HG1_ACM"
+    },
+    "relayGroupsByEndpoint": {
+      "VBAT": "TM106-VBAT-route",
+      "VBUS": "TM106-VBUS-route",
+      "nQON": "TM106-nQON-route"
+    },
+    "setOnRelayUnion": [
+      13,
+      65
+    ],
+    "registerDelta": [
+      {
+        "order": 1,
+        "call": "en_tm",
+        "source": "dft/TM106/dft-meta.json rawIntent Code2",
+        "raw": "en_tm[]"
+      },
+      {
+        "order": 2,
+        "call": "field",
+        "field": "DMUX_EN",
+        "value": 1,
+        "source": "dft/TM106/dft-meta.json rawIntent Code2"
+      },
+      {
+        "order": 3,
+        "call": "field",
+        "field": "DMUX_SEL",
+        "value": 19,
+        "source": "dft/TM106/dft-meta.json rawIntent Code2"
+      }
+    ],
+    "monitorLogicalLabel": "V(DTEST0)",
+    "monitorPhysicalPin": "nQON",
+    "prohibition": "No other source, route, relay or register selection is authorized by METHOD."
+  },
+  "methodEvidence": [
+    {
+      "source": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-meta.json",
+      "applicability": "direct",
+      "reason": "Current canonical OVERVIEW row values, sequence and reference text"
+    },
+    {
+      "source": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm106-ptc\\strategy\\tm106-resource-config-contract.json",
+      "applicability": "direct",
+      "reason": "Signed source tables, Force/Sense paths, relay groups, monitor and register fields"
+    },
+    {
+      "source": "knowledge/references/L1-chip/UVLO.md",
+      "applicability": "direct",
+      "reason": "PRST is a comparator threshold with hysteresis and a monitored indicator"
+    },
+    {
+      "source": "knowledge/references/L3-method/UVLO.md",
+      "applicability": "direct",
+      "reason": "Two sweep captures give Rise and Fall; their difference gives Hys"
+    },
+    {
+      "source": "knowledge/references/L4-Golden-code/UVLO.md",
+      "applicability": "partial",
+      "reason": "Use the dual-sweep and per-site logging pattern only; its supply values, resources, relays, register bytes and opposite trigger polarity do not govern this DALI TM"
+    },
+    {
+      "source": "knowledge/standards/toggle-awg-rules.md:28-30",
+      "applicability": "direct",
+      "reason": "User-ruled global trigger polarity: up TRIG_FALLING, down TRIG_RISING"
+    },
+    {
+      "source": "team/artifacts/ptc-temporary-decisions.md:49-52",
+      "applicability": "direct",
+      "reason": "vset sequence governs and ExpectValue is reference only"
+    },
+    {
+      "source": "team/artifacts/ptc-temporary-decisions.md:118-128",
+      "applicability": "direct",
+      "reason": "Selected 3↔5 V scan by user rule; vset endpoint range is recorded as a candidate"
+    }
+  ],
+  "goldenApplicability": {
+    "verdict": "partial",
+    "source": "knowledge/references/L4-Golden-code/UVLO.md",
+    "adopt": [
+      "two-way threshold capture",
+      "per-site Rise/Fall/Hys calculation",
+      "de-energize before relay release"
+    ],
+    "exclude": [
+      "Golden numeric ramp endpoints",
+      "Golden supply values",
+      "Golden resource and relay selection",
+      "Golden register bytes",
+      "Golden opposite trigger polarity"
+    ]
+  },
+  "methodPhases": [
+    {
+      "order": 1,
+      "phase": "relay_prepare",
+      "actions": [
+        "Keep all selected sources at 0 V/off; close TM106-VBAT-route functional K13"
+      ],
+      "commandedSetOnRelayIds": [
+        13
+      ],
+      "actualNodeVoltages": {
+        "VBAT_V": 0.0,
+        "dynamicPin_V": 0.0,
+        "nQON_V": "observe, not forced"
+      },
+      "registerState": "unchanged",
+      "bstSwDifferential": "NOT_APPLICABLE: neither BST nor SW is an endpoint or selected physical route",
+      "evidenceLocator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm106-ptc\\strategy\\tm106-resource-config-contract.json:resourceAllocation,relayGroups,registerDelta",
+      "exitCondition": "VBAT route ready and all sources still at zero"
+    },
+    {
+      "order": 2,
+      "phase": "vbat_power_on",
+      "actions": [
+        "Direct power-on of signed VBAT source to 3 V from vset[vbat,3,100e-6,0]; the 100e-6 token denotes direct power-on under the user ruling"
+      ],
+      "commandedSetOnRelayIds": [
+        13
+      ],
+      "actualNodeVoltages": {
+        "VBAT_V": 3.0,
+        "dynamicPin_V": 0.0,
+        "nQON_V": "observe, not forced"
+      },
+      "registerState": "unchanged",
+      "bstSwDifferential": "NOT_APPLICABLE: neither BST nor SW is an endpoint or selected physical route",
+      "evidenceLocator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-meta.json:rawIntent.Code1; OVERVIEW Item=TM106",
+      "exitCondition": "VBAT reaches commanded 3 V; no dynamic ramp yet"
+    },
+    {
+      "order": 3,
+      "phase": "test_mode_mux",
+      "actions": [
+        "Apply signed en_tm[] then DMUX_EN=1 and DMUX_SEL=19",
+        "Do not infer register addresses or bytes from the DFT field names"
+      ],
+      "commandedSetOnRelayIds": [
+        13
+      ],
+      "actualNodeVoltages": {
+        "VBAT_V": 3.0,
+        "dynamicPin_V": 0.0,
+        "nQON_V": "observe, not forced"
+      },
+      "registerState": {
+        "testModeEnabled": true,
+        "DMUX_EN": 1,
+        "DMUX_SEL": 19
+      },
+      "bstSwDifferential": "NOT_APPLICABLE: neither BST nor SW is an endpoint or selected physical route",
+      "evidenceLocator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-meta.json:rawIntent.Code2; OVERVIEW Item=TM106; D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm106-ptc\\strategy\\tm106-resource-config-contract.json:resourceAllocation,relayGroups,registerDelta",
+      "exitCondition": "DTEST0 channel selected"
+    },
+    {
+      "order": 4,
+      "phase": "monitor_prepare",
+      "actions": [
+        "Close signed nQON pull-up K65 after VBAT is powered",
+        "Configure signed NQON_HG1_ACM source for observation without forcing a voltage on nQON"
+      ],
+      "commandedSetOnRelayIds": [
+        13,
+        65
+      ],
+      "actualNodeVoltages": {
+        "VBAT_V": 3.0,
+        "dynamicPin_V": 0.0,
+        "nQON_V": "observe, not forced"
+      },
+      "registerState": {
+        "testModeEnabled": true,
+        "DMUX_EN": 1,
+        "DMUX_SEL": 19
+      },
+      "bstSwDifferential": "NOT_APPLICABLE: neither BST nor SW is an endpoint or selected physical route",
+      "evidenceLocator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm106-ptc\\strategy\\tm106-resource-config-contract.json:resourceAllocation,relayGroups,registerDelta; SCH-Connect-Map.txt:891",
+      "exitCondition": "nQON capture path and 5 V pull-up are available"
+    },
+    {
+      "order": 5,
+      "phase": "dynamic_direct_start",
+      "actions": [
+        "Direct power-on of VBUS to 3 V from the first dynamic vset[...,100e-6,...]; ignore its fourth argument for this decision"
+      ],
+      "commandedSetOnRelayIds": [
+        13,
+        65
+      ],
+      "actualNodeVoltages": {
+        "VBAT_V": 3.0,
+        "dynamicPin_V": 3.0,
+        "nQON_V": "observe, not forced"
+      },
+      "registerState": {
+        "testModeEnabled": true,
+        "DMUX_EN": 1,
+        "DMUX_SEL": 19
+      },
+      "bstSwDifferential": "NOT_APPLICABLE: neither BST nor SW is an endpoint or selected physical route",
+      "evidenceLocator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-meta.json:rawIntent.Code2; OVERVIEW Item=TM106",
+      "exitCondition": "VBUS reaches commanded 3 V"
+    },
+    {
+      "order": 6,
+      "phase": "rise_capture",
+      "actions": [
+        "Scan VBUS from 3 V to 5 V with the DFT 1e-3 timing token and the selected scan range",
+        "Capture the nQON falling transition as Rise using TRIG_FALLING"
+      ],
+      "commandedSetOnRelayIds": [
+        13,
+        65
+      ],
+      "actualNodeVoltages": {
+        "VBAT_V": 3.0,
+        "dynamicPin_V": {
+          "fromV": 3.0,
+          "toV": 5.0
+        },
+        "nQON_V": "observe, not forced"
+      },
+      "registerState": {
+        "testModeEnabled": true,
+        "DMUX_EN": 1,
+        "DMUX_SEL": 19
+      },
+      "bstSwDifferential": "NOT_APPLICABLE: neither BST nor SW is an endpoint or selected physical route",
+      "evidenceLocator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-meta.json:rawIntent.Code2; OVERVIEW Item=TM106; knowledge/standards/toggle-awg-rules.md:28-30; team/artifacts/ptc-temporary-decisions.md:118-128",
+      "exitCondition": "per-site Rise captured or acquisition marked invalid"
+    },
+    {
+      "order": 7,
+      "phase": "fall_capture",
+      "actions": [
+        "Scan VBUS from 5 V to 3 V with the DFT 1e-3 timing token and the selected scan range",
+        "Capture the nQON rising transition as Fall using TRIG_RISING"
+      ],
+      "commandedSetOnRelayIds": [
+        13,
+        65
+      ],
+      "actualNodeVoltages": {
+        "VBAT_V": 3.0,
+        "dynamicPin_V": {
+          "fromV": 5.0,
+          "toV": 3.0
+        },
+        "nQON_V": "observe, not forced"
+      },
+      "registerState": {
+        "testModeEnabled": true,
+        "DMUX_EN": 1,
+        "DMUX_SEL": 19
+      },
+      "bstSwDifferential": "NOT_APPLICABLE: neither BST nor SW is an endpoint or selected physical route",
+      "evidenceLocator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-meta.json:rawIntent.Code2; OVERVIEW Item=TM106; knowledge/standards/toggle-awg-rules.md:28-30; team/artifacts/ptc-temporary-decisions.md:118-128",
+      "exitCondition": "per-site Fall captured or acquisition marked invalid"
+    },
+    {
+      "order": 8,
+      "phase": "post_scan_and_results",
+      "actions": [
+        "Apply DFT delay[1e-3] after the two sweep commands",
+        "Calculate Hys from valid per-site captures; log all three values and acquisition status"
+      ],
+      "commandedSetOnRelayIds": [
+        13,
+        65
+      ],
+      "actualNodeVoltages": {
+        "VBAT_V": 3.0,
+        "dynamicPin_V": 3.0,
+        "nQON_V": "observe, not forced"
+      },
+      "registerState": {
+        "testModeEnabled": true,
+        "DMUX_EN": 1,
+        "DMUX_SEL": 19
+      },
+      "bstSwDifferential": "NOT_APPLICABLE: neither BST nor SW is an endpoint or selected physical route",
+      "evidenceLocator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-meta.json:rawIntent.Code3; OVERVIEW Item=TM106; knowledge/standards/units.md:42-57",
+      "exitCondition": "result and acquisition validity recorded per site"
+    }
+  ],
+  "measurementPlan": {
+    "technique": "rampv_capv twice, synchronized with nQON observation",
+    "rampSourceTable": "VBUS_DRVH1_ACM",
+    "monitorSourceTable": "NQON_HG1_ACM",
+    "forceSenseBoundary": [
+      {
+        "sourcePort": "S5_ACM200_FH10",
+        "dutPin": "VBUS_F_S1",
+        "requiredOn": [],
+        "locator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH10;dut_pin=VBUS_F_S1]"
+      },
+      {
+        "sourcePort": "S5_ACM200_SH10",
+        "dutPin": "VBUS_S_S1",
+        "requiredOn": [],
+        "locator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH10;dut_pin=VBUS_S_S1]"
+      },
+      {
+        "sourcePort": "S5_ACM200_FH9",
+        "dutPin": "nQON_F_S1",
+        "requiredOn": [],
+        "locator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH9;dut_pin=nQON_F_S1]"
+      },
+      {
+        "sourcePort": "S5_ACM200_SH9",
+        "dutPin": "nQON_S_S1",
+        "requiredOn": [],
+        "locator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH9;dut_pin=nQON_S_S1]"
+      }
+    ],
+    "sweeps": [
+      {
+        "result": "VBUS_PRST_Rise",
+        "rampPin": "VBUS",
+        "startV": 3.0,
+        "stopV": 5.0,
+        "timingToken": "1e-3",
+        "trigger": "TRIG_FALLING",
+        "capturePin": "nQON"
+      },
+      {
+        "result": "VBUS_PRST_Fall",
+        "rampPin": "VBUS",
+        "startV": 5.0,
+        "stopV": 3.0,
+        "timingToken": "1e-3",
+        "trigger": "TRIG_RISING",
+        "capturePin": "nQON"
+      }
+    ],
+    "sampling": {
+      "window": "Selected 3→5 V and 5→3 V capture sweeps; source=VSET",
+      "siteHandling": "one Rise and one Fall capture per valid site",
+      "captureValidity": "Missing or ambiguous toggle makes that site's measurement invalid; never invent a crossing voltage",
+      "implementationChoice": "Map the signed 1e-3 scan-timing token and selected numeric capture range to supported instrument parameters; keep source table and register selection unchanged"
+    },
+    "calculation": {
+      "result": "VBUS_PRST_Hys",
+      "formula": "(Rise_V - Fall_V) * 1000",
+      "unit": "mV",
+      "perSite": true
+    },
+    "referenceValues": {
+      "rise": {
+        "value": 3.9,
+        "unit": "V"
+      },
+      "hys": {
+        "value": 0.2,
+        "unit": "V",
+        "logEquivalentMV": 200
+      },
+      "sourceLocator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-meta.json:rawIntent.ExpectValue; OVERVIEW Item=TM106",
+      "use": "REFERENCE_ONLY"
+    },
+    "numericPassFail": "NOT_SPECIFIED",
+    "limits": {
+      "status": "NOT_SPECIFIED",
+      "numericBounds": null,
+      "tolerance": null,
+      "rule": "Do not compare recorded Rise, Fall or Hys with reference text; no numeric pass/fail decision in this METHOD contract",
+      "authority": "user ruling; team/artifacts/ptc-temporary-decisions.md:49-52"
+    },
+    "scanRangeResolution": {
+      "predictionV": 3.9,
+      "vsetRange": {
+        "lowV": 3.0,
+        "highV": 5.0,
+        "locator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-meta.json:rawIntent.Code2"
+      },
+      "notesRange": {
+        "lowV": 3.0,
+        "highV": 5.0,
+        "locator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-meta.json:rawIntent.Notes"
+      },
+      "selectedRange": {
+        "lowV": 3.0,
+        "highV": 5.0,
+        "source": "VSET"
+      },
+      "selectionReason": "FULL_TIE_PREFER_VSET; vset contains=True, midpoint distance=0.1 V, width=2.0 V; Notes contains=True, midpoint distance=0.1 V, width=2.0 V; user rule team/artifacts/ptc-temporary-decisions.md:118-128"
+    },
+    "scanPinIdentity": {
+      "scanPin": "VBUS",
+      "notesPinLabelAsWritten": "VBUS",
+      "notesLabelMatchesScanPin": true,
+      "authority": "DFT Code2, Dynamic and Name fix the scan PIN; Notes contributes a numeric range candidate only"
+    }
+  },
+  "bstSwApplicability": {
+    "status": "NOT_APPLICABLE",
+    "proof": "The canonical DFT declaredPins and selected strategy physicalProofs contain only VBAT, VBUS and nQON; no BST/SW endpoint, route or differential pair exists in this TM."
+  },
+  "powerDownPlan": {
+    "normalSequence": [
+      "Drive VBUS from the selected scan end 3 V to 0 V while VBAT remains at 3 V and the signed path is connected",
+      "Stop nQON capture; open functional pull-up K65 after the last capture",
+      "Drive VBAT to 0 V while its source relay remains connected",
+      "Wait 1 ms per normal power-off rule, then switch signed sources to relay-off at zero",
+      "Open remaining signed functional/path actuations (K13); leave all commanded sources at zero",
+      "Execute DFT finish[] after safe zero/off state"
+    ],
+    "faultSequence": "On any capture, register or source error, run the same zero-before-disconnect sequence and record the failing phase/site; never fabricate missing thresholds.",
+    "endState": {
+      "VBAT_V": 0.0,
+      "VBUS_V": 0.0,
+      "activeSetOnRelayIds": [],
+      "sourceRelayState": "OFF"
+    },
+    "evidenceLocator": "skills/agents/power-off-agent.md: normal three-step shutdown; dft rawIntent.Code3; signed strategy relayGroups"
+  },
+  "logPlan": {
+    "perValidSite": [
+      {
+        "name": "VBUS_PRST_Rise",
+        "unit": "V",
+        "kind": "raw captured threshold"
+      },
+      {
+        "name": "VBUS_PRST_Fall",
+        "unit": "V",
+        "kind": "raw captured threshold"
+      },
+      {
+        "name": "VBUS_PRST_Hys",
+        "unit": "mV",
+        "kind": "calculated (Rise-Fall)*1000"
+      }
+    ],
+    "context": [
+      "TM",
+      "site",
+      "capture validity",
+      "trigger direction",
+      "DFT source hash",
+      "strategy contract hash",
+      "commanded relay set",
+      "failing phase when applicable",
+      "selected scan range and source"
+    ],
+    "referenceValues": {
+      "rise": {
+        "value": 3.9,
+        "unit": "V"
+      },
+      "hys": {
+        "value": 0.2,
+        "unit": "V",
+        "logEquivalentMV": 200
+      },
+      "sourceLocator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-meta.json:rawIntent.ExpectValue; OVERVIEW Item=TM106",
+      "use": "REFERENCE_ONLY"
+    },
+    "numericPassFail": "NOT_SPECIFIED",
+    "acquisitionFailure": "Record INVALID_CAPTURE and affected site/phase; this is execution validity, not a numeric threshold verdict.",
+    "scanRangeResolution": {
+      "predictionV": 3.9,
+      "vsetRange": {
+        "lowV": 3.0,
+        "highV": 5.0,
+        "locator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-meta.json:rawIntent.Code2"
+      },
+      "notesRange": {
+        "lowV": 3.0,
+        "highV": 5.0,
+        "locator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-meta.json:rawIntent.Notes"
+      },
+      "selectedRange": {
+        "lowV": 3.0,
+        "highV": 5.0,
+        "source": "VSET"
+      },
+      "selectionReason": "FULL_TIE_PREFER_VSET; vset contains=True, midpoint distance=0.1 V, width=2.0 V; Notes contains=True, midpoint distance=0.1 V, width=2.0 V; user rule team/artifacts/ptc-temporary-decisions.md:118-128"
+    }
+  },
+  "openItems": [],
+  "evidence": [
+    {
+      "file": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-meta.json",
+      "locator": "rawIntent Code1/Code2/Code3/ExpectValue/Check; OVERVIEW Item=TM106"
+    },
+    {
+      "file": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm106-ptc\\strategy\\tm106-resource-config-contract.json",
+      "locator": "resourceAllocation, relayGroups, registerDelta, pinResolution, resolvedFindings"
+    },
+    {
+      "file": "knowledge/standards/toggle-awg-rules.md",
+      "locator": "lines 12-30"
+    },
+    {
+      "file": "knowledge/standards/units.md",
+      "locator": "lines 42-57"
+    },
+    {
+      "file": "team/artifacts/ptc-temporary-decisions.md",
+      "locator": "lines 49-52"
+    },
+    {
+      "file": "team/artifacts/ptc-temporary-decisions.md",
+      "locator": "lines 118-128, scanning range user ruling"
+    }
+  ],
+  "handoff": {
+    "nextRole": "rule-reviewer",
+    "numericPassFail": "NOT_SPECIFIED",
+    "methodReady": true,
+    "scanRangeSource": "VSET"
+  },
+  "signedInputs": {
+    "strategyContractSha256": "1390d823f923978fa07f6aed44b93c4707969c05e4e7fc94365402cf7396a5d1",
+    "bindingType": "mechanical current-strategy receipt; method behavior unchanged"
+  }
+}

@@ -1,0 +1,23 @@
+登记 49248 B ; 已并入 = False
+  已并入 → 50293 B
+
+=== 我方自查：是否有"位置寻址契约字段" ===
+  位置寻址命中 = 19
+    backups/t198_baseline_four_questions.py L11: closed = d["aliasResolution"][1]["resolution"]["closedRelayNumbers"]
+    backups/t200_self_correction_index.py L2: """Self-correction: my previous write read aliasResolution[1] by position instead of the bst2sw alia
+    backups/t200_self_correction_index.py L34: "reason": "SELF-CORRECTION: my previous entry read aliasResolution[1] BY POSITION instead of the bst
+    backups/t200_self_correction_index.py L42: "whatIsTrue": "that value belongs to aliasResolution[1] = sw2pgnd; the gate-read field is aliasResol
+    backups/t200_self_correction_index.py L58: doc["fieldAddressingRule"] = ("Address contract fields BY NAME (alias name, key name), never by list
+    backups/t29_defs.py L16: print("=== aliasResolution[3] (the [110,61] entry) ===")
+    backups/t29_ev.py L12: '| `aliasResolution[3]` (bst2sw) `relayChain` | `K110_ACM18_BST` "SetOn (ACM200 S5_FH18 -> BST)" | c
+    backups/t29_sub.py L13: '> and `aliasResolution[3].resolution.relayChain` naming `K110_ACM18_BST` "SetOn (ACM200 S5_FH18 -> 
+    backups/t38_fix.py L35: '    //     and aliasResolution[3] (bst2sw) lists usedByTm = TM600 and TM1205 only;\n'
+    backups/t38_hold.py L22: '| **FACT (documentary)** | `TM601.pinRouteTable` has no BST node; `TM601.relaySet` has neither 109 
+
+=== 并按名复核我方的门禁字段取值 ===
+  aliasResolution 条数 = 12 ｜ bst2sw 的 index = 3
+  按名取值 = [48, 60, 61, 76]
+  按位置 [1] 会得到 = sw2pgnd [154, 155, 60, 61]
+  ⇒ 二者不同 ⇒ 该规则在本 run 确有实际区分力 ✓
+
+  登记 = 50293 B ｜ 标题 40 ｜ 唯一 40 ｜ 重复 无

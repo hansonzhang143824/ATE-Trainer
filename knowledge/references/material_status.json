@@ -1,0 +1,639 @@
+{
+ "schema": 1,
+ "_generator": "gen_material_status.py",
+ "_note": "只放状态+哈希+指针，不放内容；批次材料门读本文件即可判定可用性/缺口，不必载入材料。",
+ "paramTypes": {
+  "RDSON": {
+   "tier1": {
+    "L1-chip/RDSON.md": {
+     "exists": true,
+     "sha256": "51b20fd4be9ef3b486c8dd7fd5b98e262d04546eecf6641ecf2c677d2ac711a5"
+    },
+    "L3-method/RDSON.md": {
+     "exists": true,
+     "sha256": "6e017846bd15bc4eca810fdd038ecc52dcb4b17b81ba4ae4f473cc7056c56130"
+    }
+   },
+   "tier2": {
+    "L4-Golden-code/Rdson.cpp": {
+     "exists": true,
+     "sha256": "8cdb0be1dd8381008a6a6ca84743170d6e1cf6f5c84f21a1e2e947a0187b72ce"
+    }
+   },
+   "tier3": {},
+   "status": "complete"
+  },
+  "VBG": {
+   "tier1": {},
+   "tier2": {
+    "L4-Golden-code/TM130_Trim_VBG.cpp": {
+     "exists": true,
+     "sha256": "6e4996cd15418342a35d122f73897cc83f919373c43442a84ee2369f24a071bf"
+    },
+    "L4-Golden-code/TM130_sub_measure.cpp": {
+     "exists": true,
+     "sha256": "673add93fb835d1736d32ad83cc17007f179926dff01b91be1b7549b3e59c725"
+    },
+    "L4-Golden-code/sub-measure-template.cpp": {
+     "exists": true,
+     "sha256": "28638d82ad5bf0cca77bfadc03589fa54edf4317ec1813007eaff2bc57e6218f"
+    }
+   },
+   "tier3": {},
+   "status": "no-tier1"
+  },
+  "BUCK HS Gain": {
+   "tier1": {},
+   "tier2": {
+    "L4-Golden-code/TM623_Trim_BUCK_HS_Gain.cpp": {
+     "exists": true,
+     "sha256": "4b409016d20393dde13645abadf78979c9142aa783903b0bc32215235c2e21f3"
+    },
+    "L4-Golden-code/TM623_sub_measure.cpp": {
+     "exists": true,
+     "sha256": "62e6a2b4c551444ff142f2a65f651a2609b99b0cde2e42e56208d31b81bcaa60"
+    },
+    "L4-Golden-code/sub-measure-template.cpp": {
+     "exists": true,
+     "sha256": "28638d82ad5bf0cca77bfadc03589fa54edf4317ec1813007eaff2bc57e6218f"
+    }
+   },
+   "tier3": {},
+   "status": "no-tier1"
+  },
+  "VAC GD present": {
+   "tier1": {},
+   "tier2": {
+    "L4-Golden-code/toggle-template.cpp": {
+     "exists": true,
+     "sha256": "2c5224890be330a21407c9c34c581fecd8c9054f88c3414417e0c330c9eb79a4"
+    }
+   },
+   "tier3": {},
+   "status": "no-tier1"
+  },
+  "UVLO": {
+   "tier1": {
+    "L1-chip/UVLO.md": {
+     "exists": true,
+     "sha256": "13691fe1e30389eab6b03be6ee6afce3fbf0e60c6d589d38eaa36c46c751ae39"
+    },
+    "L3-method/UVLO.md": {
+     "exists": true,
+     "sha256": "3e2dff6f1ab05967a25c0067eaf579bac27c52ee389e4496bdaa40cf1fa021cb"
+    }
+   },
+   "tier2": {
+    "L4-Golden-code/UVLO.cpp": {
+     "exists": true,
+     "sha256": "2c5224890be330a21407c9c34c581fecd8c9054f88c3414417e0c330c9eb79a4"
+    }
+   },
+   "tier3": {},
+   "status": "complete"
+  },
+  "Current Threshold": {
+   "tier1": {
+    "L1-chip/Current-Threshold.md": {
+     "exists": true,
+     "sha256": "ce2a52d2e1829c1c82cb3862009dc09d5a488eabec345589392cc50c57cfa047"
+    },
+    "L3-method/Current-Threshold.md": {
+     "exists": true,
+     "sha256": "87e69cbb7080ba6c9a9acdd07bf2cc340f707e8a187ae0f1a376d596d2479e9a"
+    }
+   },
+   "tier2": {
+    "L4-Golden-code/HS_ZCD.cpp": {
+     "exists": true,
+     "sha256": "3783a704e50b7c39ba8512ef27d3e9e253a7b2122318e7f63a69a5285ad65882"
+    },
+    "L4-Golden-code/LS_ZCD.cpp": {
+     "exists": true,
+     "sha256": "cd7d18e18cec115d9271a4ae1b1c09cd1b6e638c1cd9103a9f743161ea53d462"
+    }
+   },
+   "tier3": {},
+   "status": "complete"
+  },
+  "CurrentSense": {
+   "tier1": {
+    "L1-chip/CurrentSense.md": {
+     "exists": true,
+     "sha256": "65ea85dcca4d3d8fecc37841132d2be5352a4fef5517653fea445fb17283d7db"
+    },
+    "L3-method/CurrentSense.md": {
+     "exists": true,
+     "sha256": "e2876f8bf4ce4a092965169518cca4613056201ff27754a6c5d18596f918eb34"
+    }
+   },
+   "tier2": {},
+   "tier3": {},
+   "status": "no-golden"
+  },
+  "VBAT OVP": {
+   "tier1": {
+    "L1-chip/UVLO.md": {
+     "exists": true,
+     "sha256": "13691fe1e30389eab6b03be6ee6afce3fbf0e60c6d589d38eaa36c46c751ae39"
+    },
+    "L3-method/UVLO.md": {
+     "exists": true,
+     "sha256": "3e2dff6f1ab05967a25c0067eaf579bac27c52ee389e4496bdaa40cf1fa021cb"
+    }
+   },
+   "tier2": {
+    "L4-Golden-code/OVP.cpp": {
+     "exists": true,
+     "sha256": "e9ab1ea88d6cde787305cc1425fdb9db2614a14aed8c0735f3aa273af8be4f09"
+    }
+   },
+   "tier3": {},
+   "status": "complete"
+  },
+  "PSM_THREHOLD": {
+   "tier1": {
+    "L1-chip/UVLO.md": {
+     "exists": true,
+     "sha256": "13691fe1e30389eab6b03be6ee6afce3fbf0e60c6d589d38eaa36c46c751ae39"
+    },
+    "L3-method/UVLO.md": {
+     "exists": true,
+     "sha256": "3e2dff6f1ab05967a25c0067eaf579bac27c52ee389e4496bdaa40cf1fa021cb"
+    }
+   },
+   "tier2": {
+    "L4-Golden-code/UVLO.cpp": {
+     "exists": true,
+     "sha256": "2c5224890be330a21407c9c34c581fecd8c9054f88c3414417e0c330c9eb79a4"
+    }
+   },
+   "tier3": {},
+   "status": "complete"
+  },
+  "VC_OFFSET": {
+   "tier1": {
+    "L1-chip/UVLO.md": {
+     "exists": true,
+     "sha256": "13691fe1e30389eab6b03be6ee6afce3fbf0e60c6d589d38eaa36c46c751ae39"
+    },
+    "L3-method/UVLO.md": {
+     "exists": true,
+     "sha256": "3e2dff6f1ab05967a25c0067eaf579bac27c52ee389e4496bdaa40cf1fa021cb"
+    }
+   },
+   "tier2": {
+    "L4-Golden-code/UVLO.cpp": {
+     "exists": true,
+     "sha256": "2c5224890be330a21407c9c34c581fecd8c9054f88c3414417e0c330c9eb79a4"
+    }
+   },
+   "tier3": {},
+   "status": "complete"
+  },
+  "VC_CLAMP_LOW": {
+   "tier1": {},
+   "tier2": {
+    "L4-Golden-code/toggle-template.cpp": {
+     "exists": true,
+     "sha256": "2c5224890be330a21407c9c34c581fecd8c9054f88c3414417e0c330c9eb79a4"
+    }
+   },
+   "tier3": {},
+   "status": "no-tier1"
+  },
+  "OTP·MTP": {
+   "tier1": {
+    "L1-chip/OTP-MTP.md": {
+     "exists": true,
+     "sha256": "129a91fd48de9a1f3c89f22f4e798d9fed260a6e3d7520257ebc03fef84290c9"
+    },
+    "L3-method/OTP-MTP-Readback-Burn.md": {
+     "exists": true,
+     "sha256": "1c6a5fc1c534f5c48d2032bd4f26a49eafe0d0f58bf2bbd99228928c0c3d459d"
+    }
+   },
+   "tier2": {},
+   "tier3": {
+    "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例1.txt": {
+     "exists": true,
+     "sha256": "d16e699dc35cc422933e326d14444a8979269e986da185ede65a55b03f1cd395"
+    },
+    "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例2.txt": {
+     "exists": true,
+     "sha256": "0f975321167de748f495dd3d5e2b2d5a1ba1c7e10d4c08fea7ddfe9edcf5eb55"
+    },
+    "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例3.txt": {
+     "exists": true,
+     "sha256": "6a8c2b928541b4066749d4761436ed3ed8f68fd85027dd6ac98ec58d438d599d"
+    },
+    "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例4.txt": {
+     "exists": true,
+     "sha256": "a5416315f905b93b54bffb65986c015bd080a3d7248b44ac18b2b34854a6a789"
+    },
+    "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例5.txt": {
+     "exists": true,
+     "sha256": "92312b39a3ecfe4a8ddac74f9c967447318cab4e20d5a6545f979d9ee286574b"
+    }
+   },
+   "tier2_by_branch": {
+    "MTP": {
+     "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例4.md": {
+      "exists": true,
+      "sha256": "e7663334e1f1d71543bf1bbf7f296ed3f1ae399a096593e718e4e9bbacecac6a"
+     },
+     "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例5.md": {
+      "exists": true,
+      "sha256": "450fbfc006d0b8f7ddea4b54217957b12e06e43b3b4ccc211a5a4d787bfc8022"
+     }
+    },
+    "OTP": {
+     "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例1.md": {
+      "exists": true,
+      "sha256": "713d0ade86ea2fab990931826568e28e0385828de70f19e509b60afd9557db5a"
+     },
+     "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例2.md": {
+      "exists": true,
+      "sha256": "a9b0fe5e0434ec772fffa18f2b25fd595d07a67515592ce88e7ffeccab2cba50"
+     },
+     "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例3.md": {
+      "exists": true,
+      "sha256": "9ccc8ac0900f6870a7d1e4d45b38cce5d8929fcf878c2b01e1c78a8c2efea413"
+     }
+    }
+   },
+   "status": "complete"
+  },
+  "Diff Pair": {
+   "tier1": {
+    "L1-chip/01-bootstrap-hs-drive.md": {
+     "exists": true,
+     "sha256": "c0f2a1167e79eaff045862806236c39b0446fb4948232cbb74dffc2dec0846fa"
+    },
+    "L1-chip/UVLO.md": {
+     "exists": true,
+     "sha256": "13691fe1e30389eab6b03be6ee6afce3fbf0e60c6d589d38eaa36c46c751ae39"
+    },
+    "L3-method/diff-pair-spec.md": {
+     "exists": true,
+     "sha256": "f13d2e8fc9d3a735a99f1d021e72293161539166aafd901ccf1f8793616d34e1"
+    }
+   },
+   "tier2": {
+    "L4-Golden-code/TM1205_TRX_BST_UV_GD.cpp": {
+     "exists": true,
+     "sha256": "67d0c3f1c4e5c907fcf2b41fdaa058dc9655142e5ed64438f06c215529c4b01d"
+    }
+   },
+   "tier3": {},
+   "status": "complete"
+  }
+ },
+ "testTypes": {
+  "Trim 参数": {
+   "framework": "Trim（framework.md）",
+   "available": true
+  },
+  "接触项目 Contact": {
+   "framework": null,
+   "available": false
+  },
+  "OTP/MTP Pre/Post Readback": {
+   "framework": "Readback 五段式（L4 案例1~5）",
+   "available": true
+  },
+  "OTP/MTP Burn": {
+   "framework": "Burn 五段式（L4 案例1~5）",
+   "available": true
+  },
+  "P2P Leakage": {
+   "framework": null,
+   "available": false
+  },
+  "Leakage": {
+   "framework": null,
+   "available": false
+  },
+  "一般测试项目": {
+   "framework": "普通（framework.md）",
+   "available": true
+  }
+ },
+ "goldenCases": {
+  "HS_ZCD": {
+   "case": "L4-Golden-code/HS_ZCD.cpp",
+   "summary": "L4-Golden-code/HS_ZCD.md",
+   "summaryKind": "标准要点总结",
+   "summaryMissingSections": [],
+   "paramTypes": [
+    "Current Threshold"
+   ],
+   "registered": true,
+   "aliasOf": null,
+   "size": 3482,
+   "summarySize": 2726,
+   "sha256": "3783a704e50b7c39ba8512ef27d3e9e253a7b2122318e7f63a69a5285ad65882"
+  },
+  "LS_ZCD": {
+   "case": "L4-Golden-code/LS_ZCD.cpp",
+   "summary": "L4-Golden-code/LS_ZCD.md",
+   "summaryKind": "标准要点总结",
+   "summaryMissingSections": [],
+   "paramTypes": [
+    "Current Threshold"
+   ],
+   "registered": true,
+   "aliasOf": null,
+   "size": 2813,
+   "summarySize": 2525,
+   "sha256": "cd7d18e18cec115d9271a4ae1b1c09cd1b6e638c1cd9103a9f743161ea53d462"
+  },
+  "OTP_READ_PRE_POST_BURN-案例1": {
+   "case": "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例1.txt",
+   "summary": "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例1.md",
+   "summaryKind": "分支注解",
+   "summaryMissingSections": [
+    "参数类型",
+    "角色",
+    "关键结构",
+    "时序",
+    "测量",
+    "适用场景"
+   ],
+   "paramTypes": [
+    "OTP·MTP"
+   ],
+   "registered": true,
+   "aliasOf": null,
+   "size": 92519,
+   "summarySize": 2299,
+   "sha256": "d16e699dc35cc422933e326d14444a8979269e986da185ede65a55b03f1cd395"
+  },
+  "OTP_READ_PRE_POST_BURN-案例2": {
+   "case": "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例2.txt",
+   "summary": "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例2.md",
+   "summaryKind": "分支注解",
+   "summaryMissingSections": [
+    "参数类型",
+    "角色",
+    "关键结构",
+    "时序",
+    "测量",
+    "适用场景"
+   ],
+   "paramTypes": [
+    "OTP·MTP"
+   ],
+   "registered": true,
+   "aliasOf": null,
+   "size": 31861,
+   "summarySize": 1770,
+   "sha256": "0f975321167de748f495dd3d5e2b2d5a1ba1c7e10d4c08fea7ddfe9edcf5eb55"
+  },
+  "OTP_READ_PRE_POST_BURN-案例3": {
+   "case": "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例3.txt",
+   "summary": "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例3.md",
+   "summaryKind": "分支注解",
+   "summaryMissingSections": [
+    "参数类型",
+    "角色",
+    "关键结构",
+    "时序",
+    "测量",
+    "适用场景"
+   ],
+   "paramTypes": [
+    "OTP·MTP"
+   ],
+   "registered": true,
+   "aliasOf": null,
+   "size": 42696,
+   "summarySize": 1988,
+   "sha256": "6a8c2b928541b4066749d4761436ed3ed8f68fd85027dd6ac98ec58d438d599d"
+  },
+  "OTP_READ_PRE_POST_BURN-案例4": {
+   "case": "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例4.txt",
+   "summary": "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例4.md",
+   "summaryKind": "分支注解",
+   "summaryMissingSections": [
+    "参数类型",
+    "角色",
+    "关键结构",
+    "时序",
+    "测量",
+    "适用场景"
+   ],
+   "paramTypes": [
+    "OTP·MTP"
+   ],
+   "registered": true,
+   "aliasOf": null,
+   "size": 139148,
+   "summarySize": 3211,
+   "sha256": "a5416315f905b93b54bffb65986c015bd080a3d7248b44ac18b2b34854a6a789"
+  },
+  "OTP_READ_PRE_POST_BURN-案例5": {
+   "case": "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例5.txt",
+   "summary": "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例5.md",
+   "summaryKind": "分支注解",
+   "summaryMissingSections": [
+    "参数类型",
+    "角色",
+    "关键结构",
+    "时序",
+    "测量",
+    "适用场景"
+   ],
+   "paramTypes": [
+    "OTP·MTP"
+   ],
+   "registered": true,
+   "aliasOf": null,
+   "size": 50515,
+   "summarySize": 1958,
+   "sha256": "92312b39a3ecfe4a8ddac74f9c967447318cab4e20d5a6545f979d9ee286574b"
+  },
+  "OVP": {
+   "case": "L4-Golden-code/OVP.cpp",
+   "summary": "L4-Golden-code/OVP.md",
+   "summaryKind": "标准要点总结",
+   "summaryMissingSections": [],
+   "paramTypes": [
+    "VBAT OVP"
+   ],
+   "registered": true,
+   "aliasOf": null,
+   "size": 6783,
+   "summarySize": 2473,
+   "sha256": "e9ab1ea88d6cde787305cc1425fdb9db2614a14aed8c0735f3aa273af8be4f09"
+  },
+  "Rdson": {
+   "case": "L4-Golden-code/Rdson.cpp",
+   "summary": "L4-Golden-code/Rdson.md",
+   "summaryKind": "标准要点总结",
+   "summaryMissingSections": [],
+   "paramTypes": [
+    "RDSON"
+   ],
+   "registered": true,
+   "aliasOf": "L4-Golden-code/tm600-normal-highcurrent.cpp",
+   "size": 6106,
+   "summarySize": 2936,
+   "sha256": "8cdb0be1dd8381008a6a6ca84743170d6e1cf6f5c84f21a1e2e947a0187b72ce"
+  },
+  "TM1205_TRX_BST_UV_GD": {
+   "case": "L4-Golden-code/TM1205_TRX_BST_UV_GD.cpp",
+   "summary": "L4-Golden-code/TM1205_TRX_BST_UV_GD.md",
+   "summaryKind": "标准要点总结",
+   "summaryMissingSections": [],
+   "paramTypes": [
+    "Diff Pair"
+   ],
+   "registered": true,
+   "aliasOf": null,
+   "size": 5571,
+   "summarySize": 5037,
+   "sha256": "67d0c3f1c4e5c907fcf2b41fdaa058dc9655142e5ed64438f06c215529c4b01d"
+  },
+  "TM130_Trim_VBG": {
+   "case": "L4-Golden-code/TM130_Trim_VBG.cpp",
+   "summary": "L4-Golden-code/TM130_Trim_VBG.md",
+   "summaryKind": "标准要点总结",
+   "summaryMissingSections": [],
+   "paramTypes": [
+    "VBG"
+   ],
+   "registered": true,
+   "aliasOf": null,
+   "size": 3208,
+   "summarySize": 2637,
+   "sha256": "6e4996cd15418342a35d122f73897cc83f919373c43442a84ee2369f24a071bf"
+  },
+  "TM130_sub_measure": {
+   "case": "L4-Golden-code/TM130_sub_measure.cpp",
+   "summary": "L4-Golden-code/TM130_sub_measure.md",
+   "summaryKind": "标准要点总结",
+   "summaryMissingSections": [],
+   "paramTypes": [
+    "VBG"
+   ],
+   "registered": true,
+   "aliasOf": null,
+   "size": 1335,
+   "summarySize": 2443,
+   "sha256": "673add93fb835d1736d32ad83cc17007f179926dff01b91be1b7549b3e59c725"
+  },
+  "TM623_Trim_BUCK_HS_Gain": {
+   "case": "L4-Golden-code/TM623_Trim_BUCK_HS_Gain.cpp",
+   "summary": "L4-Golden-code/TM623_Trim_BUCK_HS_Gain.md",
+   "summaryKind": "标准要点总结",
+   "summaryMissingSections": [],
+   "paramTypes": [
+    "BUCK HS Gain"
+   ],
+   "registered": true,
+   "aliasOf": null,
+   "size": 6911,
+   "summarySize": 3033,
+   "sha256": "4b409016d20393dde13645abadf78979c9142aa783903b0bc32215235c2e21f3"
+  },
+  "TM623_sub_measure": {
+   "case": "L4-Golden-code/TM623_sub_measure.cpp",
+   "summary": "L4-Golden-code/TM623_sub_measure.md",
+   "summaryKind": "标准要点总结",
+   "summaryMissingSections": [],
+   "paramTypes": [
+    "BUCK HS Gain"
+   ],
+   "registered": true,
+   "aliasOf": null,
+   "size": 2790,
+   "summarySize": 2622,
+   "sha256": "62e6a2b4c551444ff142f2a65f651a2609b99b0cde2e42e56208d31b81bcaa60"
+  },
+  "UVLO": {
+   "case": "L4-Golden-code/UVLO.cpp",
+   "summary": "L4-Golden-code/UVLO.md",
+   "summaryKind": "标准要点总结",
+   "summaryMissingSections": [],
+   "paramTypes": [
+    "PSM_THREHOLD",
+    "UVLO",
+    "VC_OFFSET"
+   ],
+   "registered": true,
+   "aliasOf": "L4-Golden-code/toggle-template.cpp",
+   "size": 5275,
+   "summarySize": 2826,
+   "sha256": "2c5224890be330a21407c9c34c581fecd8c9054f88c3414417e0c330c9eb79a4"
+  },
+  "sub-measure-template": {
+   "case": "L4-Golden-code/sub-measure-template.cpp",
+   "summary": "L4-Golden-code/sub-measure-template.md",
+   "summaryKind": "标准要点总结",
+   "summaryMissingSections": [],
+   "paramTypes": [
+    "BUCK HS Gain",
+    "VBG"
+   ],
+   "registered": true,
+   "aliasOf": null,
+   "size": 3599,
+   "summarySize": 2577,
+   "sha256": "28638d82ad5bf0cca77bfadc03589fa54edf4317ec1813007eaff2bc57e6218f"
+  },
+  "tm600-normal-highcurrent": {
+   "case": "L4-Golden-code/tm600-normal-highcurrent.cpp",
+   "summary": "L4-Golden-code/tm600-normal-highcurrent.md",
+   "summaryKind": "标准要点总结",
+   "summaryMissingSections": [],
+   "paramTypes": [],
+   "registered": false,
+   "aliasOf": "L4-Golden-code/Rdson.cpp",
+   "size": 6106,
+   "summarySize": 2789,
+   "sha256": "8cdb0be1dd8381008a6a6ca84743170d6e1cf6f5c84f21a1e2e947a0187b72ce"
+  },
+  "toggle-template": {
+   "case": "L4-Golden-code/toggle-template.cpp",
+   "summary": "L4-Golden-code/toggle-template.md",
+   "summaryKind": "标准要点总结",
+   "summaryMissingSections": [],
+   "paramTypes": [
+    "VAC GD present",
+    "VC_CLAMP_LOW"
+   ],
+   "registered": true,
+   "aliasOf": "L4-Golden-code/UVLO.cpp",
+   "size": 5275,
+   "summarySize": 2889,
+   "sha256": "2c5224890be330a21407c9c34c581fecd8c9054f88c3414417e0c330c9eb79a4"
+  }
+ },
+ "gaps": {
+  "noTier1": [
+   "VBG",
+   "BUCK HS Gain",
+   "VAC GD present",
+   "VC_CLAMP_LOW"
+  ],
+  "noGolden": [
+   "CurrentSense"
+  ],
+  "missingFiles": [],
+  "missingFrameworks": [
+   "Leakage",
+   "P2P Leakage",
+   "接触项目 Contact"
+  ],
+  "unregisteredCases": [],
+  "missingSummaries": [],
+  "nonStandardSummaries": [
+   "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例1.txt",
+   "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例2.txt",
+   "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例3.txt",
+   "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例4.txt",
+   "L4-Golden-code/OTP_READ_PRE_POST_BURN-案例5.txt"
+  ]
+ }
+}

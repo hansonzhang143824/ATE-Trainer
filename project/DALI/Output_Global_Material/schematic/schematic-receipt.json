@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 2,
+  "generator": "scripts/generate_schematic_txt.py",
+  "parser": "scripts/schematic_parse/scripts/csv_schematic_adapter_v2.py",
+  "parserStatus": "PASS",
+  "readSources": [
+    {
+      "path": "project/DALI/Input_GlobalMaterial/Dali-SCH.csv",
+      "sha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a",
+      "insideInputRoot": true
+    },
+    {
+      "path": "project/DALI/Input_GlobalMaterial/sch_confirmed.json",
+      "sha256": "3283b7ca310357fe9ea6a01fdcd1c606a47136bf58be9accae3a3f8bd65b13d0",
+      "insideInputRoot": true
+    },
+    {
+      "path": "project/DALI/Input_GlobalMaterial/CBIT表-DALI.xlsx",
+      "sha256": "be5a7a18c161d7cb1df02972e322602c9b654104686bbbc256b2ed9eb6d1771a",
+      "insideInputRoot": true
+    }
+  ],
+  "outputs": {
+    "SCH-Connect-Map.txt": {
+      "sha256": "cc8009fbb27eef0cf29b45e4e50b05e1b5d7b5d49095a32005261a79d83cb427",
+      "bytes": 66403
+    },
+    "SCH-Connect-Map.json": {
+      "sha256": "539f7c0c7e41128d091fbc6e798a4f40ac6db9deb1bc7eb3be5db5dcebd18e38",
+      "bytes": 236961,
+      "sourceTxtSha256": "cc8009fbb27eef0cf29b45e4e50b05e1b5d7b5d49095a32005261a79d83cb427"
+    },
+    "Component-Statistic.txt": {
+      "sha256": "30a11536a3781bac58f10cc400cf9f9c9f0c4b32469c81cfc583eb7d475beb74",
+      "bytes": 29049
+    },
+    "Components-Statistic.json": {
+      "sha256": "f24d7ddaf4384816f7db6e315e3f8c3e9bbbf956f406694b962b7e5e27c7e52c",
+      "bytes": 106537,
+      "sourceTxtSha256": "30a11536a3781bac58f10cc400cf9f9c9f0c4b32469c81cfc583eb7d475beb74"
+    },
+    "Path-Proofs.json": {
+      "sha256": "ad695b32a7b50151788e33b061b00452a5ea96ea1f678de8b0f1df05c96f97be",
+      "bytes": 2548969,
+      "status": "PASS"
+    },
+    "Path-Proofs.txt": {
+      "sha256": "41cac5e293a3d4558a0f01ea8f49c7cfd6164de8fe5dcfed3ccf83527c9f33e8",
+      "bytes": 197,
+      "status": "PASS"
+    }
+  }
+}

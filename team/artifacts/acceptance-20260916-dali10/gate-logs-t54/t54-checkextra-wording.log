@@ -1,0 +1,30 @@
+=== 我方产物中所有 `--check-extra` 相关行 ===
+  RUN-LEDGER.md                                        L1744 **Ⓒ payload 改动三条硬约束（已下发 `t50`）**：**(1)** **必须在 `L9081` 的同一次 `SetOn` 内追加** `K48_ACM5_AMP_REF`+`K76_ACM_BST` —— **不得另起第二次 `SetOn`**（
+  RUN-LEDGER.md                                        L1756 **Ⓖ 落盘前独立复核 = `t52`（rule-reviewer）**：核对三条硬约束／内容键与不变量／门禁证据可复现，并确认 ① `ch5/ch18` 仍为 **UNKNOWN**（不得据本任务改判）、② 本轮保留 `K109/K110` 及其耦合代价已登
+  RUN-LEDGER.md                                        L1762 **Ⓑ canonical 重新定性 + 写入方冻结令（生效）**：**canonical = `implementation-payload-TM600-TM601.cpp` / 41,797 B / `6034af710a348e578099886737c
+  RUN-LEDGER.md                                        L1773 **Ⓑ 因此终批改为"收窄 + 移除"**（取代我此前"维持并集"的裁定）：**rev 25 收窄式**（`bst2sw` → ch5 路线 `[48,76]`＋SW `[60,61]`；原文标 `superseded`；**ch18 路线单列**；按通道分列
+  RUN-LEDGER.md                                        L1782 **Ⓒ 新增事实（子集语义，`schematic-expert`）**：`verify_bst_sw_sequence.py` **`L448 missing = sorted(set(exp) - data['nums'])`** ⇒ **断言是子集语义**
+  RUN-LEDGER.md                                        L1797 > **理由**：未启用 `--check-extra` ⇒ `bst-sw` 为**子集判定**（`missing = exp − actual`）⇒ **多余的闭合不可见** ⇒ **若将来有人把 `K109/K110` 加回 payload，期望集仍被满
+  RUN-LEDGER.md                                        L1798 > ⇒ **B 的守卫在代码评审与契约一致性，不在门禁**；欲使其受门禁保护，须**另立明确决定**启用 `--check-extra`（并定义 budget 池），**不得顺手打开**。
+  acceptance-report.json                               L305  "L23 (cross-item scope constraint, added by captain instruction): the channel-5 source has THREE mutually exclusive destinations s
+  acceptance-report.json                               L308  "L23 (--check-extra: the DISABLE REQUIREMENT IS LIFTED from rev 29 onward - this version closes a single route and over-closes not
+  acceptance-report.json                               L314  "L29 (corrected: the removal is DONE, not pending): the removal of K109/K110 has already been delivered - the live payload closes 
+  acceptance-report.json                               L317  "L32 (LIMIT ON THE EFFICACY OF THE SCHEME-B RULING - recorded on the captain's instruction; this must travel with the disposition 
+  acceptance-report.json                               L326  "L40 (SETTLED conclusion wording, aligned to the t43 FINAL versions - supersedes an earlier four-sentence summary of mine that sti
+  batch-spec-t43-rev25-payload.md                      L14   3. **`--check-extra`（"不得多闭"）在本修订不得启用**（并集多闭副作用）——写入 payload 注释与 `t34` 限制清单。
+  build-report.json                                    L223  "**\"GREEN\" ≠ \"闭合集被约束\"**：bst-sw 为**子集判定**（未启用 --check-extra）⇒ 多余闭合不可见。本批方案 B（仅闭 ACM200 族 {48,76} + SW {60,61}）由工程判断与契约一致性保证，**门
+  build-report.json                                    L228  "purpose": "阳性/阴性/部署态三项并列对照，证明\"门禁仍能发现真缺陷\"（B-6 类盲区已关闭）——**均在同一契约 rev 39 下完成**，沙箱内、未改脚本、未启用 --check-extra、未动 gate_baseline.json。",
+  build-report.json                                    L333  "mechanism": "`missing = exp − actual`：多余闭合不可见（未启用 `--check-extra`）",
+  build-report.json                                    L335  "guardrail": "若需约束须显式启用 `--check-extra` 并定义 budget 池"
+  build-report.json                                    L445  "门禁只读一次（无 -Build）；未改任何门禁脚本、未动 gate_baseline.json（28 B / 021015da…02cb1d）、未启用 --check-extra。",
+  implementation-input-pin.json                        L83   "revisionString": "v25 (t51 follow-up, captain-ordered NARROWING; the ch5/ch18 conflict is CLOSED in favour of ch5): the operative
+  implementation-input-pin.json                        L89   "revisionField": "v25 (t51 follow-up, captain-ordered NARROWING; the ch5/ch18 conflict is CLOSED in favour of ch5): the operative 
+  implementation-input-pin.json                        L95   "revision": "v24 (t51, captain-ordered ADDITIVE change): the ACM200 bootstrap-to-switched baseline keeps the ch5 route [48,60,61,7
+  implementation-manifest.json                         L518  "t43RulingApplied": "The payload implements the t43 §4 minimal safe fix: the UNION of the ch5 BST branch (K48_ACM5_AMP_REF + K76_A
+  review-handoff-note-plan-side.md                     L14   closes `K48`/`K76`/`K60`/`K61` with **`K109`/`K110` = 0**). **The `--check-extra` prohibition is therefore
+  review-handoff-note-plan-side.md                     L46   **Plan-side disposition (superseded sequence, kept as history):** v24 prescribed the **UNION** — add `K48`/`K76` **and retain** `K
+  review-handoff-note-plan-side.md                     L167  `--check-extra not to be enabled`, `keep --check-extra disabled`, `execute by the INTERSECTION` and
+  review-handoff-note-plan-side.md                     L250  > `42,998 B c03632d9...` 20:59:12 - captain's ONE-TIME UNFREEZE: K109/K110 REMOVED, --check-extra disable withdrawn
+  review-handoff-note-plan-side.md                     L254  Independently re-measured at citation time: **still frozen and byte-identical** at `43806 B / 66abc088ae6bd5f9b9d7201673003fc0be24
+  review-handoff-note-plan-side.md                     L275  and the **`--check-extra` prohibition is WITHDRAWN**, not merely disabled - the payload's own comment says no such
+  review-handoff-note-plan-side.md                     L462  operative closure = the ch5 set [48,60,61,76] alone; [110,61] retained only as SUPERSEDED history; final batch removes K109/K110 a

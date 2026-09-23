@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "profileId": "ptc-schematic-expert",
+  "version": "v1",
+  "publishedAt": "2026-09-19T11:41:30.761157Z",
+  "executionClass": "input-schematic",
+  "evaluation": {
+    "verdict": "pass",
+    "failed": [],
+    "caseCount": 1,
+    "checks": [
+      {
+        "id": "assets",
+        "ok": true,
+        "detail": "all required assets present"
+      },
+      {
+        "id": "profile_metadata",
+        "ok": true,
+        "detail": "profile.yaml parsed and identified"
+      },
+      {
+        "id": "execution_class_registered",
+        "ok": true,
+        "detail": "executionClass 'input-schematic' is registered in the plugin policy registry"
+      },
+      {
+        "id": "execution_class_matches_profile_map",
+        "ok": true,
+        "detail": "plugin maps ptc-schematic-expert to 'input-schematic'"
+      },
+      {
+        "id": "declared_readable",
+        "ok": true,
+        "detail": "readable: ['project/DALI/Input_GlobalMaterial/Dali-SCH.csv', 'project/DALI/Input_GlobalMaterial/sch_confirmed.json', 'project/DALI/Input_GlobalMaterial/CBIT表-DALI.xlsx', 'project/DALI/Output_Global_Material/schematic']"
+      },
+      {
+        "id": "declared_writable",
+        "ok": true,
+        "detail": "writable: ['project/DALI/Output_Global_Material/schematic', 'project/DALI/ErrorLog/schematic-expert.log']"
+      },
+      {
+        "id": "declared_requiredGates",
+        "ok": true,
+        "detail": "requiredGates: ['scripts/validate_schematic_outputs.py']"
+      },
+      {
+        "id": "readable_has_no_retired_artifact",
+        "ok": true,
+        "detail": "readable declares no retired artifact"
+      },
+      {
+        "id": "output_contract",
+        "ok": true,
+        "detail": "object schema with required=['readSources', 'parserStatus', 'outputs']"
+      },
+      {
+        "id": "case_index_matches_disk",
+        "ok": true,
+        "detail": "index ['TM106'] vs cases/ ['TM106']"
+      },
+      {
+        "id": "case_TM106",
+        "ok": true,
+        "detail": "case is complete and inside the input root"
+      },
+      {
+        "id": "preset_agreement",
+        "ok": true,
+        "detail": "preset.yml name matches displayName 'PTC Schematic Expert'"
+      },
+      {
+        "id": "boundary_regression",
+        "ok": true,
+        "detail": "plugin boundary suite passed"
+      }
+    ]
+  },
+  "files": {
+    "CHANGELOG.md": "0b2dd9047b6882cc9e6ef684e6e68a516dc81be61ea7414ec24b8219bb7ada7c",
+    "cases/TM106/expected.json": "92034b6613e907e386a4cb2cf8a140ddccdc8b4b6f137d98004958affe584f2b",
+    "evaluation/expected-results.json": "a64be39d8a13e9bad36b66e5f89a176fa40940f18044150d0c1df7fc9ebe5868",
+    "instructions.md": "0b4afb04a83e7e757217d140003fc58c6c2660491559bd12a9a9cd043c84aec8",
+    "output-contract.schema.json": "1b1fd85f47d5e74b9639980f564278195356bdc52b6a52b8a1f3708ebe84b68b",
+    "profile.yaml": "d93faa3fd1878e881fbdda97435ce738f1c1acf478cc346ebd9c66fa07cb1e24",
+    "status.json": "91e18307c453a0cd35d07ee9a405cee796286b16972baab7790b9bfca8992a6c"
+  },
+  "digest": "3eda98d25c79118b7746d0024b07b2a3dafe1d29cad46e70231fbce628a42730"
+}

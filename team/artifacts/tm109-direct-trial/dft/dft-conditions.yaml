@@ -1,0 +1,20 @@
+schemaVersion: 1
+artifact: "dft-conditions"
+tm: "TM109"
+sourcePath: "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\input\\DFT.csv"
+sourceSha256: "ce69dce829a1473f1c7fd2ec7d55014b9e2fcf85262301169c654100b5461541"
+rawIntent:
+  Item: "TM109"
+  Function_Name: ""
+  ShortName: "VAC2_PRST"
+  ExpectValue: "rising vth 4.15V, hys 0.35V"
+  Unit: "V"
+  Trim: ""
+  Record: ""
+  Hardware_initial: "vset[vbat,4.2,100e-6,0]"
+  Software_initial: "\tentertestmode();\n\tI2CWriteSameData(DEV_ADDR, 0x55, 0x96);\t//\t\tfield[(EN_DTEST0,1),(DTEST0_MUX,22)]"
+  Dynamic: "vset[vac2,3.8,100e-6,1]\nvset[vac2,4.4,1e-3,1]\nvset[vac2,4.1,100e-6,1]\nvset[vac2,3.5,1e-3,1]"
+  Check: "INT"
+  Type: "Toggle, MV"
+derivedTokens:
+  vsetPins: ["vbat", "vac2", "vac2", "vac2", "vac2"]

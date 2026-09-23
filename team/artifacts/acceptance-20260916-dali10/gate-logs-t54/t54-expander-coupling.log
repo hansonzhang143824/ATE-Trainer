@@ -1,0 +1,31 @@
+=== ① 标量假设与消费者签名（逐行）===
+  L39   def parse_defines(src):
+  L40   """#define Kxx_Name number → {name: num}"""
+  L41   d = {}
+  L42   for m in re.finditer(r'#define\s+(K\d*_\w+)\s+(\d+)', src):
+  L43   d[m.group(1)] = int(m.group(2))
+  L44   return d
+  L376  n = defines[r]
+  L401  if n in on_set:
+  L403  if n in nc_set:
+  L406  errors.append(f'{name}: {r}(K{n}) 在 SCH-Connect-Map 中不存在 (虚构通路)')
+
+=== ② on_set/nc_set 的元素类型（生产点 L102-107）===
+  L102  """解析 SCH-Connect-Map: (on_set, nc_set)"""
+  L103  on_set, nc_set = set(), set()
+  L104  for m in re.finditer(r'K(\d+)\(Relay-(ON|NC)\)', map_txt):
+  L105  n = int(m.group(1))
+  L106  (on_set if m.group(2) == 'ON' else nc_set).add(n)
+  L107  return on_set, nc_set
+
+=== ③ 最小复现：把 defines[r] 换成 list / tuple 会怎样 ===
+  标量 int 154         ⇒ in 判定 = True   （正常）
+  list [154,155]     ⇒ **TypeError: unhashable type: 'list'** ⇒ 门禁崩（非静默）
+  tuple (154,155)    ⇒ in 判定 = False  （**恒 False ⇒ 静默漏报**）
+
+=== ④ 结论（写入纪律登记）===
+  `parse_defines()` 的**首值截断**与其消费者（L401/L403/L406）的**标量签名是耦合**的：
+   · 改成 list ⇒ `TypeError: unhashable type: list` ⇒ **门禁崩**；
+   · 改成 tuple ⇒ `in` 恒 False ⇒ **静默漏报**（更糟）；
+   · 要正确修，必须把 L401/L403/L406 改为**逐值循环**。
+  ⇒ 这不是"一行正则的 bug"，而是**需要连带改动的小重构**；归 scripts owner，且不得借此改 `gate_baseline.json`。

@@ -1,0 +1,918 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>工作流架构</title>
+<meta name="description" content="ATE Offline Coding 工作流架构：执行频率与循环关系 + 每阶段详细说明（任务 / 输入 / 输出 / 调用 agent·skill·脚本）。">
+<style>
+:root{
+  --sans:system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Consolas,"Courier New",monospace;
+  --bg:#eef1ef;
+  --surface:#ffffff;
+  --surface-2:#f5f8f6;
+  --ink:#1a201d;
+  --muted:#5b655e;
+  --faint:#8a948d;
+  --border:#d7ddd9;
+  --border-2:#c6cfca;
+  --accent:#0e7a6f;
+  --accent-strong:#0b5f57;
+  --accent-soft:rgba(14,122,111,.10);
+  --ok:#1e7f50; --ok-bg:rgba(30,127,80,.10);
+  --warn:#a96f0e; --warn-bg:rgba(169,111,14,.12);
+  --bad:#b83b2b; --bad-bg:rgba(184,59,43,.10);
+  --info:#2f5fa6; --info-bg:rgba(47,95,166,.10);
+  --vio:#6b4fa0; --vio-bg:rgba(107,79,160,.10);
+  --shadow:0 1px 2px rgba(16,24,20,.05),0 8px 24px -12px rgba(16,24,20,.12);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1216;
+    --surface:#171b21;
+    --surface-2:#1d232b;
+    --ink:#e6e9e7;
+    --muted:#9aa39d;
+    --faint:#69726c;
+    --border:#262d35;
+    --border-2:#323b45;
+    --accent:#38bfae;
+    --accent-strong:#4fd0bf;
+    --accent-soft:rgba(56,191,174,.12);
+    --ok:#3fae76; --ok-bg:rgba(63,174,118,.14);
+    --warn:#d39a3f; --warn-bg:rgba(211,154,63,.14);
+    --bad:#e06a57; --bad-bg:rgba(224,106,87,.14);
+    --info:#6f9be0; --info-bg:rgba(111,155,224,.14);
+    --vio:#a088dc; --vio-bg:rgba(160,136,220,.16);
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 30px -14px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1216;
+  --surface:#171b21;
+  --surface-2:#1d232b;
+  --ink:#e6e9e7;
+  --muted:#9aa39d;
+  --faint:#69726c;
+  --border:#262d35;
+  --border-2:#323b45;
+  --accent:#38bfae;
+  --accent-strong:#4fd0bf;
+  --accent-soft:rgba(56,191,174,.12);
+  --ok:#3fae76; --ok-bg:rgba(63,174,118,.14);
+  --warn:#d39a3f; --warn-bg:rgba(211,154,63,.14);
+  --bad:#e06a57; --bad-bg:rgba(224,106,87,.14);
+  --info:#6f9be0; --info-bg:rgba(111,155,224,.14);
+  --vio:#a088dc; --vio-bg:rgba(160,136,220,.16);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 30px -14px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+
+/* ---------- masthead ---------- */
+.masthead{max-width:1240px;margin:0 auto;padding:3.5rem 1.5rem 2rem}
+.eyebrow{margin:0 0 .9rem;font-family:var(--mono);font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+h1{margin:0 0 1.1rem;font-size:clamp(1.9rem,3.6vw,2.6rem);font-weight:700;letter-spacing:-.02em;line-height:1.12;text-wrap:balance}
+.thesis{margin:0 0 1.6rem;max-width:80ch;font-size:1.03rem;color:var(--muted);padding:.9rem 1.1rem;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px}
+.thesis b{color:var(--ink);font-weight:600}
+.meta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+@media (max-width:820px){.meta-grid{grid-template-columns:1fr}}
+.meta{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.7rem .85rem;font-size:.82rem;color:var(--muted)}
+.meta-k{display:block;font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-strong);margin-bottom:.2rem}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .meta-k{color:var(--accent)}}
+:root[data-theme="dark"] .meta-k{color:var(--accent)}
+
+/* ---------- layout ---------- */
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:2.5rem;max-width:1240px;margin:0 auto;padding:0 1.5rem 3rem;align-items:start}
+@media (max-width:1024px){.layout{grid-template-columns:1fr}}
+.toc{position:sticky;top:1.25rem}
+@media (max-width:1024px){.toc{position:static;order:-1}}
+.toc-inner{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;box-shadow:var(--shadow)}
+.toc-title{margin:0 0 .6rem;font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.toc ol{list-style:none;margin:0;padding:0;display:grid;gap:.1rem}
+.toc ol ol{padding-left:.85rem;gap:.05rem}
+.toc a{display:block;padding:.3rem .55rem;border-radius:7px;text-decoration:none;color:var(--muted);font-size:.86rem;border-left:2px solid transparent}
+.toc a:hover{color:var(--accent-strong);background:var(--surface-2)}
+.toc a.active{color:var(--accent-strong);background:var(--accent-soft);border-left-color:var(--accent);font-weight:600}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .toc a:hover{color:var(--accent)}
+  :root:not([data-theme="light"]) .toc a.active{color:var(--accent)}
+}
+:root[data-theme="dark"] .toc a:hover{color:var(--accent)}
+:root[data-theme="dark"] .toc a.active{color:var(--accent)}
+main{min-width:0}
+
+/* ---------- sections ---------- */
+section{margin:0 0 3rem;scroll-margin-top:1.25rem}
+h2{display:flex;align-items:baseline;gap:.65rem;margin:0 0 .35rem;font-size:1.35rem;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+.sec-no{font-family:var(--mono);font-size:.95rem;font-weight:600;color:var(--accent);background:var(--accent-soft);border:1px solid var(--border-2);border-radius:8px;padding:.12rem .55rem;line-height:1.6}
+h2 .sub{font-size:.82rem;font-weight:500;color:var(--faint);letter-spacing:0}
+.lead{margin:.1rem 0 1.4rem;color:var(--muted);font-size:.92rem;max-width:76ch}
+h3{margin:2.2rem 0 .7rem;font-size:1.02rem;font-weight:700;display:flex;align-items:center;gap:.5rem;text-wrap:balance;scroll-margin-top:1.25rem}
+h3 .tag{font-family:var(--mono);font-size:.66rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--surface-2);border:1px solid var(--border);border-radius:6px;padding:.2em .5em}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
+
+/* ---------- tables ---------- */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px;background:var(--surface);box-shadow:var(--shadow);margin:0 0 1.6rem}
+table{width:100%;border-collapse:collapse;min-width:780px;font-size:.85rem}
+th{text-align:left;font-family:var(--mono);font-size:.66rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--surface-2);padding:.6rem .85rem;border-bottom:1px solid var(--border-2);white-space:nowrap;vertical-align:bottom}
+td{padding:.6rem .85rem;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--surface-2)}
+.fn{font-weight:600;color:var(--ink);white-space:nowrap}
+.step{display:inline-block;font-family:var(--mono);font-size:.74rem;font-weight:600;color:var(--accent-strong);background:var(--accent-soft);border-radius:6px;padding:.08em .5em;margin-right:.45em;white-space:nowrap}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .step{color:var(--accent)}}
+:root[data-theme="dark"] .step{color:var(--accent)}
+.dim{color:var(--faint);font-size:.82em}
+code{font-family:var(--mono);font-size:.8em;background:var(--surface-2);border:1px solid var(--border);border-radius:5px;padding:.1em .38em;white-space:nowrap}
+td code{white-space:normal}
+
+/* ---------- chips ---------- */
+.chip{display:inline-flex;align-items:center;gap:.3em;font-size:.72rem;font-weight:600;letter-spacing:.02em;line-height:1;padding:.38em .62em;border-radius:6px;white-space:nowrap;vertical-align:middle}
+.chip+.chip{margin-left:.35em}
+.chip + code{margin-left:.35em}
+.c-ok{color:var(--ok);background:var(--ok-bg)}
+.c-warn{color:var(--warn);background:var(--warn-bg)}
+.c-bad{color:var(--bad);background:var(--bad-bg)}
+.c-info{color:var(--info);background:var(--info-bg)}
+.c-vio{color:var(--vio);background:var(--vio-bg)}
+.c-script{color:var(--accent-strong);background:var(--accent-soft)}
+.c-agent{color:var(--info);background:var(--info-bg)}
+.c-user{color:var(--warn);background:var(--warn-bg)}
+.c-tpl{color:var(--vio);background:var(--vio-bg)}
+.c-ref{color:var(--muted);background:var(--surface-2);border:1px solid var(--border)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .c-script{color:var(--accent)}}
+:root[data-theme="dark"] .c-script{color:var(--accent)}
+
+/* ---------- loop diagrams ---------- */
+.loop-panel{padding:1rem 1.3rem;overflow-x:auto}
+.loop{margin:0;font-family:var(--mono);font-size:.78rem;line-height:1.85;font-variant-numeric:tabular-nums;min-width:540px}
+.loop .k{color:var(--accent);font-weight:600}
+.loop .v{color:var(--muted)}
+.loop .w{color:var(--warn);font-weight:600}
+.loop .i{color:var(--info)}
+.loop .x{color:var(--vio);font-weight:600}
+.loop .d{color:var(--faint)}
+.loop-note{margin:.35rem 0 1.8rem;padding:.6rem .95rem;background:var(--surface);border:1px dashed var(--border-2);border-radius:10px;color:var(--muted);font-size:.84rem}
+
+/* ---------- flowchart diagrams ---------- */
+.flow-panel{padding:1.2rem 1.3rem 1rem;overflow-x:auto}
+.flow-title{margin:0 0 .5rem;font-family:var(--mono);font-size:.8rem;font-weight:600;color:var(--accent-strong);letter-spacing:.01em}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .flow-title{color:var(--accent)}}
+:root[data-theme="dark"] .flow-title{color:var(--accent)}
+.flow-svg-wrap{margin:0}
+.flow-svg{display:block;width:100%;height:auto;min-width:560px}
+.flow-cap{margin:.7rem 0 .3rem;font-size:.85rem;color:var(--muted);line-height:1.75}
+.flow-cap b{color:var(--ink)}
+.flow-cap code{font-size:.8em}
+.six{width:100%;border-collapse:collapse;font-size:.8rem;margin:.2rem 0}
+.six th,.six td{border:1px solid var(--border);padding:.35rem .55rem;text-align:left;vertical-align:top;line-height:1.55}
+.six th{background:var(--surface-2);font-family:var(--mono);font-weight:600;color:var(--muted);white-space:nowrap;font-size:.75rem}
+.six td code{font-size:.92em}
+.legend{display:flex;flex-wrap:wrap;gap:.4rem;margin:.4rem 0 1.1rem;align-items:center}
+.legend .chip{margin:0}
+
+/* ---------- phase cards ---------- */
+.phase{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);margin:0 0 1.3rem;overflow:hidden;scroll-margin-top:1.25rem}
+.phase-head{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;padding:.8rem 1.1rem;background:var(--surface-2);border-bottom:1px solid var(--border)}
+.phase-no{font-family:var(--mono);font-size:.8rem;font-weight:600;color:var(--accent-strong);background:var(--accent-soft);border:1px solid var(--border-2);border-radius:8px;padding:.15rem .55rem}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .phase-no{color:var(--accent)}}
+:root[data-theme="dark"] .phase-no{color:var(--accent)}
+.phase-title{font-weight:700;font-size:1rem}
+.freq{margin-left:auto}
+.phase-body{padding:1rem 1.1rem;display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem}
+@media (max-width:760px){.phase-body{grid-template-columns:1fr}}
+.field-label{font-family:var(--mono);font-size:.66rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:.35rem;display:block}
+.field{font-size:.87rem;color:var(--muted);line-height:1.6}
+.field b{color:var(--ink)}
+.field ul{list-style:none;margin:.1rem 0 0;padding:0;display:grid;gap:.28rem}
+.field li{padding-left:.85rem;position:relative}
+.field li::before{content:"·";position:absolute;left:.18rem;color:var(--faint)}
+.field .chip,.field code{margin:.1em .15em .1em 0}
+.phase-body .field.full{grid-column:1/-1}
+.phase-sub{margin-top:.5rem;font-size:.85rem}
+.phase-sub b{color:var(--ink)}
+
+/* ---------- note ---------- */
+.note{margin:0 0 1.4rem;padding:.7rem .95rem;background:var(--surface);border:1px dashed var(--border-2);border-radius:10px;color:var(--muted);font-size:.85rem}
+.note b{color:var(--ink)}
+ul.clean{list-style:none;margin:0 0 1.4rem;padding:0;display:grid;gap:.5rem}
+ul.clean li{padding:.6rem .9rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;font-size:.88rem;color:var(--muted)}
+ul.clean li b{color:var(--ink)}
+ul.clean .chip{margin-right:.4em}
+
+/* ---------- footer ---------- */
+.footer{max-width:1240px;margin:0 auto;padding:1.5rem 1.5rem 3.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-top:1px solid var(--border);color:var(--faint);font-size:.78rem;font-family:var(--mono)}
+.footer a{color:var(--accent-strong);text-decoration:none}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .footer a{color:var(--accent)}}
+:root[data-theme="dark"] .footer a{color:var(--accent)}
+.theme-btn{font-family:var(--mono);font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-strong);background:var(--surface);border:1px solid var(--border-2);border-radius:8px;padding:.4rem .7rem;cursor:pointer;transition:border-color .15s,background .15s}
+.theme-btn:hover{border-color:var(--accent)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .theme-btn{color:var(--accent)}}
+:root[data-theme="dark"] .theme-btn{color:var(--accent)}
+.header-row{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+
+/* print */
+@media print{.toc,.theme-btn,.footer{display:none}body{background:#fff}.layout{display:block;max-width:none}.card,.tbl-wrap,.meta,.note,.loop-panel,.phase{box-shadow:none}.phase{break-inside:avoid}section{margin-bottom:1.5rem}a{color:inherit;text-decoration:none}}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="header-row">
+    <p class="eyebrow">ATE Offline Coding · 工作流架构</p>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换主题">切换主题</button>
+  </div>
+  <h1>ATE Offline Coding 工作流架构</h1>
+  <p class="thesis">全工作流的运行节奏 = <b>逐 TM 高频循环</b> 生成 + <b>每批门禁</b> 收尾 + <b>原理图低频重建</b> 供给数据 + <b>用户触发</b> 旁路 + <b>/evolve 异步沉淀</b> 回流知识。本文档先给<b>执行频率与循环关系</b>，再给<b>每阶段详细说明</b>（执行任务 · 输入 · 输出 · 调用的 agent / skill / 脚本）。</p>
+  <div class="meta-grid">
+    <div class="meta"><span class="meta-k">结构</span>① 执行频率与循环关系 → ② 每阶段详细说明</div>
+    <div class="meta"><span class="meta-k">事实来源</span><code>nuvolta-codegen.md</code> · <code>AGENT_MAP.md</code> · <code>schematic_parse/SKILL.md</code> · 脚本盘点</div>
+    <div class="meta"><span class="meta-k">与《工作流全景》</span>全景 = 四层地图 + 文件所有权；本文 = 执行节奏 + 阶段细节</div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="toc">
+    <nav class="toc-inner" aria-label="目录">
+      <p class="toc-title">目录</p>
+      <ol>
+        <li><a href="#frequency">一 · 执行频率与循环关系</a>
+          <ol>
+            <li><a href="#freq-table">频率档位</a></li>
+            <li><a href="#loops">循环关系</a></li>
+            <li><a href="#gates">门禁一览</a></li>
+          </ol>
+        </li>
+        <li><a href="#stages">二 · 每阶段详细说明</a>
+          <ol>
+            <li><a href="#base">公共基础</a></li>
+            <li><a href="#main">主 Pipeline（Step0~5）</a></li>
+            <li><a href="#sch">原理图解析（数据供给）</a></li>
+            <li><a href="#bypass">旁路（用户触发）</a></li>
+            <li><a href="#evolve">自进化（/evolve）</a></li>
+            <li><a href="#reflux">收尾回流（必做）</a></li>
+          </ol>
+        </li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main>
+
+    <!-- ============ 一、执行频率与循环关系 ============ -->
+    <section id="frequency">
+      <h2><span class="sec-no">一</span>执行频率与循环关系</h2>
+      <p class="lead">全工作流按触发频率分为七个档位，从「逐 TM」到「每批」到「低频重建」到「用户触发」，再到「每次收尾必做」与「待建」。循环关系用<b>一张主流程总览图</b>（门禁 G0~G5）+ 两张回流图说明——箭头 = 前后顺序，绿 PASS 前进 / 红 FAIL 回流，返回路径都画出来了。</p>
+
+      <h3 id="freq-table">频率档位</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>档位</th><th>何时触发</th><th>覆盖环节</th><th>调用的 agent · skill · 脚本</th><th>关键点 / 门禁</th></tr></thead>
+          <tbody>
+            <tr><td><span class="chip c-ok">逐 TM</span></td><td>主 pipeline 生成循环，每个测试项走一遍</td><td>材料门 → relay-agent（通路→角色→统一 SetOn） → 上电 → 寄存器 → measure → 下电 → LogData → 单函数冒烟</td><td><span class="chip c-vio">skill · nuvolta-codegen</span> <span class="chip c-agent">relay-agent</span> <span class="chip c-agent">measure-agent</span>；<code>verify_material_receipt.py</code> / <code>gen_power_sequence.py</code> / <code>verify_single_fn.py</code></td><td>冒烟 FAIL → 停留当前 TM，不得进下一个</td></tr>
+            <tr><td><span class="chip c-script">每次进入</span></td><td>用户每次发起 codegen</td><td>入口解析指令 + Step2 CBIT-Definition</td><td><span class="chip c-vio">skill · nuvolta-codegen</span> <span class="chip c-agent">cbit-agent</span>；<code>gen_cbit_defines.py --cbit [--verify]</code></td><td>有定义 + 工程 dll 距今 &gt;1 天 → 才 check；否则跳过</td></tr>
+            <tr><td><span class="chip c-info">每批</span></td><td>一批 TM 生成完毕</td><td>收尾 meta 全覆盖门 + 批量纪律 B-001</td><td><code>check_testitems_meta.py --require-all --require-scope &lt;本批&gt;</code> / <code>verify_relay_trace.py --meta</code> / <code>verify_awg_params.py --src</code></td><td>先 1 个代表函数冒烟 → 再放量；缺项 FAIL 列 TM 编号</td></tr>
+            <tr><td><span class="chip c-vio">原理图更新</span></td><td>CSV 更新后重跑（低频重建）</td><td>sch-parse 流水线 + 定义发布</td><td><span class="chip c-vio">skill · sch-parse</span>；<code>run_hardware_parse.py</code> / <code>csv_schematic_adapter_v2.py</code> / <code>sch_parse.py</code> / <code>csv_pathproof_v2.py</code> / <code>gen_path_defines.py</code> / <code>gen_cbit_defines.py</code> / <code>gen_relay_role_defines.py</code></td><td>六门控任一 FAIL 即停；产物供下游读取</td></tr>
+            <tr><td><span class="chip c-warn">用户触发（旁路）</span></td><td>"编译"/"debug"、"打开 STS8300"、"写测试方案"</td><td>compile / deploy / testplan</td><td><span class="chip c-agent">compile-agent</span> <span class="chip c-agent">deploy-agent</span> <span class="chip c-agent">testplan-agent</span>；<code>compile.ps1</code> / <code>fast_rebuild.ps1</code> / <code>auto_sts8300.py</code> / <code>input_guard.py</code></td><td>不进 codegen pipeline</td></tr>
+            <tr><td><span class="chip c-warn">用户触发（自进化）</span></td><td>"/evolve rules/exp/fn"、"提炼规则/经验/子函数"</td><td>知识沉淀</td><td><span class="chip c-agent">rules-agent</span> <span class="chip c-agent">experience-agent</span> <span class="chip c-agent">sub-function-agent</span></td><td>draft → 人工确认 → active / 发布</td></tr>
+            <tr><td><span class="chip c-ok">每次收尾必做</span></td><td>每次 codegen / debug / 规则修正结束</td><td>daylog + PROGRESS + auto-memory + skill 同步</td><td>skill 自动同步</td><td>daylog 是自进化原料，不依赖完整 pipeline</td></tr>
+            <tr><td><span class="chip c-warn">⏳ 待建</span></td><td>—</td><td>知识完整性审计</td><td><code>gen_knowledge_audit.py</code></td><td>执行顺序第 5 步，P2</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="loops">循环关系</h3>
+
+      <div class="legend">
+        <span class="chip c-info">执行一次</span>
+        <span class="chip c-vio">每次进入必走</span>
+        <span class="chip c-ok">逐 TM · 循环</span>
+        <span class="chip c-warn">每批 / 收尾</span>
+        <span class="chip c-ref">低频</span>
+        <span class="chip c-script">用户触发</span>
+        <span class="chip c-bad">◇ 门禁（FAIL 停留）</span>
+      </div>
+
+      <div class="card flow-panel">
+        <div class="flow-title">① 主流程总览 · 门禁 G0~G5 · 绿 = PASS 前进 / 红 = FAIL 回流</div>
+        <div class="flow-svg-wrap" id="fc-main"></div>
+        <p class="flow-cap"><b>怎么读：</b>每测一项走一圈 <b>G0 → … → G1</b>（绿色箭头）；<b>G1 FAIL</b> → 停留当前 TM 修正，<b>PASS · 非最后一个</b> → 沿绿线回 <b>G0</b>（下一条），<b>最后一个</b> → 进 <b>Step5</b>。收尾<b>每批一次</b>：<b>G2</b> 编译门 → <b>G3</b> Toggle 3 参数 → <b>G4</b> 继电器轨迹 → <b>G5</b> meta 全覆盖，任一 FAIL 沿红线回「修复 → 重新检查」直到 PASS。<b>批量纪律 B-001</b>：先插 1 个代表函数 → 编译 + meta + relay 全绿 → 再放量所有 TM。收尾另有 <code>verify_bst_sw_sequence.py</code>（台阶黄金约束）与各 <code>gen_* --audit-rules</code>（脚本规则自检 13/11/12/19）。</p>
+      </div>
+
+      <!-- 批量放量与收尾双查已并入上面 ① 主流程总览图（Step5 + G2~G5 + FAIL 回流线） -->
+
+      <div class="card flow-panel">
+        <div class="flow-title">② 全链路数据流（文件 × 脚本 × 产物 · 每步输入输出）</div>
+        <div class="flow-svg-wrap" id="fc-supply"></div>
+        <p class="flow-cap"><b>读：</b>左列脚本链按执行顺序排列（Step0 → Step1 → Step2 → Step4/5），每个框 = <b>脚本 · 输入 → 产物</b>；右列 = 终产物及其被谁消费。原理图 / DFT 有变 → 沿橙色虚线回顶部整链重跑（六门控任一 FAIL 即停）；主 pipeline 每测一项只<b>读</b>不重建（有货先验）。SCH-Connect-Map 的<b>生成</b>归 sch-parse，不脚本化。</p>
+      </div>
+
+      <div class="card flow-panel">
+        <div class="flow-title">③ 知识回流环（daylog → /evolve → codegen，收尾沉淀）</div>
+        <div class="flow-svg-wrap" id="fc-know"></div>
+        <p class="flow-cap"><b>读：</b>每次收尾必写 daylog + PROGRESS + auto-memory → 用户触发 <code>/evolve</code> 三 agent 提炼 → 入 <b>L1 rules-registry（强制）</b> / <b>L2 experience + shared_functions（复用）</b> → codegen 生成前先查引用；规则修正后沿橙色线同步 skill / knowledge / check-agent 闭环。</p>
+      </div>
+      <p class="loop-note">铁律要点：单函数冒烟 <b>FAIL 停留当前 TM</b>（B-001 脚本强制）；收尾双查 <b>FAIL→修复→重查→PASS</b>；meta 全覆盖门 <b>每批必做</b>（双向：无 OVERVIEW→ERROR、本批 isCodeGen=Y 未写→FAIL 列 TM）；写码两段式 <b>先正确（追加尾部+编译）后归位（按 TM 编号，最小单位=单个 TM 单元）再增量编译</b>；CBIT-Definition <b>每次进入必走</b>；脚本改动后必跑 <code>--audit-rules</code>（13/11/12/19 规则覆盖自检）。</p>
+
+      <script>
+(function(){
+"use strict";
+var NS="http://www.w3.org/2000/svg";
+function ne(n,a,c){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);(c||[]).forEach(function(x){e.appendChild(x)});return e}
+function T(x,y,s,a){return ne("text",Object.assign({x:x,y:y,"text-anchor":"middle","font-size":"11",fill:"var(--ink)"},a||{}),[document.createTextNode(s)])}
+function poly(pts,r){
+  var d="M"+pts[0][0]+" "+pts[0][1];
+  for(var i=1;i<pts.length-1;i++){
+    var p0=pts[i-1],p1=pts[i],p2=pts[i+1];
+    var dx1=p1[0]-p0[0],dy1=p1[1]-p0[1],l1=Math.hypot(dx1,dy1)||1;
+    var dx2=p2[0]-p1[0],dy2=p2[1]-p1[1],l2=Math.hypot(dx2,dy2)||1;
+    var rr=Math.min(r,l1/2,l2/2);
+    d+=" L"+(p1[0]-dx1/l1*rr)+" "+(p1[1]-dy1/l1*rr)+" Q"+p1[0]+" "+p1[1]+" "+(p1[0]+dx2/l2*rr)+" "+(p1[1]+dy2/l2*rr);
+  }
+  var lp=pts[pts.length-1];
+  return d+" L"+lp[0]+" "+lp[1];
+}
+var COLORS=["accent","ok","bad","warn","info","vio","ink"];
+var KIND={proc:["var(--surface-2)","var(--border-2)","var(--ink)"],script:["var(--accent-soft)","var(--accent)","var(--accent-strong)"],agent:["var(--info-bg)","var(--info)","var(--info)"],gate:["var(--warn-bg)","var(--warn)","var(--warn)"],start:["var(--ok-bg)","var(--ok)","var(--ok)"],term:["var(--ok-bg)","var(--ok)","var(--ok)"]};
+var BADGE={info:["var(--info-bg)","var(--info)"],ok:["var(--ok-bg)","var(--ok)"],warn:["var(--warn-bg)","var(--warn)"],vio:["var(--vio-bg)","var(--vio)"],ref:["var(--surface-2)","var(--border-2)"],script:["var(--accent-soft)","var(--accent)"]};
+function badge(n){
+  if(!n.badge)return null;
+  var c=BADGE[n.bc]||BADGE.ref,b=n.badge,bw=14+b.length*7.5;
+  return ne("g",{},[ne("rect",{x:n.x+n.w-bw-6,y:n.y-10,width:bw,height:14,rx:7,fill:c[0],stroke:c[1],"stroke-width":1}),T(n.x+n.w-bw-6+bw/2,n.y+1,b,{"font-size":9,"font-weight":600,fill:c[1],style:"font-family:var(--mono)"})]);
+}
+function estW(s,fs){var w=0;for(var i=0;i<s.length;i++){var c=s.charCodeAt(i),fw=(c>=0x2E80&&c<=0x9FFF)||(c>=0x3000&&c<=0x30FF)||(c>=0xFF00&&c<=0xFFEF)||c===0x2014||c===0x2190||c===0x2192||c===0x25A0;w+=fw?1:0.6;}return w*fs;}
+function fit(s,fs,avail){while(fs>8&&estW(s,fs)>avail){fs-=0.5;}return fs;}
+function node(n){
+  var c=KIND[n.kind]||KIND.proc,g=ne("g",{}),cx=n.x+n.w/2;
+  if(n.kind==="gate"){
+    g.appendChild(ne("polygon",{points:cx+","+n.y+" "+(n.x+n.w)+","+(n.y+n.h/2)+" "+cx+","+(n.y+n.h)+" "+n.x+","+(n.y+n.h/2),fill:c[0],stroke:c[1],"stroke-width":1.5}));
+  }else{
+    g.appendChild(ne("rect",{x:n.x,y:n.y,width:n.w,height:n.h,rx:(n.kind==="start"||n.kind==="term")?n.h/2:9,fill:c[0],stroke:c[1],"stroke-width":1.5}));
+  }
+  var gAvail=n.kind==="gate"?n.w*0.62:n.w-16;
+  if(n.t)g.appendChild(T(cx,n.kind==="gate"?n.y+n.h*0.42:n.y+n.h/2-2,n.t,{"font-size":fit(n.t,12.5,gAvail),"font-weight":600,fill:c[2],style:"font-family:var(--mono)"}));
+  if(n.s)g.appendChild(T(cx,n.kind==="gate"?n.y+n.h*0.63:n.y+n.h/2+13,n.s,{"font-size":fit(n.s,10.5,gAvail),fill:"var(--muted)"}));
+  if(n.badge)g.appendChild(badge(n));
+  return g;
+}
+function flowChart(id,spec){
+  var el=document.getElementById(id);if(!el)return;
+  var svg=ne("svg",{viewBox:"0 0 "+spec.w+" "+spec.h,"class":"flow-svg",role:"img","aria-label":spec.label||"流程图"});
+  var defs=ne("defs",{});
+  COLORS.forEach(function(c){defs.appendChild(ne("marker",{id:"f-arr-"+c,viewBox:"0 0 10 10",refX:"8",refY:"5",markerWidth:"6",markerHeight:"6",orient:"auto-start-reverse"},[ne("path",{d:"M1,1 L9,5 L1,9 z",style:"fill:var(--"+c+")"})]))});
+  svg.appendChild(defs);
+  (spec.bands||[]).forEach(function(b){
+    svg.appendChild(ne("g",{},[ne("rect",{x:b.x,y:b.y,width:b.w,height:b.h,rx:12,fill:"none",stroke:"var(--border-2)","stroke-width":1.6,"stroke-dasharray":"6 5"}),T(b.x+b.w/2,b.y+18,b.t,{"font-size":13,"font-weight":700,fill:"var(--accent-strong)",style:"font-family:var(--mono)"})]));
+  });
+  (spec.edges||[]).forEach(function(e){
+    var col=e.color||"ink";
+    var pts=e.pts;
+    if(!e.noArrow&&pts.length>1){var a=pts[pts.length-2],b=pts[pts.length-1],dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy);
+      if(len>8){pts=pts.slice(0,-1).concat([[b[0]-dx/len*6,b[1]-dy/len*6]]);}}
+    var p=ne("path",{d:poly(pts,14),fill:"none",stroke:"var(--"+col+")","stroke-width":e.w||1.8,opacity:e.o||1});
+    if(e.dash)p.setAttribute("stroke-dasharray",e.dash);
+    if(!e.noArrow)p.setAttribute("marker-end","url(#f-arr-"+col+")");
+    svg.appendChild(p);
+    if(e.label)svg.appendChild(T(e.lx,e.ly,e.label,{"font-size":11.5,"font-weight":600,fill:"var(--"+col+")",style:"font-family:var(--mono);paint-order:stroke;stroke:var(--surface);stroke-width:4px","text-anchor":e.anchor||"middle"}));
+  });
+  (spec.nodes||[]).forEach(function(n){svg.appendChild(node(n))});
+  el.appendChild(svg);
+}
+
+/* ---------- ① 主流程总览 ---------- */
+flowChart("fc-main",{
+  label:"主流程总览 G0~G5（纵向）",
+  w:740,h:1730,
+  bands:[{x:196,y:418,w:328,h:724,t:"Step4 · 共用生成循环（逐 TM）"}],
+  nodes:[
+    {kind:"start",x:280,y:26,w:160,h:38,t:"用户指令",s:"“写 TMxxx” / “生成代码”"},
+    {kind:"proc",x:230,y:92,w:260,h:46,t:"入口 · 解析指令",s:"工程完整性门 → 本批 TM 清单",badge:"执行一次",bc:"info"},
+    {kind:"proc",x:230,y:158,w:260,h:46,t:"Step0 · 原理图解析",s:"无 SCH-Connect-Map → sch-parse；有 → 沿用",badge:"有货先验",bc:"ref"},
+    {kind:"proc",x:230,y:224,w:260,h:46,t:"Step1 · DFT 解析 + pin 校验",s:"check_dft_pins 三源三层 → 0 未命中放行",badge:"三源三层",bc:"info"},
+    {kind:"proc",x:230,y:290,w:260,h:46,t:"Step2 · CBIT-Definition",s:"有定义+dll超1天→才check / 无定义→创建",badge:"每次进入必走",bc:"vio"},
+    {kind:"proc",x:230,y:356,w:260,h:46,t:"Step3 · 框架创建",s:"7 类项目结构判定: Trim / OTP / OS 等",badge:"每批首轮",bc:"ok"},
+    {kind:"gate",x:300,y:448,w:120,h:64,t:"G0",s:"材料门"},
+    {kind:"script",x:220,y:542,w:280,h:52,t:"relay-agent",s:"通路→角色→SetOn · pin-map"},
+    {kind:"script",x:220,y:624,w:280,h:52,t:"上电",s:"3 段 SECTION"},
+    {kind:"proc",x:220,y:706,w:280,h:52,t:"模板",s:"entertest"},
+    {kind:"agent",x:220,y:788,w:280,h:52,t:"measure",s:"MI/MV/Trim"},
+    {kind:"proc",x:220,y:870,w:280,h:52,t:"LogData",s:"SetResult"},
+    {kind:"gate",x:300,y:952,w:120,h:64,t:"G1",s:"单函数冒烟"},
+    {kind:"gate",x:300,y:1056,w:120,h:64,t:"Last",s:"测试项目"},
+    {kind:"proc",x:230,y:1180,w:260,h:52,t:"Step5 · 收尾双查",s:"check-agent 60+ 项 + 门禁脚本",badge:"每批",bc:"warn"},
+    {kind:"gate",x:300,y:1262,w:120,h:64,t:"G2",s:"编译门"},
+    {kind:"gate",x:300,y:1356,w:120,h:64,t:"G3",s:"Toggle 3 参数"},
+    {kind:"gate",x:300,y:1450,w:120,h:64,t:"G4",s:"继电器轨迹"},
+    {kind:"gate",x:300,y:1544,w:120,h:64,t:"G5",s:"meta 全覆盖"},
+    {kind:"term",x:230,y:1658,w:260,h:46,t:"批完成 PASSED",s:"0 error / 0 warn / 全门 PASS"}
+  ],
+  edges:[
+    {pts:[[360,64],[360,92]]},
+    {pts:[[360,138],[360,158]]},
+    {pts:[[360,204],[360,224]]},
+    {pts:[[360,270],[360,290]]},
+    {pts:[[360,336],[360,356]]},
+    {pts:[[360,402],[360,448]]},
+    {pts:[[360,512],[360,542]]},
+    {pts:[[360,594],[360,624]]},
+    {pts:[[360,676],[360,706]]},
+    {pts:[[360,758],[360,788]]},
+    {pts:[[360,840],[360,870]]},
+    {pts:[[360,922],[360,952]]},
+    {pts:[[360,1016],[360,1056]]},
+    {pts:[[300,1088],[170,1088],[170,480],[300,480]],color:"ok",dash:"6 4",label:"否 → 下一个 TM，回到 G0",lx:178,ly:691,anchor:"start"},
+    {pts:[[360,1120],[360,1180]],color:"ok",label:"是 · 最后一个 → Step5 收尾",lx:370,ly:1160,anchor:"start"},
+    {pts:[[420,984],[540,984],[540,568],[500,568]],color:"bad",label:"FAIL → 停留当前 TM 修正",lx:548,ly:776,anchor:"start"},
+    {pts:[[360,1232],[360,1262]]},
+    {pts:[[360,1326],[360,1356]]},
+    {pts:[[360,1420],[360,1450]]},
+    {pts:[[360,1514],[360,1544]]},
+    {pts:[[420,1294],[580,1294]],color:"bad"},
+    {pts:[[420,1388],[580,1388]],color:"bad"},
+    {pts:[[420,1482],[580,1482]],color:"bad"},
+    {pts:[[420,1576],[580,1576]],color:"bad"},
+    {pts:[[580,1576],[580,1206],[490,1206]],color:"bad",label:"任一 FAIL → 修复重查",lx:572,ly:1436,anchor:"end"},
+    {pts:[[360,1608],[360,1658]],color:"ok",label:"PASS",lx:370,ly:1634,anchor:"start"}
+  ]
+});
+
+/* ---------- ② 全链路数据流 ---------- */
+flowChart("fc-supply",{
+  label:"全链路数据流",
+  w:900,h:570,
+  nodes:[
+    {kind:"script",x:160,y:26,w:420,h:52,t:"csv_schematic_adapter_v2.py",s:"Dali-SCH.csv → CSV_CONNECTIVITY.NET（合成 EDIF）"},
+    {kind:"script",x:160,y:98,w:420,h:52,t:"sch_parse.py · 六任务门控",s:"合成EDIF + CBIT表 → Map(11列) + Component-Statistic（csv_pathproof_v2 哈希冻结）",badge:"任一 FAIL 即停",bc:"warn"},
+    {kind:"script",x:160,y:170,w:420,h:52,t:"gen_testitems_meta.py",s:"Dali_testmode.xlsx → dali_tm_meta.json（完整版）",badge:"两段斜坡→toggle",bc:"vio"},
+    {kind:"script",x:160,y:242,w:420,h:52,t:"gen_test_conditions.py",s:"meta → test_conditions.yaml（testType 权威）",badge:"hash-gated",bc:"ref"},
+    {kind:"script",x:160,y:314,w:420,h:52,t:"check_dft_pins.py",s:"DFT pin × Map 词汇 × DFT 清单 → 三源三层校验",badge:"0 未命中放行",bc:"vio"},
+    {kind:"script",x:160,y:386,w:420,h:52,t:"gen_cbit_defines · gen_path_defines · relay_role",s:"CBIT表 + Map + Step0 分类 → StdAfx.h 三类段",badge:"V1~V8 · P-DEF 12",bc:"warn"},
+    {kind:"script",x:160,y:458,w:420,h:52,t:"gen_power_sequence + verify_* 门禁家族",s:"meta + pin-map + StdAfx.h → PowerState + PASS/FAIL 报告",badge:"收尾双查",bc:"warn"},
+    {kind:"term",x:640,y:101,w:240,h:46,t:"SCH-Connect-Map.txt",s:"权威 11 列 · 低频重建"},
+    {kind:"term",x:640,y:173,w:240,h:46,t:"meta + yaml",s:"DFT 解读层 · 每批刷新"},
+    {kind:"term",x:640,y:389,w:240,h:46,t:"StdAfx.h 三类段",s:"单点 / PATH_RELAY / RELAY_ROLE"},
+    {kind:"term",x:640,y:458,w:240,h:52,t:"test.cpp + PowerState",s:"完整函数 · 批完成 PASS"}
+  ],
+  edges:[
+    {pts:[[370,78],[370,98]]},
+    {pts:[[370,150],[370,170]]},
+    {pts:[[370,222],[370,242]]},
+    {pts:[[370,294],[370,314]]},
+    {pts:[[370,366],[370,386]]},
+    {pts:[[370,438],[370,458]]},
+    {pts:[[580,124],[640,124]]},
+    {pts:[[580,196],[640,196]]},
+    {pts:[[580,412],[640,412]]},
+    {pts:[[580,484],[640,484]]},
+    {pts:[[370,510],[370,540],[60,540],[60,52],[160,52]],color:"warn",dash:"6 4",label:"原理图 / DFT 有变 → 沿链重跑（门控 FAIL 即停）",lx:215,ly:534}
+  ]
+});
+
+/* ---------- ③ 知识回流环 ---------- */
+flowChart("fc-know",{
+  label:"知识回流环",
+  w:900,h:640,
+  nodes:[
+    {kind:"proc",x:290,y:24,w:340,h:46,t:"收尾必写 daylog + PROGRESS + auto-memory",s:"六类标记 · 每次收尾",badge:"每次收尾",bc:"warn"},
+    {kind:"proc",x:290,y:98,w:340,h:46,t:"/evolve 三 agent 提炼",s:"rules / experience / sub-function（用户触发）",badge:"用户触发",bc:"script"},
+    {kind:"script",x:60,y:180,w:230,h:56,t:"rules-agent",s:"→ rules-registry.md · L1 强制"},
+    {kind:"agent",x:335,y:180,w:230,h:56,t:"experience-agent",s:"→ experience/ · L2 参考"},
+    {kind:"agent",x:610,y:180,w:230,h:56,t:"sub-function-agent",s:"→ shared_functions/"},
+    {kind:"proc",x:230,y:330,w:440,h:46,t:"codegen 生成时引用",s:"L1 强制 + L2 复用（生成前先查 param_type_index）",badge:"逐TM · 引用",bc:"ok"}
+  ],
+  edges:[
+    {pts:[[460,70],[460,98]]},
+    {pts:[[460,144],[460,160]],noArrow:true},
+    {pts:[[460,160],[175,160],[175,180]]},
+    {pts:[[460,160],[460,180]]},
+    {pts:[[460,160],[695,160],[695,180]]},
+    {pts:[[175,236],[175,300],[300,300],[300,330]]},
+    {pts:[[450,236],[450,330]]},
+    {pts:[[695,236],[695,300],[600,300],[600,330]]},
+    {pts:[[230,353],[40,353],[40,52],[290,52]],color:"warn",dash:"6 4",label:"规则修正 → 同步 skill / knowledge / check-agent（闭环）",lx:60,ly:347,anchor:"start"}
+  ]
+});
+})();
+      </script>
+
+      <h3 id="gates">门禁一览</h3>
+      <p class="lead">门禁是循环推进的控制点：FAIL 即停留在当前环节，PASS 才前进。</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>关卡</th><th>脚本</th><th>何时</th><th>拦截什么</th></tr></thead>
+          <tbody>
+            <tr><td>材料门（生成前）</td><td><code>verify_material_receipt.py --receipt --tm</code></td><td>Step4 进入 relay 之前</td><td>没有可参考的案例（索引未登记 且 无 code 黄金案例+要点总结）→ 禁止生成；缺材料由用户 action 提供</td></tr>
+            <tr><td>原理图六门控</td><td><code>sch_parse.py</code> G1~G5</td><td>解析时</td><td>任一任务 FAIL → 停止，不生成 map</td></tr>
+            <tr><td>单函数冒烟</td><td><code>verify_single_fn.py --src test.cpp --fn &lt;当前TM&gt;</code></td><td>每 TM 组装完</td><td>占位符 / 分号 / 花括号 / CRLF / 生命周期六阶段 / 寄存器解锁顺序 → FAIL 停留当前 TM</td></tr>
+            <tr><td>Toggle 3 参数门</td><td><code>verify_awg_params.py --src test.cpp</code></td><td>收尾（E005 必跑）</td><td>ramp 非 <code>&lt;基名&gt;_Rise/_Fall/_Hys</code> 3 参数</td></tr>
+            <tr><td>继电器轨迹核对</td><td><code>verify_relay_trace.py --meta [--warn-as-error]</code></td><td>收尾</td><td>无 SetOn（E011）/ 闭环·功能·结构三层 + 反短接</td></tr>
+            <tr><td>meta 全覆盖门</td><td><code>check_testitems_meta.py --require-all --require-scope &lt;本批&gt;</code></td><td>每批收尾</td><td>函数无 OVERVIEW 记录→ERROR；本批 isCodeGen=Y 未写→FAIL 列 TM 编号</td></tr>
+            <tr><td>台阶黄金约束</td><td><code>verify_bst_sw_sequence.py --src</code></td><td>收尾</td><td>BST−SW 台阶上电顺序 / 量程 / 寄存器（R-BST-SW，meta capAuthority 拓扑指纹派生）</td></tr>
+            <tr><td>脚本规则自检</td><td>各 gen_* <code>--audit-rules</code></td><td>脚本改动后</td><td>规则覆盖 13/11/12/19 条未丢</td></tr>
+            <tr><td>编译门禁</td><td><code>fast_rebuild.ps1</code></td><td>收尾 / 写码两段式</td><td>编译 0 error / 0 warn</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ 二、每阶段详细说明 ============ -->
+    <section id="stages">
+      <h2><span class="sec-no">二</span>每阶段详细说明 <span class="sub">执行任务 · 输入 · 输出 · 调用的 agent / skill / 脚本</span></h2>
+      <p class="lead">图例：<span class="chip c-script">脚本</span> = 已脚本化（固定逻辑）；<span class="chip c-agent">agent</span> = 推理密集；<span class="chip c-vio">skill</span> = skill / 模板；<span class="chip c-warn">用户</span> = 你提供 / 拍板。脚本均在 <code>D:\Newtest\CLAUDE_PROCESS\</code> 下；<code>schematic_parse\scripts\</code> 下为解析流水线脚本。</p>
+
+      <h3 id="base">公共基础</h3>
+      <article class="phase" id="base-cfg">
+        <div class="phase-head">
+          <span class="phase-no">Base</span><span class="phase-title">配置与读码（全部环节共享）</span>
+          <span class="chip c-script freq">全局</span>
+        </div>
+        <div class="phase-body">
+          <div class="field"><span class="field-label">执行任务</span><ul><li>统一读取工程配置，派生 <code>test.cpp / sub.cpp / StdAfx.h</code> 绝对路径</li><li>换项目只改 <code>project_config.json</code>，脚本不动</li><li>DLP 加密文件（test.cpp/StdAfx.h/Excel）一律字节模式读写</li></ul></div>
+          <div class="field"><span class="field-label">输入</span><ul><li><code>project_config.json</code>（唯一输入清单：inputs / intermediates / outputs）</li></ul></div>
+          <div class="field"><span class="field-label">输出</span><ul><li>各脚本的 cfg 字典（路径派生）</li></ul></div>
+          <div class="field"><span class="field-label">调用的 agent · skill · 脚本</span><ul><li><span class="chip c-script">脚本</span> <code>proj_config.py</code></li><li><span class="chip c-vio">skill</span> 各 skill 引用 <code>project_config.json</code></li></ul></div>
+        </div>
+      </article>
+
+      <h3 id="main">主 Pipeline（codegen）</h3>
+
+      <article class="phase" id="entry">
+        <div class="phase-head">
+          <span class="phase-no">入口</span><span class="phase-title">解析指令</span>
+          <span class="chip c-script freq">每次进入 codegen</span>
+        </div>
+        <div class="phase-body">
+          <div class="field"><span class="field-label">执行任务</span><ul><li><b>解析用户指令</b> → 本批 TM 清单：提取 TM 编号（"TM614~616" → 614/615/616），对照 OVERVIEW（<code>Dali_testmode.xlsx</code>）圈定本批 N 个 TM（含 <code>isCodeGen</code> 过滤）</li><li><b>前置 · 工程完整性门（2026-08-29 部署）</b>：<code>check_library_files.py</code> — Library Function 16 文件（inireader/BoardCheck/tempchar/treg/Test_Method/spec/FMEA 的 .h+.cpp + test.cpp/sub.cpp）+ <code>.treg</code>，缺 Library 文件 → 反馈「缺失 Library Function」；缺 .treg → 反馈「缺失 setup 函数」；0 缺失才进 Step0</li></ul></div>
+          <div class="field"><span class="field-label">输入</span><ul><li>用户指令（"写 TMxxx"）</li><li>OVERVIEW（<code>Dali_testmode.xlsx</code>）— 只用于圈定本批 TM 清单（TM 编号 / Name / isCodeGen）</li></ul></div>
+          <div class="field"><span class="field-label">输出</span><ul><li><b>本批 TM 清单</b>（仅 N 个 TM 编号，供 Step3 分类 / Step5 <code>--require-scope</code>）</li></ul></div>
+          <div class="field"><span class="field-label">调用的 agent · skill · 脚本</span><ul><li><span class="chip c-vio">skill</span> nuvolta-codegen（无独立脚本）</li></ul></div>
+        </div>
+      </article>
+
+      <article class="phase" id="step0">
+        <div class="phase-head">
+          <span class="phase-no">Step0</span><span class="phase-title">原理图解析（有货先验）</span>
+          <span class="chip c-ref freq">无 Map 才跑</span>
+        </div>
+        <div class="phase-body">
+          <div class="field full"><span class="field-label">① 职责 · 解决什么问题</span><ul><li>把原理图 CSV 变成<b>机器可查的连接权威</b>（SCH-Connect-Map + 源表清单）并哈希冻结防漂移</li><li>解决：后续每一步继电器/通路决策都依赖连接数据——若过期或缺失，生成代码会<b>接错继电器</b></li></ul></div>
+          <div class="field"><span class="field-label">② 输入（来源）</span><ul><li><code>Dali-SCH.csv</code>（唯一权威源：连接 + ComponentValue；DLP）</li><li><code>sch_confirmed.json</code>（用户确认短接）</li><li><code>project_config.json</code>（路径契约）</li></ul></div>
+          <div class="field"><span class="field-label">③ 输出（去向 · 被谁消费）</span><ul><li><code>CSV_CONNECTIVITY.NET</code> → gen_paths.py 兜底 BFS</li><li><code>SCH-Connect-Map.txt</code>（11 列）→ Step1 L1 词汇 / Step2 P3 / Step4 relay-agent / testplan</li><li><code>Component-Statistic.txt</code> → Step1 V8 / Step2 P1</li><li><code>path_proofs</code>（哈希冻结）→ 防漂移比对</li></ul></div>
+          <div class="field full"><span class="field-label">④ 脚本 → 产物映射</span><table class="six"><tr><th>脚本</th><th>输入</th><th>产出 → 落点</th></tr>
+            <tr><td><code>csv_schematic_adapter_v2.py</code></td><td>Dali-SCH.csv</td><td>CSV_CONNECTIVITY.NET（合成 EDIF）</td></tr>
+            <tr><td><code>sch_parse.py</code>（六任务门控）</td><td>合成 EDIF + CBIT表 + Pin_Channel_define.h</td><td>SCH-Connect-Map.txt + Component-Statistic.txt</td></tr>
+            <tr><td><code>csv_pathproof_v2.py</code></td><td>CSV + Map</td><td>path_proofs（哈希冻结）</td></tr></table></div>
+          <div class="field full"><span class="field-label">⑤ 检查</span><table class="six"><tr><th>检查</th><th>查什么</th><th>FAIL 行为</th></tr>
+            <tr><td>六任务门控 G1c/G1d/G2/G2b/G3~G5</td><td>schema/类型交叉/源表映射/连接完整性</td><td><b>任一 FAIL 即停</b>，不生成 map，报告用户</td></tr>
+            <tr><td>孤立 PORT 检测</td><td>port 不属于任何 net</td><td>必须反馈异常，<b>禁止静默跳过</b></td></tr>
+            <tr><td>CBIT↔网表核对</td><td>继电器数一致（如 182=182）</td><td>不一致即停</td></tr></table></div>
+          <div class="field"><span class="field-label">⑥ 执行者</span><ul><li><span class="chip c-script">脚本</span> <code>sch_parse.py</code>；触发 = 有货先验门（无 Map 才跑，有 → 沿用现网产物）</li></ul></div>
+        </div>
+      </article>
+
+      <article class="phase" id="step1">
+        <div class="phase-head">
+          <span class="phase-no">Step1</span><span class="phase-title">DFT 解析 + pin 交叉校验</span>
+          <span class="chip c-info freq">每批 · 0 未命中放行</span>
+        </div>
+        <div class="phase-body">
+          <div class="field full"><span class="field-label">① 职责 · 解决什么问题</span><ul><li>把 DFT xlsx 解读为机器可执行规格（meta + YAML），并用原理图词汇交叉校验 pin</li><li>解决：DFT 拼写错误 / 新角色 pad 与原理图对不上——<b>带病生成后面全错</b>；pin 是全局词汇，澄清一次 85 TM 受益</li></ul></div>
+          <div class="field"><span class="field-label">② 输入（来源）</span><ul><li><code>Dali_testmode.xlsx</code>（OVERVIEW/TestIO/ATESTMAP/DTESTMAP；DLP）</li><li><code>Pin_Channel_define.h</code>（源表名映射权威，DLP）</li><li><code>SCH-Connect-Map.txt</code>（L1 词汇表，来自 Step0）</li></ul></div>
+          <div class="field"><span class="field-label">③ 输出（去向 · 被谁消费）</span><ul><li><code>dali_tm_meta.json</code>（TestItemMeta 完整版）→ Step3 分类 / Step4 <code>--meta</code> / Step5 <code>--require-scope</code></li><li><code>test_conditions.yaml</code>（testType 权威）→ Step3 选模板 / Step4 conditions</li><li>pin 校验报告 → 0 未命中才放行 Step2</li></ul></div>
+          <div class="field full"><span class="field-label">④ 脚本 → 产物映射</span><table class="six"><tr><th>脚本</th><th>输入</th><th>产出 → 落点</th></tr>
+            <tr><td><span class="chip c-agent">agent</span> dft-parse-agent</td><td>DFT 段（TM 行）</td><td>TestItemMeta 部分版（pinsInvolved/floatingPairs；resourcesInvolved 留给 relay 层）</td></tr>
+            <tr><td><code>gen_testitems_meta.py</code></td><td>部分版 + 寄存器补充</td><td>dali_tm_meta.json 完整版；<b>两段斜坡(升+降)→testType 强制 toggle</b></td></tr>
+            <tr><td><code>gen_test_conditions.py</code></td><td>meta</td><td>test_conditions.yaml（hash-gated 有货先验；power 仅静态 vset → registers → measure/observe → rampv/rampi）</td></tr>
+            <tr><td><code>check_dft_pins.py</code></td><td>DFT pin + Map + DFT 清单</td><td>三源三层校验报告</td></tr></table></div>
+          <div class="field full"><span class="field-label">⑤ 检查</span><table class="six"><tr><th>检查</th><th>查什么</th><th>FAIL 行为</th></tr>
+            <tr><td>三源三层：L1 DUT pad（=map token+下划线词干 INT↔INT_PA0）/ L2 测试 pad 角色（ATEST0/1·DTEST0）/ L3 组合节点（BST_SW·PGND_SW·PMID_SW）</td><td>DFT 每个 pin 在三层之一命中</td><td>未命中 → 收集清单 → <b>问用户</b>；0 未命中（退出码 0）才放行 Step2</td></tr></table></div>
+          <div class="field"><span class="field-label">⑥ 执行者</span><ul><li><span class="chip c-agent">dft-parse-agent</span> + <span class="chip c-script">脚本</span> ×3</li></ul></div>
+        </div>
+      </article>
+
+      <article class="phase" id="step2">
+        <div class="phase-head">
+          <span class="phase-no">Step2</span><span class="phase-title">CBIT-Definition</span>
+          <span class="chip c-script freq">公共前置 · 每次进入必走</span>
+        </div>
+        <div class="phase-body">
+          <div class="field full"><span class="field-label">① 职责 · 解决什么问题</span><ul><li>保证 StdAfx.h <b>三类继电器 #define 完整、正确、最新</b>（判定门：有定义+dll&gt;1天才 check；无定义 → 四阶段创建）</li><li>解决：写码 <code>cbite.SetOn()</code> 引用的继电器名没有权威定义 → 编译错 / 接错继电器</li></ul></div>
+          <div class="field"><span class="field-label">② 输入（来源）</span><ul><li><code>CBIT表-DALI.xlsx</code>（relay 类型/位号权威；DLP）+ <code>Component-Statistic.txt</code> + <code>SCH-Connect-Map.txt</code>（B）</li><li>StdAfx.h 现状 + 工程 dll <code>F12011.dll</code> mtime（时效门）</li></ul></div>
+          <div class="field"><span class="field-label">③ 输出（去向 · 被谁消费）</span><ul><li>StdAfx.h 三类段：单点 Kxx（P1）/ PATH_RELAY 段（P3）/ RELAY_ROLE 段（Step0 分类）</li><li>消费者：Step4 relay-agent SetOn 命名、verify_relay_trace.py、check E——<b>全工作流唯一继电器命名权威</b></li></ul></div>
+          <div class="field full"><span class="field-label">④ 脚本 → 产物映射（四阶段 P1→P2→P3→P4）</span><table class="six"><tr><th>阶段</th><th>命令</th><th>产出 → 落点</th></tr>
+            <tr><td>P1 单点</td><td><code>gen_cbit_defines.py --cbit &lt;xlsx&gt; --stat &lt;txt&gt;</code></td><td>单点 #define 块 + V1~V8 报告（OVERALL PASS 才可用）</td></tr>
+            <tr><td>P2 通路</td><td>优先读 SCH-Connect-Map；缺失时 <code>gen_paths.py --netlist --cbit --json</code></td><td>path_list JSON + 通路文档（BFS 兜底）</td></tr>
+            <tr><td>P3 命名发布</td><td><code>gen_path_defines.py</code>（DLP 字节模式）</td><td>PATH_RELAY 段写入 StdAfx.h 2.x；歧义组交 cbit-path-namer 复核</td></tr>
+            <tr><td>P4 校验</td><td><code>gen_cbit_defines.py --verify &lt;StdAfx.h&gt; [--map &lt;Map&gt;]</code></td><td>V1~V8 对拍报告（加 --map 跑 V2/V7）</td></tr>
+            <tr><td>角色段</td><td><code>gen_relay_role_defines.py</code></td><td>RELAY_ROLE 段（稳压/P2P/短路/上拉/下拉）</td></tr></table></div>
+          <div class="field full"><span class="field-label">⑤ 检查</span><table class="six"><tr><th>检查</th><th>查什么</th><th>FAIL 行为</th></tr>
+            <tr><td>V1~V8（<b>V6=三重门</b>：端别识别 × 电气可达 FH/FL·SH/SL × 收敛防跨极性）</td><td>位号唯一/命名/范围/覆盖/F-S 合并/统计对拍</td><td>任一项 FAIL → OVERALL FAIL，停下问用户</td></tr>
+            <tr><td><code>gen_path_defines.py --verify</code> + <code>--audit-rules</code></td><td>StdAfx.h 2.x 段 vs Map 一致性；P-DEF 12 规则</td><td>缺项/冲突 FAIL</td></tr>
+            <tr><td>dll 时效门</td><td>F12011.dll mtime 距今</td><td>≤1 天 → 跳过 P4（定义刚随编译发布）；&gt;1 天 → 必查</td></tr>
+            <tr><td>规则覆盖自检（脚本改动后必跑）</td><td>13 + 11 + 12 规则（cbit_defines/paths/path_defines）</td><td>规则函数缺失即 FAIL</td></tr></table></div>
+          <div class="field"><span class="field-label">⑥ 执行者</span><ul><li><span class="chip c-agent">cbit-agent</span>（编排）<span class="chip c-agent">cbit-path-namer</span>（仅歧义组）+ <span class="chip c-script">脚本</span> ×4</li></ul></div>
+        </div>
+      </article>
+
+      <article class="phase" id="step3">
+        <div class="phase-head">
+          <span class="phase-no">Step3</span><span class="phase-title">框架创建（批次级）</span>
+          <span class="chip c-tpl freq">每批首轮 · 一次性分类</span>
+        </div>
+        <div class="phase-body">
+          <div class="field full"><span class="field-label">① 职责 · 解决什么问题</span><ul><li>一次把本批 N 个 TM 按 <b>7 类项目结构类型</b>分好类（按序命中即停；2~6 类 Contact/OTP/P2P/Leakage 框架待确认），有框架的按 testType 选模板——<b>本环节 = testType 类型判定权威点（唯一，读 <code>test_conditions.yaml</code> 覆盖后值）</b></li><li>解决：逐个 TM 重判类型 → 慢且可能不一致；分类只做一次，写码循环只管填充</li></ul></div>
+          <div class="field"><span class="field-label">② 输入（来源）</span><ul><li><code>test_conditions.yaml</code> 的 <code>testType</code>（Step1 权威，以覆盖后值为准：两段斜坡→toggle）</li><li><code>standards/framework.md</code> + <code>test-types.md</code>（7 类判定表）</li></ul></div>
+          <div class="field"><span class="field-label">③ 输出（去向 · 被谁消费）</span><ul><li>函数骨架（占位符模板）→ Step4 逐 TM 填充：普通 = 6 段注释框架；Toggle = Rise/Fall/Hys 3 参数；Trim = 9 固定后缀 + step0~N 走 sub.cpp</li></ul></div>
+          <div class="field full"><span class="field-label">④ 脚本 → 产物映射</span><table class="six"><tr><th>执行体</th><th>输入</th><th>产出 → 落点</th></tr>
+            <tr><td><span class="chip c-tpl">模板</span> framework.md / test-types.md</td><td>testType</td><td>test.cpp 函数骨架（占位符 &lt;%RELAY_CODE%&gt; 等，Step4 逐段填充）</td></tr></table></div>
+          <div class="field full"><span class="field-label">⑤ 检查</span><table class="six"><tr><th>检查</th><th>查什么</th><th>FAIL 行为</th></tr>
+            <tr><td>Trim 判定铁律</td><td>DFT Trim='Y' → 无条件走 trim 框架</td><td><b>禁止静默降级</b>为普通框架（用户纠偏）</td></tr>
+            <tr><td>testType 权威</td><td>不再从 DFT 重判，直接读 yaml</td><td>覆盖后值优先（两段斜坡→toggle）</td></tr></table></div>
+          <div class="field"><span class="field-label">⑥ 执行者</span><ul><li><span class="chip c-tpl">模板</span> + agent（批次级一次）</li></ul></div>
+        </div>
+      </article>
+
+      <article class="phase" id="step4">
+        <div class="phase-head">
+          <span class="phase-no">Step4</span><span class="phase-title">共用生成循环（每测试项）</span>
+          <span class="chip c-ok freq">逐 TM · 环节①~⑧</span>
+        </div>
+        <div class="phase-body">
+          <div class="field full"><span class="field-label">① 职责 · 解决什么问题</span><ul><li>逐 TM 把骨架填成完整可编译函数：继电器闭合 → 上电 → 寄存器 → 测量 → 下电 → LogData</li><li>解决：每类错误在<b>产生点立即拦截</b>（单函数冒烟 FAIL 停留当前 TM，不污染下游）</li></ul></div>
+          <div class="field"><span class="field-label">② 输入（来源）</span><ul><li>函数骨架（Step3）+ TestItemMeta + <code>test_conditions.yaml</code> conditions（Step1）</li><li>SCH-Connect-Map + StdAfx.h（Step0/2）+ Pin_Channel_define.h</li></ul></div>
+          <div class="field"><span class="field-label">③ 输出（去向 · 被谁消费）</span><ul><li>test.cpp 完整 TM 函数体（追加尾部）+ sub.cpp（Trim）</li><li>PowerState JSON（下电段内部复用 + check）+ pin-map JSON（喂 gen_power_sequence）→ Step5 收尾</li></ul></div>
+          <div class="field full"><span class="field-label">④ 脚本 → 产物映射（按环节）</span><table class="six"><tr><th>环节</th><th>执行体 / 命令</th><th>产出 → 落点</th></tr>
+            <tr><td>① 材料门</td><td><code>verify_material_receipt.py --receipt --tm</code></td><td>PASS / FAIL（索引登记 ∨ code 黄金案例+要点总结）</td></tr>
+            <tr><td>② 继电器闭合</td><td><span class="chip c-agent">relay-agent</span>（先通路 → 再角色 → 统一 <code>SetOn(Kxx,Kyy,-1)+delay_ms(3)</code>；无继电器显式 <code>SetOn(-1)</code>）</td><td>继电器闭合代码 + pin-map JSON；命名以 StdAfx.h 为准</td></tr>
+            <tr><td>③ 上电/下电</td><td><code>gen_power_sequence.py --meta --pin-map --define</code></td><td>POWER_ON / POWER_STATE / POWER_OFF 三段 SECTION（R-PON 19 规则；小电流两段式按 PIN 类型）</td></tr>
+            <tr><td>④ 寄存器</td><td>模板填充 <code>entertestmode();</code> + DFT Software_initial 原样复制</td><td>寄存器段（重新上电后必先 entertestmode）</td></tr>
+            <tr><td>⑤ 测量</td><td><span class="chip c-agent">measure-agent</span>（MI→MIRET / MV→MVRET；<b>Toggle→Library-Functions <code>test_method</code></b>.rampv_capv/rampi_capv（64 函数 ramp 库；无 AWG 禁用 R-AWG）；<b>Trim→Library-Functions <code>treg</code></b>：TRIM_NODE.execute，走 sub.cpp）</td><td>测量段</td></tr>
+            <tr><td>⑥ LogData</td><td>模板（R-LOG / R-HYS / R-VIR 单位规则）</td><td>SetTestResult 段（单位换算在赋值处带注释）</td></tr>
+            <tr><td>⑦ 单函数冒烟</td><td><code>verify_single_fn.py --src test.cpp --fn &lt;当前TM&gt;</code></td><td>7 项冒烟报告</td></tr>
+            <tr><td>⑧ 循环判断</td><td>最后一个? 否→回 ① / 是→Step5</td><td>—</td></tr></table></div>
+          <div class="field full"><span class="field-label">⑤ 检查</span><table class="six"><tr><th>检查</th><th>查什么</th><th>FAIL 行为</th></tr>
+            <tr><td>材料门</td><td>该 TM 有无可参考案例</td><td><b>FAIL 禁止进入 relay-agent</b>，缺材料由用户 action 提供</td></tr>
+            <tr><td>冒烟 7 项（B-001 强制）</td><td>占位符/分号/花括号/CRLF/模板残留/lifecycle 六阶段证据/寄存器解锁顺序</td><td><b>FAIL 停留当前 TM 修正</b>，不得进下一个</td></tr>
+            <tr><td>R-PON 19 规则（脚本改动必跑 <code>--audit-rules</code>）</td><td>上电/下电规则覆盖</td><td>规则函数缺失即 FAIL</td></tr></table></div>
+          <div class="field"><span class="field-label">⑥ 执行者</span><ul><li><span class="chip c-agent">relay-agent</span> <span class="chip c-agent">measure-agent</span> + <span class="chip c-script">脚本</span> ×3 + <span class="chip c-tpl">模板</span></li></ul></div>
+        </div>
+      </article>
+
+      <article class="phase" id="step5">
+        <div class="phase-head">
+          <span class="phase-no">Step5</span><span class="phase-title">收尾双查</span>
+          <span class="chip c-info freq">每批 · FAIL→修复→重查</span>
+        </div>
+        <div class="phase-body">
+          <div class="field full"><span class="field-label">① 职责 · 解决什么问题</span><ul><li>批级终检 + 机械强制 meta 全覆盖</li><li>解决：漏写 TM / OVERVIEW 无记录 / meta 缺失被<b>静默留到下批</b>（TM403-425 漏点，2026-08-10 堵住）</li></ul></div>
+          <div class="field"><span class="field-label">② 输入（来源）</span><ul><li>组装完整代码 + TestItemMeta + PowerState + StdAfx.h（Step4）</li><li>OVERVIEW（Dali_testmode.xlsx）+ 本批 TM 范围（用户指令）</li></ul></div>
+          <div class="field"><span class="field-label">③ 输出（去向 · 被谁消费）</span><ul><li>PASS/FAIL 报告 + meta 覆盖率报告 + 编译验证（0 error / 0 warn）</li><li>PASS → 批完成；FAIL → 修复 → 重查 → 直到 PASS</li></ul></div>
+          <div class="field full"><span class="field-label">④ 脚本 → 产物映射</span><table class="six"><tr><th>脚本</th><th>输入</th><th>产出 → 落点</th></tr>
+            <tr><td><span class="chip c-agent">check-agent</span>（60+ 项 P/E/T/R/V/M/H 组）</td><td>完整代码 + meta + PowerState + 定义文件</td><td>结构化检查报告</td></tr>
+            <tr><td><code>check_testitems_meta.py --require-all --require-scope &lt;本批&gt;</code></td><td>test.cpp + OVERVIEW</td><td>覆盖率报告（<b>双向强制</b>）</td></tr>
+            <tr><td><code>verify_relay_trace.py --meta &lt;新meta&gt; --warn-as-error</code></td><td>SetOn 序列 + meta + StdAfx.h</td><td>继电器轨迹对拍</td></tr>
+            <tr><td><code>verify_awg_params.py</code></td><td>ramp/AWG 参数</td><td>AWG 参数校验</td></tr>
+            <tr><td><code>gen_cbit_defines.py --verify</code></td><td>StdAfx.h</td><td>定义对拍（cbit-check 脚本化）</td></tr>
+            <tr><td><code>fast_rebuild.ps1</code></td><td>工程</td><td>秒级编译（0 error / 0 warn）</td></tr></table></div>
+          <div class="field full"><span class="field-label">⑤ 检查</span><table class="six"><tr><th>检查</th><th>查什么</th><th>FAIL 行为</th></tr>
+            <tr><td>meta 双向强制：正向 --require-all（每函数有 OVERVIEW 记录）；反向 --require-scope（isCodeGen='Y' 每项有 DUT_API 函数）</td><td>本批范围内无漏项</td><td>缺任一项 → <b>FAIL 并列出具体 TM 编号+Name</b>（禁止静默留到下批）</td></tr>
+            <tr><td>收尾顺序铁律</td><td>写完代码 → meta 门 → verify_relay_trace</td><td>顺序错误 = 流程违规</td></tr></table></div>
+          <div class="field"><span class="field-label">⑥ 执行者</span><ul><li><span class="chip c-agent">check-agent</span> + <span class="chip c-script">门禁脚本</span> ×5</li></ul></div>
+        </div>
+      </article>
+
+      <h3 id="sch">原理图解析（数据供给，低频重建）</h3>
+      <article class="phase" id="step-sch">
+        <div class="phase-head">
+          <span class="phase-no">S</span><span class="phase-title">sch-parse 流水线 + 定义发布</span>
+          <span class="chip c-vio freq">CSV 更新时</span>
+        </div>
+        <div class="phase-body">
+          <div class="field full"><span class="field-label">① 职责 · 解决什么问题</span><ul><li>低频重建原理图派生数据全链（合成 EDIF → Map → 统计 → 冻结）</li><li>解决：CSV 更新后所有下游产物过期——整链一次性重跑并重新冻结</li></ul></div>
+          <div class="field"><span class="field-label">执行任务</span><ul><li>CSV schema 校验 → 合成 EDIF → 六任务门控解析（G1c/G1d/G2/G3/G4/G5）</li><li>任一任务 FAIL → 停止，向用户报告，不生成 map</li><li>哈希冻结 PathProof，防原理图漂移</li><li>发布通路定义 + 角色继电器定义到 StdAfx.h（先备份）</li></ul></div>
+          <div class="field"><span class="field-label">输入</span><ul><li><code>Dali-SCH.csv</code>（25 列契约）+ <code>sch_confirmed.json</code>（用户确认短接）</li><li><code>project_config.json</code></li></ul></div>
+          <div class="field"><span class="field-label">输出</span><ul><li><code>CSV_CONNECTIVITY.NET</code> · <code>SCH-Connect-Map.txt</code>（11 列，含列11 通路分类）· <code>Component-Statistic.txt</code> · <code>path_proofs.json.txt</code> · validation_manifest</li><li>StdAfx.h 2.x 通路段 + RELAY_ROLE 段（稳压/P2P/短路/上拉/下拉）</li></ul></div>
+          <div class="field"><span class="field-label">调用的 agent · skill · 脚本</span><ul><li><span class="chip c-vio">skill · sch-parse</span>（薄指针 → <code>schematic_parse/SKILL.md</code>）</li><li><span class="chip c-script">脚本</span> <code>run_hardware_parse.py</code>（编排入口，<code>--publish-definitions</code> 发布）· <code>csv_schematic_adapter_v2.py</code> · <code>sch_parse.py</code>（六门控引擎）· <code>csv_pathproof_v2.py</code> · <code>gen_path_defines.py</code> · <code>gen_cbit_defines.py</code> · <code>gen_relay_role_defines.py</code></li></ul></div>
+        </div>
+      </article>
+
+
+      <h3 id="assets">数据资产总表（产自 → 被谁消费 → 何时重跑）</h3>
+      <div class="card" style="padding:1rem 1.2rem;overflow-x:auto">
+        <table class="six">
+          <tr><th>资产</th><th>产自</th><th>被谁消费</th><th>何时重跑</th></tr>
+          <tr><td><code>Dali-SCH.csv</code></td><td>外部输入（唯一权威源）</td><td>adapter</td><td>CSV 更新</td></tr>
+          <tr><td><code>NU1201.treg</code>（Trim 参数定义）</td><td>外部输入（用户提供；<b>换项目同步更换</b>）</td><td>Step3 Trim 判定 / Step4 写码参照 / 运行时 trim_reg.init；入口工程完整性门检查</td><td>换芯片时人工更换</td></tr>
+          <tr><td>Library Function 16 文件（inireader/BoardCheck/tempchar/treg/Test_Method/spec/FMEA + test/sub.cpp）</td><td>外部输入（用户提供工程）</td><td>编译链接 / Step4 写码落点；入口工程完整性门检查（缺失反馈）</td><td>换项目时人工更换</td></tr>
+          <tr><td><code>CSV_CONNECTIVITY.NET</code></td><td>csv_schematic_adapter_v2</td><td>sch_parse / gen_paths（兜底）</td><td>随 CSV</td></tr>
+          <tr><td><code>SCH-Connect-Map.txt</code>（11 列权威）</td><td>sch_parse.py</td><td>Step1 L1 / Step2 P3 / Step4 relay-agent / testplan</td><td>随 CSV（有货先验）</td></tr>
+          <tr><td><code>Component-Statistic.txt</code></td><td>sch_parse.py</td><td>Step1 V8 / Step2 P1 / testplan</td><td>随 CSV</td></tr>
+          <tr><td><code>path_proofs</code></td><td>csv_pathproof_v2</td><td>哈希冻结防漂移比对</td><td>随 CSV</td></tr>
+          <tr><td><code>dali_tm_meta.json</code></td><td>gen_testitems_meta</td><td>Step3 / Step4 --meta / Step5 --require-scope</td><td>DFT 变</td></tr>
+          <tr><td><code>test_conditions.yaml</code></td><td>gen_test_conditions</td><td>Step3 testType / Step4 conditions</td><td>meta 变（hash-gated）</td></tr>
+          <tr><td>StdAfx.h 单点块</td><td>gen_cbit_defines P1</td><td>编译 + SetOn 命名权威</td><td>CBIT 表变</td></tr>
+          <tr><td>StdAfx.h PATH_RELAY 段</td><td>gen_path_defines</td><td>relay-agent 通路名</td><td>Map 变</td></tr>
+          <tr><td>StdAfx.h RELAY_ROLE 段</td><td>gen_relay_role_defines</td><td>relay-agent 角色继电器</td><td>Step0 分类变</td></tr>
+          <tr><td>pin-map JSON</td><td>relay-agent（环节② 副产物）</td><td>gen_power_sequence</td><td>逐 TM</td></tr>
+          <tr><td>PowerState JSON</td><td>gen_power_sequence</td><td>下电段 + check-agent</td><td>逐 TM</td></tr>
+          <tr><td><code>test.cpp / sub.cpp</code></td><td>Step4 生成 + 人工修正</td><td>编译 / testplan</td><td>逐批</td></tr>
+          <tr><td>Library-Functions <code>test_method/</code>（64 ramp 函数）</td><td>项目库（用户维护，DLP）</td><td>Step4 ⑤ measure-agent：Toggle 必调 rampv_capv/rampi_capv（无 AWG 禁用）</td><td>静态（gen_ramp64.py 生成）</td></tr>
+          <tr><td>Library-Functions <code>treg/</code>（Trim 管理类）</td><td>项目库</td><td>Step3 Trim 框架 + Step4：trim_reg.trim/execute（走 sub.cpp）</td><td>NU1201.treg 变</td></tr>
+          <tr><td>Library-Functions <code>shared_functions/</code></td><td>sub-function-agent 沉淀（/evolve fn）</td><td>Step4 生成前查 functions-registry，命中复用（src/ 当前空）</td><td>/evolve fn 发布</td></tr>
+          <tr><td><code>F12011.dll</code></td><td>fast_rebuild / compile</td><td>Step2 时效门（mtime）</td><td>每次编译</td></tr>
+        </table>
+      </div>
+
+      <h3 id="apx-script">附录 A · 脚本速查（阶段 / 检查命令 / 规则数）</h3>
+      <div class="card" style="padding:1rem 1.2rem;overflow-x:auto">
+        <table class="six">
+          <tr><th>脚本</th><th>阶段</th><th>核心命令</th><th>检查命令</th><th>规则数</th></tr>
+          <tr><td><code>csv_schematic_adapter_v2.py</code></td><td>Step0</td><td>CSV → 合成 EDIF</td><td>—</td><td>—</td></tr>
+          <tr><td><code>sch_parse.py</code></td><td>Step0</td><td>六任务门控解析</td><td>门控内建</td><td>6 任务</td></tr>
+          <tr><td><code>csv_pathproof_v2.py</code></td><td>Step0</td><td>哈希冻结</td><td>—</td><td>—</td></tr>
+          <tr><td><code>check_dft_pins.py</code></td><td>Step1</td><td>三源三层校验</td><td>退出码 0 放行</td><td>3 层</td></tr>
+          <tr><td><code>gen_testitems_meta.py</code></td><td>Step1</td><td>meta 生成（toggle 覆盖）</td><td>—</td><td>—</td></tr>
+          <tr><td><code>gen_test_conditions.py</code></td><td>Step1</td><td>yaml 生成</td><td>hash-gated</td><td>—</td></tr>
+          <tr><td><code>gen_cbit_defines.py</code></td><td>Step2</td><td><code>--cbit --stat</code> / <code>--verify</code></td><td><code>--audit-rules</code></td><td>13</td></tr>
+          <tr><td><code>gen_paths.py</code></td><td>Step2 P2 兜底</td><td><code>--netlist --cbit --json</code></td><td><code>--audit-rules</code></td><td>11</td></tr>
+          <tr><td><code>gen_path_defines.py</code></td><td>Step2 P3</td><td>PATH_RELAY 发布 / <code>--verify</code></td><td><code>--audit-rules</code></td><td>12</td></tr>
+          <tr><td><code>gen_relay_role_defines.py</code></td><td>Step2</td><td>RELAY_ROLE 发布</td><td>VERIFY</td><td>—</td></tr>
+          <tr><td><code>verify_material_receipt.py</code></td><td>Step4 ①</td><td>材料门</td><td>FAIL 拦截</td><td>—</td></tr>
+          <tr><td><code>gen_power_sequence.py</code></td><td>Step4 ③</td><td>三段 SECTION</td><td><code>--audit-rules</code></td><td>19</td></tr>
+          <tr><td><code>verify_single_fn.py</code></td><td>Step4 ⑦</td><td>单函数冒烟</td><td>FAIL 停留当前 TM</td><td>7 项</td></tr>
+          <tr><td><code>check_testitems_meta.py</code></td><td>Step5</td><td><code>--require-all --require-scope</code></td><td>双向强制</td><td>—</td></tr>
+          <tr><td><code>verify_relay_trace.py</code></td><td>Step5</td><td>继电器轨迹对拍</td><td><code>--warn-as-error</code></td><td>—</td></tr>
+          <tr><td><code>verify_awg_params.py</code></td><td>Step5</td><td>AWG 参数校验</td><td>—</td><td>—</td></tr>
+          <tr><td><code>fast_rebuild.ps1</code></td><td>Step5</td><td>秒级编译</td><td>0 error / 0 warn</td><td>—</td></tr>
+        </table>
+      </div>
+
+        <p class="flow-cap" style="margin-top:.5rem"><b>注：</b>Library-Functions（非脚本）不在此表——消费点见数据资产总表：test_method（Toggle 测量）、treg（Trim）、shared_functions（查表复用）。</p>
+      <h3 id="apx-check">附录 B · 检查项汇总（查什么 / FAIL 行为）</h3>
+      <div class="card" style="padding:1rem 1.2rem;overflow-x:auto">
+        <table class="six">
+          <tr><th>检查层</th><th>内容</th><th>FAIL 行为</th></tr>
+          <tr><td>Step1 三源三层</td><td>L1 DUT pad / L2 测试 pad 角色 / L3 组合节点</td><td>未命中 → 问用户；0 未命中才放行</td></tr>
+          <tr><td>Step2 V1~V8</td><td>位号唯一/命名/范围/覆盖/<b>V6 三重门</b>/统计对拍</td><td>OVERALL FAIL → 停下问用户</td></tr>
+          <tr><td>Step2 规则覆盖</td><td>13（cbit_defines）+ 11（paths）+ 12（path_defines）</td><td>脚本改动后必跑 --audit-rules</td></tr>
+          <tr><td>Step4 材料门</td><td>可参考案例存在</td><td>FAIL 禁止进入 relay-agent</td></tr>
+          <tr><td>Step4 冒烟 7 项</td><td>占位符/分号/花括号/CRLF/残留/lifecycle/解锁顺序</td><td>FAIL 停留当前 TM</td></tr>
+          <tr><td>Step4 上电 19 规则</td><td>R-PON（含小电流两段式按 PIN 类型）</td><td>--audit-rules 必跑</td></tr>
+          <tr><td>Step5 meta 双向</td><td>正向全覆盖 + 反向无漏项</td><td>FAIL 列出具体 TM</td></tr>
+          <tr><td>Step5 轨迹/AWG/定义/编译</td><td>SetOn 对拍 / ramp 参数 / define 对拍 / 0 err 0 warn</td><td>任一 FAIL → 修复重查直到 PASS</td></tr>
+        </table>
+      </div>
+
+      <h3 id="bypass">旁路（用户触发，不进 codegen pipeline）</h3>
+
+      <article class="phase" id="step-cmp">
+        <div class="phase-head">
+          <span class="phase-no">C</span><span class="phase-title">编译调试</span>
+          <span class="chip c-warn freq">用户触发</span>
+        </div>
+        <div class="phase-body">
+          <div class="field full"><span class="field-label">① 职责 · 解决什么问题</span><ul><li>用户触发旁路：打开 VS 工程 → 写码 → code check → 编译 → Debug；解决「代码生成后需要人工上机验证，编译调试要固定流程防手工拼命令出错」</li></ul></div>
+          <div class="field"><span class="field-label">执行任务</span><ul><li>打开 VS 工程 → 写码 → code check → 编译 → Debug 闭环</li><li>模式 A 纯编译 / 模式 B 写码 + 编译；自修复最多 10 次</li><li>快速构建验证用 <code>fast_rebuild.ps1</code>（秒级）</li></ul></div>
+          <div class="field"><span class="field-label">输入</span><ul><li>工程路径（.sln/.vcxproj）+ 修改指令/代码 + 配置（Release/Debug）</li></ul></div>
+          <div class="field"><span class="field-label">输出</span><ul><li>修改摘要（文件+行号）+ Rebuild 结果 + Debug 启动状态</li></ul></div>
+          <div class="field"><span class="field-label">调用的 agent · skill · 脚本</span><ul><li><span class="chip c-agent">compile-agent</span> <span class="chip c-script">脚本</span> <code>compile.ps1 -ProjectPath &lt;工程&gt; [-SkipDebug]</code> · <code>fast_rebuild.ps1</code></li></ul></div>
+        </div>
+      </article>
+
+      <article class="phase" id="step-dep">
+        <div class="phase-head">
+          <span class="phase-no">D</span><span class="phase-title">部署（STS8300 自动开软件）</span>
+          <span class="chip c-warn freq">用户触发</span>
+        </div>
+        <div class="phase-body">
+          <div class="field full"><span class="field-label">① 职责 · 解决什么问题</span><ul><li>用户触发旁路：自动开 STS8300 软件并前置 VS；解决「上机前人工开 5 层软件繁琐易漏步」</li></ul></div>
+          <div class="field"><span class="field-label">执行任务</span><ul><li>Launch → Login → VC Project → VS → Build → F5（状态检测 0-4 跳过已完成步）</li><li>VS 已运行零确认；未运行只问一次</li><li>自动化期间 input_guard 屏蔽键鼠，ESC 中止</li></ul></div>
+          <div class="field"><span class="field-label">输入</span><ul><li>PGS_PATH + PGS_NAME（路径 B）；VS 状态检测（COM）</li></ul></div>
+          <div class="field"><span class="field-label">输出</span><ul><li>软件就绪状态 → 交给 compile-agent</li></ul></div>
+          <div class="field"><span class="field-label">调用的 agent · skill · 脚本</span><ul><li><span class="chip c-agent">deploy-agent</span> <span class="chip c-script">脚本</span> <code>auto_sts8300.py &lt;PGS_PATH&gt; &lt;PGS_NAME&gt;</code> · <code>input_guard.py</code></li></ul></div>
+        </div>
+      </article>
+
+      <article class="phase" id="step-tp">
+        <div class="phase-head">
+          <span class="phase-no">T</span><span class="phase-title">测试方案生成</span>
+          <span class="chip c-warn freq">用户触发</span>
+        </div>
+        <div class="phase-body">
+          <div class="field full"><span class="field-label">① 职责 · 解决什么问题</span><ul><li>用户触发旁路：程序+硬件图 → 测试方案 Word；解决「交给产线/客户的方案文档人工整理耗时」</li></ul></div>
+          <div class="field"><span class="field-label">执行任务</span><ul><li>程序 + 硬件图 → 人类可读测试方案 Word 文档</li><li>继电器功能 / 源表通路归类以 SCH-Connect-Map / Component-Statistic 为准（非代码注释）</li></ul></div>
+          <div class="field"><span class="field-label">输入</span><ul><li>test.cpp / sub.cpp + SCH-Connect-Map + Component-Statistic</li></ul></div>
+          <div class="field"><span class="field-label">输出</span><ul><li><code>.docx</code> 测试方案（按 TM 编号排序，含目录）</li></ul></div>
+          <div class="field"><span class="field-label">调用的 agent · skill · 脚本</span><ul><li><span class="chip c-agent">testplan-agent</span>；python-docx（无独立脚本）</li></ul></div>
+        </div>
+      </article>
+
+      <h3 id="evolve">自进化（/evolve，异步沉淀）</h3>
+
+      <article class="phase" id="step-rules">
+        <div class="phase-head">
+          <span class="phase-no">R</span><span class="phase-title">rules-agent（规则提炼）</span>
+          <span class="chip c-warn freq">用户触发</span>
+        </div>
+        <div class="phase-body">
+          <div class="field full"><span class="field-label">① 职责 · 解决什么问题</span><ul><li>异步沉淀：daylog → 候选规则 → 待审核区；解决「同一种错误反复犯——规则必须机械化为可执行检查」</li></ul></div>
+          <div class="field"><span class="field-label">执行任务</span><ul><li>从 daylog 提炼候选规则，六类分类，写入待审核区</li><li>人工确认发布 → active → 同步 verify 脚本</li></ul></div>
+          <div class="field"><span class="field-label">输入</span><ul><li><code>daylog/*.md</code> + <code>merge_rules.md</code> + 现有 <code>verify_*.py</code></li></ul></div>
+          <div class="field"><span class="field-label">输出</span><ul><li><code>rules-registry.md</code> draft 区（draft → 人工确认 → active）</li><li>发布后同步 verify_merge_rules / verify_relay_trace / check-agent 错误码</li></ul></div>
+          <div class="field"><span class="field-label">调用的 agent · skill · 脚本</span><ul><li><span class="chip c-agent">rules-agent</span>；<span class="chip c-script">脚本</span> 发布后更新 verify 脚本</li></ul></div>
+        </div>
+      </article>
+
+      <article class="phase" id="step-exp">
+        <div class="phase-head">
+          <span class="phase-no">E</span><span class="phase-title">experience-agent（经验沉淀）</span>
+          <span class="chip c-warn freq">用户触发</span>
+        </div>
+        <div class="phase-body">
+          <div class="field full"><span class="field-label">① 职责 · 解决什么问题</span><ul><li>异步沉淀：daylog → 项目级经验库；解决「踩过的坑下次还要重新踩——经验按参数同名联动复用」</li></ul></div>
+          <div class="field"><span class="field-label">执行任务</span><ul><li>从 daylog 提炼项目级实现经验 → 经验库 + 记忆索引</li><li>人工审核发布；global/specialized 规则转发 rules-agent、sub_function usage 转发 sub-function-agent</li></ul></div>
+          <div class="field"><span class="field-label">输入</span><ul><li><code>daylog/*.md</code> + <code>PROGRESS.md</code> + auto-memory <code>nuvolta-*.md</code>（feedback 类）</li></ul></div>
+          <div class="field"><span class="field-label">输出</span><ul><li><code>knowledge/experience/</code> 条目（index/power-sequence/measurement/debug-patterns/project-notes）+ 同步 MEMORY.md</li></ul></div>
+          <div class="field"><span class="field-label">调用的 agent · skill · 脚本</span><ul><li><span class="chip c-agent">experience-agent</span>；无脚本</li></ul></div>
+        </div>
+      </article>
+
+      <article class="phase" id="step-fn">
+        <div class="phase-head">
+          <span class="phase-no">F</span><span class="phase-title">sub-function-agent（子函数提炼）</span>
+          <span class="chip c-warn freq">用户触发</span>
+        </div>
+        <div class="phase-body">
+          <div class="field full"><span class="field-label">① 职责 · 解决什么问题</span><ul><li>异步沉淀：重复代码段 → shared_functions/ Library-Functions；解决「同样的代码段每次手写——提炼成库后 L2 复用」</li></ul></div>
+          <div class="field"><span class="field-label">执行任务</span><ul><li>从 daylog 代码 diff 提炼可复用 helper → 共享子函数库 draft</li><li>人工确认发布 → 迁入 src/ + registry/index + changelog</li></ul></div>
+          <div class="field"><span class="field-label">输入</span><ul><li><code>daylog/*.md</code>（含代码 diff）+ <code>Library-Functions/Test_Method/</code> + <code>references/</code> + 当前项目 *.cpp</li></ul></div>
+          <div class="field"><span class="field-label">输出</span><ul><li><code>Library-Functions/shared_functions/draft/&lt;函数名&gt;.md</code> → 发布后 src/ + registry</li></ul></div>
+          <div class="field"><span class="field-label">调用的 agent · skill · 脚本</span><ul><li><span class="chip c-agent">sub-function-agent</span>；无脚本（与 test_method 专项库分工：通用→shared_functions，专项 ramp→test_method）</li></ul></div>
+        </div>
+      </article>
+
+      <h3 id="reflux">收尾回流（必做，滋养自进化）</h3>
+      <article class="phase" id="step-x">
+        <div class="phase-head">
+          <span class="phase-no">X</span><span class="phase-title">收尾必做：daylog / PROGRESS / memory / skill 同步</span>
+          <span class="chip c-ok freq">每次结束</span>
+        </div>
+        <div class="phase-body">
+          <div class="field"><span class="field-label">执行任务</span><ul><li>每次 codegen / debug / 规则修正收尾，向 <code>daylog/&lt;日期&gt;.md</code> 追加一条（六类标记）</li><li>即使只改某 stage / 只提修正意见，也写一条</li><li>更新 PROGRESS.md（newest-first）+ auto-memory 指针 + skill 自动同步</li><li>修正代码或规则后，同步 knowledge/ + check-agent 清单 + daylog</li></ul></div>
+          <div class="field"><span class="field-label">输入</span><ul><li>本次工作摘要 / 修正记录</li></ul></div>
+          <div class="field"><span class="field-label">输出</span><ul><li>daylog 条目（自进化原料，不依赖完整 pipeline）</li><li>PROGRESS.md 更新 + memory 更新 + skill 同步</li></ul></div>
+          <div class="field"><span class="field-label">调用的 agent · skill · 脚本</span><ul><li><span class="chip c-vio">skill</span> 自动同步（rule 修正 → 同步 nuvolta-codegen.md）；<span class="chip c-script">脚本</span> 无独立脚本</li></ul></div>
+        </div>
+      </article>
+
+    </section>
+
+  </main>
+</div>
+
+<footer class="footer">
+  <span>源文件：<code>工作流全景.md</code> · <code>AGENT_MAP.md</code> · <code>nuvolta-codegen.md</code> · <code>schematic_parse/SKILL.md</code> · 脚本盘点 · 生成于 2026-08-26</span>
+  <a href="#top">返回顶部 ↑</a>
+</footer>
+
+<script>
+(function(){
+  var btn = document.getElementById('themeBtn');
+  var root = document.documentElement;
+  var saved = null;
+  try { saved = localStorage.getItem('wf-theme'); } catch(e) {}
+  if (saved === 'dark' || saved === 'light') root.setAttribute('data-theme', saved);
+  function label(){
+    var dark = root.getAttribute('data-theme') === 'dark' ||
+      (root.getAttribute('data-theme') !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    btn.textContent = dark ? '浅色' : '深色';
+  }
+  btn.addEventListener('click', function(){
+    var cur = root.getAttribute('data-theme');
+    var next = (cur === 'dark' || (!cur && window.matchMedia('(prefers-color-scheme: dark)').matches)) ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('wf-theme', next); } catch(e) {}
+    label();
+  });
+  label();
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+  var targets = links.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting) {
+          links.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id); });
+        }
+      });
+    }, { rootMargin: '-25% 0px -65% 0px', threshold: 0 });
+    targets.forEach(function(t){ io.observe(t); });
+  }
+})();
+</script>
+</body>
+</html>

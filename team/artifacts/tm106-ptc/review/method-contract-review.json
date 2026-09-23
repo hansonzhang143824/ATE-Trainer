@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm106-method-contract-review",
+  "taskId": "TM106-PTC-RULE_REVIEW_METHOD",
+  "trial": "tm106-ptc",
+  "tm": "TM106",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_METHOD",
+  "verdict": "pass",
+  "reviewedContracts": {
+    "strategy": {
+      "path": "strategy/tm106-resource-config-contract.json",
+      "sha256": "68bce392e8d197fca137c53457e48e78942fd55363561f24cba093008a5306a2"
+    },
+    "method": {
+      "path": "method/tm106-test-method-contract.json",
+      "sha256": "0ab56462d87b479b23934d3cf25841e4a8fb9f9a1b57b5e0876f57591f6e52a9"
+    }
+  },
+  "checks": [
+    {
+      "id": "RC-1",
+      "result": "PASS",
+      "subject": "Signed inputs and strategy gate",
+      "detail": "Both signed strategy inputs match their recorded hashes; validate_strategy_contract.py passed."
+    },
+    {
+      "id": "RC-2",
+      "result": "PASS",
+      "subject": "Route and functional-relay closure",
+      "detail": "VBAT, VBUS and nQON each retain selected Path-Proofs Force/Sense paths; final closure [13,65] includes required K13 and K65 without a CBIT or source-end conflict."
+    },
+    {
+      "id": "RC-3",
+      "result": "PASS",
+      "subject": "Scan method",
+      "detail": "Prediction 3.9 V; VSET and Notes both specify 3-5 V, so the recorded VSET tie-break is correct. Rise uses TRIG_FALLING and Fall uses TRIG_RISING."
+    },
+    {
+      "id": "RC-4",
+      "result": "PASS",
+      "subject": "Measurement, shutdown and logging",
+      "detail": "Power phases, nQON observation, power-down and Rise/Fall/Hys logging are present. BST/SW differential is explicitly not applicable with endpoint evidence."
+    },
+    {
+      "id": "RC-5",
+      "result": "PASS",
+      "subject": "No invented acceptance criterion",
+      "detail": "ExpectValue is marked REFERENCE_ONLY and numericPassFail is NOT_SPECIFIED; no tolerance or numeric pass/fail rule was introduced."
+    }
+  ],
+  "blockingDefects": [],
+  "summary": {
+    "checksPassed": 5,
+    "blockingDefects": 0,
+    "nextRole": "ate-implementer"
+  },
+  "signedInputs": {
+    "methodContractSha256": "7ff7c4d28e534d27aff2e541c303fea321d5708ad1151428ab6c726707211b55",
+    "bindingType": "mechanical current-method receipt; reviewed method behavior unchanged"
+  }
+}

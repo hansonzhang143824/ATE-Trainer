@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm103-method-contract-review-deliverable-ready",
+  "taskId": "TM103-PTC-RULE_REVIEW_METHOD",
+  "trial": "tm103-ptc",
+  "tm": "TM103",
+  "projectId": "DALI",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_METHOD",
+  "event": "deliverable_ready",
+  "status": "success",
+  "verdict": "deliverable_ready",
+  "generatedAt": "2026-09-18T03:11:04.937Z",
+  "sha256": "2af972c226d2aca5b9a5f886c42871659273180718c608775c06c57d0b55890f",
+  "sha256Scope": "byte SHA-256 of team/artifacts/tm103-ptc/review/method-contract-review.json, computed with python hashlib.sha256 over the file bytes",
+  "findingsArtifact": "team/artifacts/tm103-ptc/review/method-contract-review.json",
+  "selfCheck": "team/artifacts/tm103-ptc/review/method-contract-review-self-check.json",
+  "evidenceScope": "team/artifacts/tm103-ptc/review/review-evidence-scope.json",
+  "reviewedRevision": {
+    "snapshot": "team/artifacts/tm103-ptc/review/immutable-review-snapshot.json",
+    "strategyContractSha256": "92eb967dcc96807010c811e4c4d46ddc205ec2d1dd467dcd8d238bb249c6954a",
+    "methodContractSha256": "210d6058f99287ee22e89ca7d8accbd597d08b102f5b8cca622b6686f879a79a",
+    "copiesInspected": [
+      "01-tm103-resource-config-contract.json",
+      "02-deliverable-ready.json",
+      "03-tm103-test-method-contract.json",
+      "04-deliverable-ready.json"
+    ]
+  },
+  "reviewVerdict": {
+    "pass": true,
+    "blockingDefects": 0,
+    "nonBlockingFindings": [
+      "F-1 (minor, evidence-accuracy: a claimed zero-match grep over knowledge/standards returns 2 real matches in treg.md; conclusion unaffected)",
+      "F-2 (informational, citation range off by one)",
+      "F-3 (informational, evidence boundary note)"
+    ],
+    "intentFidelity": "VBAT=4 V static, VDM=1 V forced/measured, 0x57=0x02, 0x5E=0x04 retained verbatim; exclusive SetOn closure is a single SetOn(K13_VBAT_Cap, -1); AMUX is never driven or measured; no invented limit or tolerance; every claimed source and relay is backed by a named project artifact."
+  },
+  "nextRole": "ate-implementer",
+  "permittedNextAction": "Implementation of the signed strategy, method and method-review contracts (stage IMPLEMENTATION).",
+  "gatesRun": [
+    {
+      "id": "snapshot create",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "id": "snapshot verify",
+      "exitCode": 0,
+      "result": "PASS - no revision drift"
+    },
+    {
+      "id": "evidence scope",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "id": "strategy contract gate",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "id": "PTC output ABI gate",
+      "exitCode": 0,
+      "result": "PASS"
+    }
+  ],
+  "revisionDrift": false,
+  "editsMadeToReviewedArtifacts": false
+}

@@ -1,0 +1,182 @@
+{
+ "generatedAt": "2026-09-16 22:22:09 +0800",
+ "objective": "Parse the current user-filtered DFT workbook and emit the full meta, YAML and manifest.",
+ "input": {
+  "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Dali_testmode.xlsx",
+  "bytes": 10677032,
+  "sha256": "0b0480a290581fd3d10ec9db7aef45664949174bb8f1a94e926f24cfa582abbd",
+  "mtime": "2026-09-16 22:13:39",
+  "pinVerifiedAgainstExpected": true
+ },
+ "outputs": [
+  {
+   "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\meta\\dali_tm_meta.json",
+   "bytes": 54548,
+   "sha256": "ce6faf6a587d673c282fcf758661c3ff2f85a86e2126a06310e51332f4d81023",
+   "role": "full meta (verbatim workbook parse)"
+  },
+  {
+   "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\meta\\test_conditions.yaml",
+   "bytes": 14640,
+   "sha256": "9fde12e8ed2837043a765cffccceb24c76b9f135b5e94302ebc36fb1a0ebae04",
+   "role": "per-item test conditions"
+  }
+ ],
+ "completeness": {
+  "overviewItemCount": 20,
+  "overviewDataRows": [
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21
+  ],
+  "sheetCount": 22,
+  "sheetRowCounts": {
+   "Progress": 13,
+   "action": 12,
+   "OVERVIEW": 21,
+   "codeExplain": 6,
+   "InitialDFT_Check": 11,
+   "SpeicalSetup": 3,
+   "Package": 0,
+   "ABS": 54,
+   "Pin2Pin": 44,
+   "TestIO": 7,
+   "TESTREG": 0,
+   "SETTING_MAP": 733,
+   "DTESTMAP": 75,
+   "ATESTMAP": 49,
+   "TRIM_REG": 73,
+   "TRIMTABLE_AMUX": 17,
+   "TRIMTABLE_MNT": 67,
+   "TRIMTABLE_BG": 67,
+   "TRIMTABLE_CLK": 18,
+   "TRIMTABLE_BUBO": 66,
+   "TRIMTABLR_QDT": 17,
+   "TRIMTABLE_IBUS": 64
+  },
+  "railPinCount": 7,
+  "registerFieldCount": 16,
+  "registerFields": [
+   "AC1_GATE_ON",
+   "ATEST0_MUX",
+   "ATEST1_MUX",
+   "D2A_BUBO_EN_FORCE_ON",
+   "D2A_BUBO_TM_DIS_CLK",
+   "D2A_BUBO_TM_HSON",
+   "D2A_BUBO_TM_LSON",
+   "DIS_NTC_DETECTION_ANALOG",
+   "DMUX_EN",
+   "DMUX_SEL",
+   "EN_ATEST0",
+   "EN_ATEST1",
+   "VAC1_APORT_DET_ENABLE",
+   "VAC2_APORT_DET_ENABLE",
+   "VAC_SNK_DET_SEL",
+   "WAKE_UP"
+  ],
+  "railPins": [
+   "amux",
+   "bst",
+   "bst_sw",
+   "pmid",
+   "vbat",
+   "vbus",
+   "vdrv"
+  ],
+  "groups": {
+   "TM000": [
+    "TM000_1"
+   ]
+  },
+  "yamlRoundTripOk": true,
+  "yamlItemsParsed": 20,
+  "yamlError": null,
+  "fieldsPerItem": 29
+ },
+ "gaps": {
+  "noExpectValue": [
+   "TM000_1",
+   "TM001"
+  ],
+  "noUnit": [],
+  "noTest": [
+   "TM105",
+   "TM106",
+   "TM108",
+   "TM109",
+   "TM110",
+   "TM133",
+   "TM134",
+   "TM135"
+  ],
+  "noCheck": [],
+  "noRailSetting": [],
+  "noStimulusAndNoRamp": [
+   "TM000",
+   "TM000_1",
+   "TM001",
+   "TM101",
+   "TM102",
+   "TM103",
+   "TM104",
+   "TM105",
+   "TM106",
+   "TM108",
+   "TM109",
+   "TM110",
+   "TM133",
+   "TM134",
+   "TM135",
+   "TM422",
+   "TM424",
+   "TM425"
+  ],
+  "notRun": [
+   "TM000",
+   "TM000_1",
+   "TM001",
+   "TM101",
+   "TM102",
+   "TM103",
+   "TM104",
+   "TM105",
+   "TM106",
+   "TM108",
+   "TM109",
+   "TM110",
+   "TM133",
+   "TM134",
+   "TM135",
+   "TM422",
+   "TM424",
+   "TM425",
+   "TM600",
+   "TM601"
+  ],
+  "notChecked": []
+ },
+ "gapsNote": "Gaps are recorded verbatim as absences in the workbook; nothing was inferred or filled in. 'notRun' means the isRun column is empty for that row.",
+ "notDone": [
+  "no engineering decision (no source/relay/route selection, no limits beyond workbook text)",
+  "no old meta/YAML/validator was read or inherited",
+  "no C++/test.cpp/gate/contract change",
+  "D:/PROJECT6-DALI/devel untouched"
+ ]
+}

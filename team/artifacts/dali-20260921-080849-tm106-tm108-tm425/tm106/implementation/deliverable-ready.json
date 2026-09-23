@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "PTC-HANDOFF-V1",
+  "event": "deliverable_ready",
+  "status": "success",
+  "stage": "IMPLEMENTATION",
+  "verdict": "deliverable_ready",
+  "tm": "TM106",
+  "nextRole": "rule-reviewer",
+  "artifact": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm106/implementation/implementation-manifest.json",
+  "sha256": "e0397d4e36824b2a9d1efbeff6bb644e517a737da5347ce746b37b924367588e",
+  "source": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+  "sourceSha256": "8c2fd155839958dae7952653e892e5918a90352ce67601b04a447072235f495d",
+  "sources": [
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "sha256": "8c2fd155839958dae7952653e892e5918a90352ce67601b04a447072235f495d"
+    }
+  ],
+  "signedInputs": {
+    "strategyContractPath": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm106/strategy/tm106-resource-config-contract.json",
+    "strategyContractSha256": "3aaded63ed2f6300db978785b63cd4335e47de499e8e914d22fd027ff32a2b4e",
+    "dftMetaPath": "project/DALI/Output_Global_Material/dft/TM106/dft-meta.json",
+    "dftMetaSha256": "07379a94341f3d98c4734ef6de5c74e61e2a6b56bbecd3d80a437636182b9cc7",
+    "dftConditionsPath": "project/DALI/Output_Global_Material/dft/TM106/dft-conditions.yaml",
+    "dftConditionsSha256": "f22578bfead21939ff7e9e8385c3d44030795e47e4f2b30711489f7f57c2fb47",
+    "dftWorkbookSha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+    "registerConfigEvidencePath": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm106/strategy/register-config-evidence.json",
+    "registerConfigEvidenceSha256": "1573fed3284781e71731aa42f06cfabe640f24b1f54cc050e90f134548d52c6a",
+    "methodContractPath": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm106/method/tm106-test-method-contract.json",
+    "methodContractSha256": "74f2f33459954fcc65fc4f370aa330739f35009c07e5dd3c7b74b456fbfcde2b"
+  }
+}

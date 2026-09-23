@@ -1,0 +1,33 @@
+{
+  "task": "t54-mechtest",
+  "at": "2026-09-16T23:19:23+08:00",
+  "purpose": "把该次门禁运行的**输入**固化为字节快照 ⇒ 归属从\"日志自述\"升级为\"字节可证\"；不改任何脚本、不改门禁、不动基线。",
+  "outDir": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\acceptance-20260916-dali10\\backups\\t54-mechtest-20260916-231923-gateinputs",
+  "dryRun": false,
+  "items": {
+    "setup-contract.json": {
+      "source": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\acceptance-20260916-dali10\\setup-contract.json",
+      "why": "门禁读取的契约（rev-32 归属问题的关键输入）",
+      "status": "ok",
+      "size": 377694,
+      "sha256": "18587b83307d47e0d6f287ee28e812b6c8f25781d2e449b293e45b50282b6d9f",
+      "sha256_lf_normalized": "3f80aaf5ee1608de1eb572178b5a042361a216237dd71442671b0c82be453f56"
+    },
+    "implementation-payload-TM600-TM601.cpp": {
+      "source": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\acceptance-20260916-dali10\\implementation-payload-TM600-TM601.cpp",
+      "why": "候选交付件",
+      "status": "ok",
+      "size": 43806,
+      "sha256": "66abc088ae6bd5f9b9d7201673003fc0be2450fd6f1f222c6a4a902cbe4f0cc4",
+      "sha256_lf_normalized": "dd3998d5ab984dd91ac7997a554c1aca185b6db039c29bf613e70019b4c72c59"
+    },
+    "gate_baseline.json": {
+      "source": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\scripts\\gate_baseline.json",
+      "why": "门禁基线（应始终为 28 B / cbit 豁免）",
+      "status": "ok",
+      "size": 28,
+      "sha256": "021015da84e6fd4c54a595796e1bad73e18c57db94f856871d5667044302cb1d",
+      "sha256_lf_normalized": "99304f93162de4df14e1359a29ef897eb1b851bb192a96d7307cac4afc2805ea"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+# 继电器策略（V2 通路解析）。资源/继电器定义由外部团队提供，本流程只读取 + 闭环验证。
+
+ownership: "external_team"            # 继电器定义所有权（project_config.json ownership）
+definitions:
+  channelmap: "Pin_Channel_define.h"  # 源表通道映射（external_team）
+  relay_definitions: "StdAfx.h"       # 通路 #define Kxx（--publish-definitions 写入目标，写前备份）
+
+contact_model:
+  G6K:                                 # 双刀继电器
+    NC: {2: 3, 3: 2, 7: 6, 6: 7}       # 常闭（未上电）
+    ON: {3: 4, 4: 3, 6: 5, 5: 6}       # 上电闭合
+  MOS_SPST:                            # 单刀（非 G6K）
+    ON: {1: 2, 2: 1}
+
+classification:                        # infer_cell 判定
+  G6K: "K\\d+_ 且 引脚超出{1,2} 或 引脚名超出{COMMON,NO}"
+  SW_SPST: "K\\d+_ 且 引脚=={1,2} 且 引脚名⊆{COMMON,NO}"

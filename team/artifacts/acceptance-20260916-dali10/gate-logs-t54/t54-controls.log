@@ -1,0 +1,17 @@
+=== 同一契约版本 ===
+  revision = 33 ; size = 372138 B ; sha256 现算见下
+  bst2sw.closedRelayNumbers = [48, 60, 61, 76]
+  期望集 TM600 = [48, 60, 61, 76, 83]
+  阳性（沙箱副本，去 K48+K76）         TM600=[13, 57, 60, 61, 83, 85, 126]
+       missing=[48, 76] ⇒ 报红
+  阴性（终批 payload 原样）          TM600=[13, 48, 57, 60, 61, 76, 83, 85, 126]
+       missing=[] ⇒ PASS
+  部署态对照（真实门禁输入）              TM600=[13, 57, 60, 61, 83, 85, 126]
+       missing=[48, 76] ⇒ 报红
+
+=== 阳性对照有效性 ===
+  阳性 missing = [48, 76] ⇒ ✅ 真缺口被捕获（报红）
+  阴性 missing = [] ⇒ ✅ PASS
+  部署 missing = [48, 76] ⇒ ✅ FAIL（红因正确）
+
+WROTE D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10\gate-logs-t54\t54-controls.json (1667 B)

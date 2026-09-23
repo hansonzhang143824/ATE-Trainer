@@ -1,0 +1,118 @@
+=== 1. BoardCheck.h 205-235 (CBC_log class head + access specifiers) ===
+    205| 	BoardCheckGroup(BoardCheckGroup &x) {}
+    206| 	int is_vertical;
+    207| 	int no;
+    208| 	int ospace;     // outer space (space to other elements)
+    209| 	int ispace;     // inner space (space between elements)
+    210| 	LPBoardCheckElement *member;
+    211| };
+    212| 
+    213| 
+    214| class CBC_log
+    215| {
+    216| public:
+    217| 	CBC_log(void) {}
+    218| 	~CBC_log(void) {}
+    219| 	void clear(void) {
+    220| 		component_vec.clear();
+    221| 		tnum_map.clear();
+    222| 		lolim_map.clear();
+    223| 		hilim_map.clear();
+    224| 		unit_map.clear();
+    225| 		data_map.clear();
+    226| 		flag_map.clear();
+    227| 	}
+    228| 
+    229| 	vector<string> component_vec;
+    230| 	map<string, DWORD> tnum_map;				// map<component, test_number>
+    231| 	map<string, double> lolim_map;				// map<component, low_lim>
+    232| 	map<string, double> hilim_map;				// map<component, high_lim>
+    233| 	map<string, string> unit_map;				// map<component, unit>
+    234| 	map<string, map<DWORD, double>> data_map;	// map<component, map<site, data>>
+    235| 	map<string, map<DWORD, string>> flag_map;	// map<component, map<site, pass or fail>>
+
+=== 2. BoardCheck.h 745-790 (log declarations, access specifier, enclosing class) ===
+    745| 	BOOL test_r_middle(FPVIe &fpvie_meas, DWORD tnum, const char* component, double lolim, double hilim, const char* unit, double *result1=NULL);
+    746| 
+    747| 	BOOL test_r_kelvin(FPVIe &fpvie_meas, DWORD tnum, const char* component, double lolim, double hilim, const char* unit, double *result1 = NULL);
+    748| 	//������ѹ��ACM����ѹ
+    749| 	BOOL test_v_p2p(ACM200 &acm_meas, DWORD tnum, const char* component, double lolim, double hilim, const char* unit, double *result1 = NULL);
+    750| 
+    751| 	BOOL test_v_p2p(FOVIe &fovie_meas, DWORD tnum, const char* component, double lolim, double hilim, const char* unit, double *result1 = NULL);
+    752| 
+    753| 	BOOL test_v_p2p(FXVIe_PLUS &fovie_meas, DWORD tnum, const char* component, double lolim, double hilim, const char* unit, double *result1 = NULL);
+    754| 
+    755| 	BOOL test_kelvin(ACM200 &acm_meas, DWORD tnum, const char* component, double lolim, double hilim, const char* unit, double *result1 = NULL);
+    756| 
+    757| 	BOOL test_kelvin_ohm(FPVIe &fpvie_meas, DWORD tnum, const char* component, double lolim, double hilim, const char* unit, double *result1 = NULL);
+    758| 
+    759| 	BOOL log(DWORD tnum, const char* component, double* result, double lolim, double hilim, const char* unit);
+    760| 	BOOL test_log(DWORD tnum, const char* component, double lolim, double hilim, const char* unit, double *result1 = NULL);
+    761| 
+    762| 	void create_data_block(string str_1, ...);
+    763| 	void updateBoardCheckResults(string  str_input, string unit_input);
+    764| 	void set_data_after_boardcheck(double *test_value, double hlimit, double llimit);
+    765| 	bool check_results_summary();
+    766| 	void SetConsoleTextSize(int fontSize);
+    767| private:
+    768| 	// Prevent copying and assignments (by private definition)
+    769| 	BoardCheck operator=(const BoardCheck &x) { return *this; }
+    770| 	BoardCheck(BoardCheck &x) {}
+    771| 	void create_input(void);
+    772| 	void delete_input(void);
+    773| 	BoardCheckGroup *input;
+    774| 	BoardCheckGroup *buttons;    // deleted with input
+    775| 	BoardCheckGroup *listbox;    // deleted with input
+    776| 
+    777| 	DialogTemplate *dialog;
+    778| 	CBC_log bc_log;
+    779| 	vector<string> display_vec;
+    780| 	//int nMaxExtent;
+    781| 	BOOL CheckPass;				// result of all site
+    782| 	BOOL check_result[SITE_NUM];// result of each site
+    783| 	int nBtn;
+    784| 	BOOL site_connected[SITE_NUM];
+    785| 
+    786| 
+    787| 	// ��Ա�������壨���޸�Ϊ vector ģʽ��
+    788| 	vector<vector<KeyValuePair>> M_boardcheck_results;
+    789| 
+    790| 	map<string, MyData>m_boardcheck_results[SITE_NUM];
+
+=== 3. enclosing class of line 778 (walk back for class/struct and access specifiers) ===
+  enclosing type at line 344: class BoardCheck
+  access specifiers between the enclosing type and line 778:
+     line 240: public:
+
+=== 4. access specifier governing the CBC_log::log / test_log declarations (before line 759) ===
+     nearest specifier BEFORE (or at) line 759: line 346: public:
+     nearest specifier AFTER line 759:      line 767: private:
+
+=== 5. tree scan: who USES these primitives anywhere under ForCodexDebug ===
+  source files scanned: 36
+  CBC_log          : [('source\\BoardCheck.h', 4)]
+  bc_log           : [('source\\BoardCheck.cpp', 29), ('source\\BoardCheck.h', 1)]
+  test_log         : [('source\\BoardCheck.cpp', 1), ('source\\BoardCheck.h', 1)]
+  treg_error_log   : [('source\\treg.cpp', 47), ('source\\treg.h', 1)]
+  log_data         : [('source\\treg.cpp', 23), ('source\\treg.h', 1), ('source\\src\\treg.cpp', 23), ('source\\src\\treg.h', 1)]
+  TREG_LOG         : [('source\\treg.cpp', 31), ('source\\treg.h', 5), ('source\\src\\treg.cpp', 31), ('source\\src\\treg.h', 5)]
+  TREG_ERROR       : [('source\\treg.cpp', 68), ('source\\treg.h', 7), ('source\\src\\treg.cpp', 107), ('source\\src\\treg.h', 7)]
+  datalog_func     : [('source\\treg.cpp', 6), ('source\\treg.h', 1), ('source\\src\\treg.cpp', 5), ('source\\src\\treg.h', 1)]
+
+=== 6. includes in test.cpp / sub.cpp / StdAfx.h ===
+  test.cpp (477123 bytes) includes: ['stdafx.h', 'iostream', 'stdlib.h', 'ctime', 'conio.h', 'valarray', 'sub.h', 'Test_Method.h', 'FMEA.h', 'Coutlier.h', 'spec.h', 'tempchar.h', 'windows.h', 'UserType.h', 'sstream', 'iomanip', 'thread', 'cctype', 'Pin_Channel_define.h']
+      -> includes StdAfx
+  sub.cpp (121909 bytes) includes: ['stdafx.h', 'sub.h', 'math.h', 'tempchar.h', 'Test_Method.h']
+      -> includes StdAfx
+  StdAfx.h (56968 bytes) includes: ['windows.h', 'assert.h', 'string', 'usertype.h', 'userres.h', 'spec.h', 'treg.h']
+      -> includes treg
+  BoardCheck.h (32536 bytes) includes: ['stdafx.h', 'map', 'vector', 'string', 'Windows.h', 'iostream', 'type_traits']
+      -> includes StdAfx
+
+=== 7. result-primitive recount in test.cpp (raw tokens vs comment-stripped code) ===
+  SetTestResult    raw token=188   raw call=188   comment-stripped call=187  
+  GetMeasResult    raw token=65    raw call=65    comment-stripped call=64   
+  StsGetParam      raw token=672   raw call=672   comment-stripped call=668  
+  rampv_capv       raw token=81    raw call=79    comment-stripped call=78   
+  LogData          raw token=91    raw call=14    comment-stripped call=0    
+  in-code log-like callables in test.cpp: ['STSSetInitSelectDialog']

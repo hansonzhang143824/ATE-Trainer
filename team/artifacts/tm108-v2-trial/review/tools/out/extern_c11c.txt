@@ -1,0 +1,1800 @@
+=== 1. files defining / declaring class CParam ===
+
+=== 2. CParam class body — every member declaration containing log/result/set ===
+
+=== 3. treg.cpp : TREG_ERROR::treg_error_log and error() definitions ===
+  --- hit at line 42 ---
+     39| #endif
+     40| 
+     41| #define CHECK_SITE if(site!=MS_ALL && !(site>=0 && site<TREG::num_sites())) { \
+     42|                             TREG_ERROR::treg_error_log(ERROR_INVALID_SITE); \
+     43| 
+     44| #define CHECK_SITE_EXIT    CHECK_SITE return  ;}
+     45| #define CHECK_SITE_EXIT_0  CHECK_SITE return 0;}
+     46| 
+     47| ///////////////////////////////////////////////////////////////////////////////
+     48| // Macros for looping over trim steps
+     49| #define LOOP_STEPS(var) \
+     50|             for(var=0;var<steps;var++) \
+     51|                 if(step_enabled[var])
+     52| 
+     53| #define LOOP_STEPS_ALL(var) \
+     54|             for(var=0;var<steps;var++)
+     55| 
+     56| ///////////////////////////////////////////////////////////////////////////////
+     57| // Other macros
+     58| #define LCASE_STRING(var) \
+     59|             transform(var.begin(), var.end(), var.begin(), ::tolower);
+     60| 
+     61| #define MALLOC(ptr,typ,cnt) ptr=(typ*)malloc((cnt)*sizeof(typ))
+     62| #define FREE(ptr) if(ptr) {free(ptr);ptr=NULL;}
+     63| 
+
+  --- hit at line 189 ---
+    186| 
+    187| ///////////////////////////////////////////////////////////////////////////////
+    188| // TREG_ERROR
+    189| void(*TREG_ERROR::error_func)(const char *) = NULL;
+    190| 
+    191| #ifdef TREG_ETS364
+    192| static void default_error_func(const char *msg) { etsfatalerror((char *)msg); }
+    193| //#elif WIN32
+    194| //static void default_error_func(const char *msg) {printf("%s\n", msg);}
+    195| #else
+    196| static void default_error_func(const char *msg) { MessageBox(NULL, msg, "TREG Error", MB_OK); }
+    197| //static void default_error_func(const char *msg) {printf("%s\n", msg);}
+    198| #endif
+    199| 
+    200| 
+    201| int TREG_ERROR::error_count = 0;
+    202| 
+    203| TREG_ERROR::TREG_ERROR() {
+    204| 	TREG_ERROR::error_func = default_error_func;
+    205| }
+    206| 
+    207| TREG_ERROR::~TREG_ERROR() {
+    208| 
+    209| }
+    210| 
+
+  --- hit at line 201 ---
+    198| #endif
+    199| 
+    200| 
+    201| int TREG_ERROR::error_count = 0;
+    202| 
+    203| TREG_ERROR::TREG_ERROR() {
+    204| 	TREG_ERROR::error_func = default_error_func;
+    205| }
+    206| 
+    207| TREG_ERROR::~TREG_ERROR() {
+    208| 
+    209| }
+    210| 
+    211| // �Զ����vprintf_s����������һ����������С�͸�ʽ�ַ������Լ��ɱ�����б�
+    212| int TREG_ERROR::vprintf_s(char *buffer, size_t bufferSize, const char *format, va_list args) {
+    213| 	int result = vsnprintf(buffer, bufferSize, format, args);
+    214| 	// ����Ƿ����˻��������
+    215| 	if (result >= 0 && (size_t)result < bufferSize) {
+    216| 		buffer[result] = '\0'; // ȷ���ַ�����null��β
+    217| 		return result;
+    218| 	}
+    219| 	else {
+    220| 		// �����������������ǿ���ѡ���ӡ������Ϣ�����߲�ȡ������ʩ
+    221| 		fprintf(stderr, "Buffer overflow occurred in vprintf_s!\n");
+    222| 		return -1; // ���ش������
+
+  --- hit at line 204 ---
+    201| int TREG_ERROR::error_count = 0;
+    202| 
+    203| TREG_ERROR::TREG_ERROR() {
+    204| 	TREG_ERROR::error_func = default_error_func;
+    205| }
+    206| 
+    207| TREG_ERROR::~TREG_ERROR() {
+    208| 
+    209| }
+    210| 
+    211| // �Զ����vprintf_s����������һ����������С�͸�ʽ�ַ������Լ��ɱ�����б�
+    212| int TREG_ERROR::vprintf_s(char *buffer, size_t bufferSize, const char *format, va_list args) {
+    213| 	int result = vsnprintf(buffer, bufferSize, format, args);
+    214| 	// ����Ƿ����˻��������
+    215| 	if (result >= 0 && (size_t)result < bufferSize) {
+    216| 		buffer[result] = '\0'; // ȷ���ַ�����null��β
+    217| 		return result;
+    218| 	}
+    219| 	else {
+    220| 		// �����������������ǿ���ѡ���ӡ������Ϣ�����߲�ȡ������ʩ
+    221| 		fprintf(stderr, "Buffer overflow occurred in vprintf_s!\n");
+    222| 		return -1; // ���ش������
+    223| 	}
+    224| }
+    225| 
+
+  --- hit at line 212 ---
+    209| }
+    210| 
+    211| // �Զ����vprintf_s����������һ����������С�͸�ʽ�ַ������Լ��ɱ�����б�
+    212| int TREG_ERROR::vprintf_s(char *buffer, size_t bufferSize, const char *format, va_list args) {
+    213| 	int result = vsnprintf(buffer, bufferSize, format, args);
+    214| 	// ����Ƿ����˻��������
+    215| 	if (result >= 0 && (size_t)result < bufferSize) {
+    216| 		buffer[result] = '\0'; // ȷ���ַ�����null��β
+    217| 		return result;
+    218| 	}
+    219| 	else {
+    220| 		// �����������������ǿ���ѡ���ӡ������Ϣ�����߲�ȡ������ʩ
+    221| 		fprintf(stderr, "Buffer overflow occurred in vprintf_s!\n");
+    222| 		return -1; // ���ش������
+    223| 	}
+    224| }
+    225| 
+    226| // ��װ���������ڼ򻯵���
+    227| int TREG_ERROR::treg_error_log(const char *format, ...) {
+    228| 	error_count++;
+    229| 	if (error_count == 1)
+    230| 	{
+    231| 		FreeConsole();
+    232| 		AllocConsole();
+    233| 		COORD size = { 280, 180 };
+
+  --- hit at line 227 ---
+    224| }
+    225| 
+    226| // ��װ���������ڼ򻯵���
+    227| int TREG_ERROR::treg_error_log(const char *format, ...) {
+    228| 	error_count++;
+    229| 	if (error_count == 1)
+    230| 	{
+    231| 		FreeConsole();
+    232| 		AllocConsole();
+    233| 		COORD size = { 280, 180 };
+    234| 		SetConsoleTitleA("AccoTEST Debug Window");
+    235| 		freopen("conout$", "w+t", stdout);
+    236| 		::DeleteMenu(GetSystemMenu(GetConsoleWindow(), FALSE), SC_CLOSE, MF_BYCOMMAND);
+    237| 		printf_s("\n");
+    238| 		printf_s(" ERROR  Information List..............\n");
+    239| 		printf_s("\n");
+    240| 	}
+    241| 	char buffer_input[512] = { "" };
+    242| 	char *buffer = buffer_input;
+    243| 	size_t bufferSize = 512;
+    244| 	va_list args;
+    245| 	va_start(args, format); // ��ʼ�������б�
+    246| 	int result = vprintf_s(buffer, bufferSize, format, args);
+    247| 	va_end(args); // ���������б�
+    248| 	printf_s(" %d. ", error_count);
+
+  --- hit at line 256 ---
+    253| 
+    254| 
+    255| 
+    256| void TREG_ERROR::error(const char *msg, ...) {
+    257| 	char buff[4096];
+    258| 	va_list marker;
+    259| 	va_start(marker, msg);
+    260| 	int size = sizeof(buff);
+    261| 	_vsnprintf_s(buff, size, msg, marker);
+    262| 	buff[size - 1] = '\0';
+    263| 	va_end(marker);
+    264| 
+    265| 	if (error_func)
+    266| 		error_func(buff);
+    267| }
+    268| 
+    269| void TREG_ERROR::register_error_func(void(*func)(const char *)) {
+    270| 	error_func = func;
+    271| }
+    272| 
+    273| ///////////////////////////////////////////////////////////////////////////////
+    274| // TREG_LOG
+    275| void(*TREG_LOG::datalog_func)(unsigned tnum, double value, int site) = NULL;
+    276| 
+    277| TREG_LOG::TREG_LOG() {
+
+  --- hit at line 297 ---
+    294| 
+    295| 		if (TREG::eng_mode()) {
+    296| 			if (!get_limits(testnum)) { // check if test# exists
+    297| 				TREG_ERROR::error("TREG: Test number '%d' doesn't exist.", testnum);
+    298| 				return;
+    299| 			}
+    300| 		}
+    301| 
+    302| 		if (use_mslogdata && allow_mslogdata) {
+    303| 			char u[5]; // size from uicclib.h
+    304| 			double sc = 1.0;
+    305| 			if (!unit || ll == FLT_MAX || ul == FLT_MAX)
+    306| 				get_limits(tnum, &ll, &ul, 1, u, sizeof(u), &sc);  // bin is hardcoded to 1 currently!
+    307| 			if (unit)
+    308| 				strncpy(u, unit, 5);
+    309| 			SetTestNumber(testnum);
+    310| 			SetSubTestNumber(index);
+    311| 			log_data_func(site, (char *)testname.c_str(), ll / sc, ul / sc, value / sc, u, 1);
+    312| 			//msLogData(site, (char *)testname.c_str(), 9.4, ll/sc, ul/sc, value/sc, u);
+    313| 		}
+    314| 		else {
+    315| 			test_func(testnum, value, site, 0);
+    316| 		}
+    317| 
+    318| 	}
+
+  --- hit at line 321 ---
+    318| 	}
+    319| 	else { // fallback for older char_setup libs .... to be deleted
+    320| 		if (TREG_LOG::datalog_func == NULL) { // check if datalog_func is registered
+    321| 			TREG_ERROR::error("TREG: data-logging function not registered.\n"
+    322| 				"Use 'register_dlog_func()' once in your code. \n");
+    323| 			return;
+    324| 		}
+    325| 
+    326| 		unsigned testnum;
+    327| 		if (use_mslogdata)
+    328| 			testnum = tnum;
+    329| 		else
+    330| 			testnum = tnum + index;
+    331| 
+    332| 		if (TREG::eng_mode()) {
+    333| 			if (!get_limits(testnum)) { // check if test# exists
+    334| 				TREG_ERROR::error("TREG: Test number '%d' doesn't exist.", testnum);
+    335| 				return;
+    336| 			}
+    337| 		}
+    338| 
+    339| 		if (use_mslogdata && allow_mslogdata) {
+    340| 			char u[5]; // size from uicclib.h
+    341| 			double sc = 1.0;
+    342| 			if (!unit || ll == FLT_MAX || ul == FLT_MAX)
+
+  --- hit at line 334 ---
+    331| 
+    332| 		if (TREG::eng_mode()) {
+    333| 			if (!get_limits(testnum)) { // check if test# exists
+    334| 				TREG_ERROR::error("TREG: Test number '%d' doesn't exist.", testnum);
+    335| 				return;
+    336| 			}
+    337| 		}
+    338| 
+    339| 		if (use_mslogdata && allow_mslogdata) {
+    340| 			char u[5]; // size from uicclib.h
+    341| 			double sc = 1.0;
+    342| 			if (!unit || ll == FLT_MAX || ul == FLT_MAX)
+    343| 				get_limits(tnum, &ll, &ul, 1, u, sizeof(u), &sc);  // bin is hardcoded to 1 currently!
+    344| 			if (unit)
+    345| 				strncpy(u, unit, 5);
+    346| 			SetTestNumber(testnum);
+    347| 			SetSubTestNumber(index);
+    348| 			msLogData(site, (char *)testname.c_str(), 9.4, ll / sc, ul / sc, value / sc, u);
+    349| 		}
+    350| 		else {
+    351| 			datalog_func(testnum, value, site);
+    352| 		}
+    353| 	}
+    354| #else
+    355| 	datalog_func(tnum + index, value, site);
+
+  --- hit at line 1148 ---
+   1145| void TRIM_NODE::set_trim_type(const char* type) {
+   1146| 	if (!type) return;
+   1147| 	if (!trim_type_exists(type)) {
+   1148| 		TREG_ERROR::treg_error_log("TREG: unkown trim type '%s' passed to set_trim_type().", type);
+   1149| 		return;
+   1150| 	}
+   1151| 	trim_type = type;
+   1152| 	LCASE_STRING(trim_type);
+   1153| }
+   1154| 
+   1155| bool TRIM_NODE::trim_type_exists(const char *type) {
+   1156| 	if (!type)
+   1157| 		return false;
+   1158| 	if (_stricmp(type, "min") == 0)
+   1159| 		return true;
+   1160| 	else if (_stricmp(type, "nom") == 0)
+   1161| 		return true;
+   1162| 	else if (_stricmp(type, "max") == 0)
+   1163| 		return true;
+   1164| 	else
+   1165| 		return false;
+   1166| }
+   1167| 
+   1168| bool TRIM_NODE::updated_by_trim(int site) {
+   1169| 
+
+  --- hit at line 1528 ---
+   1525| 	double char_results[MAX_TRIM][MS_MAX_SITES];
+   1526| 
+   1527| 	if (tnum_prod < 0) {
+   1528| 		TREG_ERROR::treg_error_log("TREG: Production test number not set up for TRIM '%s'.", get_name());
+   1529| 		return;
+   1530| 	}
+   1531| 
+   1532| 	if (tnum_char > 0 && table_char_active()) {
+   1533| 		char buf[STEP_STR_BUF_SIZE];
+   1534| 		save_working();
+   1535| 		LOOP_STEPS(step) {
+   1536| 			set_working(step);
+   1537| 			measure_func(this, TREG_MEASURE_CHAR, meas_results);
+   1538| 			TREG_SERIAL{
+   1539| 				if (TREG::simulator()) {
+   1540| 					if (trim_rel_mode)
+   1541| 						meas_results[TSITE] = get_target(TSITE) * get_table_value(step);
+   1542| 					else
+   1543| 						meas_results[TSITE] = get_target(TSITE) + get_table_value(step);
+   1544| 				}
+   1545| 				table_char(meas_results[TSITE], step, TSITE);
+   1546| 				char_results[step][TSITE] = meas_results[TSITE];
+   1547| 				_snprintf_s(buf, STEP_STR_BUF_SIZE, "%d", step);
+   1548| 				TREG_LOG::log_data(tnum_char, step, meas_results[TSITE], TSITE, use_msLogData, true, (string)get_name() + "_char_step_" + (string)buf);
+   1549| 			}
+
+  --- hit at line 1814 ---
+   1811| 			if (paraname.get_pre_str(funclabel) != "error")
+   1812| 				StsGetParam(funcindex, paraname.get_pre_str(funclabel).c_str())->SetTestResult(TSITE, 0, meas_results[TSITE] * unit_scale);		// log pre trimming result
+   1813| 			else
+   1814| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <pre> and <value> both exist!");
+   1815| 			if (paraname.get_pre_bit_str(funclabel) != "error")
+   1816| 				StsGetParam(funcindex, paraname.get_pre_bit_str(funclabel).c_str())->SetTestResult(TSITE, 0, get_working(TSITE));				// log pre trimming step
+   1817| 			else
+   1818| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <pre> and <bit> both exist!");
+   1819| 	}
+   1820| 
+   1821| 
+   1822| 
+   1823| 	 pre(meas_results, true);// pre will find which code is the best code
+   1824| 
+   1825| 	 //if (QC)
+   1826| 	 //{
+   1827| 		// TREG_SERIAL
+   1828| 		// {
+   1829| 		//		 copy_read_to_work(TSITE);
+   1830| 		// }
+   1831| 	 //}
+   1832| 
+   1833| 	// post trim measurement if necessary
+   1834| 	if ( DO_TRIM)
+   1835| 	{
+
+  --- hit at line 1818 ---
+   1815| 			if (paraname.get_pre_bit_str(funclabel) != "error")
+   1816| 				StsGetParam(funcindex, paraname.get_pre_bit_str(funclabel).c_str())->SetTestResult(TSITE, 0, get_working(TSITE));				// log pre trimming step
+   1817| 			else
+   1818| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <pre> and <bit> both exist!");
+   1819| 	}
+   1820| 
+   1821| 
+   1822| 
+   1823| 	 pre(meas_results, true);// pre will find which code is the best code
+   1824| 
+   1825| 	 //if (QC)
+   1826| 	 //{
+   1827| 		// TREG_SERIAL
+   1828| 		// {
+   1829| 		//		 copy_read_to_work(TSITE);
+   1830| 		// }
+   1831| 	 //}
+   1832| 
+   1833| 	// post trim measurement if necessary
+   1834| 	if ( DO_TRIM)
+   1835| 	{
+   1836| 		if (updated_by_trim())
+   1837| 		{
+   1838| 			measure_func(this, TREG_MEASURE_POST, meas_results);
+   1839| 		}
+
+  --- hit at line 1851 ---
+   1848| 	}
+   1849| 	else
+   1850| 	{
+   1851| 		TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <post> and <value> both exist!");
+   1852| 	}
+   1853| 
+   1854| 
+   1855| 	for (int i = 0; i < max_retry_cnt; i++)
+   1856| 	{
+   1857| 		initial_need_retry();
+   1858| 		check_need_retry(pos_max_limit, pos_min_limit, meas_results);
+   1859| 		pre(meas_results); // call pre() again with post meas_results values
+   1860| 		if (updated_by_trim()) {
+   1861| 			retry_cnt++;
+   1862| 			measure_func(this, TREG_MEASURE_RETRY, meas_results);
+   1863| 		}
+   1864| 		else {
+   1865| 			break; // for loop if step wasn't changed -> no better step found
+   1866| 		}
+   1867| 	}
+   1868| 
+   1869| 
+   1870| 	///////===========================================��˧��������Ӧ����trim===================================///////
+   1871| 	if (GRP == 1)
+   1872| 	{
+
+  --- hit at line 1905 ---
+   1902| 			if (paraname.get_post_rt_str(funclabel) != "error")
+   1903| 				StsGetParam(funcindex, paraname.get_post_rt_str(funclabel).c_str())->SetTestResult(TSITE, 0, meas_results[TSITE] * unit_scale);			// log post trimming result
+   1904| 			else
+   1905| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <post> and <value> both exist!");
+   1906| 		}
+   1907| 		else
+   1908| 		{
+   1909| 			if (paraname.get_post_str(funclabel) != "error")
+   1910| 				StsGetParam(funcindex, paraname.get_post_str(funclabel).c_str())->SetTestResult(TSITE, 0, meas_results[TSITE] * unit_scale);			// log post trimming result
+   1911| 			else
+   1912| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <post> and <value> both exist!");
+   1913| 		}
+   1914| 
+   1915| 			if (paraname.get_post_bit_str(funclabel) != "error")
+   1916| 				StsGetParam(funcindex, paraname.get_post_bit_str(funclabel).c_str())->SetTestResult(TSITE, 0, get_working(TSITE));					// log post trimming step
+   1917| 			else
+   1918| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <post> and <bit> both exist!");
+   1919| 			if (paraname.get_target_str(funclabel) != "error")
+   1920| 				StsGetParam(funcindex, paraname.get_target_str(funclabel).c_str())->SetTestResult(TSITE, 0, get_target(TSITE) * unit_scale);			// log target
+   1921| 			else
+   1922| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <target>  exist!");
+   1923| 			if (paraname.get_guessed_str(funclabel) != "error")
+   1924| 				StsGetParam(funcindex, paraname.get_guessed_str(funclabel).c_str())->SetTestResult(TSITE, 0, get_guessed_final(TSITE) * unit_scale);	// log predicted result
+   1925| 			else
+   1926| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <guessed>  both exist!");
+
+  --- hit at line 1912 ---
+   1909| 			if (paraname.get_post_str(funclabel) != "error")
+   1910| 				StsGetParam(funcindex, paraname.get_post_str(funclabel).c_str())->SetTestResult(TSITE, 0, meas_results[TSITE] * unit_scale);			// log post trimming result
+   1911| 			else
+   1912| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <post> and <value> both exist!");
+   1913| 		}
+   1914| 
+   1915| 			if (paraname.get_post_bit_str(funclabel) != "error")
+   1916| 				StsGetParam(funcindex, paraname.get_post_bit_str(funclabel).c_str())->SetTestResult(TSITE, 0, get_working(TSITE));					// log post trimming step
+   1917| 			else
+   1918| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <post> and <bit> both exist!");
+   1919| 			if (paraname.get_target_str(funclabel) != "error")
+   1920| 				StsGetParam(funcindex, paraname.get_target_str(funclabel).c_str())->SetTestResult(TSITE, 0, get_target(TSITE) * unit_scale);			// log target
+   1921| 			else
+   1922| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <target>  exist!");
+   1923| 			if (paraname.get_guessed_str(funclabel) != "error")
+   1924| 				StsGetParam(funcindex, paraname.get_guessed_str(funclabel).c_str())->SetTestResult(TSITE, 0, get_guessed_final(TSITE) * unit_scale);	// log predicted result
+   1925| 			else
+   1926| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <guessed>  both exist!");
+   1927| 			if (paraname.get_updated_str(funclabel) != "error")
+   1928| 				StsGetParam(funcindex, paraname.get_updated_str(funclabel).c_str())->SetTestResult(TSITE, 0, updated_by_trim(TSITE));				// log updated_by_trim() flag
+   1929| 			else
+   1930| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <updated> exist!");
+   1931| 	}
+   1932| 		//========================================��˧��������Ӧ����trim=================================//
+   1933| 		if (TrimNode_grp_no == 1)
+
+  --- hit at line 1918 ---
+   1915| 			if (paraname.get_post_bit_str(funclabel) != "error")
+   1916| 				StsGetParam(funcindex, paraname.get_post_bit_str(funclabel).c_str())->SetTestResult(TSITE, 0, get_working(TSITE));					// log post trimming step
+   1917| 			else
+   1918| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <post> and <bit> both exist!");
+   1919| 			if (paraname.get_target_str(funclabel) != "error")
+   1920| 				StsGetParam(funcindex, paraname.get_target_str(funclabel).c_str())->SetTestResult(TSITE, 0, get_target(TSITE) * unit_scale);			// log target
+   1921| 			else
+   1922| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <target>  exist!");
+   1923| 			if (paraname.get_guessed_str(funclabel) != "error")
+   1924| 				StsGetParam(funcindex, paraname.get_guessed_str(funclabel).c_str())->SetTestResult(TSITE, 0, get_guessed_final(TSITE) * unit_scale);	// log predicted result
+   1925| 			else
+   1926| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <guessed>  both exist!");
+   1927| 			if (paraname.get_updated_str(funclabel) != "error")
+   1928| 				StsGetParam(funcindex, paraname.get_updated_str(funclabel).c_str())->SetTestResult(TSITE, 0, updated_by_trim(TSITE));				// log updated_by_trim() flag
+   1929| 			else
+   1930| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <updated> exist!");
+   1931| 	}
+   1932| 		//========================================��˧��������Ӧ����trim=================================//
+   1933| 		if (TrimNode_grp_no == 1)
+   1934| 		{
+   1935| 			TREG_SERIAL_ALL
+   1936| 			{
+   1937| 				pre_measured[TSITE] = post_measured[TSITE] = false;
+   1938| 			}
+   1939| 		}
+
+  --- hit at line 1922 ---
+   1919| 			if (paraname.get_target_str(funclabel) != "error")
+   1920| 				StsGetParam(funcindex, paraname.get_target_str(funclabel).c_str())->SetTestResult(TSITE, 0, get_target(TSITE) * unit_scale);			// log target
+   1921| 			else
+   1922| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <target>  exist!");
+   1923| 			if (paraname.get_guessed_str(funclabel) != "error")
+   1924| 				StsGetParam(funcindex, paraname.get_guessed_str(funclabel).c_str())->SetTestResult(TSITE, 0, get_guessed_final(TSITE) * unit_scale);	// log predicted result
+   1925| 			else
+   1926| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <guessed>  both exist!");
+   1927| 			if (paraname.get_updated_str(funclabel) != "error")
+   1928| 				StsGetParam(funcindex, paraname.get_updated_str(funclabel).c_str())->SetTestResult(TSITE, 0, updated_by_trim(TSITE));				// log updated_by_trim() flag
+   1929| 			else
+   1930| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <updated> exist!");
+   1931| 	}
+   1932| 		//========================================��˧��������Ӧ����trim=================================//
+   1933| 		if (TrimNode_grp_no == 1)
+   1934| 		{
+   1935| 			TREG_SERIAL_ALL
+   1936| 			{
+   1937| 				pre_measured[TSITE] = post_measured[TSITE] = false;
+   1938| 			}
+   1939| 		}
+   1940| 	//=======================================��˧��������Ӧ����trim=================================//
+   1941| 
+   1942| }
+   1943| 
+
+  --- hit at line 1926 ---
+   1923| 			if (paraname.get_guessed_str(funclabel) != "error")
+   1924| 				StsGetParam(funcindex, paraname.get_guessed_str(funclabel).c_str())->SetTestResult(TSITE, 0, get_guessed_final(TSITE) * unit_scale);	// log predicted result
+   1925| 			else
+   1926| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <guessed>  both exist!");
+   1927| 			if (paraname.get_updated_str(funclabel) != "error")
+   1928| 				StsGetParam(funcindex, paraname.get_updated_str(funclabel).c_str())->SetTestResult(TSITE, 0, updated_by_trim(TSITE));				// log updated_by_trim() flag
+   1929| 			else
+   1930| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <updated> exist!");
+   1931| 	}
+   1932| 		//========================================��˧��������Ӧ����trim=================================//
+   1933| 		if (TrimNode_grp_no == 1)
+   1934| 		{
+   1935| 			TREG_SERIAL_ALL
+   1936| 			{
+   1937| 				pre_measured[TSITE] = post_measured[TSITE] = false;
+   1938| 			}
+   1939| 		}
+   1940| 	//=======================================��˧��������Ӧ����trim=================================//
+   1941| 
+   1942| }
+   1943| 
+   1944| 
+   1945| //void TRIM_NODE::execute(void(*measure_func)(TRIM_NODE *trim_node, TREG_MEASURE_FLAG treg_measure_flag, double *results),
+   1946| //	SPEC& paraname, short funcindex, LPCTSTR funclabel, double unit_scale, int log_level, string trimname) {
+   1947| //
+
+  --- hit at line 1930 ---
+   1927| 			if (paraname.get_updated_str(funclabel) != "error")
+   1928| 				StsGetParam(funcindex, paraname.get_updated_str(funclabel).c_str())->SetTestResult(TSITE, 0, updated_by_trim(TSITE));				// log updated_by_trim() flag
+   1929| 			else
+   1930| 				TREG_ERROR::treg_error_log("post_value define is wrong in PGS, need check if string <updated> exist!");
+   1931| 	}
+   1932| 		//========================================��˧��������Ӧ����trim=================================//
+   1933| 		if (TrimNode_grp_no == 1)
+   1934| 		{
+   1935| 			TREG_SERIAL_ALL
+   1936| 			{
+   1937| 				pre_measured[TSITE] = post_measured[TSITE] = false;
+   1938| 			}
+   1939| 		}
+   1940| 	//=======================================��˧��������Ӧ����trim=================================//
+   1941| 
+   1942| }
+   1943| 
+   1944| 
+   1945| //void TRIM_NODE::execute(void(*measure_func)(TRIM_NODE *trim_node, TREG_MEASURE_FLAG treg_measure_flag, double *results),
+   1946| //	SPEC& paraname, short funcindex, LPCTSTR funclabel, double unit_scale, int log_level, string trimname) {
+   1947| //
+   1948| //	unsigned step = 0;
+   1949| //	double meas_results[MS_MAX_SITES];
+   1950| //	double char_results[MAX_TRIM][MS_MAX_SITES];
+   1951| //	string trimfullname;
+
+  --- hit at line 2114 ---
+   2111| void TRIM::set_trim_allowed(bool turn_on, int site) {
+   2112| 	CHECK_SITE_EXIT
+   2113| 		if (!count()) {
+   2114| 			TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2115| 			return;
+   2116| 		}
+   2117| 
+   2118| 	for (unsigned i = 0; i < count(); i++)
+   2119| 		(*this)[i].set_trim_allowed(turn_on, site);
+   2120| }
+   2121| 
+   2122| void TRIM::force_table_char_active(bool activate) {
+   2123| 	if (!count()) {
+   2124| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2125| 		return;
+   2126| 	}
+   2127| 
+   2128| 	for (unsigned i = 0; i < count(); i++)
+   2129| 		(*this)[i].force_table_char_active(activate);
+   2130| }
+   2131| 
+   2132| void TRIM::set_table_char_active(bool activate) {
+   2133| 	if (!count()) {
+   2134| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2135| 		return;
+
+  --- hit at line 2124 ---
+   2121| 
+   2122| void TRIM::force_table_char_active(bool activate) {
+   2123| 	if (!count()) {
+   2124| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2125| 		return;
+   2126| 	}
+   2127| 
+   2128| 	for (unsigned i = 0; i < count(); i++)
+   2129| 		(*this)[i].force_table_char_active(activate);
+   2130| }
+   2131| 
+   2132| void TRIM::set_table_char_active(bool activate) {
+   2133| 	if (!count()) {
+   2134| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2135| 		return;
+   2136| 	}
+   2137| 
+   2138| 	for (unsigned i = 0; i < count(); i++)
+   2139| 		(*this)[i].set_table_char_active(activate);
+   2140| }
+   2141| 
+   2142| void TRIM::set_learn_trim_start(unsigned value) {
+   2143| 	if (!count()) {
+   2144| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2145| 		return;
+
+  --- hit at line 2134 ---
+   2131| 
+   2132| void TRIM::set_table_char_active(bool activate) {
+   2133| 	if (!count()) {
+   2134| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2135| 		return;
+   2136| 	}
+   2137| 
+   2138| 	for (unsigned i = 0; i < count(); i++)
+   2139| 		(*this)[i].set_table_char_active(activate);
+   2140| }
+   2141| 
+   2142| void TRIM::set_learn_trim_start(unsigned value) {
+   2143| 	if (!count()) {
+   2144| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2145| 		return;
+   2146| 	}
+   2147| 
+   2148| 	for (unsigned i = 0; i < count(); i++)
+   2149| 		(*this)[i].set_learn_trim_start(value);
+   2150| }
+   2151| 
+   2152| void TRIM::set_learn_trim_step(unsigned value) {
+   2153| 	if (!count()) {
+   2154| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2155| 		return;
+
+  --- hit at line 2144 ---
+   2141| 
+   2142| void TRIM::set_learn_trim_start(unsigned value) {
+   2143| 	if (!count()) {
+   2144| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2145| 		return;
+   2146| 	}
+   2147| 
+   2148| 	for (unsigned i = 0; i < count(); i++)
+   2149| 		(*this)[i].set_learn_trim_start(value);
+   2150| }
+   2151| 
+   2152| void TRIM::set_learn_trim_step(unsigned value) {
+   2153| 	if (!count()) {
+   2154| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2155| 		return;
+   2156| 	}
+   2157| 
+   2158| 	for (unsigned i = 0; i < count(); i++)
+   2159| 		(*this)[i].set_learn_trim_step(value);
+   2160| }
+   2161| 
+   2162| void TRIM::set_learn_trim_char(unsigned value) {
+   2163| 	if (!count()) {
+   2164| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2165| 		return;
+
+  --- hit at line 2154 ---
+   2151| 
+   2152| void TRIM::set_learn_trim_step(unsigned value) {
+   2153| 	if (!count()) {
+   2154| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2155| 		return;
+   2156| 	}
+   2157| 
+   2158| 	for (unsigned i = 0; i < count(); i++)
+   2159| 		(*this)[i].set_learn_trim_step(value);
+   2160| }
+   2161| 
+   2162| void TRIM::set_learn_trim_char(unsigned value) {
+   2163| 	if (!count()) {
+   2164| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2165| 		return;
+   2166| 	}
+   2167| 
+   2168| 	for (unsigned i = 0; i < count(); i++)
+   2169| 		(*this)[i].set_learn_trim_char(value);
+   2170| }
+   2171| 
+   2172| void TRIM::force_post_measurement(bool activate) {
+   2173| 	if (!count()) {
+   2174| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2175| 		return;
+
+  --- hit at line 2164 ---
+   2161| 
+   2162| void TRIM::set_learn_trim_char(unsigned value) {
+   2163| 	if (!count()) {
+   2164| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2165| 		return;
+   2166| 	}
+   2167| 
+   2168| 	for (unsigned i = 0; i < count(); i++)
+   2169| 		(*this)[i].set_learn_trim_char(value);
+   2170| }
+   2171| 
+   2172| void TRIM::force_post_measurement(bool activate) {
+   2173| 	if (!count()) {
+   2174| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2175| 		return;
+   2176| 	}
+   2177| 
+   2178| 	for (unsigned i = 0; i < count(); i++)
+   2179| 		(*this)[i].force_post_measurement(activate);
+   2180| }
+   2181| 
+   2182| bool TRIM::start_learn_valid() {
+   2183| 	if (!count()) {
+   2184| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2185| 		return false;
+
+  --- hit at line 2174 ---
+   2171| 
+   2172| void TRIM::force_post_measurement(bool activate) {
+   2173| 	if (!count()) {
+   2174| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2175| 		return;
+   2176| 	}
+   2177| 
+   2178| 	for (unsigned i = 0; i < count(); i++)
+   2179| 		(*this)[i].force_post_measurement(activate);
+   2180| }
+   2181| 
+   2182| bool TRIM::start_learn_valid() {
+   2183| 	if (!count()) {
+   2184| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2185| 		return false;
+   2186| 	}
+   2187| 
+   2188| 	for (unsigned i = 0; i < count(); i++)
+   2189| 		if (!(*this)[i].start_learn_valid())
+   2190| 			return false;
+   2191| 
+   2192| 	return true;
+   2193| }
+   2194| 
+   2195| bool TRIM::table_char_active() {
+
+  --- hit at line 2184 ---
+   2181| 
+   2182| bool TRIM::start_learn_valid() {
+   2183| 	if (!count()) {
+   2184| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2185| 		return false;
+   2186| 	}
+   2187| 
+   2188| 	for (unsigned i = 0; i < count(); i++)
+   2189| 		if (!(*this)[i].start_learn_valid())
+   2190| 			return false;
+   2191| 
+   2192| 	return true;
+   2193| }
+   2194| 
+   2195| bool TRIM::table_char_active() {
+   2196| 	if (!count()) {
+   2197| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2198| 		return false;
+   2199| 	}
+   2200| 
+   2201| 	for (unsigned i = 0; i < count(); i++)
+   2202| 		if ((*this)[i].table_char_active())
+   2203| 			return true;
+   2204| 
+   2205| 	return false;
+
+  --- hit at line 2197 ---
+   2194| 
+   2195| bool TRIM::table_char_active() {
+   2196| 	if (!count()) {
+   2197| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2198| 		return false;
+   2199| 	}
+   2200| 
+   2201| 	for (unsigned i = 0; i < count(); i++)
+   2202| 		if ((*this)[i].table_char_active())
+   2203| 			return true;
+   2204| 
+   2205| 	return false;
+   2206| }
+   2207| 
+   2208| void TRIM::restart_table_char() {
+   2209| 	if (!count()) {
+   2210| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2211| 		return;
+   2212| 	}
+   2213| 
+   2214| 	for (unsigned i = 0; i < count(); i++)
+   2215| 		(*this)[i].restart_table_char();
+   2216| }
+   2217| 
+   2218| void TRIM::sot() {
+
+  --- hit at line 2210 ---
+   2207| 
+   2208| void TRIM::restart_table_char() {
+   2209| 	if (!count()) {
+   2210| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2211| 		return;
+   2212| 	}
+   2213| 
+   2214| 	for (unsigned i = 0; i < count(); i++)
+   2215| 		(*this)[i].restart_table_char();
+   2216| }
+   2217| 
+   2218| void TRIM::sot() {
+   2219| #ifdef TREG_ETS364
+   2220| 	if (TI_ShellIsProbeTest() && char_on_wafer_change) {
+   2221| 		// check if number of units in sublot decreased which indicates that wafer change happend
+   2222| 		int num = GetTestMainVariable(SUBLOT_DUTS_TESTED);
+   2223| 		if (num_units_sublot > num)
+   2224| 			restart_table_char();
+   2225| 		num_units_sublot = num;
+   2226| 	}
+   2227| #endif
+   2228| 	TREG_LIST<TRIM_NODE>::sot();
+   2229| }
+   2230| 
+   2231| void TRIM::eot() {
+
+  --- hit at line 2244 ---
+   2241| 	FILE        *file;
+   2242| 
+   2243| 	if (!count()) {
+   2244| 		TREG_ERROR::treg_error_log("TREG: No TRIM parameter defined.");
+   2245| 		return;
+   2246| 	}
+   2247| 
+   2248| 	for (unsigned j = 0; j < count(); j++) {
+   2249| 		TRIM_NODE &node = (*this)[j];
+   2250| 
+   2251| 		sprintf_s(file_name, "%s.csv", node.name.c_str());
+   2252| 
+   2253| 		if (node.print_learn_table_header) {
+   2254| 			fopen_s(&file, file_name, "w");
+   2255| 
+   2256| 			if (file) {
+   2257| 				fprintf(file, "Insertion,Updated by trim,Table char #unit remaining,");
+   2258| 				for (i = 0; i < node.get_steps(); i++)
+   2259| 					if (node.trim_step_enabled(i))
+   2260| 						fprintf(file, "Trim Step %d,", i);
+   2261| 
+   2262| 				TREG_SERIAL_ALL fprintf(file, ",,pre_bit [%d],"
+   2263| 					"pre_value [%d],"
+   2264| 					"post_bit [%d],"
+   2265| 					"guessed_value [%d],"
+
+  --- hit at line 2340 ---
+   2337| #ifdef TREG_ETS364
+   2338| void TRIM_LINK::set_spec(int test_list_test_number) {
+   2339| 	if (!get_limits(test_list_test_number, &lower_spec_limit, &upper_spec_limit)) {
+   2340| 		TREG_ERROR::error("TREG: set_spec(): Test number '%d' doesn't exist.", test_list_test_number);
+   2341| 		return;
+   2342| 	}
+   2343| 	this->link->set_target((lower_spec_limit + upper_spec_limit) / 2.0);
+   2344| 	calc_norm_parameters();
+   2345| }
+   2346| 
+   2347| void TRIM_LINK::set_test_num(int prod_test_number, int char_test_number) {
+   2348| 	if (!get_limits(prod_test_number)) {
+   2349| 		TREG_ERROR::error("TREG: set_test_num(): Test number '%d' doesn't exist.", prod_test_number);
+   2350| 		return;
+   2351| 	}
+   2352| 
+   2353| 	if (char_test_number > 0 && !get_limits(char_test_number)) {
+   2354| 		TREG_ERROR::error("TREG: set_test_num(): Test number '%d' doesn't exist.", char_test_number);
+   2355| 		return;
+   2356| 	}
+   2357| 	tnum_prod = prod_test_number;
+   2358| 	tnum_char = char_test_number;
+   2359| }
+   2360| #endif
+   2361| 
+
+  --- hit at line 2349 ---
+   2346| 
+   2347| void TRIM_LINK::set_test_num(int prod_test_number, int char_test_number) {
+   2348| 	if (!get_limits(prod_test_number)) {
+   2349| 		TREG_ERROR::error("TREG: set_test_num(): Test number '%d' doesn't exist.", prod_test_number);
+   2350| 		return;
+   2351| 	}
+   2352| 
+   2353| 	if (char_test_number > 0 && !get_limits(char_test_number)) {
+   2354| 		TREG_ERROR::error("TREG: set_test_num(): Test number '%d' doesn't exist.", char_test_number);
+   2355| 		return;
+   2356| 	}
+   2357| 	tnum_prod = prod_test_number;
+   2358| 	tnum_char = char_test_number;
+   2359| }
+   2360| #endif
+   2361| 
+   2362| void TRIM_LINK::set_lower_spec(double low_spec) {
+   2363| 	lower_spec_limit = low_spec;
+   2364| 	calc_norm_parameters();
+   2365| }
+   2366| 
+   2367| void TRIM_LINK::set_upper_spec(double up_spec) {
+   2368| 	upper_spec_limit = up_spec;
+   2369| 	calc_norm_parameters();
+   2370| }
+
+  --- hit at line 2354 ---
+   2351| 	}
+   2352| 
+   2353| 	if (char_test_number > 0 && !get_limits(char_test_number)) {
+   2354| 		TREG_ERROR::error("TREG: set_test_num(): Test number '%d' doesn't exist.", char_test_number);
+   2355| 		return;
+   2356| 	}
+   2357| 	tnum_prod = prod_test_number;
+   2358| 	tnum_char = char_test_number;
+   2359| }
+   2360| #endif
+   2361| 
+   2362| void TRIM_LINK::set_lower_spec(double low_spec) {
+   2363| 	lower_spec_limit = low_spec;
+   2364| 	calc_norm_parameters();
+   2365| }
+   2366| 
+   2367| void TRIM_LINK::set_upper_spec(double up_spec) {
+   2368| 	upper_spec_limit = up_spec;
+   2369| 	calc_norm_parameters();
+   2370| }
+   2371| 
+   2372| void TRIM_LINK::calc_norm_parameters() {
+   2373| 	norm_offset = (upper_spec_limit + lower_spec_limit) / 2.0;
+   2374| 	norm_factor = 2.0 / (upper_spec_limit - lower_spec_limit);
+   2375| }
+
+  --- hit at line 2703 ---
+   2700| 			int tnum_prod = trim_link.tnum_prod;
+   2701| 
+   2702| 			if (tnum_prod < 0) {
+   2703| 				TREG_ERROR::treg_error_log("TREG: Production test number not set up for TRIM '%s' in TRIM_GRP '%s'.", trim.get_name(), get_name());
+   2704| 				return;
+   2705| 			}
+   2706| 
+   2707| 			if (TREG::simulator()) {
+   2708| 				if (trim.trim_rel_mode)
+   2709| 					meas_results[i][TSITE] = trim.get_target(TSITE) * trim.get_table_value(trim.get_working(TSITE));
+   2710| 				else
+   2711| 					meas_results[i][TSITE] = trim.get_target(TSITE) + trim.get_table_value(trim.get_working(TSITE));
+   2712| 			}
+   2713| 
+   2714| 			TREG_LOG::log_data(tnum_prod, 0, trim.get_working(TSITE), TSITE, trim.use_msLogData, true, (string)trim.get_name() + "_pre_step", 0.0, trim.get_steps() - 1, "#"); // log pre trimming step
+   2715| 			TREG_LOG::log_data(tnum_prod, 1, meas_results[i][TSITE], TSITE, trim.use_msLogData, false);                                                                       // log pre trimming result
+   2716| 
+   2717| 			if (is_measure_group)
+   2718| 				trim.pre(meas_results[i][TSITE], TSITE, trim_hysteresis_pcnt);
+   2719| 			else
+   2720| 				trim.set_pre_reading(meas_results[i][TSITE], TSITE);
+   2721| 		}
+   2722| 	};
+   2723| 
+   2724| 	if (!is_measure_group) {
+
+  --- hit at line 3786 ---
+   3783| 					break;
+   3784| 				case 'x':   value_bit = param_bit;        // if 'x' do not check param bit
+   3785| 					break;
+   3786| 				default:   TREG_ERROR::treg_error_log("Wrong character detected in '%s' passed to function 'comp_prog()'", buff);
+   3787| 				}
+   3788| 
+   3789| 				if (param_bit != value_bit)
+   3790| 					return false;                // stop comparison as soon as one error is found
+   3791| 			};
+   3792| 		}
+   3793| 		else {
+   3794| 			if (bit.invert_bits)
+   3795| 				param_bit = (bit.link->get_programmed(site) & bit.param_mask) ? false : true;
+   3796| 			else
+   3797| 				param_bit = (bit.link->get_programmed(site) & bit.param_mask) ? true : false;
+   3798| 
+   3799| 
+   3800| 			switch (*p) {
+   3801| 			case '1':   value_bit = true;
+   3802| 				break;
+   3803| 			case '0':   value_bit = false;
+   3804| 				break;
+   3805| 			case 'x':   value_bit = param_bit;        // if 'x' do not check param bit
+   3806| 				break;
+   3807| 			default:   TREG_ERROR::treg_error_log("Wrong character detected in '%s' passed to function 'comp_prog()'", buff);
+
+  --- hit at line 3807 ---
+   3804| 				break;
+   3805| 			case 'x':   value_bit = param_bit;        // if 'x' do not check param bit
+   3806| 				break;
+   3807| 			default:   TREG_ERROR::treg_error_log("Wrong character detected in '%s' passed to function 'comp_prog()'", buff);
+   3808| 			}
+   3809| 
+   3810| 			if (param_bit != value_bit)
+   3811| 				return false;                // stop comparison as soon as one error is found
+   3812| 		}
+   3813| 		p++;
+   3814| 		if (p == '\0') break;                    // if all characters has been checked break even if there are still bits in register
+   3815| 	}
+   3816| 
+   3817| 	return true;    // if all bits are the same as "value" return true
+   3818| }
+   3819| 
+   3820| bool ASSY_NODE::comp_prog(INT64 value, int site) {
+   3821| 
+   3822| 	CHECK_SITE_EXIT_0
+   3823| 
+   3824| 		bool  param_bit;
+   3825| 	bool  value_bit;
+   3826| 	INT64 mask = 1;
+   3827| 
+   3828| 	for (unsigned i = 0; i < count(); i++) {
+
+  --- hit at line 3916 ---
+   3913| 				case '1':   value_bit = true;       break;
+   3914| 				case '0':   value_bit = false;      break;
+   3915| 				case 'x':   value_bit = param_bit;  break;         // if 'x' do not check param bit
+   3916| 				default:   TREG_ERROR::treg_error_log("Wrong character detected in '%s' passed to function 'comp_read()'", buff);
+   3917| 				}
+   3918| 
+   3919| 				if (param_bit != value_bit)
+   3920| 					return false;                // stop comparison as soon as one error is found
+   3921| 			};
+   3922| 		}
+   3923| 		else {
+   3924| 			if (bit.invert_bits)
+   3925| 				param_bit = (bit.link->get_read_back(site) & bit.param_mask) ? false : true;
+   3926| 			else
+   3927| 				param_bit = (bit.link->get_read_back(site) & bit.param_mask) ? true : false;
+   3928| 
+   3929| 			switch (*p) {
+   3930| 			case '1':   value_bit = true;         break;
+   3931| 			case '0':   value_bit = false;        break;
+   3932| 			case 'x':   value_bit = param_bit;    break;        // if 'x' do not check param bit
+   3933| 			default:   TREG_ERROR::treg_error_log("Wrong character detected in '%s' passed to function 'comp_read()'", buff);
+   3934| 			}
+   3935| 
+   3936| 			if (param_bit != value_bit)
+   3937| 				return false;                // stop comparison as soon as one error is found
+
+  --- hit at line 3933 ---
+   3930| 			case '1':   value_bit = true;         break;
+   3931| 			case '0':   value_bit = false;        break;
+   3932| 			case 'x':   value_bit = param_bit;    break;        // if 'x' do not check param bit
+   3933| 			default:   TREG_ERROR::treg_error_log("Wrong character detected in '%s' passed to function 'comp_read()'", buff);
+   3934| 			}
+   3935| 
+   3936| 			if (param_bit != value_bit)
+   3937| 				return false;                // stop comparison as soon as one error is found
+   3938| 		}
+   3939| 
+   3940| 		p++;
+   3941| 		if (p == '\0') break;        // if all characters has been checked break even if there are still bits in register
+   3942| 	}
+   3943| 
+   3944| 	return true;    // if all bits are the same as "value" return true
+   3945| }
+   3946| 
+   3947| bool ASSY_NODE::comp_read(INT64 value, int site) {
+   3948| 
+   3949| 	CHECK_SITE_EXIT_0
+   3950| 
+   3951| 		bool  param_bit;
+   3952| 	bool  value_bit;
+   3953| 	INT64 mask = 1;
+   3954| 
+
+  --- hit at line 4214 ---
+   4211| 		if (err.empty())
+   4212| 			assy_address = (unsigned)result;
+   4213| 		else
+   4214| 			TREG_ERROR::treg_error_log("TREG: %s in address '%s' for assy '%s'", err.c_str(), address, this->get_name());
+   4215| 
+   4216| 		p = strtok_s(NULL, sep, &next_token);
+   4217| 		if (p)
+   4218| 			vector_label = p;
+   4219| 
+   4220| 		delete[] address; address = NULL;
+   4221| 		delete parser; parser = NULL;
+   4222| 	}
+   4223| }
+   4224| 
+   4225| ///////////////////////////////////////////////////////////////////////////////
+   4226| // ASSY_GRP_NODE class
+   4227| ASSY_GRP_NODE::ASSY_GRP_NODE() {
+   4228| 
+   4229| }
+   4230| 
+   4231| ASSY_GRP_NODE::~ASSY_GRP_NODE() {
+   4232| 
+   4233| }
+   4234| 
+   4235| ASSY_LINK &ASSY_GRP_NODE::operator()(unsigned index) {
+
+  --- hit at line 4581 ---
+   4578| 		filename_info = Pre_info + filename_info + Post_info;
+   4579| 		file_name = filename_info.c_str();
+   4580| 		MessageBoxA(NULL, file_name, "�����ʾ�Ի���", MB_YESNO) ;
+   4581| 		//TREG_ERROR::error("TREG::init() file '%s' not found.\n", file_name);
+   4582| 		return false;  // exit and return false
+   4583| 	}
+   4584| 	// check for files to be included in "DEFAULT" section
+   4585| 	if ((section = reader.getSection(_DEFAULT))) {
+   4586| 		while ((key = section->getNextKey())) {
+   4587| 			string name = key->getName();
+   4588| 			size_t pos = name.find("include"); // 'include' found at the beginning?
+   4589| 			if (pos != string::npos && pos == 0) {
+   4590| 				if (!reader.append(key->getString())) { // read file
+   4591| 					size_t pos = name.find("include_try"); // 'include_try' found at the beginning?
+   4592| 					if (!(pos != string::npos && pos == 0)) {
+   4593| 						TREG_ERROR::treg_error_log("TREG::init() include file '%s' not found.\n", key->getString());
+   4594| 						return false;  // exit and return false
+   4595| 					}
+   4596| 				}
+   4597| 			}
+   4598| 		}
+   4599| 	}
+   4600| 	//reader.dump("treg.txt");
+   4601| 	// 1. look for TRIM parameters
+   4602| 	// loop through all sections
+
+  --- hit at line 4593 ---
+   4590| 				if (!reader.append(key->getString())) { // read file
+   4591| 					size_t pos = name.find("include_try"); // 'include_try' found at the beginning?
+   4592| 					if (!(pos != string::npos && pos == 0)) {
+   4593| 						TREG_ERROR::treg_error_log("TREG::init() include file '%s' not found.\n", key->getString());
+   4594| 						return false;  // exit and return false
+   4595| 					}
+   4596| 				}
+   4597| 			}
+   4598| 		}
+   4599| 	}
+   4600| 	//reader.dump("treg.txt");
+   4601| 	// 1. look for TRIM parameters
+   4602| 	// loop through all sections
+   4603| 	while ((section = reader.getNextSection())) {
+   4604| 		p = section->getName();
+   4605| 		switch (*p) {
+   4606| 		case '*': // ignore other section headers (SEL,ASSY,ASSY_GRP,TRIM_GRP)
+   4607| 		case '_':
+   4608| 		case '#':
+   4609| 		case '$':
+   4610| 		case '%':
+   4611| 		case '&':
+   4612| 			break;
+   4613| 		default: { // TRIM found
+   4614| 			TRIM_NODE *node;
+
+  --- hit at line 4623 ---
+   4620| 				if (reader.getBoolean(_DEFAULT, "allow_overwrite", &flag))
+   4621| 					trim.remove(p);
+   4622| 				else {
+   4623| 					TREG_ERROR::treg_error_log("TREG: TRIM [%s] already exists in file %s.\n", p, file_name);
+   4624| 					return false;
+   4625| 				}
+   4626| 			}
+   4627| 			char baseunit[20];
+   4628| 			int num_char_units = 0;
+   4629| 			int learn_trim_start = 0;
+   4630| 			int learn_trim_steps = 0;
+   4631| 			double trim_target = 0.0;
+   4632| 			int test_number = -1;
+   4633| 			bool debug = false;
+   4634| 
+   4635| 			learn_trim_start = getSettings(reader, p, "trim_start_learn", TRIM_START_LEARN_DEFAULT);
+   4636| 			learn_trim_steps = getSettings(reader, p, "trim_step_learn", TRIM_STEP_LEARN_DEFAULT);
+   4637| 			num_char_units = getSettings(reader, p, "trim_step_char", TRIM_STEP_CHAR_DEFAULT);
+   4638| 			reader.getBoolean(p, "debug", &debug);
+   4639| 
+   4640| 			string strim_type = reader.getString(p, "trim_type");
+   4641| 			string strim_table = reader.getString(p, "table");
+   4642| 			string strim_target = reader.getString(p, "target");
+   4643| 			string strim_method = reader.getString(p, "trim_method");
+   4644| 
+
+  --- hit at line 4649 ---
+   4646| 			if (strim_table.empty()) {
+   4647| 				// there is no 'table' -> require 'step_count' to be set
+   4648| 				if (!reader.getInteger(p, "step_count", &step_count)) {
+   4649| 					TREG_ERROR::treg_error_log("TREG: TRIM [%s] Need 'step_count' if 'table' is not specified in file %s.\n", p, file_name);
+   4650| 					return false;
+   4651| 				}
+   4652| 				// if there is no table we need to force table char and step learning
+   4653| 				if (!num_char_units)
+   4654| 					num_char_units = TRIM_STEP_CHAR_DEFAULT;
+   4655| 				// if there is no default_step we need to force start learning
+   4656| 				if (!reader.getInteger(p, "default_step", &default_step))
+   4657| 					learn_trim_start = TRIM_START_LEARN_DEFAULT;
+   4658| 				if (!(0 <= default_step && default_step < step_count)) { // check if default step is with in 0 <= default_step < step_count
+   4659| 					TREG_ERROR::treg_error_log("TREG: TRIM [%s] 'default_step' out of range file %s.\n", p, file_name);
+   4660| 					return false;
+   4661| 				}
+   4662| 			}
+   4663| 
+   4664| 			if (!strim_target.empty()) {
+   4665| 				if (strim_target[0] == '#') {
+   4666| 					strim_target.erase(0, 1);
+   4667| 					sscanf_s(strim_target.c_str(), "%d", &test_number);
+   4668| #ifdef TREG_ETS364
+   4669| 					double lsl = 0, usl = 0;
+   4670| 					if (!get_limits(test_number, &lsl, &usl)) {
+
+  --- hit at line 4659 ---
+   4656| 				if (!reader.getInteger(p, "default_step", &default_step))
+   4657| 					learn_trim_start = TRIM_START_LEARN_DEFAULT;
+   4658| 				if (!(0 <= default_step && default_step < step_count)) { // check if default step is with in 0 <= default_step < step_count
+   4659| 					TREG_ERROR::treg_error_log("TREG: TRIM [%s] 'default_step' out of range file %s.\n", p, file_name);
+   4660| 					return false;
+   4661| 				}
+   4662| 			}
+   4663| 
+   4664| 			if (!strim_target.empty()) {
+   4665| 				if (strim_target[0] == '#') {
+   4666| 					strim_target.erase(0, 1);
+   4667| 					sscanf_s(strim_target.c_str(), "%d", &test_number);
+   4668| #ifdef TREG_ETS364
+   4669| 					double lsl = 0, usl = 0;
+   4670| 					if (!get_limits(test_number, &lsl, &usl)) {
+   4671| 						TREG_ERROR::error("TREG: Test number '%s' specified in file %s for TRIM [%s] does not exists.\n",
+   4672| 							strim_target.c_str(), file_name, p);
+   4673| 						return false;
+   4674| 					}
+   4675| 					trim_target = (lsl + usl) / 2.0;
+   4676| #else
+   4677| 					TREG_ERROR::treg_error_log("TREG: Test numbers are only supported on Eagle tester platform.\n");
+   4678| 					return false;
+   4679| #endif
+   4680| 				}
+
+  --- hit at line 4671 ---
+   4668| #ifdef TREG_ETS364
+   4669| 					double lsl = 0, usl = 0;
+   4670| 					if (!get_limits(test_number, &lsl, &usl)) {
+   4671| 						TREG_ERROR::error("TREG: Test number '%s' specified in file %s for TRIM [%s] does not exists.\n",
+   4672| 							strim_target.c_str(), file_name, p);
+   4673| 						return false;
+   4674| 					}
+   4675| 					trim_target = (lsl + usl) / 2.0;
+   4676| #else
+   4677| 					TREG_ERROR::treg_error_log("TREG: Test numbers are only supported on Eagle tester platform.\n");
+   4678| 					return false;
+   4679| #endif
+   4680| 				}
+   4681| 				else {
+   4682| 					err = parser.parse(strim_target.c_str(), &trim_target);
+   4683| 					if (!err.empty()) {
+   4684| 						TREG_ERROR::treg_error_log("TREG: %s while parsing target '%s' for [%s] in file %s.\n",
+   4685| 							err.c_str(), strim_target.c_str(), p, file_name);
+   4686| 						return false;
+   4687| 					}
+   4688| 					//parser.getBaseUnit(baseunit);
+   4689| 				}
+   4690| 			}
+   4691| 			else {
+   4692| 				//strncpy_s(baseunit, "", sizeof(baseunit));
+
+  --- hit at line 4677 ---
+   4674| 					}
+   4675| 					trim_target = (lsl + usl) / 2.0;
+   4676| #else
+   4677| 					TREG_ERROR::treg_error_log("TREG: Test numbers are only supported on Eagle tester platform.\n");
+   4678| 					return false;
+   4679| #endif
+   4680| 				}
+   4681| 				else {
+   4682| 					err = parser.parse(strim_target.c_str(), &trim_target);
+   4683| 					if (!err.empty()) {
+   4684| 						TREG_ERROR::treg_error_log("TREG: %s while parsing target '%s' for [%s] in file %s.\n",
+   4685| 							err.c_str(), strim_target.c_str(), p, file_name);
+   4686| 						return false;
+   4687| 					}
+   4688| 					//parser.getBaseUnit(baseunit);
+   4689| 				}
+   4690| 			}
+   4691| 			else {
+   4692| 				//strncpy_s(baseunit, "", sizeof(baseunit));
+   4693| 			}
+   4694| 
+   4695| 			node = trim.add_new(p);
+   4696| 			LCASE_STRING(strim_type);
+   4697| 			// historically 'trim_type' could be set to 'rel', 'abs', 'min', 'max' and 'nom'.
+   4698| 			// 'rel' and 'abs' are no longer used. This info is extracted now from the trim
+
+  --- hit at line 4684 ---
+   4681| 				else {
+   4682| 					err = parser.parse(strim_target.c_str(), &trim_target);
+   4683| 					if (!err.empty()) {
+   4684| 						TREG_ERROR::treg_error_log("TREG: %s while parsing target '%s' for [%s] in file %s.\n",
+   4685| 							err.c_str(), strim_target.c_str(), p, file_name);
+   4686| 						return false;
+   4687| 					}
+   4688| 					//parser.getBaseUnit(baseunit);
+   4689| 				}
+   4690| 			}
+   4691| 			else {
+   4692| 				//strncpy_s(baseunit, "", sizeof(baseunit));
+   4693| 			}
+   4694| 
+   4695| 			node = trim.add_new(p);
+   4696| 			LCASE_STRING(strim_type);
+   4697| 			// historically 'trim_type' could be set to 'rel', 'abs', 'min', 'max' and 'nom'.
+   4698| 			// 'rel' and 'abs' are no longer used. This info is extracted now from the trim
+   4699| 			// table by parsing if there is a '%' sign in the string. For compatibility we
+   4700| 			// treat everything but 'min' and 'max' as trim_type 'nom'.
+   4701| 			if (strim_type != "min" && strim_type != "max")
+   4702| 				strim_type = "nom"; // default to nominal trimming
+   4703| 			node->trim_type = strim_type.c_str();
+   4704| 			node->sot_target = trim_target;
+   4705| 			node->base_unit_target = baseunit;
+
+  --- hit at line 4734 ---
+   4731| 				// check if there is a parameter with same name defined as TRIM (= require SEL/TRIMs to have unique names)
+   4732| 				t_node = trim.find(key->getName());
+   4733| 				if (t_node) {
+   4734| 					TREG_ERROR::treg_error_log("TREG: SEL '%s' in section [%s] already exists as TRIM in file %s.\n", key->getName(), p, file_name);
+   4735| 					return false;
+   4736| 				}
+   4737| 				node = sel.find(key->getName());
+   4738| 				if (node) {
+   4739| 					bool flag = false;
+   4740| 					if (reader.getBoolean(_DEFAULT, "allow_overwrite", &flag))
+   4741| 						sel.remove(key->getName());
+   4742| 					else {
+   4743| 						TREG_ERROR::treg_error_log("TREG: SEL '%s' in section [%s] already exists in file %s.\n", key->getName(), p, file_name);
+   4744| 						return false;
+   4745| 					}
+   4746| 				}
+   4747| 				node = sel.add_new(key->getName());
+   4748| 				TREG_SERIAL_ALL node->start[TSITE] = value;
+   4749| 			}
+   4750| 		}
+   4751| 	}
+   4752| 
+   4753| 	// 3. look for ASSYs (they required SEL and TRIM object to exist already)
+   4754| 	// loop through all sections
+   4755| 	while ((section = reader.getNextSection())) {
+
+  --- hit at line 4743 ---
+   4740| 					if (reader.getBoolean(_DEFAULT, "allow_overwrite", &flag))
+   4741| 						sel.remove(key->getName());
+   4742| 					else {
+   4743| 						TREG_ERROR::treg_error_log("TREG: SEL '%s' in section [%s] already exists in file %s.\n", key->getName(), p, file_name);
+   4744| 						return false;
+   4745| 					}
+   4746| 				}
+   4747| 				node = sel.add_new(key->getName());
+   4748| 				TREG_SERIAL_ALL node->start[TSITE] = value;
+   4749| 			}
+   4750| 		}
+   4751| 	}
+   4752| 
+   4753| 	// 3. look for ASSYs (they required SEL and TRIM object to exist already)
+   4754| 	// loop through all sections
+   4755| 	while ((section = reader.getNextSection())) {
+   4756| 		p = section->getName();
+   4757| 		if (*p == '_') { // ASSY found
+   4758| 			ASSY_NODE *node;
+   4759| 			node = assy.find(p + 1);
+   4760| 			if (node) {
+   4761| 				bool flag = false;
+   4762| 				if (reader.getBoolean(_DEFAULT, "allow_overwrite", &flag))
+   4763| 					assy.remove(p + 1);
+   4764| 				else {
+
+  --- hit at line 4765 ---
+   4762| 				if (reader.getBoolean(_DEFAULT, "allow_overwrite", &flag))
+   4763| 					assy.remove(p + 1);
+   4764| 				else {
+   4765| 					TREG_ERROR::treg_error_log("TREG: ASSY [%s] already exists in file %s.\n", p, file_name);
+   4766| 					return false;
+   4767| 				}
+   4768| 			}
+   4769| 			node = assy.add_new(p + 1);
+   4770| 			while ((key = section->getNextKey())) {
+   4771| 				const char *p_assy = key->getName();
+   4772| 				string param_bit_info = reader.getString(p, p_assy);
+   4773| 				if (strrchr(key->getName(), ':')) {
+   4774| 					while (*p_assy != ':' && *p_assy != '\0') p_assy++;     // step forward to ':'
+   4775| 					while (!isalnum(*p_assy) && *p_assy != '\0') p_assy++;  // step forward to next alphanumeric character
+   4776| 
+   4777| 					STORAGE *storage = NULL;
+   4778| 
+   4779| 					if (sel.find(p_assy))
+   4780| 						storage = &sel(p_assy);
+   4781| 					else if (trim.find(p_assy))
+   4782| 						storage = &trim(p_assy);
+   4783| 					else {
+   4784| 						TREG_ERROR::treg_error_log("TREG: Adding '%s' at position '%d' to ASSY [%s] failed. Please define '%s' as TRIM or SEL in file %s.\n",
+   4785| 							p_assy, node->count(), p, p_assy, file_name);
+   4786| 						return false;
+
+  --- hit at line 4784 ---
+   4781| 					else if (trim.find(p_assy))
+   4782| 						storage = &trim(p_assy);
+   4783| 					else {
+   4784| 						TREG_ERROR::treg_error_log("TREG: Adding '%s' at position '%d' to ASSY [%s] failed. Please define '%s' as TRIM or SEL in file %s.\n",
+   4785| 							p_assy, node->count(), p, p_assy, file_name);
+   4786| 						return false;
+   4787| 					}
+   4788| 
+   4789| 					if (storage) {
+   4790| 						ASSY_BIT *bit;
+   4791| 						bit = node->add_new(p_assy);
+   4792| 
+   4793| 						delete bit->link;
+   4794| 						bit->link_default = false;
+   4795| 						bit->link = storage;
+   4796| 
+   4797| 						bit->init(node->count() - 1, param_bit_info.c_str());
+   4798| 					}
+   4799| 				}
+   4800| 			}
+   4801| 		}
+   4802| 	}
+   4803| 
+   4804| 	// 4. look for ASSY_GRPs and TRIM_GRPs (they required SEL, TRIM and ASSY object to exist already)
+   4805| 	// loop through all sections
+
+  --- hit at line 4817 ---
+   4814| 				if (reader.getBoolean(_DEFAULT, "allow_overwrite", &flag))
+   4815| 					assy_grp.remove(p + 1);
+   4816| 				else {
+   4817| 					TREG_ERROR::treg_error_log("TREG: ASSY_GRP [%s] already exists in file %s.\n", p, file_name);
+   4818| 					return false;
+   4819| 				}
+   4820| 			}
+   4821| 			node = assy_grp.add_new(p + 1);
+   4822| 			while ((key = section->getNextKey())) {
+   4823| 				const char *p_assy = key->getName();
+   4824| 				string address_info = key->getString();
+   4825| 				if (strrchr(key->getName(), ':')) {
+   4826| 					while (*p_assy != ':' && *p_assy != '\0') p_assy++;    // step forward to ':'
+   4827| 					while (!isalnum(*p_assy) && *p_assy != '\0') p_assy++; // step forward to next alphanumeric character
+   4828| 
+   4829| 					if (assy.find(p_assy)) {
+   4830| 						ASSY_LINK *link;
+   4831| 						link = node->add_new(p_assy);
+   4832| 
+   4833| 						delete link->link;
+   4834| 						link->link_default = false;
+   4835| 						link->link = &assy(p_assy);
+   4836| 
+   4837| 						link->init(address_info);
+   4838| 					}
+
+  --- hit at line 4840 ---
+   4837| 						link->init(address_info);
+   4838| 					}
+   4839| 					else {
+   4840| 						TREG_ERROR::treg_error_log("TREG: Adding '%s' to ASSY_GRP [%s] failed. Please define '%s' as ASSY in file %s.\n",
+   4841| 							p_assy, p, p_assy, file_name);
+   4842| 						return false;
+   4843| 					}
+   4844| 				}
+   4845| 			}
+   4846| 		}
+   4847| 				  break;
+   4848| 				  // TRIM_GRP found
+   4849| 		case '&':   // '&' measurement group
+   4850| 		case '%':   // '%' dependend group
+   4851| 		case '$': { // '$' independend group
+   4852| 			bool is_linked_group = false, is_measure_group = false;
+   4853| 			TRIM_GRP_NODE *node;
+   4854| 			node = trim_grp.find(p + 1);
+   4855| 			if (node) {
+   4856| 				bool flag = false;
+   4857| 				if (reader.getBoolean(_DEFAULT, "allow_overwrite", &flag))
+   4858| 					trim_grp.remove(p + 1);
+   4859| 				else {
+   4860| 					TREG_ERROR::treg_error_log("TREG: TRIM_GRP [%s] already exists in file %s.\n", p, file_name);
+   4861| 					return false;
+
+  --- hit at line 4860 ---
+   4857| 				if (reader.getBoolean(_DEFAULT, "allow_overwrite", &flag))
+   4858| 					trim_grp.remove(p + 1);
+   4859| 				else {
+   4860| 					TREG_ERROR::treg_error_log("TREG: TRIM_GRP [%s] already exists in file %s.\n", p, file_name);
+   4861| 					return false;
+   4862| 				}
+   4863| 			}
+   4864| 			if (*p == '%') is_linked_group = true;
+   4865| 			if (*p == '&') is_measure_group = true;
+   4866| 			node = trim_grp.add_new(p + 1);
+   4867| 			node->is_linked_group = is_linked_group;
+   4868| 			node->is_measure_group = is_measure_group;
+   4869| 
+   4870| 			while ((key = section->getNextKey())) {
+   4871| 				string      limit_info;
+   4872| 				double      lsl = FLT_MIN;
+   4873| 				double      usl = FLT_MAX;
+   4874| 				int         tnum_prod = -1;
+   4875| 				int         tnum_char = -1;
+   4876| 				const char  *p_trim = key->getName();
+   4877| 
+   4878| 				limit_info = key->getString();
+   4879| 
+   4880| 				if (!limit_info.empty()) {
+   4881| 					if (limit_info[0] == '#') { // look for test numbers
+
+  --- hit at line 4883 ---
+   4880| 				if (!limit_info.empty()) {
+   4881| 					if (limit_info[0] == '#') { // look for test numbers
+   4882| #ifndef TREG_ETS364
+   4883| 						TREG_ERROR::treg_error_log("TREG: Test numbers are only supported on Eagle tester platform.\n");
+   4884| 						return false;
+   4885| #else
+   4886| 						char *limits;
+   4887| 						const char *t;
+   4888| 						limits = new char[strlen(limit_info.c_str()) + 1];
+   4889| 						strcpy(limits, limit_info.c_str());
+   4890| 
+   4891| 						t = strtok(limits, ",");
+   4892| 						sscanf(t + 1, "%d", &tnum_prod);
+   4893| 
+   4894| 						if (!get_limits(tnum_prod)) {
+   4895| 							TREG_ERROR::error("TREG: Test number '%s' specified in file %s in TRIM_GRP [%s] for TRIM '%s' does not exists.\n",
+   4896| 								limit_info.c_str(), file_name, p, p_trim);
+   4897| 							return false;
+   4898| 						}
+   4899| 
+   4900| 						t = strtok(NULL, ",");
+   4901| 						if (t && *t == '#') {
+   4902| 							sscanf(t + 1, "%d", &tnum_char);
+   4903| 
+   4904| 							if (!get_limits(tnum_char)) {
+
+  --- hit at line 4895 ---
+   4892| 						sscanf(t + 1, "%d", &tnum_prod);
+   4893| 
+   4894| 						if (!get_limits(tnum_prod)) {
+   4895| 							TREG_ERROR::error("TREG: Test number '%s' specified in file %s in TRIM_GRP [%s] for TRIM '%s' does not exists.\n",
+   4896| 								limit_info.c_str(), file_name, p, p_trim);
+   4897| 							return false;
+   4898| 						}
+   4899| 
+   4900| 						t = strtok(NULL, ",");
+   4901| 						if (t && *t == '#') {
+   4902| 							sscanf(t + 1, "%d", &tnum_char);
+   4903| 
+   4904| 							if (!get_limits(tnum_char)) {
+   4905| 								TREG_ERROR::error("TREG: Test number '%s' specified in file %s in TRIM_GRP [%s] for TRIM '%s' does not exists.\n",
+   4906| 									limit_info.c_str(), file_name, p, p_trim);
+   4907| 								return false;
+   4908| 							}
+   4909| 						}
+   4910| 
+   4911| 						delete[] limits;
+   4912| #endif
+   4913| 					}
+   4914| 					else {
+   4915| 						char *limits;
+   4916| 						char *next_token = NULL;
+
+  --- hit at line 4905 ---
+   4902| 							sscanf(t + 1, "%d", &tnum_char);
+   4903| 
+   4904| 							if (!get_limits(tnum_char)) {
+   4905| 								TREG_ERROR::error("TREG: Test number '%s' specified in file %s in TRIM_GRP [%s] for TRIM '%s' does not exists.\n",
+   4906| 									limit_info.c_str(), file_name, p, p_trim);
+   4907| 								return false;
+   4908| 							}
+   4909| 						}
+   4910| 
+   4911| 						delete[] limits;
+   4912| #endif
+   4913| 					}
+   4914| 					else {
+   4915| 						char *limits;
+   4916| 						char *next_token = NULL;
+   4917| 						limits = new char[strlen(limit_info.c_str()) + 1];
+   4918| 						strcpy_s(limits, strlen(limit_info.c_str()) + 1, limit_info.c_str());
+   4919| 						err = parser.parse(strtok_s(limits, ",", &next_token), &lsl);
+   4920| 						if (!err.empty()) {
+   4921| 							TREG_ERROR::treg_error_log("TREG: %s while parsing lower spec limit for TRIM '%s' in TRIM_GRP [%s] in file %s.",
+   4922| 								err.c_str(), p_trim, p, file_name);
+   4923| 							return false;
+   4924| 						}
+   4925| 						err = parser.parse(strtok_s(NULL, ",", &next_token), &usl);
+   4926| 						if (!err.empty()) {
+
+  --- hit at line 4921 ---
+   4918| 						strcpy_s(limits, strlen(limit_info.c_str()) + 1, limit_info.c_str());
+   4919| 						err = parser.parse(strtok_s(limits, ",", &next_token), &lsl);
+   4920| 						if (!err.empty()) {
+   4921| 							TREG_ERROR::treg_error_log("TREG: %s while parsing lower spec limit for TRIM '%s' in TRIM_GRP [%s] in file %s.",
+   4922| 								err.c_str(), p_trim, p, file_name);
+   4923| 							return false;
+   4924| 						}
+   4925| 						err = parser.parse(strtok_s(NULL, ",", &next_token), &usl);
+   4926| 						if (!err.empty()) {
+   4927| 							TREG_ERROR::treg_error_log("TREG: %s while parsing upper spec limit for TRIM '%s' in TRIM_GRP [%s] in file %s.",
+   4928| 								err.c_str(), p_trim, p, file_name);
+   4929| 							return false;
+   4930| 						}
+   4931| 						delete[] limits;
+   4932| 					}
+   4933| 				}
+   4934| 
+   4935| 				// swap limits
+   4936| 				if (lsl > usl) {
+   4937| 					double temp_limit = usl;
+   4938| 					usl = lsl;
+   4939| 					lsl = temp_limit;
+   4940| 				}
+   4941| 
+   4942| 				if (strrchr(key->getName(), ':')) {
+
+  --- hit at line 4927 ---
+   4924| 						}
+   4925| 						err = parser.parse(strtok_s(NULL, ",", &next_token), &usl);
+   4926| 						if (!err.empty()) {
+   4927| 							TREG_ERROR::treg_error_log("TREG: %s while parsing upper spec limit for TRIM '%s' in TRIM_GRP [%s] in file %s.",
+   4928| 								err.c_str(), p_trim, p, file_name);
+   4929| 							return false;
+   4930| 						}
+   4931| 						delete[] limits;
+   4932| 					}
+   4933| 				}
+   4934| 
+   4935| 				// swap limits
+   4936| 				if (lsl > usl) {
+   4937| 					double temp_limit = usl;
+   4938| 					usl = lsl;
+   4939| 					lsl = temp_limit;
+   4940| 				}
+   4941| 
+   4942| 				if (strrchr(key->getName(), ':')) {
+   4943| 					while (*p_trim != ':' && *p_trim != '\0') p_trim++;     // step forward to ':'
+   4944| 					while (!isalnum(*p_trim) && *p_trim != '\0') p_trim++;  // step forward to next alphanumeric character
+   4945| 
+   4946| 					if (trim.find(p_trim)) {
+   4947| 						TRIM_LINK *link;
+   4948| 						link = node->add_new(p_trim);
+
+  --- hit at line 4964 ---
+   4961| 						link->tnum_char = tnum_char;
+   4962| 					}
+   4963| 					else {
+   4964| 						TREG_ERROR::treg_error_log("TREG: Adding '%s' to TRIM_GRP [%s] failed. Please define '%s' as TRIM in file %s.\n",
+   4965| 							p_trim, p, p_trim, file_name);
+   4966| 						return false;
+   4967| 					}
+   4968| 				}
+   4969| 			}
+   4970| 
+   4971| 			// LINK TRIM PARAMETERS BY USING THE SAME MEMORY FOR STORAGE (working, read_back, saved, start etc....)
+   4972| 			if (is_linked_group) {                                   // check if parameters of this group are linked
+   4973| 				TRIM_NODE *base_node_pnt = &trim_grp(p + 1)[0];     // get pointer to first member in TRIM_GRP
+   4974| 
+   4975| 				for (unsigned i = 1; i < trim_grp(p + 1).count(); i++) {
+   4976| 					TRIM_NODE *temp_node_pnt = &trim_grp(p + 1)[i]; // get pointer to member X in TRIM_GRP
+   4977| 					if (temp_node_pnt != base_node_pnt) {
+   4978| 						temp_node_pnt->nom_step = base_node_pnt->nom_step;                   // ensure that default step from first parameter is used
+   4979| 						temp_node_pnt->learned_start_step = base_node_pnt->learned_start_step;
+   4980| 						temp_node_pnt->free_storage_memory();                                // free memory
+   4981| 						temp_node_pnt->start = base_node_pnt->start;              // bend pointer over to first TRIM_GRP_NODE (Link node memory)
+   4982| 						temp_node_pnt->read_back = base_node_pnt->read_back;          // bend pointer over to first TRIM_GRP_NODE (Link node memory)
+   4983| 						temp_node_pnt->working = base_node_pnt->working;            // bend pointer over to first TRIM_GRP_NODE (Link node memory)
+   4984| 						temp_node_pnt->programmed = base_node_pnt->programmed;         // bend pointer over to first TRIM_GRP_NODE (Link node memory)
+   4985| 						temp_node_pnt->saved = base_node_pnt->saved;              // bend pointer over to first TRIM_GRP_NODE (Link node memory)
+
+=== 4. TREG class: members whose name contains log (to find a public wrapper) ===
+    108| typedef void(*log_data_t)(int site, char *label, double lolim, double hilim, double val,
+    134| 	TREG_LOG_DELTA = 0x0001,    // log delta to target absolute and in %
+    136| 	TREG_LOG_TABLE = 0x0004     // log trim table during characterization
+    195| 	static void log_data(unsigned tnum, unsigned index, double value, int site, bool use_mslogdata, bool allow_mslogdata,
+    559| 		int tnum_prod, int tnum_char = -1, int log_level = TREG_LOG_STD, double trim_hysteresis_pcnt = 0.0,
+    562| 	//	SPEC& paraname, short funcindex, LPCTSTR funclabel, double unit_scale = 1, int log_level = 0, string trimname = "");
+    565| 		SPEC& paraname, short funcindex, LPCTSTR funclabel, double unit_scale, int log_level, int max_retry_cnt, int GRP=1);
+    742| 		TREG_RESULTS &meas_results), int log_level = TREG_LOG_STD,
+
+=== 5. TREG_LOG::log_data definition (who is allowed to write datalog) ===
+    285| void TREG_LOG::log_data(unsigned tnum, unsigned index, double value, int site, bool use_mslogdata, bool allow_mslogdata, string testname, double ll, double ul, const char *unit) {
+    286| 
+    287| #ifdef TREG_ETS364
+    288| 	if (log_data_func && test_func) {
+    289| 		unsigned testnum;
+    290| 		if (use_mslogdata)
+    291| 			testnum = tnum;
+    292| 		else
+    293| 			testnum = tnum + index;
+    294| 
+    295| 		if (TREG::eng_mode()) {
+    296| 			if (!get_limits(testnum)) { // check if test# exists
+    297| 				TREG_ERROR::error("TREG: Test number '%d' doesn't exist.", testnum);
+    298| 				return;
+    299| 			}
+    300| 		}
+    301| 
+    302| 		if (use_mslogdata && allow_mslogdata) {
+    303| 			char u[5]; // size from uicclib.h
+    304| 			double sc = 1.0;
+    305| 			if (!unit || ll == FLT_MAX || ul == FLT_MAX)
+    306| 				get_limits(tnum, &ll, &ul, 1, u, sizeof(u), &sc);  // bin is hardcoded to 1 currently!
+    307| 			if (unit)
+    308| 				strncpy(u, unit, 5);
+    309| 			SetTestNumber(testnum);
+    310| 			SetSubTestNumber(index);
+    311| 			log_data_func(site, (char *)testname.c_str(), ll / sc, ul / sc, value / sc, u, 1);
+    312| 			//msLogData(site, (char *)testname.c_str(), 9.4, ll/sc, ul/sc, value/sc, u);
+    313| 		}
+    314| 		else {
+    315| 			test_func(testnum, value, site, 0);
+    316| 		}
+    317| 
+    318| 	}
+    319| 	else { // fallback for older char_setup libs .... to be deleted
+    320| 		if (TREG_LOG::datalog_func == NULL) { // check if datalog_func is registered
+    321| 			TREG_ERROR::error("TREG: data-logging function not registered.\n"
+    322| 				"Use 'register_dlog_func()' once in your code. \n");
+    323| 			return;
+    324| 		}
+    325| 
+    326| 		unsigned testnum;
+    327| 		if (use_mslogdata)
+    328| 			testnum = tnum;
+    329| 		else
+    330| 			testnum = tnum + index;
+    331| 
+    332| 		if (TREG::eng_mode()) {
+    333| 			if (!get_limits(testnum)) { // check if test# exists
+    334| 				TREG_ERROR::error("TREG: Test number '%d' doesn't exist.", testnum);
+    335| 				return;
+    336| 			}
+    337| 		}
+    338| 
+    339| 		if (use_mslogdata && allow_mslogdata) {
+    340| 			char u[5]; // size from uicclib.h
+    341| 			double sc = 1.0;
+    342| 			if (!unit || ll == FLT_MAX || ul == FLT_MAX)
+    343| 				get_limits(tnum, &ll, &ul, 1, u, sizeof(u), &sc);  // bin is hardcoded to 1 currently!
+
+=== 6. tree-wide token counts (to reconcile the captain figures 200 / 422) ===
+  SetTestResult   tree total=244
+        source\test.cpp                          188
+        source\treg.cpp                          27
+        source\Coutlier.cpp                      12
+        source\sub.cpp                           7
+        source\Test_Method.cpp                   5
+        source\FMEA.cpp                          3
+        source\src\treg.cpp                      2
+  GetMeasResult   tree total=574
+        source\sub.cpp                           204
+        source\Test_Method.cpp                   153
+        source\BoardCheck.cpp                    151
+        source\test.cpp                          65
+        source\tempchar.cpp                      1
+  CParam          tree total=672
+        source\test.cpp                          668
+        source\src\treg.cpp                      2
+        source\Shmoo.h                           1
+        source\Test_Method.cpp                   1
+
+=== 7. what StsGetParam returns / CParam result API actually used in test.cpp ===
+  every "->method(" name used in test.cpp:
+        SetTestResult                  188
+        mV                             30
+        uA                             8
+        FXVIe_PLUS_10V                 6
+        getNextParam                   4
+        get_param_name_in_spec         4
+        GetMaxLimit                    3
+        SW                             3
+        PGND                           3
+        devicename                     1
+        SetbVisible                    1
+        mA                             1
+        a2d_vspre_max_cmp              1
+        a2d_vbus_prst                  1
+        a2d_vbus_path_on               1
+        delay_ms                       1
+        a2d_vac1_prst                  1
+        a2d_vac2_prst                  1
+        a2d_vac3_prst                  1
+        a2d_vbat_uv_ok                 1
+        a2d_vbat_path_on               1
+        ACM200_10V                     1
+        ACM200_40V                     1
+        K87                            1
+        K88                            1
+        K89                            1
+        PMID                           1

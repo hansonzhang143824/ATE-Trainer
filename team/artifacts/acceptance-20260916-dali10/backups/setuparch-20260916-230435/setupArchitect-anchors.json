@@ -1,0 +1,118 @@
+{
+  "purpose": "setup-architect's own freeze anchors. Kept in a file this author owns, because the shared gate-logs-t28/t28-anchors.json is rewritten wholesale by another member's generator (my namespace there was preserved but truncated to 1 of 8 entries on 2026-09-16 21:56:03).",
+  "freezeRule": "filename + recomputed sha256 + recomputed time, taken by ONE command; any remembered value is unverified",
+  "generatedAt": "2026-09-16 23:00:55",
+  "anchors": {
+    "setup-contract.json": {
+      "path": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+      "sizeBytes": 377694,
+      "sha256": "18587b83307d47e0d6f287ee28e812b6c8f25781d2e449b293e45b50282b6d9f",
+      "measuredAt": "2026-09-16 22:10:11",
+      "writesStopped": true
+    },
+    "setup-contract-build.py": {
+      "path": "team/artifacts/acceptance-20260916-dali10/setup-contract-build.py",
+      "sizeBytes": 213515,
+      "sha256": "33899111438f2f603d17d562fadd322a52bcae374d4f28820eb57a667731a051",
+      "measuredAt": "2026-09-16 22:10:10",
+      "writesStopped": true
+    },
+    "setup-contract-pin.json": {
+      "path": "team/artifacts/acceptance-20260916-dali10/setup-contract-pin.json",
+      "sizeBytes": 11273,
+      "sha256": "6972e3ba0f5b2fea49da4893a98a80c79c7f8a421905019d95c4fe197f9e799e",
+      "measuredAt": "2026-09-16 22:10:11",
+      "writesStopped": true
+    },
+    "implementation-input-pin.json": {
+      "path": "team/artifacts/acceptance-20260916-dali10/implementation-input-pin.json",
+      "sizeBytes": 19735,
+      "sha256": "04dfbb1b6967b4fb94700a7347864ed9aea1e1f35ae959bfa90e474c6415a574",
+      "measuredAt": "2026-09-16 22:23:08",
+      "writesStopped": false
+    },
+    "acceptance-report.json": {
+      "path": "team/artifacts/acceptance-20260916-dali10/acceptance-report.json",
+      "sizeBytes": 68163,
+      "sha256": "d548877338f5ccce77b30fbf8af9b2220f46e185d3574ea9f1333dd64a820e16",
+      "measuredAt": "2026-09-16 23:03:14",
+      "writesStopped": false
+    },
+    "t35-contract-reconciliation.md": {
+      "path": "team/artifacts/acceptance-20260916-dali10/t35-contract-reconciliation.md",
+      "sizeBytes": 59700,
+      "sha256": "32ad955c7b7c322a1d4946f657ba114586adf66b86e21f931f181b0bc61128fc",
+      "measuredAt": "2026-09-16 22:17:17",
+      "writesStopped": false
+    },
+    "t41-tm601-bst-path-determination.md": {
+      "path": "team/artifacts/acceptance-20260916-dali10/t41-tm601-bst-path-determination.md",
+      "sizeBytes": 38351,
+      "sha256": "230c309000dfcc5674ed9762133ba4d59a5f35f8ff1c0282588a5f1f182ee16d",
+      "measuredAt": "2026-09-16 22:17:17",
+      "writesStopped": false
+    },
+    "implementation-payload-TM600-TM601.cpp": {
+      "path": "team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp",
+      "sizeBytes": 43806,
+      "sha256": "66abc088ae6bd5f9b9d7201673003fc0be2450fd6f1f222c6a4a902cbe4f0cc4",
+      "measuredAt": "2026-09-16 21:09:24",
+      "writesStopped": true
+    },
+    "test-plan.json": {
+      "path": "team/artifacts/acceptance-20260916-dali10/test-plan.json",
+      "sizeBytes": 185689,
+      "sha256": "707ce845c5459b41b528059eab7f26b1a8e597e34daf8df40929346942a8ee69",
+      "measuredAt": "2026-09-16 21:54:50",
+      "writesStopped": false
+    },
+    "scripts/gate_baseline.json": {
+      "path": "scripts/gate_baseline.json",
+      "sizeBytes": 28,
+      "sha256": "021015da84e6fd4c54a595796e1bad73e18c57db94f856871d5667044302cb1d",
+      "measuredAt": "2026-09-13 22:45:34",
+      "writesStopped": false
+    },
+    "DEPLOYED_tree/source/test.cpp": {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "sizeBytes": 469714,
+      "sha256": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a",
+      "measuredAt": "2026-09-16 18:53:33",
+      "note": "read-only reference object for the two-object comparison"
+    },
+    "gate-logs-t54/bst-sw.log": {
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t54/bst-sw.log",
+      "sizeBytes": 1991,
+      "sha256": "bde9f7a56bb744a73c29b782dcf7ecd6a43301ff9ff97a7345de216eb5b73c17",
+      "measuredAt": "2026-09-16 21:35:20",
+      "note": "historical evidence; annotated in t34 L46; do not re-run"
+    },
+    "peer/build-report.json": {
+      "path": "team/artifacts/acceptance-20260916-dali10/build-report.json",
+      "sizeBytes": 27268,
+      "sha256": "ea90bb0c34620ba6cfb4f5c5e33eccdaef6024815704cbb2eeb7d8ab7b7846f7",
+      "measuredAt": "2026-09-16 22:50:36",
+      "owner": "compile-diagnostician",
+      "note": "peer artifact, owner-reported + recomputed by me for size/sha; content not reviewed here"
+    }
+  },
+  "runRule": "evidence strength: behaviour/production implementation > authoritative netlist > IR/derived tables > contract-derived fields",
+  "freezeNote": "contract FROZEN at rev 39; gate-read field [48,60,61,76]; further changes need prior written notice + reviewer verdict",
+  "correctionConvention": "CORRECTION CONVENTION (agreed with rule-reviewer; proposed for both sides): a correction never deletes the original text - at the SAME place state 'old value + why it was wrong + authoritative value + the revision it takes effect from', and record it cumulatively in the version notes (the v22 -> v25 pattern). FROZEN is reserved for artifacts whose writes have STOPPED; everything else is cited as 'recomputed at <time>' only.",
+  "identityRule": "size is not identity; the only identity is the recomputed sha256 (demonstrated: my anchors file had 3,579 B twice with different hashes).",
+  "t34Carrier": "team/artifacts/acceptance-20260916-dali10/acceptance-report.json ('t34' is a TASK LABEL and appears in NO filename)",
+  "owner": "setup-architect",
+  "citeRule": "per-owner citation (endorsing test-strategy-architect's section 2.3): cite this file as 'owner=setup-architect + path + recomputed-at-time'; never cite a hash without recomputing, and never assume today's content survives tomorrow's write - this file was written four times today with two of those writes at the same byte size.",
+  "pathMap": {
+    "t34": "team/artifacts/acceptance-20260916-dali10/acceptance-report.json (NO independent t34 file; 't34' is a task label)",
+    "t35": "team/artifacts/acceptance-20260916-dali10/t35-contract-reconciliation.md",
+    "t41": "team/artifacts/acceptance-20260916-dali10/t41-tm601-bst-path-determination.md",
+    "t49/t53": "team/artifacts/acceptance-20260916-dali10/setup-contract-build.py",
+    "contract": "team/artifacts/acceptance-20260916-dali10/setup-contract.json (+ setup-contract-pin.json)",
+    "planSide": "team/artifacts/acceptance-20260916-dali10/test-plan.json (owner: test-strategy-architect) + implementation-input-pin.json (owner: setup-architect)",
+    "payload": "team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp (canonical, writes stopped)",
+    "anchors": "gate-logs-t28/setupArchitect-anchors.json (owner: setup-architect) / gate-logs-t28/t28-anchors.json (owner: compile-diagnostician)",
+    "ledger": "gate-logs-t28/setupArchitect-freeze-snapshots.json (owner: setup-architect, append-only)",
+    "why": "this map exists because three false MISSING cases in this run came from name/path ambiguity"
+  }
+}

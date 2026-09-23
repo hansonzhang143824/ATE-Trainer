@@ -1,0 +1,23 @@
+TM108 relay workflow STEP6 GLOBAL-CONFLICT (step 6/8) - owner=test-strategy-architect run=tm108-v2-trial
+flow: knowledge/references/L3-method/relay-design-flow.md:39-75
+closure-set source: proof required_on + full proof relay chain
+
+-- GC-1 BUS sharing on K17
+   K17_BUSL_VAC_S1 is a [BUS] relay shared by VAC1/VAC2/VAC3, AMUX and VAC_WL (Component-Statistic.txt:441; SCH-Connect-Map.txt:192/198/204/36). Closing it excludes those other functions at the same time; TM108 needs exactly one VAC branch, so K18/K19 stay un-actuated and no other VACn branch can be reached.
+-- GC-2 BUS sharing on K62
+   K62_BUS_FH_QON_S1 / K62_BUS_SH_QON_S1 are [BUS] relays shared with HG1 (Component-Statistic.txt:441/457; SCH-Connect-Map.txt:469-470). K64 selects between nQON and HG1, so the exclusion is discharged by LC-4.
+-- GC-3 QTMU bridge must stay open
+   K141_QTMU_BUSA_S1S2 / K142_QTMU_BUSB_S1S2 bridge the FPVIe0 and FPVIe1 BUS wires; the frozen baseline requires them OPEN whenever an FPVIe channel owns a pin (setup-contract.json:8158 safetyInvariants). The selected allocation uses neither, so the requirement is met and the QTMU alternates for VAC1/VBAT/nQON remain unacceptable for this item.
+-- GC-4 cap gates
+   K21_VAC_Cap must stay OPEN while VAC1 is the scanned input (SCH-Connect-Map.txt:913; setup-contract.json:3953-3958 globalInitialization order 4) and K13_VBAT_Cap is required for the VBAT static supply (SCH-Connect-Map.txt:914; knowledge/standards/relay-checklist.md:27-40). No conflict: they are different pins.
+-- GC-5 anti-short / P2P
+   K14_VAC1_P2P (SCH-Connect-Map.txt:877), K38_KLV1_2_short (SCH-Connect-Map.txt:882), K39/K40 (SCH-Connect-Map.txt:872-873) and K92_AGND_F2S (Component-Statistic.txt:453) must stay at their un-actuated default (setup-contract.json:3920-3937 globalInitialization order 2). TM108 closes none of them.
+-- GC-6 non-target pins fed back
+   no terminal_stop violation: every accepted proof used here reports terminal_stop=true and role_match=true (tm108-paths-proofs.txt per-proof validation blocks). The rejected proofs for these terminals are role mismatches only (Force port terminating on a Sense terminal), not topology gaps (schematic-fact-audit.md section 3.3 item 5).
+-- GC-7 site-joint relays
+   K13 and K21 are _S1S2 joint relays (setup-contract.json:8167 safetyInvariants), so re-configuring them disturbs the other site: recorded as a scheduling constraint, not a resource conflict.
+-- GC-8 resource budget
+   the FPVIe family has exactly 2 channels per site and the mOhm items consume both (setup-contract.json:8165 safetyInvariants). The selected allocation uses ZERO FPVIe channels, so TM108 does not compete with them for FPVIe.
+=> no global conflict remained after local handling; the flow therefore reaches step 7
+   without an M-branch (second-shortest for non-composite relays).
+

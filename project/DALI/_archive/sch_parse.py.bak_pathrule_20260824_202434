@@ -1,0 +1,860 @@
+"""
+sch_parse.py — 原理图解析六任务门控流程
+规范: knowledge/hardware/schematic-parsing.md (原理图解析基本规则.txt)
+输入: SCH-DALI.NET
+输出: COMPONENT-STATISTIC.txt, SCH-Connect-Map.txt
+门控: 任一任务检查 FAIL -> 停止, 不生成 SCH-Connect-Map (--force 强制继续)
+"""
+import re, sys, json, os
+from collections import defaultdict, deque
+
+# 定位 workspace 根 (本脚本位于 <workspace>/Project/DALI/sch_parse.py), 使共享 loader 可导入
+_WS_ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
+if _WS_ROOT not in sys.path:
+    sys.path.insert(0, _WS_ROOT)
+import proj_config
+
+# 路径: 默认读 project_config.json (--config <path> 可覆盖); 首个非选项参数可覆盖 netlist
+_CFG = proj_config.load(proj_config.config_from_argv(sys.argv))
+_arg = []
+_skip = False
+for _a in sys.argv[1:]:
+    if _skip:
+        _skip = False
+        continue
+    if _a == '--config':
+        _skip = True
+        continue
+    if not _a.startswith('-'):
+        _arg.append(_a)
+NETLIST = _arg[0] if _arg else _CFG['inputs']['schematic']
+OUT_STAT = _CFG['intermediates']['component_statistic']
+OUT_MAP = _CFG['intermediates']['sch_connect_map']
+FORCE = '--force' in sys.argv
+
+# ---- 每项目用户确认配置 (短接关系主体从 net 文件自动推导, 此文件只放 netlist 无记录的例外) ----
+# PIN_SHORT_MAP 主体 = net 文件同一信号 net 的自动合并(见 net_pinname/disp);
+# 此配置仅登记: user_shorts=用户确认的 PIN↔PIN 短接(netlist无记录), tp_confirmed=已确认的 TP↔PIN 短接
+CONFIRMED_FILE = os.path.join(os.path.dirname(NETLIST), 'sch_confirmed.json')
+try:
+    _cfg = json.load(open(CONFIRMED_FILE, encoding='utf-8'))
+except Exception:
+    _cfg = {}
+PIN_SHORT_MAP = _cfg.get('user_shorts', {})          # PIN base -> 短接到的 PIN base (用户确认, netlist无记录)
+TP_CONFIRMED = _cfg.get('tp_confirmed', {})          # PIN base -> TP 所在 net/PIN (用户确认的 TP↔PIN 短接)
+RELAY_CLASS_OVERRIDE = _cfg.get('relay_class', {})   # 继电器 base -> 分类 (用户确认, 拓扑误判时覆盖, 如 K57_CAP_BST_SW=Cap)
+
+# ---- Pin_Channel_define.h: 源表名映射 (STS PinPlanner 生成) ----
+# 每个源表名对应多工位通道串(所有工位共享同一名字, 可同时操作):
+#   extern <类型> <源表名>;                       -> 源表名 -> 权威类型
+#   #define _PIN_CHANNEL_DEFINE_<源表名>_ "<Sx_y,...每工位一个>"
+# netlist 源表端口(S5_ACM200_FH1) 经通道键(S5_1) -> 语义源表名(ACDRV123_VCC_ACM) + 权威类型(ACM200)
+CHAN_DEF_FILE = _CFG['inputs']['channelmap']
+SRC_SEMANTIC = {}        # 通道键 "S5_1" -> 语义源表名 (如 ACDRV123_VCC_ACM)
+SRC_TYPE_BY_CHAN = {}    # 通道键 "S5_1" -> .h 权威类型 (如 ACM200)
+SRC_TYPE_BY_NAME = {}    # 源表名 -> 类型 (extern)
+HAVE_CHAN_DEF = False
+if os.path.exists(CHAN_DEF_FILE):
+    try:
+        _h = open(CHAN_DEF_FILE, encoding='utf-8', errors='ignore').read()
+        for _t, _n in re.findall(r'extern\s+(\w+)\s+(\w+);', _h):
+            SRC_TYPE_BY_NAME[_n] = _t
+        for _n, _chs in re.findall(r'#define\s+_PIN_CHANNEL_DEFINE_([A-Za-z0-9_]+)_\s+"([^"]*)"', _h):
+            for _c in _chs.split(','):
+                _c = _c.strip()
+                if _c:
+                    SRC_SEMANTIC[_c] = _n
+                    if _n in SRC_TYPE_BY_NAME:
+                        SRC_TYPE_BY_CHAN[_c] = SRC_TYPE_BY_NAME[_n]
+        HAVE_CHAN_DEF = bool(SRC_SEMANTIC)
+    except Exception as _e:
+        print(f"(警告) Pin_Channel_define.h 解析失败: {_e}")
+
+# ============================================================ 解析
+text = open(NETLIST, encoding="utf-8", errors="ignore").read()
+
+def balanced(s, start):
+    d = 0
+    for j in range(start, len(s)):
+        c = s[j]
+        if c == '(': d += 1
+        elif c == ')':
+            d -= 1
+            if d == 0: return s[start:j+1]
+    return s[start:]
+
+# --- Sheet ports (rename 原始名优先, 保留 +/- 和 (0-3)) ---
+si = text.find('(cell Sheet1_SchDoc')
+ii = text.find('(interface', si)
+blk = balanced(text, ii)
+dut_ports, src_ports = set(), set()
+for m in re.finditer(r'\(port\s+(?:\(rename\s+\S+\s+"([^"]*)"\)|(\S+))\s+\(direction\s+(OUTPUT|INOUT|INPUT)\)', blk):
+    name = (m.group(1) or m.group(2) or '').strip()
+    if not name or name == 'UNDEFINED': continue
+    if m.group(3) == 'OUTPUT': dut_ports.add(name)
+    elif m.group(3) == 'INOUT': src_ports.add(name)
+
+# --- Instances ---
+instances = {}  # name -> cellRef
+for m in re.finditer(r'\(Instance\s+(?:\(rename\s+(\S+)\s+"[^"]*"\)|(\S+))\s+\(viewRef\s+\S+\s+\(cellRef\s+(\S+)', text, re.S):
+    instances[(m.group(1) or m.group(2))] = m.group(3)
+
+# --- Nets (同名合并) ---
+nets = defaultdict(list)
+for m in re.finditer(r'\(Net\s+(?:\(rename\s+\S+\s+"([^"]*)"\)|(\S+))', text):
+    name = (m.group(1) or m.group(2) or '').strip()
+    if name.startswith('(rename)'): continue
+    nb = balanced(text, m.start())
+    conns = []
+    for pm in re.finditer(r'\(PortRef\s+(?:&(\d+)|([A-Za-z_]\w*))\s+\(InstanceRef\s+(\S+)\)\)', nb):
+        pin = int(pm.group(1)) if pm.group(1) else pm.group(2)
+        c = (pm.group(3), pin)
+        if c not in conns: conns.append(c)
+    if not name: continue
+    for c in conns:
+        if c not in nets[name]: nets[name].append(c)
+nets = dict(nets)
+
+# 反查: instance -> pin -> [nets]
+ipn = defaultdict(lambda: defaultdict(list))
+for n, conns in nets.items():
+    for inst, pin in conns:
+        ipn[inst][pin].append(n)
+
+def relay_num(inst):
+    m = re.match(r'K(\d+)_', inst)
+    return int(m.group(1)) if m else None
+
+def base_name(inst):
+    return re.sub(r'_S\d+(S\d+)?$', '', inst)
+
+RELAYS = {n: c for n, c in instances.items() if re.match(r'K\d+_', n)}
+G6K  = {n for n, c in RELAYS.items() if 'G6K' in c}
+MOS  = {n for n, c in RELAYS.items() if 'SW_SPST' in c}
+
+# ============================================================ 任务一: DUT PIN
+def pin_base_fs(p):
+    m = re.match(r'^(.+?)_(FORCE|SENSE)_S\d+$', p)
+    if m: return m.group(1), m.group(2)[0]
+    m = re.match(r'^(.+?)_([FS])_S\d+$', p)
+    if m: return m.group(1), m.group(2)
+    m = re.match(r'^(.+)_S\d+$', p)
+    if m: return m.group(1), ''
+    return p, ''
+
+pin_variants = defaultdict(set)  # base -> {'F','S',''}
+for p in dut_ports:
+    b, fs = pin_base_fs(p)
+    pin_variants[b].add(fs)
+
+gates = []  # (gate, PASS/FAIL, detail)
+g1_err = []
+pin_type = {}
+for b in sorted(pin_variants):
+    v = pin_variants[b]
+    has_f = 'F' in v
+    has_s = 'S' in v
+    if has_f and has_s: pin_type[b] = 'Kelvin'
+    elif has_f: g1_err.append(f"Kelvin PIN 缺少Sense PIN: {b} (只有 {b}_F)"); pin_type[b] = 'Kelvin(缺S)'
+    elif has_s: g1_err.append(f"Kelvin PIN 缺少Force PIN: {b} (只有 {b}_S)"); pin_type[b] = 'Kelvin(缺F)'
+    else: pin_type[b] = 'Non-Kelvin'
+gates.append(('G1 PIN成对检查', 'FAIL' if g1_err else 'PASS', g1_err))
+
+# ============================================================ 任务二: 源表
+def classify_source(p):
+    if 'ACM200' in p: return 'ACM200'
+    if 'ACM' in p: return 'ACM'
+    if 'FXVIe_PLUS' in p: return 'FXVIe_PLUS'
+    if 'FXVIe' in p: return 'FXVIe'
+    if 'FPVIe' in p: return 'FPVIe'
+    if 'FOVIe' in p: return 'FXVIe_PLUS'    # netlist 将 FXVIe_PLUS 标为 FOVIe (Pin_Channel_define.h 确认)
+    if 'QVM' in p: return 'QVM'
+    if 'QTMU' in p: return 'QTMU'
+    if re.match(r'S10_CH\d+_[AB]', p): return 'QTMU'   # 按槽位命名推断(需用户确认)
+    if re.match(r'S(24|9)_P\d+', p): return 'DCM'
+    if p.startswith('S34_I2C') or p.startswith('S34_LOCK'): return 'DIO(数字)'
+    if 'J+5V' in p or 'J_5V' in p: return '电源'
+    return '未识别'
+
+def chan_key_of_port(p):
+    """netlist 源表端口 -> 通道键 S<槽>_<ch> (供 Pin_Channel_define.h 映射); 无法确定返回 None"""
+    m = re.match(r'^S(\d+)_(?:[A-Za-z0-9]+_)?CH(\d+)', p)     # S8_QVM_CH0+ / S10_CH0_A/B
+    if m: return f'S{m.group(1)}_{int(m.group(2))}'
+    m = re.match(r'^S(\d+)_[A-Za-z0-9]+_(FH|SH)(\d+)$', p)    # S5_ACM200_FH1 / S3_FXVIe_PLUS_FH0
+    if m: return f'S{m.group(1)}_{int(m.group(3))}'
+    m = re.match(r'^S(\d+)_[A-Za-z0-9]+_(FL|SL)\((\d+)-', p)  # S3_FXVIe_PLUS_FL(0-3) 用组首通道
+    if m: return f'S{m.group(1)}_{int(m.group(3))}'
+    return None
+
+def source_name_of(p):
+    """netlist 源表端口 -> 语义源表名 (Pin_Channel_define.h, 多工位共享), 无则 None"""
+    ck = chan_key_of_port(p)
+    return SRC_SEMANTIC.get(ck) if ck else None
+
+def source_type_of(p):
+    """源表端口最终类型: Pin_Channel_define.h 权威类型优先 (覆盖 netlist 端口名标签), 否则按端口名判断"""
+    ck = chan_key_of_port(p)
+    if ck and ck in SRC_TYPE_BY_CHAN:
+        return SRC_TYPE_BY_CHAN[ck]
+    return classify_source(p)
+
+src_by_type = defaultdict(list)
+for p in sorted(src_ports):
+    src_by_type[source_type_of(p)].append(p)
+
+g2_err = []
+def need_pair(ports, hi, lo, tag):
+    if hi in src_ports and lo not in src_ports: g2_err.append(f"{tag}: 有 {hi} 缺 {lo}")
+    if lo in src_ports and hi not in src_ports: g2_err.append(f"{tag}: 有 {lo} 缺 {hi}")
+
+for ch in range(2):  # FPVIe
+    need_pair(src_ports, f'S1_FPVIe_FH{ch}', f'S1_FPVIe_SH{ch}', 'FPVIe')
+    need_pair(src_ports, f'S1_FPVIe_FL{ch}', f'S1_FPVIe_SL{ch}', 'FPVIe')
+for ch in range(8):  # S3 = FXVIe_PLUS (2026-08-05 起 netlist 直接标 FXVIe_PLUS)
+    need_pair(src_ports, f'S3_FXVIe_PLUS_FH{ch}', f'S3_FXVIe_PLUS_SH{ch}', 'FXVIe_PLUS')
+for ch in range(24):  # ACM200 FH/SH
+    need_pair(src_ports, f'S5_ACM200_FH{ch}', f'S5_ACM200_SH{ch}', 'ACM200')
+# FL/SL 分组覆盖检查
+def group_cover(prefix, ch):
+    if f'{prefix}{ch}' in src_ports: return True
+    return any(re.fullmatch(re.escape(prefix) + r'\((\d+)-(\d+)\)', p) and
+               int(re.fullmatch(re.escape(prefix) + r'\((\d+)-(\d+)\)', p).group(1)) <= ch
+               <= int(re.fullmatch(re.escape(prefix) + r'\((\d+)-(\d+)\)', p).group(2))
+               for p in src_ports)
+for ch in range(8):
+    if not group_cover('S3_FXVIe_PLUS_FL', ch): g2_err.append(f"FXVIe_PLUS: FL 组未覆盖通道 {ch}")
+    if not group_cover('S3_FXVIe_PLUS_SL', ch): g2_err.append(f"FXVIe_PLUS: SL 组未覆盖通道 {ch}")
+for ch in range(24):
+    if not group_cover('S5_ACM200_FL', ch): g2_err.append(f"ACM200: FL 组未覆盖通道 {ch}")
+    if not group_cover('S5_ACM200_SL', ch): g2_err.append(f"ACM200: SL 组未覆盖通道 {ch}")
+# QVM 成对
+need_pair(src_ports, 'S8_QVM_CH0+', 'S8_QVM_CH0-', 'QVM')
+gates.append(('G2 源表通道成对检查', 'FAIL' if g2_err else 'PASS', g2_err))
+# G2b: 源表类型交叉验证 (netlist 端口标签 vs Pin_Channel_define.h 权威类型)
+SRC_LABEL_ALIAS = {'QVM': 'QVMe', 'QTMU': 'QTMUe'}   # netlist 短名 -> 官方 'e' 系列名
+g2b_note = []
+if HAVE_CHAN_DEF:
+    for p in sorted(src_ports):
+        ck = chan_key_of_port(p)
+        if ck and ck in SRC_TYPE_BY_CHAN:
+            h_t = SRC_TYPE_BY_CHAN[ck]
+            eff = SRC_LABEL_ALIAS.get(classify_source(p), classify_source(p))
+            if eff != h_t:
+                g2b_note.append(f"{p}: netlist类型{classify_source(p)} ≠ .h声明{h_t} (以.h为准)")
+gates.append(('G2b 源表类型交叉验证(.h)', 'PASS' if HAVE_CHAN_DEF else 'FAIL', g2b_note))
+
+# ============================================================ 任务三: 继电器
+A_PART, B_PART = {2, 3, 4}, {5, 6, 7}
+g3_err, g3_warn = [], []
+relay_parts = {}
+for inst in RELAYS:
+    pins = {p for p in ipn[inst].keys() if isinstance(p, int)}
+    if inst in G6K:
+        # 规则: part 内 2~3 脚浮空报错; 但"只有A或B part也正常" → 整part 0连接=未使用=正常
+        for tag, part in (('A', A_PART), ('B', B_PART)):
+            conn = pins & part
+            floating = part - pins
+            relay_parts.setdefault(inst, {})[tag] = conn
+            if len(conn) == 0: continue                      # 整part未使用, 正常
+            if len(floating) >= 2: g3_err.append(f"{inst}: {tag} part 已接线但 {sorted(floating)} 浮空(≥2脚)")
+            elif len(floating) == 1: g3_warn.append(f"{inst}: {tag} part pin{sorted(floating)} 浮空(1脚,允许)")
+    else:  # MOS 2脚
+        mf = {1, 2} - pins
+        if len(mf) == 1: g3_err.append(f"{inst}: 光耦 pin{sorted(mf)} 浮空")
+        elif len(mf) == 2: g3_warn.append(f"{inst}: 光耦两脚均无连接(未使用)")
+gates.append(('G3 继电器浮空检查', 'FAIL' if g3_err else 'PASS', g3_err + [f"(警告) {w}" for w in g3_warn]))
+
+# --- 功能分类: L1 名称 + L3 Netlist拓扑 (DALI CBIT表无功能列, L2跳过) ---
+BUS_NET_RE = re.compile(r'(FH_BUS|SH_BUS|FL_BUS|SL_BUS|FH_PC|SH_PC|FL_PC|SL_PC)')
+def l1_class(inst):
+    n = inst.upper()
+    if 'SHARE' in n: return 'Share'
+    if 'BUSH' in n or 'BUSL' in n or 'VBUSL' in n or '_BUS_' in n: return 'BUS候选'
+    if 'CAP' in n: return 'Cap候选'
+    if 'P2P' in n: return 'P2P'
+    if 'KELVIN' in n: return 'Kelvin'
+    if n.endswith('_PU') or '_PU_' in n: return 'PU'
+    return ''
+
+pin_net_of = {p: p for p in dut_ports}  # net名==port名(Step A)
+def nets_of_pins(inst, pins):
+    out = set()
+    for p in pins: out.update(ipn[inst].get(p, []))
+    return out
+
+relay_class = {}
+for inst in RELAYS:
+    l1 = l1_class(inst)
+    l3 = ''
+    pins = set(ipn[inst].keys())
+    sig_nets = nets_of_pins(inst, pins)
+    bus_hits = [n for n in sig_nets if BUS_NET_RE.search(n)]
+    if inst in G6K:
+        a_nets = nets_of_pins(inst, pins & A_PART)
+        b_nets = nets_of_pins(inst, pins & B_PART)
+        if bus_hits:
+            l3 = 'BUS'
+        else:
+            a_pins = {pin_base_fs(n)[0] for n in a_nets if n in dut_ports}
+            b_pins = {pin_base_fs(n)[0] for n in b_nets if n in dut_ports}
+            if a_pins and b_pins and a_pins != b_pins: l3 = 'Share'
+            elif a_pins or b_pins: l3 = 'Connect'
+    else:  # MOS
+        pnets = {pin_base_fs(n)[0] for n in sig_nets if n in dut_ports}
+        if len(pnets) >= 2: l3 = 'P2P'
+        elif bus_hits: l3 = 'BUS'
+        elif any('AGND' in n for n in sig_nets) and pnets: l3 = 'P2P(到地)'
+        elif pnets: l3 = 'Connect'
+    # 合并判定
+    if l3:
+        final = l3
+        if l1 and l1 not in (l3, l3 + '候选') and not (l1 == 'BUS候选' and l3 == 'BUS') \
+           and not (l1 == 'Cap候选' and l3 == 'Cap'):
+            final = f"{l3}(名称含{l1},需人工确认)" if l1 not in ('P2P','Kelvin','PU') else l3
+    else:
+        final = l1.replace('候选', '') if l1 else '通用'
+    relay_class[inst] = RELAY_CLASS_OVERRIDE.get(base_name(inst), final)  # 用户确认覆盖拓扑误判
+
+# ============================================================ 任务四: 元器件
+CELL_EXPECT = {'Cap': 2, 'Res2': 2, 'D_Schottky': 2, 'OPA189': 4, 'Component_1': 8, 'TEST_POINT_SMALL': 1}
+comp_by_type = defaultdict(list)
+g4_err, g4_warn = [], []
+for inst, cell in instances.items():
+    if inst in RELAYS or inst == '__': continue
+    comp_by_type[cell].append(inst)
+    exp = CELL_EXPECT.get(cell)
+    if exp and len(set(ipn[inst].keys())) < exp:
+        msg = f"{inst}({cell}): 仅{len(set(ipn[inst].keys()))}/{exp}脚有连接, 疑似浮空"
+        if cell == 'TEST_POINT_SMALL' or '_NC' in inst:
+            g4_warn.append(msg + " [测试点/NC件,通常属设计意图]")
+        else:
+            g4_err.append(msg)
+gates.append(('G4 元器件连接性检查', 'FAIL' if g4_err else 'PASS', g4_err + [f"(警告) {w}" for w in g4_warn]))
+
+# ============================================================ 任务五: NET
+def net_class(n):
+    if re.search(r'FPVIe\d+_(FH|SH|FL|SL)_BUS', n): return 'FPVI BUS'
+    if 'QVM' in n and 'BUS' in n: return 'QVM BUS'
+    if 'QTMU' in n and 'BUS' in n: return 'QTMU BUS'
+    if BUS_NET_RE.search(n): return 'FPVI BUS'
+    if n in ('AGND', 'DGND', 'JGND') or n.startswith('AGND_') or n.startswith('S34_JGND'): return 'GND'
+    if n in dut_ports: return 'DUT PIN net'
+    if n in src_ports: return '源表 POGO net'
+    return '其他'
+net_by_class = defaultdict(list)
+g5_err, g5_warn = [], []
+for n, conns in nets.items():
+    net_by_class[net_class(n)].append(n)
+    if n.startswith('Net') and len(conns) < 2:  # 自动命名 Net* 悬浮
+        inst = conns[0][0] if conns else ''
+        if re.search(r'_S\d+S\d+$', inst):
+            g5_warn.append(f"{n}: 单连接({inst}, 共享继电器他工位侧, 单工位网表属预期)")
+        else:
+            g5_err.append(f"{n}: 仅{len(conns)}个连接点 ({inst})")
+gates.append(('G5 net连接性检查', 'FAIL' if g5_err else 'PASS', g5_err + [f"(警告) {w}" for w in g5_warn]))
+
+# ============================================================ 通路追踪机械 (任务六前置, 供Share精化使用)
+COIL = {'G6K': {1, 8}, 'MOS2': set()}
+def rtype(inst): return 'G6K' if inst in G6K else 'MOS2'
+def rtrans(inst, pin, seton):
+    if rtype(inst) == 'G6K':
+        t = {3: [4], 4: [3], 6: [5], 5: [6]} if seton else {2: [3], 3: [2], 7: [6], 6: [7]}
+    else:
+        t = {1: [2], 2: [1]} if seton else {}
+    return [(tp, seton) for tp in t.get(pin, [])]
+
+# 源端短接继电器排除 (R2.1)
+SOURCE_SHORT = set()
+for inst in MOS:
+    inst_nets = set()
+    for pin in ipn[inst]: inst_nets.update(ipn[inst][pin])
+    if inst_nets and all(n in src_ports for n in inst_nets):
+        if not any('AGND' in n or 'GND' in n for n in inst_nets):
+            SOURCE_SHORT.add(inst)
+
+HIGH_KW = ['FH_BUS', 'SH_BUS', 'FH_PC', 'SH_PC']
+LOW_KW = ['FL_BUS', 'SL_BUS', 'FL_PC', 'SL_PC']
+def bus_domain(n):
+    if any(k in n for k in HIGH_KW): return 'HIGH'
+    if any(k in n for k in LOW_KW): return 'LOW'
+    return None
+def is_bus_net(n): return bus_domain(n) is not None
+def src_domain(p):
+    m = re.search(r'_(FH|SH|FL|SL)\d', p)
+    if m: return 'HIGH' if m.group(1) in ('FH', 'SH') else 'LOW'
+    if p.endswith('CH0+'): return 'HIGH'
+    if p.endswith('CH0-'): return 'LOW'
+    if re.match(r'S10_CH\d+_[AB]', p): return 'HIGH'
+    return None
+SCARCE_KW = ['FPVIe', 'QTMU', 'QVM', 'CH0']
+def is_scarce(p): return any(k in p for k in SCARCE_KW)
+
+def trace(src, targets, max_depth=6):
+    """BFS 最短路径. targets: 目标net集合. 返回 {target_net: [steps]}
+    排序键: (继电器数, 需ON数) — 最短路径优先, 同长取默认导通多的(设计本意通道)"""
+    if src not in nets: return {}
+    scarce = is_scarce(src)
+    on_count = lambda path: sum(1 for s in path if s['state'] == 'ON')
+    best, visited = {}, set()
+    if src in targets:
+        best[src] = (0, [])          # 直连: 源net本身就是PIN信号net
+    q = deque([(src, [], set(), None)])
+    visited.add((src, frozenset(), None))
+    while q:
+        net, path, vrel, busdom = q.popleft()
+        if len(vrel) > max_depth: continue
+        if net in targets and path:
+            key = (len(vrel), on_count(path))
+            if net not in best or key < (len(best[net][1]), on_count(best[net][1])):
+                best[net] = (len(vrel), list(path))
+            # 不 continue: PIN net 可能是通往其他PIN的中间节点(如Share链 PB5→VAC)
+        for inst, pin in nets.get(net, []):
+            if inst not in RELAYS: continue
+            rn = relay_num(inst)
+            if rn is None or rn in vrel or inst in SOURCE_SHORT: continue
+            if pin in COIL.get(rtype(inst), set()): continue
+            for seton in (False, True):
+                for tp, needs in rtrans(inst, pin, seton):
+                    for onet in ipn[inst].get(tp, []):
+                        if onet == net: continue
+                        if not scarce and is_bus_net(onet): continue          # R3.4
+                        bd, sd = bus_domain(onet), src_domain(src)
+                        if bd and sd and bd != sd: continue                   # R3.5
+                        new_busdom = busdom
+                        if needs and bd:
+                            if new_busdom is None: new_busdom = bd
+                            elif new_busdom != bd: continue                   # R3.6
+                        step = {'relay': base_name(inst), 'rn': rn,
+                                'state': 'ON' if needs else 'NC'}
+                        nv = vrel | {rn}
+                        k = (onet, frozenset(nv), new_busdom)
+                        if k not in visited:
+                            visited.add(k)
+                            q.append((onet, path + [step], nv, new_busdom))
+    return {t: p for t, (_, p) in best.items()}
+
+def fmt_path(src_label, steps, dest):
+    parts = [src_label]
+    for s in steps: parts.append(f"K{s['rn']}(Relay-{s['state']})")
+    parts.append(dest)
+    return " -> ".join(parts)
+
+def seton_relays(steps):
+    return [f"K{s['rn']}" for s in steps if s['state'] == 'ON']
+
+def fs_conflict(steps_f, steps_s):
+    """F/S 状态一致性校验 (《通路有效性》同时连通的必要条件):
+    同一继电器在 F/S 路径中 state 互斥 (一个 ON 一个 NC) → 继电器通电/保持二选一,
+    物理上 F/S 无法同时连通 → 返回冲突继电器号列表; 一致则返回 []。"""
+    f_by = {s['rn']: s['state'] for s in steps_f}
+    s_by = {s['rn']: s['state'] for s in steps_s}
+    return sorted(rn for rn in set(f_by) & set(s_by) if f_by[rn] != s_by[rn])
+
+dut_nets = set(dut_ports) & set(nets)
+
+# ---- DUT PIN → 信号 net 映射 (R3.8: Port无同名net时经 TP_/继电器instance名 找信号net) ----
+# 短接关系主体自动推导: pin_net 建立后, 同一信号 net 的多个 PIN 自动合并为短接节点(net_pinname/disp)
+pin_net = {p: p for p in dut_ports if p in nets}                     # Step A 直接同名
+tp_only_mapped = []   # 仅经 TP_<PIN> 测试点映射(无继电器名证据, 且未被用户短接表覆盖) → 需确认 TP↔PIN 短接
+for p in sorted(dut_ports):
+    if p in pin_net: continue
+    tp_hits, relay_hits = defaultdict(int), defaultdict(int)
+    for n, conns in nets.items():
+        for inst, _ in conns:
+            if inst == 'TP_' + p: tp_hits[n] += 10                    # Step B1: TP_PIN 测试点
+            elif re.match(r'K\d+_', inst) and p in inst: relay_hits[n] += 1   # Step B2: 继电器名含PIN
+    if relay_hits:                                                    # 有继电器名证据 → 映射成立, 无需TP确认
+        pin_net[p] = max(set(tp_hits) | set(relay_hits), key=lambda n: tp_hits[n] + relay_hits[n])
+    elif tp_hits:                                                     # 仅 TP 证据 → 暂映射, 待用户确认
+        pin_net[p] = max(tp_hits, key=tp_hits.get)
+        b, _ = pin_base_fs(p)
+        if b not in PIN_SHORT_MAP and b not in TP_CONFIRMED:          # 已用户确认的短接 → 不重复询问
+            tp_only_mapped.append(p)
+
+for shorted, target in PIN_SHORT_MAP.items():
+    for fs in ('F', 'S'):
+        sp, tp = f'{shorted}_{fs}_S1', f'{target}_{fs}_S1'
+        if sp in dut_ports and sp not in pin_net:
+            tgt_net = pin_net.get(tp)
+            if tgt_net:
+                pin_net[sp] = tgt_net                     # 共享目标PIN的信号net
+        sp2 = f'{shorted}_S1'
+        if sp2 in dut_ports and sp2 not in pin_net and pin_net.get(f'{target}_S1'):
+            pin_net[sp2] = pin_net[f'{target}_S1']
+
+no_net_pins = sorted(set(dut_ports) - set(pin_net))
+
+# G1c 孤立PORT门控 (任务一Step6): 仅端口声明/不属于任何net → 异常, 必须向用户反馈, 禁止静默跳过
+if no_net_pins:
+    gates.append(('G1c 孤立PORT检查', 'FAIL',
+                  [f"{p}: 孤立PORT, 不属于任何net — 必须原理图确认: 短接到其他PIN(登记PIN_SHORT_MAP) 或 设计意图NC"
+                   for p in no_net_pins]))
+else:
+    gates.append(('G1c 孤立PORT检查', 'PASS', []))
+
+# G1d TP短接待确认门控 (任务一Step6a): 无同名net、仅经 TP_<PIN> 测试点映射 → 需用户确认 TP↔PIN 短接, 禁止静默假设
+if tp_only_mapped:
+    gates.append(('G1d TP短接待确认', 'FAIL',
+                  [f"{p}: 无同名net, 仅经测试点 TP_{p} 映射到 {pin_net[p]} — 必须向用户询问: TP 与 {p} 是否短接(确认后登记)"
+                   for p in sorted(tp_only_mapped)]))
+else:
+    gates.append(('G1d TP短接待确认', 'PASS', []))
+
+net_pinname = defaultdict(list)          # net -> [pin ports] (短路PIN合并)
+for p, n in pin_net.items():
+    net_pinname[n].append(p)
+def disp(net):
+    ps = net_pinname.get(net)
+    if not ps: return net
+    return '_'.join(sorted({pin_base_fs(p)[0] for p in ps}))
+def dest_label(net):
+    """通路终点显示: net 去掉工位尾缀, 保留 F/S 侧 (ACDRV1_F_S1 -> ACDRV1_F; ACDRV1_S_S1 -> ACDRV1_S)。
+    标题行仍用 disp() 显示合并节点名, 路径行用 dest_label() 显示实际到达的 F/S 端口。"""
+    return re.sub(r'_S\d+(S\d+)?$', '', net)
+dut_target_nets = set(pin_net.values())
+
+def role_of(src):
+    m = re.search(r'_(FH|SH|FL|SL)\d', src)
+    if m: return 'F' if m.group(1) in ('FH', 'FL') else 'S'
+    return 'F'
+
+def chan_of(src):
+    m = re.search(r'_(?:FH|SH|FL|SL)(\d+)', src)
+    return int(m.group(1)) if m else -1
+
+def trace_multi(srcs):
+    """{(节点名, fs, chan): (src, steps, net, on, depth)} — 节点=短接合并名, 每通道独立最优"""
+    best = {}
+    for src in srcs:
+        for net, steps in trace(src, dut_target_nets).items():
+            for p in net_pinname.get(net, [net]):
+                b, fs = pin_base_fs(p)
+                key = (disp(net), fs or role_of(src), chan_of(src))
+                oc = sum(1 for s in steps if s['state'] == 'ON')
+                cur = best.get(key)
+                if cur is None or (oc, len(steps)) < (cur[3], cur[4]):
+                    best[key] = (src, steps, net, oc, len(steps))
+    return best
+
+# ---- Share/Connect 精化 (《继电器功能分类》Share条件2: 同一源表通道连接>1个PIN) ----
+SHARE_SRC_TYPES = ('ACM', 'ACM200', 'FXVIe', 'FXVIe_PLUS', 'DCM')  # S3=FXVIe_PLUS, 已含
+channel_relay_pins = defaultdict(lambda: defaultdict(set))   # src -> pin_base -> {rn}
+for src in sorted(p for p in src_ports if classify_source(p) in SHARE_SRC_TYPES):
+    for net, steps in trace(src, dut_target_nets).items():
+        for p2 in net_pinname.get(net, [net]):
+            b2, _ = pin_base_fs(p2)
+            channel_relay_pins[src][b2].update(s['rn'] for s in steps)
+share_refined = set()
+for src, pins_b in channel_relay_pins.items():
+    if len(pins_b) > 1:                                   # 同一通道连接超过1个PIN
+        for b2, rns in pins_b.items():
+            share_refined.update(rns)
+for rn in sorted(share_refined):
+    for inst in [i for i in RELAYS if relay_num(i) == rn]:   # 同编号 F/S 双实例都要更新
+        if relay_class[inst] in ('Connect', '通用'):
+            relay_class[inst] = 'Share'
+
+# ============================================================ COMPONENT-STATISTIC 输出
+L = []
+L.append("=" * 70)
+L.append("COMPONENT-STATISTIC — SCH-DALI.NET 原理图解析")
+L.append("规范: 原理图解析基本规则.txt / knowledge/hardware/schematic-parsing.md")
+L.append("=" * 70)
+L.append("")
+L.append("## 门控检查结果")
+for g, st, detail in gates:
+    L.append(f"  [{st}] {g}")
+    for d in detail: L.append(f"        - {d}")
+L.append("")
+
+L.append("## 任务一: DUT PIN (%d个, %d个端口)" % (len(pin_type), len(dut_ports)))
+for t in ('Kelvin', 'Non-Kelvin'):
+    pins = [b for b, tt in sorted(pin_type.items()) if tt == t]
+    L.append(f"  {t} ({len(pins)}):")
+    L.append("    " + ", ".join(f"{b}({t})" for b in pins))
+bad = [b for b, t in sorted(pin_type.items()) if '缺' in t]
+for b in bad: L.append(f"  ⚠ {b}({pin_type[b]})")
+L.append("")
+
+L.append("## 任务二: 源表 (%d个端口)" % len(src_ports))
+for t in sorted(src_by_type):
+    L.append(f"  {t} ({len(src_by_type[t])}):")
+    L.append("    " + ", ".join(src_by_type[t]))
+L.append("  注: S3 端口 netlist 标为 FXVIe_PLUS (原 FOVIe 标签已由新网表修正, 与 Pin_Channel_define.h 一致), 列7 输出")
+L.append("  注: S10_CH0_A/B 按槽位命名推断为 QTMU, 需用户确认")
+L.append("")
+if HAVE_CHAN_DEF:
+    L.append("## 任务二b: 源表名映射 (Pin_Channel_define.h, 多工位共享同一名字, 可同时操作)")
+    L.append("  通道键 -> 语义源表名 (权威类型)")
+    for ck in sorted(SRC_SEMANTIC):
+        name = SRC_SEMANTIC[ck]
+        typ = SRC_TYPE_BY_CHAN.get(ck, SRC_TYPE_BY_NAME.get(name, '?'))
+        L.append(f"    {ck} -> {name} ({typ})")
+    _mapped = [p for p in sorted(src_ports) if source_name_of(p)]
+    if _mapped:
+        L.append("  netlist 源表端口 → 语义源表名:")
+        for p in _mapped:
+            L.append(f"    {p} -> {source_name_of(p)} ({source_type_of(p)})")
+    L.append("")
+
+L.append("## 任务三: 继电器 (%d个: 机械G6K %d, 光耦MOS %d)" % (len(RELAYS), len(G6K), len(MOS)))
+by_class = defaultdict(list)
+for inst in sorted(RELAYS, key=relay_num):
+    by_class[relay_class[inst]].append(inst)
+for c in sorted(by_class):
+    L.append(f"  [{c}] ({len(by_class[c])}):")
+    L.append("    " + ", ".join(base_name(i) for i in by_class[c]))
+L.append("")
+
+L.append("## 任务四: 元器件 (%d个)" % (len(instances) - len(RELAYS)))
+for c in sorted(comp_by_type):
+    L.append(f"  {c} ({len(comp_by_type[c])}):")
+    L.append("    " + ", ".join(sorted(comp_by_type[c])))
+L.append("")
+
+L.append("## 任务五: NET (%d个, 同名已合并)" % len(nets))
+for c in sorted(net_by_class):
+    ns = sorted(net_by_class[c])
+    L.append(f"  [{c}] ({len(ns)}):")
+    show = ns if len(ns) <= 40 else ns[:40] + [f"...(共{len(ns)}个)"]
+    L.append("    " + ", ".join(show))
+L.append("")
+
+open(OUT_STAT, "w", encoding="utf-8").write("\n".join(L))
+print("\n".join(L[:60]))
+print(f"...\n已写出: {OUT_STAT}")
+
+fails = [g for g, st, _ in gates if st == 'FAIL']
+if fails and not FORCE:
+    print("门控 FAIL:", fails, "—— 按铁律停止, 不生成 SCH-Connect-Map (--force 可强制)")
+    sys.exit(1)
+
+# ============================================================ 任务六: SCH-Connect-Map
+M = []
+M.append("=" * 100)
+M.append("SCH-Connect-Map — SCH-DALI.NET 源表→PIN/BUS 连接图")
+M.append("规范: 原理图解析基本规则.txt 任务六 / 《通路有效性》: 最短路径 + Force/Sense 同时连通")
+M.append("说明: Relay-ON=需SetOn闭合, Relay-NC=默认导通; 配对标注 [Kelvin]/[PC短接]/[单线]")
+M.append("=" * 100)
+
+
+# ---------- 列1: FPVIe -> BUS节点 (FH+SH / FL+SL 成组) ----------
+M.append("")
+M.append("## 列1: FPVIe → FPVIe BUS节点 (BUS继电器, FH+SH/FL+SL成组)")
+col1_rows = 0
+for ch in (0, 1):
+    for grp, sides, bus_sides in (('High', ('FH', 'SH'), ('FH', 'SH')),
+                                  ('Low', ('FL', 'SL'), ('FL', 'SL'))):
+        paths = {}
+        ok = True
+        for s in sides:
+            src = f'S1_FPVIe_{s}{ch}'
+            tgt = f'FPVIe{ch}_{s}_BUS_S1'
+            r = trace(src, {tgt})
+            if tgt in r: paths[s] = r[tgt]
+            else: ok = False
+        if ok:
+            all_steps_f, all_steps_s = paths[sides[0]], paths[sides[1]]
+            seton = sorted(set(seton_relays(all_steps_f) + seton_relays(all_steps_s)))
+            M.append(f"  CH{ch} {grp}({sides[0]}+{sides[1]}): 成组✓  需闭合: {','.join(seton) if seton else '无(默认导通)'}")
+            for s in sides:
+                M.append(f"    {fmt_path(f'S1_FPVIe_{s}{ch}', paths[s], f'FPVIe{ch}_{s}_BUS_S1')}")
+            col1_rows += 1
+        else:
+            M.append(f"  CH{ch} {grp}: ✗ FH+SH/FL+SL 未成组连通 (违反BUS条件2)")
+if col1_rows == 0: M.append("  (无通路)")
+
+# ---------- 列2: FPVIe -> PIN ----------
+M.append("")
+M.append("## 列2: FPVIe → PIN (BUS继电器)")
+def trace_fpvi_to_pin():
+    """返回 {(ch, base, side): (steps, net, on, depth)} — 每个源侧(FH/SH/FL/SL)独立最优"""
+    out = {}
+    for ch in (0, 1):
+        for side in ('FH', 'SH', 'FL', 'SL'):
+            src = f'S1_FPVIe_{side}{ch}'
+            for net, steps in trace(src, dut_target_nets).items():
+                b = disp(net)
+                key = (ch, b, side)
+                oc = sum(1 for s in steps if s['state'] == 'ON')
+                cur = out.get(key)
+                if cur is None or (oc, len(steps)) < (cur[2], cur[3]):
+                    out[key] = (steps, net, oc, len(steps))
+    return out
+fpvi_pin = trace_fpvi_to_pin()
+if not fpvi_pin: M.append("  (无通路)")
+for (ch, b) in sorted({(c, bb) for (c, bb, sd) in fpvi_pin}):
+    for grp, fs_, ss in (('High', 'FH', 'SH'), ('Low', 'FL', 'SL')):
+        f = fpvi_pin.get((ch, b, fs_)); s = fpvi_pin.get((ch, b, ss))
+        if f and s:
+            conf = fs_conflict(f[0], s[0])
+            if conf:
+                M.append(f"  CH{ch} {grp} -> {b}  [F/S冲突] ⚠同继电器 {conf} 在 F/S 中状态互斥(NC vs ON), 物理无法同时连通, 非有效通路")
+                M.append(f"    F: {fmt_path(f'S1_FPVIe_{fs_}{ch}', f[0], dest_label(f[1]))}")
+                M.append(f"    S: {fmt_path(f'S1_FPVIe_{ss}{ch}', s[0], dest_label(s[1]))}")
+                continue
+            seton = sorted(set(seton_relays(f[0]) + seton_relays(s[0])))
+            M.append(f"  CH{ch} {grp} -> {b}  [Kelvin]  需闭合: {','.join(seton) if seton else '无(默认导通)'}")
+            M.append(f"    {fmt_path(f'S1_FPVIe_{fs_}{ch}', f[0], dest_label(f[1]))}")
+            M.append(f"    {fmt_path(f'S1_FPVIe_{ss}{ch}', s[0], dest_label(s[1]))}")
+        elif f or s:
+            lone, sd = (f, fs_) if f else (s, ss)
+            seton = sorted(set(seton_relays(lone[0])))
+            M.append(f"  CH{ch} {grp} -> {b}  [单线-仅{sd}] ⚠F/S未同时连通,非有效通路  需闭合: {','.join(seton) if seton else '无'}")
+            M.append(f"    {fmt_path(f'S1_FPVIe_{sd}{ch}', lone[0], dest_label(lone[1]))}")
+
+
+def emit_pairs(M, best):
+    """Kelvin源(ACM200/FXVIe_PLUS等) F+S 配对输出 — 优先同通道配对, 跨通道标注"""
+    bases = sorted({b for (b, fs, ch) in best})
+    if not bases: M.append("  (无通路)"); return
+    def node_kelvin(node):
+        return any(pin_type.get(nb) == 'Kelvin' for nb in node.split('_'))
+    for b in bases:
+        f_chs = {ch for (bb, fs, ch) in best if bb == b and fs == 'F'}
+        s_chs = {ch for (bb, fs, ch) in best if bb == b and fs == 'S'}
+        same = sorted(f_chs & s_chs)
+        if same:                                    # 同通道配对(Kelvin测量有效)
+            ch = same[0]
+            f, s = best[(b, 'F', ch)], best[(b, 'S', ch)]
+            note = ''
+        else:                                       # 跨通道: 仅连通性参考
+            f = min((v for k, v in best.items() if k[0] == b and k[1] == 'F'),
+                    key=lambda v: (v[3], v[4]), default=None)
+            s = min((v for k, v in best.items() if k[0] == b and k[1] == 'S'),
+                    key=lambda v: (v[3], v[4]), default=None)
+            note = ' ⚠跨通道配对,仅连通性参考' if (f and s) else ''
+        if f and s:
+            conf = fs_conflict(f[1], s[1])
+            if conf:
+                M.append(f"  {b}  [F/S冲突] ⚠同继电器 {conf} 在 F/S 中状态互斥(NC vs ON), 物理无法同时连通, 非有效通路")
+                M.append(f"    F: {fmt_path(f[0], f[1], dest_label(f[2]))}")
+                M.append(f"    S: {fmt_path(s[0], s[1], dest_label(s[2]))}")
+                continue
+            seton = sorted(set(seton_relays(f[1]) + seton_relays(s[1])))
+            tag = '[Kelvin]' if node_kelvin(b) else '[通路]'
+            M.append(f"  {b}  {tag}{note}  需闭合: {','.join(seton) if seton else '无(默认导通)'}")
+            M.append(f"    F: {fmt_path(f[0], f[1], dest_label(f[2]))}")
+            M.append(f"    S: {fmt_path(s[0], s[1], dest_label(s[2]))}")
+        else:
+            lone = f or s; role = 'F' if f else 'S'
+            seton = sorted(set(seton_relays(lone[1])))
+            M.append(f"  {b}  [单线-仅{role}] ⚠F/S未同时连通,非有效通路  需闭合: {','.join(seton) if seton else '无'}")
+            M.append(f"    {role}: {fmt_path(lone[0], lone[1], dest_label(lone[2]))}")
+
+def emit_single(M, srcs, role_fmt=None):
+    """单端源(QTMU/DCM/QVM) 输出 — 不分Kelvin, High端到达即闭环, 无F/S配对要求"""
+    best = {}
+    for src in srcs:
+        for net, steps in trace(src, dut_target_nets).items():
+            key = (disp(net), src)
+            oc = sum(1 for s in steps if s['state'] == 'ON')
+            cur = best.get(key)
+            if cur is None or (oc, len(steps)) < (cur[3], cur[4]):
+                best[key] = (src, steps, net, oc, len(steps))
+    if not best: M.append("  (无通路)"); return
+    for (b, src) in sorted(best):
+        src, steps, net, oc, dp = best[(b, src)]
+        seton = sorted(set(seton_relays(steps)))
+        role = role_fmt(src) if role_fmt else src
+        direct = ' [直连]' if not steps else ''
+        M.append(f"  {b} ← {role}  [通路]{direct}  需闭合: {','.join(seton) if seton else '无(默认导通)'}")
+        M.append(f"    {fmt_path(src, steps, b)}")
+
+# ---------- 源端口分组 ----------
+qtmu_ports = sorted(p for p in src_ports if classify_source(p) == 'QTMU')
+qvm_ports = sorted(p for p in src_ports if classify_source(p) == 'QVM')
+dcm_ports = sorted(p for p in src_ports if classify_source(p) == 'DCM')
+acm200_hs = sorted(p for p in src_ports if re.match(r'S5_ACM200_(FH|SH)\d+', p))
+fxvie_plus_hs = sorted(p for p in src_ports if re.match(r'S3_FXVIe_PLUS_(FH|SH)\d+', p))  # S3=FXVIe_PLUS
+
+def split_bus_share(srcs):
+    """按路径是否经过BUS类继电器分成 BUS角色/Share角色"""
+    bus_best, share_best = {}, {}
+    for src in srcs:
+        for net, steps in trace(src, dut_target_nets).items():
+            bus_path = any(relay_class.get(next((i for i in RELAYS if relay_num(i) == s['rn']), ''), '').startswith('BUS') for s in steps)
+            tgt = bus_best if bus_path else share_best
+            for p in net_pinname.get(net, [net]):
+                key = (disp(net), src)
+                oc = sum(1 for s in steps if s['state'] == 'ON')
+                cur = tgt.get(key)
+                if cur is None or (oc, len(steps)) < (cur[3], cur[4]):
+                    tgt[key] = (src, steps, net, oc, len(steps))
+    return bus_best, share_best
+
+def emit_single_best(M, best, role_fmt=None):
+    if not best: M.append("  (无通路)"); return
+    for (b, src) in sorted(best):
+        src, steps, net, oc, dp = best[(b, src)]
+        seton = sorted(set(seton_relays(steps)))
+        role = role_fmt(src) if role_fmt else src
+        direct = ' [直连]' if not steps else ''
+        M.append(f"  {b} ← {role}  [通路]{direct}  需闭合: {','.join(seton) if seton else '无(默认导通)'}")
+        M.append(f"    {fmt_path(src, steps, b)}")
+
+# ---------- 列3~列10 ----------
+M.append("")
+M.append("## 列3: QTMUe → PIN (BUS继电器)")
+M.append("  注: QTMU不分Kelvin(仅FH, Low端=DGND), High端到达即闭环, 无F/S配对要求")
+qtmu_bus, qtmu_share = split_bus_share(qtmu_ports)
+emit_single_best(M, qtmu_bus)
+M.append("")
+M.append("## 列4: QVMe → PIN (BUS继电器)")
+M.append("  注: QVM为2线Sense表(CH0+/CH0-), 有效测量需两端分别到达两个测量节点")
+qvm_bus, qvm_share = split_bus_share(qvm_ports)
+emit_single_best(M, qvm_bus, role_fmt=lambda s: 'QVM高端' if s.endswith('+') else 'QVM低端')
+M.append("")
+M.append("## 列5: ACM → PIN (Share继电器)")
+M.append("  (本板卡无 ACM 源表)")
+M.append("")
+M.append("## 列6: ACM200 → PIN (Share继电器)")
+emit_pairs(M, trace_multi(acm200_hs))
+M.append("  注: ACM200 Low端 FL/SL 分组接 AGND_F, 闭环经 AGND 回流")
+M.append("")
+M.append("## 列7: FXVIe_PLUS → PIN (Share继电器)")
+M.append("  注: S3 端口 netlist 标为 FXVIe_PLUS (原 FOVIe 标签已由新网表修正); Low端 FL/SL 分组接 AGND_F")
+emit_pairs(M, trace_multi(fxvie_plus_hs))
+M.append("")
+M.append("## 列8: QTMUe → PIN (Share继电器)")
+M.append("  注: QTMU不分Kelvin(仅FH, Low端=DGND), High端到达即闭环")
+emit_single_best(M, qtmu_share)
+M.append("")
+M.append("## 列9: QVMe → PIN (Share继电器)")
+emit_single_best(M, qvm_share, role_fmt=lambda s: 'QVM高端' if s.endswith('+') else 'QVM低端')
+M.append("")
+M.append("## 列10: DCM → PIN (Share继电器)")
+M.append("  注: DCM为数字源, 不分Kelvin, Low端=DGND, High端到达即闭环")
+emit_single(M, dcm_ports)
+
+# ---------- 附注: PIN→net 映射 ----------
+M.append("")
+M.append("## 附注: DUT PIN → 信号net 映射 (R3.8)")
+if PIN_SHORT_MAP:
+    M.append("  用户确认的短接PIN (netlist无记录, 共享节点视为同一电气节点):")
+    for a, b in PIN_SHORT_MAP.items():
+        M.append(f"    {a} ↔ {b}  (合并为节点 {a}_{b}... 追踪到任一即到达)")
+if TP_CONFIRMED:
+    M.append("  用户确认的 TP↔PIN 短接 (任务一Step6a, PIN 无同名net, 经测试点建立关系):")
+    for b, net in sorted(TP_CONFIRMED.items()):
+        M.append(f"    {b} ↔ {net}  (经 TP_{b} 测试点)")
+_step_b = {p: n for p, n in pin_net.items() if p != n}
+if _step_b:
+    M.append("  无同名net, 经TP/继电器名映射(Step B):")
+    for p, n in sorted(_step_b.items()):
+        M.append(f"    {p} → {n}")
+if tp_only_mapped:
+    M.append("  ⚠ 仅经 TP 测试点映射, 待用户确认 TP↔PIN 短接 (任务一Step6a):")
+    for p in sorted(tp_only_mapped):
+        M.append(f"    {p} → {pin_net[p]}  (TP_{p})")
+_multi = {n: ps for n, ps in net_pinname.items() if len({pin_base_fs(p)[0] for p in ps}) > 1}
+if _multi:
+    M.append("  短路PIN合并(同一信号net):")
+    for n, ps in sorted(_multi.items()):
+        M.append(f"    {disp(n)} ← {n}")
+if no_net_pins:
+    M.append("  ⚠ 孤立PORT (异常: 仅端口声明, 不属于任何net) — 必须向用户反馈, 原理图确认短接/NC:")
+    M.append("    " + ", ".join(no_net_pins))
+
+open(OUT_MAP, "w", encoding="utf-8").write("\n".join(M))
+print(f"已写出: {OUT_MAP}  ({len(M)}行)")

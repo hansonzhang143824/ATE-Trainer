@@ -1,0 +1,34 @@
+=== ① 部署态 TM1205 段落逐行（K_FPVIH_TO_SW*/K_FPVIL_TO_BST*）===
+  L8791  cbite.SetOn(K_FPVIH_TO_SW1_A, K_FPVIL_TO_BST1_A, K13_VBAT_Cap, K65_nQON_PU, -1);
+  L8835  cbite.SetOn(K_FPVIH_TO_SW2_A, K_FPVIL_TO_BST2_A, K13_VBAT_Cap, K65_nQON_PU, -1);
+
+  TM1205 函数体内所有 SetOn（含别名→StdAfx 展开）:
+    L8791  K_FPVIH_TO_SW1_A=46, K_FPVIL_TO_BST1_A=41, K13_VBAT_Cap=13, K65_nQON_PU=65
+    L8835  K_FPVIH_TO_SW2_A=46, K_FPVIL_TO_BST2_A=41, K13_VBAT_Cap=13, K65_nQON_PU=65
+
+=== ② 穷举契约中所有 "aliasFlatTable"（含嵌套）===
+  找到: $/aliasFlatTable                                             条数=16
+
+=== ③ 穷举含 bst1_sw1 / bst2_sw2 / BST1 / BST2 的键或值 ===
+  命中数 = 36
+    $/integrityNotes/tokenSearchDiscipline="A 0-hit token search is never evidence of absence: the DFT sources use several spellings for the same path (pmid2sw / p
+    $/resources[51]/name="K45_Cap_SW1_BST1_S1S2"
+    $/resources[51]/role="SW1/BST1 bootstrap cap gate"
+    $/resources[52]/name="K44_Cap_SW2_BST2_S1S2"
+    $/resources[52]/role="SW2/BST2 bootstrap cap gate"
+    $/aliasResolution[3]/alias="bst2sw"
+    $/aliasResolution[3]/firstSource/evidence[0]/locator="line 92: vset[bst2sw,5,1e-3,0]; lines 125/137/150/164/175/213/251/285 repeat it"
+    $/aliasResolution[3]/resolution/irDerivedLoop="LOOP_TM600_BST2SW_5V (resources 131,132,133,134,135)"
+    $/aliasResolution[3]/resolution/evidence[1]/locator="derivedPaths[LOOP_TM600_BST2SW_5V]"
+    $/aliasResolution[3]/limits/voltage="5 V above SW (DFT vset[bst2sw,5,...])"
+    $/aliasFlatTable[3]/alias="bst2sw"
+    $/aliasFlatTable[14]/alias="bst1_sw1"
+    $/aliasFlatTable[14]/variantOf="bst2sw"
+    $/aliasFlatTable[14]/relayPath="CH0 High -> SW1 需闭合 K46 ; CH0 Low -> BST1 需闭合 K41"
+    $/aliasFlatTable[14]/divergence="POLARITY: for bst1_sw1 the connect-map puts SW1 on the HIGH terminal and BST1 on the LOW terminal, i.e. the opposite of
+
+=== ④ 结论 ===
+  · Captain/对方给的"期望来源 aliasFlatTable[14]/[15]"在**现盘契约 rev 24**中**不可复核**；
+  · 但 TM1205 的实际通路（别名展开）可在 StdAfx.h 侧复核（见上表）；
+  · 事实层面仍成立：`bst2sw.usedByTm` 收 TM1205 属**登记错项**（BST1/BST2 ≠ BST），
+    且 TM1205 **不在**本门禁默认作用范围内 ⇒ **当前不产生假红**。

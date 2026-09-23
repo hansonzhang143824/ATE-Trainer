@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "PTC-IMPLEMENTATION-V2",
+  "runId": "TM425-IMPLEMENTATION-RECREATE-20260919",
+  "stage": "IMPLEMENTATION",
+  "verdict": "deliverable_ready",
+  "targetRoot": "D:/PROJECT6-DALI/ForCodexDebug",
+  "scope": [
+    "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+    "D:/PROJECT6-DALI/ForCodexDebug/source/sub.cpp"
+  ],
+  "changes": [
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "symbols": [
+        "TM425_VREF_1P2V_BUF"
+      ],
+      "beforeSha256": "5530ca9161b12108c7c206e0f9cd44004413715d0f1737f2745e71f4c321c217",
+      "afterSha256": "2ed19d63e8d761efcfbf7eaf187ee4e36e9a492bc965c94759e568dd7ff2c90c",
+      "planRefs": [
+        "team/artifacts/tm425-ptc/method/tm425-test-method-contract.json",
+        "team/artifacts/tm425-ptc/strategy/register-config-evidence.json"
+      ]
+    },
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/sub.cpp",
+      "kind": "trim_measure_callback",
+      "symbols": [
+        "measure_mnt_v1p2_buf"
+      ],
+      "beforeSha256": "d63fdb755e776c3a8dc73fad000984018bfd9d617335ddfac1382e2b7b210e88",
+      "afterSha256": "228be739e4160c75a7c206e438f70600a7846822f62ae173b3db13079107f038",
+      "planRefs": [
+        "team/artifacts/tm425-ptc/method/tm425-test-method-contract.json",
+        "D:/PROJECT6-DALI/ForCodexDebug/NU1201.treg"
+      ]
+    }
+  ],
+  "signedInputs": {
+    "methodContractPath": "team/artifacts/tm425-ptc/method/tm425-test-method-contract.json",
+    "methodContractSha256": "81408a784f65f179e86bd04eb405e91abb085ddb73d6d12ee6e4b52041463b6b"
+  },
+  "gate": {
+    "name": "verify_implementation_batch.py",
+    "status": "PASS",
+    "sourceSha256": "2ed19d63e8d761efcfbf7eaf187ee4e36e9a492bc965c94759e568dd7ff2c90c",
+    "sourceHashes": {
+      "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp": "2ed19d63e8d761efcfbf7eaf187ee4e36e9a492bc965c94759e568dd7ff2c90c",
+      "D:/PROJECT6-DALI/ForCodexDebug/source/sub.cpp": "228be739e4160c75a7c206e438f70600a7846822f62ae173b3db13079107f038"
+    },
+    "verifiedBy": "scripts/verify_implementation_batch.py"
+  }
+}

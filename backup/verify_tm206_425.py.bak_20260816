@@ -1,0 +1,159 @@
+# -*- coding: utf-8 -*-
+# 验证 AI.cpp TM206~425 批次
+import io, re
+
+AI = r'D:\Newtest\CLAUDE_PROCESS\DALI\AI.cpp'
+with io.open(AI, 'r', encoding='utf-8') as f:
+    src = f.read()
+
+# 截取新批次 (TM206 开始)
+start = src.index('// TM206: IPD_VAC2')
+seg = src[start:]
+
+errors = []
+
+# 1) 花括号平衡
+ob = seg.count('{'); cb = seg.count('}')
+print(f'[1] brace balance: open={ob} close={cb}', 'OK' if ob == cb else '*** MISMATCH ***')
+if ob != cb:
+    errors.append('brace')
+
+# 2) AFX 参数对
+opens = seg.count('//{{AFX_STS_PARAM_PROTOTYPES')
+closes = seg.count('//}}AFX_STS_PARAM_PROTOTYPES')
+print(f'[2] AFX pairs: open={opens} close={closes}', 'OK' if opens == closes else '*** MISMATCH ***')
+if opens != closes:
+    errors.append('afx')
+
+# 3) 函数数
+funcs = re.findall(r'^DUT_API int (TM\d+_\w+)\(', seg, re.M)
+print(f'[3] functions in new batch: {len(funcs)}')
+for fn in funcs:
+    if not (int(fn.split('_')[0][2:]) in (206,207,210,211,212,213,214,215,220,222,300,301,
+                                          400,401,402,403,406,408,409,410,411,412,413,
+                                          418,419,420,421,422,424,425)):
+        errors.append(f'Unexpected func {fn}')
+
+# 4) 每个函数 entertestmode 与 I2C 顺序 (R034)
+#    按精确函数签名提取: 找到 'DUT_API int NAME(' 到下一个 'DUT_API int TM' 边界
+fn_blocks = []
+for m in re.finditer(r'DUT_API int (TM\d+_\w+)\(short funcindex', seg):
+    start = m.start()
+    end = seg.find('DUT_API int TM', start + 1)
+    if end == -1:
+        end = len(seg)
+    fn_blocks.append(seg[start:end])
+for b in fn_blocks:
+    m = re.match(r'DUT_API int (TM\d+_\w+)\(', b)
+    name = m.group(1)
+    num = int(name.split('_')[0][2:])
+    has_i2c = 'I2CWriteSameData' in b
+    has_etm = 'entertestmode()' in b
+    # 重新上电后、第一个 I2C 前必须有 entertestmode; TM206/207 (wait_warmup, 无 en_tm) 例外
+    if has_i2c and not has_etm:
+        # 允许例外: 206/207
+        if num in (206, 207):
+            print(f'    [{name}] no entertestmode (wait_warmup 例外, OK)')
+        else:
+            errors.append(f'{name}: I2C without entertestmode')
+    # 检查 entertestmode 行号 < 第一个 I2C 行号
+    if has_etm and has_i2c:
+        etm_line = b.index('entertestmode()')
+        i2c_line = b.index('I2CWriteSameData')
+        if etm_line > i2c_line:
+            errors.append(f'{name}: entertestmode AFTER I2C')
+
+# 5) Toggle 函数必须有 Rise/Fall/Hys 3 参数
+toggle_nums = (210,211,212,213,214,215,400,401,402,403,406,408,409,410,411,412,413)
+for b in fn_blocks:
+    m = re.match(r'DUT_API int (TM\d+_\w+)\(', b)
+    name = m.group(1)
+    num = int(name.split('_')[0][2:])
+    if num in toggle_nums:
+        params = re.findall(r'StsGetParam\(funcindex, "(\w+)"\)', b)
+        if not any('_Rise' in p for p in params):
+            errors.append(f'{name}: no _Rise param')
+        if not any('_Fall' in p for p in params):
+            errors.append(f'{name}: no _Fall param')
+        if not any('_Hys' in p for p in params):
+            errors.append(f'{name}: no _Hys param')
+        # 两段 ramp (rise+fall)
+        n_ramp = b.count('rampv_capv(')
+        if n_ramp != 2:
+            errors.append(f'{name}: ramp count={n_ramp} (expect 2)')
+        if not (b.count(', TRIG_FALLING,') == 1 and b.count(', TRIG_RISING,') == 1):
+            errors.append(f'{name}: trigger polarity not standard (TM403 expected inverted)')
+
+# 6) 三步下电 + RELAY_OFF 统一量程
+for b in fn_blocks:
+    m = re.match(r'DUT_API int (TM\d+_\w+)\(', b)
+    name = m.group(1)
+    # RELAY_OFF 必须 10V/10MA (或对应源表 10V/10MA)
+    offs = re.findall(r'RELAY_OFF\)', b)
+    if offs:
+        bad = re.findall(r'Set\(FV, 0, ([^,]+), ([^,]+), ACM200_RELAY_OFF\)', b)
+        bad += re.findall(r'Set\(FV, 0, ([^,]+), ([^,]+), FXVIe_PLUS_RELAY_OFF\)', b)
+        for vrng, irng in bad:
+            if vrng.strip() != 'ACM200_10V' and vrng.strip() != 'FXVIe_PLUS_10V':
+                errors.append(f'{name}: RELAY_OFF VRNG={vrng.strip()} not 10V')
+            if irng.strip() != 'ACM200_10MA' and irng.strip() != 'FXVIe_PLUS_10MA':
+                errors.append(f'{name}: RELAY_OFF IRNG={irng.strip()} not 10MA')
+
+# 7) TM403 倒置极性检查
+b403 = [b for b in fn_blocks if b.startswith('DUT_API int TM403')][0]
+if b403.count(', TRIG_RISING,') != 1 or b403.count(', TRIG_FALLING,') != 1:
+    errors.append('TM403: trigger not standard single each')
+# 检查 rise 段用 TRIG_RISING
+rise_seg = b403[b403.index('rampv_capv'):]
+first_trig = re.search(r', TRIG_(FALLING|RISING),', rise_seg).group(1)
+print(f'    [TM403] first trigger = {first_trig}', 'OK' if first_trig == 'RISING' else '*** expected RISING ***')
+if first_trig != 'RISING':
+    errors.append('TM403: first trigger not RISING (inverted)')
+
+# 8) TM220/222 无 0x57 (确认按 .sv)
+for b in fn_blocks:
+    m = re.match(r'DUT_API int (TM\d+_\w+)\(', b)
+    name = m.group(1); num = int(name.split('_')[0][2:])
+    if num in (220, 222):
+        if '0x57' in b:
+            errors.append(f'{name}: has 0x57 write (should not per .sv)')
+        if '0x56, 0x16' not in b:
+            errors.append(f'{name}: missing 0x56=0x16')
+
+# 9) 测量源表对象: TM418/419/420/421/422/424 用 VDM_SDA_ACM (ATEST0), TM425 用 AMUX_PGND_FXVI
+atest0_nums = (418,419,420,421,422,424)
+for b in fn_blocks:
+    m = re.match(r'DUT_API int (TM\d+_\w+)\(', b)
+    name = m.group(1); num = int(name.split('_')[0][2:])
+    if num in atest0_nums:
+        if 'VDM_SDA_ACM' not in b:
+            errors.append(f'{name}: missing VDM_SDA_ACM (ATEST0)')
+        if 'AMUX_PGND_FXVI' in b:
+            errors.append(f'{name}: wrongly uses AMUX_PGND_FXVI')
+    if num == 425:
+        if 'AMUX_PGND_FXVI' not in b:
+            errors.append('TM425: missing AMUX_PGND_FXVI (ATEST1)')
+        if 'VDM_SDA_ACM' in b:
+            errors.append('TM425: wrongly uses VDM_SDA_ACM')
+
+# 10) QTMU: TM300/301 必须有 QTMU_GP 调用和 K66
+for b in fn_blocks:
+    m = re.match(r'DUT_API int (TM\d+_\w+)\(', b)
+    name = m.group(1); num = int(name.split('_')[0][2:])
+    if num in (300, 301):
+        if 'QTMU_GP' not in b:
+            errors.append(f'{name}: missing QTMU_GP')
+        if 'K66_TMU_nQON' not in b:
+            errors.append(f'{name}: missing K66_TMU_nQON')
+        if 'QTMUe_MEAS_FREQ' not in b:
+            errors.append(f'{name}: missing QTMUe_MEAS_FREQ')
+        if 'AVERAGE_RESULT' not in b:
+            errors.append(f'{name}: missing AVERAGE_RESULT')
+
+print()
+if errors:
+    print('*** ERRORS ***')
+    for e in errors:
+        print('  -', e)
+else:
+    print('ALL STRUCTURAL CHECKS PASSED')

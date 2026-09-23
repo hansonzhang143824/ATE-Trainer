@@ -1,0 +1,16 @@
+{
+  "event": "deliverable_ready",
+  "status": "success",
+  "stage": "STRATEGY",
+  "verdict": "deliverable_ready",
+  "tm": "TM425",
+  "batchId": "dali-20260921-080849-tm106-tm108-tm425",
+  "role": "test-strategy-architect",
+  "artifacts": {
+    "strategyContract": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm425/strategy/tm425-resource-config-contract.json",
+    "registerConfigEvidence": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm425/strategy/register-config-evidence.json",
+    "selfCheck": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm425/strategy/self-check.json"
+  },
+  "sha256": "35a8eb6c4ccd7a103804779c1cf9194279664df25a6ab0fb70a6f437cdc06637",
+  "nextRole": "test-method-expert"
+}

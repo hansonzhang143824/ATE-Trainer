@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 2,
+  "runId": "training-20260922t154456z-898b29e5",
+  "testItems": [
+    "TM109"
+  ],
+  "createdAt": "2026-09-22T15:45:00.072Z",
+  "cacheKey": "7e746c78dd4b428e0165b810d99a2412dbbdd19339d7cfcdbb0e90e77233eeb1",
+  "files": [
+    {
+      "source": "Training_Materials/Input_GlobalMaterial/Dali_testmode.xlsx",
+      "path": "Training_Materials/runs/training-20260922t154456z-898b29e5/input/Dali_testmode.xlsx",
+      "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "view": "python-plaintext"
+    },
+    {
+      "source": "Training_Materials/Input_GlobalMaterial/DALI-special-information.json",
+      "path": "Training_Materials/runs/training-20260922t154456z-898b29e5/input/DALI-special-information.json",
+      "sha256": "86d11d43f8602cba604605fc015ba75a2d04a079345a5084f7442053c796d188",
+      "view": "python-plaintext"
+    },
+    {
+      "source": "User_input/DFT解析规则.txt",
+      "path": "Training_Materials/runs/training-20260922t154456z-898b29e5/input/DFT解析规则.txt",
+      "sha256": "90c4cdc89b3af1648b5d12b5dabd1e1bc19c816a8395adf27fb7047212e3fdc7",
+      "view": "python-plaintext"
+    },
+    {
+      "source": "team/expert-profiles/ptc-dft-expert/instructions.md",
+      "path": "Training_Materials/runs/training-20260922t154456z-898b29e5/profile/instructions.md",
+      "sha256": "7046fba48d7a51023764e7c85caa5583a4bdf820d1df07229f4d7c10cd063eee",
+      "view": "exact-bytes"
+    },
+    {
+      "source": "team/expert-profiles/ptc-dft-expert/profile.yaml",
+      "path": "Training_Materials/runs/training-20260922t154456z-898b29e5/profile/profile.yaml",
+      "sha256": "3256959f4bb60241df9598ad691be5d0d1ed4d9275f1ed89ee6cabb8968179dd",
+      "view": "exact-bytes"
+    },
+    {
+      "source": "team/expert-profiles/ptc-dft-expert/output-contract.schema.json",
+      "path": "Training_Materials/runs/training-20260922t154456z-898b29e5/profile/output-contract.schema.json",
+      "sha256": "00b8f2bfcf6a5e4f531be83ee9b48c4a213feee5dededa226cc166544f895a4a",
+      "view": "exact-bytes"
+    }
+  ],
+  "policies": [
+    {
+      "path": "scripts/hash_ate_plaintext.py",
+      "sha256": "a11792f99dedb0adf61d731aa33d859aa9fce5342602778a87d2629747d36bd5",
+      "diskSha256": "a11792f99dedb0adf61d731aa33d859aa9fce5342602778a87d2629747d36bd5"
+    },
+    {
+      "path": "scripts/material_plaintext_hash.py",
+      "sha256": "a4b38cddb580338f81d366bb5d1c30d9f40a9220a4614e5217be5ae9ce2cdf71",
+      "diskSha256": "a4b38cddb580338f81d366bb5d1c30d9f40a9220a4614e5217be5ae9ce2cdf71"
+    },
+    {
+      "path": "scripts/refresh_dft_meta_from_source.py",
+      "sha256": "14af71fbad8ceed30434ac2340bb71ef80a3dd5184f6ef9eec71e554679fa9b2",
+      "diskSha256": "14af71fbad8ceed30434ac2340bb71ef80a3dd5184f6ef9eec71e554679fa9b2"
+    },
+    {
+      "path": "scripts/render_dft_conditions_yaml.py",
+      "sha256": "0bd83b14aedf75dfa3b9ffab61a6bd77619941029245b4ccb29afeb761ab9cec",
+      "diskSha256": "0bd83b14aedf75dfa3b9ffab61a6bd77619941029245b4ccb29afeb761ab9cec"
+    },
+    {
+      "path": "scripts/validate_dft_outputs.py",
+      "sha256": "9da7a855793a595a8048d49d3b001dac402639e6d56fb940c8ca62fe45335b80",
+      "diskSha256": "9da7a855793a595a8048d49d3b001dac402639e6d56fb940c8ca62fe45335b80"
+    },
+    {
+      "path": "scripts/dft_source.py",
+      "sha256": "0974218319ac86c6fdd982a5ecd46693219d895f1ae731748df013499ec8ffd1",
+      "diskSha256": "0974218319ac86c6fdd982a5ecd46693219d895f1ae731748df013499ec8ffd1"
+    },
+    {
+      "path": "scripts/dft_test_condition.py",
+      "sha256": "96362342bb71b87db00e7de677563e39c066579db3720299133f0253df00d86b",
+      "diskSha256": "96362342bb71b87db00e7de677563e39c066579db3720299133f0253df00d86b"
+    },
+    {
+      "path": "scripts/ptc_contract_schema.py",
+      "sha256": "65d383c2f5858329fe235725c897276cccd8ddc56cfbfcdb62289f7742bb3229",
+      "diskSha256": "65d383c2f5858329fe235725c897276cccd8ddc56cfbfcdb62289f7742bb3229"
+    },
+    {
+      "path": "scripts/ptc_trim_validation.py",
+      "sha256": "eb22df1be527ebfaac5a404d50af31c7bd6733608caccbed888f4f00a23ae4c3",
+      "diskSha256": "eb22df1be527ebfaac5a404d50af31c7bd6733608caccbed888f4f00a23ae4c3"
+    },
+    {
+      "path": "scripts/project_info.py",
+      "sha256": "2bf80256bf2cda06766ff9fe2d298316f1691b7b9c4b42e976f0ebfa860127f8",
+      "diskSha256": "2bf80256bf2cda06766ff9fe2d298316f1691b7b9c4b42e976f0ebfa860127f8"
+    }
+  ],
+  "candidateSources": {
+    "TM109": {
+      "kind": "legacy",
+      "cacheCompatible": false,
+      "copied": [
+        "dft-meta.json",
+        "dft-conditions.yaml",
+        "dft-semantic-review.json"
+      ]
+    }
+  }
+}

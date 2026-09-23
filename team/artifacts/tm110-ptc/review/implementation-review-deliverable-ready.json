@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm110-implementation-review-deliverable-ready",
+  "taskId": "TM110-PTC-RULE_REVIEW_IMPLEMENTATION",
+  "trial": "tm110-ptc",
+  "tm": "TM110",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_IMPLEMENTATION",
+  "event": "deliverable_ready",
+  "status": "success",
+  "verdict": "deliverable_ready",
+  "findingsArtifact": "review/implementation-review.json",
+  "selfCheck": "review/implementation-review-self-check.json",
+  "signedInputs": {
+    "implementationManifestSha256": "c67c2a3782454c625d0a0e532e64fac3ec7b33ff2d400b74527e79d41d67a943"
+  },
+  "nextRole": "compile-diagnostician"
+}

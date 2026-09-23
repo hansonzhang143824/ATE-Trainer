@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "profileId": "ate-implementer",
+  "version": "v1",
+  "publishedAt": "2026-09-20T15:19:43.133771Z",
+  "executionClass": "implementation-standard",
+  "evaluation": {
+    "verdict": "pass",
+    "failed": [],
+    "caseCount": 1,
+    "checks": [
+      {
+        "id": "assets",
+        "ok": true,
+        "detail": "all required assets present"
+      },
+      {
+        "id": "profile_metadata",
+        "ok": true,
+        "detail": "profile.yaml parsed and identified"
+      },
+      {
+        "id": "execution_class_registered",
+        "ok": true,
+        "detail": "executionClass 'implementation-standard' is registered in the plugin policy registry"
+      },
+      {
+        "id": "execution_class_matches_profile_map",
+        "ok": true,
+        "detail": "plugin maps ate-implementer to 'implementation-standard'"
+      },
+      {
+        "id": "declared_readable",
+        "ok": true,
+        "detail": "readable: ['<run>/method', '<run>/strategy', 'knowledge/standards/treg.md', 'approved target source files']"
+      },
+      {
+        "id": "declared_writable",
+        "ok": true,
+        "detail": "writable: ['<run>/implementation', 'ErrorLog/implementer.log', 'approved target source files']"
+      },
+      {
+        "id": "declared_requiredGates",
+        "ok": true,
+        "detail": "requiredGates: ['scripts/verify_implementation_batch.py', 'scripts/write_implementation_deliverable.py']"
+      },
+      {
+        "id": "readable_has_no_retired_artifact",
+        "ok": true,
+        "detail": "readable declares no retired artifact"
+      },
+      {
+        "id": "output_contract",
+        "ok": true,
+        "detail": "object schema with required=['tm', 'stage', 'targetRoot', 'signedInputs', 'changes', 'verdict']"
+      },
+      {
+        "id": "case_index_matches_disk",
+        "ok": true,
+        "detail": "index ['TM106'] vs cases/ ['TM106']"
+      },
+      {
+        "id": "case_TM106",
+        "ok": true,
+        "detail": "case is complete and inside the allowed read scope"
+      },
+      {
+        "id": "preset_agreement",
+        "ok": true,
+        "detail": "preset.yml name matches displayName 'PTC Implementer'"
+      },
+      {
+        "id": "boundary_regression",
+        "ok": true,
+        "detail": "plugin boundary suite passed"
+      }
+    ]
+  },
+  "files": {
+    "CHANGELOG.md": "fccc59f8c843b7de5f807061bc3789adf38a16af5e9abf53745f8f2068ba7074",
+    "cases/TM106/expected.json": "23fce7a8b679102c6e5b0d3731e7ada4ea580710c299b43ddf99468d1f703cfd",
+    "evaluation/expected-results.json": "f6eddf55566064927cbca3915018ad971afad4f11abb2d969afb0f744c57e203",
+    "instructions.md": "7c5961cd971df7acf93aa5a1a0955bf52a66abfc4b32dfd797da30914906d857",
+    "output-contract.schema.json": "d8b13a148802129c9ef56b95855f00c22c1cc77c478e4d8189d92355874fc170",
+    "profile.yaml": "102b0e7af72783f2479d0b90dd01ea386b87f43fb9c6b6dff9e0683d69585cca",
+    "status.json": "f0e6144c4b85d23bd51bb644c6f4a6932330eabc6d49949405b699ff9beadf2f"
+  },
+  "digest": "3d8f2e2eac8152d3cfc7205cbaf53bec26ce050853bb4be92d5241bf5fa437fc"
+}

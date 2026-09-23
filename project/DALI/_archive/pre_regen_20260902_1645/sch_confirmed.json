@@ -1,0 +1,20 @@
+{
+  "_comment": "每项目用户确认的配置 — PIN_SHORT_MAP 主体从 net 文件自动推导（同一信号 net 合并/TP 映射），此文件只登记 netlist 无记录、无法自动推导的关系；relay_class 登记拓扑误判、用户人工确认的继电器功能分类。换项目时按该项目实际情况填写。",
+  "user_shorts": {
+    "PWM2": "PA6"
+  },
+  "tp_confirmed": {
+    "PWM1": "PB0_F/S_S1",
+    "VDRV": "V1P5_F/S_S1",
+    "PA0": "INT_F/S_S1",
+    "PA7": "DMA_F/S_S1",
+    "PC6": "DMO_F/S_S1",
+    "BST": "FPVIe1_FH/FL_PC_S1",
+    "SW": "FPVIe1_FL/SL_PC_S1",
+    "SCL": "S24_P1",
+    "SDA": "S24_P2"
+  },
+  "relay_class": {
+    "K57_CAP_BST_SW": "Cap"
+  }
+}

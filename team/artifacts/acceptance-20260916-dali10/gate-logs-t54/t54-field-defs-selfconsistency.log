@@ -1,0 +1,15 @@
+=== ① 按其**正确定义**逐行复核链（自证）===
+  行数 = 31 ｜ 文件 = 47756 B
+  链有效行数 = 30/30 ⇒ CHAIN VALID = True
+  首行 prevLineSha256 = None（应为 None）
+
+=== ② 字段定义：写入头文件 + 生成器注释 ===
+  已写 build-report.receipts.meta.json (921 B)
+  已加生成器注释 → 45625 B
+
+=== ③ 新增纪律：自一致性 ===
+  已并入 → 38783 B
+  run1 末行: RECEIPT-HISTORY D:\Newtest\DSH\ATE-Coding-Plat\team\artifact
+  run2 末行: RECEIPT-HISTORY D:\Newtest\DSH\ATE-Coding-Plat\team\artifact
+
+再验：行数 = 33 ｜ 链有效 = 32/32

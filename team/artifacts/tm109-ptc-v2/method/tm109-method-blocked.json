@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm109-method-blocked-routed-finding",
+  "artifactKind": "test-method-blocked-routed-finding",
+  "tm": "TM109",
+  "taskId": "TM109-METHOD-PTC-V2",
+  "projectId": "DALI",
+  "role": "test-method-expert",
+  "stage": "METHOD",
+  "generatedAt": "2026-09-18T00:35:00+08:00",
+  "status": "BLOCKED",
+  "verdict": "blocked_routed_to_owner",
+  "blocking": true,
+  "terminalReport": "BLOCKED: TM109; evidence: team/artifacts/tm109-ptc-v2/method/tm109-method-blocked.json; question: see report.question",
+  "signedInputBoundary": [
+    {
+      "path": "team/artifacts/tm109-ptc-v2/strategy/tm109-resource-config-contract.json",
+      "sha256": "7b91ac7ad86e8c0aa63d69d9e4a70c9819b49579617b4c3c1726869cbdbc1a44",
+      "verified": "sha256 recomputed on disk and equal to strategy/deliverable-ready.json.sha256"
+    },
+    {
+      "path": "team/artifacts/tm109-ptc-v2/strategy/deliverable-ready.json",
+      "sha256": null,
+      "verified": "event=deliverable_ready, status=success, stage=STRATEGY, verdict=deliverable_ready, nextRole=test-method-expert"
+    }
+  ],
+  "finding": {
+    "id": "BF-1",
+    "topic": "The observation endpoint signed for EP-3 (DUT pin INT via PA0_PC3_ACM ch15) is not the pad that carries the DTEST0 signal driven by the binding register delta; the observable toggle of a2d_vac2_prst is on the DTEST0 pad = nQON.",
+    "consequence": "A method contract that captures the toggle on the signed INT_PA0 node (S5_ACM200_FH15/SH15, pull-up K103+K128) would probe a node that the mux registers do not drive: DMUX_EN=1 / DMUX_SEL=21 route a2d_vac2_prst to the DTEST0 output, and DTEST0 is a pad function of nQON. No toggle would be captured, so Rise/Fall/Hys could not be measured at all. Limits, trigger polarity and sampling cannot repair a wrong observation node.",
+    "whyThisRoleCannotResolveIt": "Swapping the observation node changes a source table, a channel, a route and a relay/pull-up set. Per this role contract (test-method-expert.md lines 3, 10) and the strategy handoff returnRule, source/route/relay/pull-up choices are owned by test-strategy-architect and must not be changed silently by this stage.",
+    "triggerThatTheSignedContractItselfDeclared": "strategy contract conflicts.CF-4 (lines 754-755): \"If the test-method or review stage obtains current-project evidence that the DTEST0 output is physically presented on the nQON pin, the monitor route and its pull-up must be switched together by returning a routed finding to test-strategy-architect; the register delta and the monitor intent are unaffected.\"",
+    "evidenceObtainedByThisStage": "Five independent current-project sources (project TestIO workbook dump, the DTEST0 mux table, the project regression code for this very item, the active relay standard for this item family, and the user-confirmed project pad mapping) agree that the DTEST0 output is presented on the nQON pad, and the netlist proves INT_PA0 and nQON are two different DUT Kelvin contacts. This is the trigger condition of CF-4, not a mere open question: it is evidence AGAINST the selected route."
+  },
+  "evidence": [
+    {
+      "id": "E1",
+      "file": "project/DALI/_archive/_dump_TestIO.txt",
+      "locator": "line 2 (header line 1, sheet date line 7: 'update 2026/02/27')",
+      "quote": "\\tnQON\\t\\tDTEST0\\tSCAN_OUT",
+      "sha256": "7fd842e65e8f4c4ef0099884bd5247fc113778cdfb13c40d7be5aef210c12972",
+      "class": "current-project test-IO definition (pad name -> digital test function); names nQON as the pad carrying DTEST0"
+    },
+    {
+      "id": "E2",
+      "file": "project/DALI/_archive/_dump_DTESTMAP.txt",
+      "locator": "line 1 ('Reg_DTEST0_general  bit  A2D') and line 23",
+      "quote": "21\\t10101\\ta2d_vac2_prst",
+      "sha256": "9edd814e7f03c188f21ede0b9cbf217c67f37e7ec41c81ea4042896262329e98",
+      "class": "project mux table: the signed register value DMUX_SEL=21 (0x57=0x08 with DMUX_EN=1 from 0x56=0x15) selects a2d_vac2_prst on the DTEST0 general mux"
+    },
+    {
+      "id": "E3",
+      "file": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "locator": "TM109 block lines 2317-2393 (header 2318-2321, closure 2339, capture 2355-2364)",
+      "quote": "2339: cbite.SetOn(K13_VBAT_Cap, K65_nQON_PU, K19_ACM0_VAC2, -1); | 2358-2360: test_method.rampv_capv(VAC123_AMUX_ACM, ACM200_20V, ACM200_100MA, NQON_HG1_ACM, ACM200_10V, ACM200_10UA, 0.0, 10.0, 200, 20, 1.65, TRIG_FALLING, vth_r); | 2320: measure V(DTEST0)=nQON toggle (r 4.059 f 3.738)",
+      "sha256": "fe38f5ec2f71e6147327fb2990aacf355f4a8bde106bb8a1daa63679e3f8fecb",
+      "class": "current project regression code for TM109 itself: observes V(DTEST0) on NQON_HG1_ACM with K65_nQON_PU, and does not connect PA0_PC3_ACM or K103/K128; the sibling TM108 block (lines 2257-2266) does the same"
+    },
+    {
+      "id": "E4",
+      "file": "knowledge/hardware/relays.md",
+      "locator": "line 142 (PU principle) and line 150 (DALI instance)",
+      "quote": "142: DUT 的 DTEST0/nQON 等开漏 pad 自身只能拉低,必须外接上拉才能读出高电平 | 150: DALI 实例: K65_nQON_PU(nQON/DTEST0 上拉)。观测 DTEST0 的函数(TM105~113 阈值、TM121/127~130 Toggle、... )全部闭合",
+      "sha256": "d31ae1de0b93da4318c37e8c0f7761d4bfec956a7e9f2f1f9d25f6a247e15d49",
+      "class": "active standard: mandates K65_nQON_PU for the functions that observe DTEST0, explicitly including the TM105~113 threshold family that TM109 belongs to"
+    },
+    {
+      "id": "E5",
+      "file": "knowledge/references/L0-ate-primer.md",
+      "locator": "line 13 (project-confirmed pad mapping table)",
+      "quote": "| **DTEST0** | **nQON**(数字观测脚) | 数字：toggle / 时间 / 翻转 | 开漏 pad，需上拉 `K65_nQON_PU` |",
+      "sha256": "03a4e3c591d034a5cf9b90106d5ea193956f3b1b83d3cc855e8e357b7a706e44",
+      "class": "active primer, '本项目映射 (2026-09-02 用户确认)': DTEST0 = nQON pad"
+    },
+    {
+      "id": "E6",
+      "file": "project/DALI/SCH-Connect-Map.txt",
+      "locator": "lines 798-800 (nQON route), 891 (nQON pull-up), 702-704 (INT_PA0 route), 885 (PA0 pull-up), 927-929 (PA0 <-> INT test-point bridge)",
+      "quote": "798-800: nQON [Kelvin] 需闭合: 无(默认导通) / F: S5_ACM200_FH9 -> K64(Relay-NC) -> nQON_F / S: S5_ACM200_SH9 -> K64(Relay-NC) -> nQON_S | 891: nQON 上拉-固定5V R_nQON_PU_S1 需闭合: K65 | 702-704: INT_PA0 [Kelvin] 需闭合: 无(默认导通) / F: S5_ACM200_FH15 -> K102(Relay-NC) -> INT_F | 885: PA0 上拉-源表 R_PA0_PU_S1 需闭合: K103,K128",
+      "sha256": "cc8009fbb27eef0cf29b45e4e50b05e1b5d7b5d49095a32005261a79d83cb427",
+      "class": "primary physical-path evidence: nQON and INT_PA0 are two distinct DUT contacts with two distinct pull-ups; the alternative route named by CF-4 is reachable with zero actuations from S5_ACM200_FH9/SH9"
+    },
+    {
+      "id": "E7",
+      "file": "project/DALI/Component-Statistic.txt",
+      "locator": "line 61 (DUT pin inventory)",
+      "quote": "INT(Kelvin), ... , PA0(Kelvin), ... , nQON(Kelvin)",
+      "sha256": null,
+      "class": "confirms INT, PA0 and nQON are three separate DUT Kelvin pins, so the DFT Check field 'INT' and the DTEST0 pad nQON cannot be the same contact"
+    },
+    {
+      "id": "E8",
+      "file": "team/artifacts/tm109-ptc-v2/strategy/tm109-resource-config-contract.json",
+      "locator": "RA-3 (lines 358-475), setOnClosure (477-524), relayGroups RG-3 (597-631, isolation bullet line 627), conflicts CF-4 (725-756), openItems OI-1 (952-959), handoff returnRule (992)",
+      "quote": "627: K65_nQON_PU (S34_CBIT65) must remain un-actuated: it is the pull-up of the nQON node, which is not a target pin of this item (non-target-pin rule).",
+      "sha256": "7b91ac7ad86e8c0aa63d69d9e4a70c9819b49579617b4c3c1726869cbdbc1a44",
+      "class": "the signed contract itself: it declares the nQON route as a fully specified alternative and makes the swap the architect's action"
+    }
+  ],
+  "requiredOwnerAction": {
+    "owner": "test-strategy-architect",
+    "reason": "only the strategy stage may change a source table, a channel, a route or a relay/pull-up set",
+    "minimalDelta": [
+      "EP-3 pin: INT -> nQON (role 'monitor / digital toggle observation endpoint' unchanged; the requirement text 'observe the logic toggle of the DFT-named check endpoint' is unchanged).",
+      "RA-3 sourceTable: PA0_PC3_ACM -> NQON_HG1_ACM (ACM200, SITE_1 port S5, channel index 9, ports S5_ACM200_FH9 / S5_ACM200_SH9).",
+      "RA-3 route actuations: still ZERO (K64 default-conducting NC contact selects nQON_F/nQON_S); if K64 were closed it would select HG1_F/HG1_S instead (SCH-Connect-Map.txt lines 699-701), so K64 must remain un-actuated.",
+      "RA-3 functionalActuations: replace K103_PA0_PU + K128_FOVI7_PU_PS with K65_nQON_PU (S34_CBIT65, ON) feeding the fixed-5V pull-up R_nQON_PU_S1.",
+      "setOnClosure.relays: [13,19,103,128] -> [13,19,65]; relayNames/cbit/groupDecomposition RG-3 updated to {65}; implementationNote (single SetOn call) unchanged.",
+      "isolationRequirements: remove K65 from the keep-open list and add K103_PA0_PU, K128_FOVI7_PU_PS (and keep K101/K102) as keep-open.",
+      "OI-2 (pull-up source drive level) becomes moot: the nQON pull-up is a fixed 5 V rail (SCH-Connect-Map.txt line 891), not an FXVIe_PLUS PU-PS tap, so no drive level is method-owned any more.",
+      "conflicts.CF-4 status: change from NON_BLOCKING_DOCUMENTED_ALTERNATIVE to the nQON resolution, and record the DFT Check field 'INT' as the conflicting/stale evidence it was."
+    ],
+    "notAffected": [
+      "Register delta 0x56=0x15 (DMUX_EN=1) and 0x57=0x08 (DMUX_SEL=21 = a2d_vac2_prst) after entertestmode(): the mux target is exactly what the nQON observation needs; no value changes.",
+      "EP-1/RA-1 VBAT 3.0 V static supply (VBAT_PD3_FXVI S3 ch5, K13 closed, K8 un-actuated).",
+      "EP-2/RA-2 VAC2 swept rail (VAC123_AMUX_ACM S5 ch0, K19 ON, K18/K20/K21 un-actuated, AGND_F return).",
+      "Exclusive SetOn semantics and the single-call rule; the conflict-free state of the closure set."
+    ]
+  },
+  "methodOwnedItemsStillOpen": {
+    "note": "These are owned by test-method-expert, but every one of them depends on which physical node is observed and which pull-up feeds it, so none of them is fixed in this report. No value below is signed and none may be implemented.",
+    "items": [
+      "capture level for the DTEST0 toggle (depends on the signed pull-up rail)",
+      "per-segment trigger edge (depends on the observed node's logic sense)",
+      "sweep geometry: start/stop windows around the DFT expectation, sample count, interval",
+      "pass/fail limits: the DFT publishes 'rising vth 4.15V, hys 0.35V' with no tolerance window; no tolerance is invented by this stage (carried item, spec-layer decision)",
+      "Log fields: which calculated and context quantities are logged per site",
+      "power-down plan: the three-step zero-hold-release sequence with a unified range pair",
+      "BST/SW applicability: the DFT row declares neither BST nor SW, so the 0 V <= BST-SW <= 5 V rule is not applicable to TM109 unless a route proof puts a BST node in the loop"
+    ]
+  },
+  "selfVerification": [
+    {
+      "id": "G1",
+      "command": "python scripts/validate_ptc_output_contracts.py",
+      "workdir": "D:/Newtest/DSH/ATE-Coding-Plat",
+      "exitCode": 0,
+      "stdout": "PASS",
+      "meaning": "the deterministic PTC output-ABI checker named by team/ptc/OUTPUT_CONTRACTS.md prints PASS; the METHOD ABI it defines is intact"
+    },
+    {
+      "id": "G2",
+      "command": "python scripts/ate_ptc_runner.py --tm TM109 --trial-dir team/artifacts/tm109-ptc-v2 --command next",
+      "workdir": "D:/Newtest/DSH/ATE-Coding-Plat",
+      "exitCode": 0,
+      "stdout": "{ state: METHOD, dispatch: test-method-expert, reason: 'signed strategy is current; method contract is missing or invalid', outputDir: .../method }",
+      "meaning": "the stage gate still routes TM109 to METHOD, which is the correct state: no deliverable-ready.json was written, so nothing downstream can treat this stage as delivered"
+    },
+    {
+      "id": "G3",
+      "command": "Get-FileHash -Algorithm SHA256 team/artifacts/tm109-ptc-v2/strategy/tm109-resource-config-contract.json",
+      "exitCode": 0,
+      "stdout": "7b91ac7ad86e8c0aa63d69d9e4a70c9819b49579617b4c3c1726869cbdbc1a44",
+      "meaning": "the signed strategy contract was read, not modified; its hash still equals the hash recorded in strategy/deliverable-ready.json"
+    }
+  ],
+  "deliverablesDeliberatelyNotWritten": [
+    {
+      "path": "method/tm109-test-method-contract.json",
+      "reason": "a method contract requires a single signed observation node; signing either INT_PA0 or nQON here would either contradict the signed allocation or silently change a route"
+    },
+    {
+      "path": "method/deliverable-ready.json",
+      "reason": "writing event=deliverable_ready would assert a deliverable that does not exist and would advance the PTC chain to RULE_REVIEW_METHOD"
+    },
+    {
+      "path": "method/self-check.json",
+      "reason": "no contract exists to self-check"
+    }
+  ],
+  "report": {
+    "terminal": "BLOCKED",
+    "question": "Will you re-sign EP-3/RA-3 (and the SetOn closure) onto the DTEST0 pad route that your own CF-4 already specifies - NQON_HG1_ACM channel 9 (S5_ACM200_FH9/SH9), K64 un-actuated, K65_nQON_PU closed, closure {13,19,65} - given that the DTEST0 output driven by the binding register delta (0x56=0x15, 0x57=0x08 / DMUX_SEL=21 = a2d_vac2_prst) is presented on the nQON pad, not on the INT/PA0 node, so the signed INT allocation cannot capture the toggle?"
+  }
+}

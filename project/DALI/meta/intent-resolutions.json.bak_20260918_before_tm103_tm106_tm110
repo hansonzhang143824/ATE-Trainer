@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "projectId": "DALI",
+  "purpose": "Project-owned adjudications for DFT source conflicts. A resolution is required before strategy can choose a source, route, relay, register, or limit affected by a conflict.",
+  "resolutions": {
+    "TM109": {
+      "status": "resolved",
+      "authority": "accepted project baseline",
+      "decision": {
+        "item": "VAC2_PRST",
+        "staticSupplies": [
+          {
+            "pin": "VBAT",
+            "voltageV": 3.0
+          }
+        ],
+        "sweptPin": "VAC2",
+        "registerWrites": [
+          {
+            "address": "0x56",
+            "value": "0x15"
+          },
+          {
+            "address": "0x57",
+            "value": "0x08"
+          }
+        ],
+        "monitorIntent": "DTEST0/nQON logic toggle",
+        "monitorDutPin": "nQON"
+      },
+      "conflict": {
+        "source": "project/DALI/input/DFT.csv",
+        "record": "TM109",
+        "fact": "The CSV row names VAC3 in Dynamic/monitor fields although the item, OVERVIEW and reg_config identify VAC2.",
+        "handling": "Do not use the copied VAC3 field as a stimulus or route authority."
+      },
+      "evidence": [
+        "team/artifacts/acceptance-20260916-dali10/dft-ir.json:1092-1228",
+        "team/artifacts/acceptance-20260916-dali10/review/t6-review-checklist.md:17,176",
+        "project/DALI/reg_config/tm109.sv"
+      ],
+      "scope": "This resolution adjudicates only the DFT source contradiction. Relay and instrument selection remain the strategy architect's job and must use project schematic/CBIT evidence."
+    }
+  }
+}

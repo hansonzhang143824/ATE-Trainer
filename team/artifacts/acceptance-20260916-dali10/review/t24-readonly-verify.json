@@ -1,0 +1,80 @@
+{
+  "_note": "t24 review read-only verification (rule-reviewer). Reviewed artifact must be byte-identical before/after.",
+  "checkedAt": "2026-09-16 18:50:57",
+  "rows": {
+    "payload(REVIEWED)": {
+      "size": 35014,
+      "sha256_plaintext": "444810dde99f79ed1ef1939bb1659d5769f547bfc1103e9b9187ee46f455675c",
+      "mtime": "2026-09-16 18:42:34"
+    },
+    "test-plan.json(v20)": {
+      "size": 166099,
+      "sha256_plaintext": "1925250df53f8b52126fdda9efa84ae84fe2bc8e529867e0965fc0ffe9a08016",
+      "mtime": "2026-09-16 18:17:42"
+    },
+    "setup-contract.json(rev22)": {
+      "size": 328805,
+      "sha256_plaintext": "fd00a5082170293fcea29446c009fc432977d61a8f624ef17ac1c82f41515a18",
+      "mtime": "2026-09-16 18:43:40"
+    },
+    "excerpt.md": {
+      "size": 8423,
+      "sha256_plaintext": "9554d4d6f4fe878d05ba65fe5a79628192445f46ff74793e22d146f0e9ef89c8",
+      "mtime": "2026-09-16 18:10:44"
+    },
+    "implementation-manifest.json": {
+      "size": 25449,
+      "sha256_plaintext": "dce54185d89382bfdd1a58196eb7b410ca88646aa82d38a3dd9820d3f868e18f",
+      "mtime": "2026-09-16 18:50:06"
+    },
+    "APPLY-TM600-TM601.md": {
+      "size": 6178,
+      "sha256_plaintext": "8cad400f8cb0e75b1503174d31f791cfc96606ed73636b16f38d135497be409c",
+      "mtime": "2026-09-16 18:44:04"
+    },
+    "scripts/verify_relay_trace.py": {
+      "size": 21068,
+      "sha256_plaintext": "65e0c67f827bf4ff6e6d1b3a45bf3b76058815f8d4df501b19a3271f06410f9c",
+      "mtime": "2026-09-16 18:40:43"
+    },
+    "scripts/verify_bst_sw_sequence.py": {
+      "size": 12185,
+      "sha256_plaintext": "92250484d0dde498af620ff8847b79e352fd69c822b888188dc14414752e148c",
+      "mtime": "2026-09-13 22:45:21"
+    },
+    "knowledge golden": {
+      "size": 6106,
+      "sha256_plaintext": "8cdb0be1dd8381008a6a6ca84743170d6e1cf6f5c84f21a1e2e947a0187b72ce",
+      "mtime": "2026-08-15 23:35:23"
+    },
+    "ForCodexDebug/source/test.cpp": {
+      "size": 462848,
+      "sha256_plaintext": "3dbceb496d79d7d08631713b98e46c0c2ba6163eaf5356a87dded677e35ba479",
+      "mtime": "2026-09-16 18:23:31"
+    },
+    "ForCodexDebug/source/StdAfx.h": {
+      "size": 56968,
+      "sha256_plaintext": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+      "mtime": "2026-08-30 11:20:05"
+    },
+    "devel/source/test.cpp": {
+      "size": 434629,
+      "sha256_plaintext": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+      "mtime": "2026-09-13 22:40:01"
+    },
+    "devel/source/StdAfx.h": {
+      "size": 56968,
+      "sha256_plaintext": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+      "mtime": "2026-08-30 11:20:05"
+    }
+  },
+  "reviewedArtifactExpected": "444810dde99f79ed1ef1939bb1659d5769f547bfc1103e9b9187ee46f455675c",
+  "reviewedArtifactUnchanged": true,
+  "develUntouched": true,
+  "targetTreeUntouched": true,
+  "reviewerWrites": [
+    "review/t24-implementation-review.md",
+    "review/t24-review-findings.json",
+    "review/t24-readonly-verify.json"
+  ]
+}

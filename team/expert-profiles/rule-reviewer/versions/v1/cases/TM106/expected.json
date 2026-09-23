@@ -1,0 +1,14 @@
+{
+  "caseId": "TM106",
+  "canonicalInput": "<run>/method/TM106-test-method-contract.json",
+  "expectedReadSources": [
+    "<run>/method/TM106-test-method-contract.json",
+    "<run>/strategy/TM106-resource-config-contract.json"
+  ],
+  "expectedOutputs": [
+    "<run>/review/method-contract-review.json",
+    "<run>/review/method-contract-review-deliverable-ready.json"
+  ],
+  "semanticTruthStatus": "PENDING_DOMAIN_INPUT",
+  "semanticTruthNote": "TM106 review semantic truth (whether the method contract genuinely satisfies the signed strategy contract and project rules) awaits domain-owner confirmation; only the mechanical checks of review_method_batch.py are asserted today."
+}

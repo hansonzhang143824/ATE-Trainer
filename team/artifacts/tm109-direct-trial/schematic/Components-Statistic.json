@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "Components-Statistic",
+  "artifactKind": "Components-Statistic",
+  "sourceSha256": "35fdd1582958eb6e4fd63e29da59dec63dfe19e3fd6198d8cc8b8f727a5c7ff5",
+  "canonicalInput": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\schematic-ir.json",
+  "counts": {
+    "scope": 10,
+    "sources": 16,
+    "nets": 123,
+    "paths": 232,
+    "relays": 101,
+    "pins": 135,
+    "hazards": 1,
+    "openQuestions": 14,
+    "mainArtifacts": 2
+  },
+  "sourceTypeCounts": {
+    "unspecified": 16
+  },
+  "validationCounts": {
+    "sources": 112,
+    "raw_best_paths": 1004,
+    "accepted_path_proofs": 669,
+    "rejected_paths": 335,
+    "kelvin_pairs": 219,
+    "kelvin_pair_failures": 0
+  },
+  "basis": "Counts are direct lengths or frozen validation counts from canonical schematic-ir; no path, relay, or source selection is performed."
+}

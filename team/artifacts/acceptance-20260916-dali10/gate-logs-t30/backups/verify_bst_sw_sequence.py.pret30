@@ -1,0 +1,298 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""verify_bst_sw_sequence.py — BST-SW 台阶黄金约束门 (生成后, R-BST-SW)。
+
+目标函数不再硬编码, 从 meta (outputs.meta) 按 capAuthority.powered_pins 拓扑指纹派生:
+  - HS (BOOST, PMID-SW): powered_pins 含 BST-SW/BST_SW  → BST 5V→10V 台阶
+  - LS (BUCK, SW-PGND):  powered_pins 含 IPMID2SW/PMID-SW → BST=5V (禁 10V)
+电流量程: max |iset| ≥ 1A → FPVIe_10A, 否则 FPVIe_2A
+寄存器: LS → I2C 0x01, HS → I2C 0x02
+
+规则源: rules-registry R-BST-SW (codex 黄金约束, TM607-609 根因)。
+用法:
+  python verify_bst_sw_sequence.py [--src <test.cpp>] [--config <json>] [--list]
+判定: 任一 FAIL → exit 1; meta 无 BST-SW 目标 → 空 PASS (不误伤非 ZCD 项目)。
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import re
+import sys
+
+import proj_config
+from gen_path_defines import read_enc
+
+
+# ---- 契约常量（2026-09-13 修正两处与现网脱节的硬编码）----
+#  · BST_SRC: 原写 "SW12_U1REF_BST_ACM"（已废弃）→ 现网用 "SW12_U1REF_BST_ACM"
+#  · BST_CAP_RELAY: 原写 "K45_Cap_SW1_BST1"（SCH-Connect-Map L905 = Cap_SW1_BST1_S1,
+#    那是 TRX 的 BST1/SW1 电容）→ BUBO 的 BST−SW 对电容是 L904 "Cap_SW_BST_S1" 需闭合 K57,
+#    源码闭的也正是 K57_CAP_BST_SW。
+#  改名/换继电器时只改这里; 若与源码脱节, main 里的 SRC 守卫会报出来（不会静默 0 命中）。
+BST_SRC = "SW12_U1REF_BST_ACM"
+BST_CAP_RELAY = "K57_CAP_BST_SW"
+
+
+def iter_functions(text: str):
+    """扫描 test.cpp → [{'name','block'}]（按函数体花括号配平切分）。"""
+    out = []
+    for m in re.finditer(r'DUT_API\s+int\s+(\w+)\s*\(short\s+funcindex', text):
+        d, j = 0, m.start()
+        while j < len(text):
+            if text[j] == '{':
+                d += 1
+            elif text[j] == '}':
+                d -= 1
+                if d == 0:
+                    break
+            j += 1
+        out.append({'name': m.group(1), 'block': text[m.start():j + 1]})
+    return out
+
+
+def _norm(s: str) -> str:
+    """归一化 PIN 名: 大写 + 去非字母 (含 '-'/'_'/数字), 供拓扑指纹匹配。"""
+    return re.sub(r'[^A-Z]', '', (s or '').upper())
+
+
+def load_meta(cfg):
+    """读 meta JSON → functions 列表; 缺失/坏文件返回 []。"""
+    path = cfg.get('outputs', {}).get('meta', '')
+    if not path or not os.path.isfile(path):
+        return []
+    with open(path, 'rb') as f:
+        raw = f.read()
+    for enc in ('utf-8-sig', 'utf-8', 'gbk', 'latin-1'):
+        try:
+            data = json.loads(raw.decode(enc))
+            break
+        except (UnicodeDecodeError, ValueError):
+            continue
+    else:
+        return []
+    return data.get('functions', [])
+
+
+def derive_targets(functions):
+    """R-BST-SW 适用对象 = **做电流斜坡的测试项**（Current Threshold / ZCD / OCP 家族）。
+
+    2026-09-13 重写。原实现用 meta `capAuthority.powered_pins` 指纹, 三处失真:
+      · `_norm` 把非字母全删（**含数字**）→ 'BST1_SW1' 归一成 'BSTSW' → 把 rampv 类的
+        TM641/TM643/TM1205 **误判**为本家族目标（TM1205 还因此多出 1 条假 FAIL）;
+      · 'PMIDSW' 在现网 powered_pins 里**无人匹配** → 真正的主目标 TM607(BUCK_LS) **被漏掉**;
+      · 目标集合随 meta 漂移, 每加一个 TM 就可能多几条假 FAIL。
+
+    新判据（**行为自证**, 不依赖 meta 字段名）:
+      函数体内含 `rampi_capv(` → 电流斜坡 → 本家族。
+      实测: TM607/608/609/640 均 rampi=1 / rampv=0;
+            TM641/643/1205 均 rampi=0 / rampv>=2 → 正确排除。
+
+    拓扑 topo 同样由代码自证（取该函数 SetOn 里的 FPVIe 高端继电器）:
+      `K_FPVIH_TO_PGND` → 'LS'(BUCK, SW↔PGND); `K_FPVIH_TO_PMID` → 'HS'(BOOST, PMID↔SW)。
+    两者都判不出 → 跳过并 WARN（**不猜**）。
+    """
+    targets = []
+    for fn in functions:
+        name = fn.get('name') or ''
+        block = fn.get('block') or ''
+        if not name or not re.search(r'\brampi_capv\s*\(', block):
+            continue
+        rm = re.search(r'\brampi_capv\s*\([^;]*?FPVIe_(2A|10A)', block)
+        irange = 'FPVIe_%s' % rm.group(1) if rm else 'FPVIe_2A'
+        seton = re.search(r'cbite\.SetOn\((.*?)\);', block, re.DOTALL)
+        so = seton.group(1) if seton else ''
+        if 'K_FPVIH_TO_PGND' in so:
+            topo = 'LS'
+        elif 'K_FPVIH_TO_PMID' in so:
+            topo = 'HS'
+        else:
+            print('[warn] %s: 含 rampi_capv 但 SetOn 判不出 LS/HS 拓扑 → 跳过（不猜）' % name)
+            continue
+        targets.append((name, topo, irange))
+    return targets
+
+
+def find_function(text: str, name: str):
+    """返回函数块文本; 未找到返回 None (不抛异常)。"""
+    header = re.compile(r'\bDUT_API\s+int\s+' + re.escape(name) + r'\s*\(')
+    match = header.search(text)
+    if not match:
+        return None
+    brace = text.find('{', match.end())
+    if brace < 0:
+        return text[match.start():]
+    depth = 0
+    for pos in range(brace, len(text)):
+        if text[pos] == '{':
+            depth += 1
+        elif text[pos] == '}':
+            depth -= 1
+            if depth == 0:
+                return text[match.start():pos + 1]
+    return text[match.start():]
+
+
+def ordered(block: str, tokens, label: str, errors) -> None:
+    cursor = -1
+    for token in tokens:
+        position = block.find(token, cursor + 1)
+        if position < 0:
+            errors.append(f"{label}: missing sequence token {token}")
+            return
+        cursor = position
+
+
+def require_exact_count(section: str, token: str, expected: int, label: str, errors) -> None:
+    actual = section.count(token)
+    if actual != expected:
+        errors.append(f"{label}: expected {expected} occurrence(s) of {token}, found {actual}")
+
+
+def check_ls(name: str, block: str, errors) -> None:
+    """LS (BUCK, SW-PGND): BST=5V (禁 10V), I2C 0x01。"""
+    ramp = block.find('test_method.rampi_capv')
+    if ramp < 0:
+        errors.append(f"{name}: missing test_method.rampi_capv")
+        return
+    power_on = block[:ramp]
+    power_off = block[ramp:]
+    ordered(
+        block,
+        [
+            "FPVI0.Set(FV, 0, FPVIe_1V, FPVIe_2A",
+            "SW12_U1REF_BST_ACM.Set(FV, 5, ACM200_10V",
+            "PMID_HG2_FXVI.Set(FV, 5, FXVIe_PLUS_10V",
+            "entertestmode();",
+            "I2CWriteSameData(DEV_ADDR, 0x5A, 0x01)",
+            "FPVI0.Set(FI, 0, FPVIe_1V, FPVIe_2A",
+            "test_method.rampi_capv",
+        ],
+        f"{name} power-on/measure", errors,
+    )
+    if "SW12_U1REF_BST_ACM.Set(FV, 10" in block:
+        errors.append(f"{name}: LS topology SW=PGND=0 must use BST=5V, not 10V")
+    require_exact_count(power_on, "FPVI0.Set(FV, 0, FPVIe_1V, FPVIe_2A", 1, f"{name} power-on", errors)
+    require_exact_count(power_on, "SW12_U1REF_BST_ACM.Set(FV, 5, ACM200_10V", 1, f"{name} power-on", errors)
+    require_exact_count(power_on, "PMID_HG2_FXVI.Set(FV, 5, FXVIe_PLUS_10V", 1, f"{name} power-on", errors)
+    ordered(
+        power_off,
+        [
+            "FPVI0.Set(FI, 0, FPVIe_1V, FPVIe_2A",
+            "FPVI0.Set(FV, 0, FPVIe_1V, FPVIe_2A",
+            "PMID_HG2_FXVI.Set(FV, 0, FXVIe_PLUS_10V",
+            "SW12_U1REF_BST_ACM.Set(FV, 0, ACM200_10V",
+        ],
+        f"{name} power-off", errors,
+    )
+
+
+def check_hs(name: str, irange: str, block: str, errors) -> None:
+    """HS (BOOST, PMID-SW): BST 5V→10V 台阶, I2C 0x02。"""
+    ramp = block.find('test_method.rampi_capv')
+    if ramp < 0:
+        errors.append(f"{name}: missing test_method.rampi_capv")
+        return
+    power_on = block[:ramp]
+    power_off = block[ramp:]
+    require_exact_count(power_on, f"FPVI0.Set(FV, 0, FPVIe_1V, {irange}", 1, f"{name} power-on", errors)
+    require_exact_count(power_on, "SW12_U1REF_BST_ACM.Set(FV, 5, ACM200_10V", 1, f"{name} power-on", errors)
+    require_exact_count(power_on, "PMID_HG2_FXVI.Set(FV, 5, FXVIe_PLUS_10V", 1, f"{name} power-on", errors)
+    require_exact_count(power_on, "SW12_U1REF_BST_ACM.Set(FV, 10, ACM200_10V", 1, f"{name} power-on", errors)
+    ordered(
+        block,
+        [
+            f"FPVI0.Set(FV, 0, FPVIe_1V, {irange}",
+            "SW12_U1REF_BST_ACM.Set(FV, 5, ACM200_10V",
+            "PMID_HG2_FXVI.Set(FV, 5, FXVIe_PLUS_10V",
+            "SW12_U1REF_BST_ACM.Set(FV, 10, ACM200_10V",
+            "entertestmode();",
+            "I2CWriteSameData(DEV_ADDR, 0x5A, 0x02)",
+            f"FPVI0.Set(FI, 0, FPVIe_1V, {irange}",
+            "test_method.rampi_capv",
+        ],
+        f"{name} power-on/measure", errors,
+    )
+    ordered(
+        power_off,
+        [
+            f"FPVI0.Set(FI, 0, FPVIe_1V, {irange}",
+            f"FPVI0.Set(FV, 0, FPVIe_1V, {irange}",
+            "SW12_U1REF_BST_ACM.Set(FV, 5, ACM200_10V",
+            "PMID_HG2_FXVI.Set(FV, 0, FXVIe_PLUS_10V",
+            "SW12_U1REF_BST_ACM.Set(FV, 0, ACM200_10V",
+        ],
+        f"{name} power-off", errors,
+    )
+    require_exact_count(power_off, f"FPVI0.Set(FV, 0, FPVIe_1V, {irange}", 1, f"{name} power-off", errors)
+    require_exact_count(power_off, "SW12_U1REF_BST_ACM.Set(FV, 5, ACM200_10V", 1, f"{name} power-off", errors)
+    require_exact_count(power_off, "PMID_HG2_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON", 1, f"{name} power-off", errors)
+    require_exact_count(power_off, "SW12_U1REF_BST_ACM.Set(FV, 0, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON", 1, f"{name} power-off", errors)
+
+
+def main() -> int:
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except AttributeError:
+        pass
+    args = sys.argv[1:]
+    cfg = proj_config.load(proj_config.config_from_argv(args))
+    src = cfg["derived"]["test_cpp"]
+    if '--src' in args:
+        i = args.index('--src')
+        if i + 1 < len(args):
+            src = args[i + 1]
+
+    if not os.path.exists(src):
+        print(f'*** FAIL: 源文件不存在 {src}')
+        return 1
+
+    text, _enc = read_enc(src)
+    targets = derive_targets(iter_functions(text))
+
+    if '--list' in args:
+        for name, topo, irange in targets:
+            print(f"{name}\t{topo}\t{irange}")
+        return 0
+
+    if not targets:
+        print("[scan] test.cpp 无 rampi_capv 电流斜坡测试项 (非 ZCD/OCP 家族), 空 PASS")
+        return 0
+    errors: list[str] = []
+
+    src_seen = 0
+    for name, topo, irange in targets:
+        block = find_function(text, name)
+        if block is None:
+            errors.append(f"{name}: 函数不存在于 test.cpp")
+            continue
+        if BST_SRC in block:
+            src_seen += 1
+        seton = re.search(r"cbite\.SetOn\((.*?)\);", block, re.DOTALL)
+        if seton is None or BST_CAP_RELAY not in seton.group(1):
+            errors.append(f"{name}: missing BST-SW differential capacitor relay {BST_CAP_RELAY}"
+                          f" (BUBO 的 BST-SW 对 = SCH-Connect-Map L904 Cap_SW_BST_S1 需闭合 K57;"
+                          f" K45/K44 是 TRX 的 BST1/SW1、BST2/SW2, 属 rampv 线, 不适用本家族)")
+        if topo == 'LS':
+            check_ls(name, block, errors)
+        else:
+            check_hs(name, irange, block, errors)
+
+    print(f"[scan] {src}")
+    print("[contract] BST>=SW and 0<=BST-SW<=5V; operating target BST-SW=5V")
+    print(f"[scan] targets={len(targets)} FAIL={len(errors)}")
+    if src_seen == 0 and targets:
+        errors.append("所有目标都搜不到 BST_SRC ⇒ 源表名疑似已改名（契约常量与源码脱节），请核对 scripts/verify_bst_sw_sequence.py 的 BST_SRC")
+
+    if errors:
+        print("\n*** FAIL (BST-SW GOLDEN SEQUENCE) ***")
+        for error in errors:
+            print("  - " + error)
+        return 1
+    print("\nBST-SW SEQUENCE PASSED")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

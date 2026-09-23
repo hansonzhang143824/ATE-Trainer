@@ -1,0 +1,17 @@
+{
+  "purpose": "POINTER FILE, not a duplicate. The task known as 't34' has NO artifact file of its own; its carrier is the path below. This file exists so that a filename-based search for '*t34*' can locate the mapping. Do not treat this file as the report; review the carrier.",
+  "task": "t34",
+  "carrier": {
+    "path": "team/artifacts/acceptance-20260916-dali10/acceptance-report.json",
+    "sizeBytes": 57963,
+    "sha256": "710be274078a437593d8acae0c19041bba060ec97a10bd68fd336065ee06c041",
+    "measuredAt": "2026-09-16 22:35:47"
+  },
+  "carrierBasename": "acceptance-report.json",
+  "why": "'t34' is a task label; the run's naming convention puts the artifact under its content name (acceptance-report.json), and the only other '*t34*' hit in the tree is a script (backups/superseded-scratch/t60_apply_captain_t34_t35_t41.py).",
+  "whereItsEntriesLive": "acceptance-report.json -> limitations[] (the t34 entries are L1..L42, including the T32-F1 live-hazard rewrite, the two-object comparison, and the settled-wording entry)",
+  "writtenBy": "setup-architect",
+  "writtenAt": "2026-09-16 22:40:03",
+  "automationNote": "AUTOMATED TOOLS: do NOT read this file as the report. Read the artifact at carrier.path. This file exists only so a name-based search for '*t34*' can find the mapping; a grep/glob for '*t34*' will hit THIS file first (1.1 KB) instead of the carrier (tens of KB).",
+  "nameCollisionWarning": "name-based globbing hits this pointer first; readers must follow carrier.path"
+}

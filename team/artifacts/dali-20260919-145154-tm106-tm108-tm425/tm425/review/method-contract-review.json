@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "artifactId": "tm425-method-contract-review",
+  "trial": "tm425",
+  "tm": "TM425",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_METHOD",
+  "verdict": "pass",
+  "reviewMode": "deterministic_batch",
+  "checks": [
+    {
+      "id": "MR-01",
+      "result": "PASS",
+      "subject": "signed inputs and structure"
+    },
+    {
+      "id": "MR-02",
+      "result": "PASS",
+      "subject": "routes and functional relays"
+    },
+    {
+      "id": "MR-03",
+      "result": "PASS",
+      "subject": "register source and Code2 binding"
+    },
+    {
+      "id": "MR-04",
+      "result": "PASS",
+      "subject": "trim procedure, results and shutdown"
+    }
+  ],
+  "blockingDefects": [],
+  "summary": {
+    "checksPassed": 4,
+    "blockingDefects": 0,
+    "nextRole": "ate-implementer"
+  },
+  "signedInputs": {
+    "methodContractSha256": "12a4532dc3e1912dc0383e36ddb45c23e22117586dc64ec7a35553b333aeddd0",
+    "strategyContractSha256": "62af0e555847ca060e27e4ec4d133534ec1442fe72e9fd33bd15a5d93283e4b6"
+  }
+}

@@ -1,0 +1,1180 @@
+﻿## 2026-08-16: 阶段4 全景工作流落地 + 收敛整理 (散件归档/错误编号/改引用) + K123 网表改名
+
+### K123 命名统一（用户决策：不搞 BUSH/通道号，全文档统一一个名 `K123_BUSL_PB5`）
+- netlist 回退 `K123_BUSH_PB5` → `K123_BUSL_PB5`（5处，备份 `.bak_unify_busl_20260816`）
+- StdAfx.h 去通道号 `K123_BUSL1_PB5` → `K123_BUSL_PB5`（11处：1单点+10注释，备份 `.bak_unify_busl_20260816`）
+- 任务六重跑：6门控全 PASS，SCH-Connect-Map/COMPONENT-STATISTIC 回到 BUSL
+- gen_path_defines 重生成：352定义 --verify PASS --check-relay冲突0
+- 权威源(CBIT Excel/relay.h)本就是 `K123_BUSL_PB5`，无需改
+- 遗留 FYI：K7 为 `K7_BUSH_VBAT`（前次同类情况已改 BUSH），与 K123 命名不一致（纯标签，不影响功能）
+
+### 阶段4（工作流地图 + 所有权表 + 协作指南）
+- 新建 `工作流全景.md`（单一入口）：四层地图（主pipeline/旁路/自进化/知识层）+ 文件所有权表 + 四输入协议 + 三注册表 + 无缝接入 + 文档索引
+- `AGENT_MAP.md` 顶部加「单一入口」指针
+- 三注册表核实：`rules-registry.md`(12 active) / `references/index.md` / `functions-registry.md` 均已建且填充充分（盘点报告「待建」已落地）
+
+### 收敛整理
+- 散件归档：10 文件 → `_archive/`（源表规则/继电器识别规范/原理图解析基本规则/常用测试要求/规则文件DEEPSEEK/project_rules/Check-DEEPSEEK/使用说明/启动/try_resource），manifest `_archive/README.md`
+- 改引用 9 处：cbit-principles / closed-loop-model / schematic-parsing / test-strategy / cbit-agent×2 / relays×2 / nuvolta-codegen 不再标注旧 txt 为「权威」
+- 错误编号冲突：project_rules.md / Check-DEEPSEEK.md 旧 E001~E017 归档，新 common-errors 为权威
+
+### 待办（谨慎迁移，未盲目做）
+- auto-memory 降级指针：`STS8300-*.md`(全章) vs `sources/*.md`(精简) → 降级会丢内容，需先定方向；`nuvola` 规则类 md 需逐个核对 knowledge/ 完整性
+
+---
+
+## 2026-08-16: 框架脚本参数化 — 11 脚本硬编码路径全改读 project_config.json (proj_config.py 共享 loader)
+
+### 起因
+用户要求「整理现有的框架和资料」：脚本里的固定路径（`Project\DALI\...` / `D:\PROJECT6-DALI\...`）全部改读 project_config.json，保证其他项目只改这一个 JSON 脚本就能用。按「风险越低越先做」顺序执行，实时记录进度。
+
+### 方案（用户拍板）
+- 配置 schema **扩全**：project_config.json 增加 `project_dir` + `intermediates`(中间产物) + `derived`(由 vs_src_dir 派生 test.cpp/sub.cpp/StdAfx.h)。
+- **共享 loader `proj_config.py`**：`load()` 返回 `inputs/optional_inputs/intermediates/outputs/derived/_root/_config`；`config_from_argv()` 支持 `--config` 覆盖；相对路径按 workspace 根解析。
+
+### 改动（11 脚本，全部 config 默认 + `--*` 参数覆盖）
+| 脚本 | 改掉的固定值 → config 键 |
+|------|------|
+| verify_merge_rules.py / verify_awg_params.py / verify_single_fn.py | PROJ 硬编码 → `_root` / `derived.test_cpp` |
+| verify_relay_trace.py | PROJ/SRC/DEFS/MAP/META → `derived.test_cpp`/`stdafx_h`/`intermediates.sch_connect_map`/`outputs.meta` |
+| gen_testitems_meta.py / check_testitems_meta.py | required `--xlsx/--src/--defs/--out/--meta` → config 默认 (dft/test_cpp/stdafx_h/meta) |
+| gen_power_sequence.py | `--define` 旧 stale 路径 → `inputs.channelmap`（顺带修复 Pin_Channel_define.h 旧副本 bug） |
+| gen_paths.py | DEFAULT_NETLIST/CBIT → `inputs.schematic`/`inputs.cbit` |
+| gen_cbit_defines.py | DEFAULT_CBIT/BENCH → `inputs.cbit`/`intermediates.singlepoint_bench` |
+| sch_parse.py | NETLIST/OUT_STAT/OUT_MAP/CHAN_DEF_FILE → config（CHAN_DEF_FILE 直读 VS 权威源，免手工 copy 回 DALI\） |
+| gen_path_defines.py | DEFAULT_MAP/RELAY/STDAFX → `intermediates.sch_connect_map`/`relay_h`/`derived.stdafx_h` |
+
+### 验证（全绿）
+- py_compile 12/12 OK（11 脚本 + proj_config.py）
+- verify_relay_trace RELAY TRACE PASSED (meta 78/78) · gen_testitems_meta/check_testitems_meta exit 0
+- gen_power_sequence/gen_paths/gen_cbit_defines --audit-rules exit 0；gen_cbit_defines 全量 V1~V8 OVERALL PASS；gen_paths 142 FPVIe paths
+- sch_parse.py 重跑输出 **字节一致**（COMPONENT-STATISTIC / SCH-Connect-Map MD5 不变，1150 行）
+- gen_path_defines.py --verify **PASSED 352/352** · --check-relay **冲突 0**（只读模式，未写 StdAfx.h）
+
+### 备注
+- StdAfx.h 已字节备份 `StdAfx.h.bak_20260816`（MD5 匹配，66748 字节）；本任务未触发写入路径。
+- 未参数化：23 个历史一次性脚本（find_fpvi*/gen_v8/gen_tm206_425/append_tm*/restore_stdafx 等）— 非活跃 pipeline，超范围。
+- 仍待办：K123 网表 `K123_BUSL_PB5` 改名后重跑任务六（见 2026-08-10 条目）。
+
+---
+
+## 2026-08-16: meta 生成/校验拆分 — gen_dali_meta.py → gen_testitems_meta.py(生成器) + check_testitems_meta.py(校验器) + 路径参数化 + read-dft-agent 清理
+
+### 起因
+梳理全景流程时发现 `gen_dali_meta.py` 一个脚本混了两件职责：**建 meta**（读 OVERVIEW 派生 capAuthority → `dali_tm_meta.json`）和**门禁**（`--require-all`/`--require-scope` 收尾对账）。用户拍板：「门禁是全部写完后的证据检验，生成 meta 与最后校验分开更好理解」；且脚本名带项目名 `dali` 不便泛化。
+
+### 拆分
+- `gen_testitems_meta.py`（生成器）— 纯 DFT 派生，**不碰原理图**（原理图通路由 sch_parse.py→SCH-Connect-Map 独立产出，消费端 join）。读 OVERVIEW(DFT 意图层)→ capAuthority 四权威集(powered/mi/ramp/testpad)→ `dali_tm_meta.json`；`--dump`/`--audit` 人工审核。
+- `check_testitems_meta.py`（校验器）— 收尾证据检验，**只读不写、只报 PASS/FAIL（exit 1 报红）**，依赖 gen 先跑。`--require-all`（正向：test.cpp 每函数必须命中 meta）+ `--require-scope <批次>`（反向：范围内 isCodeGen=Y 必须已写入）。
+
+### 路径参数化（方案 B，用户拍板）
+VS 工程（test.cpp / StdAfx.h）+ 所有输入路径 = 用户必须提供；脚本用 **required `--*` 参数、无硬编码 DALI 默认值**（区别于兄弟脚本 `PROJ`+`DEFAULT_*` 约定）。
+
+### 清理
+`read-dft-agent` → `dual-parse-agent`（stale 名，无 read-dft-agent.md 文件，实际 DFT 解析 = dual-parse-agent）。
+
+### 验证
+gen 78 函数；check `--require-all` 78/78 PASS、`--require-scope 403-425` 15/15 PASS；负测试（删 meta 条目 / meta 不存在）exit 1。
+
+### 保留
+`backup\gen_dali_meta.py.bak_20260816` + daylog/PROGRESS 历史 dated 条目不改。
+
+---
+
+## 2026-08-16: 工作区重构 — 库函数全部归入 库函数\（test_method + shared_functions 移入 + sub_func 新建）+ 路径引用全量同步
+
+### 起因
+用户纠正：`treg` 是库函数（非文档），且「D 盘会放很多与 offline coding 无关的东西」→ 库函数必须在 workspace 的 `库函数\`，不放 `D:\` 根目录；「其他类似的错误也要同步改正」；新增 `sub_func.h/.cpp` 存我们自己的其他子函数（以后 copy 到各项目 VS 工程）。
+
+### 库函数归位（4 源齐）
+- `D:\test_method\`（Test_Method.h/.cpp + gen_ramp64.py）→ `库函数\test_method\`
+- `D:\shared_functions\`（README + registry + draft + src）→ `库函数\shared_functions\`
+- `库函数\treg\`（上轮已入）+ 新建 `库函数\sub_func\sub_func.h + sub_func.cpp`（Sub_Func 类骨架：上电/下电/测量/寄存器/量程，匹配 Test_Method/treg 类风格）
+
+### 顺带纠正的「类似错误」
+- `D:\test_method` 原混入 5 个 DALI 残留文件（AI.cpp + COMPONENT-STATISTIC + SCH-Connect-Map 及 2 个 .bak）→ 归档 `backup\D__test_method__dali_strays\`
+- `D:\test_method\Test_Method.{h,cpp}` 原为 16 函数旧版（Aug 3 遗留），重跑 gen_ramp64.py 升级为 **64 函数权威版**（与项目副本一致）
+
+### 路径引用全量同步
+- gen_ramp64.py `BASE` 由 `D:\test_method` 改为 `os.path.dirname(__file__)`（位置无关）
+- find_fpvi.py/2/3 + functions-registry.md + sub-function-agent.md + nuvolta-codegen.md + AGENT_MAP.md + 现状盘点/讨论记录/agent_architecture + 记忆文件：`D:\test_method`/`D:\shared_functions` → `D:\Newtest\CLAUDE_PROCESS\库函数\...`
+
+### 验证（全绿）
+1. `gen_ramp64.py` 原位重跑 → **OK: 64 decls + 64 bodies**（idempotent）
+2. Test_Method.h 内容核对 → 1 class / 73 BOOL decls（64 ramp 矩阵 + 9 非 ramp）/ .cpp 64 bodies，DLP `TSZ#` 头保留
+3. 旧路径残留扫描 → **0 残留**（唯一保留在历史 daylog/2026-08-09.md，时间戳日志不改）
+
+---
+
+## 2026-08-10: K7/K123 原理图命名修正 + 任务六重新生成 SCH-Connect-Map + 全面名字同步 (BUSL→BUSH) — 编译 0 errors/0 warnings
+
+### 起因
+用户复核确认 K7/K123 实为 **FPVIe High 侧**但原理图误标 BUSL; 用户修改 .net 网表: K7_BUSL_VBAT → **K7_BUSH_VBAT** (K123 网表仍为 K123_BUSL_PB5, 待用户改)
+
+### 任务六执行 (sch-parse agent)
+- `sch_parse.py` 重新生成 **SCH-Connect-Map.txt (1150行) + COMPONENT-STATISTIC.txt**, 门控 G1/G2/G2b/G3/G4/G5/G1c/G1d 全 PASS
+- 插曲: `Pin_Channel_define.h` 已移至工程源目录 → G2b 找不到输入 FAIL; 复制权威版回 `DALI\` 恢复输入
+- 拓扑验证: K7→CH0/CH1 High→VBAT/PD3, K123→High→PB5/nRST, K99→Low→PB5 — 值全部正确
+
+### relay.h 修复
+- `K_FPVIL_TO_VBAT 7` (错误极性别名, K7 实为 High) → `K_FPVIH_TO_VBAT 7`
+- 单点名 `K7_BUSL_VBAT` → `K7_BUSH_VBAT`
+
+### 全面名字同步 (用户拍板: 全面同步)
+- CBIT 表 xlsx: `K7_BUSL_VBAT` → `K7_BUSH_VBAT` (A113, 字节备份 xlsx.bak_20260810)
+- StdAfx.h 单点段: `K7_BUSL0_VBAT` → `K7_BUSH0_VBAT` (12处: 1单点+11注释, DLP 字节模式, round-trip 字节验证, 备份 stdafx_pre_k7rename_backup.h)
+- gen_path_defines.py 重生成 2.x 段 → 注释引用 K7_BUSH0_VBAT
+
+### 验证 (全绿)
+1. `gen_path_defines.py --verify` → **PASSED 352/352**
+2. `--check-relay` → **冲突 0** (一致 6 | 子集/改名/仅relay 61 | 脚本新增 345)
+3. `fast_rebuild.ps1` → **Release 0 errors/0 warnings** (13.8s)
+
+### 待办
+- **K123 网表仍为 `K123_BUSL_PB5`** (实为 High 侧) — 待用户改 .net 后重跑任务六 + 重生成
+- CBIT 表 / StdAfx.h K123_BUSL1_PB5 待 K123 网表改名后同步
+
+---
+
+## 2026-08-10: 通路继电器定义脚本化 — gen_path_defines.py 生成 352 定义追加 StdAfx.h + 编译 0 errors/0 warnings
+
+### 需求
+工程双头断层: relay.h(参考头) 有 2.x 通路段但**不参与编译**; StdAfx.h(唯一编译头) 只有单点 K0~K170 无通路段 → test.cpp 无法用语义通路别名 `cbite.SetOn(K_FPVIH_TO_SW2,-1)`。用户要求增加通路继电器定义。
+
+### 方案 (用户拍板)
+1) **追加到 StdAfx.h** (编译头)  2) **脚本生成** (SCH-Connect-Map `需闭合:` 全量 SetOn)  3) **全部通路** (352 条)
+
+### 实现
+- **新建 `gen_path_defines.py`** (~490 行, P-DEF-01~13 规则): 解析 SCH-Connect-Map 列1~10 源表 → path record → 按 cbit-path-namer 命名 → 追加 StdAfx.h 2.x 段 (include guard 内, DLP 字节模式)
+- **命名**: FPVIe H/L→`K_FPVIH/L_TO_<PIN>` (CH0/CH1 双通道→`_A/_B`, 禁并集短接两驱动线); QVM 带极性→`K_<PIN>_QVMH/QVML` (relay.h 无 QVM 先例); QTMU→`K_<PIN>_QTMU`, ACM200→`K_<PIN>_ACM`, FXVIe_PLUS→`K_<PIN>_FXVI`, DCM→`K_<PIN>_DCM`; 需闭合空(NC-only)→不定义; 同源同pin多通路→`_A/_B/_C`
+- **352 定义** 写入 StdAfx.h (之前空文件 11404→66384 字节), 值=需闭合位号逗号分隔, 注释带 StdAfx.h 物理名
+
+### 事故记录 (两次 StdAfx.h 被清空 → 已根治)
+1. **--check-relay 流控 bug**: 报告后 fall-through 到默认写入分支 + **沙箱 Bash 写 StdAfx.h (DLP 非写透明)** → 文件 0 字节。修复: --verify/--check-relay/--no-write 各自 sys.exit(); 写入只经 PowerShell python
+2. **write_enc 先 'wb' 后编码**: 生成段含非 GBK 字符(⚠/→) → UnicodeEncodeError 时 'wb' 已截断 → 文件二次 0 字节。修复: **先编码后 open('wb')** (编码失败绝不截断) + 生成段纯 ASCII
+- **恢复**: Copy-Item 备份对 DLP 无效(空文件); 从旧会话 transcript 提取原始 Read 结果 → recover_stdafx.h.txt (362 行完整还原, GBK/CRLF, 第346行中文注释按文档还原) → restore_stdafx.py 字节写回; 现另有字节备份 stdafx_pre_path_backup.h
+
+### 验证 (全绿)
+1. `gen_path_defines.py` (写) → 352 定义插入 StdAfx.h
+2. `--verify` → **PASSED: 352/352 与 SCH-Connect-Map 需闭合一致**
+3. `--audit-rules` → RULE_COVERAGE PASS (13/13)
+4. `--check-relay` (前期) → 与 relay.h 5 同名同值一致 + 暴露 relay.h 1 处数据错误 (K_FPVIL_TO_PB5_B: relay.h=123 应=99, 以 SCH-Connect-Map 为准)
+5. **fast_rebuild.ps1** → Release **0 errors/0 warnings**
+
+### 范围外 (后续可选)
+- 不改写 test.cpp 现有 SetOn 调用为通路别名 (仅新增定义使其可用); SCH-Connect-Map 仍归 sch-parse agent 维护
+- 命名歧义组 102 交 path-namer agent 复核; K_FPVIL_TO_PB5_B 数据修正待 relay.h 侧跟进
+
+---
+
+## 2026-08-10: TM403-425 批量生成完成 (15 函数: 8 Toggle + 4 FB + 3 Trim) — meta 反向门 78/78 + 15/15 + 继电器双查 + 编译 0 errors/0 warnings
+
+### 本轮改动
+- **范围**: 批次 15 项 isCodeGen='Y' 全写入 test.cpp 尾部 (TM402 后), 现 **75 DUT_API 函数**; 跳过 TM414/415/416 (isCodeGen 空)、TM404/405/407/417/423 (无 OVERVIEW 行); 生成器 `gen_insert_tm403_425.py` (4 模板 TOGGLE/FB/TRIM/MEASURE + 数据 dicts + fill() 降序替换)
+- **8 Toggle** (VBAT/VBUS ramp + NQON 观测 DTEST0): TM403_VBUS_REVI_VTH (**极性倒置** delta=翻转−VBAT) / TM406_VBAT_LOW_VTH / TM408_VBAT_OVP / TM409_VBUS_HT_4P8V / TM410/411_VTRIKLE_VTH1/2 / TM412/413_VRE_CHG_VTH1/2
+  - TRIG 统一模式 (参考 TM111/112/400 已验证): **上升 ramp→TRIG_FALLING, 下降 ramp→TRIG_RISING** (nQON 经 1.65V 阈值); 3 参数 `<基名>_Rise/Fall/Hys` (R-HYS 换算 mV)
+  - E012 ramp 源不闭 Cap: VBUS ramp (403/409)→不闭 K5_VBUS_Cap; VBAT ramp (406/408/410-413)→不闭 K13_VBAT_Cap; Step1: VBUS 类闭 K13_VBAT_Cap+K65_nQON_PU, VBAT 类闭 K21_VAC_Cap+K65_nQON_PU
+  - 量程: VBUS 403→ACM200_10V, 409→ACM200_40V (4→7V); VBAT 类→FXVIe_PLUS_10V; Toggle 源统一 NQON_HG1_ACM 10V/10UA
+- **4 FB** (ATEST0 MV via VDM, V(ATEST0)=通道 voutp): TM418_VAC1_FB (0x11=0x11, NC 直连) / TM419_VAC2_FB (0x12, K19_ACM0_VAC2) / TM420_VAC3_FB (0x13, K18_ACM0_VAC3) / TM421_VBUS_FB (0x14, NC 直连)
+  - Step3: 0x10=0x43 + 0x11=<sel> + 0x57=0x02(EN_ATEST0) + 0x5E=0x1F(ATEST0_MUX=31=channel voutp); Step4: VDM.Set(FI,0,10V,10UA)→MeasureVI(50,5)→MVRET; 期望 V/10
+  - 量程: VAC2/3=10V/15V→ACM200_40V, VBUS 4~10V→ACM200_40V (超 10V 档 table_max 5.0)
+- **3 Trim** (execute + measure, VDM MV): TM422_VBAT_FB (mnt_vbat_rsns_loop, step0~15, F7, 0x5E=0x17 FB_VBAT, **返回 (MVRET−2.0)×1e3 偏差**, VBAT=5V 下 FB=2.0V target=0) / TM424_VREF_TRIM (mnt_dac_buf_os, step0~31, F7+F8, 0x5E=0x13 VREF_1P68V, target 1680mV) / TM425_VREF_1P2V_BUF (mnt_v1p2_buf, step0~15, F6+F7, **ATEST1**: 0x57=0x04(EN_ATEST1)+0x58=0x02(ATEST1_MUX=2), target 1200mV)
+  - TRIM_NODE 变量名 = trim 参数名大写 (E028): MNT_VBAT_RSNS_LOOP / MNT_DAC_BUF_OS / MNT_V1P2_BUF; Step1 闭 K13_VBAT_Cap (VDM K59 NC 直连)
+  - sub.cpp 追加 3 个 measure 函数 (measure_mnt_vbat_rsns_loop/dac_buf_os/v1p2_buf: 写 EFUSE_REG F6/F7/F8 → VDM MeasureVI), sub.h 声明
+
+### 验证 (全绿)
+1. **gen_cbit_defines.py --verify** → V1~V8 PASS (仅既有 K168-170 缺口, 与本次无关)
+2. **verify_relay_trace.py --meta --warn-as-error** → RELAY TRACE PASSED (FR-001 反向 0 处)
+3. **gen_dali_meta.py --require-all --require-scope 403-425** → meta 全覆盖 **78/78** + 批次 isCodeGen=Y **15/15** PASS (反向门)
+4. **fast_rebuild.ps1** → Release **0 errors/0 warnings** (第二次重插后全量重编)
+
+### 修复记录 (教训)
+- **占位符前缀冲突**: `__CONNECT_COMMENTS__`⊃`__CONNECT__` / `__RAMP_RANGE_COMMENT__`⊃`__RAMP_RANGE__` / `__RETCOMMENT__`⊃`__RET__` → `fill()` 按占位符长度**降序**替换 (sorted(mapping, key=len, reverse=True)); data keys 重命名为完整占位符
+- **measure result 缺 `;`** (sub.cpp C2143 missing ';'): 模板 `;` 落在尾随注释内 → result 值必须 `* 1e3;  // comment` (**分号在注释前**); 备份恢复重插
+- **DLP 子文件插入正则**: norm_crlf 后行尾 `\r\n` → `re.search(r'\r\n\}(?:\r\n|\Z)', ...)`
+- **TM425 ATEST1→VDM 假设**: DALI 无 ATEST1→VDM 先例 (原工程用 NTC_FOVI, DALI 无 NTC_FOVI) → 保留设计假设 (meta/编译/继电器全过), 待实机确认
+
+---
+
+## 2026-08-10 meta 100% 机械保证 — 反向覆盖门 --require-scope (用户:"我要求meta要100%执行…不需要我下次提醒")
+
+- **洞**: 原 --require-all 只查正向 test.cpp→OVERVIEW(写了的必须有 meta), 不查反向 OVERVIEW isCodeGen=Y→test.cpp(该写但没写) → TM403-425 整批 15 项漏掉无报错
+- **改动**: `gen_dali_meta.py` 加 `--require-scope <范围>`(支持 `403-425`/`403,406,408-425`): 反向门(范围内 OVERVIEW isCodeGen=Y 项必须已写入 test.cpp, 缺项→FAIL 列 TM编号+Name) + 正向门(范围内函数缺 meta→FAIL); 新增 parse_scope() 逗号+`a-b` 范围解析
+- **skill 落点**(机械强制不靠自觉): Step 5 收尾命令改为 `gen_dali_meta.py --require-all --require-scope <本批范围>`(范围=用户指令批次); 批量生成 step 6 + tools 表同步
+- **验证**: `--require-scope 403-425` → FAIL 精确列 15 项(VBUS_REVI_VTH…VREF_1P2V_BUF, 未写时红/写完自动绿); `--require-all --require-scope 300-302` → PASS 63/63 + 批次全有 meta
+- **铁律**: 批次内 isCodeGen=Y 项必须全部写入, 禁止把"OVERVIEW 有记录但没写进 test.cpp"静默留到下批
+- **沉淀**: skill Step 5/批量 step 6/tools 表 / nuvolta-codegen-progress 记忆 / MEMORY.md
+
+## 2026-08-10 meta 全覆盖门 — 每个测试项目必须有 meta (用户要求) + gen_dali_meta.py --require-all
+
+- **用户要求**: "我需要每个测试项目都生成meta文件来保证准确性…保证后面测试项目都会有meta文件" — check E 以 meta capAuthority 为权威, 无 meta 降级对象名反推(准确性下降)
+- **改动**: `gen_dali_meta.py` 加 `--require-all`(test.cpp 函数无 OVERVIEW 记录→ERROR 退出, 覆盖率<100%→FAIL); skill nuvolta-codegen.md Step 5 收尾双查加 meta 全覆盖门(写完代码→gen_dali_meta.py --require-all→verify_relay_trace --meta --warn-as-error); 批量生成 step 6 + tools 表同步
+- **验证**: `--require-all` 54/54 PASS + 负测试(TM999_FAKE_NOMETA)→SystemExit(1); SyntaxWarning(docstring \d) 修复
+- **注**: OVERVIEW 已完整覆盖 TM216-402 全部 13 项(TM300/301 Trim=Y), 新函数写入 test.cpp 后重跑 --require-all 即自动纳入 meta
+- **沉淀**: nuvolta-codegen.md Step 5 / 批量 step 6 / tools 表 / nuvolta-codegen-progress 记忆 / MEMORY.md
+
+## 2026-08-10 电阻测量铁律 R-VIR — 电阻=实测V/实测I (global 规则) + TM203/TM204 头注释结构修复
+
+- **背景**: 用户指出电阻计算必须用实测值, 禁止理论设定电流 (TM202/TM203 原 `r_int[site] = v_measure[site] / 1e-5` 用 10uA 理论值)
+- **修复**: TM202/TM203 Step4 改为 `GetMeasResult(site, MVRET)` + `GetMeasResult(site, MIRET)` 双实测 → `R = v_measure / i_measure`
+- **附带**: 第二次文本模式写入 test.cpp 破坏 CRLF (\r\n→\r\r\n 行数翻倍) + 循环内顺序替换就地改 txt 索引失效 → TM203 头注释粘连 + TM204 头注释重复残片; 字节级修复 (open('wb') + BOM/CRLF 保留 + 精确 bytes count==1)
+- **规则沉淀**: rules-registry **R-VIR** (global) / check-agent **E027** / skill 铁律段 / 测量记忆 2b / relay-check 字节修复教训
+- **验证**: verify_relay_trace --warn-as-error PASSED (FR-001 反向 0 处, meta 54/54) + fast_rebuild 全量 Rebuild 0 errors/0 warnings (test.obj 重编确认, 非增量缓存)
+
+
+## 2026-08-10 Trim Cap 修复(二次) — 误修复位置纠正 + wo{ 损坏
+
+- **背景**: 上次 Trim 检查扩展时 re.sub(count=1) 误修 TM132/TM134(碰巧正确), Trim_IZTC_RES Step1 漏修
+- **根因**: 3 个 Trim 函数命名不匹配 TM\d+_ 正则→不在检查范围; check E 的 relays 空门控盲区
+- **修复**: ①Trim_IZTC_RES Step1 补闭 K13_VBAT_Cap(line 3830-3831) ②3 处陈旧头注释(TM131/132/134)同步
+- **附带**: test.cpp line 1802 wo{ 损坏修复(预存在, 被增量编译缓存掩盖)
+- **验证**: verify_relay_trace PASSED(FR-001 反向 0) + 负测试捕获 + fast_rebuild 0 errors
+
+
+# 进度跟踪
+
+## 当前状态
+
+**2026-08-10: TM300/301 trim 修复（判定逻辑铁律纠偏）+ TRIM_NODE 命名 global 规则 + verify_relay_trace.py K66_TMU_nQON 增强 — 编译 0 errors/0 warnings + 双查全绿**
+
+### 本轮改动（Trim 判定纠偏 + 命名规则 + 工具增强）
+- **用户纠偏（核心）**: "trim 参数错的很严重，完全没有执行trim参数" — 此前将 TM300/301 判为 "Trim=Y 但无 .treg → 暂测默认值"，写成固定寄存器+直接测频。**正确判定铁律: DFT Trim='Y' → 无条件走 trim 框架；材料缺失(无 [osc_64k] 段) → 向用户报告，禁止静默降级**。根因 4 点: ①把 reg_config(AMS 仿真) 当 trim 权威 ②没查 treg 文件 ③没识别 DFT Notes 列 'TRIM_OSC_4P5M' ④被 sub.cpp 注释模板误导（前段 measure_osc_4p5m 被注释，没看到尾部 ACTIVE 实现）
+- **TM301 重写为 trim 框架**: `trim_reg.trim("osc_4p5m")`（16step, 0xF1 bits7-5 + 0xF2 bit0, Target=4.5MHz）+ `measure_osc_4p5m`（写 F1/F2 → QTMU 测 foldback ~35KHz → ×0.128 重构 MHz）+ 24 参数（16 step + 8 后缀）
+- **TM300 重写为 trim 框架 + 数据缺口报告**: `trim_reg.trim("osc_64k")`（8step）+ `measure_osc_64k` + 16 参数；**treg 无 [osc_64k] 段 / reg_config 0xF2=0x04 与 TRIM_REG 字段定义矛盾 / D2A_TRIM_OSC_64K vs D2A_OSC_64K_TRIM 命名不一致** — 已报告，暂按 reg_config 0xF2 实现（待用户确认）
+- **TRIM_NODE 命名 global 规则（用户纠偏）**: `TRIM_NODE &<KEY_UPPER> = trim_reg.trim("<key>")`（变量名=trim 参数名大写），禁止 `PARAM_NODE` — 5 函数 10 处统一修正（IZTC_RES/BG_RES_DIV/BANDGAP/OSC_64K/OSC_4P5M）
+- **verify_relay_trace.py 增强**: `observes_open_drain()` 观测集加 `K66_TMU_nQON`（QTMU→nQON 输入继电器 = 经 QTMU 测 nQON 的强证据）— 修掉 TM300/301 的 K65_nQON_PU 误报（QTMU 代码在 sub.cpp measure 函数，test.cpp 函数体只见继电器）
+- **gen_tm216_402.cpp 已同步 trim 框架版**（旧"暂测默认值"记录推翻）
+
+### 验证
+- **fast_rebuild.ps1 -Incremental → Release PASSED (0 errors, 0 warnings) 2.5s** ✓；test.obj 18:24:14 重编 + F12011.dll 18:24 重建（含 TM300_OSC_64K/TM301_OSC_4P5M/OSC_64K_step0/OSC_4P5M_step0）
+- **gen_dali_meta.py --require-all → PASS 63/63** ✅
+- **verify_relay_trace.py --warn-as-error → RELAY TRACE PASSED** ✅
+- **gen_cbit_defines.py --verify → 预存在数据缺口 K168/169/170**（StdAfx.h 声明但 .cpp 未用、不在 SCH 单点定义，08-09 备份即有，与本次无关，待报告）
+
+---
+
+**2026-08-10: check E meta 权威化落地（用户拍板"选项A，补全meta"）— TestItemMeta capAuthority 四权威集 + gen_dali_meta.py + verify_relay_trace.py 检查 E 以 meta 为权威**
+
+### 本轮改动（检查 E 权威源重构）
+- **用户拍板**: "选项A，那就补全meta，保证准确才是第一位的" — 检查 E 供电 PIN 判定从"对象名反推"升级为"meta capAuthority 权威"（不参考 AI.cpp，已废弃）
+- **权威数据源**: `Dali_testmode.xlsx /OVERVIEW` (DFT 意图层) 派生 51 函数 TestItemMeta → `DALI/meta/dali_tm_meta.json`（生成器 `gen_dali_meta.py`，`--dump`/`--audit` 人工审核，可复现）
+- **capAuthority 四权威集**:
+  - `powered_pins` 供电轨 = vset ∪ OVERVIEW Power列 ∪ Dynamic裸PIN（**不含 iset 输出负载** — VCC/VMCU 是 DUT 内部稳压输出、测量目标非供电轨，test.cpp 从不闭 K0_VCC_Cap）
+  - `mi_pins` 测电流 PIN（Check/Dynamic 列 I(pin)）→ Cap 按 PIN 豁免
+  - `ramp_pins` ramp 扫描源（vset 同 pin ≥2 不同值 **且仅限 toggle 测试**，shipmode 掉电序列不算）→ Cap 按 PIN 豁免
+  - `testpad_pins` 测试垫偏置（AMUX/VDM/ATEST/DTEST0/NTC）→ 不查 Cap
+- **verify_relay_trace.py 检查 E**: meta_fn 权威分支 + 无 meta 降级对象名反推（旧逻辑保留作健壮性；51 函数全有 meta）
+
+### 验证
+- meta 派生与已验证 test.cpp 闭合状态 **0/51 mismatch**（强准确性信号）
+- `--warn-as-error` 全量 PASSED: meta 覆盖 51/51, FR-001 反向 0 处（与改造前基准一致，无误报）
+- 负测试 ×3（TM114/TM204/TM116 删 K13 SetOn）→ 正确捕获 WARN + 退出码 1；fallback（--meta 不存在）→ meta 覆盖 0/51 降级正常
+- meta 可复现：重新生成字节级一致；fast_rebuild Release PASSED（0 errors 0 warnings，含 DTE 自动保存）
+- 规则沉淀: `relay-check.md`（active，含 SCH-Connect-Map 层遗留说明）/ `rules-registry.md` FR-001 强制层更新
+
+**2026-08-10: 函数级 MI 豁免反模式重构（Cap 默认闭 + 按 PIN 例外）— 14 处代码修复 + verify_relay_trace.py 检查 E 改按 PIN 豁免 + 编译 0 errors/0 warnings**
+
+### 本轮改动（规则重构 round）
+- **用户纠偏（关键）**: "MI 惯例不闭"是**按函数豁免**的错误框架。正确总原则: **Cap 默认闭**（PIN 加电就需要其 Cap 稳压），仅两种情况**按 PIN** 移除: ①该 PIN 被测电流（流经其 Cap）②该 PIN 是 ramp/扫描源。skill/relays.md 原"源表直接 MI→OFF"一行读作函数级 → 已重构为默认闭框架
+- **代码修复 14 处**（test.cpp）:
+  - **10 函数补 `cbite.SetOn(K13_VBAT_Cap, ...)`**（函数级 MI 豁免反模式）: TM103/104（测 I(VDM)）、TM117/118/125/126（测 I(VCC)/I(VMCU)）、TM132/134（测 I(VDM)）、TM204（测 I(VBUS)）、TM207（测 I(VAC3)）——被测电流不流经 VBAT, VBAT 纯供电必闭
+  - **4 函数补 `cbite.SetOn(K5_VBUS_Cap, ...)`**（VBUS 纯供电）: TM114/124（测 V(VCC)/V(VMCU)）、TM127/128（VBAT ramp 时 VBUS 供电）——`VBUS_DRVH1_ACM` 提取修复后暴露的隐藏漏检
+- **脚本修复（漏检根源）**: verify_relay_trace.py 检查 E 三处: ①`mi_pins` → `fam & mi_pins`（**按 PIN 豁免**, 禁止整函数跳过）②NON_SUPPLY_TOKENS 加 `DRVH1`（`VBUS_DRVH1_ACM`→VBUS, 否则 VBUS 供电对检查 E 不可见 + mi_pins 豁免错配）③新增 `is_testpad_bias()`（AMUX/VDM/NTC 测试垫偏置非供电轨不查 Cap, 消除 TM132/134 K21 误报）
+- **规则沉淀 8 处**: skill nuvolta-codegen Cap2 段重构（默认闭+按 PIN 例外）/ relays.md Cap 段 / rules-registry FR-001 / common-errors E012 / relay-checklist 第5步+Cap2 段 / daylog 2026-08-10 / PROGRESS / 记忆
+
+### 验证
+- **verify_relay_trace.py --warn-as-error → RELAY TRACE PASSED**（49 函数, FR-001 反向 0 处, 功能规则 80 处）——原 10 处漏检全消 + 新暴露 4 处 VBUS 漏检修复
+- **fast_rebuild.ps1 -Incremental → Release PASSED (0 errors, 0 warnings), 5.1s** ✓
+
+---
+
+**2026-08-10: 静态供电漏闭稳压电容修复（FR-001 反向检查）+ verify_relay_trace.py 检查 E 强制 — 28 处代码修复 + 脚本 4 轮收敛到 0 误报 + 编译 0 errors/0 warnings**
+
+### 本轮改动（规则修正 round）
+- **用户指出（FR-001 反向）**: 用户贴 TM105 片段问"VBAT 为了稳压应该加大电容但没加，问题是什么？" → 纯供电 PIN 漏闭 Cap 稳压电容是缺陷：供电轨缺本地电荷→比较器/数字切换瞬间电流突变→VBAT 跌落+纹波→100MA 限流档补不上高频瞬态→阈值测量漂移/噪声/不可重复。**用户明确约束: "不要参考AI.CPP"**（AI.cpp 已废弃, 以 test.cpp 为准）
+- **代码修复 28 处**（test.cpp）: **25 函数补 `cbite.SetOn(K13_VBAT_Cap, ...)`**（TM105~110/114~116/121/122~124/137/138/200~203/210~215）+ **3 函数补 `cbite.SetOn(K21_VAC_Cap, ...)`**（TM114/115/128）。保持正确未改: MI 惯例（TM000/001/001_2/001_3、TM103/104/113/132/134、Trim 系列）+ VBAT ramp 源（TM111/112/127/128/129/130）
+- **脚本强制（修复漏检根源）**: verify_relay_trace.py 新增**检查 E（FR-001 反向）**: PIN 被 FV 静态供电（非 MI/非 ramp 扫描源/非下电段）未闭其 Cap → WARN。判定: `.Set(FV,...)` 提取供电 PIN（对象名取末 token 消歧 `VCC_VMCU_FXVI`→VMCU）→ 前缀匹配 Cap 家族（VBAT/VAC/VCC/VBUS）。排除: MIRET / ramp?_capi 电流捕获第4参 / ramp?_cap? 扫描源首参 / 下电段截断 Step 5。**4 轮迭代（12→4→4→3→0 WARN）收敛**。额外发现 K0_VCC_Cap(VCC)、K5_VBUS_Cap(VBUS) 同族
+- **规则沉淀 8 处**: rules-registry FR-001 强制层 → 检查B+反向检查E / relays.md Cap 规则+校验实现补检查 E / common-errors 新增 **E012** / relay-checklist 第5步 / skill nuvolta-codegen Cap2 段+工具表 / daylog 条目 / PROGRESS / 记忆 MEMORY.md hook
+
+### 验证
+- **fast_rebuild.ps1 → Release PASSED (0 errors, 0 warnings), 8.5s** ✓
+- **verify_relay_trace.py → RELAY TRACE PASSED**（46 函数, FR-001 反向 0 处, 功能规则 36 处）
+- grep `cbite.SetOn(K13_VBAT_Cap,` 共 32 处（25 新增 + 7 既有正确）; `cbite.SetOn(K65_nQON_PU, -1);` 仅剩 TM127/128（VBAT ramp 源, 正确）
+- 反向检查回归: 4 轮迭代 12→0 WARN（下电段误判/ramp 正则/capi 第4参/VAC123 消歧 均修复）
+
+---
+
+**2026-08-10: Step 1 无继电器需闭合时必须显式 cbite.SetOn(-1)（R-SETON 规则新增 + 代码 3 处修复 + verify_relay_trace.py 加结构检查强制；verify_relay_trace.py 不再参考 AI.cpp，改指 test.cpp）**
+
+### 本轮改动（规则新增 round）
+- **用户新增 global rule（STS8300 手册公共知识）**: 即使所有继电器默认NC直连、无需闭合任何继电器，Step 1 (Connect) 也必须显式执行 `cbite.SetOn(-1);` + `delay_ms(3);`，禁止只写 `delay_ms(3);` 空区块
+- **代码修复 3 处**（test.cpp 补 `cbite.SetOn(-1);`）: TM103_HSKP_LP_HR_0P5U (L1813) / TM104_HSKP_LP_PTAT_0P5U (L1872) / TM204_IPD_VBUS (L4520)
+- **脚本强制（修复漏检根源）**: verify_relay_trace.py 原本参考已不存在的 DALI/AI.cpp（工具已坏）→ 用户确认"不再参考 AI.cpp" → 改指 test.cpp（--src 可选）+ #define Kxx 改读 StdAfx.h（DLP 加密, --defines 可选）+ 新增**结构规则**（Step 1 区块缺 cbite.SetOn → FAIL）
+- **规则沉淀 7 处**: rules-registry 登记 **R-SETON**（active, 强制层 verify_relay_trace 结构规则 + check-agent R004）/ check-agent R004 加脚本钩子 / relay-agent Step11+铁律 / common-errors 新增 **E011** / relay-checklist 新增**第11步** / skill nuvolta-codegen 工具表更新 / 记忆 MEMORY.md 3 处 hook + daylog 条目
+
+### 验证
+- **fast_rebuild.ps1 → Release PASSED (0 errors, 0 warnings), 8.4s** ✓
+- **verify_relay_trace.py → RELAY TRACE PASSED**（46 函数, 结构规则 0 处, 功能规则 36 处）
+- 结构规则回归测试: 缺 SetOn 样本→命中 FAIL / 有 SetOn(-1)→不误报
+- 全量扫描 test.cpp: Step 1 缺 cbite.SetOn = 0（共 9 处 SetOn(-1) 空操作）
+
+---
+
+**2026-08-10: A0 旧遗留 Agent 内容迁移完毕并删除 — 路径穷举法→relay-agent Step13, 三类继电器错误模式→schematic-parsing §七（AGENT_MAP 文件数 21→19）**
+
+### 本轮改动（架构收敛）
+- **核查结论**: 用户问 A0-原理图Agent / A0-知识库 内容是否全部迁移到新架构 → 逐项对拍, 95% 已迁移且多处被超越（G6K/TLP3412 引脚表→relays.md 更详细、Cap/PU/P2P→功能应用规则、命名→naming.md、槽位→sources/*、QVM/QTMU/DCM→schematic-parsing、第零原则→sch-parse 铁律5、通路追踪→sch-parse 六任务+gen_paths.py 自动化）
+- **补迁 2 个实质缺口**:
+  1. **路径穷举法**（旧铁律8）→ `relay-agent.md` **Step 13**: 需求驱动逐路排除（明确需求→排除不支持源表→锁类型→列全路径 BUS/PC/混合→冲突换路→最后才多源）; 含 PB5/KLV 反例（单 FPVIe Ch0 走 PC 路径即可, 不必双通道）; 铁律区同步加行
+  2. **三类继电器拓扑错误模式**（串/并联误判、多余 relay、遗漏直接路径）→ `schematic-parsing.md` §七 常见错误表追加 3 行 + 溯源注释（同样适用于 gen_paths.py 结果人工核对）
+- **清理**: 删除 A0-原理图Agent.md + A0-知识库.md（内容已迁移）; AGENT_MAP 废弃区标"已删除" + 头部文件数 21→19
+- **注**: PROGRESS.md 2026-08-06 "新目录结构" 快照仍含 A0 引用, 为历史存档保留原文
+
+### 验证
+- grep 确认 A0 无新引用残留（仅 PROGRESS 历史快照 + AGENT_MAP 删除记录 + schematic-parsing 溯源注释）
+
+---
+
+**2026-08-10: 小电流两段式上电规则 (R-PON-09) 按 PIN 类型分类修正 — power→100MA 两段式 / digital→10MA 两段式 / ATEST(VDM等)→直接测量量程（用户纠正, 编译 0 errors/0 warnings）**
+
+### 本轮改动（规则 round 3.1 修正）
+- **用户纠正（关键）**: 通用两段式规则太宽泛 — 实际**只有 power PIN 才要求两段式**。三类 PIN:
+  - **power PIN**（VAC/ACDRV/VIN/PMID/VBUS/VBAT/VSYS/VCC/VDRV/BST/SW/CFH/CFL/LED 等）→ 两段式, 大量程 **100MA**
+  - **ATEST 类模拟 PIN**（VDM/NTC/AMON 等）→ **直接设测量量程, 无两段式**（模拟内部信号 pad）
+  - **digital PIN**（GPx/KLV/SNSP/SNSN 等）→ 两段式, 大量程 **10MA**（非 100MA）
+  - 未知按 power 保守（100MA 两段式）
+- **脚本实现**: `gen_power_sequence.py` 新增 `pin_category()`（返回 power/atest/digital, 未知→power）+ `gen_two_stage_power_on()` 参数化大量程档（big_range_name）+ ATEST→direct 单行; RULE_COVERAGE R-PON-09 → `--audit-rules` **19 规则全 PASS**; 功能测试 VBAT→power(100MA 两段式)、VDM→atest(direct)、GP0→digital(10MA 两段式)
+- **代码修正**（test.cpp, 8 处 → 保留 3 处两段式）:
+  - **VBAT (power, 保留 3 处)**: TM000 (4.4V/100UA), TM001_2/001_3 (3.7V/100UA ×2) — `Set(FV,v,100MA) → delay_us(500) → Set(FV,v,100UA)` + `// R-PON-09: 电流<100uA → 100MA 大量程上电稳定500us 后切测量量程`
+  - **VDM (ATEST, 撤销 5 处两段式)**: TM103/104/132/134 改回直接量程 — `VDM_SDA_ACM.Set(FV, 1, ACM200_10V, ACM200_10UA, ACM200_RELAY_ON)` + `// VDM 为 ATEST 类模拟 PIN: 直接设测量量程, 无两段式 (R-PON-09)`
+- **规则沉淀同步**（6 处学习面）: skill nuvolta-codegen.md R-PON-09 段 / power-on-agent.md R-PON-09 行 / rules-registry.md R-PON 行+注脚 / daylog/2026-08-10.md 条目（含修正记录）/ 记忆 nuvolta-power-rules.md 铁律节 / MEMORY.md 3 处 hook
+- **注意**: 本规则为 R-PON 上电规则组脚本化强制（gen_power_sequence.py --audit-rules）, check-agent 无独立错误码（同 R-PON-01~08 处理）
+
+### 验证
+- **fast_rebuild.ps1** → Release 0 errors/0 warnings (13.7s)
+- **gen_power_sequence.py --audit-rules** → 19 规则 PASS
+- delay_us(500) 总数 = 3（匹配 3 处 VBAT power 两段式块）; 5 处 VDM direct 10UA 行就位（L1830/1888/3692/3831/3887）; 无 VDM 两段式残留（先前验证脚本把既有 `ACM200_100MA` 行误计, 已用 R-PON-09 注释归属核对排除）
+
+---
+
+**2026-08-10: Ramp Hys 单位规则 (R-HYS) 沉淀 + 代码 22 处修复 — Hys 电压→mV / 电流→mA（用户新增 global rule, 编译 0 errors/0 warnings）**
+
+### 本轮改动（规则 round 2）
+- **用户新增 global rule**: 含 ramp 的 rise/fall/hys 测试, Hys 单位固定 — Hys 是电压量→log **mV** (原始 V `*1e3`); Hys 是电流量→log **mA** (原始 A `*1e3`)。原理: Rise/Fall 是触发点 ramp 电压/电流 (rampv_capv→V, rampi_capv→A), Hys=Rise−Fall 差值小, spec 预期 mV/mA, 禁止按原始 V/A 直接 log
+- **代码修复 22 处**（test.cpp, 全为 rampv_capv 电压 ramp）: `hys[site] = (rise_result[site] - fall_result[site]) * 1e3;  // V -> mV (R-HYS)`, 覆盖 VSPRE_MAX_CMP/VBUS_PRST/VBUS_HT_VBAT/VAC1~3_PRST/VBAT_UV/VBAT_HT_3P1V/VCC_UV/VAC_PATH_ON + TM200~215 系列; 无 rampi_capv 用例 (DFT `IBUS_TERM_200mA_Hys` Unit=mA 佐证电流规则)
+- **规则沉淀 7 处**（让 agent 学习到）:
+  1. `daylog/2026-08-10.md` — 追加 R-HYS 规则修正条目（来源=工程师口述, 分类=global rule）
+  2. `knowledge/standards/units.md` — §Ramp Hys 单位规则（换算表 + 例码 + 反例）
+  3. `agents/measure-agent.md` — 模式3 Toggle 加 R-HYS 铁律段
+  4. `agents/check-agent.md` — 新增 **E026**（有 DFT 判 FAIL, 无 DFT 判 WARN）+ 轻量模式清单行
+  5. `knowledge/standards/rules-registry.md` — 登记 **R-HYS** active（强制层: check-agent E026）
+  6. `skills/nuvolta-codegen.md` — Toggle 段加 R-HYS 铁律段
+  7. memory/nuvolta-toggle-rules.md — Hys 单位规则节 + memory/nuvolta-measurement.md §2a 交叉引用
+
+### 验证
+- **fast_rebuild.ps1** → Release 0 errors/0 warnings (9s)
+- 22 处 hys 换算全部替换（replace_all 0 残留）+ 单位与 DFT 佐证核对（IBUS_TERM_200mA_Hys=200mA）
+
+---
+
+**2026-08-10: LogData 单位铁律 (R-LOG) 沉淀 + 代码 7 处修复 — 单位必须与 spec 预期一致（用户纠正, 编译 0 errors/0 warnings）**
+
+### 本轮改动（规则 round）
+- **用户纠正**: `Iq_Operation->SetTestResult(site, 0, iq_operation[site])` 按 A 单位 log, 但 spec 预期 uA → 单位不匹配, 数据差 1e6 倍
+- **代码修复 7 处**（换算加在 GetMeasResult 赋值处带注释）: iq_standby/iq_standby_plug/iq_shipmode/iq_operation `*1e6` (A→uA), iin_suspend `*1e3` (A→mA, spec 1.118mA), lp_hr_0p5u/lp_ptat_0p5u `*1e6` (A→uA); 顺带扫描全部 MIRET/MVRET 发现 TM103/104 同类 bug
+- **规则沉淀 6 处**（让 agent 学习到）:
+  1. `daylog/2026-08-10.md` — 规则修正条目（来源=工程师口述, 初步分类=global rule）
+  2. `knowledge/standards/units.md` — §LogData 单位铁律（换算表 + 例码 + 反例）
+  3. `agents/measure-agent.md` — 模式1 MI + 模式2 MV 加铁律段 + 例码
+  4. `agents/check-agent.md` — 新增 **E025**（有 DFT 判 FAIL, 无 DFT 判 WARN）+ 轻量模式清单行
+  5. `knowledge/standards/rules-registry.md` — 登记 **R-LOG** active（强制层: check-agent E025）
+  6. `skills/nuvolta-codegen.md` — LogData 模板段后加铁律段
+- **记忆同步**: memory/nuvolta-measurement.md §2a LogData 单位铁律（链接 [[nuvolta-codegen-progress]]）
+- **注意**: 上电/下电脚本化 (R-PON/R-POFF)、cbit 脚本化 (C-CBIT/P-FINDER) 等均不受影响, 本规则为 check-agent 强制层纯规则, 无 verify 脚本
+
+### 验证
+- **fast_rebuild.ps1** → Release 0 errors/0 warnings
+- 单位换算与 DFT Unit 列逐一核对: TM000/000_1=uA, TM103/104=uA, TM118=mA 全部一致
+
+---
+
+**2026-08-10: TM113~TM215 生成完成 — 37 函数追加 test.cpp + sub.cpp 追加 3 个 Trim measure 函数（Trim 参数按 Trim 要求, 编译 0 errors/0 warnings）**
+
+### 本轮改动
+- **test.cpp 插入 37 个 DUT_API 函数**（TM112 末尾第 2532 行后, 文件 2533→5098 行）:
+  - **Batch A (6)**: TM113_VCC_UV(rampv_capi 电流折返), TM114~116 VCC MV(FI=0.05/0.03/0.05), TM117/118 VCC MI(FV=1)
+  - **Batch B (10)**: TM121_VAC_PATH_ON(Toggle), TM122~124 VMCU MV, TM125/126 VMCU MI, TM127/128 VBAT ramp Toggle, TM129/130 VCC_VBAT_HT(Toggle, K21_VAC_Cap+K65)
+  - **Batch C (9)**: TM131_IRPPO_EA_FB, TM132_IHR_P_1UA, **Trim_IZTC_RES**(73参), TM134_IPTAT_1UA, **Trim_BG_RES_DIV**(16参), TM136_AVSS_BG, TM137/138 TSD/TDIE, **Trim_VBG**(26参)
+  - **Batch D (12)**: TM200/201 VTH_SCL/SDA_IN(Toggle), TM202/203 R_INT/R_SDA(FI=10µA→Ω, 量程100UA), TM204_IPD_VBUS, TM207_IPD_VAC3, TM210~213 VAC1/2 SNK_DET REL/ABS(Toggle), TM214/215 PWM1/2_Vth(Toggle)
+- **Trim 参数按 Trim 要求**: step0~N + 8 固定后缀, AFX 参数名**照 backup 骨架逐字照抄**（Trim_VBG=BG_AVSS+VBG_step0..15+8后缀+VBG_Filter 26参 / Trim_BG_RES_DIV=BG_RES_DIV_step0..7+8后缀 16参 / Trim_IZTC_RES=IZTC_RES_step0..63+8后缀+NTC_20uA 73参）, 入口 `TRIM_NODE &P = trim_reg.trim("<块>"); P.execute(measure_x, spec, funcindex, funclabel, 1, 0, 0, 0);`
+- **sub.cpp 追加 3 个 Trim measure 函数**（GBK+CRLF 用 python 追加, 2917→3020 行）: measure_bandgap(写 F0, MV→mV)/measure_bg_res_div(写 F1, MV→mV)/measure_iztc_res(写 F0+F1, MI→uA 取负); 均含 TEST_FLOW 条件 + FOR_EACH_SITE + BURN_FLAG copy_read_to_work + trim_reg.assy("EFUSE_REG_Fx").get_working(site); sub.h 已声明
+- **Toggle 全走库函数 rampv_capv(200/20/1.65)**: 上升→TRIG_FALLING→Rise, 下降→TRIG_RISING→Fall, Hys=Rise−Fall; 测量源映射复用 TM105-112 惯例（SCL→SCL_VACWL_ACM, SDA→VDM_SDA_ACM+K59, VAC2→K19, VAC3→K18, PWM1→PB0_BST_ACM, PWM2→PA6_PC5_ACM）
+- **量程铁律**: R_INT/R_SDA 强制 10µA → ACM200_100UA（DFT 10UA 满量程太近, ≥2× 升一档）; Toggle cap 源统一 NQON_HG1_ACM ACM200_10V/10UA
+- **跳过**: TM119→tm112 覆盖, TM120→tm107 覆盖, TM205/206/208/209 isCodeGen=None
+- **下电**: 三步下电, RELAY_OFF 统一 ACM200/FXVIe_PLUS→10V/10MA
+
+### 验证
+1. **verify_awg_params.py** → **PASSED** (21 Toggle/AWG 函数, FAIL=0 WARN=0)
+2. **fast_rebuild.ps1** → **Release PASSED (0 errors, 0 warnings)**, 12.3s
+3. **F12011.dll** 符号验证: 8 个新 DUT_API 全在 DLL（Trim_IZTC_RES/Trim_BG_RES_DIV/Trim_VBG/TM113/TM200/TM215/TM137/TM129）; measure_* 内部函数经 execute() 链接（0 LNK 错误证明存在）
+4. sub.cpp/sub.h measure 函数齐全（measure_bandgap/bg_res_div/iztc_res）
+
+### 待办/风险
+- Trim 硬件联调: IZTC_RES Target=220uA / BG_RES_DIV Target=1000mV / VBG Target=1220mV 需实机标定
+- TM210~213 RELMODE DFT 慢段(2e-3)前置检查由 ramp 前 delay_ms(10) settle 替代, 快段(0.1e-3)用 200 采样捕获
+- TM204/207 wait_warmup 不调用（0x08 功能寄存器非 en_tm[]）, 注释说明
+
+---
+
+**2026-08-09: TM103-112 生成完成 + ramp 全量库函数化 — 10 个 HSKP 测试追加 test.cpp（禁止参考AI.cpp, 编译 0 errors/0 warnings）**
+
+### 本轮改动
+- **TM103/104 (MI)**: LP_HR_0P5U / LP_PTAT_0P5U — VBAT=4V + VDM=1V, `0x57=2`(EN_ATEST0) + `0x5E=4/5`(ATEST0_MUX→IBP_HR/IBP_PTAT), 测 I(ATEST0)=I(VDM) 期望 0.5/0.48uA（10UA 最小电流档, ACM200 无 1UA）
+- **TM105-112 (数字检测)**: 全部走 DMUX→DTEST0(=nQON pad) 逻辑翻转扫描:
+  - TM105 VSPRE_MAX_CMP `0x57=8` / TM108/109/110 VAC1/2/3_PRST `0x56=16/15/14+0x57=8` / TM106/107 VBUS_PRST·HT_VBAT `0x56=19/41+0x57=8` / TM111/112 VBAT_UV·HT_3P1V `0x56=23/40+0x57=8(+0x58=0x20)`
+  - **扫描实现已库函数化**: 手动 for 循环 step 扫描 → `test_method.rampv_capv()` 硬件 AWG 触发捕获（用户要求参考 D:\Newtest\CLAUDE_PROCESS\库函数\test_method 库函数）。语义: ramp 源表线性 AWG + cap 表 FI=0 高阻读 V(DTEST0), `SetMeasVTrig(1.65V, TRIG_*)` 触发, result = 触发点 ramp 源电压。上升扫描 + 下降扫描各调一次, 记录 Rise/Fall
+  - **参数标准化（用户 2026-08-09 明确 + AI.cpp 对拍确认）**: `step`=AWG 采样点数, **固定 200**; **interval 固定 20**（µs）; **trig_level 固定 1.65V**（nQON/DTEST0 数字检测标准值）。**触发方向: 上升扫描(start→stop)配 `TRIG_FALLING` 取 Rise, 下降扫描(stop→start)配 `TRIG_RISING` 取 Fall**（nQON 反相: 输入升时 cap 降, 勿写成 rising→TRIG_RISING）
+  - 重载: TM105-110 用 `rampv_capv(ACM200,ACM200)`（VAC123_AMUX_ACM/VBUS_DRVH1_ACM + NQON_HG1_ACM）; TM111/112 用 `rampv_capv(FXVIe_PLUS,ACM200)`（VBAT_PD3_FXVI + NQON_HG1_ACM）
+  - 继电器: K65_nQON_PU 上拉; VAC 扫描不闭合 K21_VAC_Cap; VAC2/VAC3 用 K19_ACM0_VAC2/K18_ACM0_VAC3（标注待确认CBIT）; TM111/112 VAC1 供电闭合 K21_VAC_Cap
+  - **cbite 语义确认（用户）**: `cbite.SetOn(relay, site)` **排他** — 只闭合括号内指定继电器, 其它全部释放; **多继电器必须在同一次调用里**（如 `SetOn(K21_VAC_Cap, K65_nQON_PU, -1)`）, 禁止两次 SetOn 各闭合一个（第二次会释放第一个）。TM109/110 `SetOn(K65_nQON_PU, K19/K18_ACM0_VACx, -1)`、TM111/112 `SetOn(K21_VAC_Cap, K65_nQON_PU, -1)` 已合并单行
+- **量程**: VAC=10V→ACM200_20V, VBUS=5V→ACM200_10V, VBAT→FXVIe_PLUS_10V; 全部 100MA 驱动
+- **编译**: fast_rebuild.ps1 增量 2.7s → Release PASSED (0 errors, 0 warnings)
+
+### 验证
+1. 10 个 DUT_API 函数全部就位（test.cpp 1792-2437 行, 全文件 2437 行）
+2. 无残留 `for (double v` 手动扫描循环（grep 验证 0 处）
+3. 库重载存在性: `rampv_capv(ACM200,ACM200)` / `rampv_capv(FXVIe_PLUS,ACM200)` 均在 devel/source Test_Method.cpp 有实现（已读源码确认 samples=(int)step 语义）
+4. 16 处 `rampv_capv` 调用全部 step=200 / interval=20 / trig=1.65 / 反相极性（8 TRIG_FALLING 上升 + 8 TRIG_RISING 下降, 计数断言全命中, 无旧参数残留）
+5. TM105-112 AFX/LogData 已按 **E005** 改 3 参数 `<基名>_Rise/Fall/Hys`（如 `VBAT_UV_Rise`, 基名=DFT 参数名）+ hys=Rise−Fall 计算 + 三个分别 SetTestResult（用户两次纠正: 单参数→Param_泛称→最终 DFT 基名+后缀, 已修复）
+6. **门禁 `verify_awg_params.py`** 建好并接入收尾双查: 对 test.cpp PASSED (8 Toggle 函数 0 FAIL); 负向样本捕获 5 项 FAIL
+7. 增量编译 0 errors / 0 warnings ✓
+
+### 待办/风险
+- VAC2/VAC3 继电器路由（K19_ACM0_VAC2/K18_ACM0_VAC3 闭合）标注待 CBIT 确认
+- 数字检测 trig_level=1.65V（nQON/DTEST0 逻辑电平预估）为 AI.cpp 对拍值, 硬件联调时按实际 nQON 电平标定; interval=20 为用户指定（AI.cpp 现有实现用 50, 两者均 ≥10 合法）
+- Toggle 参数名已固定 `<基名>_Rise/Fall/Hys`（如 VBAT_UV_Rise; E005 门禁 verify_awg_params.py 强制）; TM103/104 MI 参数名（LP_HR_0P5U 等）来自 OVERVIEW 表, 需与测试程序 spec 注册一致
+
+---
+
+**2026-08-09: B 路径完整四阶段收敛 — SCH-Connect-Map 回归 + F/S 状态一致性校验（sch_parse.py 规则疏漏修复, 用户两次更新网表修 K83/K52）**
+
+### 本轮改动
+- **B 路径完整执行**: 用户提供 SCH-Connect-Map.txt → 执行 cbit 公共前置四阶段（P1 单点→P2 通路→P3 命名→P4 校验）。relay.h 已有完整定义（1.x 单点 + 2.x 通路）, 铁律0 存在即冻结 → 核心执行 P4 带 --map 完整校验（V2/V7 首次可跑）
+- **修 bug (check_v2)**: need_close 'K22'(继电器号) 与 define 全名 K22_ACDRV1 做字符串比较 → 全量误报 "不在单点定义中"。修复: 提取位号与 defines.keys()(int) 比较 → V1~V8 全 PASS（误报 23 继电器在 relay.h 均有定义证实为脚本 bug）
+- **规则疏漏修复 (sch_parse.py 补 fs_conflict)**: 任务六只查 F/S 是否都到达, 不查同继电器状态互斥 → K83/K52 双状态漏检。补 `fs_conflict()`: 同一继电器在 F/S 中 state 互斥 (ON vs NC) → G6K 双稳态通电/保持二选一 → **物理无法同时连通** → 标 [F/S冲突] 非有效通路
+- **用户两次更新网表修原理图**: 20:30 修 K83 双状态 / 20:44 修 K52 冲突（ACM200→LG1/LG2, F 走 K52(NC)、S 走 K52(ON)）
+- **沉淀**: schematic-parsing.md §四《通路有效性》加 **"F/S 状态一致性铁律"**; rules-registry P-FINDER 注释补 fs_conflict 归属; daylog + 记忆同步
+- **补 K52 通路别名 (用户确认)**: relay.h 2.x 加 `#define K_FPVIL_TO_LG1 52 // = K52_LG2`（LG1 通路 need_close 含 K51+K52, K_FPVIL_TO_LG=51 只覆盖 K51）。其余通路 need_close 由单点定义兜底（V2 已验证 160 条全有定义）, 通路别名非全覆盖不构成缺陷
+
+### 验证
+1. 最新网表重跑 sch_parse.py 六任务门控 → SCH-Connect-Map **1150 行**, F/S冲突=0 ✓
+2. K52 各通路 F/S 状态全一致（LG1=ON/ON, LG2=NC/NC, CH0/CH1/ACM200 全一致）; K83(Relay-NC) 残留 0 ✓
+3. 单线标注 38 条（备份 39, **-1 无异常新增**, 非冲突）; P4 `gen_cbit_defines.py --verify --map` V1~V8 全 PASS, relay.h 160 条全有定义 ✓
+
+---
+
+**2026-08-09: cbit path-finder 脚本化落地 — P2 通路查找 → gen_paths.py（#54评估完成: 核心已脚本化→升级生产级; 用户确认边界: SCH-Connect-Map生成归sch-parse agent不脚本化）**
+
+### 本轮改动
+- **#54 评估结论**: 旧 `DALI/gen_paths.py`（579行）已是 cbit-path-finder 核心的完整脚本实现（BFS追踪/FPVIe域约束/跨域BUS短接/FS合并分类/CBIT类型覆盖），修正过期路径后实测跑通（146 条 FPVIe 配对通路）。非"推理密集不可脚本化"，达生产级标准即可。用户选"升级为生产级脚本"。
+- **脚本 `gen_paths.py`**（新建根目录, 由旧版提取20算法函数保真拼装 + 参数化, 829行）:
+  - CLI: `--netlist/--cbit/--output/--json/--max-depth/--audit-rules`（修正过期路径 SCH-DALI.NET→DALI_Net.NET）
+  - relay 类型: **G6K_CBIT 80条硬编码 → 动态读 CBIT 表 Excel**（read_excel_cbit 复用 gen_cbit_defines.py）→ 对拍 80=80 完全一致, 升级不丢类型
+  - RULE_COVERAGE 11 规则（P-P1~P-P11）→ `--audit-rules` 机器自检 **PASSED**
+  - `--json` 结构化 path_list（agent 规格: dut_pin/source/side/via_relays[{name,cbit,type,state,annotation}]/intermediate_source）→ 实测 360 条
+  - TP_*/TEST_* 端口排除 + max_depth 参数化
+  - 已知 WARN: K83(Relay-NC)+K83(Relay-ON) 同继电器双状态并列（BFS 对 F/S 各取不同状态最短路径, 不阻塞）
+- **边界 (用户确认)**: **SCH-Connect-Map.txt 完整生成（10列/多源/最短路径+F/S同时连通）归 sch-parse agent（任务六）, 不脚本化**。`gen_paths.py` 是通路追踪工具（BFS→path_list 兜底+对拍参考）, 不宣称生成 SCH-Connect-Map。
+- **agent 文档改造**: cbit-path-finder → 规格文档（标记脚本化 + 规则溯源）; cbit-agent 编排 P2 改优先读 SCH-Connect-Map/缺失时调脚本, P3 命名仍 agent
+- **主 Skill 接入**: nuvolta-codegen.md Step2 P2 调 gen_paths.py + 脚本改动后双跑 --audit-rules
+- **AGENT_MAP.md**: cbit 四阶段表 P2 标脚本化（P1/P2/P4 脚本化, P3 命名仍 agent）
+- **rules-registry.md**: 登记 P-FINDER 规则组（active, 强制层 gen_paths.py --audit-rules）
+
+### 验证
+1. `python gen_paths.py --audit-rules` → RULE COVERAGE PASSED (11 规则) ✓
+2. `python gen_paths.py --json` → 146 FPVIe 配对通路 + 360 条 path_list JSON ✓
+3. relay 类型对拍: 旧硬编码 G6K 80 条 vs Excel 动态读取 80 条, 0缺失/0新增 ✓
+
+---
+
+**2026-08-09: cbit 单点脚本化落地 — P1单点+P4校验 → gen_cbit_defines.py（用户确认方案1, 先写脚本→对拍全绿→降级agent）**
+
+### 本轮改动
+- **脚本 `gen_cbit_defines.py`**（新建, 模块化 A~H 层）: CBIT 单点继电器 #define 生成器 + V1~V8 校验器（架构原则"推理→agent, 固定→脚本"）
+  - 输入: `--cbit` CBIT表 Excel（动态读, 权威数据源）+ `--stat` COMPONENT-STATISTIC（V8）+ `--map` SCH-Connect-Map（V2/V7, B路径）
+  - 输出: stdout relay.h 单点 #define 块（161 个唯一 CBIT 值）+ CBIT-CHECK RESULT
+  - 合并规则: `merge_names()` 完整实现（KELVIN F/S→_FS / 非KELVIN F/S→去后缀 / FORCE/SENSE→_FOS_SNS / BUS方向合并 / 同K号拼接）
+  - 数据源验证: Excel 182 继电器与 phase2 硬编码逐项一致（MOS 102 / G6K_DEDICATED 61 / G6K_SHARED 19）
+- **规则覆盖映射表**: RULE_COVERAGE 13 规则（C-P1/C-P1a/1b/1c/C-P2 合并 + C-CK-V1~V8 校验）→ `--audit-rules` 机器自检 **PASSED**
+- **对拍全绿**:
+  - 基准对拍 phase2_singlepoint_output.txt: **161 条逐字节一致**
+  - AI.cpp 实际使用: 13 条 define 全覆盖（1 个命名差异 WARN: K25_VCC_F vs 规范 K25_VCC, 同 CBIT 值=功能正确）
+  - V1~V8 全 PASS（V8 真实校验: 182 原始继电器名全覆盖 COMPONENT-STATISTIC 分类, 非假 PASS）
+- **修 bug**: --warn-as-error action 拼错 / load_existing_defines 正则需允许行尾注释（AI.cpp define 带 // 注释, 原正则匹配 0 条=静默空跑）→ 加"0 条 → FAIL"保护
+- **agent 文档改造**: cbit-parse/singlepoint/check → 规格文档（标记脚本化 + 保留规则清单溯源）; cbit-agent 编排 P1/P4 改调脚本
+- **主 Skill 接入**: nuvolta-codegen.md Step2 cbit 公共前置 P1/P4 调脚本 + 收尾双查改 gen_cbit_defines.py --verify
+- **AGENT_MAP.md**: cbit 公共前置四阶段表 P1/P4 标脚本化
+
+### 验证
+1. `python gen_cbit_defines.py --audit-rules` → RULE COVERAGE PASSED (13 规则) ✓
+2. `python gen_cbit_defines.py --cbit ... --stat ...` → V1~V8 全 PASS + 基准 161 条逐字节一致 ✓
+3. `python gen_cbit_defines.py --cbit ... --verify AI.cpp` → 13 条全覆盖, 1 命名 WARN（预期）✓
+4. V8 真实校验: stats 182 条解析, 原始继电器名 0 缺失 ✓
+
+---
+
+**上电/下电脚本化落地 — power-on/power-off → gen_power_sequence.py（用户确认方案1, 核心验收"规则涵盖"通过）**
+
+### 本轮改动
+- **脚本 `gen_power_sequence.py`**（新建, 约 900 行, 模块化 A~I 层）: 上电+下电代码生成器, 符合架构原则"推理→agent, 固定→脚本"
+  - 输入: `--meta` TestItemMeta JSON + `--pin-map` pin→object 映射（A 路径资源表翻译 extern 名 / B 路径 relay 补 SCH-Connect-Map）+ `--define` Pin_Channel_define.h（extern 类型权威）
+  - 输出: stdout 三段 SECTION（POWER_ON 代码块 / POWER_STATE JSON / POWER_OFF 代码块），主 Skill 拼装
+  - 量程算法: 查表取第一个 table_max ≥ value（table_max=满量程50%），同时满足 ≥2× 与 ≤90%；FV 模式 iRange 是判断输入（currentLimit）
+  - RELAY_OFF 统一量程: ACM200/FXVIe_PLUS→10V/10MA, FPVIe→1V/10MA（非10A, 已对拍确认）
+  - FPVI 大电流三段式 + SetClamp；浮动 ramp 台阶（BST领先PMID≈5V, 每步≤5V, delay_us(200)）
+- **规则覆盖映射表（核心验收交付）**: 内置 RULE_COVERAGE 18 规则 → `--audit-rules` 机器自检 **PASSED**（R-PON-01~08/R-POFF-01~06/R-FLT/R-RNG/R-SRC/R-ST 全部函数存在+调用链可达）
+- **真实函数对拍（--verify）全绿**:
+  - TM000 普通 3.7V（VBAT=4.4V→FXVIe_PLUS_10V/100UA）: Set 行与 AI.cpp 完全一致
+  - TM001_2 多源（VBAT+VAC1）: 完全一致
+  - TM600 浮动大电流（vs reference）: **PASSED**, 10 条差异全部 WARN（手写码偏大松弛, 基准合规但非最接近档, 如 PMID 全程 FOVIe_40V vs 生成严格档）
+- **修 type_from_range bug**: `FXVIe_PLUS_1V`.split('_')[0]='FXVIe' 前缀解析错 → 先 startswith('FXVIe_PLUS') 判断 → 强制量程差异从 ERROR 转 WARN
+- **agent 文档改造**: power-on-agent.md / power-off-agent.md → 脚本规格文档（标记脚本化 + 保留 R-PON/R-POFF 规则清单 + 脚本输入边界表）
+- **主 Skill 接入**: nuvolta-codegen.md 共用循环 Step2/Step5 调脚本拼三段 + A/B 两路径 pin-map 生成小节 + 每次脚本改动后必跑 --audit-rules
+- **AGENT_MAP.md**: #4/#7 标注脚本化（~~power-on-agent~~→脚本）
+- **rules-registry.md**: 登记 R-PON/R-POFF active（强制层 = gen_power_sequence.py --audit-rules）
+- **脚本输入边界（仍需 agent 推理）**: pin→object 映射、currentLimit、rampProfile、mvNoFipins、≥200mA→FPVIe 选型、Step3~6 框架
+
+### 验证
+1. `python gen_power_sequence.py --audit-rules` → RULE COVERAGE PASSED (18 规则) ✓
+2. 普通对拍 TM000 / 多源对拍 TM001_2 → PASSED ✓
+3. 浮动大电流 TM600 → POWER SEQUENCE PASSED（10 WARN 全合规）✓
+4. 无资源分配表路径: --meta + --pin-map + --define（无 CSV）→ 三段输出 + extern 解析正常 ✓
+
+**2026-08-09: B 路径继电器修正 — A 无 SCH-Connect-Map, relay.h 只含单点继电器 (用户纠正, 2026-08-09 晚间)**
+
+### 本轮改动
+- **用户纠正**: 之前把"B 路径无 SCH-Connect-Map"搞反了。正确: **A 路径没有 SCH-Connect-Map**（有资源分配表），**B 路径有 SCH-Connect-Map**（sch-parse 产出）
+- **relay 数据流不变**: A 靠资源分配表 / B 靠 SCH-Connect-Map（relay-agent.md / dual-parse-agent.md 原已写对）
+- **cbit-agent.md 四阶段加 A/B 分流**: A 路径（无 SCH-Connect-Map）→ **仅 P1 单点 + P4 check**，relay.h **只含单点继电器，不含通路继电器**；B 路径（有 SCH-Connect-Map）→ **完整四阶段**，可含通路继电器。加铁律 A-1
+- **relay-agent.md**: 加 A 路径数据流说明（根据资源分配表操作继电器，relay.h 只含单点，不操作通路继电器）；Step1/Step10/铁律同步
+- **nuvolta-codegen.md**: Step2 cbit 公共前置分 A/B；共用循环 relay 标注同步
+- **AGENT_MAP.md**: cbit 四阶段表加"路径"列（P1/P4 A+B，P2/P3 仅B）
+- **flowchart（本地+服务端）**: C1 节点改"A/B 分流"——A 仅单点+check / B 完整四阶段；G2 已是 A:资源分配表 / B:SCH-Connect-Map 无需改
+- **通路继电器未来项**: A 路径无 SCH-Connect-Map 无法确认通路，通路继电器待未来通过资源分配表确认通路后再定义
+
+**2026-08-09: 旁路三 Agent 角色澄清 — compile/deploy/testplan (用户解释, 全部用户触发, 当前不执行)**
+
+### 本轮改动
+- **compile-agent**: 流程明确为 **打开工程→写码→code check→编译→Debug**。打开工程**先于**写码（code 直接写进工程文件 test.cpp/sub.cpp）；**编译前 code check**（语法无错误、无警告）后才编译。加"与 codegen 联动"节（未来 codegen 可选收尾，用户触发）
+- **deploy-agent**: 从"废弃/compile早期版"改为 **自动打开 STS8300 软件+VS 前置**（解决用户手动开软件的问题），**后续编译/Debug 内容与 compile-agent 一致**（复用 compile 逻辑，不重复实现）
+- **testplan-agent**: 加 **SCH-Connect-Map + COMPONENT-STATISTIC 输入**（继电器功能/源表通路以硬件图为权威源）+ **Word 文档输出**（python-docx 生成，含目录）
+- **AGENT_MAP**: §二更新三个 agent（标注用户触发/当前不执行）；deploy 从 §四废弃区移除
+- 三者都由用户触发，不进 codegen 双路径 pipeline
+
+**2026-08-09: 主 Skill 双路径架构重构 — dual-parse 拆 A/B + cbit 公共前置 (用户确认)**
+
+### 本轮改动
+- **背景**: flowchart.html 双路径逻辑 (流程A 资源分配表 / 流程B .net文件) → 用户纠正 AGENT_MAP 只画了 A 路径 → 确认"dual-parse 拆 A/B 模式, 画整合后完整架构图" → 确认"改"
+- **dual-parse-agent.md → A/B 双模式**:
+  - `--A` (流程A, 有资源分配表): DFT + 资源表 → 完整 TestItemMeta (含 resourcesInvolved 源表映射 + voltageInference)
+  - `--B` (流程B, 无资源分配表): **仅 DFT parse** → 部分 TestItemMeta (resourcesInvolved 留空, 源表映射由 relay-agent 从 SCH-Connect-Map 补齐)
+- **cbit-agent.md → 公共前置** (从独立工作流改为主 Skill 每次进入先走):
+  - 有继电器定义文件 → **仅 check, 不更新** (除非用户要求); 无 → 四阶段串行创建
+  - 四阶段 = "如何定义继电器": P1 singlepoint (取 COMPONENT-STATISTIC + CBIT表) → P2 path-finder (直接参考 SCH-Connect-Map) → P3 path-namer (唯一产出通路命名) → P4 check (必须有)
+- **relay-agent.md → 适配双路径**: 输入加 B 路径 (resourcesInvolved 空 → 查 SCH-Connect-Map); Step 1 查源表映射 A/B 分流; Step 10 名称验证改查 cbit 定义文件
+- **nuvolta-codegen.md → 双路径重构**: Step0 入口分流 → Step1A (dual-parse --A) / Step1B (sch-parse→Pin_Channel_define→dual-parse --B) → Step2 cbit 公共前置 → Step3~4 共用生成循环 → Step5 收尾双查 (check-agent + cbit-check)
+- **AGENT_MAP.md**: §一改为双路径 pipeline (含 cbit 公共前置 + 四阶段表), §二移除 cbit-agent (移至 §一)
+- 待办: 后续 B 路径实测验证 (sch-parse 消费链), daylog 收尾
+
+**2026-08-09: 三个自进化 Agent 落地 (用户分享微信文章, 决策确认)**
+
+### 本轮改动
+- **背景**: 用户分享 mp.weixin.qq.com 自进化Agent文章 → 三个可独立启用的知识沉淀层 Agent (rules/experience/sub_function), 共享每日 Markdown 档案, 六类分类安全阀, human-in-the-loop
+- **决策 (用户确认)**: 手动命令触发 (/evolve rules/exp/fn) · 待审核区+人工发布 · 子函数库新增独立位置 D:\Newtest\CLAUDE_PROCESS\库函数\shared_functions (跨项目复用)
+- **新资产**:
+  - `agents/rules-agent.md` / `experience-agent.md` / `sub-function-agent.md` — 三个独立工作流 (仿 cbit-agent)
+  - `knowledge/standards/rules-registry.md` — 规则注册总表 (draft→active→retired + 来源/适用范围/版本); 已登记 MR-000 + FR-001(Cap)/FR-002(PU)/FR-003(P2P)
+  - `knowledge/experience/index.md` — 经验库 (power-sequence/measurement/debug-patterns/project-notes)
+  - `D:\Newtest\CLAUDE_PROCESS\库函数\shared_functions\` — 跨项目共享子函数库 (README + registry/index + changelog + draft/ + src/)
+  - `daylog/` — 每日档案 (主 skill 收尾必写), 已建 2026-08-09.md 首条
+- **skill 更新**: nuvolta-codegen.md 加"自进化沉淀"节 (三 agent 表 + daylog 收尾 + 六类分类), 自动同步规则加"写 daylog"
+- **关键事实**: Test_Method 库分布在十几个项目副本 (哈希全不同, 无权威源) → shared_functions 与 test_method 平级分工
+- 负测试备份 _ai_orig.cpp 已清理
+
+**2026-08-09: Agent架构决策落地 — 零合并铁律 + 两条 verify 纪律检查**
+
+### 本轮改动
+- **merge_rules.md 模板**: `.claude/knowledge/standards/merge_rules.md`
+  - **MR-000 零合并铁律**(当前唯一生效): 每个 DFT 项独立成函数, 不合并
+  - 未来合并规则孵化路径: ≥2 确认案例 → 通用规则登记 MR-0xx → M 组检查强制
+  - 错误码 M001(零合并期合并)/M002(合并缺日志)/M003(规则引用错)/M004(被合并TM残留)
+  - 历史合并存档(不追溯): TM208/209→212/213 等
+- **verify_merge_rules.py**: 合并纪律检查
+  - 解析 merge_rules.md 生效规则 + merge_log.md; 零合并期任何合并行→M001 FAIL
+  - 已通过: 当前无 merge_log → PASS; 负测试 M001 捕获 ✓
+- **verify_relay_trace.py**: 继电器轨迹核对 — 闭环规则 + **功能应用规则** 双层校验
+  - 解析 AI.cpp #define + cbite.SetOn vs SCH-Connect-Map (Relay-ON/NC)
+  - 闭环规则: 继电器名有#define、闭合集⊆可达(Relay-ON)、虚构继电器→FAIL
+  - **功能应用规则 (用户纠正, 替代附件白名单)**: Cap/PU/P2P 附件继电器从**功能角度**判定闭合, 不看闭环可达——
+    - **Cap** (Kxx_<PIN>_Cap 稳压电容 >200nF): 测该 PIN 电压/供电→闭; 测该 PIN 电流(MIRET)→**严禁闭** (电容掩盖真实 Iq)
+    - **PU** (Kxx_*_PU 开漏上拉): **观测开漏输出时必需** (NQON_HG1_ACM/QTMU_GP/SDA_INT 源表对象出现); 不观测→闭合冗余 WARN
+    - **P2P** (PIN 到地短路): 仅需 PIN 到地场景 (DALI 无, 占位)
+    - **判定只看去注释后的代码** (strip_comments), 注释里的方案说明/下个函数预告不误报
+  - 检查 B(正向): 闭合 PU 未观测开漏→WARN; 测 PIN 电流却闭合其 Cap→FAIL; 检查 D(反向): 观测开漏但无 PU→WARN
+  - 通过: 73 函数 115 处功能规则 0 误报; 负测试 TM999(Cap违规)/TM998(观测开漏无PU+虚构名)/TM997(虚构) 全部捕获 ✓
+- **架构讨论结论** (2026-08-09): 推理→agent, 固定→脚本
+  - ReadDFT 保持 agent (含跳过/合并决策, 读 merge_rules.md)
+  - relay-agent 按闭环原理推断 + 推理轨迹可审计
+  - measure-agent 保留为唯一核心判断 agent
+  - 脚本: 参数定义/寄存器提取写入/LogData/库函数调用/结构化检查
+
+**2026-08-08: AI.cpp 扩展 TM206~425 完成 — 30 个新函数落地（用户："继续从TM205写到TM425"）**
+
+### 本轮改动
+- **新增 30 函数**（AI.cpp 3037→约 5070 行, 现 77 个 DUT_API）:
+  - IPD 下拉电流: `TM206_IPD_VAC2` / `TM207_IPD_VAC3` (0x08 下拉, MI; wait_warmup[] 非 en_tm[], 不调 entertestmode)
+  - SNK 检测: `TM210~213_VAC1/2_SNK_DET_VTH_REL/ABSMODE` (Toggle, 0x07+0x56/0x57; RELMODE ⚠无 expect)
+  - PWM 阈值: `TM214_PWM1_VTH` / `TM215_PWM2_VTH` (Toggle, 0x67/0x68 D2A_OVRD 强制 IO 使能, DMUX_SEL=46/45)
+  - 下拉电阻: `TM220_DMO_PD_R` / `TM222_DMA_PD_R` (0x71+0x56=0x16, FI=1mA → R=V/I; ⚠无 expect, 机制预估)
+  - OSC 频率: `TM300_OSC64K` / `TM301_OSC4P5M` (**QTMU_GP 测频**, K66_TMU_nQON 新继电器, trigger 1.65V)
+  - MNT VBUS 比较器: `TM400/401/402_VBUS_OVP_VTH1/2/3` (VBUS 斜坡, VRNG 20V/40V/40V) + `TM403_VBUS_REVI_VTH` (**极性倒置**+delta=翻转−VBAT) + `TM409_VBUS_HT_4P8V`
+  - MNT VBAT 比较器: `TM406_VBAT_LOW_VTH` / `TM408_VBAT_OVP` / `TM410/411_VTRIKLE_VTH1/2` / `TM412/413_VRE_CHG_VTH1/2` (VAC1 供电+VBAT 斜坡; TM412/413 Hys 为负 ⚠)
+  - FB 电压 (ATEST0, MV on VDM): `TM418/419/420_VAC1/2/3_FB` / `TM421_VBUS_FB` / `TM422_VBAT_FB` / `TM424_VREF_TRIM`
+  - `TM425_VREF_1P2V_BUF` (ATEST1/AMUX pad, MV on **AMUX_PGND_FXVI**)
+- **寄存器全部来自 reg_config/tm*.sv**（30/30 测试 I2C 值 verbatim 匹配 .sv, field[] 尾注保留, 含 TM410~413 缺逗号 verbatim 保留）
+- **新源表名确认**: PWM1=PB0_BST_ACM(S5_18)、PWM2=PA6_PC5_ACM(S5_19)、DMO=PC8_PC6_ACM(S5_12)、DMA=PA7_PD2_ACM(S5_23), 均直接连接(无继电器), 全在 Pin_Channel_define.h
+- **新继电器**: `K66_TMU_nQON 66` (nQON/DTEST0 → QTMU S10_CH0_A, TM300/301)
+- **跳过**: TM208/209(→212/213 合并), TM216~219(→214/215 合并), TM221(→220), TM223(→222), TM414/415/416(No such case)
+- **⚠ 待办**: Trim 项 TM300/301/422/424/425 DALI 无 .treg → 暂测默认值; TM220/222 R_pd 机制预估; TM403 REVI 极性/delta 需实机确认; TM422 测点(4V/5V)待确认
+- **验证通过**: 77 函数/花括号 232/232/AFX 30 对/I2C 值 30/30 匹配 .sv/R034 entertestmode 顺序/11 源表名全在通道宏/Toggle 3 参数两段式/TM403 倒置极性/RELAY_OFF 统一 10V10MA(修复 7 处 20V/40V→10V)
+
+### 已解决
+- 上一轮待办: TM114~205 批次验证已通过
+
+---
+
+**2026-08-08: AI.cpp 扩展 TM114~205 完成 — 29 个新函数落地（用户："继续写TM113到TM205"）**
+
+### 本轮改动
+- **新增 29 函数**（AI.cpp 1294→3024 行）:
+  - VCC 通路精度/限流: `TM114_VCC_VBUS_PATH_ACC` / `TM115_VCC_VAC_PATH_ACC` / `TM116_VCC_VBAT_PATH_ACC` (MV, iset[vcc] 带载) + `TM117_VCC_CUR_LIMIT_VBAT_PATH` / `TM118_VCC_CUR_LIMIT_VBUS_PATH` (MI, vset[vcc]=1V)
+  - `TM121_VAC_PATH_ON` (Toggle, ramp VAC1 0→5, DMUX_SEL=42)
+  - VMCU: `TM122_VMCU_VBAT_PATH_ACC1(LDO)` / `TM123_VMCU_VBAT_PATH_ACC2(LDR)` / `TM124_VMCU_VCC_PATH_ACC` (MV) + `TM125_VMCU_CUR_LIMIT_VBAT_PATH` / `TM126_VMCU_CUR_LIMIT_VCC_PATH` (MI); VMCU 源 = VCC_VMCU_FXVI + **K31_VMCU ON**（新加 define）
+  - VBAT 路径切换/比较器: `TM127_VBAT_PATH_ON_VMCU`(DMUX_SEL=53) / `TM128_VBAT_PATH_ON_VCC`(40) / `TM129_VCC_VBAT_HT_2P8`(62) / `TM130_VCC_VBAT_HT_3P7`(63), 均 Toggle (VBAT 斜坡)
+  - BG 内部信号: `TM131_IRPPO_EA_FB`(MUX=6) / `TM132_IHR_P_1UA`(7) / `TM133_IZTC_1UA`(8) / `TM134_IPTAT_1UA`(9) / `TM135_VREF_1P0`(10) / `TM136_AVSS_BG`(11) / `TM139_HP_VBG`(12) — ATEST0 pad 复用 VDM (K59 NC)
+  - TSD/TDIE_WARM: `TM137_TSD_TM`(DMUX_SEL=18) / `TM138_TDIE_WARM_TM`(17) + 0x58=0x40
+  - IO: `TM200_VTH_SCL_IN`(DMUX_SEL=5) / `TM201_VTH_SDA_IN`(6) Toggle; `TM203_R_SDA`(0x67=0x32,0x68=0x30, FI=10uA→Ω); `TM204_IPD_VBUS` / `TM205_IPD_VAC1` (0x08 下拉, MI)
+- **寄存器全部来自 reg_config/tm*.sv**（I2CWriteSameData 值逐一核对无 mismatch），field[] 尾注保留
+- **entertestmode 铁律**: 有 en_tm[] 的 TM 均先 entertestmode() 再写寄存器; TM115/116/117/118 无 en_tm[]（纯测量）注释说明; TM204/205 用 wait_warmup[]（0x08 功能寄存器）按 DFT 原始设计不调, 注释说明
+- **跳过**: TM119(VBAT_PATH_ON)→tm112 覆盖, TM120(VBUS_PATH_ON)→tm107 覆盖, TM202(R_INT)→tm400 合并
+- **⚠ 待办**: TM133/135/139 Trim 项 (TRIM_ZTC_RES/TRIM_BG_RES_DIV/TRIM_BG) DALI 无 .treg → 暂测默认值, Trim execute 待 treg; TM130 DFT 迭代 VCC_FAVOR_VBAT=1/2/3 (vth 3.7/3.9/4.1V) 暂按 favor=1 实现; iset[vcc] FI 方向(+0.05 sink 待确认)
+- **验证通过**: 47 函数/AFX 47 对/花括号平衡/I2C 值全匹配 .sv/8 源表名全在 Pin_Channel_define.h/Toggle 3 参数+2 段 ramp/RELAY_OFF 统一 10V10MA
+
+### 已解决
+- 上一轮待办: TM100~112 寄存器提取落地（已核对）
+
+---
+
+**2026-08-08: AI.cpp 寄存器配置提取完成 — TM100~112 全部落地，field[] 尾注完整保留（用户确认）**
+
+### 本轮改动
+- **范围扩展（用户："这里tm101的寄存器你从reg_config找到对应的文件了吗"）**: 上轮只落地了新增 4 函数，本轮把 **TM100~112 全部 13 个已有函数**的 `// TODO: 解析为 I2CWriteSameData()` 替换为 reg_config/tm*.sv 提取的写入
+- **落地明细** (reg_config/tmXXX.sv → AI.cpp, 含 `// Write reg ...` 尾注):
+  - TM100: `0x57=0x02`/`0x5E=0x03` (ATEST0_MUX=3) + `0x57=0x06`/`0x5B=0x50` (ATEST1/BUBO=5) + `0x61=0x4B` (BUBO_FORCE)
+  - TM101~104: `0x57=0x02`/`0x5E={0x01,0x02,0x04,0x05}` (LP_VBG/VBG_BF/HR/PTAT)
+  - TM105~112: DMUX 路由组 `0x56={0x00,0x13,0x29,0x16,0x15,0x14,0x17,0x28}` + `0x57=0x08`; TM112 加 `0x58=0x20`
+  - 合计 AI.cpp 共 **38 行** I2CWriteSameData
+- **field[] 尾注不丢（用户："这里//field 其实也是注释，我希望不要丢弃"）**: 每个 `// field[(...)]` 注释**完整保留**，且按 .sv 原始顺序放在对应写入组**之后**（写入→field尾注），非丢弃/非前移
+- **验证通过**: 38 行写入全部能在 .sv 中找到（NONE 孤儿）；目标 TM 的 .sv 写入 100% 在 AI.cpp（`all in AI.cpp: True`）；剩余 TODO 仅 3 处（TM000/000_1/001 无 reg_config 文件，保留）；花括号 152/152 平衡；field[ 注释 26 处全保留
+- **头部待办更新**: "TM100~112 全部 + TM001_2/108_1/110_1/110_2 已提取"；TM000/000_1/001 仍待寄存器地图确认
+
+---
+
+**2026-08-06: AI.cpp 寄存器配置落地 — reg_config/*.sv 提取 I2CWriteSameData（用户确认）**
+
+### 本轮改动
+- **来源**: `DALI/reg_config/tm*.sv`（AMS 自动生成测试码，含 `I2CWriteSameData(DEV_ADDR, reg, val);  // Write reg ...` 与紧跟的 `// field[...]` 尾注）
+- **AI.cpp 替换 4 个函数的 `// TODO: 解析为 I2CWriteSameData()`**:
+  - `TM001_2_IQ_SHIPMODE`: `0x29=0x01` (SHIPMODE_EN)
+  - `TM108_1_VAC1_PRST_DMO_A`: `0x56=0x16`/`0x57=0x08` (DMUX_SEL=22) + `0x71=0x3B` (DMO/A 使能)
+  - `TM110_1_VAC_SAFT_PB`: `0x56=0x41`/`0x57=0x08` (DMUX_SEL=65)
+  - `TM110_2_VAC_WL_PRST`: `0x10=0x43` (wake_up) + `0x56=0x40`/`0x57=0x08` (DMUX_SEL=64)
+  - 共 9 行，含 `// Write reg ...` 尾注（规则：I2CWriteSameData 行后注释必须完整保留）
+- **无 reg_config 文件 → 保留 TODO**: TM000/000_1 (APORT_DET_ENABLE)、TM001 (WAKE_UP/AC1_GATE_ON)、TM001_3（DFT 无 field[]）
+- **TM113**: tm113.sv 无 I2C 写入（纯电源斜坡），寄存器配置段本就无 field[]
+- **3 参签名确认**: 与 STS8300/test.cpp 既有一致（`I2CWriteSameData(DEV_ADDR, reg, val)`），规则文件DEEPSEEK.md 规定 I2CWriteSameData 行后注释不可删改
+- **头部待办更新**: 已解决项标注 reg_config 来源；未覆盖项（TM000/000_1/001）待寄存器地图确认
+
+---
+
+**2026-08-06: AI.cpp 扩展 TM000~113 — 全部缺失 TM 生成（用户确认）**
+
+### 本轮改动
+- **AI.cpp 新增 8 个函数**（TM002~006 按用户要求不写）:
+  - Top Iq (MI): `TM000_IQ_STANDBY`（TM000+TM000_1 合并, 2 参数 Iq_Standby/Iq_Standby_PLUG, VBAT=4.4V）、`TM001_IIN_SUSPEND`（期望 1.118mA）、`TM001_2_IQ_SHIPMODE`（VAC1 先上后下+60ms）、`TM001_3_IQ_OPERATION`（bench 信息项）
+  - HSKP 子项 (Toggle): `TM108_1_VAC1_PRST_DMO_A`（同 TM108+DMO/A 使能, key1_open 替代 en_tm）、`TM110_1_VAC_SAFT_PB`（DMUX_SEL=65, VAC1 0→5）、`TM110_2_VAC_WL_PRST`（+K33_VAC_WL, SCL_VACWL_ACM, DMUX_SEL=64）
+  - `TM113_VCC_UV`: **rampv_capi** 电流折返检测（VCC_VMCU_FXVI FV 斜坡 0→5, VBAT_PD3_FXVI FV=3V+ITrig, 抓 I(VBAT) 折返点）3 参数 VCC_UV_Rise/_Fall/_Hys
+- **Iq 铁律**: 静态电流测试严禁闭合 K13_VBAT_Cap（外挂 Cap2 掩盖真实 Iq）; 无继电器测试用 `cbite.SetOn(-1)`（仅关闭列表继电器=全部释放）
+- **验证通过**: 18 函数/AFX 标记×8/花括号平衡/entertestmode 与 DFT en_tm[] 一致/源表全局名全部 extern/rampv_capi(FXVIe/FXVIe) 在 Test_Method.h 存在
+- **文档更新 (AI.cpp 头部)**: TM000~113 范围、输入依据加 DTESTMAP、文件结构、待办（TM113 I-trig 10mA 预估待确认、TM108_1 key1_open 是否需 entertestmode 待确认、TM001_3 bench 可裁剪）
+
+---
+
+**2026-08-06: AI.cpp Toggle 参数修正 — 两段式 ramp 必须 3 参数（用户确认）**
+
+### 本轮改动
+- **规则 (用户确认)**: 有 ramp(AWG) 的测试项目，若 DFT 有升+降两段 → 参数为 `<Base>_Rise` / `<Base>_Fall` / `<Base>_Hys`，**Hys = Rise − Fall**，禁止单参数
+- **AI.cpp TM105~112 改造**: 8 个 Toggle 函数从单参数（只记 rise）改为 3 参数（`_Rise/_Fall/_Hys`），加 hys 数组与 `hys[site]=rise[site]-fall[site]`，LogData 三个参数分别 SetTestResult
+- **规则落地 (DFT解析为主)**: dual-parse-agent **Step 3 参数展开 + 铁律**；measure-agent 模式3 3参数规则；check-agent **E005** 强化；framework.md Toggle 模板注；nuvolta-codegen **Toggle/AWG参数规则 + H010**；memory `nuvolta-toggle-rules.md` 铁律#0
+- **TM113 备注**: 同为 ramp 两段式，算法定稿后参数同样展开为 VCC_UV_Rise/_Fall/_Hys（已写入 AI.cpp 头注待办）
+- **AI.cpp test_method**: `ToggleTest tt` → **全局定义一次** `Test_Method test_method;//cannot delete`（用户：定义一次即可，函数内不再重复声明；16 处 rampv_capv 同步，已 grep 验证）
+- **上下文管理记忆**: 新增 `nuvolta-context-management.md`（用户要求：生成代码存本地、对话只留摘要，不贴完整代码）
+
+---
+
+**2026-08-05: AI.cpp VAC 测试修正 — 反短接铁律落地（用户确认）**
+
+### 本轮改动
+- **AI.cpp 修正 (TM105/108/109/110/111/112)**: VAC1/2/3 源表由 PB5_PC4_ACM (S5_14) 改为 **VAC123_AMUX_ACM (S5_0)**；移除 K69_PB5_F/K70_VAC_F/K77_VAC_S/K78_PB5_S（Share 二选一继电器）的 SetOn —— 同时闭合两侧会把 PB5 与 VAC1 短接，违反新铁律
+- **反短接铁律（用户确认，必须执行）**: 源表→目标 PIN 的通路禁止经过/连接其他 DUT PIN（非目标 PIN 禁驱动）；例外: 浮动源（FPVIe）等电位/电流闭环连接的两 PIN 都算被测
+- **规则落地**: knowledge `schematic-parsing.md` §四反短接铁律 + §七常见错误；check-agent **P006** + 铁律；relay-agent **Step 11** + 铁律；nuvolta-codegen **反短接铁律** + **H009**；memory `nuvolta-anti-short-rule.md`
+- **AI.cpp 已验证**: 无 PB5_PC4_ACM 代码残留（仅头部修正说明）；VAC 选择树保留（VAC2→K19、VAC3→K18）；K13/K21 Cap2 与 K65_nQON_PU 不变
+
+---
+
+**2026-08-05 (22:11 网表更新): DALI_Net.NET 再解析 — S3 端口命名修正 FOVIe→FXVIe_PLUS，产物重新生成（1145行，拓扑零回归）**
+
+### 本轮改动
+- 网表 `DALI_Net.NET` 更新（Aug 5 22:11，784873B vs 上轮 783370B，+1503B）：**S3 源表端口从 `S3_FOVIe_*` 全部改为 `S3_FXVIe_PLUS_*`**（FH0-7/SH0-7/FL(0-3)/FL(4-7)/SL(0-3)/SL(4-7)，20个），无 FOVIe 残留 —— 网表将 S3 命名直接修正为 Pin_Channel_define.h 权威类型
+- `sch_parse.py` 同步：G2 通道成对 / 列7 源端口分组硬编码前缀 `S3_FOVIe_` → `S3_FXVIe_PLUS_`（否则 G2 误报 FL/SL 未覆盖、列7 丢全部通路）；`classify_source` 保留 FOVIe 兼容；STAT/MAP 备注更新
+- 产物：`COMPONENT-STATISTIC.txt` + `SCH-Connect-Map.txt`（**1145行**），全门控通过（G1/G2/G2b/G3/G4/G5/G1c/G1d）
+- **统计与上轮完全一致**：69 PIN(67 Kelvin/2 Non) + 112 源表端口 + 182 继电器(G6K 80/MOS 102) + 276 元器件 + 306 net；分类不变（BUS 67/Share 49/Connect 10/通用 19 等）
+- **CBIT↔网表核对：182 = 182 零差异**——仅网表有/仅CBIT有无；"同号不同名"仅为 CBIT 基础名 vs 网表工位尾缀（K1_COMP_AMP vs K1_COMP_AMP_S1），属预期
+- **AI.cpp 依赖通路全部保持**：VCC→K25、VAC1 默认、VAC2→K19、VAC3→K18、VDM/VBUS→ACM200 默认、VBAT/PB5→FXVIe_PLUS 默认；列7 FXVIe_PLUS→ACDRV1/2/3（K31-NC→K25→K22/23/24）；列1 FPVIe→BUS 结构不变（K87/88/89、K131/132/133）
+- 规则文档同步（skill 铁律）：`原理图解析基本规则.txt` / `schematic-parsing.md` / `sch-parse.md` / `nuvolta-codegen.md` 中"netlist 标 FOVIe"表述更新为"S3 直标 FXVIe_PLUS（22:11 起）"
+
+---
+
+**2026-08-05 (21:50 网表更新): DALI_Net.NET 再解析 — 聚合统计不变，Connect-Map 1142→1145行（拓扑微调）**
+
+### 本轮改动
+- 网表 `DALI_Net.NET` 更新（Aug 5 21:50，783370B vs 上轮 783314B，+56B）：无新增继电器/元器件/PIN，属现有 net 连接微调
+- 产物：`COMPONENT-STATISTIC.txt` + `SCH-Connect-Map.txt`（**1145行**，+3），全门控通过（G1/G2/G2b/G3/G4/G5/G1c/G1d）
+- **统计与上轮完全一致**：69 PIN(67 Kelvin/2 Non) + 112 源表端口 + 182 继电器(G6K 80/MOS 102) + 276 元器件 + 306 net；分类不变（BUS 67/Share 49/Connect 10/通用 19 等）
+- **附注段不变**：无新孤立PORT、无新短接/TP映射
+- **AI.cpp 依赖通路全部保持**：VCC→K25、VAC1 默认、VAC2→K19、VAC3→K18、VDM/VBUS→ACM200 默认、VBAT/PB5→FXVIe_PLUS 默认导通；列1 FPVIe→BUS 结构不变（K87/88/89、K131/132/133）
+- 说明：+3 行为拓扑微调（疑新增一条完整 Kelvin 对），旧网表未留档无法逐行 diff，已通过上述不变量确认无回归
+
+---
+
+**2026-08-05 (21:23 网表更新): DALI_Net.NET 再解析 — 新增 K147_PB0_OSC/K147_PB1_OSC，CBIT↔网表核对清零**
+
+### 本轮改动
+- 网表 `DALI_Net.NET` 更新（Aug 5 21:23）：新增 **K147_PB0_OSC / K147_PB1_OSC**（光耦 MOS，归 [Connect]）—— 解决上次"仅 CBIT 表有、网表无"待确认项，现已进网表
+- 同步新增 OSC 电路：C1_OSC / C2_OSC / R_OSC / U6 + net NetC1_OSC_S1_1/2、NetC2_OSC_S1_2（K147 桥接 OSC 电路 ↔ PB0_F/PB1_F）
+- 产物：`COMPONENT-STATISTIC.txt` + `SCH-Connect-Map.txt`（**1142行**），全门控通过（G1/G2/G2b/G3/G4/G5/G1c/G1d）
+- **统计**：69 PIN(67 Kelvin/2 Non) + 112 源表端口 + **182 继电器**（G6K 80/MOS 102，+2）+ **276 元器件**（+4）+ **306 net**（+3）
+- **继电器分类**：BUS 67 / Share 49 / Connect **10**（+2=K147×2）/ Cap 2 / Connect(名称含Cap候选,需人工确认) 7 / P2P 12 / P2P(到地) 5 / PU 7 / Kelvin 4 / 通用 19 —— 其余分类不变
+- **CBIT↔网表核对**：182 = 182 完全一致（CBIT 表 184 行含 2 个分组标签"机械共享/机械独享"，实际继电器 182）—— 无"CBIT有网表无"、无"网表有CBIT无"
+- K147 未出现在任何源表通路中（源表→PIN 路径 0 次），属 OSC 测试点/辅助连接，不影响 AI.cpp 既有通路
+
+---
+
+**2026-08-05: 新网表 DALI_Net.NET 解析 — COMPONENT-STATISTIC + SCH-Connect-Map 重新生成（全门控通过）**
+
+### 本轮改动
+- **网表文件更新**：`SCH-DALI.NET` 已被 `DALI_Net.NET` 取代（Aug 5 21:07，python 可读 EDIF）；`sch_parse.py` 默认路径改为 `DALI_Net.NET`，并支持首个非选项参数覆盖网表路径（`python sch_parse.py <netlist> [--force]`）
+- 产物：`COMPONENT-STATISTIC.txt` + `SCH-Connect-Map.txt`（**1142行**，上次 1181 行，拓扑有收敛）
+- **统计**：69 PIN（67 Kelvin/2 Non）+ 112 源表端口 + 180 继电器（G6K 80/MOS 100）+ 272 元器件 + 303 net
+- **继电器分类**：BUS 67 / Share 49 / Connect 8 / Cap 2 / Connect(名称含Cap候选,需人工确认) 7 / P2P 12 / P2P(到地) 5 / PU 7 / Kelvin 4 / 通用 19
+- **新增继电器**：K158_AMPOUT、K168_VCP_F、K169_PB5_F、K170_VAC_F（CBIT 表已有，网表新加入）；K168-170 与 K68-70 平行、归通用类，**未出现在任何路径中**（并联备用）
+- **CBIT↔网表核对**：网表 180 实例全部在 CBIT 表内；**K147_PB0_OSC / K147_PB1_OSC 仅 CBIT 表有、网表无** — 需确认是否从设计移除（否则下游 CBIT #define 会引用不存在的继电器）
+- **AI.cpp 依赖的关键通路全部保持**：VCC→ACM200(K25)、VAC2→K19、VAC3→K18、VAC1→默认、VBAT→FXVIe_PLUS 默认导通、VDM/VBUS→ACM200 默认导通；短接合并节点 PA6_PWM2 / PB0_PWM1 / V1P5_VDRV / DMA_PA7 / DMO_PC6 / INT_PA0 / BST_SW 均保持
+- 待确认沿用：7 个 Connect(名称含Cap候选) 继电器（K13_VBAT_Cap 等）
+
+### 门控现状
+- G1/G2/G2b/G3/G4/G5/G1c/G1d 全部 PASS；仅 G3 单脚浮空警告×42、G4 测试点/NC件警告×3（均允许，设计意图）
+
+---
+
+**2026-08-05: DALI TM100~113 测试代码生成 — 输出 AI.cpp（CBIT定义 + 测试内容），未入 skill（用户指定当前任务）**
+
+### 本轮改动
+- 输入：`Pin_Channel_define.h` + `SCH-Connect-Map.txt` + `Dali_testmode.xlsx` + `CBIT表-DALI.xlsx` + `C:\AccoTEST\...\INCLUDE\FXVIe.h`
+- 产物：`DALI/AI.cpp`（740行）— 前半 CBIT 继电器 #define，后半 11 个测试函数（TM100/102/105/106~113）
+- **FXVIe_PLUS 修正**（用户指正）：VBAT_PD3_FXVI 是 `FXVIe_PLUS` 类型，常量前缀 `FXVIe_PLUS_*`（非 `FXVIe_*`），量程多 40V/20V/1UA；官方头 `INCLUDE\FXVIe.h` + 例 `TESTFILE\FXVIe_PLUS_Example`；已记入 memory `nuvolta-source-name-mapping`
+- 生成函数：
+  - `TM100_HSKP_ATEST0` = TM100+TM101 (MV)；`TM102_HSKP_LP_ATEST0` = TM102+TM103+TM104 (MV+MI)
+  - `TM105_VSPRE_MAX_CMP` (Toggle)；`TM106/107_VBUS_PRST` (Toggle, VBAT=3/4V)
+  - `TM108/109/110_VAC1/2/3_PRST` (Toggle, Share K69/K70/K77/K78 +K19/K18)
+  - `TM111_VBAT_UV` + `TM112_VBAT_HT_3P1V` (Toggle, VAC1供电+VBAT斜坡)；`TM113_VCC_UV` (MI@VBAT)
+- 关键映射：ATEST0→VDM pad；VBAT→`VBAT_PD3_FXVI`(FXVIe_PLUS S3_5)；VDM→`VDM_SDA_ACM`(S5_7)；VAC1/2/3→`PB5_PC4_ACM`(S5_14, Share)；DTEST0→`NQON_HG1_ACM`(S5_9)+K65_nQON_PU；VBUS→`VBUS_DRVH1_ACM`(S5_10)；VCC→`ACDRV123_VCC_ACM`(S5_1)+K25_VCC_F
+- 待办：field[] 寄存器地址需 DALI 寄存器地图；K13_VBAT_Cap 需人工确认；DTEST0 触发电平 1.65V 预估需确认；TM113 折返检测算法待设计
+
+---
+
+**2026-08-05: 新增任务二b 读取 Pin_Channel_define.h + FOVIe 修正为 FXVIe_PLUS — 全门控通过, SCH-Connect-Map.txt 重新生成（1181行）**
+
+### 本轮改动
+- **新增任务二b: 读取 Pin_Channel_define.h 建立源表名映射**（STS PinPlanner 生成）
+  - `.h` 定义每个源表名的多工位通道串：`extern <类型> <源表名>;` + `#define _PIN_CHANNEL_DEFINE_<源表名>_ "<Sx_y,...>"`
+  - 所有工位对应通道共享同一名字，可同时操作；代码生成用语义源表名（如 `ACDRV123_VCC_ACM`），不用 netlist 端口名
+  - `sch_parse.py`：`chan_key_of_port()` 由 netlist 端口（`S5_ACM200_FH1`）推导通道键（`S5_1`）→ 映射语义名 + 权威类型；新增 **G2b 类型交叉验证**门控
+  - COMPONENT-STATISTIC 新增 "任务二b: 源表名映射" 段（全部 240 通道键 → 语义名）
+- **FOVIe 修正为 FXVIe_PLUS**（用户确认）：netlist 标 "FOVIe" 的 S3 槽实际是 FXVIe_PLUS
+  - 昨日"FOVIe 升格一级源表"基于类型误认，现还原：列6 回到 ACM200，S3 通路移入**列7 FXVIe_PLUS**（原10列规范已有此列）
+  - 类型别名：netlist 短名 QVM/QTMU = 官方 QVMe/QTMUe（'e'增强系列），G2b 归一化处理
+  - 源表类型以 .h 声明为权威（`source_type_of`）；COMPONENT-STATISTIC 源表段：`FXVIe_PLUS (20)`、`QVMe (2)`、`QTMUe (2)`
+  - 三份规则文档同步：`原理图解析基本规则.txt` / `schematic-parsing.md` / `sch-parse.md`（还原 FOVIe + 加入任务二b）；`nuvolta-codegen.md` 非浮空源清单 FOVI→FXVIe_PLUS
+- **K57_CAP_BST_SW = Cap**（昨日确认，保持）不变
+
+### 产物 (DALI/)
+- `SCH-Connect-Map.txt` — 1181行，列6=ACM200、列7=FXVIe_PLUS（S3 全量通路）
+- `COMPONENT-STATISTIC.txt` — 任务二b 源表名映射段 + 源表类型按 .h 权威
+- 新增输入 `Pin_Channel_define.h`（多工位共享源表名）
+
+### 门控现状
+- G1/G2/G2b/G3/G4/G5/G1c/G1d 全部 PASS
+- 关闭："FOVIe 附加列/一级源表" 待确认 → 确认为 FXVIe_PLUS（列7）
+
+---
+
+**2026-08-02 (第二轮): FOVIe 升格一级源表(列6) + K57 确认为 Cap — 全门控通过, SCH-Connect-Map.txt 重新生成（1182行）**
+（注: 该条目中 FOVIe 列6 的处理已被 2026-08-05 修正——FOVIe 实为 FXVIe_PLUS，列6 还原 ACM200）
+
+### 本轮改动
+- **FOVIe 升格一级源表**（用户确认，原先只作"附加列"输出）：
+  - 所有含 ACM200 的位置同步增加 FOVIe：`schematic-parsing.md`（任务二源表判断 a~i、G2通道成对含 FOVIe 分组端口、§三 Share 源表清单、§五列6）、`sch-parse.md`（Step3 列5~10）、`sch_parse.py`（列6 改 "ACM200/FOVIe → PIN"，FOVIe 路径并入列6，删除附加列）
+- **K57_CAP_BST_SW 确认为 Cap 继电器**（用户确认，非 BUS）：BST↔SW 电容耦合
+  - 误判原因：K57 pin3 连 FPVIe1_FH_PC_S1（`_PC_` net 命中 BUS_NET_RE），L3 拓扑误判为 BUS
+  - 新增 `sch_confirmed.json` 的 `relay_class` 覆盖机制（用户确认分类覆盖拓扑误判），K57 → Cap
+  - knowledge 新增 §三 Cap 继电器说明 + 常见错误表 Cap 误判行
+  - COMPONENT-STATISTIC: [Cap] 1→2（K21_VAC_Cap, K57_CAP_BST_SW）
+
+### 产物 (DALI/)
+- `SCH-Connect-Map.txt` — 1182行，列6 含 ACM200+FOVIe 全量路径（FOVIe 49 条源引用）
+- `COMPONENT-STATISTIC.txt` — K57 归入 [Cap]，FOVIe 备注已更新
+
+### 门控现状
+- G1/G2/G3/G4/G5/G1c/G1d 全部 PASS
+- 关闭两个"待人工确认"：K57_CAP_BST_SW（→Cap）、FOVIe 附加列（→一级源表）
+
+---
+
+**2026-08-02: DALI 原理图解析更新完成 — 全门控通过, SCH-Connect-Map.txt 重新生成（1184行）**
+
+### 本轮改动
+- **新规则: TP↔PIN 短接确认**（用户 2026-08-02 提出）
+  - `skills/sch-parse.md` 铁律#7「TP短接先问」：PIN 无同名 net 但存在 `TP_<PIN>` → 必须向用户询问 TP 与 PIN 是否短接，确认后建立关系
+  - `knowledge/hardware/schematic-parsing.md` 任务一 Step6 改为「孤立PORT + TP短接确认」，常见错误表新增 TP 静默假设行
+  - `sch_parse.py` 新增 **G1d TP短接待确认** 门控
+- **PIN_SHORT_MAP 主体从 net 文件推导，非固定表**（用户 2026-08-02 修正）
+  - 同一信号 net 的多个 PIN 自动合并为短接节点（net_pinname/disp），无需登记
+  - netlist 无记录的例外登记在每项目 `sch_confirmed.json`（user_shorts=PWM2↔PA6, tp_confirmed=已确认 TP↔PIN），不放脚本
+  - skill 铁律#8「短接表从 net 文件来」
+- **通路终点显示 F/S 端口**（用户 2026-08-02 修正）：标题行保留合并节点名，路径行终点用 `dest_label()` 去工位尾缀保留 F/S 侧（FH→PIN_F, SH→PIN_S），skill 与 knowledge 已同步
+- **net 文件更新影响**（SCH-DALI.NET 21:38）
+  - **G4 元器件浮空修复**（Cap1_VBUS_S1 / R_COMP_S1 连接补全, PASS）
+  - **VDRV 新增 TP_VDRV → V1P5_F/S_S1**：VDRV↔V1P5 短接（用户确认）
+- **用户确认的短接关系**（全部登记）
+  - PIN_SHORT_MAP: PWM1↔PB0（既有）、**PWM2↔PA6（新增, 节点 PA6_PWM2）**
+  - TP_CONFIRMED: VDRV↔V1P5、PA0↔INT、PA7↔DMA、PC6↔DMO、BST/SW→FPVIe1 PC、SCL/SDA→DCM S24_P1/P2
+
+### 产物 (DALI/)
+- `SCH-Connect-Map.txt` — 1184行，全门控通过，PWM2/PA6 与 VDRV/V1P5 已并入合并节点
+- `COMPONENT-STATISTIC.txt` — 更新后统计
+
+### 门控现状
+- G1/G2/G3/G4/G5/G1c/G1d 全部 PASS，无遗留待确认项
+- PWM2、VDRV 孤立PORT问题已关闭（netlist 无记录，靠用户确认短接关系解决）
+
+---
+
+**2026-07-31: DALI 原理图解析完成 — COMPONENT-STATISTIC + SCH-Connect-Map（含全部分析要点）**
+
+### 产物 (DALI/)
+- `sch_parse.py` — 六任务门控解析器（可复用；`python sch_parse.py --force` 跳过门控阻断）
+- `COMPONENT-STATISTIC.txt` — 69 PIN(67 Kelvin/2 Non) + 112源表端口 + 180继电器(8类) + 252元器件 + 296 net
+- `SCH-Connect-Map.txt` — 1170行，10列+FOVIe附加列+PIN→net映射附注；223 Kelvin对 / 43单线 / 2跨通道
+
+### ⚠️ 环境要点（下次必读）
+- **SCH-DALI.NET 是透明加密文件**（TSZ#头）：只有 python 等授权进程能读，grep/od/cat 读到的是密文。**一切文件访问必须用 python**
+- 控制台 GBK 乱码：python 打印中文用 `python -X utf8` + `sys.stdout.reconfigure(encoding='utf-8')`
+
+### Netlist 格式要点（EDIF）
+- Sheet 端口在 `(cell Sheet1_SchDoc` 的 `(interface` 块内，需括号配平截取；rename 引号内是原始名（保留 `+`/`-`/`(0-3)`）
+- **QVM rename 冲突**：`S8_QVM_CH0+` 与 `S8_QVM_CH0-` 的 EDIF id 都是 `S8_QVM_CH0_`，必须取引号原始名区分
+- 实例格式：`(Instance (rename NAME "*?") (viewRef NetlistView (cellRef CELL ...`
+- Net 成员：`(PortRef &N (InstanceRef X))`；**OPA189/EEPROM(U1) 用命名 PortRef**（PLUSIN/GND/VOUT…非数字），解析必须兼容
+- 同名 net 需合并（AGND_F_S1、S34_J+5V 有重复块）
+
+### DALI 板卡构成
+- 源表：FPVIe 2ch(S1) / FOVIe 8ch(S3) / ACM200 24ch(S5) / QVM CH0±(S8) / QTMU(S10_CH0_A/B,推断) / DCM S24_P0~15 / 无ACM、无FXVIe(PLUS)
+- FL/SL 为分组端口：FOVIe FL(0-3)/FL(4-7)，ACM200 FL(0-11)/FL(12-23)、SL 四组
+- BUS net 命名：`FPVIe{0,1}_{FH,SH,FL,SL}_BUS_S1`；矩阵继电器 K87/88/89(CH0)、K131/132/133(CH1) 默认NC导通，**不需 SetOn**
+
+### 关键拓扑发现
+- **DCM 直连**：S24_P1=SCL force net、S24_P2=SDA force net（经 TP_SCL_F/TP_SDA_F 映射确认），无需闭合继电器
+- **短接 PIN 对**：PA0↔INT、PA7↔DMA、PC6↔DMO、BST↔SW（经 FPVIe1 PC net）；PA5/PB5/VCN/VCP 是 FORCE/SENSE 全词命名 net
+- **Share 分时复用（拓扑验证）**：ACM200 ch1→ACDRV1/2/3(K22/23/24)；FOVIe ch2→VCC→ACDRV(K31→K25→K22/23/24)；ACM200 ch4→BST1/BST2(K42/43)
+- **继电器功能分类结果**：BUS 71 / Share 54 / Connect 22 / Cap 1(+7待确认) / P2P 12 / P2P(到地) 5 / PU 7 / Kelvin 4 / 通用 8
+- `K57_CAP_BST_SW`：拓扑=BUS 但名称含 Cap → **待人工确认**
+
+### 解析器算法要点（改动原因）
+- BFS 命中 PIN net 后**不停步**——PIN net 是 Share 链中间节点（PB5→VAC），停步会丢 VAC 通路
+- 排序键=(继电器数, 需ON数)：同长取默认导通多者=设计本意通道（修正 ACDRV2 错挂 FH1 问题）
+- Kelvin 配对**同通道优先**，跨通道标注"仅连通性参考"（原先把 FOVIe FH1+SH3 错配）
+- Share 精化：按"同一通道扇出>1 PIN"重新分类（6→54），同编号 F/S 双实例都要更新
+- DUT PIN 无同名 net 三步查找(R3.8)：TP_PIN 实例名映射最可靠
+- G3 浮空判定：整 part 0 连接=未使用=正常（_S1S2 共享继电器 B part 是他工位侧）
+
+### 待用户确认（未关闭）
+1. **G4 FAIL**：Cap1_VBUS_S1、R_COMP_S1 各缺 1 脚连接（真实浮空疑点）
+2. FOVIe 不在《原理图解析基本规则》源表清单和10列中 → 规则文件需补充；目前以"附加列"输出
+3. S10_CH0_A/B 按命名推断为 QTMU
+4. ~~PWM1/PWM2/VDRV 无信号 net~~ → **PWM1↔PB0 短接已由用户确认（2026-07-31）**，登记在 sch_parse.py 的 `PIN_SHORT_MAP`，节点合并为 PB0_PWM1；**PWM2、VDRV 的短接对象仍待用户提供**（netlist 中无任何记录，不可猜）
+5. CBIT表-DALI.xlsx 无功能分组列 → 三层分类 L2 跳过，仅靠 L1名称+L3拓扑+Share精化
+
+### 短接 PIN 处理机制（2026-07-31 新增）
+- 规则：共享/短接节点 = 同一电气节点，追踪到任一 PIN 即到达全部
+- netlist 可自动发现的短接（PA0↔INT 等）：经 R3.8 三步查找 + net_pinname 合并
+- netlist 无记录的短接（PWM1↔PB0）：用户在原理图确认后登记 `PIN_SHORT_MAP`（sch_parse.py 顶部）
+- 节点级去重：trace_multi 按 disp(net) 合并名分组，短接对只输出一行（如 PB0_PWM1 [Kelvin]）
+
+### 下一步候选
+- 用 COMPONENT-STATISTIC + SCH-Connect-Map 跑 cbit-ctreate-step 生成 relay.h
+- 规则文件《原理图解析基本规则.txt》补充 FOVIe 类型与列定义
+
+---
+
+**2026-07-31: 原理图解析 skill + 知识库落地（基于原理图解析基本规则.txt）**
+
+### 新增
+- `knowledge/hardware/schematic-parsing.md` — 原理图解析知识库：六任务门控流程（PIN/源表/继电器/元器件/net/SCH-Connect-Map）、《继电器功能分类》BUS/Share/Connect判定条件、《通路有效性》、§六设计原理（分时复用、BUS广播、三种稀缺源表BUS线Kelvin结构、三层动态分类、同名Net合并）、常见错误表
+- `.claude/skills/sch-parse.md` — 原理图解析 skill：编排六任务，输出 COMPONENT-STATISTIC + SCH-Connect-Map.txt（10列）
+
+### 更新
+- `relays.md` — "按功能分类"前增加设计原因表（Share=PIN端分时复用 / BUS=源表端BUS广播 / 两级复用组合）+ 三层动态分类法；硬编码编号表标注为"当前板卡实例，不可移植"
+- `cbit-parse-agent.md` — 新增 Step 1.5 门控检查 G1~G5（PIN成对/源表通道成对/继电器浮空/连接性/功能分类）+ Step 1.6 COMPONENT-STATISTIC 输出格式
+- `nuvolta-codegen.md` — 知识库表加 schematic-parsing.md，新增"其他 Skill"表收录 sch-parse.md
+
+### 来源整合
+- 规则来源：`原理图解析基本规则.txt`（六任务工作流+功能分类+通路有效性）
+- 记忆来源：`nuvolta-bus-vs-share`（分时复用原因、BUS设计原因、三层动态分类、同名Net合并）
+
+---
+
+**2026-07-31: paths.txt 生成规范平台无关版沉淀**
+
+### 新增文档
+- `paths_txt_生成规范_平台无关版.md` — 从 gen_paths.py + cbit-path-finder/parse-agent 提取的完整规范
+- 内容：paths.txt 四章节输出清单、输入依赖(D1 Netlist/D2 CBIT表)、内置知识库K1~K5、P1~P5流程规则R1.1~R8.4、自检清单C1~C12、模块关系图、平台迁移要点
+- 目的：规则可整体迁移到豆包等其他平台达到同等效果；换板卡只需替换 Netlist/CBIT表/K2编号分类表
+
+---
+
+**2026-07-23: 路径 B 键鼠屏蔽 — input_guard.py**
+
+### Deploy Agent 增强
+- 新增 `input_guard.py` — WH_KEYBOARD_LL/WH_MOUSE_LL 低级钩子，屏蔽用户真实键鼠，放行脚本 SendInput 注入
+- ESC = 唯一中止出口：脚本在启动/登录/编译/F5前 4 个安全点检测并退出，屏蔽自动解除
+- `auto_sts8300.py` 集成：start() + check_abort() + try/finally 兜底
+- `deploy-agent.md` 同步更新（路径 B 流程 + 关键规则5）
+- 冒烟测试通过：钩子安装、注入输入放行、屏蔽解除均正常
+
+---
+
+**2026-07-22: Deploy Agent 完成 — 一键编译Debug**
+
+### Deploy Agent (`deploy-agent`)
+- `auto_sts8300.py` — 158行，5状态自动检测(0=全流程, 4=仅F5)
+- 支持中英文路径（剪贴板+Ctrl+V方案）
+- 自动登录、PowerOff弹窗、VC Project、PGS加载、Rebuild、F5
+- 项目: `D:\PROJECT5-BOSTON\P68101\F68101-V0P2` (FT/QA)
+
+---
+
+**2026-07-18: Agent/Skill/知识库 重构完成 + TM600 修复 + E006 固化**
+
+### 最新修复 (TM600)
+
+| 问题 | 修复 |
+|------|------|
+| E006 上电反偏: BST=5V, PMID=15V无台阶 | 4级同步台阶ramp, BST领先PMID 5V (5→10→15→20V) |
+| E006 下电反偏: BST先降到0V, PMID保持15V | 先关HS FET(0x59=0x00) + BST降到PMID电平 + 同步下降 |
+| SetClamp(25,25) 限制测量范围 | → SetClamp(50,50), 0.5V compliance |
+| SW_ACM量程不足 | → ACM200_10V |
+
+### 规则更新
+
+- `knowledge/hardware/bus-topology.md` ← 新增 E006反偏防护规则 (PMID-FET-SW耦合)
+- `check-agent.md` ← 新增 E018~E021 检查: FET耦合反偏, BUS优先级, Cap名验证, 下电FET规则
+- `references/tm600-normal-highcurrent.cpp` ← 修复后代码（去K38, 正Cap名, 保FET下电）
+- `knowledge/hardware/voltage-inference.md` ← 🆕 电压推断四类方法 (A源表/B浮动对/C FET导通/D FPVI大电流)
+- `knowledge/hardware/bus-topology.md` ← 新增 FPVI BUS优先级 + 下电FET规则
+- `knowledge/standards/naming.md` ← 新增 Cap继电器命名规则
+- `dual-parse-agent.md` ← 新增 FET对收集 + 电压推断预览输出
+
+### NU1201 FET 对配置 (用户提供)
+| ID | 对 | 类型 | 导通条件 |
+|----|-----|------|----------|
+| C1 | PMID ↔ SW | HS 上管 | 0x59 HSON=1 |
+| C2 | VBUS ↔ PMID | HS 上管 | — |
+| C3 | SW ↔ PGND | LS 下管 | —
+
+### 新目录结构
+
+```
+.claude/
+├── skills/
+│   └── nuvolta-codegen.md           ← 主 Skill（编排6个Sub-Agent）
+├── agents/
+│   ├── dual-parse-agent.md          ← 双表解析（DFT + 资源分配表）
+│   ├── relay-agent.md               ← 继电器闭合
+│   ├── power-on-agent.md            ← 上电 + PowerState
+│   ├── measure-agent.md             ← 五模式测量
+│   ├── power-off-agent.md           ← 下电（消费PowerState）
+│   ├── check-agent.md               ← 60+项检查（P/E/R/H四层）
+│   ├── A0-原理图Agent.md            ← 原理图分析（独立，不入流水线）
+│   └── A0-知识库.md                 ← A0参考知识
+├── knowledge/                       ← 知识库（纯事实）
+│   ├── sources/
+│   │   ├── acm200.md, fovie.md, fpvie.md, hvie.md, qvme.md
+│   ├── hardware/
+│   │   ├── relays.md, pin-resource-map.md, bus-topology.md
+│   └── standards/
+│       ├── naming.md, framework.md, units.md
+└── references/                      ← 参考案例
+    ├── tm600-normal-highcurrent.cpp ← Normal + 大电流 + 浮动源
+    ├── sub-measure-template.cpp     ← Trim sub.cpp 模板
+    └── toggle-template.cpp          ← Toggle/AWG 代码片段
+```
+
+### 已删除（旧）
+
+| 旧文件 | 替代 |
+|--------|------|
+| 程序agent.md | 主Skill直接编排 |
+| A1~A6 旧Agent | dual-parse/relay/power-on/measure/power-off/check |
+| 硬件原理图.md | → knowledge/hardware/ + A0-知识库 |
+
+### 核心变化
+
+1. **三层分离**: 知识库(事实) / Skill(流程) / 参考案例(成品)
+2. **双表解析Agent**: DFT + 资源分配表 联合解析，不再分开
+3. **框架模板化**: 框架/寄存器/LogData 由主Skill模板填充，不做Sub-Agent
+4. **统一错误码**: P/E/R/H 四层 60+ 检查项
+5. **去重**: 量程表/继电器规则/Pin映射 只存一处(knowledge/)
+
+## 已完成测试函数
+
+| TM编号 | 函数名 | 参数 | 类型 | 状态 |
+|--------|--------|------|------|------|
+| TM600 | RDSON_TEST | HS_RDSON | Normal (MI&MV) | ✅ 已生成 |
+| TM100/101 | TM100_HSKP_ATEST0 | VS_PRE, LP_VBG | HSKP MV (DALI) | ✅ AI.cpp |
+| TM102/103/104 | TM102_HSKP_LP_ATEST0 | LP_VBG_BF, LP_HR_0P5U, LP_PTAT_0P5U | HSKP MV+MI (DALI) | ✅ AI.cpp |
+| TM105 | TM105_VSPRE_MAX_CMP | VSPRE_MAX_CMP | Toggle (DALI) | ✅ AI.cpp |
+| TM106 | TM106_VBUS_PRST | VBUS_PRST | Toggle (DALI) | ✅ AI.cpp |
+| TM107 | TM107_VBUS_HT_VBAT | VBUS_HT_VBAT | Toggle (DALI) | ✅ AI.cpp |
+| TM108 | TM108_VAC1_PRST | VAC1_PRST | Toggle (DALI) | ✅ AI.cpp |
+| TM109 | TM109_VAC2_PRST | VAC2_PRST | Toggle (DALI) | ✅ AI.cpp |
+| TM110 | TM110_VAC3_PRST | VAC3_PRST | Toggle (DALI) | ✅ AI.cpp |
+| TM111 | TM111_VBAT_UV | VBAT_UV | Toggle (DALI) | ✅ AI.cpp |
+| TM112 | TM112_VBAT_HT_3P1V | VBAT_HT_3P1V | Toggle (DALI) | ✅ AI.cpp |
+| TM113 | TM113_VCC_UV | VCC_UV | MI@VBAT (DALI) | ✅ AI.cpp |
+| TM114~118 | TM114~118_VCC_* | VCC 通路精度/限流 | MV+MI (DALI) | ✅ AI.cpp |
+| TM121 | TM121_VAC_PATH_ON | VAC_PATH_ON_Rise/_Fall/_Hys | Toggle (DALI) | ✅ AI.cpp |
+| TM122~126 | TM122~126_VMCU_* | VMCU 精度/限流 | MV+MI (DALI) | ✅ AI.cpp |
+| TM127~130 | TM127~130_* | VBAT 路径切换/比较器 | Toggle (DALI) | ✅ AI.cpp |
+| TM131~139 | TM131~139_* | BG ATEST0 内部信号+TSD | MV+MI (DALI) | ✅ AI.cpp |
+| TM200/201 | TM200/201_VTH_*_IN | SCL/SDA 输入阈值 | Toggle (DALI) | ✅ AI.cpp |
+| TM203 | TM203_R_SDA | R_SDA | Ω (DALI) | ✅ AI.cpp |
+| TM204/205 | TM204/205_IPD_* | VBUS/VAC1 下拉电流 | MI (DALI) | ✅ AI.cpp |
+| TM206/207 | TM206/207_IPD_VAC2/VAC3 | VAC2/3 下拉电流 | MI (DALI) | ✅ AI.cpp |
+| TM210~213 | TM210~213_VAC1/2_SNK_DET_VTH_* | VAC1/2 SNK 检测 REL/ABS | Toggle (DALI) | ✅ AI.cpp |
+| TM214/215 | TM214/215_PWM1/2_VTH | PWM1/2 输入阈值 | Toggle (DALI) | ✅ AI.cpp |
+| TM220/222 | TM220/222_DMO/DMA_PD_R | DMO/DMA 下拉电阻 | Ω FI负载 (DALI) | ✅ AI.cpp |
+| TM300/301 | TM300/301_OSC64K/4P5M | OSC 频率 (QTMU) | QTMU (DALI) | ✅ AI.cpp |
+| TM400~403/409 | TM400~403/409_VBUS_* | VBUS OVP×3/REVI/HT | Toggle (DALI) | ✅ AI.cpp |
+| TM406/408/410~413 | TM406/408/410~413_* | VBAT 比较器 (LOW/OVP/VTRIKLE×2/VRE_CHG×2) | Toggle (DALI) | ✅ AI.cpp |
+| TM418~422/424 | TM418~422/424_*_FB/VREF_TRIM | VAC1/2/3/VBUS/VBAT FB + VREF | MV ATEST0 (DALI) | ✅ AI.cpp |
+| TM425 | TM425_VREF_1P2V_BUF | 1.2V 基准缓冲 | MV ATEST1 (DALI) | ✅ AI.cpp |
+| TM119/120 | — | 分别由 tm112/tm107 覆盖 | 跳过 | ✅ 占位 |
+| TM205/206/208/209 | — | isCodeGen=None | 跳过 | ✅ 占位 |
+| TM113~118 (test.cpp) | TM113_VCC_UV / TM114~116_VCC_* / TM117~118_VCC_CUR_LIMIT_* | VCC UV/通路精度/限流 | rampv_capi+MV+MI (DALI) | ✅ test.cpp |
+| TM121~130 (test.cpp) | TM121_VAC_PATH_ON / TM122~126_VMCU_* / TM127~128_VBAT_PATH_ON / TM129~130_VCC_VBAT_HT | 通路精度/限流/路径切换 | Toggle+MV+MI (DALI) | ✅ test.cpp |
+| TM131~139 (test.cpp) | TM131_IRPPO_EA_FB / TM132_IHR_P_1UA / TM134_IPTAT_1UA / TM136_AVSS_BG / TM137~138_TSD_TDIE | BG ATEST0 内部信号+TSD | MV+MI (DALI) | ✅ test.cpp |
+| Trim×3 (test.cpp) | Trim_IZTC_RES / Trim_BG_RES_DIV / Trim_VBG | Trim 项 (IZTC 64步/BG_RES_DIV 8步/VBG 16步) | Trim execute (DALI) | ✅ test.cpp + sub.cpp measure |
+| TM200~215 (test.cpp) | TM200/201_VTH_*_IN / TM202/203_R_INT·R_SDA / TM204_IPD_VBUS / TM207_IPD_VAC3 / TM210~213_VAC1/2_SNK_DET / TM214/215_PWM1/2_Vth | IO 阈值/下拉电阻/下拉电流/SNK检测 | Toggle+MI (DALI) | ✅ test.cpp |
+| TM208/209/216~219/221/223 | — | 分别并入 212/213、214/215、220、222 | 跳过 | ✅ 占位 |
+| TM414/415/416 | — | No such case | 跳过 | ✅ 占位 |
+
+## 快速恢复
+
+- **"写 TMxxx"** → 主Skill 自动调度 6 个Sub-Agent生成代码
+- **"/nuvolta-codegen"** → 加载主Skill
+- 所有规则文件已重组，不再散落
+
+## 历史记录
+- 2026-08-10: **check E meta 权威化** — TestItemMeta capAuthority 四权威集（OVERVIEW 派生）+ gen_dali_meta.py + verify_relay_trace.py 检查 E 以 meta 为权威（0/51 mismatch，负测试×3，fast_rebuild PASSED）
+- 2026-08-10: **test.cpp TM113~TM215 生成完成** — 37 函数 + sub.cpp 3 个 Trim measure 函数; Trim 参数按 Trim 要求（step+8 后缀）; verify_awg_params PASSED + fast_rebuild 0 errors/0 warnings; F12011.dll 符号确认
+- 2026-08-09: AWG 参数命名规则演进 — 用户最终确认: `<DFT参数基名>_Rise/_Fall/_Hys`（如 VBAT_UV_Rise）, **非字面 Param_ 前缀**（曾误统一为 Param_ 前缀, 用户纠正恢复 DFT 基名+后缀, 含 H010/E005 口径 + verify_awg_params.py 门禁）
+- 2026-07-18: 重构Agent/Skill/知识库 → 三层分离 + 双表解析 + 统一错误码
+- 2026-07-16: A1~A6全部创建完毕，程序Agent作为主控
+- 2026-07-15: Netlist分析，Git仓库初始化
+- 2026-07-14: 完成TM600(HS_RDSON) v1，含台阶上电/大电流/浮动源
+- 2026-07-14: 创建进度文件，DFT.csv确认可读
+
+## 2026-08-09 完整 codegen pipeline 收尾 (TM000~TM102, B路径)
+
+### 已完成
+- **7 个 TM 函数已写入 test.cpp**: TM000_IQ_STANDBY(2参数, Iq_Standby+Iq_Standby_PLUG), TM001_IIN_SUSPEND, TM001_2_IQ_SHIPMODE, TM001_3_IQ_OPERATION, TM100_HSKP_ATEST0(VS_PRE), TM101_HSKP_LP_ATEST0(LP_VBG), TM102_HSKP_LP_ATEST0(LP_VBG_BF)
+- **StdAfx.h 无需新增继电器**: K13_VBAT_Cap=13 / K21_VAC_Cap=21 已存在, 用 StdAfx.h 宏名(编译权威)
+- **编译通过**: Release + Debug 0 errors 0 warnings
+- **TM000+TM000_1 合并**: 1 函数 2 参数 (用户决策)
+
+### 编译问题解决: LNK2019 fpvi_gp_valid (预存在, 与 test.cpp 无关)
+- 现象: Test_Method.obj ramp 方法引用 ?fpvi_gp_valid@@YAHH@Z, 链接失败
+- 根因: sub.h:68 声明 BOOL fpvi_gp_valid(int gp_no=0), SDK lib 与工厂源码均无实现
+- 解决: 用户确认可屏蔽 → test.cpp 追加 stub 恒返回 TRUE (GP 恒有效, 检查不生效)
+- 注意: compile.ps1 将 vcxproj toolset v143→v120 (本机无 VS2022/v143, 只能 v120; 备份在 Backup\code_20260809_193338)
+
+### 遗留 TODO
+- TM001 AC1_GATE_ON 位未知
+- testui 注册后续再做 (本次仅保证编译通过)
+
+---
+
+# 2026-08-10 TM216~TM402 批量生成 (9 函数) — 全链路收尾
+
+## 范围
+- 主编号 216~402 共 13 项; **TM218/219 merge→TM214/215, TM221/223 merge→TM220/222 跳过**
+- 实际生成 **9 个函数**: TM216/217/220/222/300/301/400/401/402 → test.cpp 尾部 (字节模式 BOM+CRLF 保留), 现共 **60 个 DUT_API 函数**
+
+## 新增函数 (test.cpp 5798 行)
+| 函数 | 类型 | CBIT 继电器 | 核心动作 |
+|------|------|------------|---------|
+| TM216_PWM1_Current / TM217_PWM2_Current | 普通 MI | K13_VBAT_Cap | PWM FV=0 → MI 100UA (digital两段式 10MA→500us) |
+| TM220_DMO_PD_R / TM222_DMA_PD_R | 普通 R | K13_VBAT_Cap + **K21_VAC_Cap** | VAC1=0V; DMO/DMA FI=1mA → R=MVRET/MIRET (R-VIR) |
+| TM300_OSC_64K / TM301_OSC_4P5M | Trim(暂测默认值) | K13+K65_nQON_PU+K66_TMU_nQON | QTMU_GP 测频 (KHz), 期望 64K/35K |
+| TM400/401/402_VBUS_OVP_VTH | Toggle | K13+K65 | VBUS 4→7/15/20→4 rampv_capv, 期望 6.5/12.8/18.8V, hys0.3 |
+
+## meta 全覆盖门 (用户要求 2026-08-10: 每个测试项目必须有 meta)
+- `gen_dali_meta.py --require-all`: **PASS 63/63** (OVERVIEW 已含 13 项记录, --require-all 为收尾双查必带参数)
+- `verify_relay_trace.py --warn-as-error`: **RELAY TRACE PASSED** (FR-001 反向 0 处)
+- `gen_cbit_defines.py --verify StdAfx.h`: CBIT-CHECK 8 项 PASS; 3 条预存在缺口 (K168/169/170 R100M 不在 CBIT 表单点定义, 与本次无关, 待报告)
+
+## 编译
+- `fast_rebuild.ps1 -Incremental`: **Release PASSED 0 errors 0 warnings**
+- F12011.dll 重建: 含全部 9 函数名 + 14 参数名
+
+## 关键决策记录
+1. **TM220/222 需 K21_VAC_Cap**: VAC1 被 FV 驱动 0V 且非 mi/ramp → VAC 家族需闭 Cap (同 TM114 先例); 由 meta capAuthority 派生发现, 非人工
+2. **QTMU_GP_MEASURE 宏不可用** (仅注释代码): 改 `QTMU_GP.Connect→SetInSource(SINGLE_SOURCE_A)→Start(10V,POS,2.0,FILTER_PASS)→Measure(FREQ,20,10,TRANGE_US)→GetMeasureResult(AVERAGE_RESULT,KHz)→Disconnect`
+3. **Trim=Y 但无 .treg**: TM300/301 采用"暂测默认值" (固定 D2A_TRIM_OSC 寄存器), QTMU 直接测频, 不写 sub.cpp measure 函数
+4. **量程**: TM216/217 漏电流→ACM200_100UA; TM400-402 VBUS 7/15/20V→ACM200_40V (10V 档 table_max 5.0 不足 2×7); RELAY_OFF 统一 10V/10MA (R-POFF-06)
+5. **寄存器映射** (reg_config/*.sv 权威): TM216 0x10=0x43,0x56=0x2E; TM217 0x56=0x2D; TM220 0x71=0x2A,0x56=0x16; TM222 0x71=0x31,0x56=0x16; TM300 0x56=0x0C,0x57=0x08,0xF2=0x04(VBAT=4V); TM301 0x10=0x43,0x56=0x33,0x57=0x08(VBAT=5V); TM400 0x56=0x20; TM401 +0x0C=0x08 先于 0x10; TM402 +0x0C=0x14,0xFF=0x04
+
+## 生成记录
+- 完整源码: `gen_tm216_402.cpp` (9 函数, 4 空格缩进, TM214 风格)
+- 本地文件: `DALI/meta/dali_tm_meta.json` (51→63 函数覆盖)

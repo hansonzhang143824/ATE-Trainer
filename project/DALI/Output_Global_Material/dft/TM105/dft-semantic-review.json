@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "reviewGeneration": 3,
+  "reviewer": "LLM semantic review",
+  "tm": "TM105",
+  "verdict": "PASS",
+  "reviewPurpose": "Final targeted semantic review of the current deterministic DFT output against the canonical TM105 row only.",
+  "readSources": [
+    {
+      "path": "project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx",
+      "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "hashMethod": "scripts/hash_ate_plaintext.py",
+      "withinInputRoot": true,
+      "sheet": "OVERVIEW"
+    }
+  ],
+  "reviewedArtifacts": [
+    {
+      "path": "project/DALI/Output_Global_Material/dft/TM105/dft-meta.json",
+      "sha256": "c1d79a723a0e976ccd580ff611621181f9c9e34c152199e1b4f8b352252eb42f"
+    },
+    {
+      "path": "project/DALI/Output_Global_Material/dft/TM105/dft-conditions.yaml",
+      "sha256": "c2fc0ea407200521d06e5c61ede6563976c82baf17c11725a619e60b689ff8fc"
+    }
+  ],
+  "fieldChecks": [
+    {
+      "field": "identity and basic conditions",
+      "verdict": "PASS",
+      "evidence": "Canonical row matches TM105, VSPRE_MAX_CMP, HSKP, Debug, VAC-VBAT=~1V, V, blank Trim/Notes, VBAT power, VAC1 dynamic source and V(DTEST0) check."
+    },
+    {
+      "field": "power and direct-power rule",
+      "verdict": "PASS",
+      "evidence": "Code1 VBAT 4 V at 100e-6 is retained as sourceOrder 1/directPowerOn. Code2 VAC1 10 V then 0 V actions are retained as source orders 2 and 3."
+    },
+    {
+      "field": "HELPER scan intent",
+      "verdict": "PASS",
+      "evidence": "Canonical HELPER is ramp VAC：0->10, INT fall:5->0. Output preserves its normalized text as helperIntent and scanIntent.raw, with structured ramp VAC 0 to 10 and internal FALL 5 to 0 entries."
+    },
+    {
+      "field": "internal comparison",
+      "verdict": "PASS",
+      "evidence": "Canonical Description declares internal VAC-VDIO (VS_MAX) compared with VBAT. Output records internalComparison DECLARED with VAC-VDIO vs VBAT and does not invent an external differential drive."
+    },
+    {
+      "field": "toggle and Hys provenance",
+      "verdict": "PASS",
+      "evidence": "Canonical Description declares rising and falling thresholds. Output marks Rise and Fall SOURCE_DECLARED; Hys appears only as DERIVED from their difference."
+    },
+    {
+      "field": "register fields",
+      "verdict": "PASS",
+      "evidence": "Code2 fields DMUX_EN=1 and DMUX_SEL=0 are retained."
+    }
+  ],
+  "discrepancies": [],
+  "rule": "PASS means declared test meaning is preserved and derived meaning is explicitly labeled. No unprovided electrical meaning has been inferred."
+}

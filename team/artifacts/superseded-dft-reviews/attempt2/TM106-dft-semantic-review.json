@@ -1,0 +1,262 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "LLM semantic review",
+  "tm": "TM106",
+  "reviewPurpose": "Semantically verify that every field of the canonical OVERVIEW row for TM106 is covered by dft-meta.json and dft-conditions.yaml, and that each derived testCondition field is explained by a source locator.",
+  "rule": "Read the single OVERVIEW row of Dali_testmode.xlsx (plaintext sha256 896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b) and compare rawIntent with testCondition field by field. A source contradiction is preserved as an open item and reported, never resolved. No value may be inferred, no source substituted, no hash re-bound.",
+  "verdict": "PASS",
+  "readSources": [
+    {
+      "path": "project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx",
+      "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "hashMethod": "scripts/hash_ate_plaintext.py",
+      "withinInputRoot": true,
+      "sheet": "OVERVIEW"
+    }
+  ],
+  "reviewedArtifacts": [
+    {
+      "path": "project/DALI/Output_Global_Material/dft/TM106/dft-meta.json",
+      "sha256": "e9e779248c5e062eac2e0af25d884c14dfcd1d5d490de2ec5c2912a867dd3ffc"
+    },
+    {
+      "path": "project/DALI/Output_Global_Material/dft/TM106/dft-conditions.yaml",
+      "sha256": "48fa643544e821e49c366dc6169d36b79a592d830e3df87e430a4e2b460025e5"
+    }
+  ],
+  "fieldChecks": [
+    {
+      "field": "identity",
+      "rawIntent": {
+        "Item": "TM106",
+        "Level": "HSKP",
+        "Name": "VBUS_PRST",
+        "Description": "VBUS PRST COMP threshold",
+        "Purpose": "SCM",
+        "Unit": "V"
+      },
+      "derived": {
+        "testItem": "TM106",
+        "level": "HSKP",
+        "parameterName": "VBUS_PRST",
+        "description": "VBUS PRST COMP threshold",
+        "purpose": "SCM",
+        "unit": "V"
+      },
+      "match": true,
+      "evidence": "testCondition.identity copies OVERVIEW columns Item, Level, Name, Description, Purpose and Unit verbatim for the single row whose Item is TM106."
+    },
+    {
+      "field": "isTrim",
+      "rawIntent": {
+        "Trim": ""
+      },
+      "derived": {
+        "isTrim": false
+      },
+      "match": true,
+      "evidence": "OVERVIEW column Trim is empty for TM106, so the item is not a trim test."
+    },
+    {
+      "field": "staticPower",
+      "rawIntent": {
+        "Code1": "vset[vbat,3,100e-6,0]",
+        "Power": "VBAT"
+      },
+      "derived": {
+        "staticPower": [
+          {
+            "pin": "vbat",
+            "raw": "vset[vbat,3,100e-6,0]",
+            "directPowerOn": true
+          }
+        ]
+      },
+      "match": true,
+      "evidence": "OVERVIEW column Code1 declares vset[vbat,3,100e-6,0] as the static rail and the Power column names VBAT; the 100e-6 ramp slot makes it a direct power-on."
+    },
+    {
+      "field": "hasRamp",
+      "rawIntent": {
+        "Code2": "en_tm[]\nfield[(DMUX_EN,1),(DMUX_SEL,19)]\nvset[vbus,3,100e-6,1]\nvset[vbus,5,1e-3,0]\nvset[vbus,3,1e-3,0]",
+        "Notes": "ramp up/down vbus from 3~5V,\nmux A2D_VBUS_PRST to dtest0\ncheck int pin toggle",
+        "Dynamic": "VBUS"
+      },
+      "derived": {
+        "hasRamp": true
+      },
+      "match": true,
+      "evidence": "OVERVIEW column Code2 contains vset[vbus,5,1e-3,0] and vset[vbus,3,1e-3,0] (non-100e-6 ramp slot) and the Notes column states ramp up/down vbus from 3~5V, so hasRamp is true."
+    },
+    {
+      "field": "ramps",
+      "rawIntent": {
+        "Code2": "vset[vbus,3,100e-6,1]\nvset[vbus,5,1e-3,0]\nvset[vbus,3,1e-3,0]"
+      },
+      "derived": {
+        "ramps": [
+          {
+            "pin": "vbus",
+            "orderedVset": [
+              "vset[vbus,3,100e-6,1]",
+              "vset[vbus,5,1e-3,0]",
+              "vset[vbus,3,1e-3,0]"
+            ]
+          }
+        ]
+      },
+      "match": true,
+      "evidence": "testCondition.ramps carries one ordered vbus sweep copied from OVERVIEW column Code2 in source order: vset[vbus,3,100e-6,1] then vset[vbus,5,1e-3,0] then vset[vbus,3,1e-3,0]; no value is added or inferred."
+    },
+    {
+      "field": "dynamicPins",
+      "rawIntent": {
+        "Dynamic": "VBUS"
+      },
+      "derived": {
+        "dynamicPins": [
+          "VBUS"
+        ]
+      },
+      "match": true,
+      "evidence": "OVERVIEW column Dynamic reads VBUS for TM106, so testCondition.dynamicPins contains exactly VBUS."
+    },
+    {
+      "field": "differentialVoltage",
+      "rawIntent": {
+        "Special": "",
+        "Name": "VBUS_PRST",
+        "Description": "VBUS PRST COMP threshold",
+        "Notes": "ramp up/down vbus from 3~5V,\nmux A2D_VBUS_PRST to dtest0\ncheck int pin toggle"
+      },
+      "derived": {
+        "differentialVoltage": {
+          "state": "NOT_DECLARED"
+        }
+      },
+      "match": true,
+      "evidence": "No OVERVIEW column Name, Description, Notes or Special declares a differential voltage pair, so state is NOT_DECLARED."
+    },
+    {
+      "field": "highCurrent",
+      "rawIntent": {
+        "Special": "",
+        "Name": "VBUS_PRST",
+        "Description": "VBUS PRST COMP threshold",
+        "Notes": "ramp up/down vbus from 3~5V,\nmux A2D_VBUS_PRST to dtest0\ncheck int pin toggle"
+      },
+      "derived": {
+        "highCurrent": {
+          "state": "NOT_DECLARED"
+        }
+      },
+      "match": true,
+      "evidence": "No OVERVIEW column Name, Description, Notes or Special declares a high-current mode, so state is NOT_DECLARED."
+    },
+    {
+      "field": "involvedPins",
+      "rawIntent": {
+        "Check": "V(DTEST0)",
+        "Code1": "vset[vbat,3,100e-6,0]",
+        "Code2": "vset[vbus,...]"
+      },
+      "derived": {
+        "vsetPins": [
+          "vbat",
+          "vbus"
+        ],
+        "logicalCheck": "V(DTEST0)"
+      },
+      "match": true,
+      "evidence": "OVERVIEW columns Code1 and Code2 supply the vset pin names vbat and vbus; the Check column supplies the logical monitor label V(DTEST0), kept as a label and not converted into a physical DUT pin."
+    },
+    {
+      "field": "measurement.quantity",
+      "rawIntent": {
+        "Check": "V(DTEST0)",
+        "Unit": "V"
+      },
+      "derived": {
+        "quantity": "VOLTAGE"
+      },
+      "match": true,
+      "evidence": "OVERVIEW column Check is V(DTEST0) with the Unit column V, so quantity is VOLTAGE."
+    },
+    {
+      "field": "measurement.isToggle",
+      "rawIntent": {
+        "Notes": "check int pin toggle",
+        "HELPER": "ramp VBUS, INT toggle"
+      },
+      "derived": {
+        "isToggle": true,
+        "resultTypes": [
+          "Rise",
+          "Fall"
+        ]
+      },
+      "match": true,
+      "evidence": "The OVERVIEW Notes column says check int pin toggle and the HELPER column says ramp VBUS, INT toggle, so isToggle is true and resultTypes are Rise and Fall (Hys is marked DERIVED, not source-declared)."
+    },
+    {
+      "field": "registerFieldIntent",
+      "rawIntent": {
+        "Code2": "en_tm[]\nfield[(DMUX_EN,1),(DMUX_SEL,19)]\nvset[vbus,3,100e-6,1]"
+      },
+      "derived": {
+        "registerFieldIntent": [
+          "(DMUX_EN,1),(DMUX_SEL,19)"
+        ]
+      },
+      "match": true,
+      "evidence": "OVERVIEW column Code2 contains field[(DMUX_EN,1),(DMUX_SEL,19)], preserved as register-field intent in source order."
+    },
+    {
+      "field": "referenceValue",
+      "rawIntent": {
+        "ExpectValue": "rising vth 3.9V, hys 0.2V",
+        "Unit": "V"
+      },
+      "derived": {
+        "referenceValue": "rising vth 3.9V, hys 0.2V"
+      },
+      "match": true,
+      "evidence": "testCondition.referenceValue is the OVERVIEW ExpectValue text rising vth 3.9V, hys 0.2V verbatim in Unit V."
+    },
+    {
+      "field": "expectedValue",
+      "rawIntent": {
+        "ExpectValue": "rising vth 3.9V, hys 0.2V",
+        "de test": "r 3.798\nf 3.613"
+      },
+      "derived": {
+        "expectedValue": "rising vth 3.9V, hys 0.2V"
+      },
+      "match": true,
+      "evidence": "testCondition.expectedValue is the OVERVIEW ExpectValue text verbatim; the de test column r 3.798 / f 3.613 is preserved as reference evidence and, per the approved TM106 adjudication, the ExpectValue text is the acceptance limit."
+    },
+    {
+      "field": "remarks",
+      "rawIntent": {
+        "Notes": "ramp up/down vbus from 3~5V,\nmux A2D_VBUS_PRST to dtest0\ncheck int pin toggle"
+      },
+      "derived": {
+        "remarks": "ramp up/down vbus from 3~5V,\nmux A2D_VBUS_PRST to dtest0\ncheck int pin toggle"
+      },
+      "match": true,
+      "evidence": "testCondition.remarks is the OVERVIEW Notes column copy verbatim, including the mux A2D_VBUS_PRST to dtest0 line which remains Notes text."
+    },
+    {
+      "field": "notes",
+      "rawIntent": {
+        "Notes": "ramp up/down vbus from 3~5V,\nmux A2D_VBUS_PRST to dtest0\ncheck int pin toggle"
+      },
+      "derived": {
+        "notes": "ramp up/down vbus from 3~5V,\nmux A2D_VBUS_PRST to dtest0\ncheck int pin toggle"
+      },
+      "match": true,
+      "evidence": "testCondition.notes is the OVERVIEW Notes column copy verbatim."
+    }
+  ],
+  "discrepancies": []
+}

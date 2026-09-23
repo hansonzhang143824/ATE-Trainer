@@ -1,0 +1,417 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+gen_path_defines.py — 通路继电器定义生成器 (P-DEF 规则组)
+
+从 DALI/SCH-Connect-Map.txt 解析全部 SetOn 通路 → 生成 2.x 通路段(语义别名)
+→ 追加到工程编译头 StdAfx.h (DLP 加密, python 字节模式读写).
+
+数据权威: SCH-Connect-Map.txt 的 group head `需闭合:` 列表 = 该通路全量 SetOn 集.
+命名规则: cbit-path-namer.md — FPVIe→K_FPVIH/L_TO_<PIN>; 其他源→K_<PIN>_<SRC>;
+          同(source,side,pin)多通路→_A/_B/_C; NC-only / ⚠非有效通路 不定义.
+架构原则: 推理→agent, 固定→脚本 (通路命名歧义项输出 review 清单交 path-namer agent).
+
+用法:
+  python gen_path_defines.py                  # 生成 + 插入 StdAfx.h (DLP 环境运行)
+  python gen_path_defines.py --no-write       # 仅 stdout 输出 2.x 段
+  python gen_path_defines.py --verify         # 只校验 StdAfx.h 2.x 段 vs 数据源
+  python gen_path_defines.py --audit-rules    # RULE_COVERAGE 机器自检
+"""
+import argparse
+import re
+from schematic_projection import read_schematic_text
+import sys
+from collections import defaultdict
+
+import proj_config
+
+if sys.stdout and hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if sys.stderr and hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
+# =====================================================================
+# 常量
+# =====================================================================
+SECTION_START = "// ==== PATH_RELAY_START (gen_path_defines.py) ===="
+SECTION_END   = "// ==== PATH_RELAY_END ===="
+
+# =====================================================================
+# RULE_COVERAGE (P-DEF 通路定义生成规则组) — --audit-rules 机器自检
+# =====================================================================
+RULE_COVERAGE = [
+    ("P-DEF-01", "解析 ## 列N 分组头(源表→目标, 列→源表映射)", "parse_columns"),
+    ("P-DEF-02", "group head → path record(col/source/side/pin/tag/relays/valid)", "parse_path_records"),
+    ("P-DEF-03", "源表 token 映射(FPVIe/QTMU/QVM/ACM200/FXVIe_PLUS/DCM)", "SRC_TOKEN"),
+    ("P-DEF-04", "FPVIe H/L → K_FPVIH/L_TO_<PIN> 命名 (type2)", "name_path"),
+    ("P-DEF-05", "其他源 → K_<PIN>_<SRC> 命名 (type3)", "name_path"),
+    ("P-DEF-06", "需闭合: 无(默认导通) NC-only → 不定义", "parse_path_records"),
+    ("P-DEF-07", "⚠非有效通路(单线/跨通道配对) → 跳过并报告", "parse_path_records"),
+    ("P-DEF-08", "同(source,side,pin)多通路 → _A/_B/_C; 完全重复去重", "name_defines"),
+    ("P-DEF-09", "值 = 需闭合位号逗号分隔 (全量 SetOn 集, SCH-Connect-Map 权威)", "build_define"),
+    ("P-DEF-10", "注释引用 StdAfx.h 单点物理名 (value→name)", "build_comment"),
+    ("P-DEF-11", "插入 StdAfx.h include guard 内, 保留 BOM/编码, 幂等替换", "insert_into_stdafx"),
+    ("P-DEF-12", "--verify: StdAfx.h 2.x 段 vs 数据源一致 (缺项/异值 FAIL)", "verify_stdafx"),
+]
+
+# 列号 → 源表 (SCH-Connect-Map `## 列N:` 表头)
+COL_SOURCE = {1: "FPVIe", 2: "FPVIe", 3: "QTMU", 4: "QVM", 5: "ACM",
+              6: "ACM200", 7: "FXVIe_PLUS", 8: "QTMU", 9: "QVM", 10: "DCM"}
+# 源表 → type3 命名 token
+SRC_TOKEN = {"FPVIe": "FPVI", "QTMU": "QTMU", "QVM": "QVM",
+             "ACM200": "ACM", "ACM": "ACM", "FXVIe_PLUS": "FXVI", "DCM": "DCM"}
+# 输出分节顺序
+SECTION_ORDER = {"FPVIe": 0, "QTMU": 1, "QVM": 2, "ACM200": 3, "FXVIe_PLUS": 4, "DCM": 5}
+SECTION_TITLE = {"FPVIe": "FPVIe", "QTMU": "QTMUe", "QVM": "QVMe",
+                 "ACM200": "ACM200", "FXVIe_PLUS": "FXVIe_PLUS", "DCM": "DCM"}
+
+# =====================================================================
+# A. 输入层
+# =====================================================================
+def read_enc(path):
+    """DLP 透明加密回退读: 返回 (text, encoding). 沙箱下读到加密头则报错."""
+    with open(path, "rb") as f:
+        raw = f.read()
+    if raw.startswith(b"TSZ#"):
+        raise SystemExit(
+            f"ERROR: {path} 是 DLP 加密文件(TSZ#), 沙箱/Bash 读到的是密文。"
+            f"请在 DLP 环境(PowerShell python)运行本脚本。")
+    return raw.decode(detect_encoding(raw)), detect_encoding(raw)
+
+def detect_encoding(raw):
+    if raw.startswith(b"\xef\xbb\xbf"):
+        return "utf-8-sig"
+    for enc in ("utf-8", "gbk", "latin-1"):
+        try:
+            raw.decode(enc)
+            return enc
+        except (UnicodeDecodeError, ValueError):
+            continue
+    return "utf-8"
+
+def write_enc(path, text, encoding):
+    # 先编码后打开: 编码失败绝不截断目标文件 (曾因 'wb' 先截断后编码损坏 StdAfx.h)
+    data = text.encode(encoding)
+    with open(path, "wb") as f:
+        f.write(data)
+
+# =====================================================================
+# B. 解析层
+# =====================================================================
+RE_COL = re.compile(r"##\s*列(\d+):\s*(\S+?)\s*(?:→|->)")   # ## 列2: FPVIe → ...
+RE_COL2 = re.compile(r"CH(\d+)\s+(High|Low)\s*->\s*(\S+)")  # CH0 High -> SW1
+RE_ARR  = re.compile(r"^(\S+)\s*←\s*(\S+)")                 # ACDRV1 ← S10_CH0_A
+RE_PIN  = re.compile(r"^(\S+)\s+\[")                        # ACDRV1  [Kelvin]
+RE_NEED = re.compile(r"需闭合:\s*(\S+)")
+
+def parse_columns(text):
+    """按 `## 列N:` 切块, 返回 [(col, source, lines)]."""
+    blocks, cur = [], None
+    for raw in text.splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        m = RE_COL.search(line)
+        if m:
+            col = int(m.group(1))
+            cur = (col, COL_SOURCE.get(col, m.group(2)), [raw])
+            blocks.append(cur)
+        elif cur is not None:
+            cur[2].append(raw)
+    return blocks
+
+def parse_path_records(blocks):
+    """group head → PathRecord dict. 只保留需闭合非空且有效的 SetOn 通路."""
+    records, skipped_invalid, nc_only = [], 0, 0
+    review = []
+    for col, source, lines in blocks:
+        for raw in lines:
+            stripped = raw.strip()
+            if not stripped or stripped.startswith("#") or "需闭合" not in stripped:
+                continue
+            rec = {"col": col, "source": source}
+            # --- 识别 group head 格式 ---
+            m2 = RE_COL2.match(stripped)   # CH<n> High|Low -> pin
+            ma = RE_ARR.match(stripped)    # pin ← channel
+            mp = RE_PIN.match(stripped)    # pin [tag (col6/7)
+            if m2 and col == 2:
+                rec["channel"], rec["side"], rec["pin"] = m2.group(1), ("H" if m2.group(2) == "High" else "L"), m2.group(3)
+                rec["side_desc"] = "H" if rec["side"] == "H" else "L"
+            elif ma and col in (3, 4, 8, 9, 10):
+                rec["pin"], ch = ma.group(1), ma.group(2)
+                rec["channel"] = ch
+                if ch in ("QVM高端", "QVM低端"):
+                    rec["side"] = "H" if ch == "QVM高端" else "L"
+                    rec["side_desc"] = "高端" if ch == "QVM高端" else "低端"
+                else:
+                    rec["side"], rec["side_desc"] = None, ch
+            elif mp and col in (6, 7):
+                rec["pin"] = mp.group(1)
+                rec["channel"], rec["side"], rec["side_desc"] = "", None, ""
+            else:
+                continue
+            # --- tag / 需闭合 / 有效性 ---
+            mt = re.search(r"\[([^\]]+)\]", stripped)
+            rec["tag"] = mt.group(1) if mt else ""
+            mn = RE_NEED.search(stripped)
+            need = mn.group(1) if mn else ""
+            if need.startswith("无"):
+                nc_only += 1
+                continue
+            relays = tuple(int(x) for x in re.findall(r"K(\d+)", need))
+            if not relays:
+                nc_only += 1
+                continue
+            rec["relays"] = relays
+            rec["invalid"] = "⚠" in stripped
+            rec["line_no"] = raw
+            if rec["invalid"]:
+                skipped_invalid += 1
+                review.append(rec)
+                continue
+            records.append(rec)
+    return records, skipped_invalid, nc_only, review
+
+# =====================================================================
+# C. 命名层
+# =====================================================================
+def name_path(rec):
+    if rec["source"] == "FPVIe":
+        side = rec.get("side")
+        if side == "H":
+            return "K_FPVIH_TO_%s" % rec["pin"]
+        if side == "L":
+            return "K_FPVIL_TO_%s" % rec["pin"]
+        return "K_FPVI_TO_%s" % rec["pin"]
+    # QVM 高端/低端 → 极性入名 (cbit-path-namer 优先级1 精神; 旧 relay.h 已归档 _archive, 无 QVM 先例)
+    if rec["source"] == "QVM" and rec.get("side"):
+        return "K_%s_QVM%s" % (rec["pin"], rec["side"])  # K_<PIN>_QVMH / K_<PIN>_QVML
+    token = SRC_TOKEN.get(rec["source"], rec["source"])
+    return "K_%s_%s" % (rec["pin"], token)
+
+def build_comment(rec, phys):
+    src = rec["source"]
+    ch = rec.get("side_desc") or rec.get("channel") or ""
+    names = []
+    for k in rec["relays"]:
+        names.append(phys.get(k, "K%d" % k))
+    return "// %s[%s] -> %s: %s" % (src, ch, rec["pin"], " + ".join(names))
+
+def build_define(rec, suffix, phys):
+    name = name_path(rec)
+    if suffix:
+        name = "%s_%s" % (name, suffix)
+    return {"name": name,
+            "relays": rec["relays"],
+            "comment": build_comment(rec, phys),
+            "source": rec["source"],
+            "pin": rec["pin"]}
+
+def name_defines(records, phys):
+    """分组命名: 同(source,side,pin) → _A/_B/_C; 完全重复去重. 返回 defines + 歧义review.
+    多源/多通道连同一 pin 属正常命名(尾缀 A/B/C 区分), 全部发布; 仅 ⚠非有效 在 parse 阶段已跳过."""
+    groups = defaultdict(list)
+    for rec in records:
+        groups[(rec["source"], rec.get("side"), rec["pin"])].append(rec)
+
+    defines, collisions = [], []
+    for key in sorted(groups, key=lambda k: (SECTION_ORDER.get(k[0], 99), k[1] or "", k[2])):
+        seen = {}
+        for rec in groups[key]:
+            seen.setdefault(rec["relays"], rec)
+        uniq = list(seen.values())
+        if len(uniq) == 1:
+            defines.append(build_define(uniq[0], None, phys))
+        else:
+            collisions.append((key, uniq))
+            for i, rec in enumerate(uniq):
+                defines.append(build_define(rec, chr(ord("A") + i), phys))
+    defines.sort(key=lambda d: (SECTION_ORDER.get(d["source"], 99), d["name"]))
+    return defines, collisions
+
+# =====================================================================
+# D. 拼装层
+# =====================================================================
+def build_section(defines, skipped, nc, review, collisions):
+    out = []
+    out.append(SECTION_START)
+    out.append("// Path Relay Definitions - 通路继电器语义别名 (SetOn only)")
+    out.append("//   数据权威: DALI/SCH-Connect-Map.txt `需闭合:` 全量 SetOn 集")
+    out.append("//   命名规则: cbit-path-namer.md (FPVIe->K_FPVIH/L_TO_PIN; 其他->K_PIN_SRC; 多路径->A/B/C)")
+    out.append("//   生成: gen_path_defines.py | %d defines | !跳过 %d | NC-only %d"
+               % (len(defines), skipped, nc))
+    out.append("// " + "-" * 78)
+    cur_src = None
+    for d in defines:
+        if d["source"] != cur_src:
+            cur_src = d["source"]
+            out.append("// --- %s -> DUT Pin ---" % SECTION_TITLE.get(cur_src, cur_src))
+        out.append("#define %-42s %-28s %s" % (d["name"], ",".join(str(k) for k in d["relays"]), d["comment"]))
+    out.append(SECTION_END)
+    return "\n".join(out)
+
+# =====================================================================
+# E. 写入层 (DLP 字节模式, 保留 BOM/编码, 幂等)
+# =====================================================================
+def insert_into_stdafx(text, section):
+    """返回插入后的文本. 已有 SECTION_START → 幂等替换; 否则插到末尾 #endif 前."""
+    section = section.rstrip("\r\n") + "\n"
+    if SECTION_START in text:
+        start = text.index(SECTION_START)
+        end = text.index(SECTION_END, start) + len(SECTION_END)
+        before = re.sub(r"[\r\n]+$", "\n", text[:start])
+        after = re.sub(r"^[\r\n]+", "\n", text[end:])
+        return before + section + after
+    lines = text.splitlines(keepends=True)
+    idx = None
+    for i in range(len(lines) - 1, -1, -1):
+        if lines[i].lstrip().startswith("#endif"):
+            idx = i
+            break
+    if idx is None:
+        raise SystemExit("ERROR: StdAfx.h 无 include guard 末尾 #endif, 无法定位插入点")
+    before = "".join(lines[:idx])
+    if before and not before.endswith("\n"):
+        before += "\n"
+    return before + section + "".join(lines[idx:])
+
+def parse_section_defines(text):
+    """从 StdAfx.h 的 PATH_RELAY_START..END 段解析 name→relays."""
+    if SECTION_START not in text or SECTION_END not in text:
+        return {}
+    start = text.index(SECTION_START)
+    end = text.index(SECTION_END, start)
+    out = {}
+    for m in re.finditer(r"#define\s+(K_[A-Za-z0-9_]+)\s+([\d,\s]+)", text[start:end]):
+        out[m.group(1)] = tuple(int(x) for x in m.group(2).replace(" ", "").split(","))
+    return out
+
+# =====================================================================
+# F. verify 层
+# =====================================================================
+def verify_stdafx(stdafx_text, records, phys):
+    """StdAfx.h 2.x 段 vs 数据源一致: 缺项/异值 FAIL."""
+    errors, warns = [], []
+    expected, collisions = name_defines(records, phys)
+    exp_map = {d["name"]: d["relays"] for d in expected}
+    cur = parse_section_defines(stdafx_text)
+    if SECTION_START not in stdafx_text:
+        errors.append("StdAfx.h 缺少 2.x 通路段 (PATH_RELAY_START 横幅) → 未生成/未插入")
+    for name, relays in sorted(exp_map.items()):
+        if name not in cur:
+            errors.append("缺项: %s (期望 %s)" % (name, ",".join(str(k) for k in relays)))
+        elif cur[name] != relays:
+            errors.append("异值: %s (StdAfx=%s vs 数据源=%s)"
+                          % (name, ",".join(str(k) for k in cur[name]),
+                             ",".join(str(k) for k in relays)))
+    for name in sorted(set(cur) - set(exp_map)):
+        warns.append("StdAfx.h 多余: %s (数据源无此通路)" % name)
+    return errors, warns, len(expected), len(cur)
+
+# =====================================================================
+# H. 规则审计
+# =====================================================================
+def audit_rules():
+    fails = []
+    for rid, desc, fn in RULE_COVERAGE:
+        if fn not in globals() or not callable(globals().get(fn)) and fn not in ("SRC_TOKEN", "COL_SOURCE"):
+            fails.append((rid, desc, fn))
+    if fails:
+        for rid, desc, fn in fails:
+            print("FAIL  %s | %s | %s" % (rid, desc, fn))
+        return False
+    print("RULE_COVERAGE PASS: %d 规则全部存在且可达" % len(RULE_COVERAGE))
+    return True
+
+# =====================================================================
+# I. main
+# =====================================================================
+def main():
+    cfg = proj_config.load(proj_config.config_from_argv(sys.argv))
+    ap = argparse.ArgumentParser(description="通路继电器定义生成器 (P-DEF)")
+    ap.add_argument("--config", default=None, help="project_config.json (默认 workspace 根)")
+    ap.add_argument("--map", default=cfg['intermediates']['sch_connect_map'], help="SCH-Connect-Map.txt")
+    ap.add_argument("--stdafx", default=cfg['derived']['stdafx_h'], help="StdAfx.h (目标编译头)")
+    ap.add_argument("--no-write", action="store_true", help="仅输出 2.x 段, 不写 StdAfx.h")
+    ap.add_argument("--verify", action="store_true", help="只校验 StdAfx.h 2.x 段 vs 数据源")
+    ap.add_argument("--audit-rules", action="store_true", help="RULE_COVERAGE 机器自检")
+    ap.add_argument("--review", action="store_true", help="输出 ⚠跳过/命名歧义 明细(默认仅计数)")
+    ap.add_argument("--warn-as-error", action="store_true")
+    args = ap.parse_args()
+
+    if args.audit_rules:
+        sys.exit(0 if audit_rules() else 1)
+
+    # ---- 解析数据源 ----
+    map_text, _ = read_enc(args.map)
+    blocks = parse_columns(map_text)
+    records, skipped, nc, review = parse_path_records(blocks)
+
+    # ---- StdAfx.h 物理名映射 (供注释) ----
+    phys = {}
+    stdafx_text = None
+    try:
+        stdafx_text, stdafx_enc = read_enc(args.stdafx)
+        for m in re.finditer(r"#define\s+(K\d+[A-Za-z0-9_]*)\s+(\d+)", stdafx_text):
+            val = int(m.group(2))
+            if val not in phys:
+                phys[val] = m.group(1)
+    except SystemExit as e:
+        print("WARN: %s → 注释回退 K<位号>" % e, file=sys.stderr)
+
+    defines, collisions = name_defines(records, phys)
+    section = build_section(defines, skipped, nc, review, collisions)
+
+    print("=== 通路继电器定义 (P-DEF) ===")
+    print("数据源: %s | 有效通路 %d 条 → %d 个定义 | ⚠非有效 %d | NC-only %d | 命名歧义组 %d"
+          % (args.map, len(records), len(defines), skipped, nc, len(collisions)))
+    if review and args.review:
+        print("-- ⚠非有效通路(跳过, 供复核): %d 条 (单线/跨通道, F/S未同时连通)"
+              % len(review))
+        for r in review[:8]:
+            print("   跳过 %s[%s] → %s (需闭合 %s)"
+                  % (r["source"], r.get("side_desc") or r.get("channel") or "",
+                     r["pin"], ",".join("K%d" % k for k in r["relays"])))
+        if len(review) > 8:
+            print("    ... 其余 %d 条省略 (--review 看全部)" % (len(review) - 8))
+    if collisions and args.review:
+        print("-- 命名歧义(同源同pin多通路 → _A/_B/_C, 交 path-namer agent 复核): %d 组"
+              % len(collisions))
+        for key, uniq in collisions:
+            print("   %s %s → %s: %s"
+                  % (key[0], key[1] or "", key[2],
+                     ", ".join("%s={%s}" % (name_path(r), ",".join("K%d" % k for k in r["relays"]))
+                               for r in uniq)))
+
+    if args.no_write:
+        print(section)
+        sys.exit(0)
+
+    if args.verify:
+        if stdafx_text is None:
+            raise SystemExit("ERROR: --verify 需要可读的 StdAfx.h (DLP 环境)")
+        errors, warns, n_exp, n_cur = verify_stdafx(stdafx_text, records, phys)
+        for w in warns:
+            print("WARN  %s" % w)
+        if errors:
+            for e in errors:
+                print("FAIL  %s" % e)
+            print("VERIFY FAILED: %d 错误 | 期望 %d / 现有 %d 定义" % (len(errors), n_exp, n_cur))
+            sys.exit(1)
+        print("VERIFY PASSED: %d 通路定义与 SCH-Connect-Map 一致" % n_cur)
+        sys.exit(0)
+
+    # ---- 默认: 插入 StdAfx.h ----
+    if not (args.verify or args.no_write):
+        if stdafx_text is None:
+            raise SystemExit("ERROR: 需要可读的 StdAfx.h (DLP 环境 PowerShell python)")
+        new_text = insert_into_stdafx(stdafx_text, section)
+        if new_text == stdafx_text:
+            print("StdAfx.h 2.x 段已是最新, 无需改动")
+        else:
+            write_enc(args.stdafx, new_text, stdafx_enc)
+            print("已插入 2.x 通路段 (%d 定义) → %s" % (len(defines), args.stdafx))
+            print("验证: python gen_path_defines.py --verify")
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,221 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "dft-meta",
+  "projectId": "DALI",
+  "tm": "TM102",
+  "sourceSha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+  "canonicalInput": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\Dali_testmode.xlsx",
+  "readSources": [
+    {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\Dali_testmode.xlsx",
+      "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "insideInputRoot": true
+    }
+  ],
+  "rawIntent": {
+    "Item": "TM102",
+    "Level": "HSKP",
+    "Name": "LP_VBG_BF",
+    "Description": "low power bg_buf",
+    "ExpectValue": 1.27,
+    "Unit": "V",
+    "Test": "Direct",
+    "Special": "",
+    "Purpose": "Debug",
+    "Trim": "",
+    "Notes": "注意带载能力弱，需要先对外部pin先上电；",
+    "Code1": "vset[vbat,4,100e-6,0]",
+    "Code2": "en_tm[]\nvset[vdm,1.2,100e-6,0]\nfield[(EN_ATEST0,1),(ATEST0_MUX,2)]\nvset_off[vdm]",
+    "Code3": "delay[1e-3]\nfinish[]",
+    "Power": "VBAT",
+    "Dynamic": "",
+    "Check": "V(ATEST0)",
+    "isCodeGen": "Y",
+    "isRun": "",
+    "Assign": "",
+    "State \nAMS\nValidation": "Done",
+    "State\nBench Validation": "",
+    "is CP test?": "",
+    "CP comment": "",
+    "State\nATE Validation": "",
+    "HELPER": "",
+    "de test": 1.178,
+    "aetest": "",
+    "is test": "checked"
+  },
+  "parsedVsetCommands": [
+    {
+      "column": "Code1",
+      "order": 1,
+      "pin": "vbat",
+      "args": [
+        "4",
+        "100e-6",
+        "0"
+      ],
+      "raw": "vset[vbat,4,100e-6,0]",
+      "powerOnDirect": true
+    },
+    {
+      "column": "Code2",
+      "order": 1,
+      "pin": "vdm",
+      "args": [
+        "1.2",
+        "100e-6",
+        "0"
+      ],
+      "raw": "vset[vdm,1.2,100e-6,0]",
+      "powerOnDirect": true
+    }
+  ],
+  "declaredPins": [
+    "vbat",
+    "vdm"
+  ],
+  "openItems": [],
+  "generation": "deterministic OVERVIEW-only parse",
+  "testCondition": {
+    "identity": {
+      "testItem": "TM102",
+      "level": "HSKP",
+      "parameterName": "LP_VBG_BF",
+      "description": "low power bg_buf",
+      "purpose": "Debug",
+      "unit": "V"
+    },
+    "remarks": "注意带载能力弱，需要先对外部pin先上电；",
+    "expectedValue": 1.27,
+    "isTrim": false,
+    "powerSequence": [
+      {
+        "column": "Code1",
+        "order": 1,
+        "sourceOrder": 1,
+        "pin": "vbat",
+        "args": [
+          "4",
+          "100e-6",
+          "0"
+        ],
+        "raw": "vset[vbat,4,100e-6,0]",
+        "directPowerOn": true
+      },
+      {
+        "column": "Code2",
+        "order": 1,
+        "sourceOrder": 2,
+        "pin": "vdm",
+        "args": [
+          "1.2",
+          "100e-6",
+          "0"
+        ],
+        "raw": "vset[vdm,1.2,100e-6,0]",
+        "directPowerOn": true
+      }
+    ],
+    "staticPower": [
+      {
+        "column": "Code1",
+        "order": 1,
+        "sourceOrder": 1,
+        "pin": "vbat",
+        "args": [
+          "4",
+          "100e-6",
+          "0"
+        ],
+        "raw": "vset[vbat,4,100e-6,0]",
+        "directPowerOn": true
+      }
+    ],
+    "directPowerActions": [
+      {
+        "column": "Code1",
+        "order": 1,
+        "sourceOrder": 1,
+        "pin": "vbat",
+        "args": [
+          "4",
+          "100e-6",
+          "0"
+        ],
+        "raw": "vset[vbat,4,100e-6,0]",
+        "directPowerOn": true
+      },
+      {
+        "column": "Code2",
+        "order": 1,
+        "sourceOrder": 2,
+        "pin": "vdm",
+        "args": [
+          "1.2",
+          "100e-6",
+          "0"
+        ],
+        "raw": "vset[vdm,1.2,100e-6,0]",
+        "directPowerOn": true
+      }
+    ],
+    "hasRamp": false,
+    "ramps": [],
+    "helperIntent": "",
+    "scanIntent": {
+      "state": "NOT_DECLARED",
+      "source": "HELPER",
+      "raw": "",
+      "entries": []
+    },
+    "dynamicPins": [],
+    "highCurrent": {
+      "state": "NOT_DECLARED",
+      "evidenceColumns": [
+        "Name",
+        "Description",
+        "Notes",
+        "Special"
+      ]
+    },
+    "differentialVoltage": {
+      "state": "NOT_DECLARED",
+      "evidenceColumns": [
+        "Name",
+        "Description",
+        "Notes",
+        "Special"
+      ]
+    },
+    "internalComparison": {
+      "state": "NOT_DECLARED",
+      "expression": "",
+      "sourceText": ""
+    },
+    "involvedPins": {
+      "vsetPins": [
+        "vbat",
+        "vdm"
+      ],
+      "logicalCheck": "V(ATEST0)"
+    },
+    "measurement": {
+      "check": "V(ATEST0)",
+      "quantity": "VOLTAGE",
+      "isToggle": false,
+      "resultTypes": [
+        "Measurement"
+      ],
+      "resultTypeProvenance": [
+        {
+          "type": "Measurement",
+          "state": "SOURCE_DECLARED"
+        }
+      ]
+    },
+    "registerFieldIntent": [
+      "(EN_ATEST0,1),(ATEST0_MUX,2)"
+    ],
+    "referenceValue": 1.27,
+    "notes": "注意带载能力弱，需要先对外部pin先上电；"
+  }
+}

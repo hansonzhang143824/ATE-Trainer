@@ -1,0 +1,344 @@
+{
+  "schemaVersion": "PTC-METHOD-V3",
+  "artifactId": "TM102-test-method-contract",
+  "artifactKind": "test-method-contract",
+  "tm": "TM102",
+  "trial": "tm102-ptc",
+  "role": "test-method-expert",
+  "stage": "METHOD",
+  "verdict": "deliverable_ready",
+  "title": "LP_VBG_BF direct measurement",
+  "signedInputBoundary": {
+    "strategyContract": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm102-ptc\\strategy\\tm102-resource-config-contract.json",
+    "dftMeta": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM102\\dft-meta.json"
+  },
+  "signedInputs": {
+    "strategyContractPath": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm102-ptc\\strategy\\tm102-resource-config-contract.json",
+    "strategyContractSha256": "45319feded8f1bf8824fe092f3f1aaa300ad481a5ba83372a9c390be650b259e",
+    "dftMetaPath": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM102\\dft-meta.json",
+    "dftMetaSha256": "72ee457190a2d74c2503d3dc9dadd0eaa561dca9a33cc07066cff97499083b6b",
+    "registerEvidencePath": "team/artifacts/tm102-ptc/strategy/register-config-evidence.json",
+    "registerEvidenceSha256": "b77aa68e4a0389d7d5f7f42fd0c4ff60f6a4ddfe1927da8b741c0e16e5c6149e"
+  },
+  "classification": {
+    "parameterName": "LP_VBG_BF",
+    "isTrim": false,
+    "hasRamp": false,
+    "measurement": {
+      "check": "V(ATEST0)",
+      "quantity": "VOLTAGE",
+      "isToggle": false,
+      "resultTypes": [
+        "Measurement"
+      ],
+      "resultTypeProvenance": [
+        {
+          "type": "Measurement",
+          "state": "SOURCE_DECLARED"
+        }
+      ]
+    }
+  },
+  "methodFamily": "direct_measurement",
+  "resourceBoundary": {
+    "allocations": [
+      {
+        "endpointId": "VBAT",
+        "dutPin": "VBAT",
+        "selectionState": "SELECTED",
+        "sourceTable": "VBAT_PD3_FXVI",
+        "instrumentCategory": "FXVIe_PLUS",
+        "ports": [
+          "S3_FXVIe_PLUS_FH5",
+          "S3_FXVIe_PLUS_SH5"
+        ],
+        "selectedPath": "S3_FXVIe_PLUS_FH5 -> VBAT_F_S1 ; S3_FXVIe_PLUS_SH5 -> VBAT_S_S1",
+        "requiredActuations": [],
+        "physicalProofs": [
+          {
+            "sourcePort": "S3_FXVIe_PLUS_FH5",
+            "dutPin": "VBAT_F_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S3_FXVIe_PLUS_FH5;dut_pin=VBAT_F_S1]"
+          },
+          {
+            "sourcePort": "S3_FXVIe_PLUS_SH5",
+            "dutPin": "VBAT_S_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S3_FXVIe_PLUS_SH5;dut_pin=VBAT_S_S1]"
+          }
+        ],
+        "functionalRelays": [
+          {
+            "id": "K13",
+            "state": "ON",
+            "reason": "DFT functional relay rule"
+          }
+        ],
+        "evidenceChain": {
+          "dftEndpointLocator": "project/DALI/Output_Global_Material/dft/TM102/dft-meta.json:testCondition.involvedPins",
+          "sourceTableLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h:_PIN_CHANNEL_DEFINE_VBAT_PD3_FXVI_ and extern VBAT_PD3_FXVI",
+          "schematicRouteLocator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs",
+          "relayDefinitionLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h plus Path-Proofs.json required_on",
+          "registerConfigurationLocator": "team/artifacts/tm102-ptc/strategy/register-config-evidence.json"
+        }
+      },
+      {
+        "endpointId": "VDM",
+        "dutPin": "VDM",
+        "selectionState": "SELECTED",
+        "sourceTable": "VDM_SDA_ACM",
+        "instrumentCategory": "ACM200",
+        "ports": [
+          "S5_ACM200_FH7",
+          "S5_ACM200_SH7"
+        ],
+        "selectedPath": "S5_ACM200_FH7 -> VDM_F_S1 ; S5_ACM200_SH7 -> VDM_S_S1",
+        "requiredActuations": [],
+        "physicalProofs": [
+          {
+            "sourcePort": "S5_ACM200_FH7",
+            "dutPin": "VDM_F_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S5_ACM200_FH7;dut_pin=VDM_F_S1]"
+          },
+          {
+            "sourcePort": "S5_ACM200_SH7",
+            "dutPin": "VDM_S_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S5_ACM200_SH7;dut_pin=VDM_S_S1]"
+          }
+        ],
+        "functionalRelays": [],
+        "evidenceChain": {
+          "dftEndpointLocator": "project/DALI/Output_Global_Material/dft/TM102/dft-meta.json:testCondition.involvedPins",
+          "sourceTableLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h:_PIN_CHANNEL_DEFINE_VDM_SDA_ACM_ and extern VDM_SDA_ACM",
+          "schematicRouteLocator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs",
+          "relayDefinitionLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h plus Path-Proofs.json required_on",
+          "registerConfigurationLocator": "team/artifacts/tm102-ptc/strategy/register-config-evidence.json"
+        }
+      },
+      {
+        "endpointId": "AMUX",
+        "dutPin": "AMUX",
+        "selectionState": "SELECTED",
+        "sourceTable": "AMUX_PGND_FXVI",
+        "instrumentCategory": "FXVIe_PLUS",
+        "ports": [
+          "S3_FXVIe_PLUS_FH3",
+          "S3_FXVIe_PLUS_SH3"
+        ],
+        "selectedPath": "S3_FXVIe_PLUS_FH3 -> AMUX_F_S1 ; S3_FXVIe_PLUS_SH3 -> AMUX_S_S1",
+        "requiredActuations": [],
+        "physicalProofs": [
+          {
+            "sourcePort": "S3_FXVIe_PLUS_FH3",
+            "dutPin": "AMUX_F_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S3_FXVIe_PLUS_FH3;dut_pin=AMUX_F_S1]"
+          },
+          {
+            "sourcePort": "S3_FXVIe_PLUS_SH3",
+            "dutPin": "AMUX_S_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S3_FXVIe_PLUS_SH3;dut_pin=AMUX_S_S1]"
+          }
+        ],
+        "functionalRelays": [],
+        "evidenceChain": {
+          "dftEndpointLocator": "project/DALI/Output_Global_Material/dft/TM102/dft-meta.json:testCondition.involvedPins",
+          "sourceTableLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h:_PIN_CHANNEL_DEFINE_AMUX_PGND_FXVI_ and extern AMUX_PGND_FXVI",
+          "schematicRouteLocator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs",
+          "relayDefinitionLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h plus Path-Proofs.json required_on",
+          "registerConfigurationLocator": "team/artifacts/tm102-ptc/strategy/register-config-evidence.json"
+        }
+      }
+    ],
+    "functionalRelayIds": [
+      "K13"
+    ],
+    "registerConfiguration": {
+      "evidencePath": "team/artifacts/tm102-ptc/strategy/register-config-evidence.json",
+      "evidenceSha256": "b77aa68e4a0389d7d5f7f42fd0c4ff60f6a4ddfe1927da8b741c0e16e5c6149e",
+      "sourcePath": "project/DALI/reg_config/tm102.sv",
+      "sourceSha256": "687ffbf66fcdd5bdeb90e25b287b9f4592503e140e387dfee2f5690fc9a344dd",
+      "orderedWrites": [
+        {
+          "sourceLine": 19,
+          "sourceText": "I2CWriteSameData(DEV_ADDR, 0x57, 0x02);  // Write reg 0x57 = 2",
+          "address": "0X57",
+          "value": "0X02"
+        },
+        {
+          "sourceLine": 20,
+          "sourceText": "I2CWriteSameData(DEV_ADDR, 0x5E, 0x02);  // Write reg 0x5E = 2",
+          "address": "0X5E",
+          "value": "0X02"
+        }
+      ]
+    }
+  },
+  "methodEvidence": [
+    {
+      "source": "DFT testCondition",
+      "locator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM102\\dft-meta.json:testCondition",
+      "usedFor": "test semantics and power sequence"
+    },
+    {
+      "source": "signed strategy",
+      "locator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm102-ptc\\strategy\\tm102-resource-config-contract.json",
+      "usedFor": "source tables, routes, relays and register source"
+    }
+  ],
+  "methodPhases": [
+    {
+      "id": "MP-01",
+      "name": "safe_start",
+      "actions": [
+        "Verify all selected sources are 0 V.",
+        "Close functional relays: K13."
+      ],
+      "exitCondition": "sources are 0 V and functional relays are closed"
+    },
+    {
+      "id": "MP-02",
+      "name": "static_power",
+      "actions": [
+        "VBAT=4 V, current limit 100e-6; DFT vset[vbat,4,100e-6,0]"
+      ],
+      "exitCondition": "Code1 power values are present"
+    },
+    {
+      "id": "MP-03",
+      "name": "test_mode",
+      "actions": [
+        "entertestmode();"
+      ],
+      "exitCondition": "test mode entered"
+    },
+    {
+      "id": "MP-04",
+      "name": "measurement_bias",
+      "actions": [
+        "VDM=1.2 V, current limit 100e-6; DFT vset[vdm,1.2,100e-6,0]"
+      ],
+      "exitCondition": "Code2 measurement bias is present"
+    },
+    {
+      "id": "MP-05",
+      "name": "register_activation",
+      "actions": [
+        "I2CWriteSameData(DEV_ADDR, 0x57, 0x02);  // Write reg 0x57 = 2",
+        "I2CWriteSameData(DEV_ADDR, 0x5E, 0x02);  // Write reg 0x5E = 2"
+      ],
+      "exitCondition": "verified register writes issued in source order"
+    },
+    {
+      "id": "MP-06",
+      "name": "release_measurement_bias",
+      "actions": [
+        "Set VDM=0 V; DFT vset_off[vdm]."
+      ],
+      "exitCondition": "DFT temporary measurement bias is off"
+    },
+    {
+      "id": "MP-07",
+      "name": "measure",
+      "actions": [
+        "Measure VOLTAGE at V(ATEST0); expected reference 1.27 V."
+      ],
+      "exitCondition": "one measured result per valid site is available"
+    },
+    {
+      "id": "MP-08",
+      "name": "power_down",
+      "actions": [
+        "Set dynamic sources to 0 V.",
+        "Set static sources to 0 V.",
+        "Open functional relays."
+      ],
+      "exitCondition": "all selected sources read 0 V and relays are open"
+    }
+  ],
+  "measurementPlan": {
+    "technique": "direct voltage measurement",
+    "scanRangeResolution": {
+      "state": "NOT_APPLICABLE",
+      "reason": "DFT testCondition.hasRamp is false"
+    },
+    "forceSenseBoundary": [
+      {
+        "sourcePort": "S3_FXVIe_PLUS_FH5",
+        "dutPin": "VBAT_F_S1",
+        "requiredOn": [],
+        "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S3_FXVIe_PLUS_FH5;dut_pin=VBAT_F_S1]"
+      },
+      {
+        "sourcePort": "S3_FXVIe_PLUS_SH5",
+        "dutPin": "VBAT_S_S1",
+        "requiredOn": [],
+        "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S3_FXVIe_PLUS_SH5;dut_pin=VBAT_S_S1]"
+      },
+      {
+        "sourcePort": "S5_ACM200_FH7",
+        "dutPin": "VDM_F_S1",
+        "requiredOn": [],
+        "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S5_ACM200_FH7;dut_pin=VDM_F_S1]"
+      },
+      {
+        "sourcePort": "S5_ACM200_SH7",
+        "dutPin": "VDM_S_S1",
+        "requiredOn": [],
+        "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S5_ACM200_SH7;dut_pin=VDM_S_S1]"
+      },
+      {
+        "sourcePort": "S3_FXVIe_PLUS_FH3",
+        "dutPin": "AMUX_F_S1",
+        "requiredOn": [],
+        "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S3_FXVIe_PLUS_FH3;dut_pin=AMUX_F_S1]"
+      },
+      {
+        "sourcePort": "S3_FXVIe_PLUS_SH3",
+        "dutPin": "AMUX_S_S1",
+        "requiredOn": [],
+        "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S3_FXVIe_PLUS_SH3;dut_pin=AMUX_S_S1]"
+      }
+    ],
+    "measurementPin": "V(ATEST0)",
+    "quantity": "VOLTAGE",
+    "expectedValue": 1.27,
+    "resultTypes": [
+      "Measurement"
+    ],
+    "resultPublisher": {
+      "kind": "set_test_result",
+      "minimumCount": 1,
+      "resultNames": [
+        "Measurement"
+      ]
+    }
+  },
+  "powerDownPlan": {
+    "actions": [
+      "Set dynamic sources to 0 V.",
+      "Set static sources to 0 V.",
+      "Open functional relays."
+    ],
+    "safeEndState": "all selected sources at 0 V; selected functional relays open"
+  },
+  "logPlan": {
+    "requiredResults": [
+      "Measurement"
+    ],
+    "context": [
+      "per-site source values",
+      "relay state",
+      "register write source lines"
+    ]
+  },
+  "openItems": [],
+  "handoff": {
+    "nextStage": "RULE_REVIEW_METHOD",
+    "instruction": "Review this exact signed method contract before implementation."
+  }
+}

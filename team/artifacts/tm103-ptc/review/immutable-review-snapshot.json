@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "purpose": "immutable-review-snapshot",
+  "implementationManifestPath": "team\\artifacts\\tm103-ptc\\review\\contract-manifest.json",
+  "implementationManifestSha256": "16741f415072d760e29d4bcdde5675ce9ae75902aa7eb57e07153863f49029b5",
+  "runId": "tm103-ptc",
+  "sources": [
+    {
+      "sourcePath": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm103-ptc\\strategy\\tm103-resource-config-contract.json",
+      "reviewCopyPath": "team\\artifacts\\tm103-ptc\\review\\copy\\01-tm103-resource-config-contract.json",
+      "sha256": "92eb967dcc96807010c811e4c4d46ddc205ec2d1dd467dcd8d238bb249c6954a",
+      "bytes": 30370
+    },
+    {
+      "sourcePath": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm103-ptc\\strategy\\deliverable-ready.json",
+      "reviewCopyPath": "team\\artifacts\\tm103-ptc\\review\\copy\\02-deliverable-ready.json",
+      "sha256": "8ee5da2a165b17db4762c50c2192cecdc0be30140e3131f579d66091d1115c7b",
+      "bytes": 1462
+    },
+    {
+      "sourcePath": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm103-ptc\\method\\tm103-test-method-contract.json",
+      "reviewCopyPath": "team\\artifacts\\tm103-ptc\\review\\copy\\03-tm103-test-method-contract.json",
+      "sha256": "210d6058f99287ee22e89ca7d8accbd597d08b102f5b8cca622b6686f879a79a",
+      "bytes": 59988
+    },
+    {
+      "sourcePath": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm103-ptc\\method\\deliverable-ready.json",
+      "reviewCopyPath": "team\\artifacts\\tm103-ptc\\review\\copy\\04-deliverable-ready.json",
+      "sha256": "8b394b4bf22af94eb87a37e2b43b7c8c44a966a036c9cc6bcc301540eea00e17",
+      "bytes": 4198
+    }
+  ]
+}

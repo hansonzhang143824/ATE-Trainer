@@ -1,0 +1,179 @@
+{
+  "name": "ate-coding-core-v2",
+  "id": "ate-coding-core-v2",
+  "description": "Persistent DALI ATE V2 role registry (workspace D:/Newtest/DSH/ATE-Coding-Plat), continuing the TM108 run (runId tm108-v2-trial). Objective: write the TM108 (TM108_HSKP_VAC1_PRST) code — the VS C++ implementation of the signed strategy contract (t4) and test-method contract (t5) in the writable project copy D:/PROJECT6-DALI/ForCodexDebug, plus the staged patch, implementation manifest (team/schemas/implementation-manifest.schema.json) and terminal report. Upstream DFT t2 / schematic t3 / strategy t4 / method t5 artifacts already exist; this is a continuation, not a new TM. Only the ate-implementer task is staged now; rule-reviewer and compile-diagnostician tasks are created only after the implementer terminal report validates.",
+  "profile": {
+    "name": "ate-delivery-v2",
+    "description": "DALI ATE V2 with separated resource architecture and test method ownership",
+    "protocol": "This is a persistent cross-project ATE role registry. Keep this team and its roster after every TM; never auto-delete, archive, recreate, or replace it. The Commander is the Captain; do not create another coordinator. Team approval must leave every role unspawned. The Commander creates only DFT and schematic tasks for a new TM. The scheduler materializes only the named owner of a ready task. A member writes a terminal report to the Commander, never a reasoning transcript to a downstream member. The Commander validates terminal reports, then creates exactly the next role task. Any failure blocks downstream work; the Commander diagnoses from the recorded error log for at most five minutes, then asks the user for a ruling. Setup remains frozen unless invalidated. evolution-expert starts only on explicit user request.",
+    "executionPrompt": "Work in D:/Newtest/DSH/ATE-Coding-Plat. Read team/AGENT_RUNTIME_BASE.md and team/LAZY_AGENT_TEAM_RUNTIME.md first, then your role charter. Use current project facts and active rules only. Do not use retired-context as default input. Store outputs in team/artifacts/<run-id>/ with hashes and a terminal report. Never modify D:/PROJECT6-DALI/devel.",
+    "taskPlanning": "captain",
+    "reviewPolicy": {
+      "requiredReviewers": []
+    },
+    "lazyMembers": true
+  },
+  "reviewPolicy": {
+    "requiredReviewers": []
+  },
+  "captainSessionId": "ate-coding-core-commander-v2",
+  "createdAt": 1789646637714,
+  "phase": "running",
+  "members": [
+    {
+      "id": "",
+      "name": "dft-expert",
+      "role": "Extract DFT source facts into project meta, YAML and manifest.",
+      "provider": "deepseek-official",
+      "model": "deepseek-v4-flash",
+      "reasoningEffort": "high",
+      "executionPrompt": "Read team/roles/dft-expert.md completely and obey its contract.",
+      "joinedAt": 1789646637714,
+      "status": "idle"
+    },
+    {
+      "id": "",
+      "name": "schematic-expert",
+      "role": "Produce the three project schematic artifacts and physical path facts.",
+      "provider": "deepseek-official",
+      "model": "deepseek-v4-flash",
+      "reasoningEffort": "high",
+      "executionPrompt": "Read team/roles/schematic-expert.md completely and obey its contract.",
+      "joinedAt": 1789646637714,
+      "status": "idle"
+    },
+    {
+      "id": "",
+      "name": "setup-architect",
+      "role": "Maintain only the frozen global resource and safety baseline.",
+      "provider": "deepseek-official",
+      "model": "deepseek-v4-flash",
+      "reasoningEffort": "high",
+      "executionPrompt": "Read team/roles/setup-architect.md completely and obey its contract.",
+      "joinedAt": 1789646637714,
+      "status": "idle"
+    },
+    {
+      "id": "",
+      "name": "test-strategy-architect",
+      "role": "Select per-TM resources, routes, relay groups and register configuration.",
+      "provider": "deepseek-official",
+      "model": "deepseek-v4-flash",
+      "reasoningEffort": "high",
+      "executionPrompt": "Read team/roles/test-strategy-architect.md completely and obey its contract.",
+      "joinedAt": 1789646637714,
+      "status": "idle"
+    },
+    {
+      "id": "",
+      "name": "test-method-expert",
+      "role": "Derive phases, actual nodes, measurement, power-down and log within signed resource boundary.",
+      "provider": "deepseek-official",
+      "model": "deepseek-v4-flash",
+      "reasoningEffort": "high",
+      "executionPrompt": "Read team/roles/test-method-expert.md completely and obey its contract.",
+      "joinedAt": 1789646637714,
+      "status": "idle"
+    },
+    {
+      "id": "",
+      "name": "ate-implementer",
+      "role": "Create correctly located VS C++ code using signed contracts, APIs and library functions.",
+      "provider": "deepseek-official",
+      "model": "deepseek-v4-flash",
+      "reasoningEffort": "high",
+      "executionPrompt": "Read team/roles/ate-implementer.md completely and obey its contract.",
+      "joinedAt": 1789646637714,
+      "status": "idle"
+    },
+    {
+      "id": "",
+      "name": "rule-reviewer",
+      "role": "Independently review contracts, code and applicable active rules.",
+      "provider": "deepseek-official",
+      "model": "deepseek-v4-flash",
+      "reasoningEffort": "high",
+      "executionPrompt": "Read team/roles/rule-reviewer.md completely and obey its contract.",
+      "joinedAt": 1789646637714,
+      "status": "idle"
+    },
+    {
+      "id": "",
+      "name": "compile-diagnostician",
+      "role": "Run applicable gates and real VS builds, then classify diagnostics.",
+      "provider": "deepseek-official",
+      "model": "deepseek-v4-flash",
+      "reasoningEffort": "high",
+      "executionPrompt": "Read team/roles/compile-diagnostician.md completely and obey its contract.",
+      "joinedAt": 1789646637714,
+      "status": "idle"
+    },
+    {
+      "id": "",
+      "name": "evolution-expert",
+      "role": "User-triggered closed-run knowledge evolution only; never auto-start in TM delivery.",
+      "provider": "deepseek-official",
+      "model": "deepseek-v4-flash",
+      "reasoningEffort": "high",
+      "executionPrompt": "Read team/roles/evolution-expert.md completely. Start only when the user explicitly requests it.",
+      "joinedAt": 1789646637714,
+      "status": "idle"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "subject": "TM108 implementation: TM108_HSKP_VAC1_PRST code + implementation manifest",
+      "description": "Write the TM108 code.\n\nRUN: tm108-v2-trial. INPUTS (verify sha256 before use; they are the only authority):\n- team/artifacts/tm108-v2-trial/method/tm108-test-method-contract.md (6f605... is the strategy md; read the contract header table for hashes) + .json\n- team/artifacts/tm108-v2-trial/strategy/tm108-resource-config-contract.md (sha256 6f6057721062e97ebda53531383aff22a91bd0aa8141aadc6bafc5ef448fe6e4) + .json (fba489b5...)\n- team/artifacts/tm108-v2-trial/dft/dft-fact-audit.md, team/artifacts/tm108-v2-trial/schematic/schematic-fact-audit.md, team/artifacts/tm108-v2-trial/schematic/tm108-paths-proofs.json\n- team/artifacts/tm108-v2-trial/captain-precheck/ground-truth.md and oi-t4-01-status-addendum.md (binding status corrections)\nRead team/AGENT_RUNTIME_BASE.md, team/LAZY_AGENT_TEAM_RUNTIME.md, team/ROLE_ROUTING.md and team/roles/ate-implementer.md before acting.\n\nCODING FACTS (from the role charter, use them): the Trim main functions live in test.cpp; active measure callbacks are at the tail of sub.cpp and bind through PARAM_NODE.execute. Implementation target is the writable project copy D:/PROJECT6-DALI/ForCodexDebug (the implementation-manifest schema pins targetRoot to that path); D:/PROJECT6-DALI/devel is frozen and must never be written.\n\nSCOPE OF THE CODE: only TM108 (TM108_HSKP_VAC1_PRST), toggle/AWG/UVLO-PRST, inside the signed t4 boundary: closure set {13,65}, K17 required closed without an invented source (OI-T4-04), register staircase entertestmode() then DMUX_EN=1 + DMUX_SEL=22 as one directive with no invented de-activation (RT-3), two-segment rampv_capv producing Rise/Fall/Hys(mV), three-step power-down and safe end state. Do not touch any other TM.\n\nDO NOT INVENT: electrical or method decisions, tolerances (RT-4 leaves pass/fail limits undefined), the K57/BST-SW state (RT-2), the observation endpoint identity (OI-T4-01 / OI-T5-01). Mark those sites PENDING with the open-item id. Keep DFT conflicts F1-F6 two-sided.\n\nDELIVERABLE FORM: staged patch inside the workspace plus the implementation manifest and a terminal report. If writing into D:/PROJECT6-DALI/ForCodexDebug is denied by the filesystem sandbox, try the exact same write once more with sandbox escalation (the approval prompt is the user's consent), and if it is still denied record the denial verbatim and deliver the staged patch + manifest. Never write to D:/PROJECT6-DALI/devel.",
+      "status": "pending",
+      "assignee": "ate-implementer",
+      "dependencies": [],
+      "attempt": 0,
+      "createdAt": 1789646647303,
+      "updatedAt": 1789646647303,
+      "kind": "implementation",
+      "objective": "Produce the TM108 (TM108_HSKP_VAC1_PRST) VS C++ implementation from the signed test-method contract (t5) and the signed resource/config contract (t4) as code plus a staged patch, an implementation manifest that validates against team/schemas/implementation-manifest.schema.json, and a terminal report — with zero invented electrical, method or code-placement decisions, and every unresolved open item carried as an explicit PENDING marker.",
+      "inScope": [
+        "team/artifacts/tm108-v2-trial/implementation/"
+      ],
+      "outOfScope": [
+        "D:/PROJECT6-DALI/devel",
+        "project/DALI/",
+        "team/artifacts/tm108-v2-trial/dft/",
+        "team/artifacts/tm108-v2-trial/schematic/",
+        "team/artifacts/tm108-v2-trial/strategy/",
+        "team/artifacts/tm108-v2-trial/method/"
+      ],
+      "acceptance": [
+        "Implementation manifest exists and passes the frozen schema: `python scripts/validate_team_artifact.py implementation-manifest team/artifacts/tm108-v2-trial/implementation/tm108-implementation-manifest.json` exits 0, with targetRoot = D:/PROJECT6-DALI/ForCodexDebug, non-empty backups and changes, and before/after sha256 for every changed file.",
+        "The nine contract phases P0 pre-state, P1 closure, P2 VBAT on, P3 register activation, P4 rising sweep capture, P5 turn-around hold, P6 falling sweep capture, P7 bounded settle + stimulus de-energise, P8 closure release + safe end state exist in the code in that order, each carrying its prerequisite, relay group, register activation, setpoint/ramp/delay and exit condition as signed in contract md section 3.",
+        "Closure set is exactly {13, 65} with K17 required-closed but no invented source for its actuation; the register staircase writes entertestmode() first, then DMUX_EN=1 with DMUX_SEL=22 as one directive, and no de-activation write is invented (RT-3 cited as open).",
+        "The measurement is the two-segment rampv_capv (rising capture during P4, falling capture during P6) producing the three logged parameters Rise / Fall / Hys(mV) with the calculation and units of contract md section 4 and the log fields/units/precision of section 6; no tolerance or pass/fail threshold is invented while RT-4 is open.",
+        "Three-step power-down and the safe end state of contract md section 5 are implemented, with the BST-SW differential (0 V <= BST_actual - SW_actual <= 5 V) not asserted for any phase: all nine phases stay marked as unevaluated (RT-2 / OI-T5-02), never SW=0 V by default.",
+        "Every observation-endpoint-dependent site carries an explicit PENDING-OI-T4-01 marker and no line treats DTEST0 as nQON; F1-F6 stay two-sided with no side selected; RT-1 (K13 conflict) is closed at P1 / released at P8 and reported, not silently resolved.",
+        "No source table, route, relay, register field, functional relay or isolation condition outside the signed t4 boundary is added; the staged patch is a truthful representation of the manifest changes (apply-and-hash-check reproducible), and the terminal report is written in the LAZY_AGENT_TEAM_RUNTIME.md format with paths plus sha256.",
+        "D:/PROJECT6-DALI/devel is not read-modified, not written, and not used as a patch target; if the filesystem sandbox denies the write into D:/PROJECT6-DALI/ForCodexDebug, the denial is recorded verbatim and escalated once for approval, and the staged patch plus manifest are still delivered."
+      ],
+      "verify": [
+        "python scripts/validate_team_artifact.py implementation-manifest team/artifacts/tm108-v2-trial/implementation/tm108-implementation-manifest.json",
+        "pwsh -File scripts/run_gates.ps1 -Scope 108 -LogDir team/artifacts/tm108-v2-trial/implementation/gate-logs",
+        "pwsh -File scripts/compile.ps1 -ProjectPath D:\\PROJECT6-DALI\\ForCodexDebug -Configuration Release (only if the write escalation into that copy is approved; otherwise record it as not-run with the denial as evidence)"
+      ],
+      "deliverables": [
+        "team/artifacts/tm108-v2-trial/implementation/tm108-implementation-manifest.json",
+        "team/artifacts/tm108-v2-trial/implementation/tm108-implementation.md",
+        "team/artifacts/tm108-v2-trial/implementation/patch/ (per-file staged patch or full replacement segments)",
+        "team/artifacts/tm108-v2-trial/implementation/tm108-terminal-report.yaml",
+        "team/artifacts/tm108-v2-trial/implementation/gate-logs/"
+      ],
+      "nonGoals": [
+        "Do not write, review or compile any TM other than TM108.",
+        "Do not create the rule-reviewer or compile-diagnostician task; the captain does that after the terminal report validates.",
+        "Do not modify project/DALI, team/artifacts/tm108-v2-trial/dft, .../schematic, .../strategy, .../method or any signed upstream artifact.",
+        "Do not claim hardware pass, do not deploy, do not self-review."
+      ]
+    }
+  ],
+  "taskSeq": 1,
+  "approvedAt": 1789646736224
+}

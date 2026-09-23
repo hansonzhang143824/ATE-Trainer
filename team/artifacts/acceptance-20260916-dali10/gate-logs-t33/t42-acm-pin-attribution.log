@@ -1,0 +1,48 @@
+Dali-SCH.csv 307157 B / 04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a
+
+=== ① 源侧标识在网表里的出现（决定性）===
+  [S5_5                  ] 0 hit(s)
+  [S5_FH18               ] 0 hit(s)
+  [S5_SH18               ] 0 hit(s)
+  [SW12_U1REF_BST_ACM    ] 0 hit(s)
+  [FH18                  ] 1 hit(s)
+                              S5_ACM200_FH18         NetK109_BUSL_PB0_S1_4
+  [SH18                  ] 1 hit(s)
+                              S5_ACM200_SH18         NetK109_BUSL_PB0_S1_5
+  [S24_P10               ] 1 hit(s)
+                              S24_P10                NetK110_BST_S1_7
+
+=== ② StdAfx.h 的角色宏（既有权威定性）===
+   #define K_FPVIH_TO_BST_A                           46,48,76   // FPVIe[H] -> BST: K46_BUS0_FH_SW1 + K48_ACM5_AMP_REF + K76_ACM_BST
+   #define K_FPVIL_TO_BST_B                           109,110   // FPVIe[L] -> BST: K109_BUSL1_PB0 + K110_ACM18_BST
+   #define K_BST_ACM                                  48,76   // ACM200[] -> BST: K48_ACM5_AMP_REF + K76_ACM_BST
+   #define	K48_ACM5_AMP_REF	48
+   #define	K76_ACM_BST	76
+   #define	K109_BUSL1_PB0	109
+   #define	K110_ACM18_BST	110
+
+=== ③ 契约侧（rev 24）对同一问题的表述 ===
+  列2: FPVIe → PIN (BUS继电器) | CH0 High                        needsClosed=[46, 48, 76]                   line=39
+  列2: FPVIe → PIN (BUS继电器) | CH0 Low                         needsClosed=[109, 110, 138, 139, 145, 146] line=42
+  列2: FPVIe → PIN (BUS继电器) | CH1 High                        needsClosed=[131, 132, 134, 135]           line=265
+  列2: FPVIe → PIN (BUS继电器) | CH1 Low                         needsClosed=[109, 110]                     line=268
+  列3: QTMUe → PIN (BUS继电器) | None                            needsClosed=[141, 46, 48, 76]              line=461
+  列4: QVMe → PIN (BUS继电器) | None                             needsClosed=[137, 46, 48, 76]              line=536
+  列6: ACM200 → PIN (Share继电器) | None                         needsClosed=[48, 76]                       line=672
+  aliasResolution[bst2sw].closedRelayNumbers = [110, 61]
+  aliasResolution[bst2sw].relayChain = [('K110_ACM18_BST', 'SetOn (ACM200 S5_FH18 -> BST)'), ('K61_ACM8_SW', 'SetOn (ACM200 S5_FH8 -> SW)')]
+
+=== ④ 判读（供 t42 裁决；两套候选各有依据，本脚本不选边）===
+  候选甲 [48,76]（ACM200 直接路线）依据：
+    · StdAfx.h: K_BST_ACM = 48,76  // ACM200[] -> BST: K48_ACM5_AMP_REF + K76_ACM_BST
+    · StdAfx.h: K48_ACM5_AMP_REF 命名含 ACM5；K76_ACM_BST 为 BST 侧件
+    · 契约 pinRouteTable.BST["列6: ACM200 → PIN (Share继电器)"] needsClosed=[48,76] (L672)
+    · 宏 Pin_Channel_define.h: _PIN_CHANNEL_DEFINE_SW12_U1REF_BST_ACM_ = "S5_5,S6_5,..." ⇒ 通道 5
+  候选乙 [110,61]（FPVIe 低侧路线）依据：
+    · SCH:42/43/44 CH0 Low -> BST 需闭合 K109,K110,...（K109(ON) -> K110(ON) -> BST_F）
+    · 契约 aliasResolution[bst2sw].closedRelayNumbers=[110,61] 与 pinRouteTable CH0 Low
+    · StdAfx.h: K_FPVIL_TO_BST_B = 109,110  // FPVIe[L] -> BST
+  ⚠️ 关键判别点（t42 的实质问题）：**SW12_U1REF_BST_ACM 这一台仪器实例实际落在哪条链上**——
+     若它 = ACM200 的通道 5（宏字面 S5_5），则 [48,76] 生效、[110,61] 属 FPVIe 低侧而非本实例；
+     若夹具把该实例接到 ACM200 FH18/SH18，则 [110,61] 生效。
+     ⇒ 这决定 t29（补 K109/K110）是**必需**还是**依约保守**，也决定 t30 断言的期望集合。

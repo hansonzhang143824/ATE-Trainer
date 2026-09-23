@@ -1,0 +1,41 @@
+所有测试讨论，除了专指代Board check时候，都是按照芯片放置好，DUT PIN 可以实际与芯片PIN PAD相连为原则进行。首先原理图上芯片PIN脚是简称DUT PIN或者DUT copper,这里简称copper，所以原理图上可以看到POGO到copper，中间经历的继电器连接，copper会和弹簧针短接，弹簧针和真实芯片PAD连接。链路是：POGO(源表输出点)-->继电器-->Copper-->弹簧针-->芯片Pad。
+本文介绍的原则，可以与skill里数字源进行整合，同时如果发现与已有模拟源规则冲突，反馈用户。有任何不理解，向用户反馈。
+源表分类：模拟源表和数字源表
+模拟源表类型：ACM，ACM200，FXVIe，FXVIe_PLUS,FOVIe,FPVIe
+模拟源表共同特性:
+1. 所有模拟源表都是4线Kelvin结构，分为High端和Low端，同时也分Force和Sense。High端是Force High和Sense High简写FH和SH， Low端是Force Low和Sense Low简写FL和SL.
+2. Force 端用来输出电流和电压，同时测量电流，Sense端用来测量电压。
+3. Sense相当于电压表，SH和SL就是电压表两个测量端，电压表内阻无穷大，超过100M欧姆，因此sense线上接10K电阻，对于测试结果影响也不会超过1%。
+4. 对于所有模拟源表来说，测量时候都需要能够同时完成电压和电流的测量，因此force端的和sense端，均不能断路或者浮空，不接任何地方。
+5. 对于所有模拟源表，使用中都要满足闭环原则：
+所谓闭环，就是满足两个要求，<第一源表force和sense必须有连接>，无论通过继电器，电阻还是通过芯片放置后，force 和sense在PAD处短接。我们这里除了Board check函数外，其余都按照有芯片放置作为推理条件，这个作为首要原则填写进入skill。<第二high端和low端必须形成回路，不是断路的>，常见类型：
+A. High端和low端都能通过导线，电阻，继电器通路到原理图DUT PIN处。
+B. High端和Low端与其他节点相连，节点可以是电阻，电容，继电器，等等各种器件的端点或者连线交点，或者是其他源表的POGO或者其他源表的通路上的节点（比如两个源表通过继电器或者器件，或导线短接）。
+C. High 端和Low端其中一个连接DUT PIN，另一个连接节点.
+D. 特殊说明，force和sense之间连接的Kelvin电阻一般大于5K，这里虽然也可以实现force和sense线的短接，但是因为电阻过大，因此除了做Boardcheck时候，其余时候认为是开路或者是断开状态。
+6. FPVIe因为是大电流，同时通道数很少，一般都采用浮动接法。而其余的模拟源表的LOW端，都是FL接到AGND_F 或者GND_F, SL接到AGND_S或者GND_S.因此芯片放好后，FL和SL就已经短接到AGND了，因此high端就只需要满足force sense连接（电阻<1K ）同时high端与Copper连接或者节点连接进行。
+7. Kelvin连接和Non-Kelvin连接的区别：
+Kelvin连接指的是，从源表出来Force和Sense线，一直都是分开的，这种才是kelvin结构。
+Non-Kelvin结构指的是，从源表出来Force和Sense线，在短接到芯片pin脚前或者某一个节点的时候，force和sense线通过继电器，或者导线直接短接，或者通过小于5K的电阻短接，这种就称为non-kelvin结构。
+Kelvin和Non-Kelvin结构的影响，首先模拟源表作为force源和测量源，原则是保证测量的电流和电压要精准，因为电流只能走force线，因此电流测量只要满足不断路条件，可以确保测量准确。电压测量通过sense端测试，因此sense测量的电压是sense点终点位置，终点要么是芯片PIN脚，要么是与force端有连接的位置，连接形式可以是继电器导通，电阻或者短接。因此，sense点是否是目标测量点的位置，会直接决定测量精度。对于force和sense点已经连接的线路，线路一般会有电阻R，当电流I流过，就会产生电压降低，Sense点电压和希望测试点之间会存在:I*R, Vsense =I*R+Vexpect。如果force和sense短接后，到希望被测点中有继电器或者电阻或者到芯片PIN脚时候，R就会包括导线电阻（一般小于1欧姆），继电器导通电阻(一般几十毫欧姆到几十欧姆)，以及接触电阻（几欧姆到几百欧姆），接触电阻是连接到芯片PIN脚一定会存在的电阻。
+接触电阻产生原因：
+接触电阻指弹簧针与copper或者PAD接触时候会有电阻，从几欧姆到几百欧姆不等。
+接下来展示Kelvin结构和non-kelvin结构：
+Kelvin结构：POGO Froce-->继电器-->Copper Force--> 弹簧针Force-->PAD，POGO Sense-->继电器-->Copper Sense--> 弹簧针Sense-->PAD, 可以看到直到芯片PAD处， force和sense才短接。原理图上Force和sense是不短接的。因此如果有电流流到PAD处，sense端测量是PAD处电压，待测位置是PAD时候，就没有电压降，虽然sense端也有接触电阻，但是电阻相比于内阻10M，可以忽略不计。
+Non-Kelvin结构：POGO Force和 POGO Sense分开-->f继电器（可以是force和sense分开，也可以是同一个）-->Copper(只有一个，部分force和sense)--> 弹簧针Force-->PAD，在Copper处就短接了。因此如果有电流流到PAD处，sense端测量是PAD处电压，待测位置是PAD时候，有电压降，电压降是至少含有copper到PAD的接触电阻带来的电压降低。
+特殊说明：force端和sense端接入10K电阻，这时候算Kelvin连接，因为是芯片放上后，force和sense会在pad处短接，电阻远远小于10K，因此10K就相当于不存在。
+8. 额外说明，一般来说，模拟源表force和sense点一般希望是连接在相同的位置，比如同时到类似的节点，同时到Copper force和sense，同时到同一个节点。这个时常规做法，特殊情况的可以由用户说明。
+9. POGO说明，这里POGO专指所有源表的force和sense线的出口，包括所有模拟源表的FH/FL/SH/SL, 所有地，AGND，DGND，JGND，还有CBIT，电源和QTMU_A/B high端，QVMe的High端和low端。
+电源有：S36_+15V,S36_-15V,S36_+12V,S36_+5V,S34_+15V,S34_-15V,S34_+12V,S34_+5V,都是high端，low端时JGND。
+CBIT的high端是S34_CBIT0~127,S36_CBIT0~127, low端是JGND。
+DCM,QTMU的low端都是DGND。
+所有模拟源从POGO出来都是四线kelvin结构。
+
+接下来是数字源介绍
+数字源包括：CBIT，电源，DCM，QTMU
+数字源的共同点有两个：第一是不分Kelvin，所有都是non-Kelvin输出。从POGO处出来就是Non-Kelvin结构。
+第二是POGO处看到CBIT，电源，DCM和QTMU的都是High端，Low端全部短接了DGND，DGND也会通过POGO输出。
+数字源的闭合原则与模拟源一致，唯一不同点是，数字源只需要考虑high端形成闭环就可以了。
+特殊源表QVMe. 单独的电压表测量源，因为只有sense线，所以闭环原则与模拟源一样。
+
+CBIT这里解释一下，CBIT是继电器的控制端，一个CBIT最多同时驱动8个机械继电器，或者32个光耦继电器。后续更新CBIT识别文档。

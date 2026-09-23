@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "PTC-IMPLEMENTATION-V2",
+  "runId": "TM105-IMPLEMENTATION-RECREATE-20260919",
+  "stage": "IMPLEMENTATION",
+  "verdict": "deliverable_ready",
+  "targetRoot": "D:/PROJECT6-DALI/ForCodexDebug",
+  "scope": [
+    "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp"
+  ],
+  "changes": [
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "symbols": [
+        "TM105_HSKP_VSPRE_MAX_CMP"
+      ],
+      "beforeSha256": "5530ca9161b12108c7c206e0f9cd44004413715d0f1737f2745e71f4c321c217",
+      "afterSha256": "2ed19d63e8d761efcfbf7eaf187ee4e36e9a492bc965c94759e568dd7ff2c90c",
+      "planRefs": [
+        "team/artifacts/tm105-ptc/method/tm105-test-method-contract.json",
+        "team/artifacts/tm105-ptc/strategy/register-config-evidence.json"
+      ]
+    }
+  ],
+  "signedInputs": {
+    "methodContractPath": "team/artifacts/tm105-ptc/method/tm105-test-method-contract.json",
+    "methodContractSha256": "59b543ddf2dffb8cd04ce76a89fa97003de51021fd7edda0192ba302306b07f9"
+  },
+  "gate": {
+    "name": "verify_implementation_batch.py",
+    "status": "PASS",
+    "sourceSha256": "2ed19d63e8d761efcfbf7eaf187ee4e36e9a492bc965c94759e568dd7ff2c90c"
+  }
+}

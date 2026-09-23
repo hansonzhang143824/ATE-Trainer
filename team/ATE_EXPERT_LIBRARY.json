@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "libraryId": "ate-coding-core",
+  "displayName": "ATE-Expert",
+  "projectRoot": "D:\\Newtest\\DSH\\ATE-Coding-Plat",
+  "commander": { "id": "ate-coding-core-commander-v2", "title": "ATE Commander", "sessionId": "ate-coding-core-commander-v2", "role": "Commander / Captain", "runtime": "on-demand" },
+  "experts": [
+    { "id": "dft-expert", "title": "DFT 专家", "role": "DFT 解析与 meta/YAML", "runtime": "on-demand" },
+    { "id": "schematic-expert", "title": "原理图专家", "role": "连接映射、元件统计、schematic IR", "runtime": "on-demand" },
+    { "id": "setup-architect", "title": "Setup 专家", "role": "项目 Setup 与环境配置", "runtime": "on-demand" },
+    { "id": "test-strategy-architect", "title": "策略架构专家", "role": "项目类型、参数、函数架构、源表、继电器、寄存器", "runtime": "on-demand" },
+    { "id": "test-method-expert", "title": "测试方法专家", "role": "黄金案例、芯片知识、上下电、测量、Log", "runtime": "on-demand" },
+    { "id": "ate-implementer", "title": "实现专家", "role": "VS 工程、库函数、测试代码与 Trim 函数", "runtime": "on-demand" },
+    { "id": "rule-reviewer", "title": "规则审查专家", "role": "规则验证与问题回传", "runtime": "on-demand" },
+    { "id": "compile-diagnostician", "title": "编译诊断专家", "role": "编译错误定位与修复建议", "runtime": "on-demand" },
+    { "id": "evolution-expert", "title": "进化专家", "role": "用户触发的能力改进", "runtime": "user-triggered" }
+  ]
+}
+

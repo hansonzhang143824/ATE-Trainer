@@ -1,0 +1,22 @@
+=== run 树内（全路径 + size + mtime）===
+  team/artifacts/acceptance-20260916-dali10/setup-contract.json   377694 B  @22:10:11   契约
+  team/artifacts/acceptance-20260916-dali10/build-report.json    21015 B  @22:15:04   t54 报告（门禁/编译证据载体）
+  team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp    43806 B  @21:09:24   候选交付件
+  team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28-anchors.json    11854 B  @22:16:44   单一真源
+  team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28-citation-notice.txt     4724 B  @20:05:14   引用通告
+  team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28-summary.md    19301 B  @20:58:43   t28 报告
+  team/artifacts/acceptance-20260916-dali10/gate-logs-t30/t30-summary.md    22073 B  @21:27:39   t30 报告
+  team/artifacts/acceptance-20260916-dali10/gate-logs-t54/bst-sw.log     1991 B  @21:35:20   t54 门禁日志
+  team/artifacts/acceptance-20260916-dali10/gate-logs-t54/run-gates-t54-stdout.log     2666 B  @21:35:21   t54 门禁汇总
+
+=== run 树外 ===
+  scripts/verify_relay_trace.py                           21068 B  @18:40:43   被审门禁
+  scripts/verify_bst_sw_sequence.py                       24964 B  @19:39:53   被审门禁
+  scripts/gate_baseline.json                                 28 B  @22:45:34   基线（应未改）
+  D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp         469714 B  @18:53:33   部署态（未落盘）
+  D:/PROJECT6-DALI/devel/source/test.cpp                 434629 B  @22:40:01   生产树（只读）
+
+=== 契约关键字段（决定期望集）===
+  revision = 39
+  aliasResolution[bst2sw].resolution.closedRelayNumbers = [48, 60, 61, 76]
+  …Superseded = [110, 61]

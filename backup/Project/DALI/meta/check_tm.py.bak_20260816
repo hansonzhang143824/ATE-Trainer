@@ -1,0 +1,120 @@
+# -*- coding: utf-8 -*-
+"""TM000~102 codegen check: 校验生成代码的所有标识符在 DALI 工程已定义 (编译通过前置)"""
+import re, sys, io
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
+SRC = r'D:\Newtest\CLAUDE_PROCESS\DALI\meta\gen_tm000_102.cpp'
+PROJ = r'D:\PROJECT6-DALI\devel\source'
+
+code = io.open(SRC, encoding='utf-8').read()
+
+# ---- 0. 剥离行注释, 仅检查代码标识符 ----
+code_no_comment = re.sub(r'//.*', '', code)
+
+# ---- 1. 提取大写标识符 (源表对象/量程常量/继电器宏/FV/FI/MIRET等) ----
+caps = sorted(set(re.findall(r'\b[A-Z][A-Z0-9_]{2,}\b', code_no_comment)))
+caps = [c for c in caps if c not in ('CParam','LPCTSTR','FOR','SHORT')]
+
+# 已知 SDK 定义 (BoardCheck.cpp/AI.cpp 使用证明, 不在 source 目录可见)
+sdk_known = {'FV','FI','MIRET','MVRET','SITE_NUM','DEV_ADDR','DUT_API','CBITe','DCM','TREG','SPEC','BOOL','CParam','LPCTSTR'}
+# 代码中实际出现的 API 调用: 对象方法 (.xxx() 与 ->xxx() 调用) + 独立小写函数
+api_calls = set(re.findall(r'[.>](\w+)\s*\(', code_no_comment))
+api_calls |= set(re.findall(r'\b([a-z]\w*)\s*\(', code_no_comment))
+api_calls -= {'if','for','return','while'}
+
+# ---- 2. 构建工程已定义标识符集 + 源码全文 ----
+import glob
+defined = set()
+all_src = ''
+for f in glob.glob(PROJ + r'\*.h') + glob.glob(PROJ + r'\*.cpp'):
+    try:
+        txt = io.open(f, encoding='utf-8-sig', errors='ignore').read()
+    except Exception:
+        continue
+    all_src += txt + '\n'
+    # #define NAME value
+    defined.update(re.findall(r'#\s*define\s+([A-Za-z_]\w*)', txt))
+    # extern TYPE name;  / class / struct
+    defined.update(re.findall(r'extern\s+[A-Za-z_:]+\s+([A-Za-z_]\w*)', txt))
+    defined.update(re.findall(r'\b(class|struct)\s+([A-Za-z_]\w*)', txt))
+    # 函数签名 (定义/声明)
+    defined.update(re.findall(r'\b(?:void|int|double|bool|BOOL|DWORD|BYTE)\s+([A-Za-z_]\w*)\s*\(', txt))
+    # 变量声明 (局部/全局) —— 保守: 直接匹配赋值模式
+    defined.update(re.findall(r'\b([A-Za-z_]\w*)\s*(?:\[|;|,|\s=)', txt))
+
+print("=" * 70)
+print("CHECK: gen_tm000_102.cpp 标识符存在性校验")
+print("=" * 70)
+
+# 本文件内定义/声明的符号 (新函数 + CParam 参数) — 编译期在定义处生效, 无需工程预定义
+local_declared = set(re.findall(r'DUT_API int (\w+)\s*\(', code_no_comment))
+local_declared |= set(re.findall(r'CParam \*(\w+)\s*=', code_no_comment))
+local_declared |= set(re.findall(r'double (\w+)\[SITE_NUM\]', code_no_comment))
+
+missing = []
+for tok in caps:
+    if tok in local_declared:
+        continue
+    # 定义过 或 在工程源码中出现过 (调用/使用即存在) → 编译可用
+    if tok in sdk_known or tok in defined or re.search(r'\b' + re.escape(tok) + r'\b', all_src):
+        continue
+    missing.append(tok)
+
+# 检查 API 调用是否在工程源码中出现过 (调用即存在)
+for ap in sorted(api_calls):
+    if ap in all_src:
+        continue
+    missing.append(ap)
+
+if missing:
+    print("[FAIL] 以下标识符在 DALI 工程未找到定义/使用:")
+    for m in missing:
+        print("   -", m)
+    sys.exit(1)
+else:
+    print("[PASS] 全部 %d 个大写标识符 + %d 个 API 调用均已定义/使用" % (len(caps), len(api_calls)))
+
+# ---- 3. 结构检查 ----
+print("-" * 70)
+print("结构检查:")
+funcs = re.findall(r'DUT_API int (\w+)\(short funcindex, LPCTSTR funclabel\)', code)
+print("  [INFO] 函数数: %d" % len(funcs))
+for fn in funcs:
+    print("   -", fn)
+
+# 6步法完整性
+for fn in funcs:
+    body = code.split('DUT_API int ' + fn)[1]
+    steps = {
+        'Connect': 'Step 1: Connect' in body,
+        'PowerOn': 'Step 2: Power On' in body,
+        'Register': 'Step 3: Register Config' in body,
+        'Measure': 'Step 4: Measure' in body,
+        'PowerOff': 'Step 5: Power Off' in body,
+        'LogData': 'Step 6: LogData' in body,
+        'return': 'return 0;' in body,
+    }
+    bad = [k for k, v in steps.items() if not v]
+    if bad:
+        print("  [FAIL] %s 缺步骤: %s" % (fn, ', '.join(bad)))
+    else:
+        print("  [PASS] %s 6步法完整" % fn)
+
+# 有 en_tm 的必须有 entertestmode (寄存器铁律: 重新上电后配置寄存器前先 entertestmode)
+# 豁免: 测 sleep 静态电流 (DFT 无 en_tm, 如 TM000) — entertestmode 会唤醒 DUT 破坏测量
+print("-" * 70)
+print("寄存器铁律检查 (en_tm → entertestmode, 测sleep电流豁免):")
+for fn in funcs:
+    body = code.split('DUT_API int ' + fn)[1].split('return 0;')[0]
+    has_entm = 'entertestmode()' in body
+    has_i2c = 'I2CWriteSameData' in body
+    exempt = 'DFT 无 en_tm' in body
+    if has_i2c and not has_entm and not exempt:
+        print("  [FAIL] %s 有 I2CWriteSameData 但无 entertestmode (TM100/101/102 与 TM001_2 均有 en_tm 应 pair)" % fn)
+    else:
+        tag = " [sleep豁免]" if exempt else ""
+        print("  [PASS] %s (entertestmode=%s, I2C=%s)%s" % (fn, has_entm, has_i2c, tag))
+
+print("=" * 70)
+print("CHECK COMPLETE")

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "review-findings.schema.json",
+  "type": "object",
+  "required": ["runId", "reviewedArtifact", "verdict", "findings", "passedChecks"],
+  "properties": {
+    "runId": {"type": "string"},
+    "reviewedArtifact": {"type": "object", "required": ["path", "sha256"]},
+    "verdict": {"enum": ["pass", "changes-required", "blocked"]},
+    "findings": {"type": "array", "items": {"type": "object", "required": ["id", "severity", "ruleId", "location", "evidence", "impact", "correction", "verification"], "properties": {"id": {"type": "string"}, "severity": {"enum": ["critical", "high", "medium", "low"]}, "ruleId": {"type": "string"}, "location": {"type": "object", "required": ["path", "symbol"]}, "evidence": {"type": "string"}, "impact": {"type": "string"}, "correction": {"type": "string"}, "verification": {"type": "string"}, "status": {"enum": ["open", "fixed", "accepted"]}}, "additionalProperties": true}},
+    "passedChecks": {"type": "array", "items": {"type": "string"}},
+    "proposedRules": {"type": "array", "items": {"type": "object"}}
+  },
+  "additionalProperties": true
+}

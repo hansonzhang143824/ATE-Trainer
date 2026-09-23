@@ -1,0 +1,67 @@
+﻿{
+  "state": "RULE_REVIEW_METHOD",
+  "dispatch": "rule-reviewer",
+  "dispatchableRoles": [
+    "rule-reviewer"
+  ],
+  "dispatches": [
+    {
+      "role": "rule-reviewer",
+      "tms": [
+        "TM106",
+        "TM108"
+      ],
+      "trialDirs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm106",
+        "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm108"
+      ],
+      "stage": "RULE_REVIEW_METHOD"
+    }
+  ],
+  "targetTms": [
+    "TM106",
+    "TM108"
+  ],
+  "trialDirs": [
+    "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm106",
+    "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm108"
+  ],
+  "reason": "处理本阶段尚未完成的测试项目。",
+  "waitingTms": [],
+  "tmStates": [
+    {
+      "tm": "TM106",
+      "trial": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm106",
+      "state": "RULE_REVIEW_METHOD",
+      "dispatch": "rule-reviewer",
+      "reason": "current method contract requires independent rule review",
+      "registeredStage": "RULE_REVIEW_METHOD",
+      "registeredOwner": "rule-reviewer",
+      "registeredGate": "scripts/review_method_batch.py"
+    },
+    {
+      "tm": "TM108",
+      "trial": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm108",
+      "state": "RULE_REVIEW_METHOD",
+      "dispatch": "rule-reviewer",
+      "reason": "current method contract requires independent rule review",
+      "registeredStage": "RULE_REVIEW_METHOD",
+      "registeredOwner": "rule-reviewer",
+      "registeredGate": "scripts/review_method_batch.py"
+    }
+  ],
+  "registeredStage": "RULE_REVIEW_METHOD",
+  "registeredOwner": "rule-reviewer",
+  "registeredGate": "scripts/review_method_batch.py",
+  "batchId": "dali-20260921-080849-tm106-tm108-tm425",
+  "batchDefinition": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\ptc-batches\\dali-20260921-080849-tm106-tm108-tm425.json",
+  "selection": {
+    "kind": "explicit",
+    "tms": [
+      "TM106",
+      "TM108"
+    ]
+  },
+  "project": "DALI",
+  "command": "captain-advance-batch"
+}

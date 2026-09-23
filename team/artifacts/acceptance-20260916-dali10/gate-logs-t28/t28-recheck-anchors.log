@@ -1,0 +1,19 @@
+=== ① 对方引用的六项 + t28-summary（全部现算）===
+  t28-summary.md                    17690 B  0333aedd8c6e52fd802a8987300c0535453814826cb4edffd4fd87c650526a2e  mtime=20:03:18  ← 与对方实测一致
+  t28-red-proof.json                 5351 B  b97441a457119ca0ca11dca2b55a69e302c06cc6cc0b378f663bc77d4d78c529  mtime=19:35:33  ← 与对方实测一致
+  redproof-after-fix.log             6377 B  6a17726003afaa6e6470c20e7e94ea18477e96c6590d76ad906e1970c3aae7e2  mtime=19:35:33  ← 与对方实测一致
+  redproof-before-fix.log            1317 B  c0bfc972d34b44915165f7d893f19d8a6f9fe9c8ce641d8c20ed168d17327786  mtime=19:35:33  ← 与对方实测一致
+  --- 关键一行：对方用"命令机械取得"的正确值 ---
+  check_input_sync.py               17455 B  e804c459b2d3088e72d455eb9e1b7893119cea47ad0a640735b6f5db42d784d1  mtime=19:17:40  ← 与对方实测一致
+      sha256 与对方机械取得值逐位一致 = True ; 长度=64
+  gate_baseline.json                   28 B  021015da84e6fd4c54a595796e1bad73e18c57db94f856871d5667044302cb1d  mtime=22:45:34  ← 与对方实测一致
+  build-report.json                 13075 B  808abcc1b0176c9b92ffc44e9bd1684921be4958260b51422ffe2195f54e46e2  mtime=19:52:26  ← 与对方实测一致
+
+=== ② t28-freeze-correction.md 是否已含对方建议的纪律原句 ===
+  含 "任何被引用的哈希必须由脚本从产物直接 `sha256(file)` " = True
+  含 "禁止手打，禁止在报告里手拼 expected 值作核对基准" = True
+
+=== ③ 我随后改过哪些文件（报告类 vs 被审对象）===
+  t30-summary.md                    19362 B  b73087cb1445b2917ab8fb08f1e051ccb32c91e7cef3e3728a770461d2cec8d1  mtime=20:48:30
+  t33-revision-attribution.md        6145 B  c37d947c0c9ccb09eddf7aa5a7263e4ef4ce05fc4933edbbc5572b448807b1ae  mtime=20:41:27
+  t33-transition-plan.md             4844 B  45cea19d3476e98db8e306fad1e93fc30a430f2766e108788f25c59ec0f37f7a  mtime=20:38:53

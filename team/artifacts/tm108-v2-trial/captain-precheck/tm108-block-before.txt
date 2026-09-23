@@ -1,0 +1,81 @@
+    return 0;
+}
+// =====================================================================
+// TM108: HSKP VAC1_PRST - VAC1 PRST CMP threshold (digital V(DTEST0))
+// DFT: vset[vbat,3] -> en_tm[] -> field[(DMUX_EN,1),(DMUX_SEL,22)] -> a2d_vac1_prst
+//      -> VAC1 0->10->0V scan, measure V(DTEST0)=nQON toggle (r 4.059 f 3.738)
+// Loop: VBAT_PD3_FXVI + VAC123_AMUX_ACM + NQON_HG1_ACM
+// =====================================================================
+DUT_API int TM108_HSKP_VAC1_PRST(short funcindex, LPCTSTR funclabel)
+{
+    //{{AFX_STS_PARAM_PROTOTYPES
+    CParam *VAC1_PRST_Rise = StsGetParam(funcindex, "VAC1_PRST_Rise");
+    CParam *VAC1_PRST_Fall = StsGetParam(funcindex, "VAC1_PRST_Fall");
+    CParam *VAC1_PRST_Hys = StsGetParam(funcindex, "VAC1_PRST_Hys");
+    //}}AFX_STS_PARAM_PROTOTYPES
+
+    double rise_result[SITE_NUM] = { 0 };
+    double fall_result[SITE_NUM] = { 0 };
+    double hys[SITE_NUM] = { 0 };
+
+    // ====== Step 1: Connect ======
+    // VBAT -> VBAT_PD3_FXVI: K8 default NC, static supply needs K13_VBAT_Cap
+    // VAC1 -> VAC123_AMUX_ACM: default NC; VAC1 is scanned input, do NOT close K21_VAC_Cap
+    // nQON -> NQON_HG1_ACM: K64 direct + K65_nQON_PU pull-up
+    cbite.SetOn(K13_VBAT_Cap, K65_nQON_PU, -1);
+    delay_ms(3);
+
+    // ====== Step 2: Power On ======
+    // vset[vbat,3,100e-6,0] -> VBAT=3V FV
+    VBAT_PD3_FXVI.Set(FV, 3, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    delay_ms(1);
+
+    // ====== Step 3: Register Config ======
+    entertestmode();
+    // field[(DMUX_EN,1),(DMUX_SEL,22)] -> a2d_vac1_prst (reg_config/tm108.sv)
+    I2CWriteSameData(DEV_ADDR, 0x56, 0x16);
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x08);
+
+    // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+    // nQON high-Z reads DTEST0 logic level; ramp VAC1 linearly and capture source voltage
+    double vth_r[SITE_NUM] = { 0 };
+    double vth_f[SITE_NUM] = { 0 };
+    // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+    test_method.rampv_capv(VAC123_AMUX_ACM, ACM200_20V, ACM200_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           0.0, 10.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+    // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+    test_method.rampv_capv(VAC123_AMUX_ACM, ACM200_20V, ACM200_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           10.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+    FOR_EACH_VALID_SITE(site)
+    {
+        rise_result[site] = vth_r[site];
+        fall_result[site] = vth_f[site];
+    }
+    // Hys = Rise - Fall; voltage hysteresis logs in mV
+    FOR_EACH_VALID_SITE(site)
+    {
+        hys[site] = (rise_result[site] - fall_result[site]) * 1e3;
+    }
+
+    // ====== Step 5: Power Off (three-step) ======
+    VAC123_AMUX_ACM.Set(FV, 0, ACM200_20V, ACM200_100MA, ACM200_RELAY_ON);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10UA, ACM200_RELAY_ON);
+    delay_ms(1);
+    VAC123_AMUX_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+
+    // ====== Step 6: LogData ======
+    FOR_EACH_VALID_SITE(site)
+    {
+        VAC1_PRST_Rise->SetTestResult(site, 0, rise_result[site]);
+        VAC1_PRST_Fall->SetTestResult(site, 0, fall_result[site]);
+        VAC1_PRST_Hys->SetTestResult(site, 0, hys[site]);
+    }
+    return 0;
+}
+
+// =====================================================================

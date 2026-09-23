@@ -1,0 +1,68 @@
+﻿{
+  "state": "INPUT_SYNC",
+  "dispatch": null,
+  "dispatches": [
+    {
+      "role": "dft-expert",
+      "tms": [
+        "TM106",
+        "TM108",
+        "TM425"
+      ],
+      "trialDirs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm106",
+        "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm108",
+        "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm425"
+      ]
+    }
+  ],
+  "reason": "先完成本批次缺失的输入材料。",
+  "waitingTms": [],
+  "tmStates": [
+    {
+      "tm": "TM106",
+      "trial": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm106",
+      "state": "INPUT_SYNC",
+      "dispatch": "dft-expert",
+      "reason": "upstream artifacts are stale or missing",
+      "registeredStage": "INPUT_SYNC",
+      "registeredOwner": "captain",
+      "registeredGate": "scripts/prepare_input_sync_v2.py"
+    },
+    {
+      "tm": "TM108",
+      "trial": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm108",
+      "state": "INPUT_SYNC",
+      "dispatch": "dft-expert",
+      "reason": "upstream artifacts are stale or missing",
+      "registeredStage": "INPUT_SYNC",
+      "registeredOwner": "captain",
+      "registeredGate": "scripts/prepare_input_sync_v2.py"
+    },
+    {
+      "tm": "TM425",
+      "trial": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm425",
+      "state": "INPUT_SYNC",
+      "dispatch": "dft-expert",
+      "reason": "upstream artifacts are stale or missing",
+      "registeredStage": "INPUT_SYNC",
+      "registeredOwner": "captain",
+      "registeredGate": "scripts/prepare_input_sync_v2.py"
+    }
+  ],
+  "registeredStage": "INPUT_SYNC",
+  "registeredOwner": "captain",
+  "registeredGate": "scripts/prepare_input_sync_v2.py",
+  "batchId": "dali-20260921-080849-tm106-tm108-tm425",
+  "batchDefinition": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\ptc-batches\\dali-20260921-080849-tm106-tm108-tm425.json",
+  "selection": {
+    "kind": "explicit",
+    "tms": [
+      "TM106",
+      "TM108",
+      "TM425"
+    ]
+  },
+  "project": "DALI",
+  "command": "captain-advance-batch"
+}

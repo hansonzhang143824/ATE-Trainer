@@ -1,0 +1,17 @@
+import sys,io,os,json,hashlib
+sys.stdout=io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8',errors='replace')
+d=r'D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10'
+M=json.loads(open(os.path.join(d,'implementation-manifest.json'),'rb').read().decode('utf-8-sig'))
+print('=== manifest frozenInputs.test-plan.json (current) ===')
+print(json.dumps(M['frozenInputs']['test-plan.json'],ensure_ascii=False,indent=1)[:400])
+print()
+print('=== inputDriftAtReferenceTime.test-plan.json ===')
+print(json.dumps(M['inputDriftAtReferenceTime']['test-plan.json'],ensure_ascii=False,indent=1)[:600])
+print()
+print('=== does it already carry fabdd24f or 1925250d? ===')
+s=json.dumps(M,ensure_ascii=False)
+print('  fabdd24f present:', 'fabdd24f' in s)
+print('  1925250d present:', '1925250d' in s)
+print()
+live=open(os.path.join(d,'test-plan.json'),'rb').read()
+print('  live test-plan now:',len(live),'B',hashlib.sha256(live).hexdigest()[:16])

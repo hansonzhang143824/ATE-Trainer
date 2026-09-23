@@ -1,0 +1,502 @@
+{
+  "schemaVersion": 2,
+  "artifact": "dft-meta",
+  "taskId": "TM109-DFT-R3",
+  "role": "dft-expert",
+  "stage": "DFT",
+  "projectId": "DALI",
+  "tm": "TM109",
+  "generatedAt": "2026-09-17 22:34:33 +0800",
+  "verdict": "generated",
+  "sourceSha256": "ce69dce829a1473f1c7fd2ec7d55014b9e2fcf85262301169c654100b5461541",
+  "source": {
+    "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\input\\DFT.csv",
+    "sha256": "ce69dce829a1473f1c7fd2ec7d55014b9e2fcf85262301169c654100b5461541",
+    "bytes": 16862,
+    "mtime": "2026-09-17 22:25:38 +0800",
+    "format": "flat CSV, UTF-8 with BOM, comma-delimited, 12 columns, 35 data records, embedded newlines inside quoted fields",
+    "header": [
+      "Item",
+      "Function Name",
+      "ShortName",
+      "ExpectValue",
+      "Unit",
+      "Trim",
+      "Record",
+      "Hardware_initial",
+      "Software_initial",
+      "Dynamic",
+      "Check",
+      "Type"
+    ],
+    "recordCount": 35,
+    "recordsMatchingTm": 1,
+    "hashVerifiedBy": "Python standard-library hashlib.sha256 over plaintext binary stream",
+    "hashVerificationNote": "In this runtime the Windows pwsh file layer (Get-FileHash, certutil, [IO.File]::ReadAllBytes, Get-Content) returns a DIFFERENT byte stream for this same path at the same length, hashing to c87e601534d5d4cacea3a68793585473874cf541c44c4e10b68f1dd34485a5c5. python hashlib and the harness read tool independently agree on b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4, which is the authoritative digest per the Commander ruling in team/artifacts/tm109-direct-trial/captain-ruling-001-input-hash.md. The pwsh reading is an environment artifact and is NOT a property of DFT.csv.",
+    "parsePath": "python3 csv.DictReader, encoding utf-8-sig, newline=''"
+  },
+  "tmCount": 1,
+  "tmOrder": [
+    "TM109"
+  ],
+  "tms": {
+    "TM109": {
+      "identity": {
+        "tm": "TM109",
+        "item": "TM109",
+        "functionName": "",
+        "shortName": "VAC2_PRST",
+        "trimFlag": "",
+        "recordFlag": "",
+        "type": "Toggle, MV",
+        "checkEndpoint": "INT"
+      },
+      "rawIntent": {
+        "description": "Verbatim DFT fields for TM109. No interpretation, expansion or completion applied.",
+        "shortName": "VAC2_PRST",
+        "expectValue": "rising vth 4.15V, hys 0.35V",
+        "unit": "V",
+        "trim": "",
+        "record": "",
+        "check": "INT",
+        "type": "Toggle, MV",
+        "rawRow": {
+          "Item": "TM109",
+          "Function Name": "",
+          "ShortName": "VAC2_PRST",
+          "ExpectValue": "rising vth 4.15V, hys 0.35V",
+          "Unit": "V",
+          "Trim": "",
+          "Record": "",
+          "Hardware_initial": "vset[vbat,4.2,100e-6,0]",
+          "Software_initial": "\tentertestmode();\n\tI2CWriteSameData(DEV_ADDR, 0x55, 0x96);\t//\t\tfield[(EN_DTEST0,1),(DTEST0_MUX,22)]",
+          "Dynamic": "vset[vac2,3.8,100e-6,1]\nvset[vac2,4.4,1e-3,1]\nvset[vac2,4.1,100e-6,1]\nvset[vac2,3.5,1e-3,1]",
+          "Check": "INT",
+          "Type": "Toggle, MV"
+        }
+      },
+      "pinConditions": {
+        "hardwareInitial": [
+          {
+            "order": 1,
+            "pin": "vbat",
+            "action": "vset",
+            "argsRaw": [
+              "4.2",
+              "100e-6",
+              "0"
+            ],
+            "raw": "vset[vbat,4.2,100e-6,0]",
+            "sourceLocation": {
+              "startLine": 30,
+              "endLine": 30
+            }
+          }
+        ],
+        "dynamic": [
+          {
+            "order": 1,
+            "pin": "vac2",
+            "action": "vset",
+            "argsRaw": [
+              "3.8",
+              "100e-6",
+              "1"
+            ],
+            "raw": "vset[vac2,3.8,100e-6,1]",
+            "sourceLocation": {
+              "startLine": 31,
+              "endLine": 31
+            }
+          },
+          {
+            "order": 2,
+            "pin": "vac2",
+            "action": "vset",
+            "argsRaw": [
+              "4.4",
+              "1e-3",
+              "1"
+            ],
+            "raw": "vset[vac2,4.4,1e-3,1]",
+            "sourceLocation": {
+              "startLine": 32,
+              "endLine": 32
+            }
+          },
+          {
+            "order": 3,
+            "pin": "vac2",
+            "action": "vset",
+            "argsRaw": [
+              "4.1",
+              "100e-6",
+              "1"
+            ],
+            "raw": "vset[vac2,4.1,100e-6,1]",
+            "sourceLocation": {
+              "startLine": 33,
+              "endLine": 33
+            }
+          },
+          {
+            "order": 4,
+            "pin": "vac2",
+            "action": "vset",
+            "argsRaw": [
+              "3.5",
+              "1e-3",
+              "1"
+            ],
+            "raw": "vset[vac2,3.5,1e-3,1]",
+            "sourceLocation": {
+              "startLine": 34,
+              "endLine": 34
+            }
+          }
+        ],
+        "checkEndpoint": {
+          "pin": "INT",
+          "raw": "INT",
+          "sourceLocation": {
+            "startLine": 34,
+            "endLine": 34,
+            "column": "Check"
+          }
+        },
+        "declaredPins": [
+          "vbat",
+          "vac2"
+        ],
+        "argSemantics": "DFT.csv does not label the vset/iset arguments. Argument vectors are recorded positionally and verbatim; this artifact assigns no meaning (voltage, current limit, range, unit) to any argument position."
+      },
+      "limits": {
+        "expectValueRaw": "rising vth 4.15V, hys 0.35V",
+        "unit": "V",
+        "numericBounds": null,
+        "boundForm": "descriptive threshold specification written as text; DFT.csv states no numeric minimum/maximum pass-fail bounds for this item",
+        "asWritten": [
+          {
+            "quantityLabelVerbatim": "rising vth",
+            "value": "4.15",
+            "unit": "V"
+          },
+          {
+            "quantityLabelVerbatim": "hys",
+            "value": "0.35",
+            "unit": "V"
+          }
+        ],
+        "asWrittenDerivation": "decomposed verbatim from the ExpectValue text; quantity labels are the DFT's own wording; no value was added, computed or inferred",
+        "sourceLocation": {
+          "startLine": 30,
+          "endLine": 30,
+          "column": "ExpectValue / Unit"
+        }
+      },
+      "dftRegisterConfig": {
+        "source": "Software_initial",
+        "sourceLocation": {
+          "startLine": 30,
+          "endLine": 31,
+          "column": "Software_initial"
+        },
+        "calls": [
+          {
+            "order": 1,
+            "call": "entertestmode",
+            "argsRaw": [],
+            "fields": []
+          },
+          {
+            "order": 2,
+            "call": "I2CWriteSameData",
+            "argsRaw": [
+              "DEV_ADDR",
+              "0x55",
+              "0x96"
+            ],
+            "deviceAddrSymbol": "DEV_ADDR",
+            "reg": "0x55",
+            "data": "0x96",
+            "dftFieldComment": "field[(EN_DTEST0,1),(DTEST0_MUX,22)]"
+          }
+        ],
+        "note": "Field annotations are the DFT's own trailing comments, recorded verbatim. DFT.csv supplies no register map, so field names, widths and values are neither re-derived nor expanded here."
+      },
+      "explicitRelations": {
+        "documentedSequence": [
+          {
+            "order": 1,
+            "field": "Hardware_initial",
+            "sourceLocation": {
+              "startLine": 30,
+              "endLine": 30
+            }
+          },
+          {
+            "order": 2,
+            "field": "Software_initial",
+            "sourceLocation": {
+              "startLine": 30,
+              "endLine": 31
+            }
+          },
+          {
+            "order": 3,
+            "field": "Dynamic",
+            "sourceLocation": {
+              "startLine": 31,
+              "endLine": 34
+            }
+          }
+        ],
+        "dynamicStepsExplicitlyOrdered": true,
+        "dynamicStepCount": 4,
+        "dynamicTargetPinConsistent": "vac2 across all 4 steps",
+        "interleavingExplicitlyStated": false,
+        "note": "DFT.csv presents the three field groups in the column order above and enumerates the Dynamic steps in document order. DFT.csv contains no statement that any Dynamic transition interleaves with the Software_initial writes, so this artifact asserts no interleaving and no timing relationship between the groups."
+      },
+      "parseStatus": {
+        "status": "complete",
+        "recordsMatchedForTm": 1,
+        "recordsExpectedForTm": 1,
+        "columnsInHeader": 12,
+        "columnsInRow": 12,
+        "unparsedContent": [],
+        "emptyCells": [
+          "Function Name",
+          "Trim",
+          "Record"
+        ],
+        "emptyCellSemantics": "recorded as empty strings exactly as present in the source; not filled in, not inferred",
+        "encodingIssues": []
+      },
+      "openItems": [
+        {
+          "id": "TM109-OI-1",
+          "type": "source_conflict",
+          "severity": "resolved_by_user_ruling",
+          "description": "Resolved by user ruling VAC2 authoritative and canonical source correction: TM109 Dynamic now drives vac2 in all four steps. The prior vac3 observation is retained as provenance.",
+          "evidence": [
+            {
+              "locator": "DFT.csv lines 30-34, column ShortName",
+              "value": "VAC2_PRST"
+            },
+            {
+              "locator": "DFT.csv lines 31-34, column Dynamic",
+              "value": "vset[vac3,3.8,100e-6,1] / vset[vac3,4.4,1e-3,1] / vset[vac3,4.1,100e-6,1] / vset[vac3,3.5,1e-3,1]"
+            }
+          ],
+          "corroboratingLocators": [
+            {
+              "locator": "DFT.csv lines 25-29 (TM108, ShortName VAC1_PRST)",
+              "value": "dynamic pins ['vac1']; reg 0x55=0x97; (DTEST0_MUX,23)"
+            },
+            {
+              "locator": "DFT.csv lines 30-34 (TM109, ShortName VAC2_PRST)",
+              "value": "dynamic pins ['vac3']; reg 0x55=0x96; (DTEST0_MUX,22)"
+            },
+            {
+              "locator": "DFT.csv lines 35-39 (TM110, ShortName VAC3_PRST)",
+              "value": "dynamic pins ['vac3']; reg 0x55=0x95; (DTEST0_MUX,21)"
+            },
+            {
+              "locator": "whole-file token search over Hardware_initial|Software_initial|Dynamic|Check",
+              "value": "vac1 present in TM105, TM108, TM114, TM116, TM439_1; vac2 present in no record; vac3 present in TM109, TM110, TM624"
+            }
+          ],
+          "rawObservationOnly": "TM109's Dynamic block is character-identical to TM110's Dynamic block. The register byte and DTEST0_MUX value in TM109's row differ from TM110's. No conclusion about which element is correct is drawn here.",
+          "requiredRuling": "Rule whether TM109's stimulus target is the pin 'vac3' as written, or whether the Dynamic column of TM109 is a copy of TM110's row and the intended target is a VAC2 pin. DFT.csv contains no pin-name cross-reference table, so this cannot be settled from the source alone.",
+          "resolutionAuthority": "user or Commander ruling; DFT expert must not resolve",
+          "downstreamImpact": "test-strategy-architect cannot select a route or endpoint for TM109 until the target pin is ruled.",
+          "status": "resolved",
+          "resolution": {
+            "authority": "user",
+            "ruling": "VAC2 authoritative",
+            "evidencePath": "team/artifacts/tm109-direct-trial/dft/source-correction-vac2.json",
+            "changedTokens": "vac3 -> vac2 x4",
+            "priorAlternativeRetained": "vac3 as written in the before-correction backup"
+          }
+        },
+        {
+          "id": "TM109-OI-2",
+          "type": "missing_numeric_limit",
+          "severity": "high",
+          "description": "TM109 states its expectation only as descriptive text. DFT.csv provides no numeric minimum, maximum, or pass-fail bound.",
+          "evidence": [
+            {
+              "locator": "DFT.csv line 30, column ExpectValue / Unit",
+              "value": "rising vth 4.15V, hys 0.35V / V"
+            }
+          ],
+          "requiredRuling": "Confirm whether the descriptive threshold text is sufficient as the acceptance source, or supply the numeric pass-fail bounds for TM109.",
+          "resolutionAuthority": "user ruling; DFT expert must not synthesize limits",
+          "downstreamImpact": "test-method-expert has no DFT-sourced limit to judge against."
+        },
+        {
+          "id": "TM109-OI-3",
+          "type": "missing_explicit_timing",
+          "severity": "medium",
+          "description": "TM109's row states no ramp rate, delay, settle time, or sampling window for the four Dynamic steps.",
+          "evidence": [
+            {
+              "locator": "DFT.csv lines 31-34, column Dynamic",
+              "value": "four vset steps with no accompanying delay[] or ramp specification"
+            }
+          ],
+          "requiredRuling": "Confirm that DFT is intentionally silent on timing for TM109 and that timing is to be owned downstream by test-method-expert.",
+          "resolutionAuthority": "user ruling or downstream owner; DFT expert must not supply timing",
+          "downstreamImpact": "test-method-expert must own all ramp/delay/sample decisions without a DFT-stated constraint."
+        },
+        {
+          "id": "TM109-OI-4",
+          "type": "empty_source_field",
+          "severity": "low",
+          "description": "The 'Function Name' cell is empty for TM109, so no function name is available from the DFT source.",
+          "evidence": [
+            {
+              "locator": "DFT.csv line 30, column Function Name",
+              "value": "(empty)"
+            }
+          ],
+          "requiredRuling": "None required for parsing; recorded so no downstream role treats an absent function name as an omission of this artifact.",
+          "resolutionAuthority": "informational",
+          "downstreamImpact": "downstream naming must be derived from ShortName 'VAC2_PRST' or from a ruling, not from an assumed function name."
+        },
+        {
+          "id": "TM109-OI-5",
+          "type": "unstated_second_edge_limit",
+          "severity": "low",
+          "description": "The ExpectValue text names only a rising threshold plus hysteresis, while the Dynamic stimulus also contains falling steps. DFT.csv states no falling-threshold value.",
+          "evidence": [
+            {
+              "locator": "DFT.csv line 30, column ExpectValue",
+              "value": "rising vth 4.15V, hys 0.35V"
+            },
+            {
+              "locator": "DFT.csv lines 32-34, column Dynamic",
+              "value": "4.4 -> 4.1 -> 3.5, i.e. transitions in the decreasing direction"
+            }
+          ],
+          "rawFactOnly": "Recorded as an absence in the source. No falling-threshold value is computed, derived, or asserted by this artifact.",
+          "requiredRuling": "Confirm whether the falling-direction steps are in scope for TM109's judgement and, if so, supply the falling-threshold limit.",
+          "resolutionAuthority": "user ruling; DFT expert must not compute a second-edge limit",
+          "downstreamImpact": "test-method-expert cannot judge the falling steps against a DFT-stated limit."
+        }
+      ]
+    }
+  },
+  "sourceLocations": {
+    "scheme": "physical 1-based line numbers in DFT.csv (the file has no sheet or cell addressing); the TM109 record is CSV data record 9 of 35 and spans physical lines 30-34 because quoted fields contain embedded newlines",
+    "tm109RecordSpan": {
+      "startLine": 30,
+      "endLine": 34
+    },
+    "fieldLocations": [
+      {
+        "field": "Item",
+        "line": 30
+      },
+      {
+        "field": "Function Name",
+        "line": 30
+      },
+      {
+        "field": "ShortName",
+        "line": 30
+      },
+      {
+        "field": "ExpectValue",
+        "line": 30
+      },
+      {
+        "field": "Unit",
+        "line": 30
+      },
+      {
+        "field": "Trim",
+        "line": 30
+      },
+      {
+        "field": "Record",
+        "line": 30
+      },
+      {
+        "field": "Hardware_initial",
+        "line": 30
+      },
+      {
+        "field": "Software_initial",
+        "startLine": 30,
+        "endLine": 31
+      },
+      {
+        "field": "Dynamic",
+        "startLine": 31,
+        "endLine": 34
+      },
+      {
+        "field": "Check",
+        "line": 34
+      },
+      {
+        "field": "Type",
+        "line": 34
+      }
+    ]
+  },
+  "coverage": {
+    "scope": "TM109 only, as directed by team/artifacts/tm109-direct-trial/input-manifest.json (rowCount 1)",
+    "recordsInSource": 35,
+    "recordsInScope": 1,
+    "recordsEmitted": 1,
+    "recordsMissed": [],
+    "duplicateTmRecords": [],
+    "columnsInHeader": 12,
+    "distinctColumnCountsAcrossAllRecords": [
+      12
+    ],
+    "allInScopeCellsAccountedFor": true,
+    "crossCheckAgainstInputManifest": "Fresh CSV parse matches rawIntent.rawRow value-for-value after the VAC2 source correction.",
+    "crossCheckResult": "match"
+  },
+  "charterBoundary": {
+    "owned": [
+      "scoped DFT intent, project meta, YAML and manifest facts for TM109"
+    ],
+    "notDone": [
+      "no source table, channel, route, relay or functional relay selection",
+      "no project type, parameter type, function architecture or Golden decision",
+      "no expansion of the DFT target condition into power-up, measurement or power-down steps",
+      "no register, limit, unit or timing completion from experience",
+      "no modification of the source DFT and no resolution of the registered conflict",
+      "no schematic or physical-path analysis",
+      "no production code"
+    ],
+    "conflictPolicy": "Conflicts and absences are registered as facts with source locations and referred for ruling; they are never resolved or normalized by this role."
+  },
+  "handoff": {
+    "nextRole": "test-strategy-architect",
+    "requiredGates": [
+      "dft-expert deliverable_ready for TM109",
+      "schematic-expert deliverable_ready for the same TM"
+    ],
+    "blockingItems": [],
+    "blockingNote": "No blocking DFT source conflict remains after the user ruling and canonical VAC2 correction.",
+    "nonBlockingItems": [
+      "TM109-OI-2",
+      "TM109-OI-3",
+      "TM109-OI-4",
+      "TM109-OI-5"
+    ],
+    "gateSatisfied": "DFT metadata and YAML are hash-bound to corrected sourceSha256 ce69dce829a1473f1c7fd2ec7d55014b9e2fcf85262301169c654100b5461541."
+  },
+  "sourceCorrection": {
+    "userRuling": "VAC2 authoritative",
+    "record": "TM109 Dynamic stimulus target vac3 -> vac2 (4 occurrences)",
+    "beforeSha256": "b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4",
+    "afterSha256": "ce69dce829a1473f1c7fd2ec7d55014b9e2fcf85262301169c654100b5461541",
+    "evidencePath": "team/artifacts/tm109-direct-trial/dft/source-correction-vac2.json"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "implementation_self_check",
+  "trialPath": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108",
+  "tm": "TM108",
+  "role": "ate-implementer",
+  "stage": "IMPLEMENTATION",
+  "mode": "skeleton-option-B: no source edits; pre-seeded TM108_HSKP_VAC1_PRST (test.cpp:8925-8969) accepted as-is per user adjudication",
+  "terminalState": "BLOCKED",
+  "final": true,
+  "checks": [
+    {
+      "name": "signed method contract read and parsed",
+      "status": "pass",
+      "detail": "466 lines JSON, tm=TM108, verdict=deliverable_ready, methodFamily=scan; byte sha256 recorded per dispatcher measurement: bd47c31e6d68c6ea1f0b0eb70f8ebe0fa3819642fd38e9e070e5eac06bc1265b"
+    },
+    {
+      "name": "manifest changes[0] hash binding",
+      "status": "pass",
+      "detail": "afterSha256=8c2fd155839958dae7952653e892e5918a90352ce67601b04a447072235f495d (test.cpp current bytes, dispatcher-measured); symbols=[TM108_HSKP_VAC1_PRST]; field name afterSha256 as required"
+    },
+    {
+      "name": "pre-seed present in test.cpp",
+      "status": "pass",
+      "detail": "TM108_HSKP_VAC1_PRST at test.cpp:8925-8969 (file tail; totalLines=8969)"
+    },
+    {
+      "name": "known deviations documented",
+      "status": "pass",
+      "detail": "6 deviations (DEV-1..DEV-6) recorded in implementation-manifest.json#knownDeviations, all accepted-as-is under option B"
+    },
+    {
+      "name": "apply_ptc_source_comments.py",
+      "status": "expected-denied-recorded",
+      "detail": "exit 1, PermissionError [Errno 13] writing D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp (sandbox workspace-write, denied=true, enforcement=partial); test.cpp untouched, no retry per dispatcher instruction"
+    },
+    {
+      "name": "verify_implementation_batch.py",
+      "status": "fail",
+      "detail": "exit 1, status=FAIL, errors: [tm108: TM108_HSKP_VAC1_PRST: signed 3->5 sweep with TRIG_FALLING missing; tm108: TM108_HSKP_VAC1_PRST: signed 5->3 sweep with TRIG_RISING missing]. validate_body rejected the pre-seeded scan range 0->10/10->0 (DEV-1-scan-range); signed selectedRange is [3,5]V (USER_DECIDED, authority=notes). No retry loop, no source edits per dispatcher instruction"
+    },
+    {
+      "name": "write_implementation_deliverable.py",
+      "status": "not-run",
+      "detail": "gate did not PASS; per instruction command 3 only runs after verify PASS/exit 0"
+    }
+  ],
+  "blocker": {
+    "where": "python scripts/verify_implementation_batch.py team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108 -> validate_body (pre-seeded test.cpp:8925-8969)",
+    "cause": "pre-seeded TM108_HSKP_VAC1_PRST sweeps 0.0->10.0 (TRIG_FALLING) and 10.0->0.0 (TRIG_RISING) while the signed method contract selects [3,5]V (methodContract.measurementPlan.scanRangeResolution.selectedRange; sweeps 3->5 TRIG_FALLING / 5->3 TRIG_RISING)",
+    "evidence": [
+      "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108/implementation/implementation-manifest.json#knownDeviations[DEV-1-scan-range]",
+      "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108/implementation/self-check.json",
+      "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp:8925-8969 (pre-seed, unchanged)",
+      "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108/method/tm108-test-method-contract.json"
+    ]
+  },
+  "hookDenialsRecorded": [
+    "read AGENTS.md / team/ptc/ATE_PTC_RUNTIME.md / team/ptc/OUTPUT_CONTRACTS.md — denied by PTC implementation contract read boundary",
+    "read existing implementation/implementation-manifest.json + implementation/self-check.json + project/DALI/ErrorLog/implementer.log — denied by PTC material boundary (write-only targets); implementer.log therefore NOT written (no safe append without read access)"
+  ],
+  "noSourceEdits": true,
+  "noRetries": true
+}

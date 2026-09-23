@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "PTC-IMPLEMENTATION-V2",
+  "runId": "TM425-FAST-DELIVERY-20260919",
+  "stage": "IMPLEMENTATION",
+  "verdict": "FAST_DELIVERY_PENDING_AUDIT",
+  "targetRoot": "D:/PROJECT6-DALI/ForCodexDebug",
+  "scope": [
+    "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+    "D:/PROJECT6-DALI/ForCodexDebug/source/sub.cpp"
+  ],
+  "changes": [
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "symbols": [
+        "TM425_MNT_1P2V_BUF"
+      ],
+      "afterSha256": "aea7940182ed1ec6104262519480e039fd41be2ca71c081cb70db2b1e6f7bbf1",
+      "planRefs": [
+        "strategy/register-config-evidence.json"
+      ]
+    },
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/sub.cpp",
+      "kind": "trim_measure_callback",
+      "symbols": [
+        "measure_mnt_v1p2_buf"
+      ],
+      "afterSha256": "88a63791117f7942718d22d920765833d10997da43c48d7fadc1957ec612ff15",
+      "planRefs": [
+        "method/tm425-test-method-contract.json",
+        "D:/PROJECT6-DALI/ForCodexDebug/NU1201.treg"
+      ]
+    }
+  ],
+  "signedInputs": {
+    "methodContractPath": "team/artifacts/dali-20260919-145154-tm106-tm108-tm425/tm425/method/tm425-test-method-contract.json",
+    "methodContractSha256": "747f6ad08660e54ed69d17eb7878af1700134f7fae73ed8de8ed86f28eac5d45"
+  },
+  "fastDelivery": {
+    "mode": "FAST_DELIVERY",
+    "skippedStages": [
+      "RULE_REVIEW_IMPLEMENTATION"
+    ],
+    "auditStatus": "PENDING"
+  },
+  "safetyRules": {
+    "functionalRelaySettleMs": 3,
+    "shutdown": [
+      "set FV=0 while connected",
+      "wait 1ms",
+      "disconnect relay"
+    ]
+  },
+  "trimCompliance": {
+    "standardReferences": [
+      {
+        "path": "knowledge/standards/treg.md",
+        "sha256": "c63c76ca21e085586ef864e1b605c0f9f1254570a32ee91573ce58eaf3ace0f8"
+      },
+      {
+        "path": "knowledge/references/L4-Golden-code/TM130_Trim_VBG.md",
+        "sha256": "58c5b908068b0e12dfa9de3c9faec50093e757ec95bf75c29016a50549597cac"
+      },
+      {
+        "path": "knowledge/references/L4-Golden-code/sub-measure-template.md",
+        "sha256": "a2fc61c6237d47307a609bb7a6477a8a2c3e09dd739c44e1ebf399456f1326e1"
+      }
+    ],
+    "validator": {
+      "path": "scripts/ptc_trim_validation.py",
+      "sha256": "eb22df1be527ebfaac5a404d50af31c7bd6733608caccbed888f4f00a23ae4c3",
+      "status": "PASS",
+      "errors": []
+    }
+  }
+}

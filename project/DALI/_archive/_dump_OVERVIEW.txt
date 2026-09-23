@@ -1,0 +1,3637 @@
+Item	Level	Name	Description	ExpectValue	Unit	Test	Special	Purpose	Trim	Notes	Code1	Code2	Code3	Power	Dynamic	Check	isCodeGen	isRun	Assign	State 
+AMS
+Validation	State
+Bench Validation	is CP test?	CP comment	State
+ATE Validation	HELPER								de test	aetest	is test
+TM000	Top	Iq_Standby	Sleep Quiescent current
+w/o VAC_PLUG module on	23 w/o digital iq.	uA	Direct		SCM		Quiescent current in sleep mode.	vset[vbat,4.4,100e-6,0]	field[(VAC1_APORT_DET_ENABLE,0),(VAC2_APORT_DET_ENABLE,0),(VAC_SNK_DET_SEL,0)]	delay[10e-3]
+finish[]	VBAT		I(VBAT)				Done		Y	Force VBAT
+Sense VCC
+Sense VBAT current										22uA		checked
+TM000_1	Top	Iq_Standby	Sleep Quiescent current
+w/i VAC_PLUG module on		uA	Direct		SCM		Quiescent current in sleep mode.	vset[vbat,4.4,100e-6,0]	field[(VAC1_APORT_DET_ENABLE,1),(VAC2_APORT_DET_ENABLE,1),(VAC_SNK_DET_SEL,0)]	finish[]	VBAT		I(VBAT)				Done		Y	Force VBAT
+Sense VCC
+Sense VBAT current										31.5u		checked
+TM001	Top	Iin_Suspend	Operation Quiescent current		uA	Direct		SCM		Quiescent current in operation mode.	vset[vbat,3.7,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(AC1_GATE_ON,1)]	delay[10e-3]
+// Check IQ from VBAT
+finish[]	VBAT		I(VBAT)				Done		Y	Force VBAT
+Sense VCC
+Sense VBAT current										1.118mA		checked
+TM001_2	Top	Iq_Shipmode	Shipmode iq.		uA	Direct		SCM			vset[vbat,3.7,100e-6,0]
+vset[vac1,5,100e-6,0]
+en_tm[]	field[(SHIPMODE_EN,1)]
+vset[vac1,0,100e-6,0]
+delay[60e-3]	// Check IQ from VBAT
+finish[]	VBAT		I(VBAT)	Y	Y		Done
+TM001_3	Top	Iq_Operation			uA	Direct		SCM		Covered by bench test.	vset[vbat,3.7,100e-6,0]
+vset[vac1,5,100e-6,0]
+		// Check IQ from VAC
+finish[]	VBAT		I(VBAT)				Done
+TM002	Top	SCAN&IDDQ									vset[vbat,4,100e-6,0]
+en_tm[]	vset[vac1,5,100e-6,0]
+en_scan[]
+delay[10e-3]	field[(WAKE_UP,1)]
+vset[vdm,4,1e-6,0]
+delay[10e-6]
+vset[vdm,0,1e-6,0]
+delay[10e-3]
+finish[]	VBAT			Y	Y		Done		Y	Force VBAT
+Sense VCC
+Sense VBAT current	测试频率多少MHz？
+10MHz
+TM003	Top	EFUSE BURN	set NVM_PROG_ALL=1 to program all data which stored in TRIM register.
+Reboot check if data is stored in efuse.							1. program all;
+2. reload, read all;
+3. margin read;
+4. warmup ~ 10ms	vset[vbat,4,100e-6,0]
+en_tm[]
+field[(wake_up,1)]	field[(d2a_trim_bg,5),(d2a_trim_qdt_vth_cmp,1)]
+field[(NVM_PROG_ALL,1)]
+delay[2e-3]
+field[(NVM_PROG_ALL,0)]	field_renew[(d2a_trim_bg,1),(d2a_trim_qdt_vth_cmp,7)]
+field[(NVM_RELOAD,1)]
+delay[2e-3]
+field_renew[(d2a_trim_bg,2),(d2a_trim_qdt_vth_cmp,3)]
+field[(NVM_REG_SET,3)]
+field[(NVM_RELOAD,1),(NVM_REG_SET,3)]
+delay[2e-3]
+vset[vbat,0,100e-6,0]
+delay[1e-3]
+vset[vbat,4,100e-6,0]
+delay[10e-3]
+finish[]			readback trim region data
+before finish	Y	Y		Done
+TM004	Top	EFUSE RELOAD	set NVM_RELOAD=1 to reload
+reload function is only actived when wake-up.							merge into TM003
+	vset[vbat,4,100e-6,0]
+en_tm[]
+field[(wake_up,1)]	field[(NVM_RELOAD,1),(NVM_REG_SET,0)]
+delay[2e-3]	finish[]			readback trim region data
+before finish				MergeIntoOtherCase
+TM005	Top	EFUSE MARGIN READ	set NVM_RELOAD=1 to reload
+when NVM_REG_SET is configed.
+reload function is only actived when wake-up.							merge into TM003	vset[vbat,4,100e-6,0]
+en_tm[]
+field[(wake_up,1)]	field[(NVM_RELOAD,1),(NVM_REG_SET,3)]
+delay[2e-3]	finish[]			readback trim region data
+before finish				MergeIntoOtherCase
+TM006	ABS	ABS																		Done				参考ABS sheet									ABS!A1		checked
+TM100	HSKP	VS_PRE	0.5*VS_PRE	2	V	Indirect		Debug			vset[vbat,4,100e-6,0]	en_tm[]
+field[(EN_ATEST0,1),(ATEST0_MUX,3)]
+field[(EN_ATEST1,1),(D2A_BUBO_ATEST1_MUX,5)]
+field[(D2A_BUBO_EN_FORCE_ON,1),(BUBO_MODE,0)]	delay[1e-3]
+finish[]	VBAT		V(ATEST0)	Y			Done													VBAT=4V
+VSPRE*0.5=1.997
+		checked
+TM101	HSKP	LP_VBG	low power bg	1.27	V	Direct		Debug		注意带载能力弱，需要先对外部pin先上电；	vset[vbat,4,100e-6,0]	en_tm[]
+vset[vdm,1.2,100e-6,0]
+field[(EN_ATEST0,1),(ATEST0_MUX,1)]
+vset_off[vdm]	delay[1e-3]
+finish[]	VBAT		V(ATEST0)	Y			Done													1.178		checked
+TM102	HSKP	LP_VBG_BF	low power bg_buf	1.27	V	Direct		Debug		注意带载能力弱，需要先对外部pin先上电；	vset[vbat,4,100e-6,0]	en_tm[]
+vset[vdm,1.2,100e-6,0]
+field[(EN_ATEST0,1),(ATEST0_MUX,2)]
+vset_off[vdm]	delay[1e-3]
+finish[]	VBAT		V(ATEST0)	Y			Done													1.178		checked
+TM103	HSKP	LP_HR_0P5U	IBP 0.5UA HR 	0.5	uA	Direct		Debug			vset[vbat,4,100e-6,0]	en_tm[]
+field[(EN_ATEST0,1),(ATEST0_MUX,4)]
+vset[vdm,1,100e-6,0]	delay[1e-3]
+finish[]	VBAT		I(ATEST0)	Y			Done													0.5uA		checked
+TM104	HSKP	LP_PTAT_0P5U	IBP 0.5UA PTAT 	0.5	uA	Direct		Debug			vset[vbat,4,100e-6,0]	en_tm[]
+field[(EN_ATEST0,1),(ATEST0_MUX,5)]
+vset[vdm,1,100e-6,0]	delay[1e-3]
+finish[]	VBAT		I(ATEST0)	Y			Done													0.48uA		checked
+TM105	HSKP	VSPRE_MAX_CMP	VSPRE power rail  max comp
+电路内部取VAC-VDIO(模块内名字为VS_MAX)和VBAT进行比较，建议测试比较器功能
+VS_MAX-VBAT  rising vth=~0.3V falling vth=0V@VBAT=4V	VAC-VBAT=~1V	V			Debug			vset[vbat,4,100e-6,0]	en_tm[]
+field[(DMUX_EN,1),(DMUX_SEL,0)]
+vset[vac1,10,1e-3,0]
+vset[vac1,0,1e-3,0]	delay[1e-3]
+finish[]	VBAT	VAC1	V(DTEST0)	Y			Done					ramp VAC：0->10, INT fall:5->0								PASS		checked
+TM106	HSKP	VBUS_PRST	VBUS PRST COMP threshold	rising vth 3.9V, hys 0.2V	V			SCM		ramp up/down vbus from 3~5V,
+mux A2D_VBUS_PRST to dtest0
+check int pin toggle	vset[vbat,3,100e-6,0]	en_tm[]
+field[(DMUX_EN,1),(DMUX_SEL,19)]
+vset[vbus,3,100e-6,1]
+vset[vbus,5,1e-3,0]
+vset[vbus,3,1e-3,0]	delay[1e-3]
+finish[]	VBAT	VBUS	V(DTEST0)	Y			Done					ramp VBUS, INT toggle								r 3.798
+f 3.613		checked
+TM107	HSKP	VBUS_HT_VBAT	VBUS HT_VBAT CMOP threshold
+通过mux vcc的 vbus_path_on来判断	rising vth 0.126V, hys 0.18V	V	Indirect		SCM		ramp up/down vbus from 3~5V, 1V/ms
+mux vbus_path_on to dtest0
+check int pin toggle	vset[vbat,4,100e-6,0]	en_tm[]
+field[(DMUX_EN,1),(DMUX_SEL,41)]
+vset[vbus,2,100e-6,1]
+vset[vbus,5,1e-3,0]
+vset[vbus,2,1e-3,0]	delay[1e-3]
+finish[]	VBAT	VBUS	V(DTEST0)	Y			Done					ramp VBUS, INT toggle								vbat=4V
+r 0.1
+f -0.013
+		checked
+TM108	HSKP	VAC1_PRST	VAC1 PRST CMOP threshold	rising vth 4.4V, hys 0.35V	V			SCM		ramp up/down vac1 from 3~5V, 1V/ms
+mux A2D_VAC1_PRST to dtest0
+check int pin toggle	vset[vbat,3,100e-6,0]	en_tm[]
+field[(DMUX_EN,1),(DMUX_SEL,22)]
+vset[vac1,10,1e-3,0]
+vset[vac1,0,1e-3,0]	delay[1e-3]
+finish[]	VBAT	VAC1	V(DTEST0)	Y			Done					ramp VAC , INT toggle								r 4.059
+f 3.738		checked
+TM108_1	HSKP	VAC1_PRST_DMO_A	VAC1 PRST CMOP threshold	rising vth 4.4V, hys 0.35V						Using DMO/A output	vset[vbat,3,100e-6,0]
+wait_warmup[]	key1_open[]
+field[(DMUX_EN,1),(DMUX_SEL,22)]
+field[(D2A_DMO_CHANNEL_SEL,1),(D2A_DMA_CHANNEL_SEL,1),(DM_CHANNEL_SEL_OVER_WRITE,1),(D2A_DMA_EN,1),(D2A_DMO_EN,1)]
+vset[vac1,10,1e-3,0]
+vset[vac1,0,1e-3,0]	delay[1e-3]
+finish[]	VBAT	VAC1	V(DTEST0)	Y	Y		Done
+TM109	HSKP	VAC2_PRST	VAC2 PRST CMOP threshold	rising vth 4.4V, hys 0.35V	V			SCM		ramp up/down vac1 from 3~5V, 1V/ms
+mux A2D_VAC2_PRST to dtest0
+check int pin toggle	vset[vbat,3,100e-6,0]	en_tm[]
+field[(DMUX_EN,1),(DMUX_SEL,21)]
+vset[vac2,10,1e-3,0]
+vset[vac2,0,1e-3,0]	delay[1e-3]
+finish[]	VBAT	VAC2	V(DTEST0)	Y			Done					ramp VAC , INT toggle								r 4.079
+f 3.748		checked
+TM110	HSKP	VAC3_PRST	VAC3 PRST CMOP threshold	rising vth 4.4V, hys 0.35V	V			SCM		ramp up/down vac1 from 3~5V, 1V/ms
+mux A2D_VAC3_PRST to dtest0
+check int pin toggle	vset[vbat,3,100e-6,0]	en_tm[]
+field[(DMUX_EN,1),(DMUX_SEL,20)]
+vset[vac3,10,1e-3,0]
+vset[vac3,0,1e-3,0]	delay[1e-3]
+finish[]	VBAT	VAC3	V(DTEST0)	Y			Done					ramp VAC , INT toggle								r 4.085
+f 3.758		checked
+TM110_1	HSKP	VAC_SAFT_PB	VAC det for power bank safety	rising vth<2.8V
+hys 0.24V	V			SCM			vset[vbat,4,100e-6,0]	en_tm[]
+field[(DMUX_EN,1),(DMUX_SEL,65)]
+vset[vac1,5,1e-3,0]
+vset[vac1,0,1e-3,0]	delay[1e-3]
+finish[]	VBAT	VAC1	V(DTEST0)	Y	Y		Done
+TM110_2	HSKP	VAC_WL_PRST	VAC WL prenset	rising vth> 4.5V
+hys 0.4V	V			SCM			vset[vbat,4,100e-6,0]	en_tm[]
+field[(wake_up,1)]
+field[(DMUX_EN,1),(DMUX_SEL,64)]
+vset[vac_wl,5,1e-3,0]
+vset[vac_wl,0,1e-3,0]	delay[1e-3]
+finish[]	VBAT	VAC_WL	V(DTEST0)	Y	Y		Done
+TM111	HSKP	VBAT_UV	VBAT_UV CMOP threshold	rising vth 2.2V, hys 0.1V	V			SCM		ramp up/down vbat from 1~3V, 1V/ms
+mux A2D_VBAT_UV to dtest0
+check int pin toggle	vset[vac1,5,1e-3,0]	en_tm[]
+field[(DMUX_EN,1),(DMUX_SEL,23)]
+vset[vbat,5,1e-3,0]
+vset[vbat,0,1e-3,0]	delay[1e-3]
+finish[]	VAC1	VBAT	DTEST0	Y			Done					ramp VBAT, INT toggle								r 2.178
+f 2.137
+阈值偏小		checked
+TM112	HSKP	VBAT_HT_3P1V	VBAT_HT_3P1V CMOP threshold
+通过mux vcc的 vbat_path_on来判断	rising vth 3.1V, hys 0.1V	V	Indirect		SCM		ramp up/down vbat from 1~4V, 1V/ms
+mux vbat_path_on to dtest0
+check int pin toggle	vset[vbat,2.5,1e-3,0]
+vset[vac1,5,1e-3,0]	en_tm[]
+field[(DMUX_EN,1),(DMUX_SEL,40),(D2A_REGN_TM_EN,1)]
+vset[vbat,4,10e-3,0]
+vset[vbat,0,10e-3,0]	delay[1e-3]
+finish[]	VAC1	VBAT	DTEST0	Y			Done					ramp VBAT, INT toggle								r 3.019
+f 2.972		checked
+TM113	VCC	VCC_UV	VCC_UV CMOP threshold
+VBAT供电VCC时，限流有一级电流折返是拿VCC_UV判断的。
+ramp VCC，观察VBAT电流出现折返	rising vth 2.1V, hys 0.1V	V			SCM		ramp up/down vbat from 0~5V, 1V/ms
+check current toggle of VBAT 	vset[vbat,3,1e-3,0]	vset[vcc,2.5,1e-3,0]
+vset[vcc,0,1e-3,0]	delay[1e-3]
+finish[]	VBAT	VCC	I(VBAT)	Y			Done					check Vcc current toggle or check INT toggle or VBAT current toggle								r 2.08
+f 1.96		checked
+TM114	VCC	VCC_VBUS_PATH_ACC	VCC VOUT ACC from VBUS	4.2~4.5	V			SCM			vset[vbus,5,100e-6,0]
+vset[vbat,3.7,100e-6,0]
+vset[vac1,5.2,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(REGN_VOL_SET,0)]
+iset[vcc,0.05,1e-3,0]	delay[1e-3]
+finish[]	VBAT
+VBUS		V(VCC)	Y			Done													
+4.971
+4.484（30mA）		checked
+TM115	VCC	VCC_VAC_PATH_ACC	VCC VOUT ACC from VAC	3.3~3.7	V			SCM			vset[vbat,2.5,100e-6,0]
+vset[vac1,5,100e-6,0]	iset[vcc,0.03,1e-3,0]	delay[1e-3]
+finish[]	VBAT
+VAC		V(VCC)	Y			Done						scm需要增加							
+4.548
+4.342（30mA）		pass
+TM116	VCC	VCC_VBAT_PATH_ACC	VCC VOUT ACC from VBAT	3.4~3.7	V			SCM			vset[vbat,3.7,1e-3,0]	wait_warmup[]
+delay[1e-3]
+iset[vcc,0.05,1e-3,0]	delay[1e-3]
+finish[]	VBAT		V(VCC)	Y			Done													3.701
+3.295(10mA)		checked
+TM117	VCC	VCC_CUR_LIMIT_VBAT_PATH	VBAT PATH VCC CURRENT LIMIT
+补充scm	20~70	mA					VCC force 1V，check  current of VCC	vset[vbat,4,100e-6,0]	vset[vcc,1,1e-3,1]	delay[1e-3]
+finish[]	VBAT	VCC	I(VCC)	Y			Done													25mA		checked
+TM118	VCC	VCC_CUR_LIMIT_VBUS_PATH	VBUS PATH VCC CURRENT LIMIT
+补充scm	30~70	mA					VCC force 1V，check  current of VCC	vset[vbat,3,100e-6,0]
+vset[vbus,5,100e-6,0]	vset[vcc,1,1e-3,1]	delay[1e-3]
+finish[]	VBAT
+VBUS	VCC	I(VCC)	Y			Done													14mA		checked
+TM119	VCC	VBAT_PATH_ON	cover by tm112					debug												MergeIntoOtherCase															NA
+TM120	VCC	VBUS_PATH_ON	cover by tm107					debug												MergeIntoOtherCase															NA
+TM121	VCC	VAC_PATH_ON	VBAT<3.1V，当VAC1>4.4V时，VCC切换至VAC1供电
+MUX A2D_VAC_PATH_ON信号到dtest0					debug			vset[vbat,3,100e-6,0]	en_tm[]
+field[(DMUX_EN,1),(DMUX_SEL,42)]
+vset[vac1,5,1e-3,0]
+vset[vac1,0,1e-3,0]	delay[1e-3]
+finish[]	VBAT
+VAC1	VAC1	V(DTEST0)	Y			Done					VAC1 ramp, INT toggle								PASS		checked
+TM122	VMCU	VMCU_VBAT_PATH_ACC1	VBAT供电VCMU，并且在LDO模式下，测试VMCU带载50mA电压	3.2~3.7	V			SCM			vset[vbat,3.7,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(VMCU_FAVOR_VBAT,1)]
+iset[vmcu,0.05,1e-3,0]	delay[1e-3]
+finish[]	VBAT	I(VMCU)	V(VMCU)	Y			Done
+TM123	VMCU	VMCU_VBAT_PATH_ACC2	VBAT供电VCMU，并且在LDR模式下，测试VMCU带载50mA电压	3.2~3.7	V			SCM			vset[vbat,3.7,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(VMCU_FAVOR_VBAT,1),(VMCU_VOL_BAT_PATH,1)]
+iset[vmcu,0.05,1e-3,0]	delay[1e-3]
+finish[]	VBAT	I(VMCU)	V(VMCU)	Y			Done
+TM124	VMCU	VMCU_VCC_PATH_ACC	VCC供电VCMU，测试VMCU带载50mA电压	3.8~4.5	V			SCM			vset[vbat,3.7,100e-6,0]
+vset[vbus,5,100e-6,0]	en_tm[]
+delay[1e-3]
+iset[vmcu,0.05,1e-3,0]	delay[1e-3]
+finish[]	VBAT
+VBUS	I(VMCU)	V(VMCU)	Y			Done				不需要VCC供电
+TM125	VMCU	VMCU_CUR_LIMIT_VBAT_PATH	VBAT PATH VMCU CURRENT LIMIT
+补充scm	10~40	mA						vset[vbat,3.7,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(VMCU_FAVOR_VBAT,1)]
+vset[vmcu,0.5,1e-3,0]	delay[1e-3]
+finish[]	VBAT	VMCU	I(VMCU)	Y			Done
+TM126	VMCU	VMCU_CUR_LIMIT_VCC_PATH	VCC PATH VMCU CURRENT LIMIT
+补充scm	20~70	mA						vset[vbat,3.7,100e-6,0]
+vset[vbus,5,100e-6,0]	wait_warmup[]
+vset[vmcu,0.5,1e-3,0]	delay[1e-3]
+finish[]	VBAT	VMCU	I(VMCU)	Y			Done
+TM127	VMCU	VBAT_PATH_ON_VMCU	测试VMCU选择VBAT通路功能
+reg VMCU_FAVOR_VBAT!=0 && VBAT>2.8V
+VCC由VBUS供电切换到VBAT供电								vset[vbat,2.5,100e-6,0]
+vset[vbus,5,100e-6,0]
+en_tm[]	field[(WAKE_UP,1),(VMCU_FAVOR_VBAT,1)]
+delay[3e-3]
+field[(DMUX_EN,1),(DMUX_SEL,53)]
+vset[vbat,4,1e-3,0]
+vset[vbat,0,1e-3,0]	delay[1e-3]
+finish[]	VBUS	VBAT	V(DTEST0)	Y			Done
+TM128	VMCU	VBAT_PATH_ON_VCC	测试VCC选择VBAT通路功能
+reg VCC_FAVOR_VBAT!=0 && VBAT>3.7V
+VCC由VBUS供电切换到VBAT供电								vset[vbat,3.4,100e-6,0]
+vset[vac1,5,100e-6,0]
+vset[vbus,5,100e-6,0]
+en_tm[]	field[(WAKE_UP,1),(VCC_FAVOR_VBAT,1)]
+delay[3e-3]
+field[(DMUX_EN,1),(DMUX_SEL,40)]
+vset[vbat,4,10e-3,0]
+vset[vbat,0,10e-3,0]	delay[1e-3]
+finish[]	VBUS	VBAT	V(DTEST0)	Y			Done
+TM129	VBAT_MNT	VCC_VBAT_HT_2P8	测试VBAT_HT_2P8比较器精度	rising vth 2.8V, hys 0.2V	V			SCM			vset[vac1,5,1e-3,0]
+en_tm[]	field[(WAKE_UP,1),(VMCU_FAVOR_VBAT,1)]
+field[(DMUX_EN,1),(DMUX_SEL,62)]
+vset[vbat,3,1e-3,0]
+vset[vbat,0,1e-3,0]	delay[1e-3]
+finish[]	VAC1	VBAT	V(DTEST0)	Y			Done
+TM130	VBAT_MNT	VCC_VBAT_HT_3P7	测试VBAT_HT_3P7比较器精度	rising vth 3.7/3.9/4.1V, hys 0.2V	V			SCM			vset[vac1,5,1e-3,0]
+en_tm[]	field[(WAKE_UP,1),(VCC_FAVOR_VBAT,1)]
+field[(DMUX_EN,1),(DMUX_SEL,63)]
+vset[vbat,4.5,10e-3,0]
+vset[vbat,0,10e-3,0]
+field[(WAKE_UP,1),(VCC_FAVOR_VBAT,2)]
+vset[vbat,4.5,10e-3,0]
+vset[vbat,0,10e-3,0]
+field[(WAKE_UP,1),(VCC_FAVOR_VBAT,3)]
+vset[vbat,4.5,10e-3,0]
+vset[vbat,0,10e-3,0]	delay[1e-3]
+finish[]	VAC1	VBAT	V(DTEST0)	Y			Done
+TM131	BG	IRPPO_EA_FB		0.8	V						vset[vbat,5,100e-6,0]
+en_tm[]	field[(WAKE_UP,1)]
+field[(EN_ATEST0,1),(ATEST0_MUX,6)]	delay[1e-3]
+finish[]	VBAT		V(ATEST0)	Y			Done					measure AMUX voltage								0.79		checked
+TM132	BG	IHR_P_1UA		1	uA						vset[vbat,5,100e-6,0]
+vset[amux,1,100e-6,0]
+en_tm[]	field[(WAKE_UP,1)]
+field[(EN_ATEST0,1),(ATEST0_MUX,7)]
+vset[vdm,1,100e-6,0]	delay[1e-3]
+finish[]	VBAT		I(ATEST0)	Y			Done					AMUX=1V, measure AMUX current								0.91uA		checked
+TM133	BG	IZTC_1UA		1	uA				Y	TRIM_ZTC_RES	vset[vbat,5,100e-6,0]
+vset[amux,1,100e-6,0]
+en_tm[]	field[(WAKE_UP,1)]
+field[(EN_ATEST0,1),(ATEST0_MUX,8)]
+vset[vdm,1,100e-6,0]	delay[1e-3]
+finish[]	VBAT		I(ATEST0)	Y			Done					AMUX=1V, measure AMUX current								1.01uA	Bench Passed，0.972uA，able to trim	checked
+TM134	BG	IPTAT_1UA		1	uA						vset[vbat,5,100e-6,0]
+vset[amux,1,100e-6,0]
+en_tm[]	field[(WAKE_UP,1)]
+field[(EN_ATEST0,1),(ATEST0_MUX,9)]
+vset[vdm,1,100e-6,0]	delay[1e-3]
+finish[]	VBAT		I(ATEST0)	Y			Done					AMUX=1V, measure AMUX current								0.995uA		checked
+TM135	BG	VREF_1P0	VREF_1P0 ACC	1	V				Y	TRIM_BG_RES_DIV	vset[vbat,5,100e-6,0]
+en_tm[]	field[(WAKE_UP,1)]
+field[(EN_ATEST0,1),(ATEST0_MUX,10)]	delay[1e-3]
+finish[]	VBAT		V(ATEST0)	Y			Done													0.9853	Bench Passed，0.998V，able to trim	checked
+TM136	BG	AVSS_BG		0	V						vset[vbat,5,100e-6,0]
+en_tm[]	field[(WAKE_UP,1)]
+field[(EN_ATEST0,1),(ATEST0_MUX,11)]	delay[1e-3]
+finish[]	VBAT		V(ATEST0)	Y			Done													11mV		checked
+TM137	BG	TSD_TM	检查TSD比较器功能
+配置测试模式后阈值会折返：
+TSD:  rising 0C falling -20C							function check:
+在进TM_TSD前，比较器不会翻转；
+进TM_TSD后，比较器翻转。	vset[vbat,5,100e-6,0]
+en_tm[]	field[(WAKE_UP,1)]
+field[(DMUX_EN,1),(DMUX_SEL,18)]
+delay[1e-3]
+field[(D2A_BG_TM_TSD,1)]	delay[1e-3]
+finish[]	VBAT		V(DTEST0)	Y			Done				量产无法改变温度									PASS		checked
+TM138	BG	TDIE_WARM_TM	检查TDIE_WARM比较器功能
+配置测试模式后阈值会折返：
+TDIE_WARM:  rising -30C falling 0C							function check:
+在进TM_TSD前，比较器不会翻转；
+进TM_TSD后，比较器翻转。	vset[vbat,5,100e-6,0]
+en_tm[]	field[(WAKE_UP,1)]
+field[(DMUX_EN,1),(DMUX_SEL,17)]
+delay[1e-3]
+field[(D2A_BG_TM_TSD,1)]	delay[1e-3]
+finish[]	VBAT		V(DTEST0)	Y			Done				量产无法改变温度
+TM139	BG	HP_VBG	VBG ACC	1.275	V				Y	TRIM_BG	vset[vbat,5,100e-6,0]
+en_tm[]	field[(WAKE_UP,1)]
+field[(EN_ATEST0,1),(ATEST0_MUX,12)]	delay[1e-3]
+finish[]	VBAT		V(ATEST0)	Y			Done													1.214	Bench Passed，1.224V，able to trim	checked
+TM200	IO	VTH_SCL_IN	SCL input rise/fall threshold.	rising 小于1.4
+falling 大于0.6	V	Direct		SCM		conig_tm_io_sch
+(IO->sch, STIM->new verilog_tm include vsrc of SCL/SDA)	vset[vbat,5,100e-6,0]	en_tm[]
+field[(DMUX_EN,1),(DMUX_SEL,5)]	vset[scl,3,1e-3,0]
+vset[scl,0,1e-3,0]
+delay[1e-3]
+finish[]	VBAT	SCL	V(DTEST0)	Y	Y		Done													r 1.04
+f 0.94
+		checked
+TM201	IO	VTH_SDA_IN	SCL input rise/fall threshold.	rising 小于1.4
+falling 大于0.6	V	Direct		SCM		conig_tm_io_sch
+(IO->sch, STIM->new verilog_tm include vsrc of SCL/SDA)	vset[vbat,5,100e-6,0]	en_tm[]
+field[(DMUX_EN,1),(DMUX_SEL,6)]	vset[sda,3,1e-3,0]
+vset[sda,0,1e-3,0]
+delay[1e-3]
+finish[]	VBAT	SDA	V(DTEST0)	Y	Y		Done													r 1.04
+f 0.94
+		checked
+TM202	IO	R_INT	pulldown resistor at INT		ohm	Direct		SCM		merge into TM400, test INT resistor when VBUS>VBUS_OVP
+????	vset[vbat,4,100e-6,0]	en_tm[]
+field[(D2A_OVRD_SEL,49),(OVRD_VALUE,3)]	delay[1e-3]
+finish[]	VBAT	I(INT)	V(INT)	Y	Y		Done				计算公式？现在没有INT了									0.1V  0.015mA
+7.14OHM		checked
+TM203	IO	R_SDA	pulldown resistor at SDA		ohm	Direct		SCM		Waiting for OVRD(d2a_sda_out)	vset[vbat,4,100e-6,0]	en_tm[]
+field[(D2A_OVRD_SEL,50),(OVRD_VALUE,3)]	delay[1e-3]
+finish[]	VBAT	I(SDA)	V(SDA)	Y	Y		Done					SDA=1V, measure current								0.185/0.02
+9.25ohm		checked
+TM204	IO	IPD_VBUS	pulldown current at vbus	20	mA	Direct		SCM			vset[vbat,4,100e-6,0]
+delay[5e-3]
+vset[vbus,5,100e-6,1]	wait_warmup[]
+field[(VBUS_PULLDOWN,1)]	delay[1e-3]
+field[(VBUS_PULLDOWN,0)]
+delay[1e-3]
+field[(VBUS_PULLDOWN,1)]
+delay[1e-3]
+finish[]	VBAT	VBUS	I(VBUS)	Y			Done													19.4mA		checked
+TM205	IO	IPD_VAC1	pulldown current at vac1	2mA VAC=4V
+<1mA VAC=0.8V	mA	Direct		SCM			vset[vbat,4,100e-6,0]	wait_warmup[]
+field[(VAC1_PULLDOWN,1)]	vset[vac1,1,1e-3,0]
+delay[1e-3]
+vset[vac1,4,1e-3,0]
+delay[1e-3]
+finish[]	VBAT	VAC1	I(VAC1)				Done													2.2mA		checked
+TM206	IO	IPD_VAC2	pulldown current at vac2	2mA VAC=4V
+<1mA VAC=0.8V	mA	Direct		SCM			vset[vbat,4,100e-6,0]	wait_warmup[]
+field[(VAC2_PULLDOWN,1)]	vset[vac2,1,1e-3,0]
+delay[1e-3]
+vset[vac2,4,1e-3,0]
+delay[1e-3]
+finish[]	VBAT	VAC2	I(VAC2)				Done													2.2mA		checked
+TM207	IO	IPD_VAC3	pulldown current at vac3	2mA VAC=4V
+<1mA VAC=0.8V	mA	Direct		SCM			vset[vbat,4,100e-6,0]	wait_warmup[]
+field[(VAC3_PULLDOWN,1)]	vset[vac3,1,1e-3,0]
+delay[1e-3]
+vset[vac3,4,1e-3,0]
+delay[1e-3]
+finish[]	VBAT	VAC3	I(VAC3)	Y			Done													2.2mA		checked
+TM208	IO	VAC1_SNK_DET_PREBIAS	prebiase voltage check	2.2	V	Direct		SCM	 	merge into TM212	vset[vbat,4,100e-6,0]	delay[10e-3]
+field[(VAC1_APORT_DET_ENABLE,1),(VAC_SNK_DET_SEL,1)]	delay[100e-3]
+finish[]	VBAT	VAC1	V(VAC1)				MergeIntoOtherCase													2.714		checked
+TM209	IO	VAC2_SNK_DET_PREBIAS	prebiase voltage check	2.2	V	Direct		SCM	 	merge into TM213	vset[vbat,4,100e-6,0]	delay[10e-3]
+field[(VAC2_APORT_DET_ENABLE,1),(VAC_SNK_DET_SEL,1)]	delay[100e-3]
+finish[0]	VBAT	VAC2	V(VAC2)				MergeIntoOtherCase													2.714		checked
+TM210	IO	VAC1_SNK_DET_VTH_RELMODE	Slew rate detection
+generate VPP=0.6, 5Khz, 100us rise, 100us fall at VAC1.	0.2V/32us	V/us	Direct		SCM	 	 	vset[vbat,4,100e-6,0]	en_tm[]
+field[(VAC1_APORT_DET_ENABLE,1),(VAC_SNK_DET_SEL,1)]
+field[(DMUX_EN,1),(DMUX_SEL,2)]
+delay[10e-3]	vset[vac1,3,2e-3,0]
+vset[vac1,0,2e-3,0]
+delay[2e-3]
+vset[vac1,3,0.1e-3,0]
+vset[vac1,0,0.1e-3,0]
+delay[1e-3]
+finish[0]	VBAT	VAC1	V(DTEST0)	Y			Done				三角波，2mS从0V到3V	ramp VAC1 , check INT								2.022		checked
+TM211	IO	VAC2_SNK_DET_VTH_RELMODE	Slew rate detection
+generate VPP=0.6, 5Khz, 100us rise, 100us fall at VAC2.	0.2V/32us	V/us	Direct		SCM	 	 	vset[vbat,4,100e-6,0]	en_tm[]
+field[(VAC2_APORT_DET_ENABLE,1),(VAC_SNK_DET_SEL,1)]
+field[(DMUX_EN,1),(DMUX_SEL,44)]
+delay[10e-3]	vset[vac2,3,2e-3,0]
+vset[vac2,0,2e-3,0]
+delay[2e-3]
+vset[vac2,3,0.1e-3,0]
+vset[vac2,0,0.1e-3,0]
+delay[1e-3]
+finish[0]	VBAT	VAC2	V(DTEST0)	Y			Done				同上	ramp VAC2 , check INT								2.035		checked
+TM212	IO	VAC1_SNK_DET_VTH_ABSMODE	Vth	R:1.9/F:1.7	V	Direct		SCM	 	 	vset[vbat,4,100e-6,0]	en_tm[]
+field[(VAC1_APORT_DET_ENABLE,1),(VAC_SNK_DET_SEL,0)]
+field[(DMUX_EN,1),(DMUX_SEL,2)]
+delay[10e-3]	vset[vac1,3,10e-3,0]
+vset[vac1,0,10e-3,0]
+delay[2e-3]
+finish[0]	VBAT	VAC1	V(VAC1)
+V(DTEST0)	Y			Done					ramp VAC1,直接使用,不用AWG								有功能 需确认
+relative reg写1 还是0		checked
+TM213	IO	VAC2_SNK_DET_VTH_ABSMODE	Vth	R:1.9/F:1.7	V	Direct		SCM	 	 	vset[vbat,4,100e-6,0]	en_tm[]
+field[(VAC2_APORT_DET_ENABLE,1),(VAC_SNK_DET_SEL,0)]
+field[(DMUX_EN,1),(DMUX_SEL,44)]
+delay[10e-3]	vset[vac2,3,10e-3,0]
+vset[vac2,0,10e-3,0]
+delay[2e-3]
+finish[0]	VBAT	VAC2	V(VAC2)
+V(DTEST0)	Y			Done					ramp VAC2,直接使用,不用AWG								有功能		checked
+TM214	IO	PWM1_Vth	Vth	1.4/0.6	V	Direct		SCM	 	need enabel D2A_EN_PWM_IO funtion in testmode.	vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(DMUX_EN,1),(DMUX_SEL,46)]
+field[(D2A_OVRD_SEL,48),(ovrd_value,3)]
+delay[2e-3]
+vset[pwm1,4,1e-3,0]
+vset[pwm1,0,1e-3,0]	delay[2e-3]
+finish[0]	VBAT	PWM1	V(DTEST0)	Y			Done				通过DFT配置，MUX到Mason的其他外置pin进行测试	ramp VAC2,直接使用,不用AWG								有功能		checked
+TM215	IO	PWM2_Vth	Vth	1.4/0.6	V	Direct		SCM	 	need enabel D2A_EN_PWM_IO funtion in testmode.	vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(DMUX_EN,1),(DMUX_SEL,45)]
+field[(D2A_OVRD_SEL,48),(ovrd_value,3)]
+delay[2e-3]
+vset[pwm2,4,1e-3,0]
+vset[pwm2,0,1e-3,0]	delay[2e-3]
+finish[0]	VBAT	PWM2	V(DTEST0)	Y			Done				通过DFT配置，MUX到Mason的其他外置pin进行测试	ramp VAC2,直接使用,不用AWG								有功能		checked
+TM216	IO	PWM1 Current	Current	10uA	V	Direct		SCM	 	check I(pwm1) when V(pwm1)=0 in TM 214				VBAT	PWM1	I(PWM1)				MergeIntoOtherCase					ramp VAC2,直接使用,不用AWG								有功能		checked
+TM217	IO	PWM2 Current	Current	10uA	V	Direct		SCM	 	check I(pwm2) when V(pwm2)=0 in TM 215				VBAT	PWM2	I(PWM2)				MergeIntoOtherCase					ramp VAC2,直接使用,不用AWG								有功能		checked
+TM218	IO	PWM1 HIZ voltage	PWM highZ output voltage	0.9	V	Direct				merge into TM214										MergeIntoOtherCase
+TM219	IO	PWM1 HIZ voltage	PWM highZ output voltage	0.9	V	Direct				merge into TM215										MergeIntoOtherCase
+TM220	IO	DMO pulldown resistor	DMO pushpull resistor test		Ohm	Direct				Select A2D_VAC1_PRST as DMO digital input. DMO module buffer this signal to pad.
+measure ron when dmo is high or low.	vset[vbat,4,100e-6,0]
+en_tm[]	field[(DM_CHANNEL_SEL_OVER_WRITE,1),(D2A_DMO_EN,1),(D2A_DMO_CHANNEL_SEL,1)]
+field[(DMUX_SEL,22)]
+vset[vac1,5,10e-3,0]
+vset[vac1,0,10e-3,0]	delay[2e-3]
+finish[0]	VBAT	VAC1	Measure Ron between(DMO, AGND) 
+Measure Ron between(VMCU, DMO)	Y	Y		Done				测试2个电阻
+TM221	IO	DMO pullup resistor	DMO pushpull resistor test		Ohm	Direct				merge into TM 220										MergeIntoOtherCase
+TM222	IO	DMA pulldown resistor	DMA pushpull resistor test		Ohm	Direct				Select A2D_VAC1_PRST as DMA digital input. DMA module buffer this signal to pad.
+measure ron when dmo is high or low.	vset[vbat,4,100e-6,0]
+en_tm[]	field[(DM_CHANNEL_SEL_OVER_WRITE,1),(D2A_DMA_EN,1),(D2A_DMA_CHANNEL_SEL,1)]
+field[(DMUX_SEL,22)]
+vset[vac1,5,10e-3,0]
+vset[vac1,0,10e-3,0]	delay[2e-3]
+finish[0]	VBAT	VAC1	Measure Ron between(DMO, AGND) 
+Measure Ron between(VMCU, DMO)	Y	Y		Done				测试2个电阻
+TM223	IO	DMA pullup resistor	DMA pushpull resistor test		Ohm	Direct				merge into TM 222										MergeIntoOtherCase
+TM300	OSC	OSC64K	OSC64K output	64	Khz	Direct		SCM	Y		vset[vbat,4,100e-6,0]	en_tm[]
+field[(DMUX_EN,1),(DMUX_SEL,12)]
+delay[1e-3]
+field[(D2A_TRIM_OSC_64K,2)]	delay[1e-3]
+finish[0]	VBAT		V(DTEST0)	Y			Done														Bench Pass, 72.67KHz	checked
+TM301	OSC	OSC4P5M	Foldback to 35khz
+OSC4P5M output	35	Khz	Indirect		SCM	Y	TRIM_OSC_4P5M	vset[vbat,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(DMUX_EN,1),(DMUX_SEL,51)]	delay[1e-3]
+finish[0]	VBAT		V(DTEST0)	Y			Done														check passed on Bench, Freq=36.54Khz, able to Trim	checked
+TM400	MNT	VBUS_OVP_VTH1	vbus ovp threshold	rising 6.5, hys 0.3	V	Direct		SCM		monitor VBUS when dtest0 flip	vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(VBUS_OVP,0),(DMUX_EN,1),(DMUX_SEL,32)]	vset[vbus,4,100e-6,1]
+vset[vbus,7,1e-3,1]
+vset[vbus,4,1e-3,1]
+delay[1e-3]
+finish[0]	VBAT	VBUS	V(DTEST0)
+VBUS	Y			Done					Ramp VBUS and check INT toggle								r 6.432
+f 6.139		checked
+TM401	MNT	VBUS_OVP_VTH2	vbus ovp threshold	rising 12.8, hys 0.3	V	Direct		SCM		monitor VBUS when dtest0 flip	vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(VBUS_OVP,2),(DMUX_EN,1),(DMUX_SEL,32)]	vset[vbus,4,100e-6,1]
+vset[vbus,15,1e-3,1]
+vset[vbus,4,1e-3,1]
+delay[1e-3]
+finish[0]	VBAT	VBUS	V(DTEST0)
+VBUS	Y			Done					Ramp VBUS and check INT toggle								r 13.365
+f 13.078		checked
+TM402	MNT	VBUS_OVP_VTH3	vbus ovp threshold	rising 18.8, hys 0.3	V	Direct		SCM		monitor VBUS when dtest0 flip	vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(VBUS_OVP,5),(DMUX_EN,1),(MPP_EN,1),(DMUX_SEL,32)]	vset[vbus,4,100e-6,1]
+vset[vbus,20,1e-3,1]
+vset[vbus,4,1e-3,1]
+delay[1e-3]
+finish[0]	VBAT	VBUS	V(DTEST0)
+VBUS	Y			Done					Ramp VBUS and check INT toggle								r 19.591
+f 19.342		checked
+TM403	MNT	VBUS_REVI_VTH	VBUS-VBAT falling	falling : -120mV, rising : 0V	V	Direct		SCM		monitor VBUS-VBAT when dtest0 flip	vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(DMUX_EN,1),(DMUX_SEL,30)]	vset[vbus,3.7,100e-6,1]
+vset[vbus,4.5,1e-3,1]
+vset[vbus,3.7,1e-3,1]
+delay[1e-3]
+finish[0]	VBAT	VBUS	V(DTEST0)
+VBUS-VBAT	Y			Done					Ramp VBUS and check INT toggle								r -0.016
+f -0.138		checked
+TM406	MNT	VBAT_LOW_VTH	boost mode
+vbus_ht_low threshold	rising : 2.7V, falling : 2.5V	V	Direct		SCM		monitor VBAT when dtest0 flip	vset[vac1,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(DMUX_EN,1),(DMUX_SEL,26),(BUBO_MODE,1)]	vset[vbat,5,1e-3,0]
+vset[vbat,0,1e-3,0]
+finish[0]	VBAT	VBAT	V(DTEST0)
+VBUS-VBAT	Y			Done				VAC1要上电	Ramp VBAT and check INT toggle								r 2.686
+f 2.491		checked
+TM408	MNT	VBAT_OVP	buck mode
+VBAT ovp threshold(relative to CV)	rising 104%*VBAT_CV 
+hys 2%*VBAT_CV
+VBAT_CV=4.2	V	Direct		SCM			vset[vac1,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(DMUX_EN,1),(DMUX_SEL,28),(VBAT_CV,9)]	vset[vbat,5,1e-3,0]
+vset[vbat,0,1e-3,0]
+finish[0]	VAC	VBAT	V(DTEST0)
+VBAT	Y			Done					Ramp VBAT and check INT toggle								r 4.231
+f 4.158		checked
+TM409	MNT	VBUS_HT_4P8V	boost mode
+vbus comparator	rising : 4.8V	V	Direct		SCM			vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(DMUX_EN,1),(DMUX_SEL,31),(BUBO_MODE,1)]	vset[vbus,4,100e-6,1]
+vset[vbus,7,1e-3,1]
+vset[vbus,4,1e-3,1]
+finish[0]	VBAT	VBUS	V(DTEST0)
+VBUS	Y			Done					Ramp VBUS and check INT toggle								r 4.661
+f 4.562		checked
+TM410	MNT	VTRIKLE_VTH1	buck mode
+vbat trikle charge threshold	rising 2.7, hys 0.3	V	Direct		SCM			vset[vac1,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(VTRICKLE,0)(DMUX_EN,1),(DMUX_SEL,29),(BUBO_MODE,0)]	vset[vbat,5,1e-3,0]
+vset[vbat,0,1e-3,0]
+finish[0]	VAC	VBAT	V(DTEST0)
+VBAT	Y			Done					Ramp VBAT and check INT toggle								r 2.687
+f 2.393		checked
+TM411	MNT	VTRIKLE_VTH2	buck mode
+vbat trikle charge threshold	rising 3, hys 0.3	V	Direct		SCM			vset[vac1,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(VTRICKLE,1)(DMUX_EN,1),(DMUX_SEL,29),(BUBO_MODE,0)]	vset[vbat,5,1e-3,0]
+vset[vbat,0,1e-3,0]
+finish[0]	VAC	VBAT	V(DTEST0)
+VBAT	Y			Done					Ramp VBAT and check INT toggle								r 2.983
+f 2.69		checked
+TM412	MNT	VRE_CHG_VTH1	buck mode
+vbat recharge threshold	VBAT_CV - 0.1, hys 0.05
+VBAT_CV=4.1V	V	Direct		SCM			vset[vac1,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(VRE_CHG,0)(DMUX_EN,1),(DMUX_SEL,27),(BUBO_MODE,0)]	vset[vbat,5,1e-3,0]
+vset[vbat,0,1e-3,0]
+finish[0]	VAC	VBAT	V(DTEST0)
+VBAT	Y			Done					Ramp VBAT and check INT toggle								f 4.03
+r 3.979		checked
+TM413	MNT	VRE_CHG_VTH2	buck mode
+vbat recharge threshold	VBAT_CV - 0.2, hys 0.05
+VBAT_CV=4.1V	V	Direct		SCM			vset[vac1,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(VRE_CHG,1)(DMUX_EN,1),(DMUX_SEL,27),(BUBO_MODE,0)]	vset[vbat,5,1e-3,0]
+vset[vbat,0,1e-3,0]
+finish[0]	VAC	VBAT	V(DTEST0)
+VBAT	Y			Done					Ramp VBAT and check INT toggle								f 3.929
+r 3.882		checked
+TM414	MNT	NTC_COLD	under buck mode	rising 0.55V, falling 0.44V	V	Direct		SCM		No such case	vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(BUBO_MODE,0),(DMUX_EN,1),(DMUX_SEL,3)]	vset[ntc,4,1e-3,0]
+vset[ntc,0.2,1e-3,0]
+vset[ntc,1,1e-3,0]	VBAT	NTC1(PC6)	V(DTEST0)				Cancel					Ramp NTC and check INT toggle								r 0.54
+f 0.44		checked
+TM415	MNT	NTC_COLD	under boost mode	rising 1.36V, falling 1.07V	V	Direct		SCM		No such case	vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(BUBO_MODE,1),(DMUX_EN,1),(DMUX_SEL,3)]	vset[ntc,4,1e-3,0]
+vset[ntc,0.2,1e-3,0]
+vset[ntc,1.7,1e-3,0]	VBAT	NTC1(PC6)	V(DTEST0)				Cancel					Ramp NTC and check INT toggle								r 1.347
+f 1.065		checked
+TM416	MNT	NTC_JUDGE		falling 0.15,rising 1.98	V	Direct		SCM		No such case	vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(DMUX_EN,1),(DMUX_SEL,62)]	vset[ntc,4,1e-3,0]
+vset[ntc,0,1e-3,0]	VBAT	NTC1(PC6)	V(DTEST0)				Cancel					Ramp NTC and check INT toggle								r 0.147
+f 1.971		checked
+TM418	MNT	VAC1_FB	vac1 feedback voltage	VAC1/10	V	Direct		SCM			vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,1),(EN_ATEST0,1),(ATEST0_MUX,31)]	vset[vac1,5,1e-3,0]
+finish[0]	VBAT	VAC1	V(ATEST0)	Y			Done													0.502/5		checked
+TM419	MNT	VAC2_FB	vac2 feedback voltage	VAC2/10	V	Direct		SCM			vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,2),(EN_ATEST0,1),(ATEST0_MUX,31)]	vset[vac2,10,1e-3,0]
+finish[0]	VBAT	VAC2	V(ATEST0)	Y			Done													1.005/10		checked
+TM420	MNT	VAC3_FB	vac3 feedback voltage	VAC3/10	V	Direct		SCM			vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,3),(EN_ATEST0,1),(ATEST0_MUX,31)]	vset[vac3,15,1e-3,0]
+finish[0]	VBAT	VAC3	V(ATEST0)	Y			Done													1.503/15		checked
+TM421	MNT	VBUS_FB	vbus feedback voltage	VBUS/10	V	Direct		SCM			vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,4),(EN_ATEST0,1),(ATEST0_MUX,31)]	vset[vbus,4,1e-3,1]
+vset[vbus,10,1e-3,1]
+finish[0]	VBAT	VBUS	V(ATEST0)	Y			Done													0.802/8		checked
+TM422	MNT	VBAT_FB	vbat feedback voltage	VBAT*2/5	V	Direct		SCM	Y	TRIM_MNT_VBAT_RSNS_LOOP	vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(EN_ATEST0,1),(ATEST0_MUX,23)]	vset[vbat,5,100e-6,0]
+delay[1e-3]
+finish[0]	VBAT	VBAT	V(ATEST0)	Y			Done													1.597/3.998	Bench pass, 测试值1.597V, able to trim	checked
+TM424	MNT	VREF_TRIM	monitor LDO reference voltage & its trim	1.68	V	Direct		debug	Y	TRIM_MNT_DAC_BUF_OS	vset[vbat,4.4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(EN_ATEST0,1),(ATEST0_MUX,19)]	delay[2e-3]
+finish[0]	VBAT		V(ATEST0)	Y			Done													1.669	Bench pass, 测试值1.669V, able to trim	checked
+TM425	MNT	VREF_1P2V_BUF	internal 1.2V voltage refernce	1.2	V	Direct		debug	Y	TRIM_MNT_V1P2_BUF	vset[vbat,4.4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(EN_ATEST1,1),(ATEST1_MUX,2),(DIS_NTC_DETECTION_ANALOG,1)]	delay[2e-3]
+finish[0]	VBAT		V(ATEST1)	Y			Done													1.197	Bench Pass, 测试值1.197V, able to trim	checked
+TM432	MNT	IR_CABLE_COMP1	BOOST MODE
+IR compensation resistance value	50m	ohm	Indrect		SCM		VDM mimic IBUSP in buck mode with ratio 400mV/A, and IBUSN connected to 1.2V
+R=[ATEST0(ATEST1=2.4V)-ATEST0(ATEST1=1.2V)]/(0.1*3)	vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(BUBO_MODE,1),(IR_COMP_TYPE,0)(IR_COMP,1),(VCLAMP,0),(D2A_MNT_TM_EN,1),(EN_ATEST0,1),(ATEST0_MUX,22),(EN_ATEST1,1),(ATEST1_MUX,1),(DIS_NTC_DETECTION_ANALOG,1),(DMUX_EN,1),(DMUX_SEL,25)]	vset[amux,2.4,1e-3,0]
+delay[2e-3]
+vset[amux,1.2,1e-3,0]
+delay[1e-3]
+finish[0]	VBAT	V(ATEST1)	V(ATEST0)	Y			Done					R=[ATEST0(NTC=3V)-ATEST0(NTC=1.2V)]/0.1								(1.906-1.891)/0.1/3
+50m		checked
+TM433	MNT	VCLAMP_DISCHG1	BOOST MODE
+IR compensation maximum clamp voltage	200m	V	Indrect		SCM		VDM mimic IBUSP in buck mode with ratio 400mV/A, and IBUSN connected to 1.2V
+R=[ATEST0(ATEST1=3V)-ATEST0(ATEST1=1.2V)]/0.1	vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(BUBO_MODE,1),(IR_COMP_TYPE,0)(IR_COMP,1),(VCLAMP,0),(D2A_MNT_TM_EN,1),(EN_ATEST0,1),(ATEST0_MUX,22),(EN_ATEST1,1),(ATEST1_MUX,1),(DIS_NTC_DETECTION_ANALOG,1),(DMUX_EN,1),(DMUX_SEL,25)]	vset[amux,3,1e-3,0]
+delay[2e-3]
+vset[amux,1.2,9e-3,0]
+delay[1e-3]
+finish[0]	VBAT	V(ATEST1)	V(ATEST0)	Y			Done					R=[ATEST0(NTC=3V)-ATEST0(NTC=1.2V)]/0.1								(1.91-1.891)/0.1
+190m		checked
+TM434	MNT	IR_CABLE_COMP2	BOOST MODE
+IR compensation resistance value	100m	ohm	Indrect		SCM		VDM mimic IBUSP in buck mode with ratio 400mV/A, and IBUSN connected to 1.2V
+R=[ATEST0(ATEST1=1.8V)-ATEST0(ATEST1=1.2V)]/(0.1*1.5)	vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(BUBO_MODE,1),(IR_COMP_TYPE,0)(IR_COMP,2),(VCLAMP,0),(D2A_MNT_TM_EN,1),(EN_ATEST0,1),(ATEST0_MUX,22),(EN_ATEST1,1),(ATEST1_MUX,1),(DIS_NTC_DETECTION_ANALOG,1),(DMUX_EN,1),(DMUX_SEL,25)]	vset[amux,1.8,1e-3,0]
+delay[2e-3]
+vset[amux,1.2,1e-3,0]
+delay[1e-3]
+finish[0]	VBAT	V(ATEST1)	V(ATEST0)	Y			Done					R=[ATEST0(NTC=3V)-ATEST0(NTC=1.2V)]/0.1								(1.871-1.856)/0.1/1.5
+100m		checked
+TM435	MNT	VCLAMP_DISCHG2	BOOST MODE
+IR compensation maximum clamp voltage	400m	V	Indrect		SCM		VDM mimic IBUSP in buck mode with ratio 400mV/A, and IBUSN connected to 1.2V
+R=[ATEST0(ATEST1=3V)-ATEST0(ATEST1=1.2V)]/0.1	vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(BUBO_MODE,1),(IR_COMP_TYPE,0)(IR_COMP,2),(VCLAMP,1),(D2A_MNT_TM_EN,1),(EN_ATEST0,1),(ATEST0_MUX,22),(EN_ATEST1,1),(ATEST1_MUX,1),(DIS_NTC_DETECTION_ANALOG,1),(DMUX_EN,1),(DMUX_SEL,25)]	vset[amux,3,1e-3,0]
+delay[2e-3]
+vset[amux,1.2,9e-3,0]
+delay[1e-3]
+finish[0]	VBAT	V(ATEST1)	V(ATEST0)	Y			Done					R=[ATEST0(NTC=3V)-ATEST0(NTC=1.2V)]/0.1								(1.93-1.891)/0.1
+390m		checked
+TM436	MNT	IR_CABLE_COMP3	BOOST MODE
+IR compensation resistance value	150m	ohm	Indrect		SCM		VDM mimic IBUSP in buck mode with ratio 400mV/A, and IBUSN connected to 1.2V
+R=[ATEST0(ATEST1=2V)-ATEST0(ATEST1=1.2V)]/(0.1*2)	vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(BUBO_MODE,1),(IR_COMP_TYPE,0)(IR_COMP,3),(VCLAMP,1),(D2A_MNT_TM_EN,1),(EN_ATEST0,1),(ATEST0_MUX,22),(EN_ATEST1,1),(ATEST1_MUX,1),(DIS_NTC_DETECTION_ANALOG,1),(DMUX_EN,1),(DMUX_SEL,25)]	vset[amux,2,1e-3,0]
+delay[2e-3]
+vset[amux,1.2,1e-3,0]
+delay[1e-3]
+finish[0]	VBAT	V(ATEST1)	V(ATEST0)	Y			Done					R=[ATEST0(NTC=3V)-ATEST0(NTC=1.2V)]/0.1								(1.92-1.891)/0.1/2
+145m		checked
+TM438	MNT	IR_COMP_DISCHG_STOP	BOOST MODE
+IR compensation stop threshold for ibus, falling vth	falling: 500m
+rising: 800m	A	Indrect		SCM		VDM mimic IBUSP in buck mode with ratio 400mV/A, and IBUSN connected to 1.2V      
+i=(ATEST0-1.2)/0.4	vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(BUBO_MODE,1),(IR_COMP_TYPE,0)(IR_COMP,3),(VCLAMP,1),(D2A_MNT_TM_EN,1),(EN_ATEST0,1),(ATEST0_MUX,22),(EN_ATEST1,1),(ATEST1_MUX,1),(DIS_NTC_DETECTION_ANALOG,1),(DMUX_EN,1),(DMUX_SEL,25)]	vset[amux,4,1e-3,0]
+vset[amux,0,1e-3,0]
+delay[1e-3]
+finish[0]	VBAT	V(ATEST1)	V(DTEST0)	Y			Done					INT翻转时的电压V1, (V1-1.2)/0.4								(1.407-1.2)/0.4
+517mA		checked
+TM439_0	MNT	CV_BUF_TRIM	VBAT EA trim merged in CV_BUF
+no need serve loop,
+but not accurate
+using TM439_1	4.2	V	 		 	Y	?	vset[vac1,5,100e-6,0]
+vset[vbat,4,1e-3,0]
+delay[10e-3]	en_tm[]
+field[(WAKE_UP,1),(VBAT_CV,9),(IBAT_LIMIT,7),(IBUS_SET,127),(VBUS_LOOP_DISABLE,1),(EN_ATEST1,1),(D2A_BUBO_ATEST1,5),(DIS_NTC_DETECTION_ANALOG,1)]
+delay[1e-3]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+delay[1e-3]	vset[vbat,4.4,1e-3,0]
+vset[vbat,4.0,1e-3,0]
+delay[10e-3]
+finish[0]	VBAT		VBAT				Cancel					Ramp VBAT, check INT for accuacy check as backup								4.18V	NTC低于4.155V时候稳定3.2V，在4.175以上会稳定在2.2V， 在4.155~4.175 之间， NTC会震荡，振幅从小到大再逐步缩小到消失	checked
+TM439_1	MNT	CV_BUF_TRIM	need serve loop
+monitor co-work with BUBO
+choose best trim code under CV=0x9(4.2V)	4.2	V	Direct		SCM	Y	check vbat regulation by serve loop.
+TRIM_MNT_CVBUF	vset[vbus,5,100e-6,0]
+vset[vac2,5,100e-6,0]
+vset[vbat,4.15,1e-3,0]
+delay[10e-3]	en_tm[]
+field[(WAKE_UP,1)]
+delay[1e-3]
+field[(VBAT_CV,9),(IBAT_LIMIT,7),(IBUS_SET,127),(VBUS_LOOP_DISABLE,1),(EN_ATEST1,1),(D2A_BUBO_ATEST1,5),(DIS_NTC_DETECTION_ANALOG,1)]
+delay[1e-3]
+field[(D2A_BUBO_TM_DIS_CLK,1),(D2A_BUBO_TM_DIS_COMPH_SLP,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+field[(D2A_OVRD_SEL,9)(ovrd_value,3)]
+delay[1e-3]	ServeLoopCTRL[1]
+delay[2e-3]
+vset_off[vbat]
+field[(d2a_trim_mnt_cv_buf_h,1)]
+delay[1e-3]
+field[(d2a_trim_mnt_cv_buf_h,2)]
+delay[1e-3]
+field[(d2a_trim_mnt_cv_buf_h,4)]
+delay[1e-3]
+field[(d2a_trim_mnt_cv_buf_h,8)]
+delay[1e-3]
+finish[0]	VBAT		VBAT	Y	Y		Done					Sweep trim code and measure VBAT with serve loop, until VBAT voltage close to trim target									验证失败，VAC1=5V， 测试VBAT电压仅为0.169V,远低于目标值4.2V	Issue
+TM440	MNT	VBUS_BUF_TRIM	trim BUFFER of VBUS_REF
+no need serve loop	1.2	V	Direct		debug	Y		vset[vbat,4.4,100e-6,0]
+wait_warmup[]	en_tm[]
+field[(en_i2c_ctrl,1)(WAKE_UP,1),(BUBO_MODE,1),(BUBO_EN,1),(VBUS_VOL_SET_L,124),(VBUS_VOL_SET_H,1),(EN_ATEST1,1),(ATEST1_MUX,4),(DIS_NTC_DETECTION_ANALOG,1)]	delay[4e-3]
+field[(d2a_trim_mnt_vbus_buf,1)]
+delay[1e-3]
+field[(d2a_trim_mnt_vbus_buf,2)]
+delay[1e-3]
+field[(d2a_trim_mnt_vbus_buf,4)]
+delay[1e-3]
+field[(d2a_trim_mnt_vbus_buf,8)]
+delay[1e-3]
+field[(d2a_trim_mnt_vbus_buf,16)]
+delay[1e-3]
+field[(d2a_trim_mnt_vbus_buf,32)]
+finish[0]	VBAT		AMUX	Y	Y		Done					removed										NA
+TM441	MNT	BOOST_VBUS_EA_TRIM	need serve loop
+trim BUBO EA offset under vbus loop & boost mode	12	V	Direct		SCM	Y	check vbus regulation by serve loop.
+TRIM_MNT_VBUS_EA_OS_BO	vset[vbat,4.4,100e-6,0]
+vset[vbus,12,1e-3,0]
+delay[10e-3]	en_tm[]
+field[(WAKE_UP,1),(BUBO_MODE,1),(VBUS_VOL_SET_L,124),(VBUS_VOL_SET_H,1),(IBAT_LIMIT,7),(IBUS_SET,127),(EN_ATEST1,1),(D2A_BUBO_ATEST1,5),(DIS_NTC_DETECTION_ANALOG,1)]
+field[(EN_I2C_CTRL,1),(D2A_BUBO_TM_DIS_VBATLOOP,1)]
+delay[1e-3]
+field[(D2A_BUBO_TM_DIS_CLK,1),(D2A_BUBO_TM_DIS_COMPH_SLP,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+delay[1e-3]	ServeLoopCTRL[3]
+delay[1e-3]
+vset_off[vbus]
+delay[1e-3]
+field[(d2a_trim_mnt_vbus_ea_os_bo,1)]
+delay[1e-3]
+field[(d2a_trim_mnt_vbus_ea_os_bo,2)]
+delay[1e-3]
+field[(d2a_trim_mnt_vbus_ea_os_bo,4)]
+delay[1e-3]
+field[(d2a_trim_mnt_vbus_ea_os_bo,8)]
+delay[1e-3]
+field[(d2a_trim_mnt_vbus_ea_os_bo,16)]
+delay[1e-3]
+field[(d2a_trim_mnt_vbus_ea_os_bo,32)]
+delay[4e-3]
+finish[0]	VBAT		V(VBUS)	Y	Y		Done					Sweep trim code and measure VBUS with serve loop, until VBAT voltage close to trim target									验证失败，VBAT=4.4V， 测试VBUS电压仅为4.067VV,远低于目标值12V，需要确认是不是寄存器不对	Issue
+TM442	MNT	BUCK_VBUS_EA_TRIM	need serve loop
+trim BUBO EA offset under vbus loop & boost mode	4.6	V	Direct		SCM	Y	check vbus regulation by serve loop.
+pay attenton that serve loop need to be changed.
+TRIM_MNT_VBUS_EA_OS_BU	vset[vbat,4.4,100e-6,0]
+vset[vbus,5.5,1e-3,0]
+delay[10e-3]	en_tm[]
+field[(WAKE_UP,1),(BUBO_MODE,0),(VBUS_VOL_SET_L,10),(IBAT_LIMIT,7),(IBUS_SET,127),(EN_ATEST1,1),(D2A_BUBO_ATEST1,5),(DIS_NTC_DETECTION_ANALOG,1)]
+field[(EN_I2C_CTRL,1),(D2A_BUBO_TM_DIS_VBATLOOP,1)]
+delay[1e-3]
+field[(D2A_BUBO_TM_DIS_CLK,1),(D2A_BUBO_TM_DIS_COMPH_SLP,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+delay[1e-3]	ServeLoopCTRL[2]
+delay[1e-3]
+vset_off[vbus]
+delay[1e-3]
+field[(d2a_trim_mnt_vbus_ea_os_bu_l,1)]
+delay[1e-3]
+field[(d2a_trim_mnt_vbus_ea_os_bu_l,2)]
+delay[1e-3]
+field[(d2a_trim_mnt_vbus_ea_os_bu_l,4)]
+delay[1e-3]
+field[(d2a_trim_mnt_vbus_ea_os_bu_l,8)]
+delay[1e-3]
+field[(d2a_trim_mnt_vbus_ea_os_bu_h,1)]
+delay[1e-3]
+field[(d2a_trim_mnt_vbus_ea_os_bu_h,2)]
+delay[4e-3]
+finish[0]	VBAT		V(VBUS)	Y	Y		Done					Sweep trim code and measure VBUS with serve loop, until VBAT voltage close to trim target									验证失败，VBAT=4.4V， 测试VBUS电压仅为4.022VV,远低于目标值5V， 需要确认是不是寄存器不对	Issue
+TM443	MNT	NTC_COLD	under buck mode
+TEMP SETTING = 0	rising 1.08, falling 1.28	V					No such 	vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(BUBO_MODE,0),(DMUX_EN,1),(DMUX_SEL,4),(NTC1_TEMP_SETTING,0)]	vset[ntc,1.8,1e-3,0]
+vset[ntc,0,1e-3,0]	VBAT		V(DTEST0)				Cancel													r 1.075
+f 1.267		checked
+TM443	MNT	NTC_COLD	under buck mode
+TEMP SETTING = 0	rising 1.08, falling 1.28	V						vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(BUBO_MODE,0),(DMUX_EN,1),(DMUX_SEL,4),(NTC1_TEMP_SETTING,0)]	vset[ntc,1.8,1e-3,0]
+vset[ntc,0,1e-3,0]	VBAT		V(DTEST0)				Cancel													r 1.075
+f 1.267		checked
+TM443	MNT	NTC_HOT	under buck mode
+TEMP SETTING = 0	rising 1.08, falling 1.28	V						vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(BUBO_MODE,0),(DMUX_EN,1),(DMUX_SEL,4),(NTC1_TEMP_SETTING,0)]	vset[ntc,1.8,1e-3,0]
+vset[ntc,0,1e-3,0]	VBAT		V(DTEST0)				Cancel													r 1.075
+f 1.267		checked
+TM444	MNT	NTC_HOT	under buck mode
+TEMP SETTING = 1	rising 0.92, rising 1.08	V						vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(BUBO_MODE,0),(DMUX_EN,1),(DMUX_SEL,4),(NTC1_TEMP_SETTING,1)]	vset[ntc,1.8,1e-3,0]
+vset[ntc,0,1e-3,0]	VBAT		V(DTEST0)				Cancel													r 0.917
+f 1.267		checked
+TM445	MNT	NTC_HOT	under boost mode
+TEMP SETTING = 0	rising 0.78, falling 0.92	V						vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(BUBO_MODE,1),(DMUX_EN,1),(DMUX_SEL,4),(NTC1_TEMP_SETTING,0)]	vset[ntc,1.8,1e-3,0]
+vset[ntc,0,1e-3,0]	VBAT		V(DTEST0)				Cancel													r 0.779
+f 0.911		checked
+TM446	MNT	NTC_HOT	under boost mode
+TEMP SETTING = 1	rising 0.665, falling 0.78	V						vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(BUBO_MODE,1),(DMUX_EN,1),(DMUX_SEL,4),(NTC1_TEMP_SETTING,1)]	vset[ntc,1.8,1e-3,0]
+vset[ntc,0,1e-3,0]	VBAT		V(DTEST0)				Cancel													r 0.664
+f 0.772		checked
+TM447	MNT	MNT_IQ	block IQ of monitor	460u	A	Indirect		debug		IVBAT(after ovrd)-IVBAT(before ovrd)	vset[vbat,4,100e-6,0]
+	en_tm[]
+field[(WAKE_UP,1)]	delay[5e-3]
+field[(D2A_OVRD_SEL,7)]
+delay[50e-6]
+field[(OVRD_VALUE,3)]
+delay[10e-3]
+finish[]	VBAT		I(VBAT)	Y			Done													1.059-0.845
+0.214mA		checked
+TM448	MNT	NTC220uA		220	uA				Y	TRIM_ZTC_RES	vset[vbat,5,100e-6,0]
+vset[ntc,0.1,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]		VBAT		I(ATEST1)				Cancel													1.01uA	Bench Passed，0.972uA，able to trim	checked
+TM449	MNT	NTC20uA		20	uA						vset[vbat,5,100e-6,0]
+vset[ntc,2,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]		VBAT		I(ATEST1)				Cancel													1.01uA	Bench Passed，0.972uA，able to trim	checked
+TM500	ACDRV	AC_DRIVER_ON_VOL	meause for ACDRV1/2/3 respectively	5	V	direct		SCM		VACDRV-VAC	vset[vbat,4,100e-6,0]	wait_warmup[]
+field[(WAKE_UP,1)]
+delay[1e-3]
+field[(AC1_GATE_ON,1)]
+vset[vac1,5,20e-6,0]
+delay[1e-3]
+field[(AC2_GATE_ON,1)]
+vset[vac2,5,20e-6,0]
+delay[1e-3]
+field[(AC3_GATE_ON,1)]
+vset[vac3,5,20e-6,0]
+delay[1e-3]
+	
+finish[]	VBAT	VAC1	V(ACDRV1/2/3)	Y			Done													vac1/2/3=5 
+acdrv1=9.985
+acdrv2=9.853
+acdrv3=9.823		checked
+TM501	ACDRV	AC_DRIVER_ON_CLP	meause for ACDRV1/2/3 respectively	>-9	V	direct		SCM		stable VACDRV-VAC after GATE_ON=0	vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+delay[10e-3]
+field[(AC1_GATE_ON,1),(AC2_GATE_ON,1),(AC3_GATE_ON,1)]
+delay[10e-3]	vset[vac1,12,20e-6,0]
+vset[vac2,12,20e-6,0]
+vset[vac3,12,20e-6,0]
+delay[10e-3]
+field[(AC1_GATE_ON,0)]
+delay[10e-3]
+field[(AC2_GATE_ON,0)]
+delay[10e-3]
+field[(AC3_GATE_ON,0)]
+delay[10e-3]
+finish[]	VBAT	VAC1	V(ACDRV1)	Y			Done													AC1  16.9-4
+AC2 16.95-4.13
+AC3 16.9-4.15		checked
+TM502	ACDRV	tAC DRIVER _SS	meause for ACDRV1/2/3 output current instead 	<5m	s	indirect		SCM		Measure ACDRV output current instead[TM510].
+t_SS=(value in TM500*Cgs)/(4*value in TM510)	vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+delay[10e-3]
+field[(AC1_GATE_ON,1)]	vset[vac3,5,20e-6,0]
+delay[100e-3]
+finish[]	VBAT	VAC1	I(ACDRV1)				MergeIntoOtherCase					measure ACDRV current calculate softstart time								AC1/2/3=3.96uA		checked
+TM503	ACDRV	tAC DRIVER _SD	meause for ACDRV1/2/3 respectively	<10u	s	indirect		SCM		check IACDRV1 after AC1_GATE_ON was set to 0	vset[vbat,4,100e-6,0]
+	en_tm[]
+field[(WAKE_UP,1)]
+field[(AC1_GATE_ON,1),(EN_ATEST0,1),(ATEST0_MUX,15)]
+delay[10e-3]	vset[vac1,5,20e-6,0]
+delay[10e-3]
+vset[acdrv1,5,2e-3,0]
+field[(AC1_GATE_ON,0)]
+delay[10e-3]
+finish[]	VBAT	VACDRV1	I(ACDRV1)	y			Done					check ACDRV2 voltage drop								force acdrv 电压测电流
+vac=12V，force acdrv=15V，
+ac_gate_on 1->0  电流为20mA		checked
+TM503_1	ACDRV	ACDRV fastoff off trig	meause for ACDRV1/2/3 respectively	function check	s	indirect		SCM		monitor IACDRV1 after AC1_GATE_ON was set to 0(VACDRV=10  VACDRV=5 respectively)	vset[vbat,4,100e-6,0]
+	en_tm[]
+field[(WAKE_UP,1)]
+field[(AC1_GATE_ON,1),(EN_ATEST0,1),(ATEST0_MUX,15)]
+delay[10e-3]	vset[vac1,10,20e-6,0]
+delay[10e-3]
+vset[acdrv1,10,2e-3,0]
+field[(AC1_GATE_ON,0)]
+delay[10e-3]
+vset[acdrv1,5,2e-3,0]
+finish[]	VBAT	VACDRV1	I(ACDRV1)	y			Done					check ACDRV2 voltage drop								force acdrv 电压测电流
+vac=12V，force acdrv=15V，
+ac_gate_on 1->0  电流为20mA		checked
+TM504	ACDRV	AC_DRIVER_SS_Vth		4.5	V	direct		Debug			vset[vbat,4.4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+delay[1e-3]
+field[(AC1_GATE_SS_EN,1),(AC1_GATE_ON,1)]	vset[vbus,6,1e-3,0]
+delay[100e-3]
+finish[]	VBAT	VBUS	I(ACDRV1)	y			Done					ramp VBUS from 4V to 6V, check iacdrv								4.46V		checked
+TM505	ACDRV	VCP_test	VCP voltage foldback to 1/5	1.1	V	Indirect		Debug			vset[vbat,4.4,100e-6,0]
+vset[vac1,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+delay[1e-3]
+field[(en_i2c_ctrl,1)]
+field[(AC1_GATE_ON,1),(EN_ATEST0,1),(ATEST0_MUX,15)]	delay[10e-3]
+finish[]	VBAT		V(ATEST0)	Y			Done													1.196		checked
+TM506	ACDRV	ACDRV_BIAS_1UA		1u	A	Indirect		Debug			vset[vbat,4.4,100e-6,0]
+vset[vdm,1,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+delay[1e-3]
+field[(en_i2c_ctrl,1)]
+field[(AC1_GATE_ON,1),(EN_ATEST0,1),(ATEST0_MUX,13)]	delay[10e-3]
+finish[]	VBAT		I(ATEST0)	Y			Done					AMUX=1V, measure AMUX current								1UA		checked
+TM507	ACDRV	ACDRV_VDD_IQ	may not be measured directly	26u	A	direct		Debug		1.test current at vcc as i1 before ac_gate_on=0
+2.test current at vcc as i2 after ac_gate_on=1
+iq=i2-i1	vset[vbat,4,100e-6,0]
+vset[vbus,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+delay[1e-3]
+field[(en_i2c_ctrl,1)]	field[(D2A_AC1_GATE_FORCE_ON,1)]
+delay[1e-3]
+field[(D2A_AC2_GATE_FORCE_ON,1)]
+delay[1e-3]
+field[(D2A_AC3_GATE_FORCE_ON,1)]
+delay[5e-3]
+finish[]			VCC	Y	Y		Done													ac_gate_On=0，i=989u
+ac_gate_On=1，i=1017u
+vbus=5V能测到
+TM508	ACDRV	ACDRV_VBUS_IQ	may not be measured directly	100u	A	direct		Debug		1.test current at vbus as i1 before ac_gate_on=0
+2.test current at vbus as i2 after ac_gate_on=1
+iq=i2-i1	vset[vbat,4,100e-6,0]
+vset[vbus,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+delay[1e-3]
+field[(en_i2c_ctrl,1)]
+	field[(D2A_AC1_GATE_FORCE_ON,1)]
+delay[1e-3]
+field[(D2A_AC2_GATE_FORCE_ON,1)]
+delay[1e-3]
+field[(D2A_AC3_GATE_FORCE_ON,1)]
+delay[5e-3]
+finish[]			VBUS	Y	Y		Done													ac_gate_On=0，i=187u
+ac_gate_On=1，i=272u
+TM509	ACDRV	ACDRV_icharge_fullyon	meause 1/4 of charge current of fully-on
+actully is 4uA	1u	A	Indirect		Debug			vset[vbat,4.4,100e-6,0]
+vset[vdm,1,100e-6,0]
+	en_tm[]
+field[(WAKE_UP,1)]
+delay[1e-3]
+field[(AC1_GATE_ON,1),(EN_ATEST0,1),(ATEST0_MUX,16)]	delay[10e-3]
+finish[]	VBAT		I(ATEST0)	Y			Done													ac_gate_On=0，i=187u
+ac_gate_On=1，i=272u
+TM510	ACDRV	ACDRV_icharge_ss	meause charge cureent of ss mode	1.4u	A	Indirect		Debug			vset[vbat,4.4,100e-6,0]
+vset[vdm,1,100e-6,0]
+vset[vbus,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+delay[1e-3]
+field[(AC1_GATE_ON,1),(AC1_GATE_SS_EN,1),(EN_ATEST0,1),(ATEST0_MUX,17)]	delay[10e-3]
+finish[]	VBAT		I(ATEST0)	Y			Done													ac_gate_On=0，i=187u
+ac_gate_On=1，i=272u
+TM511	ACDRV	ACDRV_CLAMP_CMP	moniter VSMAX-5V								vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+delay[1e-3]
+field[(AC1_GATE_ON,1),(EN_ATEST0,1),(ATEST0_MUX,14),(DMUX_EN,1),(DMUX_SEL,33)]	delay[1e-3]
+vset[vac1,10,10e-3,0]
+delay[1e-3]
+finish[]	VBAT	VAC1	V(DTEST0)	Y			Done													ac_gate_On=0，i=187u
+ac_gate_On=1，i=272u
+TM600	BUBO	HS_RDSON	high side powerfet rdson	11	mΩ	direct	Y
+2 FLOAT	SCM		Rds,on=(PMID-SW)/ISW	vset[vbat,3.5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst_sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(D2A_BUBO_TM_HSON,1)]	delay[1e-3]
+iset[sw,1,1e-3,0]
+delay[2e-3]
+finish[]	VBAT
+BST-SW	ISW	PMID-SW
+floating source：V(BST_SW)	Y			Done													I=0.2A
+pmid-sw=46mV		checked
+TM601	BUBO	LS_RDSON	low side powerfet  rdson	7.5	mΩ	direct		SCM		Rds,on=(SW-PGND)/IPMID2SW	vset[vbat,3.5,100e-6,0]
+vset[vdrv,5,100e-6,0]
+vset[vbus,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(D2A_BUBO_TM_LSON,1)]	delay[5e-3]
+iset[pmid_sw,1,1e-3,0]
+delay[2e-3]
+finish[]	VBAT	SW
+ISW	SW-PGND
+floating source：I(PMID_SW)	Y			Done													I=1A
+SW-PGND=0.3		checked
+TM602	BUBO	VC_HIGH_CLAMP[1]&ISCALE_RATIO	vc clamp high voltage [0] and loop current fold ratio in buck mode	3.14
+current ratio=10	V	direct		SCM		current ratio=current in ATEST0 before TM_ISCALE_DOWN=1 /current in AMUX after TM_ISCALE_DOWN=1	vset[vbat,3.5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[vdm,2,1e-3,0]	en_tm[]
+field[(WAKE_UP,1),(EN_I2C_CTRL,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1),(IBUS_SET,89),(VBUS_LOOP_DISABLE,1),(EN_ATEST0,1),(D2A_BUBO_ATEST0_MUX,1),(D2A_BUBO_TM_DIS_COMPH_SLP,1),(DIS_NTC_DETECTION_ANALOG,1),(BUBO_EA_CLAMP_H_VTH,0),(BUBO_SHORT_RCOMP,1)]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+delay[50e-3]
+field[(D2A_BUBO_TM_ISCALE_DOWN,1)]	delay[10e-3]
+finish[]	VBAT		V(COMP)
+I(ATEST0)	Y			Done				和604计算可以得到SCM中TM629结果	配置寄存器再AMUX上测量VC_high_Clamp 的电压，之后AMUX＝2V,配置不同寄存器测试AMUX电流，计算比例	ISCALE_RATIO=I1/I2
+I1=current in AMUX when TM_ISCALE_DOWN=0
+I2=current in AMUX when TM_ISCALE_DOWN=1							ntc=3.3
+i1=10.4u i2=1.4u  ratio=7.42		checked
+TM603	BUBO	VC_HIGH_CLAMP[2]&ISCALE_RATIO	vc clamp high voltage [1] and loop current fold ratio in boost mode	3.5	V	direct		SCM		current ratio=current in ATEST0 before TM_ISCALE_DOWN=1 /current in AMUX after TM_ISCALE_DOWN=1	vset[vbat,3.5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[vdm,2,1e-3,0]	en_tm[]
+field[(WAKE_UP,1)] 
+field[(D2A_BUBO_EN_FORCE_ON,1),(IBUS_SET,89),(VBUS_LOOP_DISABLE,1),(BUBO_MODE,1),(EN_ATEST0,1),(D2A_BUBO_ATEST0_MUX,1),(D2A_BUBO_TM_DIS_COMPH_SLP,1),(DIS_NTC_DETECTION_ANALOG,1),(BUBO_EA_CLAMP_H_VTH,1),(BUBO_SHORT_RCOMP,1)] 
+field[(D2A_BUBO_TM_DIS_CLK,1),(FSM_STAT,6)]
+delay[50e-3]
+field[(D2A_BUBO_TM_ISCALE_DOWN,1)]	delay[10e-3]
+finish[]	VBAT		V(COMP)
+I(ATEST0)	Y			Done					配置寄存器再AMUX上测量VC_high_Clamp 的电压，之后AMUX＝2V,配置不同寄存器测试AMUX电流，计算比例								ntc=2.893
+i1=8.11u i2=1.24u  ratio=6.54		checked
+TM604	BUBO	 	trim BUCK mode RCS	0.116		Indirect	Y
+2 FLOAT	SCM	Y	trim bit:d2a_trim_bu_rcs<3:0>
+Rcs=(VC in TM602 -1.4)/(ISW*current ratio in TM602)
+TRIM_BU_RCS	vset[vbat,3.5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst_sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(EN_I2C_CTRL,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(IBUS_SET,89),(VBUS_LOOP_DISABLE,1),(BUBO_MODE,0),(D2A_BUBO_TM_ISCALE_DOWN,1),(D2A_BUBO_TM_DIS_COMPH_SLP,1)]
+field[(DMUX_EN,1),(DMUX_SEL,37),(D2A_BUBO_DTEST0,5)]
+delay[50e-3]
+field[(D2A_BUBO_TM_HSON,1)]	delay[5e-3]
+iset[sw,4,10e-3,0]
+delay[1e-3]
+finish[]	VBAT
+BST-SW
+	ISW	DTEST
+ISW
+floating source：V(BST_SW)	Y			Done					根据TM602计算出来VC_High_Clamp 和ISCALE ratio, ramp SW to PGND, check INT toggle, check toggle point of SW as Isw, Rcs=(VHC-1.4)/(SCALE*Isw)	de发现即使不配置D2A_DIS_VBUS_LOOP
+，也就是电路没有工作在vabt_loop中，碰巧vuas_loop上也让VC最高了，可能会有隐藏问题							sw抽电流，在1.08A附近int出现震荡
+RCS=0.16		checked
+TM605	BUBO	BOOST_RCS_TRIM	trim BOOST mode RCS	0.116		Indirect		SCM	Y	trim bit:d2a_trim_bo_rcs<3:0>
+Rcs=(VC in TM603 -1.4)/(IPMID2SW*current ratio in TM603)
+TRIM_BO_RCS	vset[vbat,3.5,100e-6,0]
+vset[vdrv,5,100e-6,0]
+vset[vbus,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1),(IBUS_SET,89),(VBUS_LOOP_DISABLE,1),(BUBO_MODE,1),(D2A_BUBO_TM_ISCALE_DOWN,1),(D2A_BUBO_TM_DIS_COMPH_SLP,1),(BUBO_SHORT_RCOMP,1)]
+delay[1e-5]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+delay[1e-3]
+field[(DMUX_EN,1),(DMUX_SEL,37),(D2A_BUBO_DTEST0,6)]
+delay[10e-3]
+field[(D2A_BUBO_TM_LSON,1)]	delay[5e-3]
+iset[pmid_sw,4,1e-3,0]
+delay[1e-3]
+finish[]	VBAT
+	IPMID2SW	DTEST
+IPMID2SW
+floating source：I(PMID_SW)	Y			Done					根据TM603计算出来VC_High_Clamp 和ISCALE ratio, rampPMID to SW, check INT toggle, check toggle point of SW as Isw, Rcs=(VHC-1.4)/(SCALE*Isw)								2.5A int翻转
+RCS=0.05		checked
+TM606	BUBO	BOOT_VOLTAGE_DROP	meausre voltage between VCC and BST 
+VCC to BST 100mA	0.15	V	direct		SCM			vset[vbat,3.5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[vdrv,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_LSON,1),(BUBO_MODE,0)]
+delay[5e-6]
+field[(D2A_BUBO_TM_LSON,0)]
+delay[5e-6]
+field[(D2A_BUBO_TM_LSON,1)]
+delay[5e-6]	iset[bst,0.1,1e-5,0]
+delay[1e-3]
+finish[]	VBAT	IBST	VDRV-BST	Y			Done					BST=-10mA,check VCC-BTST								测试因为非kelvin，测试值偏大， 100mA , 290mV		checked
+TM607	BUBO	BUCK_LS_ZCD	buck mode zero current detect(SW to PGND)	0.1	A	direct		SCM			vset[vbat,3.5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[vdrv,5,100e-6,0]
+iset[pmid_sw,-0.2,1e-3,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_LSON,1),(BUBO_MODE,0)]
+delay[1e-5]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+delay[3e-3]
+field[(DMUX_EN,1),(DMUX_SEL,37),(D2A_BUBO_DTEST0,6)]
+delay[5e-3]	iset[pmid_sw,0.2,1e-3,0]
+delay[1e-3]
+finish[]	VBAT	IPMID2SW	V(DTEST0)
+floating source：I(PMID_SW)	Y			Done													sw抽-0.18A时，比较器输出震荡		checked
+TM608	BUBO	BOOST_HS_ZCD	boost mode zero current detect	0.1	A	direct	Y
+2 FLOAT	SCM			vset[vbat,3.5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst_sw,5,1e-3,0]
+iset[sw,-0.2,1e-3,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_HSON,1),(BUBO_MODE,1)]
+delay[1e-5]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+delay[3e-3]
+field[(DMUX_EN,1),(DMUX_SEL,37),(D2A_BUBO_DTEST0,5)]
+delay[5e-3]	iset[sw,0.2,1e-3,0]
+delay[1e-3]
+finish[]	VBAT
+BST-SW	ISW	V(DTEST0)
+floating source：V(BST_SW)	Y			Done				电流，PMID-SW									0.5A~0.56A	扫电流未发现int翻转	passed
+TM609	BUBO	BOOST_HS_NEG	boost mode PFWM negative current limit	-3	A	direct	Y	SCM			vset[vbat,3.5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst_sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1),(BUBO_MODE,1),(FPWM_EN,1)]
+field[(DMUX_EN,1),(DMUX_SEL,37),(D2A_BUBO_DTEST0,5),(EN_ATEST0,1),(D2A_BUBO_ATEST0_MUX,6),]
+delay[1e-5]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+delay[3e-3]
+field[(D2A_BUBO_TM_HSON,1)]
+delay[5e-3]	iset[sw,2,1e-3,0]
+delay[1e-3]
+finish[]	VBAT
+BST-SW	ISW	V(DTEST0)
+floating source：V(BST_SW)	Y			Done													sw抽1.5A，int翻转	电流太大，未测	checked
+TM610	BUBO	STRESS_TEST_HS_GATE	high side gate voltage stress test 								vset[vbat,3.5,100e-6,0]
+vset[pmid,8,100e-6,0]
+vset[bst_sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(D2A_BUBO_EN_FORCE_ON,0),(D2A_BUBO_TM_DIS_CLK,1),(D2A_BUBO_TM_HSON,1)]	vset[bst_sw,5,1e-3,0]
+vset[bst_sw,8,1e-3,0]
+delay[10e-3]
+vset[bst_sw,5,1e-3,0]
+finish[]
+	VBAT	BST-SW	I(BST) 
+floating source：V(BST_SW)				Done															checked
+TM611	BUBO	STRESS_TEST_LS_GATE	low side gate voltage stress test								vset[vbat,3.5,100e-6,0]
+vset[pmid,8,100e-6,0]
+vset[vdrv,5,1e-3,0]	en_tm[]
+field[(WAKE_UP,1),(D2A_BUBO_EN_FORCE_ON,0),(D2A_BUBO_TM_DIS_CLK,1),(D2A_BUBO_TM_DIS_BST_CHARGE,1),(D2A_BUBO_TM_LSON,1)]	vset[vdrv,5,1e-3,0]
+vset[vdrv,8,1e-3,0]
+delay[10e-3]
+vset[vdrv,5,1e-3,0]
+finish[]	VBAT	VDRV	IVDRV				Done															bench vdrv短接到vcc
+该项需要ramp vdrv至8V
+TM612	BUBO	STRESS_TEST_HS_VDS	high side Vds stress test 								vset[vbat,3.5,100e-6,0]
+vset[pmid,26,100e-6,0]
+vset[sw,0,1e-3,0]		delay[10e-3]
+finish[]	VBAT	PMID-SW	ISW				Done															checked
+TM613	BUBO	STRESS_TEST_LS_VDS	low side Vds stress test								vset[vbat,3.5,100e-6,0]
+vset[pmid,26,100e-6,0]
+vset[sw,26,1e-3,0]		delay[10e-3]
+finish[]	VBAT	SW-VBAT	ISW				Done															checked
+TM614	BUBO	VC_CLAMP_LOW	VC clamp low voltage test	1.3	V	direct		SCM			vset[vbat,5,100e-6,0]
+vset[pmid,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(IBUS_SET,127),(VBUS_LOOP_DISABLE,1),(DIS_NTC_DETECTION_ANALOG,1),(BUBO_SHORT_RCOMP,1)]
+	delay[10e-3]
+finish[]	VBAT		V(COMP)	Y			Done													1.044
+target 1.3		checked
+TM615	BUBO	PSM_THREHOLD	VC voltage threhold when enter and exit PSM mode	1.4/1.35	V	direct		SCM			vset[vbat,3.5,100e-6,0]
+vset[pmid,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1)]
+field[(EN_ATEST1,1),(D2A_BUBO_ATEST1_MUX,5),(DIS_NTC_DETECTION_ANALOG,1),(BUBO_SHORT_RCOMP,1)]
+field[(DMUX_EN,1),(DMUX_SEL,37),(D2A_BUBO_DTEST0,3)]	vset[amux,1.3,1e-3,0]
+vset[amux,1.5,1e-3,0]
+vset[amux,1.3,1e-3,0]
+delay[1e-3]
+finish[]	VBAT	ATEST1(AMUX)	V(DTEST0)	Y			Done					Ramp NTC , check INT toggle								r 1.341
+f 1.392		checked
+TM616	BUBO	VC_OFFSET	VC offset voltage	1.4(NTC voltge when ATEST0 current >0)	V	direct		SCM			vset[vbat,3.5,100e-6,0]
+vset[pmid,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(DIS_NTC_DETECTION_ANALOG,1),(BUBO_SHORT_RCOMP,1)]
+field[(EN_ATEST1,1),(D2A_BUBO_ATEST1_MUX,5),(EN_ATEST0,1),(D2A_BUBO_ATEST0_MUX,2)]
+	vset[vdm,2,1e-3,0]
+delay[1e-3]
+vset[amux,1.3,1e-3,0]
+vset[amux,1.5,1e-3,0]
+vset[amux,1.3,1e-3,0]
+delay[1e-3]
+finish[]	VBAT	ATEST1(AMUX)	I(ATEST0)	Y			Done				Ramp AMUX
+测ATEST突变电流对应的电压	Ramp NTC， check AMUX current, 电流过小，测试不保证								1.41		checked
+TM627	BUBO	TRICKLE_CURRENT1	1.trickle current threshold of all tune
+2.ZCD current of trikle mode	1: 0.55/1.2/0.4/0.7/
+2: 0	A	Indirect		SCM		I1:INT first flip IL current
+I2:INT second flip IL current
+target=0.5*(I1+I2)	vset[vbat,2.5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst_sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(D2A_BUBO_TM_HSON,1),(D2A_BUBO_EN_FORCE_ON,1),(BUBO_MODE,0),(ITRIKLE,0)]
+delay[5e-4]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+delay[5e-5]
+field[(DMUX_EN,1),(DMUX_SEL,37),(D2A_BUBO_DTEST0,5)]
+iset[sw,1.5,2e-3,0]
+iset[sw,-1,1e-3,0]
+iset[sw,1.5,2e-3,0]
+iset[sw,-1,1e-3,0]
+field[(ITRIKLE,1)]
+iset[sw,1.5,2e-3,0]
+iset[sw,-1,1e-3,0]
+field[(ITRIKLE,2)]
+iset[sw,1.5,2e-3,0]
+iset[sw,-1,1e-3,0]
+field[(ITRIKLE,3)]
+iset[sw,1.5,2e-3,0]
+iset[sw,-1,1e-3,0]
+iset[pmid_sw,1,1e-3,0]
+field[(D2A_BUBO_TM_HSON,0),(D2A_BUBO_TM_LSON,1)]
+field[(DMUX_EN,1),(DMUX_SEL,37),(D2A_BUBO_DTEST0,6)]
+iset[pmid_sw,-1,2e-3,0]
+	delay[1e-3]
+finish[]	VBAT
+BST-SW	ISW	V(DTEST0)
+floating source：V(BST_SW)、I(PMID_SW)	Y			Done					HSFET ramp电流，测试一个INT翻转点对应的电流，LSFET ramp电流，测试一个INT翻转点对应的电流,然后相加取平均								i1=0.45A 
+i2=0.55A		checked
+TM628	BUBO	TRICKLE_PERIOD	switching enable period in trickle charging mode(目前没有将clk_trikle mux到dmux端口，直接添加即可)	4u/8u/8u/16u/dc	uS	Indirect		SCM		check the frequency of trickle clk of each tune	vset[vbat,4.1,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst_sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(D2A_BUBO_TM_HSON,1),(D2A_BUBO_EN_FORCE_ON,1),(BUBO_MODE,0),(ITRIKLE,0),(ITRIKLE_HALF,0)]
+field[(D2A_OVRD_SEL,3)]
+delay[5e-5]
+field[(OVRD_VALUE,2)]
+field[(DMUX_EN,1),(DMUX_SEL,37),(D2A_BUBO_DTEST0,9)]
+delay[1e-4]
+field[(ITRIKLE,1),(ITRIKLE_HALF,0)]
+delay[1e-4]
+field[(ITRIKLE,0),(ITRIKLE_HALF,1)]
+delay[1e-4]
+field[(ITRIKLE,1),(ITRIKLE_HALF,1)]
+delay[1e-4]
+field[(ITRIKLE,3),(ITRIKLE_HALF,1)]
+delay[1e-4]
+field[(ITRIKLE,4),(ITRIKLE_HALF,1)]
+delay[1e-4]	finish[]	VBAT
+BST-SW		DTEST0
+floating source：V(BST_SW)	Y			Done				测试频率	HSFET ramp电流，测试一个INT翻转点对应的电流，LSFET ramp电流，测试一个INT翻转点对应的电流,然后相加取平均								i1=0.96A
+i2=0.55A		checked
+TM631	BUBO	VBAT_LOOP_TRIM	buck mode vbat loop trim
+serve loop	4.1	V	Indirect		Debug	Y	merge into TM439_1， function check										MergeIntoOtherCase					follow VBAT_CV trim, funciton check										follow TM439_1， function check
+TM632	BUBO	VBUS_LOOP_BUCK_TRIM	buck mode vbus loop trim
+serve loop	4.4	V	Indirect		Debug	Y	merge into  TM442										MergeIntoOtherCase					follow VBUS EA trim, funciton check										follow TM441/TM442， function check
+TM632_2	BUBO	VBUS_LOOP_BOOST_TRIM	boost mode vbus loop trim
+serve loop	12	V	Indirect		Debug	Y	merge into TM441										MergeIntoOtherCase					follow VBUS EA trim, funciton check										follow TM441/TM442， function check
+TM634_2	BUBO	IBUS_LOOP_TRIM	buck mode ibus loop trim when EA loop is closed as IBUS_REF buffer.
+PIN_COMP need compensation(1nF)	 	 	Indirect		Debug	Y	when EA loop is closed as IBUS_REF buffer.
+Trim_IBUS_LOOP_Offset
+<@吴顶和>:可否减小电流到1A左右？	vset[vbat,4,100e-6,0]
+vset[vbus,5,100e-6,0]
+delay[1e-3]	en_tm[]
+field[(WAKE_UP,1),(BUBO_MODE,0),(IBUS_SET,37),(VBUS_LOOP_DISABLE,1)]
+field[(DIS_NTC_DETECTION_ANALOG,1)]
+field[(EN_ATEST0,1),(ATEST0_MUX,25)]
+field[(D2A_BUBO_TM_DIS_BST_UVLO_LOCAL,1),(BUBO_SHORT_RCOMP,1),(D2A_BUBO_TM_DIS_VBATLOOP,1)]
+delay[1e-3]
+field[(EN_I2C_CTRL,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+delay[1e-3]	iset[pmid,2,1e-3,0]
+delay[10e-3]
+field[(D2A_TRIM_IBUS_LOOP_OS,1)]
+delay[10e-3]
+field[(D2A_TRIM_IBUS_LOOP_OS,2)]
+delay[10e-3]
+field[(D2A_TRIM_IBUS_LOOP_OS,4)]
+delay[10e-3]
+field[(D2A_TRIM_IBUS_LOOP_OS,8)]
+delay[10e-3]
+finish[0]		TRIM CODE	COMP
+V(ATEST0)	Y			Done				DE:期望2A	VBUS and PMID force 2A current, sweep trim code and measure AMUX, until AMUX close to target： TM700 Trimpost 值								W/O TRIM -400mV
+sweep trim code deltaV change 		checked
+TM634_3	BUBO	IBUS_LOOP_TEST_IN_BOOST	boost mode ibus loop acc test when EA loop is closed as IBUS_REF buffer.
+PIN_COMP need compensation(1nF)			Indirect		Debug		D2A_BUBO_TM_DIS_BST_UVLO_LOCAL=1可将EA接成buffer；ramp vos code的delay time可以缩短	vset[vbat,4,100e-6,0]
+vset[pmid,5,100e-6,0]
+delay[1e-3]	en_tm[]
+field[(WAKE_UP,1)]
+field[(BUBO_MODE,1),(IBUS_SET,37),(VBUS_LOOP_DISABLE,1)]
+field[(DIS_NTC_DETECTION_ANALOG,1)]
+field[(EN_ATEST0,1),(ATEST0_MUX,25)]
+field[(D2A_BUBO_TM_DIS_BST_UVLO_LOCAL,1),(BUBO_SHORT_RCOMP,1),(D2A_BUBO_TM_DIS_VBATLOOP,1)]
+delay[1e-3]
+field[(EN_I2C_CTRL,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+delay[1e-3]	iset[vbus,2,1e-3,0]
+delay[5e-3]
+field[(D2A_TRIM_IBUS_LOOP_OS,1)]
+delay[5e-3]
+field[(D2A_TRIM_IBUS_LOOP_OS,2)]
+delay[5e-3]
+field[(D2A_TRIM_IBUS_LOOP_OS,4)]
+delay[5e-3]
+field[(D2A_TRIM_IBUS_LOOP_OS,8)]
+delay[5e-3]
+finish[0]			COMP
+V(ATEST0)	Y			Done				COMP 加1nF电容
+TM635	BUBO	VBAT_LOOP_GM_TRIM	trim vbat loop error amplifier gm
+need serve loop	145u	S	Indirect		SCM	Y	Gmbh=I/[abs(VBAT voltage-4.2)*0.4]	vset[pmid,5,100e-6,0]
+vset[vac2,5,100e-6,0]
+vset[bst_sw,5,1e-3,0]
+vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(VBAT_CV,9),(IBAT_LIMIT,7),(IBUS_SET,127),(VBUS_LOOP_DISABLE,1),(EN_ATEST1,1),(D2A_BUBO_ATEST1,5),(EN_ATEST0,1),(ATEST0_MUX,18),(DIS_NTC_DETECTION_ANALOG,1)]
+delay[1e-3]
+field[(D2A_BUBO_TM_DIS_CLK,1),(D2A_BUBO_TM_DIS_COMPH_SLP,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+field[(D2A_OVRD_SEL,9)(ovrd_value,3)]
+delay[1e-3]	ServeLoopCTRL[1]
+delay[2e-3]
+vset_off[vbat]
+delay[1e-3]
+iset[COMP,10e-6,100e-6,0]
+delay[1e-3]
+field[(d2a_trim_bubo_iptat_l,1)]
+delay[1e-3]
+field[(d2a_trim_bubo_iptat_h,1)]
+delay[1e-3]
+field[(d2a_trim_bubo_iptat_h,2)]
+delay[1e-3]
+field[(d2a_trim_bubo_iptat_h,4)]
+delay[2e-3]
+finish[0]	VBAT	IATEST1	VBAT
+floating source：V(BST_SW)	Y	Y		Done					1. TRIM everything in MNT
+2. set up same serve loop as vbat loop trim, mux VC to ATEST1, VBAT ref set to 4.2V
+3. force 10uA into VC
+4. measure VBAT voltage
+5. Gm=I/[abs(Vbat-4.2V)*0.4], trim gm by trim_PTAT, trim target 145uS								114u/(1.678-4*0.4)
+290u		checked
+TM636	BUBO	VBUS_LOOP_GM_BUCK	vbus loop error amplifier gm in buck mode	120u	S	Indirect		SCM		GM=ICOMP/(ATEST1-ATEST0)	vset[vbat,4,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst_sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]
+	en_tm[]
+field[(WAKE_UP,1)]
+field[(BUBO_MODE,0),(IBUS_SET,127),(EN_ATEST0,1),(ATEST0_MUX,22),(EN_ATEST1,1),(ATEST1_MUX,5),(DIS_NTC_DETECTION_ANALOG,1)]
+field[(EN_I2C_CTRL,1),(D2A_BUBO_TM_DIS_VBATLOOP,1),(BUBO_SHORT_RCOMP,1),(VBUS_VOL_SET_L,80)]
+delay[1e-3]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+vset[comp,2,1e-3,0]
+delay[10e-3]	finish[]	VBAT		V(ATEST0)
+V(ATEST1)
+I(COMP)
+	Y			Done					1. VBUS REF set to 9V
+2. mux and force vbus fb from MNT(ATEST1) around 9V, measure ATEST1 voltage and current in COMP
+3. gm=I(COMP)/(9V-V(ATEST1)) 								116u/(0.45-5*0.1)
+		checked
+TM637	BUBO	VBUS_LOOP_GM_BOOST	vbus loop error amplifier gm in boost mode	90u	S	Indirect		SCM		GM=ICOMP/(ATEST1-ATEST0)	vset[vbat,4,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst_sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(BUBO_MODE,1),(IBUS_SET,127),(EN_ATEST0,1),(ATEST0_MUX,22),(EN_ATEST1,1),(ATEST1_MUX,5),(DIS_NTC_DETECTION_ANALOG,1)]
+field[(EN_I2C_CTRL,1),(D2A_BUBO_TM_DIS_VBATLOOP,1),(BUBO_SHORT_RCOMP,1),(VBUS_VOL_SET_L,80)]
+delay[1e-3]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+vset[comp,2,1e-3,0]
+delay[10e-3]	finish[]	VBAT		V(ATEST0)
+V(ATEST1)
+I(COMP)	Y			Done					1. VBUS REF set to 9V
+2. mux and force vbus fb from MNT(ATEST0) around 9V, measure ATEST0 voltage and current in COMP
+3. gm=I(COMP)/(9V-V(ATEST0))
+4. NOTE: bu/bo vbus极性对换，需要注意测试pin不同 								116u/(0.45-5*0.1)
+		checked
+TM638	BUBO	IBUS_LOOP_GM_BUCK	ibus loop error amplifier gm in buck mode	145u	S	Indirect		SCM		I*10	vset[vbat,3.5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst_sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]
+iset[vbus,-0.5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(BUBO_MODE,0),(IBUS_SET,0),(VBUS_LOOP_DISABLE,1),(EN_ATEST0,1),(ATEST0_MUX,24),(DIS_NTC_DETECTION_ANALOG,1)]
+field[(EN_I2C_CTRL,1),(VBUS_LOOP_Disable,1),(BUBO_SHORT_RCOMP,1)]
+delay[1e-3]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+delay[1e-3]
+vset[comp,2,1e-3,0]
+delay[20e-3]
+field[(IBUS_SET,1)]
+delay[20e-3]	finish[]	VBAT		ATEST0
+I(COMP)	Y			Done				实际测试不需要大电流	1. IBUS REF set to 3A
+2. mux ibus ref and measure in ATEST1 (TM_IBUS_REF)
+3. mux and force ibus fb in ATEST1 (TM_IBUS_FB) around ibus ref, measure AETST1 voltage and current in COMP
+4.gm=I(COMP)/(ibus_ref - V(ATEST1)) 								116u*10		checked
+TM639	BUBO	IBUS_LOOP_GM	ibus loop error amplifier gm	105u	S	Indirect		SCM		I/(AMUX voltage before dynamic set-1.5)	vset[vbat,4,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst_sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]
+iset[vbus,0.5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(BUBO_MODE,1),(IBUS_SET,0),(VBUS_LOOP_DISABLE,1),(EN_ATEST0,1),(ATEST0_MUX,24),(DIS_NTC_DETECTION_ANALOG,1)]
+field[(EN_I2C_CTRL,1),(VBUS_LOOP_Disable,1),(BUBO_SHORT_RCOMP,1)]
+delay[1e-3]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+delay[1e-3]
+vset[comp,2,1e-3,0]
+delay[20e-3]
+field[(IBUS_SET,1)]
+delay[20e-3]	finish[]	VBAT		ATEST0
+I (COMP)	Y			Done					1. IBUS REF set to 3A
+2. mux ibus ref and measure in ATEST1 (TM_IBUS_REF)
+3. mux and force ibus fb in ATEST1 (TM_IBUS_FB) around ibus ref, measure AETST1 voltage and current in COMP
+4.gm=I(COMP)/(ibus_ref - V(ATEST1)) 								amux 1.709
+i_ntc=116u
+116u/(1.709-1.5)=580u		checked
+TM640	BUBO	BOOST HS OCP	boost mode HS current limit
+foldback 1/10
+15(Scale down to 1.5)	1.5	A	Indirect	Y
+2 FLOAT	SCM		1.monitor ISW when DTEST FLIP
+2.检查atest0的电流	vset[vbat,3.5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst_sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]
+vset[vdm,1,100e-6,0]
+	en_tm[]
+field[(WAKE_UP,1)]
+field[(D2A_BUBO_TM_HSON,1),(BUBO_MODE,1),(D2A_BUBO_TM_LOW_ILIMT_OFF,1)]
+field[(DIS_NTC_DETECTION_ANALOG,1),(D2A_OVRD_SEL,3)]
+delay[5e-5]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+delay[1e-5]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+delay[1e-3]
+field[(D2A_BUBO_TM_BOOST_OCP_EN,1)]
+field[(DMUX_EN,1),(DMUX_SEL,37),(D2A_BUBO_DTEST0,7)]
+	delay[1e-3]
+iset[sw,-2,1e-3,0]
+delay[1e-3]
+field[(EN_ATEST0,1),(D2A_BUBO_ATEST0_MUX,5)]
+delay[1e-3]
+field[(BUBO_BOOST_OCP_OPT,1)]
+delay[1e-3]
+finish[]	VBAT
+BST-SW	ISW	DTEST0
+I(ATEST0)
+floating source：V(BST_SW)	Y			Done					ramp current between PMID and SW and monitor INT toggle, measure I as Imeas1, measure AMUX-NTC as Refer1, Ratio = Imeas1/Refer1.  Config register, measure Refer2, Imeas= Refer2*Ratio									翻转2.05A	0x59写0x82
+0x61=0x09, HS_OCP_REF=2.805
+0x61=0x0B, HS_OCP_REF=1.930
+0x61=0x0D, HS_OCP_REF=1.494
+0x61=0x0F, HS_OCP_REF=1.494
+CSTOP_VREF_SNS2=2.804
+0x59写0x86
+0x61=0x09, HS_OCP_REF=2.805
+0x61=0x0B, HS_OCP_REF=2.585
+0x61=0x0D, HS_OCP_REF=2.586
+0x61=0x0F, HS_OCP_REF=2.586
+CSTOP_VREF_SNS2=2.804	checked
+TM640_1	BUBO	BOOST HS OCP	boost mode HS current limit
+using current mirror ratio to calculate 20A threshold	20(Scale down to 2)	A	Indirect	Y
+2 FLOAT	SCM		monitor DTEST when dynamic ISW	vset[vbat,3.5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst2sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(D2A_BUBO_TM_HSON,1),(BUBO_MODE,1),(D2A_BUBO_TM_FORCE_EN_CS,1),(D2A_BUBO_TM_LOW_ILIMT_OFF,1)]
+field[(DIS_NTC_DETECTION_ANALOG,1),(D2A_OVRD_SEL,3)]
+delay[5e-5]
+field[(OVRD_VALUE,3)]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+field[(D2A_BUBO_ATEST1,10)]
+delay[5e-5]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+field[(DMUX_EN,1),(DMUX_SEL,64)]
+delay[1e-3]
+field[(EN_ATEST1,1)]
+delay[5e-5]
+delay[1e-5]
+delay[1e-3]	field[(D2A_BUB0_ATEST1,11)]
+delay[1e-3]
+field[(IPEAK_LIMIT,0)]
+delay[1e-3]
+field[(D2A_BUBO_TM_LOW_ILIMT_OFF,0)]
+delay[5e-3]
+field[(IPEAK_LIMIT,1)]
+field[(D2A_BUB0_ATEST1,10)]
+delay[1e-3]
+field[(D2A_BUB0_ATEST1,11)]
+delay[5e-3]
+field[(IPEAK_LIMIT,2)]
+field[(D2A_BUB0_ATEST1,10)]
+delay[1e-3]
+field[(D2A_BUB0_ATEST1,11)]
+delay[5e-3]
+field[(IPEAK_LIMIT,3)]
+field[(D2A_BUB0_ATEST1,10)]
+delay[1e-3]
+field[(D2A_BUB0_ATEST1,11)]
+delay[1e-3]
+iset[pmid2sw,4,1e-3,0]	VBAT
+BST-SW	IPMID2SW	DTEST				Cancel					ramp current between PMID and SW and monitor INT toggle, measure I as Imeas1, measure AMUX-NTC as Refer1, Ratio = Imeas1/Refer1.  Config register, measure Refer2, Imeas= Refer2*Ratio									翻转2.05A	0x59写0x82
+0x61=0x09, HS_OCP_REF=2.805
+0x61=0x0B, HS_OCP_REF=1.930
+0x61=0x0D, HS_OCP_REF=1.494
+0x61=0x0F, HS_OCP_REF=1.494
+CSTOP_VREF_SNS2=2.804
+0x59写0x86
+0x61=0x09, HS_OCP_REF=2.805
+0x61=0x0B, HS_OCP_REF=2.585
+0x61=0x0D, HS_OCP_REF=2.586
+0x61=0x0F, HS_OCP_REF=2.586
+CSTOP_VREF_SNS2=2.804	checked
+TM641	BUBO	BST UV/GD	BST UV/GD threshold	3.25 falling/3.45rising	V	Indirect		SCM		monitor BST-SW voltage when DTEST flip high and low	vset[vbat,3.5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst_sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]
+vset[sw,3,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+field[(DMUX_EN,1),(DMUX_SEL,11)]
+delay[10e-6]
+field[(D2A_BUBO_TM_DIS_CLK,1)]	delay[100e-6]
+vset[bst_sw,2.5,10e-3,0]
+delay[100e-6]
+vset[bst_sw,4,10e-3,0]
+delay[1e-3]
+finish[]	VBAT	BST-SW	DTEST0
+floating source：V(BST_SW)	Y			Done					ramp voltage between BST-SW, and check INT toggle									Rise：BST-SW=3.56， Fall 3.49, BST Good 没有配置文件	checked
+TM642	BUBO	BO_OCP_COUNTER	boost HS OCP counter								vset[vbat,3.5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst2sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]
+vset[sw,3,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(D2A_BUBO_TM_HSON,1),(BUBO_MODE,1),(D2A_BUBO_TM_FORCE_EN_CS,1),(D2A_BUBO_TM_LOW_ILIMT_OFF,1),(HFET_OCP_PRO_DIS,1)]
+field[(DIS_NTC_DETECTION_ANALOG,1),(D2A_OVRD_SEL,3)]
+delay[5e-5]
+field[(OVRD_VALUE,3)]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+field[(D2A_BUB0_ATEST1,10)]
+delay[5e-5]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+field[(DMUX_EN,1),(DMUX_SEL,64)]
+delay[1e-3]
+field[(EN_ATEST1,1)]
+delay[5e-5]
+field[(DMUX_EN,1),(DMUX_SEL,47)]
+delay[2e-6]
+field[(D2A_BUBO_TM_HSON,0)]
+delay[2e-6]
+field[(D2A_BUBO_TM_HSON,1)]
+delay[2e-6]
+field[(D2A_BUBO_TM_HSON,0)]
+	delay[2e-6]
+field[(D2A_BUBO_TM_HSON,1)]
+delay[2e-6]
+field[(D2A_BUBO_TM_HSON,0)]
+delay[2e-6]
+field[(D2A_BUBO_TM_HSON,1)]
+delay[2e-6]
+field[(D2A_BUBO_TM_HSON,0)]
+delay[2e-6]
+field[(D2A_BUBO_TM_HSON,1)]
+delay[2e-6]
+field[(D2A_BUBO_TM_HSON,0)]
+delay[2e-6]
+field[(D2A_BUBO_TM_HSON,1)]
+delay[1e-3]
+iset[pmid2sw,4,1e-3,0]			DTEST				Cancel															NA
+TM642_1	BUBO	BO_OCP_COUNTER1	the second methon for boost HS OCP counter							check HS_ON times when DTEST filp to low	vset[vbat,3.5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst2sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(D2A_BUBO_TM_HSON,1),(BUBO_MODE,1),(D2A_BUBO_TM_FORCE_EN_CS,1),(D2A_BUBO_TM_LOW_ILIMT_OFF,1),(HFET_OCP_PRO_DIS,1),(D2A_BUBO_TM_FORCE_ILIMT_SNS_OFF,1)]
+field[(DIS_NTC_DETECTION_ANALOG,1),(D2A_OVRD_SEL,3)]
+delay[5e-5]
+field[(OVRD_VALUE,3)]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+delay[5e-5]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+field[(DMUX_EN,1),(DMUX_SEL,64)]
+delay[1e-3]
+delay[5e-5]
+field[(HFET_OCP_PRO_DIS,0)]
+field[(DMUX_EN,1),(DMUX_SEL,47)]
+delay[2e-6]
+field[(D2A_BUBO_TM_HSON,0)]
+delay[2e-6]
+field[(D2A_BUBO_TM_HSON,1)]
+delay[2e-6]
+field[(D2A_BUBO_TM_HSON,0)]
+delay[2e-6]
+field[(D2A_BUBO_TM_HSON,1)]
+delay[2e-6]
+field[(D2A_BUBO_TM_HSON,0)]
+delay[2e-6]
+field[(D2A_BUBO_TM_HSON,1)]
+delay[2e-6]
+field[(D2A_BUBO_TM_HSON,0)]
+delay[2e-6]
+field[(D2A_BUBO_TM_HSON,1)]
+delay[2e-6]
+field[(D2A_BUBO_TM_HSON,0)]
+delay[2e-6]
+field[(D2A_BUBO_TM_HSON,1)]				DTEST				Cancel					no current needed, config register and check INT status change								配置HS打开关闭，四次上升沿
+后int翻转		checked
+TM643	BUBO	VBAT_LOOP_INDICTOR	monitor vbat indictor comparator flip	3.506 rising/3.43 falling(VBAT voltage）	V						vset[vbat,5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst_sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(BUBO_MODE,0),(VBAT_CV,1),(IBUS_SET,57),(VBUS_LOOP_DISABLE,1),(EN_ATEST1,1),(ATEST1_MUX,3),(DIS_NTC_DETECTION_ANALOG,1),(DMUX_EN,1),(DMUX_SEL,7)]
+delay[1e-5]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+delay[1e-3]	delay[2e-3]
+vset[vbat,3,1e-3,0]
+vset[vbat,5,1e-3,0]
+delay[1e-3]
+finish[]	VBUS	VBAT	DTEST0
+floating source：V(BST_SW)	Y			Done					VBAT REF set to 4.2V, Ramp VBAT voltage and monitor INT toggle								vbat在3.39V时，比较器出现toggle	Rise 3.48， Fall  3.45, 没有迟滞	checked
+TM644	BUBO	IBUS_LOOP_INDICTOR_BU	monitor ibus indictor comparator flip in buck mode	(ibus_ref - 1.348) rising/ (ibus_ref - 1.502) falling	V						vset[vbat,3.5,100e-6,0]
+vset[vbus,4.9,100e-6,0]
+vset[bst_sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]
+vset[sw,3,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(BUBO_MODE,1),(IBUS_SET,17),(EN_ATEST0,1),(ATEST0_MUX,24),(DIS_NTC_DETECTION_ANALOG,1),(DMUX_EN,1),(DMUX_SEL,8),(VBUS_VOL_SET_LIMIT,30)]
+field[(EN_I2C_CTRL,1),(D2A_BUBO_TM_DIS_VBATLOOP,1)]
+delay[1e-5]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+vset[vdm,1.5,100e-6,0]
+delay[10e-3]	vset[vdm,1.7,10e-3,0]
+delay[10e-3]
+vset[vdm,1.5,10e-3,0]
+delay[10e-3]
+finish[]	VBAT	I (VBUS)	DTEST0
+floating source：V(BST_SW)	Y			Done					1. IBUS REF set to 3A
+2. ramp current into VBUS, monitor INT toggle								Rise 1.6V  Fall 1.3 ,但是DTEST会震荡		checked
+TM645	BUBO	IBUS_LOOP_INDICTOR_BO	monitor ibus indictor comparator flip in boost mode	(ibus_ref - 1.093) rising/ (ibus_ref - 1.247) falling	V						vset[vbat,3.5,100e-6,0]
+vset[pmid,5.1,100e-6,0]
+vset[bst_sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]
+vset[sw,3,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(BUBO_MODE,1),(IBUS_SET,17),(EN_ATEST0,1),(ATEST0_MUX,24),(DIS_NTC_DETECTION_ANALOG,1),(DMUX_EN,1),(DMUX_SEL,8),(VBUS_VOL_SET_LIMIT,30)]
+field[(EN_I2C_CTRL,1),(D2A_BUBO_TM_DIS_VBATLOOP,1)]
+delay[1e-5]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+vset[vdm,1.5,100e-6,0]
+delay[10e-3]	vset[vdm,1.7,10e-3,0]
+delay[10e-3]
+vset[vdm,1.5,10e-3,0]
+delay[10e-3]
+finish[]	VBAT	I (VBUS)	DTEST0
+floating source：V(BST_SW)	Y			Done					1. IBUS REF set to 3A
+2. ramp current into VBUS, monitor INT toggle								r  2.019
+f 1.982		checked
+TM646	BUBO	VBUS_LOOP_INDICTOR_BU	monitor vbus indictor comparator flip in buck mode	5.852 falling/5.5399 rising	V						vset[vbat,4,100e-6,0]
+vset[pmid,9,100e-6,0]
+vset[bst_sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(BUBO_MODE,0),(IBUS_SET,127),(EN_ATEST0,1),(ATEST0_MUX,22),(EN_ATEST1,1),(ATEST1_MUX,5),(DIS_NTC_DETECTION_ANALOG,1),(DMUX_EN,1),(DMUX_SEL,9)]
+field[(EN_I2C_CTRL,1),(D2A_BUBO_TM_DIS_VBATLOOP,1),(VBUS_VOL_SET_L,6)]
+delay[1e-5]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+delay[1e-3]	vset[pmid,5,1e-3,0]
+vset[pmid,9,1e-3,0]
+delay[1e-3]
+finish[]	VBAT	VBUS	DTEST0
+floating source：V(BST_SW)	Y	Y		Done					VBUS REF set to 9V, Ramp VBUS voltage and monitor INT toggle								r 7.46
+f 7.56
+阈值偏低	Rise 6.49 没有迟滞，不确定和BST-SW压差没给有无关系	checked
+TM647	BUBO	VBUS_LOOP_INDICTOR_BO	monitor vbus indictor comparator flip in boost mode	6.4809 rising/6.1668 falling	V						vset[vbat,4,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst_sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1)]
+field[(BUBO_MODE,1),(IBUS_SET,127),(EN_ATEST0,1),(ATEST0_MUX,21),(EN_ATEST1,1),(ATEST1_MUX,5),(DIS_NTC_DETECTION_ANALOG,1),(DMUX_EN,1),(DMUX_SEL,9)]
+field[(EN_I2C_CTRL,1),(D2A_BUBO_TM_DIS_VBATLOOP,1),(VBUS_VOL_SET_L,6),(VBUS_VOL_SET_H,1)]
+delay[1e-5]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+delay[1e-3]	vset[pmid,9,1e-3,0]
+vset[pmid,5,1e-3,0]
+finish[]	VBAT	VBUS	DTEST0
+floating source：V(BST_SW)	Y			Done					VBUS REF set to 9V, Ramp VBUS voltage and monitor INT toggle								比较器在阈值附近出现震荡
+8.7		checked
+TM700	IBUS_SNS	IBUS_SNS_ACC_BU	IBUS sense in buck mode
+(ATEST0-ATEST1)/0.2 VS I_input
+chop enable	3	%	Direct	Y	SCM		在Buck模式下测试精度
+
+需要ATEST1, BENCH需要修复amux上挂电阻问题；	vset[vbat,4.4,100e-6,0]
+vset[vbus,5,100e-6,1]	en_tm[]
+field[(WAKE_UP,1),(EN_ATEST0,1),(ATEST0_MUX,25),(EN_ATEST1,1),(ATEST1_MUX,7)]	iset[pmid,1,1e-3,0]
+iset[pmid,2,1e-3,0]
+iset[pmid,0.5,1e-3,0]
+delay[1e-3]
+finish[]	VBAT	IPMID	ATEST0
+ATEST1	Y	Y		Done					Buck mode,VBUS->PMID=2A current, and measure VDM-AMUX voltage, Ical=(AMUX-NTC)/0.2										checked
+TM701	IBUS_SNS	IBUS_SNS_ACC_BO	IBUS sense in boost mode
+(ATEST0-ATEST1)/0.2 VS I_input
+chop enable	3	%	Direct	Y	SCM		在BOOST模式下测试精度	vset[vbat,4.4,100e-6,0]
+vset[pmid,5,100e-6,1]	en_tm[]
+field[(WAKE_UP,1),(EN_ATEST0,1),(ATEST0_MUX,25),(EN_ATEST1,1),(ATEST1_MUX,7),(BUBO_MODE,1)]	iset[vbus,1,1e-3,0]
+iset[vbus,2,1e-3,0]
+iset[vbus,0.5,1e-3,0]
+delay[1e-3]
+finish[]	VBAT	IBUS	ATEST0
+ATEST1	Y	Y		Done					Boost mode,PMID->VBUS=2A current, and measure VDM-AMUX voltage, Ical=(AMUX-NTC)/0.2										checked
+TM702	IBUS_SNS	IBUS_SNS_GAIN_TRIM	IBUS sense gain trim
+chop disable
+
+boost:Trim in BOOST mode
+1. force PMID2VBUS 1A, 3A.
+2. measure ATEST0. calculate gain.	0.2	V/A	Direct	Y	SCM	Y	(ATEST1-ATEST0)/ibus is the sense ratio
+sweep trim code make ratio=0.2
+TRIM_IBUS_SNS_GAIN,	vset[vbat,4.4,100e-6,0]
+vset[pmid,5,100e-6,1]	en_tm[]
+field[(WAKE_UP,1),(EN_ATEST0,1),(ibus_sns_off_chop,1),(ATEST0_MUX,25),(EN_ATEST1,1),(ATEST1_MUX,7),(BUBO_MODE,1)]	iset[vbus,1,1e-3,0]
+delay[2e-3]
+iset[vbus,3,1e-3,0]
+delay[2e-3]
+finish[]	VBAT	IBUS	ATEST0
+ATEST1	Y			Done					Boost mode, PMID->VBUS=1A/3A current, and measure VDM-AMUX voltage, gain=(deltaV@3A-deltaV@1A)/2, sweep trim code until Gain≈200mohm, and trim step = 1.25%										checked
+TM702_1		IBUS_SNS_GAIN_test_BUCK	BUCK mode
+1. force VBUS2PMID 1A, 3A.
+2. measure ATEST0. calculate gain.	0.2	V/A	Direct		SCM		(ATEST1-ATEST0)/ibus is the sense ratio	vset[vbat,4.4,100e-6,0]
+vset[vbus,5,100e-6,1]	en_tm[]
+field[(WAKE_UP,1),(EN_ATEST0,1),(ATEST0_MUX,25),(EN_ATEST1,1),(ATEST1_MUX,7),(BUBO_MODE,0)]	iset[pmid,1,1e-3,0]
+delay[2e-3]
+iset[pmid,3,1e-3,0]
+delay[2e-3]
+finish[]	VBAT	IBUS	ATEST0
+ATEST1	Y			Done					gain=(deltaV@3A-deltaV@1A)/2
+TM703	IBUS_SNS	IBUS_SNS_VOS&TRIM	IBUS sense vos
+trim while chopper off=1
+measure while chopper off=0	0	mV	Direct	Y	SCM	Y	finsh TM702 first, then pull 2A from VBUS, Vos=(ATEST0-ATEST1)-0.4
+TRIM_IBUS_EA_OS	vset[vbat,4.4,100e-6,0]
+vset[pmid,5,100e-6,1]	en_tm[]
+field[(WAKE_UP,1),(ibus_sns_off_chop,1),(EN_ATEST0,1),(ATEST0_MUX,25),(EN_ATEST1,1),(ATEST1_MUX,7),(BUBO_MODE,1)]	iset[vbus,2,1e-3,0]
+delay[1e-3]
+field[(d2a_trim_ibus_ea_offset,1)]
+delay[1e-3]
+field[(d2a_trim_ibus_ea_offset,2)]
+delay[1e-3]
+field[(d2a_trim_ibus_ea_offset,4)]
+delay[1e-3]
+field[(d2a_trim_ibus_ea_offset,8)]
+delay[1e-3]
+finish[]	VBAT	IBUS	ATEST0	Y			Done					1. finish trim of TM 702
+2. offset = (ATEST0-ATEST1) - 2*0.2										checked
+TM704	IBUS_SNS	IBUS_TERM	IBUS comparator for low current
+25mA~400mA, step=25mA	200
+
+acc: +/-50mA	mA	Direct		SCM		IBUS termination.	vset[vbat,4.4,100e-6,0]
+vset[vbus,5,100e-6,1]	en_tm[]
+field[(WAKE_UP,1),(DMUX_EN,1),(DMUX_SEL,24)]
+field[(en_i2c_ctrl,1)]
+field[(d2a_trim_opt_dis_term_flt,1)]
+field[(ITERM,7)]	delay[1e-3]
+iset[pmid,1,10e-3,0]
+iset[pmid,0,10e-3,0]
+delay[1e-3]
+field_renew[(ITERM,15)]
+delay[1e-3]
+iset[pmid,1,10e-3,0]
+iset[pmid,0,10e-3,0]
+delay[1e-3]
+finish[]		IPMID	DTEST	Y	Y		Done					Ramp current between VBUS and PMID  and monitor INT toggle								r 210mA
+f 310mA		checked
+TM705	IBUS_SNS	IBUS_REF	IBUS regulation refence voltage
+（ATEST0-ATEST1)/0.2 VS I_input			Direct		Debug		measured voltage = 30mV + code*10mV	vset[vbat,4.4,100e-6,0]
+vset[vbus,5,100e-6,1]	en_tm[]
+field[(WAKE_UP,1),(BUBO_MODE,0),(IBAT_LIMIT,7),(IBUS_SET,11),(VBUS_LOOP_DISABLE,1)]
+field[(DIS_NTC_DETECTION_ANALOG,1)]
+field[(EN_ATEST1,1),(ATEST1_MUX,7)]
+field[(EN_ATEST0,1),(ATEST0_MUX,24)]
+field[(D2A_BUBO_TM_DIS_BST_UVLO_LOCAL,1)]
+delay[1e-3]
+field[(EN_I2C_CTRL,1)]
+field[(D2A_BUBO_EN_FORCE_ON,1)]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+delay[1e-3]	delay[1e-3]
+field[(IBUS_SET,37)]
+delay[1e-3]
+field[(IBUS_SET,77)]
+delay[1e-3]
+finish[]			ATEST0
+ATEST1	Y	Y		Done													amux0-amux1
+IBUS_SET 2A
+1.905-1.419=0.489
+IBUS_SET 4A
+2.3-1.419=0.881
+		checked
+TM706	IBUS_SNS	ICHG_TERM_FLT	测试ICHG_TERM的filter时间	3.2	ms	Direct		Debug		set IBUS=1A->0A, check DTEST turn high, calculate time interval	vset[vbat,4.4,100e-6,0]
+vset[vbus,5,100e-6,1]	en_tm[]
+field[(WAKE_UP,1),(BUBO_MODE,0),(DMUX_EN,1),(DMUX_SEL,24)]	iset[pmid,1,1e-3,0]
+delay[5e-3]
+iset[pmid,0,1e-3,0]
+delay[5e-3]
+finish[]
+TM800	IAC_SNS	IAC_KLV1_VAC1_ACC	iac_term
+电流方向 KLV1->VAC1 ,KLV1 =5/10/15V
+ACC = (输出)/(输入*理想放大倍数) -1	V(KLV1, VAC1)= res_vac1_klv1*i_vac1=2mV/10mV
+acc=20%	%	Direct		SCM		vin(klv1-vac1)
+ratio=200	vset[vbat,4.4,100e-6,0]
+vset[klv1,5,100e-6,1]
+res[klv1_vac1,0.02]	delay[1e-3]
+iset[vac1,0.1,1e-3,0]
+en_tm[]
+field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,8),(EN_ATEST0,1),(ATEST0_MUX,31),(IAC_SEL,1)]
+field[(IAC_RATIO,3)]
+delay[500e-6]
+field[(ATEST0_MUX,30)]
+delay[500e-6]
+iset[vac1,0.5,100e-6,0]
+delay[500e-6]
+field[(ATEST0_MUX,31)]
+delay[500e-6]
+field[(ATEST0_MUX,30)]
+delay[500e-6]	finish[]	VBAT
+KLV1		KLV1
+VAC1
+V(ATEST0)	Y			Done
+TM801	IAC_SNS	IAC_VAC1_KLV1_ACC	ibat_sns
+电流方向VAC1->KLV1, KLV1 =5V
+ACC = (输出)/(输入*理想放大倍数) -1
+电路中删除了IBAT_SNS功能	V(VAC1, KLV1)= res_vac1_klv1*i_vac1=6mV/10mV
+acc=3%	%	Direct	Y	SCM		vin(klv1-vac1)
+ratio=200
+	vset[vbat,4.4,100e-6,0]
+vset[vac1,5,100e-6,1]
+res[klv1_vac1,0.02]	en_tm[]
+field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,8),(EN_ATEST0,1),(ATEST0_MUX,31),(IAC_SEL,2)]
+field[(IAC_RATIO,3)]
+delay[1e-3]
+iset[klv1,0.3,1e-3,0]
+delay[500e-6]
+field[(ATEST0_MUX,30)]
+delay[1e-3]
+iset[klv1,0.5,1e-3,0]
+delay[500e-6]	delay[1e-3]
+finish[]	VBAT
+VAC1		V(ATEST0)				Cancel
+TM802	IAC_SNS	IAC_KLV2_VAC2_ACC	iac_term
+电流方向KLV2->VAC2
+ACC = (输出)/(输入*理想放大倍数) -1	V(VAC2, KLV2)= res_vac2_klv2*i_vac2=2mV/10mV
+acc=25%	%	Direct	Y	SCM		vin(klv2-vac2)
+ratio=200	vset[vbat,4.4,100e-6,0]
+vset[klv2,5,100e-6,1]
+vset[klv1,5,100e-6,1]
+res[klv2_vac2,0.02]	delay[1e-3]
+iset[vac2,0.1,1e-3,0]
+en_tm[]
+field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,8),(EN_ATEST0,1),(ATEST0_MUX,31),(IAC_SEL,3)]
+field[(IAC_RATIO,3)]
+delay[500e-6]
+field[(ATEST0_MUX,30)]
+delay[500e-6]
+iset[vac2,0.5,100e-6,0]
+delay[500e-6]
+field[(ATEST0_MUX,31)]
+delay[500e-6]
+field[(ATEST0_MUX,30)]
+delay[500e-6]	delay[1e-3]
+finish[]	VBAT
+KLV2		KLV2
+VAC2
+V(ATEST0)	Y	Y		Done				KLV1是否需要上电
+TM803	IAC_SNS	IAC_KLV2_VACWL_ACC	tx_isns
+电流方向KLV2->VAC_WL	V(VAC2, KLV2)= res_vac2_klv2*i_vac2=20mV/40mV, acc=1%	%	Direct	Y	SCM		vin(klv2-vac_wireless)
+ratio=50	vset[vbat,4.4,100e-6,0]
+vset[klv2,5,100e-6,1]
+vset[klv1,5,100e-6,1]
+res[klv2_vacwl,0.02]	delay[1e-3]
+iset[vac_wl,1,1e-3,0]
+en_tm[]
+field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,8),(EN_ATEST0,1),(ATEST0_MUX,31),(IAC_SEL,4)]
+field[(IAC_RATIO,0)]
+delay[1.5e-3]
+field[(ATEST0_MUX,30)]
+delay[500e-6]
+iset[vac_wl,2,100e-6,0]
+delay[500e-6]
+field[(ATEST0_MUX,31)]
+delay[500e-6]
+field[(ATEST0_MUX,30)]
+delay[500e-6]	delay[1e-3]
+finish[]	VBAT
+KLV2		KLV2
+VAC_WL
+V(ATEST0)	Y	Y		Done				KLV1是否需要上电
+TM804	IAC_SNS	IAC_KLV2_VACWL_OCP	tx_ocp comparator for IAC_KLV2_VACWL
+measure V(KLV2, VAC_WL) when dtest0 toggle.
+acc: 10%	30/40/50
+HYS: 5	mV	Direct		SCM		ratio sel 25, iac channel sel ch3	vset[vbat,4.4,100e-6,0]
+vset[klv1,5,100e-6,1]
+vset[klv2,5,100e-6,1]
+res[klv2_vacwl,0.04]	delay[1e-3]
+en_tm[]
+field[(WAKE_UP,1),(DMUX_EN,1),(DMUX_SEL,61)]
+delay[3e-3]
+field[(IAC_SEL,4)]
+field[(IAC_RATIO,0)]
+field[(IAC_OCP,1)]
+iset[vac_wl,2.6,1e-3,0]
+iset[vac_wl,0,1e-3,0]
+field[(IAC_OCP,2)]
+iset[vac_wl,2.6,1e-3,0]
+iset[vac_wl,0,1e-3,0]
+field[(IAC_OCP,3)]
+iset[vac_wl,2.6,1e-3,0]
+iset[vac_wl,0,1e-3,0]	delay[1e-3]
+finish[]	VBAT
+KLV2	IVAC_WL	V(DTEST0)	Y	Y		Done				KLV1是否需要上电
+TM900	AMUX	amux_buffer trim	trim amux buffer vos
+1.mux buffer vp and vn，vos=vp-vn
+2.sweep trim code make vos=0	0	mV	Direct			Y	sweep trim code, make ATEST0(reg=28)-ATEST0(reg=29)=0
+TRIM_AMUX_EA_OS	vset[vbat,4,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,15),(EN_ATEST0,1),(ATEST0_MUX,28)]	delay[3e-3]
+field[(ATEST0_MUX,29)]
+delay[1e-3]
+finish[]	VBAT		V(ATEST0)	Y			Done					sweep trim code, measure AMUX at Reg=28 and Reg=29, calculate Gap=Reg28-Reg29, trim value to 0								1.192-1.193		checked
+TM901	AMUX	amux acc	测试amux自身精度							1.amux_channel=15
+gain=1.2/(atest0)
+2.select sample channel 
+conversion_value=atest0*gain
+3.mux chan_voutp(vbat_fb_amux) to atest0 as amux_input
+4. amux_input vs conversion_value	vset[vbat,4,100e-6,0]	res[amux,200000]
+en_tm[]
+field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,15)]
+delay[3e-3]	field[(CHANNEL_MUX,0)]
+delay[3e-3]
+field[(EN_ATEST0,1),(ATEST0_MUX,31)]
+delay[1e-3]
+finish[]	VBAT		AMUX
+V(ATEST0)	Y			Done														Iref=9.59uA， Rref=200K，Gain=1.2/Iref*Rref=0.6256,  Imeas=13.48uA, Vout=Imeas*Rref*Gain=1.687V, Amux_in=1.592V.  VBAT =3V, 对应Amux_in=1.134V , Imeas =9.63uA	checked
+TM902	AMUX	vbat channel acc	测试amux采样vbat精度	VBAT*0.4	V			SCM		1.amux_channel=15
+gain=1.2/(atest0)
+2.select sample channel 
+conversion_value=atest0*gain
+VBAT vs conversion_value
+(conversion_value/0.4/VBAT-1)*100*VBAT	vset[vbat,4,100e-6,0]
+	res[amux,200000]
+en_tm[]
+field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,15)]
+delay[3e-3]
+field[(CHANNEL_MUX,0)]	delay[1e-3]
+finish[]	VBAT		AMUX	Y			Done					0x11 选择channel， 0x56选择Sense 电压，可以直接量也可以分时量VP和VN做差计算									Iref=9.59uA， Rref=200K，Gain=1.2/Iref*Rref=0.6256,  Imeas=13.48uA, Vout=Imeas*Rref*Gain=1.687V, Amux_in=1.592V.  VBAT =3V, 对应Amux_in=1.134V , Imeas =9.63uA	checked
+TM903	AMUX	vac1 channel acc	测试amux采样vac1精度	VAC1*0.1	V			SCM		1.amux_channel=15
+gain=1.2/(atest0)
+2.select sample channel 
+conversion_value=atest0*gain
+VAC1 vs conversion_value
+(conversion_value/0.1/VAC1-1)*100*VAC1	vset[vbat,4,100e-6,0]
+vset[vac1,5,100e-6,0]	res[amux,200000]
+en_tm[]
+field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,15)]
+delay[3e-3]
+field[(CHANNEL_MUX,1)]	delay[1e-3]
+finish[]	VBAT
+VAC1		AMUX	Y			Done														Iref=9.59uA， Rref=200K，Gain=1.2/Iref*Rref=0.6256, VAC1=5V,  Imeas=4.04uA, Vout=Imeas*Rref*Gain=0.5055V, Amux_in=0.479V  	checked
+TM904	AMUX	vac2 channel acc	测试amux采样vac2精度	VAC2*0.1	V			SCM		1.amux_channel=15
+gain=1.2/(atest0)
+2.select sample channel 
+conversion_value=atest0*gain
+VAC2 vs conversion_value
+(conversion_value/0.1/VAC2-1)*100*VAC2	vset[vbat,4,100e-6,0]
+vset[vac2,10,100e-6,0]	res[amux,200000]
+en_tm[]
+field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,15)]
+delay[3e-3]
+field[(CHANNEL_MUX,2)]	delay[1e-3]
+finish[]	VBAT
+VAC2		AMUX	Y			Done														Iref=9.59uA， Rref=200K，Gain=1.2/Iref*Rref=0.6256, VAC2=5V,  Imeas=4.04uA, Vout=Imeas*Rref*Gain=0.5055V, Amux_in=0.479V  	checked
+TM905	AMUX	vac3 channel acc	测试amux采样vac3精度	VAC3*0.1	V			SCM		1.amux_channel=15
+gain=1.2/(atest0)
+2.select sample channel 
+conversion_value=atest0*gain
+VAC3 vs conversion_value
+(conversion_value/0.1/VAC3-1)*100*VAC3	vset[vbat,4,100e-6,0]
+vset[vac3,15,100e-6,0]	res[amux,200000]
+en_tm[]
+field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,15)]
+delay[3e-3]
+field[(CHANNEL_MUX,3)]	delay[1e-3]
+finish[]	VBAT
+VAC3		AMUX	Y			Done														Iref=9.59uA， Rref=200K，Gain=1.2/Iref*Rref=0.6256, VAC3=5V,  Imeas=4.01uA, Vout=Imeas*Rref*Gain=0.5045V, Amux_in=0.479V  	checked
+TM906	AMUX	vbus channel acc	测试amux采样vbus精度	VBUS*0.1	V			SCM		1.amux_channel=15
+gain=1.2/(atest0)
+2.select sample channel 
+conversion_value=atest0*gain
+VBUS vs conversion_value
+(conversion_value/0.1/VBUS-1)*100*VBUS	vset[vbat,4,100e-6,0]
+vset[vbus,10,100e-6,0]	res[amux,200000]
+en_tm[]
+field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,15)]
+delay[3e-3]
+field[(CHANNEL_MUX,4)]	delay[1e-3]
+finish[]	VBAT
+VBUS		AMUX	Y			Done														Iref=9.59uA， Rref=200K，Gain=1.2/Iref*Rref=0.6256, VBUS=5V,  Imeas=4.01uA, Vout=Imeas*Rref*Gain=0.5045V, Amux_in=0.479V  	checked
+TM907	AMUX	IBUS channel acc	测试amux采样ibus精度	IBUS*0.4	A			SCM		1.amux_channel=15
+gain=1.2/(atest0)
+2.select sample channel 
+conversion_value=atest0*gain
+IBUS vs conversion_value
+(conversion_value/0.4/IBUS-1)*100*IBUS	vset[vbat,4,100e-6,0]
+vset[vbus,5,100e-6,0]	res[amux,200000]
+en_tm[]
+field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,15)]
+iset[pmid,2,1e-3,0]
+delay[3e-3]
+field[(CHANNEL_MUX,5)]	delay[1e-3]
+finish[]	VBAT
+VBUS	IPMID	AMUX	Y			Done														Iref=9.59uA， Rref=200K，Gain=1.2/Iref*Rref=0.6256, IBUS=500mA,  Imeas=1.6uA, Vout=Imeas*Rref*Gain=0.2V, Amux_in=0.19V, Target =0.5A VS Vout/0.4=0.5A	checked
+TM908	AMUX	IBUS_SML channel acc	测试amux采样ibus_sml精度	IBUS*4	A			SCM		1.amux_channel=15
+gain=1.2/(atest0)
+2.select sample channel 
+conversion_value=atest0*gain
+IBUS vs conversion_value
+(conversion_value/4/IBUS-1)*100*IBUS	vset[vbat,4,100e-6,0]
+vset[vbus,5,100e-6,0]	res[amux,200000]
+en_tm[]
+field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,15)]
+iset[pmid,0.4,1e-3,0]
+delay[3e-3]
+field[(CHANNEL_MUX,6)]	delay[1e-3]
+finish[]	VBAT
+VBUS	IPMID	AMUX	Y			Done														Iref=9.59uA， Rref=200K，Gain=1.2/Iref*Rref=0.6256, IBUS=500mA,  Imeas=1.6uA, Vout=Imeas*Rref*Gain=0.2V, Amux_in=0.19V, Target =0.5A VS Vout/0.4=0.5A	checked
+TM909	AMUX	IAC_SNS	测试amux采样iac精度	IAC*GAIN	A			SCM		1.amux_channel=15
+gain=1.2/(atest0)
+2.select sample channel 
+conversion_value=atest0*gain
+IAC vs conversion_value
+(conversion_value/4/IAC-1)*100*IAC	vset[vbat,4,100e-6,0]
+vset[klv1,5,100e-6,0]
+res[klv1_vac1,0.02]
+iset[vac1,0.3,1e-3,0]	res[amux,200000]
+en_tm[]
+field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,15)]
+delay[3e-3]
+field[(IAC_SEL,1),(IAC_RATIO,3)]
+delay[3e-3]
+field[(CHANNEL_MUX,8)]
+delay[3e-3]
+iset[vac1,0.5,1e-3,0]	delay[1e-3]
+finish[]	VBAT
+KLV1		AMUX	Y	Y		Done					AMUX上输出的sense电压和输入电压*400的差值										checked
+TM910	AMUX	ntc channel acc	ntc功能删除，该通道不进行测试		V			SCM		1.amux_channel=15
+gain=1.2/(atest0)
+2.select sample channel 
+conversion_value=atest0*gain	vset[vbat,4,100e-6,0]
+vset[ntc,1,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,15)]	delay[3e-3]
+field[(CHANNEL_MUX,13)]	VBAT		V(ATEST0)				Cancel															checked
+TM911	AMUX	ntc2 channel acc	ntc功能删除，该通道不进行测试		V			SCM		1.amux_channel=15
+gain=1.2/(atest0)
+2.select sample channel 
+conversion_value=atest0*gain	vset[vbat,4,100e-6,0]
+vset[ntc2,1.5,100e-6,0]	en_tm[]
+field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,15)]	delay[3e-3]
+field[(CHANNEL_MUX,10)]	VBAT		V(ATEST0)				Cancel															checked
+TM913	AMUX	AMUX IQ	测试模块iq, 且check 1.2V通道；	~50	uA			Debug		测试开启AMUX前后vbat iq.	vset[vbat,4,100e-6,0]	wait_warmup[]
+res[amux,200000]
+field[(WAKE_UP,1)]
+delay[1e-3]
+field[(AMUX_EN,1),(CHANNEL_MUX,15)]	delay[1e-3]
+finish[]	VBAT		I(VBAT)	Y	Y		Done													1.269m-1.232m
+37u		checked
+TM1000	QDT	QDT_LG1_LG2_CHECK_DIS	discharge phase lg1/lg2 function check	lg1=high，lg2=high							vset[vbat,4,100e-6,0]
+en_tm[]	field[(WAKE_UP,1)]
+field[(en_i2c_ctrl,1),(d2a_qdt_en_dischg,1),(d2a_qdt_en,1)]	delay[1e-3]
+finish[]	VBAT		V(LG1),V(LG2)	Y	Y		Done
+TM1001	QDT	QDT_LG1_LG2_CHECK_PRE	precharge phase lg1/lg2 function check	lg1=low，lg2=high							vset[vbat,4,100e-6,0]
+en_tm[]	field[(WAKE_UP,1)]
+field[(en_i2c_ctrl,1),(d2a_qdt_en_prechg,1),(d2a_qdt_en,1)]	delay[1e-3]
+finish[]	VBAT		V(LG1),V(LG2)
+V(SW1)	Y	Y		Done
+TM1002	QDT	QDT_VPRECHARGE	precharge phase, precharge voltage check @ SW1	1.2/1.6/1.8/2.4	V			SCM		merge into TM1001	vset[vbat,4,100e-6,0]
+en_tm[]	field[(WAKE_UP,1)]
+field[(en_i2c_ctrl,1),(d2a_qdt_en_prechg,1),(d2a_qdt_en,1)]	delay[1e-3]
+finish[]	VBAT		V(SW1)				MergeIntoOtherCase
+TM1003	QDT	QDT_LG1_LG2_CHECK_COMP	comp phase lg1/lg2 function check	lg1=high，lg2=high							vset[vbat,4,100e-6,0]
+en_tm[]	field[(WAKE_UP,1)]
+field[(en_i2c_ctrl,1),(d2a_qdt_en_comp,1),(d2a_qdt_en,1)]	delay[1e-3]
+finish[]	VBAT		V(SW1)	Y	Y		Done
+TM1004	QDT	QDT_VTH_COMP	TRIM阈值比较器的OFFSET:
+1. 通过TM1008得到比较器的参考电压
+2.通过trim来让比较器阈值逼近参考电压，使得offset最小化
+	VPRECHARGE/RATIO
+对上阈值进行trim，下阈值在测试模式下加入0.1V迟滞	V			SCM	Y	以往项目经验：
+1. 没有迟滞，比较器的输出在实际过程中存在抖动；
+2.看是否需要更换测试方案？
+@吴顶和@林晨曦在测试该比较器的时候，故意新增迟滞Vhys保证反转无glitch，实际使用时候无迟滞；（20260409）
+额外信号：D2A_QDT_ATEST<2>=1	vset[vbat,4,100e-6,0]
+en_tm[]	field[(WAKE_UP,1)]
+field[(en_i2c_ctrl,1),(d2a_qdt_en_comp,1),(d2a_qdt_en,1)]
+field[(Q_PRE_CHG_VOL,3)]
+field[(Q_DET_RATIO,3)]
+field[(DMUX_EN,1),(DMUX_SEL,70)]	delay[1e-3]
+vset[vcp,2,100e-6,0]
+vset[vcp,0,100e-6,0]
+delay[1e-3]
+field[(EN_ATEST0,1),(ATEST0_MUX,34)]
+vset[vcp,2,100e-6,0]
+vset[vcp,0,100e-6,0]
+finish[]	VBAT	V(VCP)	V(VCP)，V(DTEST0)	Y	Y		Done
+TM1005	QDT	QDT_RATIO_ACC	计算VPRECHARGE(TM1002)/阈值比较器的阈值(TM1004)，作为实际ratio	16/8/4/2				SCM												MergeIntoOtherCase
+TM1006	QDT	QDT_ZCD_COMP	测试过零比较器的精度	rising 0V
+falling ~25mV	V			SCM			vset[vbat,4,100e-6,0]
+en_tm[]	field[(WAKE_UP,1)]
+delay[2e-3]
+field[(en_i2c_ctrl,1),(d2a_qdt_en_comp,1),(d2a_qdt_en,1)]
+field[(DMUX_EN,1),(DMUX_SEL,71)]
+delay[1e-3]
+vset[vcp,-0.5,100e-6,0]
+vset[vcp,0.5,100e-6,0]
+vset[vcp,-0.5,100e-6,0]	delay[1e-3]
+finish[]	VBAT	V(VCP)	V(DTEST0)	Y	Y		Done
+TM1007	QDT	QDT_IBP_ZTC_1UA_TEST	电流ibias测试模式	1	uA			Debug			vset[vbat,4,100e-6,0]
+en_tm[]	field[(WAKE_UP,1)]
+field[(en_i2c_ctrl,1),(d2a_qdt_en,1)]
+field[(EN_ATEST0,1),(ATEST0_MUX,33)]
+vset[vdm,1,100e-6,0]	delay[1e-3]
+finish[]	VBAT		I(ATEST0)	Y	Y		Done
+TM1008	QDT	QDT_VREF_VTH_CMP	vth cmp的vref	1.2/16=0.075	V			Debug			vset[vbat,4,100e-6,0]
+en_tm[]	field[(WAKE_UP,1)]
+field[(en_i2c_ctrl,1),(d2a_qdt_en,1)]
+field[(EN_ATEST0,1),(ATEST0_MUX,32)]	delay[1e-3]
+finish[]	VBAT		V(ATEST0)	Y	Y		Done
+TM1009	QDT	QDT VPCHG SHORT CURRENT	VPRECHG的最大输出能力	~2	mA						vset[vbat,4,100e-6,0]
+en_tm[]	field[(WAKE_UP,1)]
+field[(en_i2c_ctrl,1),(d2a_qdt_en_prechg,1),(d2a_qdt_en,1)]
+delay[10e-3]
+vset[sw1,1.2,100e-6,0]
+vset[sw1,0,100e-6,0]	delay[1e-3]
+finish[]	VBAT		I(SW1)	Y			Done
+TM1100	DEMO	DEMO_VREF_1P65	测试DEMO的参考电压
+1.65V	1.65	V	 		Debug	 	 	vset[vbat,4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]
+field[(EN_ATEST0,1),(EN_ATEST1,1),(D2A_ADM_ATEST1_MUX,1),(D2A_ADM_ATEST1_MUX,7),(D2A_ADM_ATEST1_MUX_H,1)]	delay[2e-3]
+field[(D2A_ADM_ATEST0_MUX,14)]
+delay[2e-3]	finish[]	VBAT	 	V(ATEST0)	Y	Y	 	Done								 	 
+TM1101	DEMO	DEMO_VCAP_SNS_GAIN_ACC	测试VCP_SNS的gain:
+1.通过TM1100得到VCAP_SNS的输出共模电压VREF_1P65
+2.VCN=1, VCP-VCN force Vin1=100mV, 计算Vout1=Vdma(pd5)-VREF_1P65
+3.VCN=1, VCP-VCN force Vin2=200mV, 计算Vout2=Vdma(pd5)-VREF_1P65
+4.gain=(vout1-vout2)/(vin1-vin2)	0.5/…../8.375	 	 		 	 	 	vset[vbat,4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+vset[vcn,0,100e-6,0]
+vset[vcp,0.1,100e-6,0]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]
+field[(D2A_DMA_EN,1),(D2A_DMA_MODE,1),(DM_CHANNEL_SEL_OVER_WRITE,1)]
+field[(VCAP_RATIO,1)]	delay[2e-3]
+vset[vcp,1,1000e-6,0]
+vset[vcp,0,1000e-6,0]
+vset[vcn,1,1000e-6,0]
+vset[vcn,0,1000e-6,0]
+delay[2e-3]	finish[]	VBAT	V(VCP),V(VCN)	V(DMA)	Y	Y	 	Done				Vin1=Vin2=100mV?怎么计算？				 	 
+TM1102	DEMO	DEMO_VPEAK_TRACK	测试VCAP 包络采样功能
+1.VCN=1V，VCP提供360k Hz的数字信号（2/0V），方波	atest1输出会跟随DMA的峰值
+（VCP-VCN)*gain+1.65的最高电压	 	 	Y	Function test.	 	 	vset[vbat,4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+vset[vcn,0.5,100e-6,0]
+vset[vcp,2,100e-6,0]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]
+field[(VCAP_RATIO,0),(SEL_DMO,3),(D2A_ADM_ATEST1_MUX,7),(EN_ATEST1,1)]
+field[(D2A_DMA_EN,1),(D2A_DMA_MODE,1),(DM_CHANNEL_SEL_OVER_WRITE,1)]	delay[2e-3]
+vset[vcp,0,10e-9,0]
+delay[1.4e-6]
+vset[vcp,2,10e-9,0]
+delay[1.4e-6]
+vset[vcp,0,10e-9,0]
+delay[1.4e-6]
+vset[vcp,2,10e-9,0]
+delay[1.4e-6]
+vset[vcp,0,10e-9,0]
+delay[1.4e-6]
+vset[vcp,2,10e-9,0]
+delay[1.4e-6]
+vset[vcp,0,10e-9,0]
+delay[1.4e-6]
+vset[vcn,1,10e-6,0]
+delay[1.4e-6]
+vset[vcp,2,10e-9,0]
+delay[1.4e-6]
+vset[vcp,0,10e-9,0]
+delay[1.4e-6]
+vset[vcp,2,10e-9,0]
+delay[1.4e-6]
+vset[vcp,0,10e-9,0]
+delay[1.4e-6]
+vset[vcp,2,10e-9,0]
+delay[1.4e-6]
+vset[vcp,0,10e-9,0]
+delay[1.4e-6]
+vset[vcp,2,10e-9,0]
+delay[2e-3]	finish[]	VBAT	V(VCP),V(VCN)	V(ATEST1)
+V(DMA)	Y		 	Done								 	 
+TM1103	DEMO	DEMO_PHASE_DET_ZCD_CMP	测试VCAP相位采样的ZCD比较器
+1.配置PWM2=high，mux VCAP to DMA pin
+2.ramp VCAP from 1.5V to 1.8V
+3.记录比较器翻转时，对应VCAP电压
+	翻转阈值为VREF_1P65(TM1100)	 	 	Y	 	 	 	vset[vbat,4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+vset[vcn,1,100e-6,0]
+vset[vcp,0,100e-6,0]
+vset[sw2,4,100e-6,0]
+field[(DMUX_EN,1),(DMUX_SEL,54)]
+field[(D2A_DMA_EN,1),(D2A_DMA_MODE,1),(DM_CHANNEL_SEL_OVER_WRITE,1)]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]
+	delay[2e-3]
+vset[vcp,2,1e-3,0]
+vset[vcp,0,1e-3,0]	delay[2e-3]
+finish[]	VBAT	V(DMA)	V(DTEST0)	Y		 	Done								 	 
+TM1104	DEMO	DEMO_PHASE_DET_T2V	测试PHASE采样中的时间转电压电路功能
+1.设置为FLT1通道
+2.PWM2 force 360khz 方波，高电平时间100ns/200ns/300ns
+3.检测atest0上电压	期待结果为
+ATEST0电压与pwm2脉宽正相关 	 	 	Y	Function test.	 	 	vset[vbat,4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+delay[2e-3]
+field[(DEMO_UPDATE,1)]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]
+field[(SEL_DMA,1),(EN_ATEST0,1),(D2A_ADM_ATEST0_MUX,7)]
+field[(D2A_ADM_TM_T2V,1)]
+field[(D2A_VCAP_PHASE_ICHG_OPT,0)]
+field_renew[(D2A_OVRD_SEL,48),(ovrd_value,3)]
+vset[pwm2,4,10e-9,0]
+delay[2e-6]
+vset[pwm2,0,10e-9,0]
+delay[2e-6]
+vset[pwm2,4,10e-9,0]
+delay[2e-6]
+vset[pwm2,0,10e-9,0]
+delay[2e-6]
+vset[pwm2,4,10e-9,0]
+delay[2e-6]
+vset[pwm2,0,10e-9,0]
+delay[2e-6]
+vset[pwm2,4,10e-9,0]
+delay[2e-6]
+vset[pwm2,0,10e-9,0]
+delay[2e-6]
+vset[pwm2,4,10e-9,0]
+delay[2e-6]	vset[pwm2,4,10e-9,0]
+delay[2e-6]
+vset[pwm2,0,10e-9,0]
+delay[2e-6]
+vset[pwm2,4,10e-9,0]
+delay[2e-6]
+vset[pwm2,0,10e-9,0]
+delay[2e-6]
+vset[pwm2,4,10e-9,0]
+delay[2e-6]
+vset[pwm2,0,10e-9,0]
+delay[2e-6]
+vset[pwm2,4,10e-9,0]
+delay[2e-6]
+vset[pwm2,0,10e-9,0]
+delay[2e-6]
+vset[pwm2,4,10e-9,0]
+delay[2e-6]
+vset[pwm2,0,10e-9,0]
+delay[2e-6]
+vset[pwm2,4,10e-9,0]
+delay[2e-6]
+vset[pwm2,0,10e-9,0]
+delay[2e-6]
+vset[pwm2,4,10e-9,0]
+delay[2e-6]
+vset[pwm2,0,10e-9,0]
+delay[2e-6]	vset[pwm2,4,10e-9,0]
+delay[2e-6]
+vset[pwm2,0,10e-9,0]
+delay[2e-6]
+vset[pwm2,4,10e-9,0]
+delay[2e-6]
+vset[pwm2,0,10e-9,0]
+delay[2e-6]
+vset[pwm2,4,10e-9,0]
+delay[2e-6]
+vset[pwm2,0,10e-9,0]
+delay[2e-6]
+vset[pwm2,4,10e-9,0]
+delay[2e-6]
+vset[pwm2,0,10e-9,0]
+delay[2e-6]
+vset[pwm2,4,10e-9,0]
+delay[2e-6]
+vset[pwm2,0,10e-9,0]
+delay[2e-6]
+vset[pwm2,4,10e-9,0]
+delay[2e-6]
+vset[pwm2,0,10e-9,0]
+delay[2e-6]
+vset[pwm2,4,10e-9,0]
+delay[2e-6]
+vset[pwm2,0,10e-9,0]
+delay[2e-6]
+vset[pwm2,4,10e-9,0]
+delay[2e-6]
+vset[pwm2,0,10e-9,0]
+delay[2e-6]
+delay[2e-3]
+finish[]	VBAT	V(PWM2)	V(ATEST0)	Y		 	Done				测试ATEST电压即可				 	 
+TM1105	DEMO	DEMO_FLT1_AAF	测试FLT1 AAF输出
+VCP 施加正弦信号，Vmid=0.5V，VPP=1V 频率2khz, VCN=0.5V					Debug			vset[vbat,4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+delay[2e-3]
+field[(DEMO_UPDATE,1)]
+field[(EN_ATEST0,1),(D2A_ADM_ATEST0_MUX,11)]
+field[(SEL_DMA,2)]
+vset[vcn,0.5,10e-6,0]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]
+field[(DMA_DISABLE_AGC_DCOC,1)]	delay[2e-3]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[500e-6]
+vset[vcp,1,10e-6,0]
+delay[500e-6]
+vset[vcp,0,10e-6,0]
+delay[500e-6]
+vset[vcp,1,10e-6,0]
+delay[2e-3]	delay[2e-3]
+finish[]	VBAT	V(VCP),V(VCN)	V(ATEST0)	Y			Done
+TM1106	DEMO	DEMO_FLT1_BPF_VOUT	测试ADM FLT1通路的BPF输出
+VCP 施加正弦信号，Vmid=0.5V，VPP=1V 频率2khz, VCN=0.5V	输出vpp=0.5V	 	 	Y	Debug	 	 	vset[vbat,4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+delay[2e-3]
+field[(DEMO_UPDATE,1)]
+field[(EN_ATEST0,1),(EN_ATEST1,1),(D2A_ADM_ATEST0_MUX,1),(D2A_ADM_ATEST1_MUX,1)]
+field[(SEL_DMA,2)]
+vset[vcn,0.5,10e-6,0]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]	delay[2e-3]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[2e-3]	delay[2e-3]
+finish[]	VBAT	V(VCP),V(VCN)	V(ATEST0),V(ATEST1)	Y		 	Done				同时测试ATEST,结果作差，差分输出				 	 
+TM1107	DEMO	DEMO_FLT1_AGC_AUTO_GAIN	测试ADM FLT1通路的AGC的gain，auto gain
+VCN force 0.5V, VCP 施加正弦信号 频率2khz, Vmid=0.5V, Vpp=5mV
+1.mux BPF差分输出作为vin
+2.mux AGC差分输出作为vout
+3.gain=vout/vin	GAIN≈52/24/144	 	 	Y	Debug	 	 	vset[vbat,4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+delay[2e-3]
+field[(DEMO_UPDATE,1)]
+field[(EN_ATEST0,1),(EN_ATEST1,1),(D2A_ADM_ATEST0_MUX,2),(D2A_ADM_ATEST1_MUX,2)]
+field[(SEL_DMA,2)]
+vset[vcn,0.5,10e-6,0]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]	delay[10e-3]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+field[(DMA_SEL_AGC_GAIN,1)]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+field[(DMA_SEL_AGC_GAIN,2)]
+delay[250e-6]	delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+field[(DMA_SEL_AGC_GAIN,0)]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+field[(DMA_SEL_AGC_GAIN,3)]
+delay[2e-3]
+finish[]	VBAT	V(VCP),V(VCN)	V(ATEST0),V(ATEST1)	Y		 	Done				同上				 	 
+TM1108	DEMO	DEMO_FLT1_AGC_FIXED_GAIN	测试ADM FLT1通路的AGC的gain，fixed gain
+VCN force 0.5V, VCP 施加正弦信号 频率2khz, Vmid=0.5V, Vpp=1V
+1.mux AGC差分输出作为vout
+2.fixed_gain=0时，vout峰峰值在~0.7V
+3.fixed_gain=1时，vout峰峰值超过2V	输出峰峰值由~0.7V->2V	 	 	Y	Debug	 	 	vset[vbat,4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+delay[2e-3]
+field[(DEMO_UPDATE,1)]
+field[(EN_ATEST0,1),(EN_ATEST1,1),(D2A_ADM_ATEST0_MUX,2),(D2A_ADM_ATEST1_MUX,2)]
+field[(SEL_DMA,2)]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]
+field[(DMA_SEL_AGC_GAIN,1)]
+vset[vcn,0.5,10e-6,0]	delay[10e-3]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]	vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+field[(DMA_FIXED_AGC_GAIN,1)]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[2e-3]
+finish[]	VBAT	V(VCP),V(VCN)	V(ATEST0),V(ATEST1)	Y		 	Done				同上				 	 
+TM1109	DEMO	DEMO_FLT1_AGC_VCMFB	测试ADM FLT1通路的AGC共模输出
+	1.588	 V	 	Y	Debug	 	 	vset[vbat,4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]
+field[(EN_ATEST0,1),(D2A_ADM_ATEST0_MUX,10)]	delay[2e-3]
+delay[2e-3]	delay[2e-3]
+finish[]	VBAT	V(VCP),V(VCN)	V(ATEST0),V(ATEST1)	Y		 	Done				同上				 	 
+TM1110	DEMO	DEMO_FLT1_DIFF_VOUT	测试ADM FLT2通路的微分电路输出
+VCN force 0.5V, VCP 施加正弦信号 频率2khz, Vmid=0.5V, Vpp=1V	 	 	 	Y	Debug	 	 	vset[vbat,4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+delay[2e-3]
+field[(DEMO_UPDATE,1)]
+field[(EN_ATEST0,1),(EN_ATEST1,1),(D2A_ADM_ATEST0_MUX,3),(D2A_ADM_ATEST1_MUX,3)]
+field[(SEL_DMA,2)]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]
+vset[vcn,0.5,10e-6,0]	delay[2e-3]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[2e-3]	delay[2e-3]
+finish[]	VBAT	V(VCP),V(VCN)	V(ATEST0),V(ATEST1)	Y		 	Done				同上				 	 
+TM1111	DEMO	DEMO_FLT1_ZERO_CMP	测试FLT1零点比较器阈值	
+VDM-AMUX作为输入
+r +23/11.5/60/100mV
+f -23/11.5/60/100mV	mV						vset[vbat,4,100e-6,0]
+vset[amux,1.4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+field[(EN_ATEST0,1),(EN_ATEST1,1),(D2A_ADM_ATEST0_MUX,2),(D2A_ADM_ATEST1_MUX,2)]
+field[(SEL_DMA,2)]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]
+field[(DMUX_EN,1),(DMUX_SEL,68)]	delay[2e-3]
+vset[vdm,2,10e-3,0]
+vset[vdm,0,10e-3,0]
+field[(DMA_SEL_CMP_HYS,1)]
+vset[vdm,2,10e-3,0]
+vset[vdm,0,10e-3,0]
+field[(DMA_SEL_CMP_HYS,2)]
+vset[vdm,2,10e-3,0]
+vset[vdm,0,10e-3,0]
+field[(DMA_SEL_CMP_HYS,3)]
+vset[vdm,2,10e-3,0]
+vset[vdm,0,10e-3,0]	delay[2e-3]
+finish[]	VBAT	V(AMUX),V(VDM)	V(DTEST)	Y			Pending
+TM1112	DEMO	DEMO_FLT1_STAT_CMP	测试FLT1驻点比较器阈值	
+VDM-AMUX作为输入
+r +23/11.5/60/100mV
+f -23/11.5/60/100mV	mV						vset[vbat,4,100e-6,0]
+vset[amux,0.7,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+field[(EN_ATEST0,1),(EN_ATEST1,1),(D2A_ADM_ATEST0_MUX,3),(D2A_ADM_ATEST1_MUX,3)]
+field[(SEL_DMA,2)]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]
+field[(DMUX_EN,1),(DMUX_SEL,69)]	delay[2e-3]
+vset[vdm,2,10e-3,0]
+vset[vdm,0,10e-3,0]
+field[(DMA_SEL_CMP_HYS,1)]
+vset[vdm,2,10e-3,0]
+vset[vdm,0,10e-3,0]
+field[(DMA_SEL_CMP_HYS,2)]
+vset[vdm,2,10e-3,0]
+vset[vdm,0,10e-3,0]
+field[(DMA_SEL_CMP_HYS,3)]
+vset[vdm,2,10e-3,0]
+vset[vdm,0,10e-3,0]	delay[2e-3]
+finish[]	VBAT	V(AMUX),V(VDM)	V(DTEST)	Y			Done
+TM1113	DEMO	DEMO_FLT2_AAF	测试FLT2 AAF输出								vset[vbat,4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+field[(EN_ATEST1,1),(D2A_ADM_ATEST1_MUX,3),(D2A_ADM_ATEST1_MUX_H,1)]
+field[(SEL_DMO,3)]
+vset[vcn,0.5,10e-6,0]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]	delay[2e-3]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[500e-6]
+vset[vcp,1,10e-6,0]
+delay[500e-6]
+vset[vcp,0,10e-6,0]
+delay[500e-6]
+vset[vcp,1,10e-6,0]
+delay[2e-3]	delay[2e-3]
+finish[]	VBAT	V(VCP),V(VCN)	V(ATEST0)	Y			Done
+TM1114	DEMO	DEMO_FLT2_BPF_VOUT	测试ADM FLT2通路的BPF输出
+VCP 施加正弦信号，Vmid=0.5V，VPP=1V 频率2khz, VCN=0.5V	输出vpp=0.5V	 	 	Y	Debug	 	 	vset[vbat,4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+field[(EN_ATEST0,1),(EN_ATEST1,1),(D2A_ADM_ATEST0_MUX,4),(D2A_ADM_ATEST1_MUX,4)]
+field[(SEL_DMO,3)]
+vset[vcn,0.5,10e-6,0]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]	delay[2e-3]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[2e-3]	delay[2e-3]
+finish[]	VBAT	V(VCP),V(VCN)	V(ATEST0),V(ATEST1)	Y		 	Done				同上				 	 
+TM1115	DEMO	DEMO_FLT2_AGC_AGC_AUTO_GAIN	测试ADM FLT2通路的AGC的gain，auto gain
+VCN force 0.5V, VCP 施加正弦信号 频率2khz, Vmid=0.5V, Vpp=5mV
+1.mux BPF差分输出作为vin
+2.mux AGC差分输出作为vout
+3.gain=vout/vin	GAIN≈52/24/144	 	 	Y	Debug	 	 	vset[vbat,4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+field[(EN_ATEST0,1),(EN_ATEST1,1),(D2A_ADM_ATEST0_MUX,5),(D2A_ADM_ATEST1_MUX,5)]
+field[(SEL_DMO,3)]
+vset[vcn,0.5,10e-6,0]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]	delay[10e-3]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+field[(DMO_SEL_AGC_GAIN,1)]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+field[(DMO_SEL_AGC_GAIN,2)]
+delay[250e-6]	delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+field[(DMO_SEL_AGC_GAIN,0)]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+delay[250e-6]
+vset[vcp,0.497,10e-6,0]
+delay[250e-6]
+vset[vcp,0.503,10e-6,0]
+field[(DMO_SEL_AGC_GAIN,3)]
+delay[2e-3]
+finish[]	VBAT	V(VCP),V(VCN)	V(ATEST0),V(ATEST1)	Y		 	Done				同上				 	 
+TM1116	DEMO	DEMO_FLT2_AGC_FIXED_GAIN	测试ADM FLT2通路的AGC的gain，fixed gain
+VCN force 0.5V, VCP 施加正弦信号 频率2khz, Vmid=0.5V, Vpp=1V
+1.mux AGC差分输出作为vout
+2.fixed_gain=0时，vout峰峰值在~0.7V
+3.fixed_gain=1时，vout峰峰值超过2V	输出峰峰值~0.6V	 	 	Y	Debug	 	 	vset[vbat,4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+field[(EN_ATEST0,1),(EN_ATEST1,1),(D2A_ADM_ATEST0_MUX,5),(D2A_ADM_ATEST1_MUX,5)]
+field[(SEL_DMO,3)]
+vset[vcn,0.5,10e-6,0]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]
+field[(DMO_SEL_AGC_GAIN,1)]	delay[10e-3]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]	vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+field[(DMO_FIXED_AGC_GAIN,1)]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[2e-3]
+finish[]	VBAT	V(VCP),V(VCN)	V(ATEST0),V(ATEST1)	Y		 	Done				同上				 	 
+TM1117	DEMO	DEMO_FLT2_AGC_VCMFB	测试ADM FLT2通路的AGC共模输出
+	1.588	 	 	Y	Debug	 		vset[vbat,4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]
+field[(EN_ATEST1,1),(D2A_ADM_ATEST1_MUX,2),(D2A_ADM_ATEST1_MUX_H,1)]	delay[2e-3]	delay[2e-3]
+finish[]	VBAT	V(VCP),V(VCN)	V(ATEST0),V(ATEST1)	Y		 	Done				code1已经满足测试条件，测试电压				 	 
+TM1118	DEMO	DEMO_FLT2_DIFF_VOUT	测试ADM FLT2通路的微分电路输出
+VCN force 0.5V, VCP 施加正弦信号 频率2khz, Vmid=0.5V, Vpp=1V	 	 	 	Y	Debug	 	 	vset[vbat,4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+field[(EN_ATEST0,1),(EN_ATEST1,1),(D2A_ADM_ATEST0_MUX,6),(D2A_ADM_ATEST1_MUX,6)]
+field[(SEL_DMO,3)]
+vset[vcn,0.5,10e-6,0]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]	delay[2e-3]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+field[(D2A_ADM_ATEST_OUT_BF_EN,1)]	delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+delay[2e-3]
+finish[]	VBAT	V(VCP),V(VCN)	V(ATEST0),V(ATEST1)	Y		 	Done				差分输出				 	 
+TM1119	DEMO	DEMO_FLT2_ZERO_CMP	测试FLT2零点比较器阈值	
+VDM-AMUX作为输入
+r +23/11.5/60/100mV
+f -23/11.5/60/100mV							vset[vbat,5.5,100e-6,0]
+vset[amux,0.3,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+field[(EN_ATEST0,1),(EN_ATEST1,1),(D2A_ADM_ATEST0_MUX,5),(D2A_ADM_ATEST1_MUX,5)]
+field[(SEL_DMO,3)]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]
+field[(DMUX_EN,1),(DMUX_SEL,66)]
+field[(DMO_SEL_AGC_GAIN,1)]	delay[2e-3]
+vset[vdm,2,10e-3,0]
+vset[vdm,0,10e-3,0]
+field[(DMO_SEL_CMP_HYS,1)]
+vset[vdm,2,10e-3,0]
+vset[vdm,0,10e-3,0]
+field[(DMO_SEL_CMP_HYS,2)]
+vset[vdm,2,10e-3,0]
+vset[vdm,0,10e-3,0]
+field[(DMO_SEL_CMP_HYS,3)]
+vset[vdm,2,10e-3,0]
+vset[vdm,0,10e-3,0]	delay[2e-3]
+finish[]	VBAT	V(AMUX),V(VDM)	V(DTEST)	Y			Pending				code没问题，需要跟BRT做协同
+TM1120	DEMO	DEMO_FLT2_STAT_CMP	测试FLT2驻点比较器阈值	
+VDM-AMUX作为输入
+r +23/11.5/60/100mV
+f -23/11.5/60/100mV							vset[vbat,4,100e-6,0]
+vset[amux,0.3,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+field[(EN_ATEST0,1),(EN_ATEST1,1),(D2A_ADM_ATEST0_MUX,6),(D2A_ADM_ATEST1_MUX,6)]
+field[(SEL_DMO,3)]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]
+field[(DMUX_EN,1),(DMUX_SEL,67)]	delay[2e-3]
+vset[vdm,0.5,10e-3,0]
+vset[vdm,0,10e-3,0]
+field[(DMO_SEL_CMP_HYS,1)]
+vset[vdm,0.5,10e-3,0]
+vset[vdm,0,10e-3,0]
+field[(DMO_SEL_CMP_HYS,2)]
+vset[vdm,0.5,10e-3,0]
+vset[vdm,0,10e-3,0]
+field[(DMO_SEL_CMP_HYS,3)]
+vset[vdm,0.5,10e-3,0]
+vset[vdm,0,10e-3,0]	delay[2e-3]
+finish[]	VBAT	V(AMUX),V(VDM)	V(DTEST)	Y			Done				ramp，测试阈值
+TM1121	DEMO	DEMO_VDM_CHANNEL_FUNCTION_TEST	测试VDM通道的解包功能；
+Force 1Khz Vmid=1V, Vpp=0.1V, Duty=0.5的方波信号在VDM上；
+选择FLT2的零点和驻点比较器输出	DTEST上有类似方波的频率和Duty出现			Y	Function test.			vset[vbat,4,100e-6,0]
+vset[vac_wl,5,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+field[(SEL_DMO,1)]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]
+field[(D2A_DMO_EN,1),(SEL_DMO_CMP_OUT,0)]
+field[(DM_CHANNEL_SEL_OVER_WRITE,1)]
+field[(POWERSTAGE_EN,1)]
+field[(DIS_TX_BST_UV_GD_PROTECT,1)]	delay[2e-3]
+vset[vdm,2.1,1e-6,0]
+delay[250e-6]
+vset[vdm,1.9,1e-6,0]
+delay[250e-6]
+vset[vdm,2.1,1e-6,0]
+delay[250e-6]
+vset[vdm,1.9,1e-6,0]
+delay[250e-6]
+vset[vdm,2.1,1e-6,0]
+delay[250e-6]
+vset[vdm,1.9,1e-6,0]
+delay[250e-6]
+vset[vdm,2.1,1e-6,0]
+delay[250e-6]
+vset[vdm,1.9,1e-6,0]
+delay[250e-6]
+vset[vdm,2.1,1e-6,0]
+delay[250e-6]
+vset[vdm,1.9,1e-6,0]
+delay[250e-6]
+vset[vdm,2.1,1e-6,0]
+delay[250e-6]
+vset[vdm,1.9,1e-6,0]
+delay[250e-6]
+field[(SEL_DMO_CMP_OUT,1)]	vset[vdm,2.1,1e-6,0]
+delay[250e-6]
+vset[vdm,1.9,1e-6,0]
+delay[250e-6]
+vset[vdm,2.1,1e-6,0]
+delay[250e-6]
+vset[vdm,1.9,1e-6,0]
+delay[250e-6]
+vset[vdm,2.1,1e-6,0]
+delay[250e-6]
+vset[vdm,1.9,1e-6,0]
+delay[250e-6]
+vset[vdm,2.1,1e-6,0]
+delay[250e-6]
+vset[vdm,1.9,1e-6,0]
+delay[250e-6]
+vset[vdm,2.1,1e-6,0]
+delay[250e-6]
+vset[vdm,1.9,1e-6,0]
+delay[250e-6]
+vset[vdm,2.1,1e-6,0]
+delay[250e-6]
+vset[vdm,1.9,1e-6,0]
+delay[2e-3]
+finish[]	VBAT	V(VDM)	V(DMO)	Y			Done				DMO是mux到DTEST上的输出
+TM1122	DEMO	DEMO_FLT1_CHANNEL_FUNCTION_TEST	测试VCAP通道的解包功能；
+Force 1Khz Vmid=1V, Vpp=0.1V, Duty=0.5的方波信号在VCP上，VCN=0V；
+选择FLT1的零点和驻点比较器输出	DTEST上有类似方波的频率和Duty出现			Y	Function test.			vset[vbat,4,100e-6,0]
+vset[vac_wl,5,100e-6,0]
+vset[vcn,0.5,100e-6,0]
+vset[vcp,0,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+field[(DEMO_UPDATE,1)]
+delay[2e-3]
+field[(SEL_DMA,2)]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]
+field[(D2A_DMA_EN,1),(SEL_DMA_CMP_OUT,0)]
+field[(DM_CHANNEL_SEL_OVER_WRITE,1)]
+field[(POWERSTAGE_EN,1)]
+field[(DIS_TX_BST_UV_GD_PROTECT,1)]	delay[10e-3]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+field[(SEL_DMA_CMP_OUT,1)]	vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+delay[2e-3]
+finish[]	VBAT	V(VCP),V(VCN)	V(DMA)	Y			Done				DMA是mux到DTEST上的输出
+TM1123	DEMO	DEMO_VREF_1P2	测试DEMO的参考电压	1.2	V	 		Debug	 	 	vset[vbat,4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]	delay[2e-3]
+field[(EN_ATEST1,1),(D2A_ADM_ATEST1_MUX,6),(D2A_ADM_ATEST1_MUX_H,1)]
+delay[2e-3]	finish[]	VBAT	 	V(ATEST0)	Y	Y	 	Done								 	 
+TM1124	DEMO	DEMO_FLT1_HPF_VOUT	测试ADM FLT1通路的BPF中的高通滤波器输出
+VCN force 1V, VCP 施加正弦信号 频率1khz, Vmid=1V, Vpp=0.1V	输出vpp=0.1V	 	 	Y	Debug	 	 	vset[vbat,4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+delay[2e-3]
+field[(DEMO_UPDATE,1)]
+field[(EN_ATEST0,1),(EN_ATEST1,1),(D2A_ADM_ATEST0_MUX,8),(D2A_ADM_ATEST1_MUX_H,1)]
+field[(SEL_DMA,2)]
+vset[vcn,0.5,10e-6,0]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]	delay[2e-3]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[2e-3]	delay[2e-3]
+finish[]	VBAT	V(VCP),V(VCN)	V(ATEST0),V(ATEST1)	Y		 	Pending				差分输出
+TM1125	DEMO	DEMO_FLT2_HPF_VOUT	测试ADM FLT2通路的BPF中的高通滤波器输出
+VCN force 1V, VCP 施加正弦信号 频率1khz, Vmid=1V, Vpp=0.1V	输出vpp=0.1V			Y	Debug			vset[vbat,4,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+delay[2e-3]
+field[(DEMO_UPDATE,1)]
+field[(EN_ATEST0,1),(EN_ATEST1,1),(D2A_ADM_ATEST0_MUX,9),(D2A_ADM_ATEST1_MUX_H,1),(D2A_ADM_ATEST1_MUX,1)]
+field[(SEL_DMO,3)]
+vset[vcn,0.5,10e-6,0]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]	delay[2e-3]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[250e-6]
+vset[vcp,0,10e-6,0]
+delay[250e-6]
+vset[vcp,1,10e-6,0]
+delay[2e-3]	delay[2e-3]
+finish[]	VBAT	V(VCP),V(VCN)	V(ATEST0),V(ATEST1)	Y			Pending				同上
+TM1126	DEMO	DEMO_FLT1_DEG	测试ADM flt1的deglitch时间
+1.AMUX force 0.5V，VDM快速从0 ramp到1V
+2.将VDM翻转到DMA出现翻转时间作为deglitch时间	rising和falling deglitch 170us/190us/140us/110us				Debug			vset[vbat,4,100e-6,0]
+vset[vac_wl,5,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+field[(DEMO_UPDATE,1)]
+delay[2e-3]
+field[(SEL_DMA,2)]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]
+field[(D2A_DMA_EN,1),(SEL_DMA_CMP_OUT,0)]
+field[(DM_CHANNEL_SEL_OVER_WRITE,1)]
+field[(POWERSTAGE_EN,1)]
+field[(DIS_TX_BST_UV_GD_PROTECT,1)] 
+field[(EN_ATEST0,1),(EN_ATEST1,1),(D2A_ADM_ATEST0_MUX,2),(D2A_ADM_ATEST1_MUX,2)]	vset[amux,0.5,10e-6,0]
+vset[vdm,0,10e-6,0]
+delay[5e-3]
+vset[vdm,1,10e-6,0]
+delay[2e-3]
+vset[vdm,0,10e-6,0]
+delay[2e-3]
+vset[vdm,1,10e-6,0]
+delay[2e-3]
+vset[vdm,0,10e-6,0]
+delay[2e-3]
+field[(DMA_ADM_SEL_CMP_DEG,1)]
+delay[2e-3]
+vset[vdm,1,10e-6,0]
+delay[2e-3]
+vset[vdm,0,10e-6,0]
+delay[2e-3]
+field[(DMA_ADM_SEL_CMP_DEG,2)]
+delay[2e-3]
+vset[vdm,1,10e-6,0]
+delay[2e-3]
+vset[vdm,0,10e-6,0]
+delay[2e-3]
+field[(DMA_ADM_SEL_CMP_DEG,3)]
+delay[2e-3]
+vset[vdm,1,10e-6,0]
+delay[2e-3]
+vset[vdm,0,10e-6,0]
+delay[2e-3]
+field[(DMA_ADM_DEG_BYPASS,1)]
+delay[2e-3]
+vset[vdm,1,10e-6,0]
+delay[2e-3]
+vset[vdm,0,10e-6,0]
+delay[1e-3]	delay[2e-3]
+finish[]	VBAT	V(VDM),V(AMUX)	V(DMA)	Y			Done				DMA是mux到DTEST上的输出
+TM1127	DEMO	DEMO_FLT2_DEG	测试ADM flt2的deglitch时间
+1.AMUX force 0.5V，VDM快速从0 ramp到1V
+2.将VDM翻转到DMA出现翻转时间作为deglitch时间	rising和falling deglitch 170us/190us/140us/110us				Debug			vset[vbat,4,100e-6,0]
+vset[vac_wl,5,100e-6,0]
+en_tm[]
+field[(WAKE_UP,1)]
+field[(SEL_DMO,2)]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]
+field[(D2A_DMO_EN,1),(SEL_DMO_CMP_OUT,0)]
+field[(DM_CHANNEL_SEL_OVER_WRITE,1)]
+field[(POWERSTAGE_EN,1)]
+field[(DIS_TX_BST_UV_GD_PROTECT,1)]
+field[(EN_ATEST0,1),(EN_ATEST1,1),(D2A_ADM_ATEST0_MUX,5),(D2A_ADM_ATEST1_MUX,5)]	vset[amux,0.5,10e-6,0]
+vset[vdm,0,10e-6,0]
+delay[5e-3]
+vset[vdm,1,10e-6,0]
+delay[2e-3]
+vset[vdm,0,10e-6,0]
+delay[2e-3]
+vset[vdm,1,10e-6,0]
+delay[2e-3]
+vset[vdm,0,10e-6,0]
+delay[2e-3]
+field[(DMO_ADM_SEL_CMP_DEG,1)]
+delay[2e-3]
+vset[vdm,1,10e-6,0]
+delay[2e-3]
+vset[vdm,0,10e-6,0]
+delay[2e-3]
+field[(DMO_ADM_SEL_CMP_DEG,2)]
+delay[2e-3]
+vset[vdm,1,10e-6,0]
+delay[2e-3]
+vset[vdm,0,10e-6,0]
+delay[2e-3]
+field[(DMO_ADM_SEL_CMP_DEG,3)]
+delay[2e-3]
+vset[vdm,1,10e-6,0]
+delay[2e-3]
+vset[vdm,0,10e-6,0]
+delay[2e-3]
+field[(DMO_ADM_DEG_BYPASS,1)]
+delay[2e-3]
+vset[vdm,1,10e-6,0]
+delay[2e-3]
+vset[vdm,0,10e-6,0]
+delay[2e-3]	delay[2e-3]
+finish[]	VBAT	V(VDM),V(AMUX)	V(DMO)	Y			Done
+TM1200	TRX	TRX_LG1_HG1_Ron_Roff	Test LG1 Ron/Roff resistor	50	Ohm						vset[vbat,4,100e-6,0]
+en_tm[]
+field[(wake_up,1)]
+field[(wake_up,1)]
+field_renew[(D2A_OVRD_SEL,47),(ovrd_value,3)]
+field_renew[(D2A_OVRD_SEL,45),(ovrd_value,3)]
+field_renew[(D2A_OVRD_SEL,48),(ovrd_value,3)]
+vset[sw1,0.1,100e-6,0]
+
+vset[bst1_sw1,4,100e-6,0]
+delay[1e-3]
+vset[pwm1,0,1e-6,0]
+delay[10e-6]
+vset[pwm1,4,1e-6,0]
+delay[10e-6]
+vset[pwm1,0,1e-6,0]
+delay[10e-6]	vset[pwm1,4,1e-6,0]
+delay[10e-6]
+vset[pwm1,0,1e-6,0]
+delay[10e-6]
+vset[pwm1,4,1e-6,0]
+delay[10e-6]
+vset[pwm1,0,1e-6,0]
+delay[10e-6]
+vset[pwm1,4,1e-6,0]
+delay[10e-6]
+vset[pwm1,0,1e-6,0]
+delay[10e-6]
+vset[pwm1,4,1e-6,0]
+delay[10e-6]
+vset[pwm1,0,1e-6,0]
+delay[10e-6]
+vset[pwm1,0,1e-6,0]
+delay[10e-6]
+vset[pwm1,4,1e-6,0]
+delay[10e-6]
+vset[pwm1,0,1e-6,0]
+delay[10e-6]
+vset[pwm1,4,1e-6,0]
+delay[10e-6]
+vset[pwm1,0,1e-6,0]
+delay[10e-6]	vset[pwm1,4,1e-6,0]
+delay[10e-6]
+vset[pwm1,0,1e-6,0]
+delay[10e-6]
+vset[pwm1,4,1e-6,0]
+delay[10e-6]
+vset[pwm1,0,1e-6,0]
+delay[10e-6]
+vset[pwm1,4,1e-6,0]
+delay[10e-6]
+vset[pwm1,0,1e-6,0]
+delay[10e-6]
+vset[pwm1,4,1e-6,0]
+delay[10e-6]
+vset[pwm1,0,1e-6,0]
+delay[10e-6]
+vset[pwm1,4,1e-6,0]
+delay[10e-6]
+vset[pwm1,0,1e-6,0]
+delay[10e-6]
+vset[pwm1,4,1e-6,0]
+delay[10e-6]
+vset[pwm1,0,1e-6,0]
+delay[1e-3]
+finish[]			Float source:
+BST1-SW1, HG1-SW1, HG1-BST1
+LG1-PGND_WL, LG1-VDRV
+
+LG1, 
+Roff: Force current from LG1 to PGND_WL, measure Voltage. Calculate Ron
+Ron: Force current from LG1 to VDRV, measure Voltage. Calculate Ron
+
+HG1, 
+Roff: Force current from HG1 to SW1, measure Voltage. Calculate Ron
+Ron: Force current from HG1 to BST1, measure Voltage. Calculate Ron	Y	Y		Done
+TM1201	TRX	TRX_LG2_HG2_Ron_Roff	Test LG2 Ron/Roff resistor	50	Ohm						vset[vbat,4,100e-6,0]
+en_tm[]
+field[(wake_up,1)]
+field_renew[(D2A_OVRD_SEL,47),(ovrd_value,3)]
+field_renew[(D2A_OVRD_SEL,45),(ovrd_value,3)]
+field_renew[(D2A_OVRD_SEL,48),(ovrd_value,3)]
+vset[sw2,0.1,100e-6,0]
+
+vset[bst2_sw2,4,100e-6,0]
+delay[1e-3]
+vset[pwm2,0,1e-6,0]
+delay[10e-6]
+vset[pwm2,4,1e-6,0]
+delay[10e-6]
+vset[pwm2,0,1e-6,0]
+delay[10e-6]	vset[pwm2,4,1e-6,0]
+delay[10e-6]
+vset[pwm2,0,1e-6,0]
+delay[10e-6]
+vset[pwm2,4,1e-6,0]
+delay[10e-6]
+vset[pwm2,0,1e-6,0]
+delay[10e-6]
+vset[pwm2,4,1e-6,0]
+delay[10e-6]
+vset[pwm2,0,1e-6,0]
+delay[10e-6]
+vset[pwm2,4,1e-6,0]
+delay[10e-6]
+vset[pwm2,0,1e-6,0]
+delay[10e-6]
+vset[pwm2,0,1e-6,0]
+delay[10e-6]
+vset[pwm2,4,1e-6,0]
+delay[10e-6]
+vset[pwm2,0,1e-6,0]
+delay[10e-6]
+vset[pwm2,4,1e-6,0]
+delay[10e-6]
+vset[pwm2,0,1e-6,0]
+delay[10e-6]	vset[pwm2,4,1e-6,0]
+delay[10e-6]
+vset[pwm2,0,1e-6,0]
+delay[10e-6]
+vset[pwm2,4,1e-6,0]
+delay[10e-6]
+vset[pwm2,0,1e-6,0]
+delay[10e-6]
+vset[pwm2,4,1e-6,0]
+delay[10e-6]
+vset[pwm2,0,1e-6,0]
+delay[10e-6]
+vset[pwm2,4,1e-6,0]
+delay[10e-6]
+vset[pwm2,0,1e-6,0]
+delay[10e-6]
+vset[pwm2,4,1e-6,0]
+delay[10e-6]
+vset[pwm2,0,1e-6,0]
+delay[10e-6]
+vset[pwm2,4,1e-6,0]
+delay[10e-6]
+vset[pwm2,0,1e-6,0]
+delay[1e-3]
+finish[]			Float source:
+BST2-SW2, HG2-SW2, HG2-BST2
+LG2-PGND_WL, LG2-VDRV
+
+LG2, 
+Roff: Force current from LG2 to PGND_WL, measure Voltage. Calculate Ron
+Ron: Force current from LG2 to VDRV, measure Voltage. Calculate Ron
+
+HG2, 
+Roff: Force current from HG2 to SW2, measure Voltage. Calculate Ron
+Ron: Force current from HG2 to BST2, measure Voltage. Calculate Ron	Y	Y		Done
+TM1202	TRX	TRX_HG1_Ron_Roff	Test HG1 Ron/Roff resistor				Y
+2 FLOAT													MergeIntoOtherCase
+TM1203	TRX	TRX_HG2_Ron_Roff	Test HG2 Ron/Roff resistor				Y
+2 FLOAT													MergeIntoOtherCase
+TM1204	TRX	TRX_SW2_LS_OCP	Test SW2 - PGND_WL OCP threshold	20..10..80	mV						vset[vbat,4,100e-6,0]
+en_tm[]
+field[(wake_up,1)]
+field[(wake_up,1)]
+field_renew[(D2A_OVRD_SEL,47),(ovrd_value,3)]
+field_renew[(D2A_OVRD_SEL,45),(ovrd_value,3)]
+field_renew[(D2A_OVRD_SEL,48),(ovrd_value,3)]
+field_renew[(D2A_TRX_TM_SW2_OCP_DEG_BYPASS,1)]
+field_renew[(TX_OCP,3)]	field_renew[(DMUX_EN,1),(DMUX_SEL,56)]
+res[sw2_pgndwl,100e-3]
+delay[1e-3]
+vset[pwm2,0,1e-6,0]
+delay[10e-6]
+vset[pwm2,4,1e-6,0]
+delay[10e-6]
+vset[pwm2,0,1e-6,0]
+delay[10e-6]
+iset[vccext_sw2, 2,1e-3,0]
+iset[vccext_sw2,0,1e-3,0]
+field_renew[(TX_OCP,6)]
+iset[vccext_sw2, 2,1e-3,0]
+iset[vccext_sw2,0,1e-3,0]	delay[1e-3]
+finish[]				Y	Y		Done				SW2-PGND_WL加外挂电阻
+10ohm(~100mV)
+TM1205	TRX	TRX_BST_UV_GD	Test BST1-SW1, BST2-SW2的 UVLO阈值		V						vset[vbat,4,100e-6,0]
+en_tm[]
+field[(wake_up,1)]
+field[(wake_up,1)]
+field_renew[(D2A_OVRD_SEL,47),(ovrd_value,3)]
+field_renew[(D2A_OVRD_SEL,45),(ovrd_value,3)]
+field_renew[(D2A_OVRD_SEL,48),(ovrd_value,3)]
+field_renew[(D2A_TRX_TM_BOOTGD_DEG_BYPASS,1)]
+delay[1e-3]	field_renew[(DMUX_EN,1),(DMUX_SEL,57)]
+vset[bst1_sw1,4,1000e-6,0]
+vset[bst1_sw1,0,1000e-6,0]
+delay[1e-3]
+field_renew[(DMUX_EN,1),(DMUX_SEL,58)]
+vset[bst2_sw2,4,1000e-6,0]
+vset[bst2_sw2,0,1000e-6,0]
+delay[1e-3]	finish[]				Y	Y		Done
+TM1206	TRX	TRX_BST1_RON	测试VCC到BST的电阻，需要外部输入CLK	100	Ohm						vset[vbat,4.4,100e-6,0]
+en_tm[]
+field[(wake_up,1)]
+iset[bst1,0.1e-3,100e-6,0]
+vset[sw1,3,100e-6,0]
+field_renew[(D2A_OVRD_SEL,47),(ovrd_value,3)]
+field_renew[(D2A_OVRD_SEL,45),(ovrd_value,3)]
+field_renew[(D2A_OVRD_SEL,48),(ovrd_value,3)]
+field_renew[(D2A_TRX_TM_EN_BST_EXT_CLK,1)]
+delay[1e-3]	vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[5e-6]
+vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[5e-6]
+vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[5e-6]
+vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[5e-6]
+vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[5e-6]
+vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[5e-6]
+vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[5e-6]
+vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[5e-6]
+vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[5e-6]
+	vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[5e-6]
+vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[5e-6]
+vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[1e-3]
+finish[]			Force current from VDRV to BST1
+Mearsure voltage from VDRV to BST1	Y	Y		Done
+TM1206_2	TRX	TRX_BST2_RON	测试VCC到BST的电阻，需要外部输入CLK	100	Ohm						vset[vbat,4,100e-6,0]
+en_tm[]
+field[(wake_up,1)]
+iset[bst2,0.1e-3,100e-6,0]
+vset[sw2,3,100e-6,0]
+field_renew[(D2A_OVRD_SEL,47),(ovrd_value,3)]
+field_renew[(D2A_OVRD_SEL,45),(ovrd_value,3)]
+field_renew[(D2A_OVRD_SEL,48),(ovrd_value,3)]
+field_renew[(D2A_TRX_TM_EN_BST_EXT_CLK,1)]
+delay[1e-3]	vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[5e-6]
+vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[5e-6]
+vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[5e-6]
+vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[5e-6]
+vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[5e-6]
+vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[5e-6]
+vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[5e-6]
+vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[5e-6]
+vset[pwm1,4,1e-6,0]
+delay[5e-6]
+vset[pwm1,0,1e-6,0]
+delay[5e-6]
+	vset[pwm2,4,1e-6,0]
+delay[5e-6]
+vset[pwm2,0,1e-6,0]
+delay[5e-6]
+vset[pwm2,4,1e-6,0]
+delay[5e-6]
+vset[pwm2,0,1e-6,0]
+delay[5e-6]
+vset[pwm2,4,1e-6,0]
+delay[5e-6]
+vset[pwm2,0,1e-6,0]
+delay[1e-3]
+finish[]			Force current from VDRV to BST2
+Mearsure voltage from VDRV to BST2	Y	Y		Done
+TM1207	TRX	TRX_SW1_DET_VTH	测试SW1的阈值比较器输出	1.2/1	V						vset[vbat,4,100e-6,0]
+en_tm[]
+field_renew[(DMUX_EN,1),(DMUX_SEL,59)]
+delay[1e-3]
+vset[sw1,4,1e-3,0]
+vset[sw1,0,1e-3,0]
+delay[1e-3]	field_renew[(DMUX_EN,1),(DMUX_SEL,60)]
+delay[1e-3]
+vset[sw2,4,1e-3,0]
+vset[sw2,0,1e-3,0]
+delay[1e-3]	finish[]				Y	Y		Done				SW1,SW2不用同时上电
+TM1208	TRX	TRX_SW2_DET_VTH	测试SW2的阈值比较器输出	1.2/1	V															MergeIntoOtherCase
+TM1209	TRX	TRX_DRVH	DRVH Ron test	Ron/off=1.4kohm							vset[vbat,4,100e-6,0]
+en_tm[]
+field[(wake_up,1)]
+field_renew[(D2A_OVRD_SEL,47),(ovrd_value,3)]
+field_renew[(D2A_OVRD_SEL,45),(ovrd_value,3)]
+field_renew[(D2A_OVRD_SEL,48),(ovrd_value,3)]
+field[(mpp_en,1),(rx_mode_en,1)]
+vset[bst2_sw2,4,100e-6,0]
+vset[sw2,1,100e-6,0]	field[(DRVH_EN,1)]
+delay[1e-3]
+//TEST DRVH pin to BST2 or SW2 resistor.	finish[]			Need 2 float source.
+
+Force current from DRVH to SW2
+Mearsure voltage from DRVH to SW2	Y	Y		Done
+TM1210	TRX	TRX_RX_VTH_SW1	Test cross couple drive function of RX.	Vrise/Vfall = 1.6/1.1							vset[vbat,4,100e-6,0]
+en_tm[]
+field[(wake_up,1)]
+field[(mpp_en,1),(rx_mode_en,1)]
+field_renew[(D2A_OVRD_SEL,46),(ovrd_value,3)]
+field_renew[(D2A_OVRD_SEL,47),(ovrd_value,3)]
+field_renew[(D2A_OVRD_SEL,45),(ovrd_value,3)]
+vset[sw2,2,100e-6,0]
+vset[sw2,0,100e-6,0]	// Check LG1 toggle. Catch SW2 voltage when LG1 toggle.
+delay[2e-3]
+vset[sw1,2,100e-6,0]
+vset[sw1,0,100e-6,0]
+// Check LG2 toggle. Catch SW1 voltage when LG2 toggle.
+delay[2e-3]
+	finish[]				Y	Y		Done
+TM1211	TRX
+TM1212	TRX
+HTOL	TOP	HTOL									vset[vbat,6,100e-6,0]
+vset[vcp,6,100e-6,0]
+vset[bst2_sw2,6,100e-6,0]
+vset[bst1_sw1,6,100e-6,0]
+delay[1e-3]
+vset[vbus,19,100e-6,0]
+vset[sw1,19,100e-6,0]
+vset[sw2,19,100e-6,0]
+vset[vac1,19,100e-6,0]
+vset[vac2,19,100e-6,0]
+vset[vac3,19,100e-6,0]
+vset[klv1,19,100e-6,0]
+vset[klv2,19,100e-6,0]	
+delay[2e-3]
+en_tm[]
+field[(wake_up,1)]
+field[(BUBO_MODE,0)]
+field[(D2A_OVRD_SEL,21),(ovrd_value,2)]
+field_renew[(D2A_OVRD_SEL,16),(ovrd_value,2)]
+field_renew[(D2A_OVRD_SEL,15),(ovrd_value,2)]
+field_renew[(D2A_OVRD_SEL,24),(ovrd_value,2)]
+field[(AC1_GATE_ON,1),(AC2_GATE_ON,1),(AC3_GATE_ON,1)]
+delay[1e-3]
+field[(AMUX_EN,1),(CHANNEL_MUX,1)]
+field[(IAC_SEL,4)]
+field[(D2A_QDT_EN,1)]
+field[(D2A_OVRD_SEL,44),(ovrd_value,3)]
+field[(DEMO_UPDATE,1),(SEL_DMA,2),(SEL_DMO,3)]
+field[(D2A_DMA_EN,1),(D2A_DMO_EN,1),(DM_CHANNEL_SEL_OVER_WRITE,1)]
+field[([POWERSTAGE_EN,1)]
+field[(BUBO_MODE,0),(D2A_BUBO_EN_FORCE_ON,1)]	delay[2e-3]				Y			CodeReady

@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent 架构全景图 · 半导体芯片测试代码生成（2026-08-10）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 20px 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            flex-shrink: 0;
+        }
+
+        header h1 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        header p {
+            font-size: 13px;
+            opacity: 0.85;
+            margin-top: 4px;
+        }
+
+        .toolbar {
+            background: white;
+            padding: 12px 30px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+
+        .toolbar button {
+            background: #2a5298;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .toolbar button:hover {
+            background: #1e3c72;
+        }
+
+        .toolbar button.secondary {
+            background: #6c757d;
+        }
+
+        .toolbar button.secondary:hover {
+            background: #5a6268;
+        }
+
+        .toolbar .info {
+            margin-left: auto;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .toolbar .zoom-level {
+            font-size: 12px;
+            color: #555;
+            min-width: 55px;
+        }
+
+        main {
+            flex: 1;
+            overflow: auto;
+            padding: 20px 30px 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .card-title {
+            padding: 14px 20px;
+            border-bottom: 1px solid #e8e8e8;
+            font-size: 15px;
+            font-weight: 600;
+            color: #1e3c72;
+            background: #fafcff;
+        }
+
+        .card-body {
+            padding: 20px;
+            position: relative;
+        }
+
+        .flow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            padding: 6px 0;
+        }
+
+        .flow-inner { gap: 6px; }
+
+        .fnode {
+            min-width: 340px;
+            max-width: 640px;
+            border: 1px solid #999;
+            border-radius: 6px;
+            padding: 8px 14px;
+            font-size: 13px;
+            line-height: 1.55;
+            background: #e3f2fd;
+            border-color: #2196f3;
+            color: #0d47a1;
+            text-align: center;
+        }
+
+        .fnode b { display: block; font-size: 12.5px; }
+        .fnode .fn-sub { display: block; margin-top: 2px; font-size: 12px; color: #37474f; }
+
+        .fnode-start { background: #e8f5e9; border-color: #4caf50; color: #1b5e20; }
+        .fnode-decision { background: #fff3e0; border-color: #ff9800; color: #e65100; }
+        .fnode-cbit { background: #fce4ec; border-color: #e91e63; color: #880e4f; }
+        .fnode-loop { background: #f3e5f5; border-color: #9c27b0; color: #4a148c; }
+        .fnode-final { background: #fff8e1; border-color: #ffc107; color: #7d5a00; }
+
+        .fgroup {
+            border: 1px dashed #90a4ae;
+            border-radius: 10px;
+            padding: 10px 14px 14px;
+            margin: 2px 0;
+            min-width: 380px;
+            max-width: 680px;
+        }
+
+        .fgroup > .fgroup-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1e3c72;
+            text-align: center;
+            margin: 0 0 8px;
+        }
+
+        .farrow {
+            color: #78909c;
+            font-size: 15px;
+            line-height: 1;
+            padding: 3px 0;
+            text-align: center;
+        }
+
+        .fstep-table { width: 100%; border-collapse: collapse; }
+        .fstep-table th {
+            background: #1e3c72;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 7px 12px;
+            text-align: left;
+        }
+        .fstep-table td {
+            border: 1px solid #e2e6ee;
+            padding: 7px 12px;
+            font-size: 13px;
+            vertical-align: top;
+        }
+        .fstep-table td.fstep-no { width: 40px; text-align: center; font-weight: 600; color: #1e3c72; background: #f0f4fb; }
+        .fstep-table td.fstep-actor { width: 200px; font-weight: 600; color: #1e3c72; white-space: nowrap; }
+        .fstep-table tbody tr:nth-child(even) td { background: #fafbfe; }
+
+        .table-wrap {
+            overflow-x: auto;
+            padding: 10px 20px 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        table th, table td {
+            border: 1px solid #e2e6ee;
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        table th {
+            background: #f0f4fb;
+            color: #1e3c72;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        table tr:nth-child(even) {
+            background: #fafbfe;
+        }
+
+        .group-header td {
+            background: #e8effa;
+            font-weight: 600;
+            color: #1e3c72;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        .tag-agent {
+            background: #e3f2fd;
+            color: #0d47a1;
+        }
+
+        .tag-script {
+            background: #e8f5e9;
+            color: #1b5e20;
+        }
+
+        .tag-skill {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .legend {
+            position: sticky;
+            bottom: 20px;
+            width: fit-content;
+            margin: 10px auto 0;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .legend h4 {
+            margin-bottom: 4px;
+            color: #1e3c72;
+            width: 100%;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            border: 1px solid #999;
+        }
+
+        .note {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 10px 14px;
+            font-size: 12px;
+            color: #7d5a00;
+            margin: 0 20px 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 12px;
+            font-size: 12px;
+            color: #999;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>半导体芯片测试代码生成 · Agent 架构全景</h1>
+        <p>固定解析链 + CBIT-Definition + 脚本化收敛 · 共 19 个 Agent（2026-08-10，A0 旧遗留已删除）· 纯 HTML 自包含渲染</p>
+    </header>
+
+    <div class="toolbar">
+        <button onclick="zoomIn()">放大 +</button>
+        <span class="zoom-level" id="zoomLevel">100%</span>
+        <button onclick="zoomOut()">缩小 -</button>
+        <button onclick="resetZoom()">重置视图</button>
+        <span class="info">🤖 Agent · <span class="tag tag-script">脚本</span> 脚本化 · <span class="tag tag-skill">Skill</span> · 点击放大查看细节</span>
+    </div>
+
+    <main>
+        <!-- ============ 图 1: Pipeline 流程图 ============ -->
+        <div class="card">
+            <div class="card-title">① 代码生成 Pipeline 执行顺序（主 Skill「nuvolta-codegen」编排）</div>
+            <div class="card-body" id="zoomWrapper">
+                <div class="flow" id="pipelineFlow">
+                    <div class="fnode fnode-start"><b>用户指令</b><span class="fn-sub">“写 TMxxx” / “生成代码”</span></div>
+                    <div class="farrow">▼</div>
+                    <div class="fnode fnode-proc"><b>入口 · 解析指令</b><span class="fn-sub">→ 本批 TM 清单</span></div>
+                    <div class="farrow">▼</div>
+                    <div class="fgroup">
+                        <div class="fgroup-title">Step0 原理图解析（有货先验）</div>
+                        <div class="flow flow-inner">
+                            <div class="fnode fnode-proc"><b>Step0-1 检测 SCH-Connect-Map</b><span class="fn-sub">无 → <span class="tag tag-skill">Skill</span> sch-parse · 📄 Dali-SCH.csv → SCH-Connect-Map + Component-Statistic</span></div>
+                            <div class="farrow">▼</div>
+                            <div class="fnode fnode-proc"><b>Step0-2 源表名映射</b><span class="fn-sub">📄 Pin_Channel_define.h</span></div>
+                        </div>
+                    </div>
+                    <div class="farrow">▼</div>
+                    <div class="fgroup">
+                        <div class="fgroup-title">Step1 DFT 解析 + pin 交叉校验</div>
+                        <div class="flow flow-inner">
+                            <div class="fnode fnode-proc"><b>Step1-1 解析</b><span class="fn-sub">🤖 dft-parse-agent → TestItemMeta（源表映射按 SCH-Connect-Map 补齐）</span></div>
+                            <div class="farrow">▼</div>
+                            <div class="fnode fnode-proc"><b>Step1-2 DFT 解读层</b><span class="fn-sub"><span class="tag tag-script">脚本</span> gen_test_conditions.py → test_conditions.yaml（Plan A 权威）· power 仅静态 vset 保 DFT 次序 · testType 两段斜坡→toggle 覆盖</span></div>
+                            <div class="farrow">▼</div>
+                            <div class="fnode fnode-proc"><b>Step1-3 pin 交叉校验</b><span class="fn-sub"><span class="tag tag-script">脚本</span> check_dft_pins.py 三源三层 · L1 DUT pad / L2 测试pad / L3 组合节点 · 未命中→问用户 · 0 未命中→放行</span></div>
+                        </div>
+                    </div>
+                    <div class="farrow">▼</div>
+                    <div class="fgroup">
+                        <div class="fgroup-title">Step2 CBIT-Definition · 每次进入主Skill必走</div>
+                        <div class="flow flow-inner">
+                            <div class="fnode fnode-decision"><b>有继电器定义文件?</b><span class="fn-sub">🤖 cbit-agent（编排）</span></div>
+                            <div class="farrow">▼ 否 → 创建（完整四阶段）</div>
+                            <div class="fnode fnode-cbit"><b>P1 单点 #define</b><span class="fn-sub"><span class="tag tag-script">脚本</span> gen_cbit_defines.py --cbit --stat → V1~V8</span></div>
+                            <div class="farrow">▼</div>
+                            <div class="fnode fnode-cbit"><b>P2 通路查找</b><span class="fn-sub"><span class="tag tag-script">脚本</span> gen_paths.py --json · 优先读 SCH-Connect-Map</span></div>
+                            <div class="farrow">▼</div>
+                            <div class="fnode fnode-cbit"><b>P3 通路命名</b><span class="fn-sub">🤖 cbit-path-namer（命名含人工判断）</span></div>
+                            <div class="farrow">▼</div>
+                            <div class="fnode fnode-cbit"><b>P4 校验</b><span class="fn-sub"><span class="tag tag-script">脚本</span> gen_cbit_defines.py --verify [--map] → V1~V8</span></div>
+                            <div class="fnode fnode-cbit"><b>是 → 仅 check 不更新</b><span class="fn-sub">有定义 + 工程 dll 距今 &gt;1 天 → --verify · ≤1 天 → 跳过（定义刚随编译发布）</span></div>
+                        </div>
+                    </div>
+                    <div class="farrow">▼</div>
+                    <div class="fnode fnode-proc"><b>Step3 框架创建（批次级）</b><span class="fn-sub">读 test_conditions.yaml 的 testType · 本批一次性分类 · 普通 / Toggle-AWG / Trim</span></div>
+                    <div class="farrow">▼</div>
+                    <div class="fgroup">
+                        <div class="fgroup-title">Step4 共用生成循环 · 每测试项 · 环节② relay-agent 统一单元（先通路 → 后角色 → 统一 SetOn）</div>
+                        <div class="flow flow-inner">
+                            <div class="fnode fnode-loop"><b>② relay-agent（环节② 统一单元）</b><span class="fn-sub">→ 先通路继电器（SCH-Connect-Map）→ 再角色继电器（BUS/Cap/P2P/Toggle）→ 统一 cbite.SetOn() 封装 · 📄 test_conditions.yaml + StdAfx.h + 知识库</span></div>
+                            <div class="farrow">▼</div>
+                            <div class="fnode fnode-loop"><b>③ gen_power_sequence.py</b><span class="fn-sub"><span class="tag tag-script">脚本</span> 一次调用三段 → 上电 + PowerState + 下电</span></div>
+                            <div class="farrow">▼</div>
+                            <div class="fnode fnode-loop"><b>④ 模板填充</b><span class="fn-sub">entertestmode() + Software_initial</span></div>
+                            <div class="farrow">▼</div>
+                            <div class="fnode fnode-loop"><b>⑤ measure-agent</b><span class="fn-sub">→ MI/MV/Toggle/Trim 测量代码</span></div>
+                            <div class="farrow">▼</div>
+                            <div class="fnode fnode-loop"><b>⑥ 模板填充 LogData</b><span class="fn-sub">R-LOG 单位 + R-HYS</span></div>
+                        </div>
+                    </div>
+                    <div class="farrow">▼</div>
+                    <div class="fnode fnode-decision"><b>最后一个测试项?</b><span class="fn-sub">否 → 回循环 ②</span></div>
+                    <div class="farrow">▼ 是</div>
+                    <div class="fnode fnode-final"><b>Step5 收尾双查</b><span class="fn-sub">🤖 check-agent + <span class="tag tag-script">脚本</span> gen_cbit_defines.py --verify · FAIL → 修复 → 重查 → PASS</span></div>
+                    <div class="farrow">▼</div>
+                    <div class="fnode fnode-start"><b>结束</b><span class="fn-sub">写 daylog + PROGRESS.md</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ 图 2: 时序图 ============ -->
+        <div class="card">
+            <div class="card-title">② Step 4 生成循环内部时序（每测试项一次）</div>
+            <div class="card-body">
+                <table class="fstep-table">
+                    <thead><tr><th>#</th><th>参与者</th><th>动作</th></tr></thead>
+                    <tbody>
+                        <tr><td class="fstep-no">1</td><td class="fstep-actor">主Skill → relay-agent</td><td>调用环节②（TestItemMeta / test_conditions.yaml + SCH-Connect-Map + StdAfx.h）</td></tr>
+                        <tr><td class="fstep-no">2</td><td class="fstep-actor">relay-agent → 主Skill</td><td>cbite.SetOn() 统一封装（先通路继电器 → 后角色继电器 → 一起 SetOn）</td></tr>
+                        <tr><td class="fstep-no">3</td><td class="fstep-actor">relay-agent → 主Skill</td><td>pin-map JSON 副产物（SCH-Connect-Map 补齐 PIN→源表对象+类型，喂 gen_power_sequence）</td></tr>
+                        <tr><td class="fstep-no">4</td><td class="fstep-actor">主Skill → gen_power_sequence.py</td><td>--meta + --pin-map + --define 一次调用</td></tr>
+                        <tr><td class="fstep-no">5</td><td class="fstep-actor">gen_power_sequence.py → 主Skill</td><td>###SECTION:POWER_ON###（Step5 上电）</td></tr>
+                        <tr><td class="fstep-no">6</td><td class="fstep-actor">gen_power_sequence.py → 主Skill</td><td>###SECTION:POWER_STATE###（PowerState JSON）</td></tr>
+                        <tr><td class="fstep-no">7</td><td class="fstep-actor">gen_power_sequence.py → 主Skill</td><td>###SECTION:POWER_OFF###（Step8 下电）</td></tr>
+                        <tr><td class="fstep-no">8</td><td class="fstep-actor">主Skill</td><td>模板填充 entertestmode() + Software_initial</td></tr>
+                        <tr><td class="fstep-no">9</td><td class="fstep-actor">主Skill → measure-agent</td><td>调用（params[].check + testType）</td></tr>
+                        <tr><td class="fstep-no">10</td><td class="fstep-actor">measure-agent → 主Skill</td><td>MI/MV/Toggle/Trim/AMUX-NTC 测量代码</td></tr>
+                        <tr><td class="fstep-no">11</td><td class="fstep-actor">主Skill</td><td>模板填充 LogData（R-LOG 单位 + R-HYS）</td></tr>
+                        <tr><td class="fstep-no">12</td><td class="fstep-actor">主Skill</td><td>下一个测试项? 是 → 回循环头 / 否 → Step5 收尾双查</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ============ Agent 分组总览 ============ -->
+        <div class="card">
+            <div class="card-title">③ Agent 分组总览（agents/ 目录共 19 个文件）</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Agent</th>
+                            <th>类型</th>
+                            <th>触发</th>
+                            <th>职责 / 产出</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="group-header">
+                            <td colspan="4">一、代码生成 Pipeline（主 Skill 编排，固定解析链 + CBIT-Definition）</td>
+                        </tr>
+                        <tr>
+                            <td>dft-parse-agent</td>
+                            <td><span class="tag tag-agent">Agent</span> B 模式（仅 DFT）</td>
+                            <td>Step1 每次进入</td>
+                            <td>DFT → TestItemMeta JSON（仅 DFT，源表映射按 SCH-Connect-Map 补齐）</td>
+                        </tr>
+                        <tr>
+                            <td>cbit-agent</td>
+                            <td><span class="tag tag-agent">Agent</span> 编排</td>
+                            <td>Step2 每次进入</td>
+                            <td>有定义+dll距今>1天→仅 check / ≤1天跳过 / 无→完整四阶段（P1→P2→P3→P4）</td>
+                        </tr>
+                        <tr>
+                            <td>cbit-path-namer</td>
+                            <td><span class="tag tag-agent">Agent</span></td>
+                            <td>Step2 P3</td>
+                            <td>通路继电器 #define 命名（命名优先级含人工判断，不脚本化）</td>
+                        </tr>
+                        <tr>
+                            <td>relay-agent</td>
+                            <td><span class="tag tag-agent">Agent</span></td>
+                            <td>Step4 循环内</td>
+                            <td>环节② 统一单元：先通路 → 后角色 → 统一 cbite.SetOn() 封装 + pin-map 副产物（SCH-Connect-Map）</td>
+                        </tr>
+                        <tr>
+                            <td>measure-agent</td>
+                            <td><span class="tag tag-agent">Agent</span></td>
+                            <td>Step4 循环内</td>
+                            <td>MI/MV/Toggle/Trim/AMUX-NTC 测量代码</td>
+                        </tr>
+                        <tr>
+                            <td>check-agent</td>
+                            <td><span class="tag tag-agent">Agent</span></td>
+                            <td>Step5 收尾</td>
+                            <td>代码检查报告 PASS/FAIL/WARN（E 组错误码）</td>
+                        </tr>
+                        <tr>
+                            <td>power-on / power-off-agent</td>
+                            <td><span class="tag tag-script">脚本</span> 规格文档</td>
+                            <td>Step4 循环内</td>
+                            <td>已脚本化 → gen_power_sequence.py（19 规则 --audit-rules 自检）</td>
+                        </tr>
+                        <tr>
+                            <td>cbit-parse / singlepoint / check / path-finder</td>
+                            <td><span class="tag tag-script">脚本</span> 规格文档</td>
+                            <td>Step2</td>
+                            <td>已脚本化 → gen_cbit_defines.py（13 规则）+ gen_paths.py（11 规则）</td>
+                        </tr>
+
+                        <tr class="group-header">
+                            <td colspan="4">二、旁路独立工作流（用户触发，不进 pipeline）</td>
+                        </tr>
+                        <tr>
+                            <td>sch-parse</td>
+                            <td><span class="tag tag-skill">Skill</span></td>
+                            <td>“原理图” / Step0 原理图解析（有货先验）</td>
+                            <td>原理图 CSV → Component-Statistic + SCH-Connect-Map</td>
+                        </tr>
+                        <tr>
+                            <td>compile-agent</td>
+                            <td><span class="tag tag-agent">Agent</span></td>
+                            <td>“编译” / “debug”</td>
+                            <td>打开工程 → 写码 → code check → 编译 → Debug 闭环</td>
+                        </tr>
+                        <tr>
+                            <td>deploy-agent</td>
+                            <td><span class="tag tag-agent">Agent</span></td>
+                            <td>“打开STS8300”</td>
+                            <td>自动开 STS8300 软件 + VS（compile 前置，后续复用 compile）</td>
+                        </tr>
+                        <tr>
+                            <td>testplan-agent</td>
+                            <td><span class="tag tag-agent">Agent</span></td>
+                            <td>“写测试方案”</td>
+                            <td>test.cpp + SCH-Connect-Map → Word 方案文档</td>
+                        </tr>
+
+                        <tr class="group-header">
+                            <td colspan="4">三、自进化三 Agent（独立启用，共享 daylog）</td>
+                        </tr>
+                        <tr>
+                            <td>rules-agent</td>
+                            <td><span class="tag tag-agent">Agent</span></td>
+                            <td>/evolve rules</td>
+                            <td>rules-registry.md 规则生命周期（draft→active→retired）</td>
+                        </tr>
+                        <tr>
+                            <td>experience-agent</td>
+                            <td><span class="tag tag-agent">Agent</span></td>
+                            <td>/evolve exp</td>
+                            <td>knowledge/experience/ 项目经验</td>
+                        </tr>
+                        <tr>
+                            <td>sub-function-agent</td>
+                            <td><span class="tag tag-agent">Agent</span></td>
+                            <td>/evolve fn</td>
+                            <td>D:\Newtest\CLAUDE_PROCESS\Library-Functions\shared_functions\ 跨项目子函数库</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="note">
+                <strong>注：</strong>已删除 A0-原理图Agent / A0-知识库（2026-08-10 内容迁移完毕：路径穷举法→relay-agent Step13，三类继电器错误模式→schematic-parsing §七）。旧版 flowchart_local.html 为 2026-08-09 存档。
+            </div>
+        </div>
+
+        <div class="legend">
+            <h4>图例</h4>
+            <div class="legend-item"><div class="legend-color" style="background:#e8f5e9"></div><span>开始/结束</span></div>
+            <div class="legend-item"><div class="legend-color" style="background:#e3f2fd"></div><span>处理步骤</span></div>
+            <div class="legend-item"><div class="legend-color" style="background:#fff3e0"></div><span>判断节点</span></div>
+            <div class="legend-item"><div class="legend-color" style="background:#fce4ec"></div><span>CBIT-Definition</span></div>
+            <div class="legend-item"><div class="legend-color" style="background:#f3e5f5"></div><span>共用生成循环</span></div>
+            <div class="legend-item"><div class="legend-color" style="background:#fff8e1"></div><span>收尾双查</span></div>
+            <div class="legend-item"><span class="tag tag-agent">Agent</span>推理判断</div>
+            <div class="legend-item"><span class="tag tag-script">脚本</span>固定模板</div>
+            <div class="legend-item"><span class="tag tag-skill">Skill</span>skill 流程</div>
+        </div>
+    </main>
+
+    <footer>
+        Agent 架构全景图（2026-08-10）· 🤖 Agent / 脚本化 / Skill 标注 · 纯 HTML 自包含渲染 · 用于团队架构展示
+    </footer>
+
+    <script>
+        let zoomLevel = 1;
+        const zoomWrapper = document.getElementById('zoomWrapper');
+        const zoomLevelEl = document.getElementById('zoomLevel');
+
+        function updateZoom() {
+            zoomWrapper.style.transform = 'scale(' + zoomLevel + ')';
+            zoomLevelEl.textContent = Math.round(zoomLevel * 100) + '%';
+        }
+
+        function zoomIn() {
+            zoomLevel = Math.min(zoomLevel + 0.1, 3);
+            updateZoom();
+        }
+
+        function zoomOut() {
+            zoomLevel = Math.max(zoomLevel - 0.1, 0.3);
+            updateZoom();
+        }
+
+        function resetZoom() {
+            zoomLevel = 1;
+            updateZoom();
+        }
+    </script>
+</body>
+</html>

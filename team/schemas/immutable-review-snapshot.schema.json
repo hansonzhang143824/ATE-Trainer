@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Immutable Review Snapshot",
+  "type": "object",
+  "required": ["schemaVersion", "implementationManifestPath", "implementationManifestSha256", "sources"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "implementationManifestPath": {"type": "string"},
+    "implementationManifestSha256": {"type": "string", "pattern": "^[0-9a-fA-F]{64}$"},
+    "sources": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["sourcePath", "reviewCopyPath", "sha256"], "properties": {"sourcePath": {"type": "string"}, "reviewCopyPath": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[0-9a-fA-F]{64}$"}}}}
+  }
+}

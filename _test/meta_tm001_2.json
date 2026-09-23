@@ -1,0 +1,12 @@
+{
+  "functionName": "TM001_2_IQ_SHIPMODE",
+  "testType": "normal",
+  "params": [],
+  "hardwareInit": [
+    {"cmd": "vset", "pin": "vbat", "value": 3.7, "time": "100e-6", "ignore": 0},
+    {"cmd": "vset", "pin": "vac1", "value": 5, "time": "100e-6", "ignore": 0}
+  ],
+  "pinsInvolved": ["VBAT", "VAC1"],
+  "floatingPairs": [],
+  "mvNoFipins": []
+}

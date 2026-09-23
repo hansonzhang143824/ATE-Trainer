@@ -1,0 +1,20 @@
+{
+  "stage": "IMPLEMENTATION",
+  "tm": "TM106",
+  "verdict": "pass",
+  "sourceSha256": "f4d011e99fe7942ccfa85301b9958b43806dd69b15ffba5b2352c3fe0431c249",
+  "symbol": "TM106_HSKP_VBUS_PRST",
+  "checks": {
+    "symbolOccursOnce": true,
+    "verifiedRegisterWritePair": true,
+    "riseTrigger": "TRIG_FALLING",
+    "fallTrigger": "TRIG_RISING",
+    "scanRangeV": [
+      3.0,
+      5.0
+    ],
+    "numericPassFail": "NOT_SPECIFIED",
+    "sourceSha256": "9018fbbc9b5b2f3c3879a2f381f29e56e2cce177ac51c6b06e2427826d714421",
+    "commentContract": "TM107-style header, source-power, scan, power-off, and result comments present"
+  }
+}

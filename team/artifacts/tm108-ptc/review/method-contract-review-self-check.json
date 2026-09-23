@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm108-method-contract-review-self-check",
+  "taskId": "TM108-PTC-RULE_REVIEW_METHOD",
+  "trial": "tm108-ptc",
+  "tm": "TM108",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_METHOD",
+  "checks": [
+    {"id": "SC-1", "result": "PASS", "detail": "Strategy and method signatures match their recorded input bindings."},
+    {"id": "SC-2", "result": "PASS", "detail": "Strategy validator and PTC output ABI validator both passed."},
+    {"id": "SC-3", "result": "PASS", "detail": "Review verifies only the signed contracts and writes no changes to either reviewed artifact."}
+  ]
+}

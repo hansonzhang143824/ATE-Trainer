@@ -1,0 +1,73 @@
+=== 候选判据源命中面（只读实测）===
+
+TM1205_TRX_BST_UV_GD  payload SetOn 数字集合 = [13, 65]
+   A:pinRouteTable union              expected=26  missing=26  [3, 5, 46, 48, 57, 60, 61, 76, 83, 85, 109, 110]...
+   B:relaySet                         expected=26  missing=26  [3, 46, 48, 60, 61, 76, 83, 86, 109, 110, 130, 131]...
+   C:alias usedByTm/aliasesUsed       expected=2   missing=2   [61, 110]
+   D:relaySet ∩ alias-closed          expected=2   missing=2   [61, 110]
+   E:pinRouteTable ∩ alias-closed     expected=2   missing=2   [61, 110]
+
+TM600_HS_RDSON  payload SetOn 数字集合 = [13, 57, 60, 61, 83, 85, 126]
+   A:pinRouteTable union              expected=30  missing=23  [7, 46, 48, 76, 109, 110, 131, 132, 133, 134, 135, 136]...
+   B:relaySet                         expected=32  missing=29  [7, 17, 18, 20, 46, 48, 76, 86, 109, 110, 130, 131]...
+   C:alias usedByTm/aliasesUsed       expected=4   missing=1   [110]
+   D:relaySet ∩ alias-closed          expected=4   missing=1   [110]
+   E:pinRouteTable ∩ alias-closed     expected=4   missing=1   [110]
+
+TM601_LS_RDSON  payload SetOn 数字集合 = [13, 57, 60, 61, 85, 126, 154, 155]
+   A:pinRouteTable union              expected=26  missing=18  [3, 5, 7, 83, 132, 133, 134, 135, 136, 137, 138, 139]...
+   B:relaySet                         expected=24  missing=20  [3, 7, 83, 86, 130, 132, 133, 134, 135, 136, 137, 138]...
+   C:alias usedByTm/aliasesUsed       expected=4   missing=0   []
+   D:relaySet ∩ alias-closed          expected=4   missing=0   []
+   E:pinRouteTable ∩ alias-closed     expected=4   missing=0   []
+
+=== 契约 relaySet 里哪些 K 号在任何 pinRouteTable 出现? (判定"是否有路由依据") ===
+  TM600_HS_RDSON K7    在路由枚举中: ['VBAT/L210', 'VBAT/L418', 'VBAT/L513', 'VBAT/L638']
+  TM600_HS_RDSON K17   在路由枚举中: **无**（仅 relaySet 提及）
+  TM600_HS_RDSON K18   在路由枚举中: **无**（仅 relaySet 提及）
+  TM600_HS_RDSON K20   在路由枚举中: **无**（仅 relaySet 提及）
+  TM600_HS_RDSON K46   在路由枚举中: ['BST/L39', 'BST/L461', 'BST/L536']
+  TM600_HS_RDSON K48   在路由枚举中: ['BST/L39', 'BST/L461', 'BST/L536', 'BST/L672']
+  TM600_HS_RDSON K76   在路由枚举中: ['BST/L39', 'BST/L461', 'BST/L536', 'BST/L672']
+  TM600_HS_RDSON K86   在路由枚举中: **无**（仅 relaySet 提及）
+  TM600_HS_RDSON K109  在路由枚举中: ['BST/L42', 'BST/L268']
+  TM600_HS_RDSON K110  在路由枚举中: ['BST/L42', 'BST/L268']
+  TM600_HS_RDSON K130  在路由枚举中: **无**（仅 relaySet 提及）
+  TM600_HS_RDSON K131  在路由枚举中: ['BST/L265']
+  TM600_HS_RDSON K132  在路由枚举中: ['SW/L391', 'BST/L265']
+  TM600_HS_RDSON K133  在路由枚举中: ['SW/L391']
+  TM600_HS_RDSON K134  在路由枚举中: ['SW/L391', 'BST/L265']
+  TM600_HS_RDSON K135  在路由枚举中: ['SW/L391', 'BST/L265']
+  TM600_HS_RDSON K136  在路由枚举中: ['PMID/L382', 'VBAT/L210', 'VBAT/L638', 'PGND/L376']
+  TM600_HS_RDSON K137  在路由枚举中: ['PMID/L382', 'PMID/L614', 'BST/L536', 'VBAT/L210', 'PGND/L376', 'PGND/L610']
+  TM600_HS_RDSON K138  在路由枚举中: ['SW/L620', 'BST/L42', 'AGND/L31']
+  TM600_HS_RDSON K139  在路由枚举中: ['BST/L42', 'AGND/L257']
+  TM600_HS_RDSON K140  在路由枚举中: ['AGND/L31', 'AGND/L257', 'AGND/L853']
+  TM600_HS_RDSON K141  在路由枚举中: ['PMID/L505', 'BST/L461', 'PGND/L501']
+  TM600_HS_RDSON K142  在路由枚举中: **无**（仅 relaySet 提及）
+  TM600_HS_RDSON K143  在路由枚举中: ['PMID/L382', 'VBAT/L210', 'PGND/L376']
+  TM600_HS_RDSON K144  在路由枚举中: ['PMID/L382', 'VBAT/L210', 'PGND/L376']
+  TM600_HS_RDSON K145  在路由枚举中: ['BST/L42']
+  TM600_HS_RDSON K146  在路由枚举中: ['BST/L42']
+  TM600_HS_RDSON K154  在路由枚举中: ['PGND/L156', 'PGND/L376', 'PGND/L501', 'PGND/L610']
+  TM600_HS_RDSON K155  在路由枚举中: ['PGND/L156', 'PGND/L376', 'PGND/L501', 'PGND/L610', 'PGND/L817']
+  TM601_LS_RDSON K3    在路由枚举中: ['VBUS/L213', 'VBUS/L421', 'VBUS/L640']
+  TM601_LS_RDSON K7    在路由枚举中: ['VBAT/L210', 'VBAT/L418', 'VBAT/L513', 'VBAT/L638']
+  TM601_LS_RDSON K83   在路由枚举中: ['PMID/L165', 'PMID/L382', 'PMID/L505', 'PMID/L614']
+  TM601_LS_RDSON K86   在路由枚举中: **无**（仅 relaySet 提及）
+  TM601_LS_RDSON K130  在路由枚举中: **无**（仅 relaySet 提及）
+  TM601_LS_RDSON K132  在路由枚举中: ['SW/L391']
+  TM601_LS_RDSON K133  在路由枚举中: ['SW/L391']
+  TM601_LS_RDSON K134  在路由枚举中: ['SW/L391']
+  TM601_LS_RDSON K135  在路由枚举中: ['SW/L391']
+  TM601_LS_RDSON K136  在路由枚举中: ['PGND/L376', 'PMID/L382', 'VBAT/L210', 'VBAT/L638']
+  TM601_LS_RDSON K137  在路由枚举中: ['PGND/L376', 'PGND/L610', 'PMID/L382', 'PMID/L614', 'VBAT/L210']
+  TM601_LS_RDSON K138  在路由枚举中: ['SW/L620', 'VBUS/L421', 'VBUS/L640', 'AGND/L31']
+  TM601_LS_RDSON K139  在路由枚举中: ['VBUS/L421', 'AGND/L257']
+  TM601_LS_RDSON K140  在路由枚举中: ['AGND/L31', 'AGND/L257', 'AGND/L853']
+  TM601_LS_RDSON K141  在路由枚举中: ['PGND/L501', 'PMID/L505']
+  TM601_LS_RDSON K142  在路由枚举中: **无**（仅 relaySet 提及）
+  TM601_LS_RDSON K143  在路由枚举中: ['PGND/L376', 'PMID/L382', 'VBAT/L210']
+  TM601_LS_RDSON K144  在路由枚举中: ['PGND/L376', 'PMID/L382', 'VBAT/L210']
+  TM601_LS_RDSON K145  在路由枚举中: ['VBUS/L421']
+  TM601_LS_RDSON K146  在路由枚举中: ['VBUS/L421']

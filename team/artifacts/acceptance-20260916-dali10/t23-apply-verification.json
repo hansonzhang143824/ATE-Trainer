@@ -1,0 +1,68 @@
+{
+  "live": {
+    "bytes": 469714,
+    "sha256": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a"
+  },
+  "baseline": {
+    "bytes": 434629,
+    "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317"
+  },
+  "payload": {
+    "bytes": 35014,
+    "sha256": "444810dde99f79ed1ef1939bb1659d5769f547bfc1103e9b9187ee46f455675c"
+  },
+  "checks": [
+    {
+      "name": "payload block appended verbatim at EOF",
+      "pass": true,
+      "ev": "endswith(normalised payload)=True"
+    },
+    {
+      "name": "lone-LF structure unchanged vs baseline",
+      "pass": true,
+      "ev": "3 -> 3"
+    },
+    {
+      "name": "BOM preserved",
+      "pass": true,
+      "ev": "True"
+    },
+    {
+      "name": "definition count TM600_HS_RDSON == 1",
+      "pass": true,
+      "ev": "1"
+    },
+    {
+      "name": "definition count TM601_LS_RDSON == 1",
+      "pass": true,
+      "ev": "1"
+    },
+    {
+      "name": "delta(live-baseline) == payload, all tokens",
+      "pass": true,
+      "ev": "mismatch=NONE"
+    },
+    {
+      "name": "bare 126 fixed (payload code has 0)",
+      "pass": true,
+      "ev": "0"
+    },
+    {
+      "name": "K5/K44/K45 absent from the new block",
+      "pass": true,
+      "ev": "checked"
+    },
+    {
+      "name": "K57 present in the new block",
+      "pass": true,
+      "ev": "2"
+    },
+    {
+      "name": "ERROR_RES present in the new block",
+      "pass": true,
+      "ev": "2"
+    }
+  ],
+  "mismatch": [],
+  "verdict": true
+}

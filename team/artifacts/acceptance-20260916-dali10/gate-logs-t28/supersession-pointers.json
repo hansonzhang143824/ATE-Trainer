@@ -1,0 +1,143 @@
+{
+  "owner": "setup-architect",
+  "rule": "append-only; records point at superseded nested keys without touching the referenced artifact",
+  "entries": [
+    {
+      "recordedAt": "2026-09-16 23:40:40",
+      "purpose": "POINTER/RECORD ONLY - this file does not change any contract byte. It records that a specific nested key inside the contract is superseded by its parent's marker, so that a reader who opens the sub-key alone does not mistakenly read it as the operative rule. Recommended shape: (a) treat the parent SUPERSEDED marker as covering the child, PLUS (b) name the child path here in an append-only file - which invalidates no existing hash and requires no re-anchoring.",
+      "pointers": [
+        {
+          "artifact": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+          "artifactSha256AtRecording": "18587b83307d47e0d6f287ee28e812b6c8f25781d2e449b293e45b50282b6d9f",
+          "artifactRevisionAtRecording": 39,
+          "supersededPath": "revision29Bindings.completenessUnderBothReadings.why_the_union_and_not_either_single_form.union_form",
+          "supersededValue": "COMPLETE under BOTH readings - this is the only configuration that is complete either way, which is a stronger justification than 'safe either way'.",
+          "coveredBy": "the parent block revision29Bindings.completenessUnderBothReadings carries SUPERSEDED, and the disposition is the captain's: add K48/K76 and REMOVE K109/K110 on the single channel-5 route",
+          "gateImpact": "none - the bst-sw gate reads only aliasResolution[*].resolution.closedRelayNumbers (= [48,60,61,76])",
+          "evidenceNote": "my earlier separate observation of the parent-level marker and the child-level text is recorded in t34 L47"
+        }
+      ]
+    },
+    {
+      "recordedAt": "2026-09-16 23:42:04",
+      "purpose": "second residue child found by the recount (enumerate-then-classify); record it so a reader opening either child alone is warned",
+      "pointers": [
+        {
+          "artifact": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+          "artifactSha256AtRecording": "18587b83307d47e0d6f287ee28e812b6c8f25781d2e449b293e45b50282b6d9f",
+          "artifactRevisionAtRecording": 39,
+          "supersededPaths": [
+            "revision29Bindings.completenessUnderBothReadings.ruling",
+            "revision29Bindings.completenessUnderBothReadings.why_the_union_and_not_either_single_form.union_form"
+          ],
+          "values": {
+            "ruling": "The batch keeps the UNION: TM600's single SetOn carries K48+K76 (ACM200 family complete), K109+K110 (FPVIe[L] family complete) and K60+K61 (SW side complete).",
+            "union_form": "COMPLETE under BOTH readings - this is the only configuration that is complete either way, which is a stronger justification than 'safe either way'."
+          },
+          "coveredBy": "the parent block's SUPERSEDED key and the captain's disposition (add K48/K76, remove K109/K110, single channel-5 route)",
+          "correctionOfMyOwnCount": "my earlier report said the contract had 12 'union' occurrences; a raw-text recount gives 13, and classifying all 13 showed that TWO children of this block still assert the union form - the 'union_form' sub-key I had named, and the block's own 'ruling' field.",
+          "gateImpact": "none - the gate reads only aliasResolution[*].resolution.closedRelayNumbers = [48,60,61,76]"
+        }
+      ]
+    },
+    {
+      "recordedAt": "2026-09-16 23:43:51",
+      "purpose": "correction: the residue inside the superseded parent block is THREE children, not two (the earlier entry named ruling and union_form; the recount also exposes disposition, which is the most consequential because it is imperative)",
+      "pointers": [
+        {
+          "artifact": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+          "artifactSha256AtRecording": "18587b83307d47e0d6f287ee28e812b6c8f25781d2e449b293e45b50282b6d9f",
+          "artifactRevisionAtRecording": 39,
+          "supersededPaths": [
+            "revision29Bindings.completenessUnderBothReadings.ruling",
+            "revision29Bindings.completenessUnderBothReadings.disposition",
+            "revision29Bindings.completenessUnderBothReadings.why_the_union_and_not_either_single_form.union_form"
+          ],
+          "values": {
+            "revision29Bindings.completenessUnderBothReadings.ruling": "The batch keeps the UNION: TM600's single SetOn carries K48+K76 (ACM200 family complete), K109+K110 (FPVIe[L] family complete) and K60+K61 (SW side complete).",
+            "revision29Bindings.completenessUnderBothReadings.disposition": "add K48/K76 and RETAIN K109/K110 this batch; removal of K109/K110 stays scheduled for the later minimal cleanup revision (together with lifting the --check-extra ban and downgrading the contract's [110,61] from contested to superseded), pending owner/bench confirmation of the attribution.",
+            "revision29Bindings.completenessUnderBothReadings.why_the_union_and_not_either_single_form.union_form": "COMPLETE under BOTH readings - this is the only configuration that is complete either way, which is a stronger justification than 'safe either way'."
+          },
+          "coveredBy": "the parent block's SUPERSEDED key plus the captain's final disposition (add K48/K76, REMOVE K109/K110, single channel-5 route)",
+          "note": "'disposition' still reads 'add K48/K76 and RETAIN K109/K110 this batch; removal ... stays scheduled for the later minimal cleanup revision' - an imperative sentence that contradicts the final ruling. It is covered by the parent marker and read by no gate, but a reader opening that field alone would be misled, so it is named here explicitly.",
+          "gateImpact": "none - the gate reads only aliasResolution[*].resolution.closedRelayNumbers = [48,60,61,76]"
+        }
+      ]
+    },
+    {
+      "recordedAt": "2026-09-17 00:43:04",
+      "purpose": "refinement: a parent-level SUPERSEDED marker does NOT protect a child key from a deep-path reader",
+      "pointers": [
+        {
+          "artifact": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+          "artifactSha256AtRecording": "18587b83307d47e0d6f287ee28e812b6c8f25781d2e449b293e45b50282b6d9f",
+          "artifactRevisionAtRecording": 39,
+          "paths": [
+            "revision29Bindings.completenessUnderBothReadings.disposition",
+            "revision29Bindings.completenessUnderBothReadings.ruling",
+            "revision29Bindings.completenessUnderBothReadings.why_the_union_and_not_either_single_form.union_form"
+          ],
+          "measuredFacts": {
+            "markersPresent": "the block carries two explicit SUPERSEDED markers (parent revision29Bindings.SUPERSEDED and the sibling completenessUnderBothReadings.SUPERSEDED)",
+            "insertionOrder": [
+              "ruling",
+              "why_the_union_and_not_either_single_form",
+              "roleOfK109",
+              "disposition",
+              "recordedBy",
+              "SUPERSEDED"
+            ],
+            "risk": "the imperative (disposition) is reached BEFORE the sibling marker in insertion order; a sorting tool shows SUPERSEDED first; and a deep-path citation of the child alone sees no marker at all",
+            "childCarriesMarker": true
+          },
+          "criterion": "an annotation must be co-located with the content it constrains, or written inside it - a marker at the parent does not travel to the child",
+          "optionsForTheOwner": [
+            "(a) prefix the imperative itself: '[SUPERSEDED - history only] add K48/K76 and RETAIN K109/K110 this batch; ...'",
+            "(b) rename the key to disposition_superseded",
+            "(c) state both in one value: 'RETIRED: RETAIN K109/K110 (old) / OPERATIVE: REMOVE K109/K110 (t53)'"
+          ],
+          "gateImpact": "none - the gate reads only aliasResolution[*].resolution.closedRelayNumbers = [48,60,61,76]"
+        }
+      ]
+    },
+    {
+      "recordedAt": "2026-09-17 02:27:29",
+      "purpose": "amendment to the remediation options: the (a) text prefix plus a machine-consumable status sibling key (schematic-expert's a-prime)",
+      "pointers": [
+        {
+          "artifact": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+          "artifactSha256AtRecording": "18587b83307d47e0d6f287ee28e812b6c8f25781d2e449b293e45b50282b6d9f",
+          "artifactRevisionAtRecording": 39,
+          "supersededPaths": [
+            "revision29Bindings.completenessUnderBothReadings.disposition",
+            "revision29Bindings.completenessUnderBothReadings.ruling",
+            "revision29Bindings.completenessUnderBothReadings.why_the_union_and_not_either_single_form.union_form"
+          ],
+          "currentKeysOfTheBlock": [
+            "ruling",
+            "why_the_union_and_not_either_single_form",
+            "roleOfK109",
+            "disposition",
+            "recordedBy",
+            "SUPERSEDED"
+          ],
+          "remediationUpgrade": {
+            "name": "annotation upgrade (a-prime) proposed by schematic-expert",
+            "problem": "option (a) - a text prefix inside the value - is robust to key order, display order and deep-path reads, but a machine still has to parse prose to learn the state",
+            "proposal": "keep the human-readable prefix AND add a sibling machine-consumable key, e.g. disposition = '[SUPERSEDED - history only] add K48/K76 and RETAIN K109/K110 this batch; ...' plus dispositionStatus = {state: SUPERSEDED, operativeRule: 'REMOVE K109/K110 (t53)', note: 'retained as history only'}",
+            "benefits": [
+              "a deep-path reader of the value carries the annotation with it",
+              "independent of key order and of sorted display",
+              "a program can consume the state without parsing prose",
+              "it only ADDS a key, so unlike renaming to disposition_superseded it breaks no existing deep-path reference"
+            ],
+            "criterionExtended": "an annotation must be co-located with the content it constrains; state that must be machine-consumable must have its own field",
+            "historyPreserved": "the original disposition wording is retained (with the prefix), so the R1 convention still holds",
+            "reportedToCaptain": "the option set I already submitted listed (a)/(b)/(c)/status quo; this upgrade is offered as an amendment, since schematic-expert asked me to supplement rather than re-report"
+          },
+          "gateImpact": "none - the gate reads only aliasResolution[*].resolution.closedRelayNumbers = [48,60,61,76]"
+        }
+      ]
+    }
+  ]
+}

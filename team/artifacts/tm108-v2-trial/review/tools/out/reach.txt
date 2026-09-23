@@ -1,0 +1,36 @@
+=== 1. are the duplicate sources identical? (plaintext sha256 + size) ===
+  treg.h     e10c2ac7e2b53b043467ed1579e76de9c41bde2b6e7d5b787a3e0d8ccc262bbc 51157
+  src\treg.h ae0d6d6221f8fdb5409e98956218211740170ad6bbfa70ef016d0efbf61450ff 47730  IDENTICAL=False
+  treg.cpp   ae86d1a1cdbd3ee1baed85d3435a46cb19d5803ae97c0faf0373e1ca91512489 160192
+  src\treg.cpp 1cefbf1128c9c9ff4010c6efc5ea74f24e451efffde6fd683d6444268ff87158 155267  IDENTICAL=False
+  treg.h         class TREG_LOG segment contains "private:"=True  log_data decl=True
+  src\treg.h     class TREG_LOG segment contains "private:"=True  log_data decl=True
+
+=== 2. transitive include closure from test.cpp (local headers, resolved in source/) ===
+  closure size: 16 local headers/sources
+    source\Coutlier.h
+    source\FMEA.h
+    source\LogDataStruct.h
+    source\Pin_Channel_define.h
+    source\StdAfx.h
+    source\Test_Method.h
+    source\mylib.h
+    source\spec.h
+    source\src\visa.h
+    source\src\visatype.h
+    source\stdafx.h
+    source\sub.cpp
+    source\sub.h
+    source\tempchar.h
+    source\test.cpp
+    source\treg.h
+  --> BoardCheck.h IN CLOSURE: False
+  --> treg.h        IN CLOSURE: True
+
+=== 3. BoardCheck instances and externs anywhere in the tree ===
+  source\diags.cpp              80| BoardCheck bc;
+  (mentions) source\diags.cpp           4
+  (mentions) source\test.cpp            4
+
+=== 4. users of CBC_log / bc_log / test_log outside BoardCheck.* ===
+  (no lines above = no user outside BoardCheck.*)

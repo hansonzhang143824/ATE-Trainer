@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm103-method-deliverable-ready",
+  "taskId": "TM103-PTC-METHOD",
+  "trial": "tm103-ptc",
+  "tm": "TM103",
+  "projectId": "DALI",
+  "role": "test-method-expert",
+  "stage": "METHOD",
+  "event": "deliverable_ready",
+  "status": "success",
+  "verdict": "deliverable_ready",
+  "generatedAt": "2026-09-18T03:07:39.553Z",
+  "sha256": "210d6058f99287ee22e89ca7d8accbd597d08b102f5b8cca622b6686f879a79a",
+  "sha256Scope": "byte SHA-256 of team/artifacts/tm103-ptc/method/tm103-test-method-contract.json, computed with python hashlib.sha256 over the file bytes (the same computation the METHOD gate performs)",
+  "contract": "team/artifacts/tm103-ptc/method/tm103-test-method-contract.json",
+  "selfCheck": "team/artifacts/tm103-ptc/method/self-check.json",
+  "nextRole": "rule-reviewer",
+  "permittedNextAction": "Independent rule review of the signed strategy and method contracts (stage RULE_REVIEW_METHOD).",
+  "signedInputBoundaryAccepted": {
+    "strategyContract": "team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json",
+    "strategyContractSha256": "92eb967dcc96807010c811e4c4d46ddc205ec2d1dd467dcd8d238bb249c6954a",
+    "strategyContractSha256Verified": true,
+    "strategyHandoff": "team/artifacts/tm103-ptc/strategy/deliverable-ready.json"
+  },
+  "methodSummary": {
+    "structuralType": "general test item, static DC point",
+    "measurementMethod": "FV-MI on VDM (force 1 V, measure the pin current)",
+    "endpoints": [
+      "VBAT",
+      "VDM"
+    ],
+    "powerSequence": [
+      "PH-02 exclusive relay closure K13_VBAT_Cap + delay_ms(3)",
+      "PH-03 VBAT FV 4 V on FXVIe_PLUS_10V / FXVIe_PLUS_100MA + delay_ms(1)",
+      "PH-04 entertestmode then 0x57=0x02, 0x5E=0x04",
+      "PH-05 VDM FV 1 V on ACM200_3p6V / ACM200_1UA",
+      "PH-06 1 ms settle (DFT delay[1e-3])",
+      "PH-07 MeasureVI(50, 5) + GetMeasResult(MIRET) x 1e6 -> uA",
+      "PH-08 ordinary power-down (zero VDM, zero VBAT, delay_ms(1), RELAY_OFF both)"
+    ],
+    "measurementRange": {
+      "VBAT": "FXVIe_PLUS_10V / FXVIe_PLUS_100MA",
+      "VDM": "ACM200_3p6V / ACM200_1UA"
+    },
+    "logUnit": "uA (DFT Unit column)",
+    "setOnClosure": [
+      13
+    ],
+    "relaysMustRemainUnactuated": [
+      8,
+      7,
+      59,
+      58,
+      152
+    ]
+  },
+  "handedOffOpenItemsClosed": [
+    {
+      "id": "OI-TM103-STR-01",
+      "state": "RESOLVED_BY_METHOD",
+      "resolution": "ACM200_1UA current range (ACM200_3p6V voltage range) for the 0.5 uA measurement, no two-stage power-up because VDM is an ATEST-class analog pin (R-PON-09)"
+    },
+    {
+      "id": "OI-TM103-STR-02",
+      "state": "RESOLVED_BY_METHOD",
+      "resolution": "VBAT compliance/range triple = FV / FXVIe_PLUS_10V / FXVIe_PLUS_100MA, derived from the range rule and the project's default vset compliance since no VBAT current is published"
+    },
+    {
+      "id": "OI-TM103-STR-03",
+      "state": "ACKNOWLEDGED_INHERITED_NOT_REOPENED",
+      "owner": "rule-reviewer",
+      "resolution": "Loop orientation carried as the strategy's statement and used as the node-voltage reference; not re-decided here"
+    }
+  ],
+  "openItems": [
+    {
+      "id": "OI-TM103-MTH-01",
+      "blocking": false,
+      "item": "No project-authority pass/fail bound or tolerance for I(ATEST0) 0.5 uA; the method logs the value without a bound."
+    },
+    {
+      "id": "OI-TM103-MTH-02",
+      "blocking": false,
+      "item": "The vset third token 100e-6 has no defined unit in any located artifact; the method uses the documented instrument default rising time and carries the token as metadata."
+    },
+    {
+      "id": "OI-TM103-MTH-03",
+      "blocking": false,
+      "item": "Site scope closed by this stage: FOR_EACH_VALID_SITE with the GetMeasResult(site) index, trial scope site 1."
+    }
+  ],
+  "resolvedFindings": [],
+  "gateCommand": "python scripts/ate_ptc_runner.py --tm TM103 --trial-dir team/artifacts/tm103-ptc --command next",
+  "gateResult": "PASS - the deterministic PTC gate accepts these METHOD artifacts and names the successor (state=RULE_REVIEW_METHOD, dispatch=rule-reviewer, reason=independent review of the signed strategy and method contracts is required; exit code 0)"
+}

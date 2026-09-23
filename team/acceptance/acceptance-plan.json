@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "workspace": "D:/Newtest/DSH/ATE-Coding-Plat",
+  "writeTarget": "D:/PROJECT6-DALI/ForCodexDebug",
+  "productionTree": {"path": "D:/PROJECT6-DALI/devel", "policy": "read-only"},
+  "definitionOfClosedLoop": "A real TM completes evidence-backed DFT and schematic analysis, setup contract, test plan, implementation, independent rule review, gates, and a successful build in the isolated VS copy.",
+  "groups": [
+    {
+      "id": "foundation",
+      "purpose": "Prove normal low-current, grouped/static-current, voltage and current measurement paths.",
+      "items": [
+        {"tm": "TM000", "symbolHint": "TM000_IQ_STANDBY", "expectedFamilies": ["normal", "low-current"], "baseline": "present"},
+        {"tm": "TM001", "symbolHint": "TM001_IIN_SUSPEND", "expectedFamilies": ["normal", "low-current", "grouped-family"], "baseline": "present"},
+        {"tm": "TM102", "symbolHint": "TM102_HSKP_LP_ATEST0", "expectedFamilies": ["normal", "voltage"], "baseline": "present"},
+        {"tm": "TM103", "symbolHint": "TM103_HSKP_LP_HR_0P5U", "expectedFamilies": ["normal", "current", "atest"], "baseline": "present"}
+      ]
+    },
+    {
+      "id": "toggle-trim",
+      "purpose": "Prove search/toggle state handling and trim architecture.",
+      "items": [
+        {"tm": "TM108", "symbolHint": "TM108_HSKP_VAC1_PRST", "expectedFamilies": ["toggle"], "baseline": "present"},
+        {"tm": "TM109", "symbolHint": "TM109_HSKP_VAC2_PRST", "expectedFamilies": ["toggle"], "baseline": "present"},
+        {"tm": "TM135", "symbolHint": "Trim_BG_RES_DIV", "expectedFamilies": ["trim", "grouped"], "baseline": "present"}
+      ]
+    },
+    {
+      "id": "power-special",
+      "purpose": "Prove high-current floating/differential RDSON and a late toggle case.",
+      "items": [
+        {"tm": "TM600", "symbolHint": "RDSON_TEST_HS", "expectedFamilies": ["normal", "high-current", "floating", "differential"], "baseline": "missing-from-debug-test.cpp", "evidenceHint": "project/DALI/input/DFT.csv and docs/PROGRESS.md"},
+        {"tm": "TM601", "symbolHint": "RDSON_TEST_LS", "expectedFamilies": ["normal", "high-current", "differential"], "baseline": "missing-from-debug-test.cpp", "evidenceHint": "project/DALI/input/DFT.csv and project/DALI/_archive/_dump_OVERVIEW.txt"},
+        {"tm": "TM1205", "symbolHint": "TM1205_TRX_BST_UV_GD", "expectedFamilies": ["toggle", "bst-sw"], "baseline": "present"}
+      ]
+    }
+  ],
+  "requiredArtifacts": ["dft-ir.json", "schematic-ir.json", "setup-contract.json", "test-plan.json", "implementation-manifest.json", "review-findings.json", "build-report.json"],
+  "acceptanceCriteria": [
+    "All requested TMs have source-traceable plans and no unresolved blocking decisions.",
+    "Only the debug copy changes; the production tree hash/timestamps are not modified by the run.",
+    "All implementation changes have backups, before/after hashes, and independent review.",
+    "No open critical/high review finding remains.",
+    "No new gate failure is introduced and Release build exits 0.",
+    "Build success is reported separately from electrical/hardware validation."
+  ]
+}

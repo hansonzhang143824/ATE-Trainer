@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "runId": "training-20260922t143354z-454b6e9a",
+  "profileId": "ptc-dft-expert",
+  "childSessionId": "2d61e6e6-9fed-42b1-9820-2068b0a84ec0",
+  "childResult": {
+    "output": [
+      {
+        "type": "reasoning",
+        "text": "Final gate: exit 0, status \"ready\", missingOrStaleOutputs empty. All three products validated.\n\nPer training round 4, persist the verification result as a dft- prefixed file in the verification directory: `Training_Materials/Output_Global_Material/verification/dft-validate-TM109.json`. Content with no root literals — bare filenames and logical source name.\n\nThen call structured_output inside the final run_code, and give the final text report."
+      },
+      {
+        "type": "text",
+        "text": "Gate exit 0, status `ready`, `missingOrStaleOutputs` empty. Persisting the training-mode verification product per the round-4 rule (dft- prefix, verification directory), then reporting:"
+      },
+      {
+        "type": "tool-call",
+        "id": "call_6d3c57171afb458a94b77053",
+        "name": "run_code",
+        "arguments": "{\"code\":\"const vPath = \\\"Training_Materials/Output_Global_Material/verification/dft-validate-TM109.json\\\";\\nlet existed = null;\\ntry { existed = (await tools.read({ file_path: vPath })).lines.map(l => l.text).join(\\\"\\\\n\\\"); } catch (e) { /* absent */ }\\nconsole.log(\\\"verification file existed before:\\\", existed !== null);\\n\\nconst rec = {\\n  tm: \\\"TM109\\\",\\n  role: \\\"dft-expert\\\",\\n  gate: \\\"DFT_OUTPUT\\\",\\n  tool: \\\"validate_dft_outputs.py\\\",\\n  mode: \\\"OVERWRITTEN\\\",\\n  exitCode: 0,\\n  status: \\\"ready\\\",\\n  missingOrStaleOutputs: [],\\n  canonicalInput: { file: \\\"Input_GlobalMaterial/Dali_testmode.xlsx\\\", sheet: \\\"OVERVIEW\\\", sha256: \\\"896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b\\\", withinInputRoot: true },\\n  artifacts: {\\n    \\\"dft-meta.json\\\": { sha256: \\\"ed9a0ebc3a2433f3f3316cce6a52a71bc934ac78f21aa4789eb02588a2ba8af2\\\", digestProvenance: \\\"refresh_dft_meta_from_source.py metaSha256\\\" },\\n    \\\"dft-conditions.yaml\\\": { sha256: \\\"14406f41f864f45783325af02f95b53f36256f52a352f1c47c0b8388d7f160a3\\\", digestProvenance: \\\"render_dft_conditions_yaml.py outputSha256\\\" },\\n    \\\"dft-semantic-review.json\\\": { verdict: \\\"PASS\\\", binding: \\\"readSources sha256 + producer metaSha256/outputSha256 copied verbatim; review file itself not hashed\\\" }\\n  },\\n  semanticReviewFindings: \\\"powerSequence matches Code1/Code2 vset commands; measurement V(DTEST0) matches Check column; registerFieldIntent en_tm[]/field[(DMUX_EN,1),(DMUX_SEL,21)] matches Code2; expectedValue 'rising vth 4.4V, hys 0.35V' from ExpectValue; non-blocking observation: source Notes wording mentions ramp vac1 3~5V while Code2 drives vac2 10->0 (preserved verbatim, ramp facts derive from Code2)\\\"\\n};\\nconst w = await tools.write({ file_path: vPath, content: JSON.stringify(rec, null, 2) + \\\"\\\\n\\\" });\\nconsole.log(\\\"verification product written:\\\", w.operation, w.path);\\n\\nawait tools.structured_output({\\n  status: \\\"done\\\",\\n  mode: \\\"OVERWRITTEN\\\",\\n  outputs: [\\n    \\\"Training_Materials/Output_Global_Material/dft/TM109/dft-meta.json\\\",\\n    \\\"Training_Materials/Output_Global_Material/dft/TM109/dft-conditions.yaml\\\",\\n    \\\"Training_Materials/Output_Global_Material/dft/TM109/dft-semantic-review.json\\\",\\n    \\\"Training_Materials/Output_Global_Material/verification/dft-validate-TM109.json\\\"\\n  ],\\n  gates: [\\n    \\\"DFT_OUTPUT final validator exit=0 status=ready missingOrStaleOutputs=[] (validate_dft_outputs.py --tm TM109)\\\",\\n    \\\"canonical input sha256=896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b (hash_ate_plaintext.py exit=0)\\\",\\n    \\\"metaSha256=ed9a0ebc3a2433f3f3316cce6a52a71bc934ac78f21aa4789eb02588a2ba8af2 (refresh_dft_meta_from_source.py exit=0)\\\",\\n    \\\"outputSha256=14406f41f864f45783325af02f95b53f36256f52a352f1c47c0b8388d7f160a3 (render_dft_conditions_yaml.py exit=0)\\\",\\n    \\\"semantic review verdict=PASS bound to producer-reported digests\\\"\\n  ]\\n});\\nreturn { recorded: true };\",\"description\":\"Write verification product and report done\"}"
+      }
+    ],
+    "structured": {
+      "status": "done",
+      "mode": "OVERWRITTEN",
+      "outputs": [
+        "Training_Materials/Output_Global_Material/dft/TM109/dft-meta.json",
+        "Training_Materials/Output_Global_Material/dft/TM109/dft-conditions.yaml",
+        "Training_Materials/Output_Global_Material/dft/TM109/dft-semantic-review.json",
+        "Training_Materials/Output_Global_Material/verification/dft-validate-TM109.json"
+      ],
+      "gates": [
+        "DFT_OUTPUT final validator exit=0 status=ready missingOrStaleOutputs=[] (validate_dft_outputs.py --tm TM109)",
+        "canonical input sha256=896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b (hash_ate_plaintext.py exit=0)",
+        "metaSha256=ed9a0ebc3a2433f3f3316cce6a52a71bc934ac78f21aa4789eb02588a2ba8af2 (refresh_dft_meta_from_source.py exit=0)",
+        "outputSha256=14406f41f864f45783325af02f95b53f36256f52a352f1c47c0b8388d7f160a3 (render_dft_conditions_yaml.py exit=0)",
+        "semantic review verdict=PASS bound to producer-reported digests"
+      ]
+    },
+    "stopReason": "completed"
+  },
+  "reports": [
+    {
+      "tm": "TM109",
+      "exitCode": 0,
+      "role": "dft-expert",
+      "gate": "DFT_OUTPUT",
+      "status": "ready",
+      "canonicalInput": {
+        "path": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\Input_GlobalMaterial\\Dali_testmode.xlsx",
+        "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+        "sheet": "OVERVIEW"
+      },
+      "requiredOutputs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\Output_Global_Material\\dft\\TM109\\dft-meta.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\Output_Global_Material\\dft\\TM109\\dft-conditions.yaml",
+        "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\Output_Global_Material\\dft\\TM109\\dft-semantic-review.json"
+      ],
+      "missingOrStaleOutputs": []
+    }
+  ],
+  "verifiedAt": "2026-09-22T14:42:50.790Z"
+}

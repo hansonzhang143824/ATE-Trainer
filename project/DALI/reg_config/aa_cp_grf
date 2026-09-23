@@ -1,0 +1,3 @@
+cp TX500_qdt1.grf tx_500.grf
+sed -i 's/TX500/tx_500/g' tx_500.grf
+

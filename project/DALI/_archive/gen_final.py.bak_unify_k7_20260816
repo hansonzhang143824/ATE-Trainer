@@ -1,0 +1,507 @@
+"""
+Final relay.h generator — all confirmed rules:
+- Rule 0: NC default = no define needed, only SetOn paths
+- Rule 1: Shorted pair detection & merge naming
+- Rule 2: Single-point from CBIT table
+- Rule 3: Type 2 (FPVIe→PIN) + Type 3 (PIN_SOURCE) + grouped
+"""
+import re
+from collections import defaultdict, deque
+
+# ===== CBIT TABLE =====
+RAW_CBIT = [
+    ("K1_COMP_AMP","S34_CBIT1","MOS"),("K6_VBUS_LP","S34_CBIT6","MOS"),
+    ("K9_COMP_SVLP1","S34_CBIT9","MOS"),("K10_COMP_SVLP2","S34_CBIT10","MOS"),
+    ("K11_VBUS_SVLP","S34_CBIT11","MOS"),("K12_VBAT_SVLP","S34_CBIT12","MOS"),
+    ("K14_VAC1_P2P","S34_CBIT14","MOS"),("K15_VAC2_P2P","S34_CBIT15","MOS"),
+    ("K16_VAC3_P2P","S34_CBIT16","MOS"),
+    ("K22_ACDRV1_F","S34_CBIT22","MOS"),("K22_ACDRV1_S","S34_CBIT22","MOS"),
+    ("K23_ACDRV2_F","S34_CBIT23","MOS"),("K23_ACDRV2_S","S34_CBIT23","MOS"),
+    ("K24_ACDRV3_F","S34_CBIT24","MOS"),("K24_ACDRV3_S","S34_CBIT24","MOS"),
+    ("K25_VCC_F","S34_CBIT25","MOS"),("K25_VCC_S","S34_CBIT25","MOS"),
+    ("K26_ACDRV1_P2P","S34_CBIT26","MOS"),("K27_ACDRV2_P2P","S34_CBIT27","MOS"),
+    ("K28_ACDRV3_P2P","S34_CBIT28","MOS"),
+    ("K34_SCL_PU","S34_CBIT34","MOS"),("K38_KLV1_2_short","S34_CBIT38","MOS"),
+    ("K39_KLV1_P2P","S34_CBIT39","MOS"),("K40_KLV2_P2P","S34_CBIT40","MOS"),
+    ("K41_BUS_FL_BST","S34_CBIT41","MOS"),("K41_BUS_SL_BST","S34_CBIT41","MOS"),
+    ("K46_BUS_FH_SW1","S34_CBIT46","MOS"),("K46_BUS_SH_SW1","S34_CBIT46","MOS"),
+    ("K47_BUS_FL_SW1","S34_CBIT47","MOS"),("K47_BUS_SL_SW1","S34_CBIT47","MOS"),
+    ("K53_LG2_P2P","S34_CBIT53","MOS"),("K54_LG1_P2P","S34_CBIT54","MOS"),
+    ("K55_HG2_P2P","S34_CBIT55","MOS"),("K56_HG1_P2P","S34_CBIT56","MOS"),
+    ("K62_BUS_FH_QON","S34_CBIT62","MOS"),("K62_BUS_SH_QON","S34_CBIT62","MOS"),
+    ("K63_SDA_PU","S34_CBIT63","MOS"),("K65_nQON_PU","S34_CBIT65","MOS"),
+    ("K66_TMU_nQON","S34_CBIT66","MOS"),
+    ("K68_VCP_F","S34_CBIT68","MOS"),("K69_PB5_F","S34_CBIT69","MOS"),
+    ("K70_VAC_F","S34_CBIT70","MOS"),("K71_KLV_F","S34_CBIT71","MOS"),
+    ("K72_PA5_F","S34_CBIT72","MOS"),("K73_VCN_F","S34_CBIT73","MOS"),
+    ("K77_VAC_S","S34_CBIT77","MOS"),("K78_PB5_S","S34_CBIT78","MOS"),
+    ("K79_KLV_S","S34_CBIT79","MOS"),("K80_PA5_S","S34_CBIT80","MOS"),
+    ("K81_AMPOUT_QVM","S34_CBIT81","MOS"),
+    ("K86_KELVIN0_F","S34_CBIT86","MOS"),("K86_KELVIN0_S","S34_CBIT86","MOS"),
+    ("K92_AGND_F2S","S34_CBIT92","MOS"),
+    ("K94_BUS_FL_PC8","S34_CBIT94","MOS"),("K94_BUS_SL_PC8","S34_CBIT94","MOS"),
+    ("K96_BUS_FH_CC1","S34_CBIT96","MOS"),("K96_BUS_SH_CC1","S34_CBIT96","MOS"),
+    ("K101_BUS_FH_PA0","S34_CBIT101","MOS"),("K101_BUS_SH_PA0","S34_CBIT101","MOS"),
+    ("K103_PA0_PU","S34_CBIT103","MOS"),
+    ("K104_BUS_FL_PD5","S34_CBIT104","MOS"),("K104_BUS_SL_PD5","S34_CBIT104","MOS"),
+    ("K106_BUS_FH_PA1","S34_CBIT106","MOS"),("K106_BUS_SH_PA1","S34_CBIT106","MOS"),
+    ("K108_PA1_PU","S34_CBIT108","MOS"),
+    ("K111_BUS_FH_PA6","S34_CBIT111","MOS"),("K111_BUS_SH_PA6","S34_CBIT111","MOS"),
+    ("K113_PA6_PU","S34_CBIT113","MOS"),
+    ("K116_BUS_FH_PB7","S34_CBIT116","MOS"),("K116_BUS_SH_PB7","S34_CBIT116","MOS"),
+    ("K118_BUS_FL_PA4","S34_CBIT118","MOS"),("K118_BUS_SL_PA4","S34_CBIT118","MOS"),
+    ("K120_BUS_FH_PA7","S34_CBIT120","MOS"),("K120_BUS_SH_PA7","S34_CBIT120","MOS"),
+    ("K122_PA7_PU","S34_CBIT122","MOS"),
+    ("K127_U2_PS","S34_CBIT127","MOS"),
+    ("K128_PU_PS","S36_CBIT0","MOS"),("K129_Backup","S36_CBIT1","MOS"),
+    ("K130_KELVIN1_F","S36_CBIT2","MOS"),("K130_KELVIN1_S","S36_CBIT2","MOS"),
+    ("K136_QVMH_BUS0","S36_CBIT8","MOS"),("K137_QVMH_BUS1","S36_CBIT9","MOS"),
+    ("K138_QVML_BUS0","S36_CBIT10","MOS"),("K139_QVML_BUS1","S36_CBIT11","MOS"),
+    ("K140_QVML_AGND","S36_CBIT12","MOS"),
+    ("K143_DCM_BUS0_H","S36_CBIT15","MOS"),("K144_DCM_BUS1_H","S36_CBIT16","MOS"),
+    ("K145_DCM_BUS0_L","S36_CBIT17","MOS"),("K146_DCM_BUS1_L","S36_CBIT18","MOS"),
+    ("K147_PB0_OSC","S36_CBIT19","MOS"),("K147_PB1_OSC","S36_CBIT19","MOS"),
+    ("K148_PC4_PD","S36_CBIT20","MOS"),("K149_PA1_PD","S36_CBIT21","MOS"),
+    ("K150_PA4_PD","S36_CBIT22","MOS"),
+    ("K152_VDM_TMU","S36_CBIT24","MOS"),("K153_PA4","S36_CBIT25","MOS"),
+    ("K156_BUS_FH_VCN","S36_CBIT28","MOS"),("K156_BUS_SH_VCN","S36_CBIT28","MOS"),
+    ("K158_AMPOUT","S36_CBIT30","MOS"),
+    ("K168_VCP_F","S36_CBIT31","MOS"),("K169_PB5_F","S36_CBIT32","MOS"),
+    ("K170_VAC_F","S36_CBIT33","MOS"),
+    ("K3_BUSL_VBUS","S34_CBIT3","G6K"),("K4_DRVH1","S34_CBIT4","G6K"),
+    ("K7_BUSL_VBAT","S34_CBIT7","G6K"),("K8_PD3","S34_CBIT8","G6K"),
+    ("K17_BUSL_VAC","S34_CBIT17","G6K"),("K18_VAC3","S34_CBIT18","G6K"),
+    ("K19_VAC2","S34_CBIT19","G6K"),("K20_AMUX","S34_CBIT20","G6K"),
+    ("K29_BUSL_VCC","S34_CBIT29","G6K"),("K30_BUSH_ACDRV","S34_CBIT30","G6K"),
+    ("K31_VMCU","S34_CBIT31","G6K"),("K32_BUSL_SCL","S34_CBIT32","G6K"),
+    ("K33_VAC_WL","S34_CBIT33","G6K"),("K35_BUSH_KLV","S34_CBIT35","G6K"),
+    ("K36_PGND_WL","S34_CBIT36","G6K"),("K37_KLV2","S34_CBIT37","G6K"),
+    ("K42_AMP_PS","S34_CBIT42","G6K"),("K43_BST2","S34_CBIT43","G6K"),
+    ("K48_AMP_REF","S34_CBIT48","G6K"),("K49_ACM_SW2","S34_CBIT49","G6K"),
+    ("K50_FOVI_SW2","S34_CBIT50","G6K"),("K51_BUSL_LG","S34_CBIT51","G6K"),
+    ("K52_LG2","S34_CBIT52","G6K"),("K58_BUSH_VDM","S34_CBIT58","G6K"),
+    ("K59_SDA","S34_CBIT59","G6K"),("K60_BUSL_VCP","S34_CBIT60","G6K"),
+    ("K61_SW","S34_CBIT61","G6K"),("K64_HG1","S34_CBIT64","G6K"),
+    ("K76_ACM_BST","S34_CBIT76","G6K"),("K83_BUSH_PMID","S34_CBIT83","G6K"),
+    ("K84_HG2","S34_CBIT84","G6K"),("K88_KELVIN0","S34_CBIT88","G6K"),
+    ("K90_PC0_Force","S34_CBIT90","G6K"),("K91_PC0_Sense","S34_CBIT91","G6K"),
+    ("K93_AGND2PGND","S34_CBIT93","G6K"),("K95_PC6","S34_CBIT95","G6K"),
+    ("K97_Qpoint","S34_CBIT97","G6K"),("K98_PB3","S34_CBIT98","G6K"),
+    ("K99_BUSL_PB5","S34_CBIT99","G6K"),("K100_PC4","S34_CBIT100","G6K"),
+    ("K102_PC3","S34_CBIT102","G6K"),("K105_CC2","S34_CBIT105","G6K"),
+    ("K107_PB1","S34_CBIT107","G6K"),("K109_BUSL_PB0","S34_CBIT109","G6K"),
+    ("K110_BST","S34_CBIT110","G6K"),("K112_PC5","S34_CBIT112","G6K"),
+    ("K114_BUSL_PA5","S34_CBIT114","G6K"),("K115_PB2","S34_CBIT115","G6K"),
+    ("K117_PB6","S34_CBIT117","G6K"),("K119_PB4","S34_CBIT119","G6K"),
+    ("K121_PD2","S34_CBIT121","G6K"),("K123_BUSL_PB5","S34_CBIT123","G6K"),
+    ("K124_nRST","S34_CBIT124","G6K"),("K125_U34_PS","S34_CBIT125","G6K"),
+    ("K126_V1P5_CAP","S34_CBIT126","G6K"),
+    ("K132_KELVIN1","S36_CBIT4","G6K"),("K134_PC1_Force","S36_CBIT6","G6K"),
+    ("K135_PC1_Sense","S36_CBIT7","G6K"),("K154_BUSH_AMUX","S36_CBIT26","G6K"),
+    ("K155_FOVI_PGND","S36_CBIT27","G6K"),("K157_COMP","S36_CBIT29","G6K"),
+    ("K0_VCC_Cap","S34_CBIT0","SHARED"),("K2_BUF","S34_CBIT2","SHARED"),
+    ("K5_VBUS_Cap","S34_CBIT5","SHARED"),("K13_VBAT_Cap","S34_CBIT13","SHARED"),
+    ("K21_VAC_Cap","S34_CBIT21","SHARED"),("K44_Cap_SW2_BST2","S34_CBIT44","SHARED"),
+    ("K45_Cap_SW1_BST1","S34_CBIT45","SHARED"),("K57_CAP_BST_SW","S34_CBIT57","SHARED"),
+    ("K74_GAIN1_SEL","S34_CBIT74","SHARED"),("K75_GAIN2_SEL","S34_CBIT75","SHARED"),
+    ("K82_R_CS","S34_CBIT82","SHARED"),("K85_CAP_PMID","S34_CBIT85","SHARED"),
+    ("K87_KELVIN0","S34_CBIT87","SHARED"),("K89_KELVIN0","S34_CBIT89","SHARED"),
+    ("K131_KELVIN1","S36_CBIT3","SHARED"),("K133_KELVIN1","S36_CBIT5","SHARED"),
+    ("K141_QTMU_BUSA","S36_CBIT13","SHARED"),("K142_QTMU_BUSB","S36_CBIT14","SHARED"),
+    ("K151_NC_GND","S36_CBIT23","SHARED"),
+]
+
+def pcbit(s):
+    m=re.match(r'S(\d+)_CBIT(\d+)',s)
+    if m:b,n=int(m.group(1)),int(m.group(2));return n if b==34 else n+128
+    return None
+
+# ===== PARSE NETLIST =====
+with open(r"D:\Newtest\CLAUDE_PROCESS\Project\DALI\SCH-DALI.NET",encoding="utf-8",errors="ignore") as f:text=f.read()
+
+nets={};cn,cc,inn,d=None,[],False,0
+for line in text.split('\n'):
+    m=re.match(r'^\s*\(Net\s+(.+)$',line)
+    if m and not inn:
+        cn=m.group(1).strip().strip('"')
+        if cn.startswith('(rename)'):
+            rm=re.match(r'\(rename\s+("[^"]*")\s*',line)
+            if rm:cn=rm.group(1).strip('"')
+        cc,inn,d=[],True,1
+        continue
+    if inn:
+        for c in line:
+            if c=='(':d+=1
+            elif c==')':d-=1
+        for pin,inst in re.findall(r'\(PortRef\s+&(\d+)\s+\(InstanceRef\s+(\S+)\)\)',line):cc.append((inst,int(pin)))
+        if d<=0:
+            if cn:nets[cn]=cc
+            cn,cc,inn,d=None,[],False,0
+
+# ===== DUT PORTS + SHORTED PAIRS =====
+dut_raw=set()
+for m in re.finditer(r'\(port\s+(?:\(rename\s+("[^"]+")\s*("[^"]*")\)|(\S+))\s+\(direction\s+OUTPUT\)\)',text):
+    name=(m.group(1)or m.group(3)).strip('"')
+    if name and name not in ('UNDEFINED',''):dut_raw.add(name)
+
+# Source ports (INOUT) — for detecting source-side shorting relays
+src_ports=set()
+for m in re.finditer(r'\(port\s+(?:\(rename\s+("[^"]+")\s*("[^"]*")\)|(\S+))\s+\(direction\s+INOUT\)\)',text):
+    name=(m.group(1)or m.group(3)).strip('"')
+    if name and name not in ('UNDEFINED',''):src_ports.add(name)
+
+def norm(p):
+    # Strip full-word FORCE/SENSE suffixes first (e.g. KLV_FORCE_S1 -> KLV)
+    p = re.sub(r'_FORCE_S\d+$', '', p)
+    p = re.sub(r'_SENSE_S\d+$', '', p)
+    # Then strip single-letter F/S suffixes (e.g. KLV1_F_S1 -> KLV1)
+    p = re.sub(r'_[FS]_S\d+$', '', p)
+    # Finally strip bare site suffix (e.g. nRST_S1 -> nRST)
+    return re.sub(r'_S\d+$', '', p)
+
+port_sn={}
+for p in dut_raw:
+    base=norm(p)
+    if p in nets:port_sn[base]=p
+for p in sorted(dut_raw):
+    base=norm(p)
+    if base in port_sn:continue
+    nc=defaultdict(int)
+    for nn,conns in nets.items():
+        for inst,pin in conns:
+            ib=re.sub(r'_S\d+(S\d+)?$','',inst)
+            if base in ib.split('_'):nc[nn]+=1
+    if nc:port_sn[base]=max(nc,key=nc.get)
+
+# Step C: Shorted pin detection — merge DUT pins sharing same signal net
+# e.g. PA0 and INT shorted by wire → same net → merge to "PA0_INT"
+net_to_bases=defaultdict(set)
+for base,sn in port_sn.items():
+    net_to_bases[sn].add(base)
+for sn,bases in net_to_bases.items():
+    if len(bases)>1:
+        merged="_".join(sorted(bases))
+        # Remove individual bases, add merged
+        for b in bases:
+            if b in port_sn:del port_sn[b]
+        port_sn[merged]=sn
+
+# ===== RELAYS =====
+rp=defaultdict(set)
+for n,conns in nets.items():
+    for inst,pin in conns:
+        if re.match(r'^K\d+_',inst):rp[inst].add(pin)
+relay_type={}
+for inst,pins in rp.items():
+    if max(pins)>=5:relay_type[inst]='G6K'
+    elif max(pins)==2:relay_type[inst]='MOS2'
+    else:relay_type[inst]='MOS'
+# CBIT-based override: some G6K relays only expose 3-4 pins in netlist (K87/K89/K131/K133)
+# Their NC path is essential but misdetected as MOS by pin-count heuristic
+_known_g6k=set([
+    'K3_BUSL_VBUS','K4_DRVH1','K7_BUSL_VBAT','K8_PD3','K17_BUSL_VAC','K18_VAC3','K19_VAC2','K20_AMUX',
+    'K29_BUSL_VCC','K30_BUSH_ACDRV','K31_VMCU','K32_BUSL_SCL','K33_VAC_WL','K35_BUSH_KLV','K36_PGND_WL',
+    'K37_KLV2','K42_AMP_PS','K43_BST2','K48_AMP_REF','K49_ACM_SW2','K50_FOVI_SW2','K51_BUSL_LG','K52_LG2',
+    'K58_BUSH_VDM','K59_SDA','K60_BUSL_VCP','K61_SW','K64_HG1','K76_ACM_BST','K83_BUSH_PMID','K84_HG2',
+    'K88_KELVIN0','K90_PC0_Force','K91_PC0_Sense','K93_AGND2PGND','K95_PC6','K97_Qpoint','K98_PB3',
+    'K99_BUSL_PB5','K100_PC4','K102_PC3','K105_CC2','K107_PB1','K109_BUSL_PB0','K110_BST','K112_PC5',
+    'K114_BUSL_PA5','K115_PB2','K117_PB6','K119_PB4','K121_PD2','K123_BUSL_PB5','K124_nRST','K125_U34_PS',
+    'K126_V1P5_CAP','K132_KELVIN1','K134_PC1_Force','K135_PC1_Sense','K154_BUSH_AMUX','K155_FOVI_PGND',
+    'K157_COMP','K0_VCC_Cap','K2_BUF','K5_VBUS_Cap','K13_VBAT_Cap','K21_VAC_Cap','K44_Cap_SW2_BST2',
+    'K45_Cap_SW1_BST1','K57_CAP_BST_SW','K74_GAIN1_SEL','K75_GAIN2_SEL','K82_R_CS','K85_CAP_PMID',
+    'K87_KELVIN0','K89_KELVIN0','K131_KELVIN1','K133_KELVIN1',
+    'K141_QTMU_BUSA','K142_QTMU_BUSB','K151_NC_GND',
+])
+for inst in list(relay_type.keys()):
+    base=re.sub(r'_S\d+(S\d+)?$','',inst)
+    if base in _known_g6k:relay_type[inst]='G6K'
+COIL={'G6K':{1,8},'MOS':{1,2},'MOS2':set()}
+ipn=defaultdict(lambda:defaultdict(list))
+for n,conns in nets.items():
+    for inst,pin in conns:ipn[inst][pin].append(n)
+
+# === Source-side shorting relays (skip in BFS) ===
+SOURCE_SHORT=set()
+for inst in rp:
+    if max(rp[inst])!=2:continue
+    inst_nets=set()
+    for pin in rp[inst]:inst_nets.update(ipn[inst].get(pin,[]))
+    if not inst_nets:continue
+    if all(n in src_ports for n in inst_nets):
+        if not any('AGND'in n or'GND'in n for n in inst_nets):
+            SOURCE_SHORT.add(inst)
+
+def rtrans(inst,pin,seton):
+    rt=relay_type.get(inst,'?')
+    if rt=='G6K':t={3:[4],4:[3],6:[5],5:[6]} if seton else {2:[3],3:[2],7:[6],6:[7]}
+    elif rt=='MOS2':t={1:[2],2:[1]} if seton else {}
+    elif rt=='MOS':t={3:[4],4:[3]} if seton else {}
+    else:t={}
+    return [(tp,seton) for tp in t.get(pin,[])]
+
+# ===== SINGLE-POINT CBIT =====
+by_cbit={}
+for name,cs,group in RAW_CBIT:
+    val=pcbit(cs)
+    if val is None:continue
+    if val not in by_cbit:by_cbit[val]={"names":[],"group":group}
+    by_cbit[val]["names"].append(name)
+
+def merge(names):
+    kfs=[n for n in names if re.match(r'K\d+_KELVIN\d+_[FS]$',n)]
+    if len(kfs)==2:return re.sub(r'_[FS]$','',kfs[0])+"_FS"
+    if any('K147' in n for n in names):
+        pins=[re.search(r'K147_(\w+)_OSC',n).group(1) for n in names if re.search(r'K147_(\w+)_OSC',n)]
+        if pins:return f"K_{'_'.join(sorted(pins))}_OSC"
+    for a,b,pat in [('_FH_','_SH_',r'_FH_'),('_SH_','_FH_',r'_SH_'),('_FL_','_SL_',r'_FL_'),('_SL_','_FL_',r'_SL_')]:
+        x=[n for n in names if a in n];y=[n for n in names if b in n]
+        if x and y and len(x)==1 and len(y)==1:
+            xb,yb=x[0].replace(a,'_'),y[0].replace(b,'_')
+            if xb==yb:return xb
+    f=[n for n in names if n.endswith('_F')];s=[n for n in names if n.endswith('_S')]
+    if f and s and len(f)==1 and len(s)==1:
+        fb,sb=re.sub(r'_F$','',f[0]),re.sub(r'_S$','',s[0])
+        if fb==sb:return fb if 'KELVIN'not in fb else fb+"_FS"
+    return names[0]
+
+single={}
+for val,info in sorted(by_cbit.items()):
+    nms,grp=info["names"],info["group"]
+    merged=merge(nms) if len(nms)>1 else nms[0]
+    single[merged]=(val,grp)
+
+# Build merged name → cbit, and orig→merged
+orig_to_merged={}
+for val,info in by_cbit.items():
+    merged=merge(info["names"]) if len(info["names"])>1 else info["names"][0]
+    for on in info["names"]:orig_to_merged[on]=merged
+merged_to_cbit={n:v for n,(v,_) in single.items()}
+
+# ===== BUS NETS =====
+BUS_NETS=set()
+HIGH_BUS=set();LOW_BUS=set()
+for n in nets:
+    for kw in ['FH_BUS','FL_BUS','SH_BUS','SL_BUS','FH_PC','FL_PC','SH_PC','SL_PC']:
+        if kw in n:BUS_NETS.add(n);break
+    if any(kw in n for kw in ['FH_BUS','SH_BUS','FH_PC','SH_PC']):HIGH_BUS.add(n)
+    if any(kw in n for kw in ['FL_BUS','SL_BUS','FL_PC','SL_PC']):LOW_BUS.add(n)
+
+def bus_domain(net):
+    """Return 'HIGH' if net is high-side bus, 'LOW' if low-side, else None."""
+    if net in HIGH_BUS:return 'HIGH'
+    if net in LOW_BUS:return 'LOW'
+    return None
+
+# ===== TYPE 2: BFS DUT→BUS (depth=4, SetOn-only paths) =====
+def trace_type2(base,md=4):
+    sn=port_sn.get(base)
+    if not sn or sn not in nets:return[]
+    found=[];visited=set();q=deque();q.append((sn,[],set(),None));visited.add((sn,frozenset()))
+    while q:
+        net,sr,ar,domain=q.popleft()
+        if len(ar)>md:continue
+        if net in BUS_NETS and sr:
+            # === FPVIe domain constraint ===
+            bd=bus_domain(net)
+            if domain is not None and bd is not None and bd!=domain:
+                continue  # skip cross-domain terminal (FH→SL, FL→SH)
+            # ================================
+            cbits=sorted(set(merged_to_cbit[r] for r in sr if r in merged_to_cbit))
+            if cbits:
+                ch='0' if 'FPVIe0' in net else '1'
+                side='H' if any(h in net for h in['FH','SH']) else 'L'
+                found.append((sr,cbits,side,ch))
+            continue
+        for inst,pin in nets.get(net,[]):
+            if not re.match(r'^K\d+_',inst):continue
+            rbase=orig_to_merged.get(re.sub(r'_S\d+(S\d+)?$','',inst),re.sub(r'_S\d+(S\d+)?$','',inst))
+            if rbase in ar:continue
+            if inst in SOURCE_SHORT:continue  # source-side Force↔Sense shorting, skip
+            rt=relay_type.get(inst,'?')
+            if pin in COIL.get(rt,set()):continue
+            for seton in[False,True]:
+                for tp,needs in rtrans(inst,pin,seton):
+                    if tp in COIL.get(rt,set()):continue
+                    for onet in ipn[inst].get(tp,[]):
+                        if onet==net:continue
+                        # === FPVIe domain constraint ===
+                        new_domain=domain
+                        if onet in BUS_NETS:
+                            bd=bus_domain(onet)
+                            if bd is not None:
+                                if domain is None:new_domain=bd
+                                elif bd!=domain:continue  # cross-domain hop
+                        # ================================
+                        na=ar|{rbase};ns=sr+([rbase]if needs else[])
+                        k=(onet,frozenset(na))
+                        if k not in visited:visited.add(k);q.append((onet,ns,na,new_domain))
+    return found
+
+# ===== TYPE 3: G6K multiplexer relays → SetOn-side pins =====
+# For G6K relays, check: pin7(C2,NC)→pin6(COM2). In SetOn: pin6(COM2)→pin5(O2)
+# Get the NC-side pin net and SetOn-side pin net
+def analyze_g6k_mux():
+    """Find G6K relays that multiplex between NC and SetOn DUT pins."""
+    mux = {}
+    for inst_name in relay_type:
+        if relay_type[inst_name]!='G6K':continue
+        rbase=orig_to_merged.get(re.sub(r'_S\d+(S\d+)?$','',inst_name),re.sub(r'_S\d+(S\d+)?$','',inst_name))
+
+        # Check B-pole: pin7(C2,NC)→pin6(COM2), pin6(COM2)→pin5(O2,SetOn)
+        nc_nets=set()
+        seton_nets=set()
+        com_nets=set()
+
+        # NC path: pin7→pin6
+        if 7 in ipn[inst_name] and 6 in ipn[inst_name]:
+            nc_nets.update(ipn[inst_name][7])
+            com_nets.update(ipn[inst_name][6])
+        # NC path: pin2→pin3
+        if 2 in ipn[inst_name] and 3 in ipn[inst_name]:
+            nc_nets.update(ipn[inst_name][2])
+            com_nets.update(ipn[inst_name][3])
+        # SetOn path: pin6→pin5 (from COM2)
+        if 5 in ipn[inst_name]:
+            seton_nets.update(ipn[inst_name][5])
+        # SetOn path: pin3→pin4 (from COM1)
+        if 4 in ipn[inst_name]:
+            seton_nets.update(ipn[inst_name][4])
+
+        # Find DUT pins on NC nets and SetOn nets
+        nc_pins=set()
+        for nn in nc_nets:
+            if nn in dut_raw:nc_pins.add(norm(nn))
+            for b,sn in port_sn.items():
+                if sn==nn:nc_pins.add(b)
+
+        seton_pins=set()
+        for sn_net in seton_nets:
+            if sn_net in dut_raw:seton_pins.add(norm(sn_net))
+            for b,sn in port_sn.items():
+                if sn==sn_net:seton_pins.add(b)
+
+        # Only report if the relay switches between different DUT pins
+        if nc_pins and seton_pins and nc_pins!=seton_pins:
+            # Determine source type from COM pins
+            src='ACM'  # default
+            for cn_net in com_nets:
+                if 'ACM200' in cn_net:src='ACM';break
+                if 'FOVIe' in cn_net:src='FOVI';break
+                if cn_net in BUS_NETS:src='FPVI';break
+
+            mux[rbase]={'nc_pins':nc_pins,'seton_pins':seton_pins,'src':src,'cbit':merged_to_cbit.get(rbase)}
+
+    return mux
+
+mux_relays = analyze_g6k_mux()
+
+# ===== BUILD PATH DEFINES =====
+path_defines={}  # {key: (cbits_list, comment)}
+
+# Type 2: FPVIe BUS → DUT pin
+for base in sorted(port_sn):
+    paths=trace_type2(base)
+    for sr,cbits,side,ch in paths:
+        if side=='H':key=f"K_FPVIH_TO_{base}"
+        elif side=='L':key=f"K_FPVIL_TO_{base}"
+        else:key=f"K_FPVI_TO_{base}"
+        rnames=[r for r in sr if r in merged_to_cbit]
+        if key not in path_defines or len(cbits)<len(path_defines[key][0]):
+            path_defines[key]=(cbits,' + '.join(rnames))
+
+# Type 3: G6K mux → SetOn side pins (only)
+for rbase,info in mux_relays.items():
+    for pin in info['seton_pins']:
+        src=info['src']
+        cbits=[info['cbit']]
+        # If it's an FPVI BUS relay, it's Type 2 not Type 3
+        if src=='FPVI':
+            # Check if it serves a BUS→pin path
+            if any(kw in rbase for kw in ['BUS','BUSH','BUSL']):continue
+        key=f"K_{pin}_{src}"
+        if key not in path_defines:path_defines[key]=(cbits,rbase)
+
+# Direct ACM/FOVI named relays (K49_ACM_SW2 etc.)
+for name,(val,group) in single.items():
+    m=re.match(r'K\d+_(ACM|FOVI)_(\w+)',name)
+    if m:
+        src,pin=m.group(1),m.group(2)
+        key=f"K_{pin}_{src}"
+        if key not in path_defines:path_defines[key]=([val],name)
+
+# KELVIN grouped
+for pfx in['KELVIN0','KELVIN1']:
+    cbs=sorted(set(v for n,(v,_)in single.items() if pfx in n))
+    if cbs:path_defines[f'K_{pfx}']=(cbs,f'KELVIN {pfx} group')
+
+# Cap paths
+for n,(v,g)in single.items():
+    if('Cap'in n or'CAP'in n)and n not in path_defines:path_defines[n]=([v],n)
+
+# Other grouped
+gain=sorted(set(v for n,(v,_)in single.items()if'GAIN'in n and'SEL'in n))
+if gain:path_defines['K_GAIN_SEL']=(gain,'GAIN1_SEL + GAIN2_SEL')
+svlp=sorted(set(v for n,(v,_)in single.items()if'COMP_SVLP'in n))
+if svlp:path_defines['K_COMP_SVLP']=(svlp,'COMP_SVLP1 + COMP_SVLP2')
+
+# ===== GENERATE relay.h =====
+mos,g6k,shared=[],[],[]
+for name,(val,group)in sorted(single.items(),key=lambda x:x[1][0]):
+    brd,bit=(34,val)if val<128 else(36,val-128)
+    line=f"#define {name:<40} {val:<6} // S{brd}_CBIT{bit}"
+    if group=="MOS":mos.append(line)
+    elif group=="G6K":g6k.append(line)
+    else:shared.append(line)
+
+out=[]
+out.append("// relay.h — DALI project")
+out.append(f"// Rule: only SetOn paths defined. NC default = no define.")
+out.append(f"// Single: {len(single)} | Path: {len(path_defines)}")
+out.append("")
+out.append("#ifndef _RELAY_H_\n#define _RELAY_H_\n")
+out.append("// === 1. Single-Point Defines ===")
+out.append("// 1.1 MOS SPST (TLP3412)");out.extend(mos);out.append("")
+out.append("// 1.2 G6K Dedicated");out.extend(g6k);out.append("")
+out.append("// 1.3 G6K Shared");out.extend(shared);out.append("")
+out.append("// === 2. Path Defines (SetOn only) ===")
+out.append("")
+
+fh,fl,ty3,kel,cap,oth=[],[],[],[],[],[]
+for key,(cbits,comment)in sorted(path_defines.items()):
+    cs=", ".join(str(c)for c in cbits)
+    line=f"#define {key:<40} {cs:<12} // {comment}"
+    if key.startswith('K_FPVIH'):fh.append(line)
+    elif key.startswith('K_FPVIL'):fl.append(line)
+    elif re.match(r'K_\w+_(ACM|FOVI|FXVI)',key):ty3.append(line)
+    elif 'KELVIN'in key:kel.append(line)
+    elif'Cap'in key or'CAP'in key:cap.append(line)
+    else:oth.append(line)
+
+out.append("// 2.1 Type 2: FPVIe High-side → DUT Pin");out.extend(fh);out.append("")
+out.append("// 2.2 Type 2: FPVIe Low-side → DUT Pin");out.extend(fl);out.append("")
+out.append("// 2.3 Type 3: ACM/FOVI Source → DUT Pin (SetOn only)");out.extend(ty3);out.append("")
+out.append("// 2.4 KELVIN");out.extend(kel);out.append("")
+out.append("// 2.5 Cap");out.extend(cap);out.append("")
+out.append("// 2.6 Other");out.extend(oth);out.append("")
+out.append("#endif")
+
+result="\n".join(out)
+with open(r"D:\Newtest\CLAUDE_PROCESS\Project\DALI\relay.h","w",encoding="utf-8")as f:f.write(result)
+
+print(f"=== relay.h: {len(result.split(chr(10)))} lines ===")
+print(f"Single: {len(single)} | Path: {len(path_defines)}")
+sv=[v for v,_ in single.values()]
+dps=set(v for v in sv if sv.count(v)>1)
+print(f"Dup CBIT: {'NONE'if not dps else dps}")
+bad=[(k,c)for k,(cbs,_)in path_defines.items()for c in cbs if c not in sv]
+print(f"Bad refs: {'NONE'if not bad else bad}")
+
+print("\n=== Type 2 (FPVIe) ===")
+for line in fh+fl:print(f"  {line}")
+
+print("\n=== Type 3 (ACM/FOVI SetOn only) ===")
+for line in ty3:print(f"  {line}")
+
+print("\n=== G6K Mux Analysis ===")
+for rbase,info in sorted(mux_relays.items()):
+    print(f"  {rbase}: NC→{info['nc_pins']}, SetOn→{info['seton_pins']}, src={info['src']}, cbit={info['cbit']}")

@@ -1,0 +1,206 @@
+==== VBAT_F (IR pin VBAT_F_S1) ====
+-- SCH-Connect-Map.txt rows ending at VBAT_F: 3
+     211| S1_FPVIe_FH0 -> K87(Relay-NC) -> K143(Relay-ON) -> K144(Relay-ON) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT_F   [K=[87, 143, 144, 7, 8]]
+     419| S1_FPVIe_FH1 -> K131(Relay-NC) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT_F   [K=[131, 7, 8]]
+     833| F: S3_FXVIe_PLUS_FH5 -> K8(Relay-NC) -> VBAT_F   [K=[8]]
+-- IR path PIN_VBAT_F_S1 from=S10_CH0_A|S1_FPVIe_FH0|S1_FPVIe_FH1|S3_FXVIe_PLUS_FH5|S8_QVM_CH0+
+   chain K130_KELVIN1_F_S1          ON
+   chain K131_KELVIN1_S1S2          NC
+   chain K132_KELVIN1_S1            NC
+   chain K136_QVMH_BUS0_S1          ON
+   chain K141_QTMU_BUSA_S1S2        NC
+   chain K143_DCM_BUS0_H_S1         ON
+   chain K144_DCM_BUS1_H_S1         ON
+   chain K7_BUSH_VBAT_S1            ON
+   chain K87_KELVIN0_S1S2           NC
+   chain K8_PD3_S1                  NC
+-- IR pin record sources=['S10_CH0_A', 'S1_FPVIe_FH0', 'S1_FPVIe_FH1', 'S3_FXVIe_PLUS_FH5', 'S8_QVM_CH0+']
+   requiredRelays=[7, 130, 136, 143, 144] nets=['NetCap1_VBAT_S1_1'] proofs=5 rejected=2
+-- K numbers only in IR chain (not on any map row ending at VBAT_F): [130, 132, 136, 141]
+-- K numbers only on map rows ending at VBAT_F (not in IR chain): []
+
+==== VBAT_S (IR pin VBAT_S_S1) ====
+-- SCH-Connect-Map.txt rows ending at VBAT_S: 3
+     212| S1_FPVIe_SH0 -> K88(Relay-NC) -> K137(Relay-ON) -> K136(Relay-ON) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT_S   [K=[88, 137, 136, 7, 8]]
+     420| S1_FPVIe_SH1 -> K132(Relay-NC) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT_S   [K=[132, 7, 8]]
+     834| S: S3_FXVIe_PLUS_SH5 -> K8(Relay-NC) -> VBAT_S   [K=[8]]
+-- IR path PIN_VBAT_S_S1 from=S10_CH0_A|S1_FPVIe_SH0|S1_FPVIe_SH1|S3_FXVIe_PLUS_SH5
+   chain K130_KELVIN1_F_S1          ON
+   chain K131_KELVIN1_S1S2          NC
+   chain K132_KELVIN1_S1            NC
+   chain K136_QVMH_BUS0_S1          ON
+   chain K137_QVMH_BUS1_S1          ON
+   chain K141_QTMU_BUSA_S1S2        NC
+   chain K7_BUSH_VBAT_S1            ON
+   chain K88_KELVIN0_S1             NC
+   chain K8_PD3_S1                  NC
+-- IR pin record sources=['S10_CH0_A', 'S1_FPVIe_SH0', 'S1_FPVIe_SH1', 'S3_FXVIe_PLUS_SH5']
+   requiredRelays=[7, 130, 136, 137] nets=['NetK8_PD3_S1_2'] proofs=4 rejected=3
+-- K numbers only in IR chain (not on any map row ending at VBAT_S): [130, 131, 141]
+-- K numbers only on map rows ending at VBAT_S (not in IR chain): []
+
+==== VAC1_F (IR pin VAC1_F_S1) ====
+-- SCH-Connect-Map.txt rows ending at VAC1_F: 4
+     190| S1_FPVIe_FH0 -> K87(Relay-ON) -> K90(Relay-ON) -> K82(Relay-NC) -> K70(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1_F   [K=[87, 90, 82, 70, 18, 19]]
+     191| S1_FPVIe_SH0 -> K88(Relay-ON) -> K91(Relay-ON) -> K82(Relay-NC) -> K70(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1_F   [K=[88, 91, 82, 70, 18, 19]]
+     193| S1_FPVIe_FL0 -> K89(Relay-NC) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1_F   [K=[89, 17, 18, 19]]
+     407| S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1_F   [K=[133, 146, 145, 17, 18, 19]]
+-- IR path PIN_VAC1_F_S1 from=S10_CH0_B|S1_FPVIe_FH0|S1_FPVIe_FL0|S1_FPVIe_FL1|S5_ACM200_FH0
+   chain K133_KELVIN1_S1S2          NC
+   chain K142_QTMU_BUSB_S1S2        ON
+   chain K145_DCM_BUS0_L_S1         ON
+   chain K146_DCM_BUS1_L_S1         ON
+   chain K17_BUSL_VAC_S1            ON
+   chain K18_VAC3_S1                NC
+   chain K19_VAC2_S1                NC
+   chain K70_VAC_F_S1               ON
+   chain K82_R_CS_S1S2              NC
+   chain K87_KELVIN0_S1S2           ON
+   chain K89_KELVIN0_S1S2           NC
+   chain K90_PC0_Force_S1           ON
+-- IR pin record sources=['S10_CH0_B', 'S1_FPVIe_FH0', 'S1_FPVIe_FL0', 'S1_FPVIe_FL1', 'S5_ACM200_FH0']
+   requiredRelays=[17, 70, 87, 90, 142, 145, 146] nets=['NetCap1_VAC1_S1_1'] proofs=5 rejected=2
+-- K numbers only in IR chain (not on any map row ending at VAC1_F): [142]
+-- K numbers only on map rows ending at VAC1_F (not in IR chain): [88, 91]
+
+==== VAC1_S (IR pin VAC1_S_S1) ====
+-- SCH-Connect-Map.txt rows ending at VAC1_S: 2
+     194| S1_FPVIe_SL0 -> K88(Relay-NC) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1_S   [K=[88, 17, 18, 19]]
+     408| S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1_S   [K=[132, 139, 138, 17, 18, 19]]
+-- IR path PIN_VAC1_S_S1 from=S1_FPVIe_SL0|S1_FPVIe_SL1|S5_ACM200_SH0|S8_QVM_CH0-
+   chain K132_KELVIN1_S1            NC
+   chain K138_QVML_BUS0_S1          ON
+   chain K139_QVML_BUS1_S1          ON
+   chain K17_BUSL_VAC_S1            ON
+   chain K18_VAC3_S1                NC
+   chain K19_VAC2_S1                NC
+   chain K88_KELVIN0_S1             NC
+-- IR pin record sources=['S1_FPVIe_SL0', 'S1_FPVIe_SL1', 'S5_ACM200_SH0', 'S8_QVM_CH0-']
+   requiredRelays=[17, 138, 139] nets=['NetK19_VAC2_S1_7'] proofs=4 rejected=1
+-- K numbers only in IR chain (not on any map row ending at VAC1_S): []
+-- K numbers only on map rows ending at VAC1_S (not in IR chain): []
+
+==== nQON_F (IR pin nQON_F_S1) ====
+-- SCH-Connect-Map.txt rows ending at nQON_F: 3
+     243| S1_FPVIe_FH0 -> K87(Relay-NC) -> K62(Relay-ON) -> K64(Relay-NC) -> nQON_F   [K=[87, 62, 64]]
+     445| S1_FPVIe_FH1 -> K131(Relay-NC) -> K141(Relay-NC) -> K66(Relay-ON) -> nQON_F   [K=[131, 141, 66]]
+     799| F: S5_ACM200_FH9 -> K64(Relay-NC) -> nQON_F   [K=[64]]
+-- IR path PIN_nQON_F_S1 from=S10_CH0_A|S1_FPVIe_FH0|S1_FPVIe_FH1|S24_P0|S5_ACM200_FH9|S8_QVM_CH0+
+   chain K130_KELVIN1_F_S1          ON
+   chain K131_KELVIN1_S1S2          NC
+   chain K132_KELVIN1_S1            NC
+   chain K136_QVMH_BUS0_S1          ON
+   chain K141_QTMU_BUSA_S1S2        NC
+   chain K62_BUS_FH_QON_S1          ON
+   chain K64_HG1_S1                 NC
+   chain K66_TMU_nQON_S1            ON
+   chain K87_KELVIN0_S1S2           NC
+-- IR pin record sources=['S10_CH0_A', 'S1_FPVIe_FH0', 'S1_FPVIe_FH1', 'S24_P0', 'S5_ACM200_FH9', 'S8_QVM_CH0+']
+   requiredRelays=[62, 66, 130, 136] nets=['NetK64_HG1_S1_7'] proofs=6 rejected=2
+-- K numbers only in IR chain (not on any map row ending at nQON_F): [130, 132, 136]
+-- K numbers only on map rows ending at nQON_F (not in IR chain): []
+
+==== nQON_S (IR pin nQON_S_S1) ====
+-- SCH-Connect-Map.txt rows ending at nQON_S: 3
+     244| S1_FPVIe_SH0 -> K88(Relay-NC) -> K62(Relay-ON) -> K64(Relay-NC) -> nQON_S   [K=[88, 62, 64]]
+     446| S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K62(Relay-ON) -> K64(Relay-NC) -> nQON_S   [K=[132, 136, 137, 62, 64]]
+     800| S: S5_ACM200_SH9 -> K64(Relay-NC) -> nQON_S   [K=[64]]
+-- IR path PIN_nQON_S_S1 from=S10_CH0_A|S1_FPVIe_SH0|S1_FPVIe_SH1|S5_ACM200_SH9
+   chain K132_KELVIN1_S1            NC
+   chain K136_QVMH_BUS0_S1          ON
+   chain K137_QVMH_BUS1_S1          ON
+   chain K141_QTMU_BUSA_S1S2        ON
+   chain K62_BUS_SH_QON_S1          ON
+   chain K64_HG1_S1                 NC
+   chain K86_KELVIN0_F_S1           ON
+   chain K87_KELVIN0_S1S2           NC
+   chain K88_KELVIN0_S1             NC
+-- IR pin record sources=['S10_CH0_A', 'S1_FPVIe_SH0', 'S1_FPVIe_SH1', 'S5_ACM200_SH9']
+   requiredRelays=[62, 86, 136, 137, 141] nets=['NetK64_HG1_S1_2'] proofs=4 rejected=3
+-- K numbers only in IR chain (not on any map row ending at nQON_S): [86, 87, 141]
+-- K numbers only on map rows ending at nQON_S (not in IR chain): []
+
+==== AGND_F (IR pin AGND_F_S1) ====
+-- SCH-Connect-Map.txt rows ending at AGND_F: 0
+-- IR path PIN_AGND_F_S1 from=S3_FXVIe_PLUS_FL(0-3)|S3_FXVIe_PLUS_FL(4-7)|S5_ACM200_FL(0-11)|S5_ACM200_FL(12-23)
+-- IR pin record sources=['S3_FXVIe_PLUS_FL(0-3)', 'S3_FXVIe_PLUS_FL(4-7)', 'S5_ACM200_FL(0-11)', 'S5_ACM200_FL(12-23)']
+   requiredRelays=[] nets=['AGND_F_S1'] proofs=4 rejected=0
+-- K numbers only in IR chain (not on any map row ending at AGND_F): []
+-- K numbers only on map rows ending at AGND_F (not in IR chain): []
+
+==== AGND_S (IR pin AGND_S_S1) ====
+-- SCH-Connect-Map.txt rows ending at AGND_S: 2
+      32| S1_FPVIe_SL0 -> K88(Relay-NC) -> K138(Relay-ON) -> K140(Relay-ON) -> AGND_S   [K=[88, 138, 140]]
+     258| S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K140(Relay-ON) -> AGND_S   [K=[132, 139, 140]]
+-- IR path PIN_AGND_S_S1 from=S10_CH0_B|S1_FPVIe_SL0|S1_FPVIe_SL1|S3_FXVIe_PLUS_SL(0-3)|S3_FXVIe_PLUS_SL(4-7)|S5_ACM200_SL(0-5)|S5_ACM200_SL(12-17)|S5_ACM200_SL(18-23)|S5_ACM200_SL(6-11)|S8_QVM_CH0-
+   chain K130_KELVIN1_S_S1          ON
+   chain K132_KELVIN1_S1            NC
+   chain K133_KELVIN1_S1S2          NC
+   chain K138_QVML_BUS0_S1          ON
+   chain K139_QVML_BUS1_S1          ON
+   chain K140_QVML_AGND_S1          ON
+   chain K142_QTMU_BUSB_S1S2        NC
+   chain K88_KELVIN0_S1             NC
+-- IR pin record sources=['S10_CH0_B', 'S1_FPVIe_SL0', 'S1_FPVIe_SL1', 'S3_FXVIe_PLUS_SL(0-3)', 'S3_FXVIe_PLUS_SL(4-7)', 'S5_ACM200_SL(0-5)', 'S5_ACM200_SL(12-17)', 'S5_ACM200_SL(18-23)', 'S5_ACM200_SL(6-11)', 'S8_QVM_CH0-']
+   requiredRelays=[130, 138, 139, 140] nets=['NetK92_AGND_F2S_S1_2'] proofs=10 rejected=2
+-- K numbers only in IR chain (not on any map row ending at AGND_S): [130, 133, 142]
+-- K numbers only on map rows ending at AGND_S (not in IR chain): []
+
+==== AMUX_F (IR pin AMUX_F_S1) ====
+-- SCH-Connect-Map.txt rows ending at AMUX_F: 5
+      34| S1_FPVIe_FH0 -> K87(Relay-NC) -> K154(Relay-ON) -> K155(Relay-NC) -> AMUX_F   [K=[87, 154, 155]]
+      37| S1_FPVIe_FL0 -> K89(Relay-NC) -> K17(Relay-ON) -> K18(Relay-ON) -> K20(Relay-ON) -> AMUX_F   [K=[89, 17, 18, 20]]
+     260| S1_FPVIe_FH1 -> K131(Relay-NC) -> K144(Relay-ON) -> K143(Relay-ON) -> K154(Relay-ON) -> K155(Relay-NC) -> AMUX_F   [K=[131, 144, 143, 154, 155]]
+     263| S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K17(Relay-ON) -> K18(Relay-ON) -> K20(Relay-ON) -> AMUX_F   [K=[133, 146, 145, 17, 18, 20]]
+     806| F: S3_FXVIe_PLUS_FH3 -> K155(Relay-NC) -> AMUX_F   [K=[155]]
+-- IR path PIN_AMUX_F_S1 from=S10_CH0_A|S10_CH0_B|S1_FPVIe_FH0|S1_FPVIe_FH1|S1_FPVIe_FL0|S1_FPVIe_FL1|S3_FXVIe_PLUS_FH3|S5_ACM200_FH0|S8_QVM_CH0+
+   chain K131_KELVIN1_S1S2          NC
+   chain K133_KELVIN1_S1S2          NC
+   chain K137_QVMH_BUS1_S1          ON
+   chain K141_QTMU_BUSA_S1S2        ON
+   chain K142_QTMU_BUSB_S1S2        ON
+   chain K143_DCM_BUS0_H_S1         ON
+   chain K144_DCM_BUS1_H_S1         ON
+   chain K145_DCM_BUS0_L_S1         ON
+   chain K146_DCM_BUS1_L_S1         ON
+   chain K154_BUSH_AMUX_S1          ON
+   chain K155_FOVI_PGND_S1          NC
+   chain K17_BUSL_VAC_S1            ON
+   chain K18_VAC3_S1                ON
+   chain K20_AMUX_S1                ON
+   chain K86_KELVIN0_F_S1           ON
+   chain K87_KELVIN0_S1S2           NC
+   chain K88_KELVIN0_S1             NC
+   chain K89_KELVIN0_S1S2           NC
+-- IR pin record sources=['S10_CH0_A', 'S10_CH0_B', 'S1_FPVIe_FH0', 'S1_FPVIe_FH1', 'S1_FPVIe_FL0', 'S1_FPVIe_FL1', 'S3_FXVIe_PLUS_FH3', 'S5_ACM200_FH0', 'S8_QVM_CH0+']
+   requiredRelays=[17, 18, 20, 86, 137, 141, 142, 143, 144, 145, 146, 154] nets=['NetK20_AMUX_S1_4'] proofs=9 rejected=3
+-- K numbers only in IR chain (not on any map row ending at AMUX_F): [86, 88, 137, 141, 142]
+-- K numbers only on map rows ending at AMUX_F (not in IR chain): []
+
+==== AMUX_S (IR pin AMUX_S_S1) ====
+-- SCH-Connect-Map.txt rows ending at AMUX_S: 5
+      35| S1_FPVIe_SH0 -> K88(Relay-NC) -> K154(Relay-ON) -> K155(Relay-NC) -> AMUX_S   [K=[88, 154, 155]]
+      38| S1_FPVIe_SL0 -> K88(Relay-NC) -> K17(Relay-ON) -> K18(Relay-ON) -> K20(Relay-ON) -> AMUX_S   [K=[88, 17, 18, 20]]
+     261| S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K154(Relay-ON) -> K155(Relay-NC) -> AMUX_S   [K=[132, 136, 137, 154, 155]]
+     264| S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K17(Relay-ON) -> K18(Relay-ON) -> K20(Relay-ON) -> AMUX_S   [K=[132, 139, 138, 17, 18, 20]]
+     807| S: S3_FXVIe_PLUS_SH3 -> K155(Relay-NC) -> AMUX_S   [K=[155]]
+-- IR path PIN_AMUX_S_S1 from=S10_CH0_A|S1_FPVIe_SH0|S1_FPVIe_SH1|S1_FPVIe_SL0|S1_FPVIe_SL1|S3_FXVIe_PLUS_SH3|S5_ACM200_SH0|S8_QVM_CH0-
+   chain K132_KELVIN1_S1            NC
+   chain K136_QVMH_BUS0_S1          ON
+   chain K137_QVMH_BUS1_S1          ON
+   chain K138_QVML_BUS0_S1          ON
+   chain K139_QVML_BUS1_S1          ON
+   chain K141_QTMU_BUSA_S1S2        ON
+   chain K154_BUSH_AMUX_S1          ON
+   chain K155_FOVI_PGND_S1          NC
+   chain K17_BUSL_VAC_S1            ON
+   chain K18_VAC3_S1                ON
+   chain K20_AMUX_S1                ON
+   chain K86_KELVIN0_F_S1           ON
+   chain K87_KELVIN0_S1S2           NC
+   chain K88_KELVIN0_S1             NC
+-- IR pin record sources=['S10_CH0_A', 'S1_FPVIe_SH0', 'S1_FPVIe_SH1', 'S1_FPVIe_SL0', 'S1_FPVIe_SL1', 'S3_FXVIe_PLUS_SH3', 'S5_ACM200_SH0', 'S8_QVM_CH0-']
+   requiredRelays=[17, 18, 20, 86, 136, 137, 138, 139, 141, 154] nets=['NetK20_AMUX_S1_5'] proofs=8 rejected=4
+-- K numbers only in IR chain (not on any map row ending at AMUX_S): [86, 87, 141]
+-- K numbers only on map rows ending at AMUX_S (not in IR chain): []
+

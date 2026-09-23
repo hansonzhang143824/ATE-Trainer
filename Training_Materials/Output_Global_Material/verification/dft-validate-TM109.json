@@ -1,0 +1,31 @@
+{
+  "tm": "TM109",
+  "role": "dft-expert",
+  "gate": "DFT_OUTPUT",
+  "tool": "validate_dft_outputs.py",
+  "mode": "OVERWRITTEN",
+  "exitCode": 0,
+  "status": "ready",
+  "missingOrStaleOutputs": [],
+  "canonicalInput": {
+    "file": "Input_GlobalMaterial/Dali_testmode.xlsx",
+    "sheet": "OVERVIEW",
+    "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+    "withinInputRoot": true
+  },
+  "artifacts": {
+    "dft-meta.json": {
+      "sha256": "ed9a0ebc3a2433f3f3316cce6a52a71bc934ac78f21aa4789eb02588a2ba8af2",
+      "digestProvenance": "refresh_dft_meta_from_source.py metaSha256"
+    },
+    "dft-conditions.yaml": {
+      "sha256": "14406f41f864f45783325af02f95b53f36256f52a352f1c47c0b8388d7f160a3",
+      "digestProvenance": "render_dft_conditions_yaml.py outputSha256"
+    },
+    "dft-semantic-review.json": {
+      "verdict": "PASS",
+      "binding": "readSources sha256 + producer metaSha256/outputSha256 copied verbatim; review file itself not hashed"
+    }
+  },
+  "semanticReviewFindings": "powerSequence matches Code1/Code2 vset commands; measurement V(DTEST0) matches Check column; registerFieldIntent en_tm[]/field[(DMUX_EN,1),(DMUX_SEL,21)] matches Code2; expectedValue 'rising vth 4.4V, hys 0.35V' from ExpectValue; non-blocking observation: source Notes wording mentions ramp vac1 3~5V while Code2 drives vac2 10->0 (preserved verbatim, ramp facts derive from Code2)"
+}

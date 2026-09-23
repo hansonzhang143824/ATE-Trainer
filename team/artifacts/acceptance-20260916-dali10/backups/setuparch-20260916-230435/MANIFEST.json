@@ -1,0 +1,105 @@
+{
+  "copiedAt": "2026-09-16 23:04:35",
+  "purpose": "Byte copies of this round's artifacts. Rationale: 'hash pins but does not preserve' - a hash cannot be re-verified once the file is rewritten, and size is not a proxy (this run produced 3,579 B three times with three different hashes). A copy makes the round independently checkable; the copies are READ-ONLY evidence and must never be edited.",
+  "owner": "setup-architect",
+  "files": {
+    "acceptance-report.json": {
+      "from": "team/artifacts/acceptance-20260916-dali10/acceptance-report.json",
+      "copy": "team/artifacts/acceptance-20260916-dali10/backups/setuparch-20260916-230435/acceptance-report.json",
+      "sizeBytes": 68163,
+      "sha256": "d548877338f5ccce77b30fbf8af9b2220f46e185d3574ea9f1333dd64a820e16",
+      "sourceMtime": "2026-09-16 23:03:14"
+    },
+    "setupArchitect-anchors.json": {
+      "from": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/setupArchitect-anchors.json",
+      "copy": "team/artifacts/acceptance-20260916-dali10/backups/setuparch-20260916-230435/setupArchitect-anchors.json",
+      "sizeBytes": 7324,
+      "sha256": "b78c2792bbf6f6b85b0d2cfbcda19f43bd83d1f377683d22a3bfba1225f075bc",
+      "sourceMtime": "2026-09-16 23:03:14"
+    },
+    "setupArchitect-freeze-snapshots.json": {
+      "from": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/setupArchitect-freeze-snapshots.json",
+      "copy": "team/artifacts/acceptance-20260916-dali10/backups/setuparch-20260916-230435/setupArchitect-freeze-snapshots.json",
+      "sizeBytes": 42605,
+      "sha256": "a8dafffe12ca3121b355e224c25e9a0c1852e3ca76dbdfaa53a701f4481d2452",
+      "sourceMtime": "2026-09-16 23:02:56"
+    },
+    "t34-carrier-pointer.json": {
+      "from": "team/artifacts/acceptance-20260916-dali10/t34-carrier-pointer.json",
+      "copy": "team/artifacts/acceptance-20260916-dali10/backups/setuparch-20260916-230435/t34-carrier-pointer.json",
+      "sizeBytes": 1517,
+      "sha256": "f2b6760b0958726b2370c04301fc5d41d2feb75e9eedba7c41fddaf25a1ae64d",
+      "sourceMtime": "2026-09-16 23:02:33"
+    },
+    "t34-CARRIER-PATH.md": {
+      "from": "team/artifacts/acceptance-20260916-dali10/t34-CARRIER-PATH.md",
+      "copy": "team/artifacts/acceptance-20260916-dali10/backups/setuparch-20260916-230435/t34-CARRIER-PATH.md",
+      "sizeBytes": 649,
+      "sha256": "b06dfe70a9366abce8ef2da13d9fbc85713b78e1e48fc2dc33e141086953a762",
+      "sourceMtime": "2026-09-16 22:43:13"
+    },
+    "PATH-MAP.md": {
+      "from": "team/artifacts/acceptance-20260916-dali10/PATH-MAP.md",
+      "copy": "team/artifacts/acceptance-20260916-dali10/backups/setuparch-20260916-230435/PATH-MAP.md",
+      "sizeBytes": 2388,
+      "sha256": "6c971cff065e09aeb043058159d86265253bcf13bbd21f61b5b675f3b91cf1ee",
+      "sourceMtime": "2026-09-16 22:59:08"
+    },
+    "setup-contract.json": {
+      "from": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+      "copy": "team/artifacts/acceptance-20260916-dali10/backups/setuparch-20260916-230435/setup-contract.json",
+      "sizeBytes": 377694,
+      "sha256": "18587b83307d47e0d6f287ee28e812b6c8f25781d2e449b293e45b50282b6d9f",
+      "sourceMtime": "2026-09-16 22:10:11"
+    },
+    "implementation-input-pin.json": {
+      "from": "team/artifacts/acceptance-20260916-dali10/implementation-input-pin.json",
+      "copy": "team/artifacts/acceptance-20260916-dali10/backups/setuparch-20260916-230435/implementation-input-pin.json",
+      "sizeBytes": 19735,
+      "sha256": "04dfbb1b6967b4fb94700a7347864ed9aea1e1f35ae959bfa90e474c6415a574",
+      "sourceMtime": "2026-09-16 22:23:08"
+    },
+    "t35-contract-reconciliation.md": {
+      "from": "team/artifacts/acceptance-20260916-dali10/t35-contract-reconciliation.md",
+      "copy": "team/artifacts/acceptance-20260916-dali10/backups/setuparch-20260916-230435/t35-contract-reconciliation.md",
+      "sizeBytes": 59700,
+      "sha256": "32ad955c7b7c322a1d4946f657ba114586adf66b86e21f931f181b0bc61128fc",
+      "sourceMtime": "2026-09-16 22:17:17"
+    },
+    "t41-tm601-bst-path-determination.md": {
+      "from": "team/artifacts/acceptance-20260916-dali10/t41-tm601-bst-path-determination.md",
+      "copy": "team/artifacts/acceptance-20260916-dali10/backups/setuparch-20260916-230435/t41-tm601-bst-path-determination.md",
+      "sizeBytes": 38351,
+      "sha256": "230c309000dfcc5674ed9762133ba4d59a5f35f8ff1c0282588a5f1f182ee16d",
+      "sourceMtime": "2026-09-16 22:17:17"
+    },
+    "implementation-payload-TM600-TM601.cpp": {
+      "from": "team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp",
+      "copy": "team/artifacts/acceptance-20260916-dali10/backups/setuparch-20260916-230435/implementation-payload-TM600-TM601.cpp",
+      "sizeBytes": 43806,
+      "sha256": "66abc088ae6bd5f9b9d7201673003fc0be2450fd6f1f222c6a4a902cbe4f0cc4",
+      "sourceMtime": "2026-09-16 21:09:24"
+    },
+    "test-plan.json": {
+      "from": "team/artifacts/acceptance-20260916-dali10/test-plan.json",
+      "copy": "team/artifacts/acceptance-20260916-dali10/backups/setuparch-20260916-230435/test-plan.json",
+      "sizeBytes": 185689,
+      "sha256": "707ce845c5459b41b528059eab7f26b1a8e597e34daf8df40929346942a8ee69",
+      "sourceMtime": "2026-09-16 21:54:50"
+    },
+    "build-report.json": {
+      "from": "team/artifacts/acceptance-20260916-dali10/build-report.json",
+      "copy": "team/artifacts/acceptance-20260916-dali10/backups/setuparch-20260916-230435/build-report.json",
+      "sizeBytes": 27268,
+      "sha256": "ea90bb0c34620ba6cfb4f5c5e33eccdaef6024815704cbb2eeb7d8ab7b7846f7",
+      "sourceMtime": "2026-09-16 22:50:36"
+    },
+    "t28-anchors.json": {
+      "from": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28-anchors.json",
+      "copy": "team/artifacts/acceptance-20260916-dali10/backups/setuparch-20260916-230435/t28-anchors.json",
+      "sizeBytes": 11941,
+      "sha256": "38ba37b268e328158cddca660ab1b514d4c0dfcef6e2cd5be3c6e1e296a52874",
+      "sourceMtime": "2026-09-16 22:58:53"
+    }
+  }
+}

@@ -1,0 +1,967 @@
+# -*- coding: utf-8 -*-
+"""
+gen_power_sequence.py — 上电/下电代码生成器（固定→脚本）
+
+架构原则: "推理→agent, 固定→脚本"。把 power-on/power-off 的固定模板规则
+(R-PON-01~08 / R-POFF-01~06 / R-FLT / R-RNG / R-SRC / R-ST) 落地为确定性发射器。
+agent 只提供输入边界 (pin→源表映射 / currentLimit / rampProfile), 脚本按规则生成。
+
+输入:  TestItemMeta JSON (--meta) + pin→object 映射 (--pin-map) + Pin_Channel_define.h
+输出: stdout 三段式 (###SECTION:...### 分隔, 主 Skill 按 section 拼装)
+      POWER_ON / [HIGH_CURRENT_INIT] / POWER_STATE / POWER_OFF
+
+用法:
+  python gen_power_sequence.py --meta meta.json --pin-map map.json
+  python gen_power_sequence.py --audit-rules
+  python gen_power_sequence.py --meta meta.json --pin-map map.json --verify AI.cpp --verify-func TM000_IQ_STANDBY
+
+规则覆盖: RULE_COVERAGE 映射 + --audit-rules 机器自检 (每个规则函数存在且调用链可达)。
+对拍: --verify 抽取基准 .cpp 的 Step2/Step5 Set 行与生成结果字段级比较。
+"""
+
+import argparse
+import io
+import json
+import os
+import re
+import sys
+
+import proj_config
+
+# =====================================================================
+# 常量表
+# =====================================================================
+
+# 量程表: {extern类型: {V|I: [(常量, table_max), ...]}} 升序
+# R-RNG: 量程≥2×设定值 且 力值≤90%满量程。table_max = 满量程/2 = 文档"设定值范围"列上限,
+#   取第一个 table_max ≥ value 即同时满足两条约束。
+#   (FOVIe 与 FXVIe_PLUS 同一硬件, 常量前缀以 extern 类型为准)
+RANGE_TABLES = {
+    'ACM200': {
+        'V': [('ACM200_3p6V', 1.8), ('ACM200_10V', 5.0), ('ACM200_40V', 20.0)],
+        'I': [('ACM200_1UA', 500e-9), ('ACM200_10UA', 5e-6), ('ACM200_100UA', 50e-6),
+              ('ACM200_1MA', 500e-6), ('ACM200_10MA', 5e-3), ('ACM200_100MA', 50e-3),
+              ('ACM200_200MA', 100e-3)],
+    },
+    'FXVIe_PLUS': {
+        'V': [('FXVIe_PLUS_1V', 0.5), ('FXVIe_PLUS_2V', 1.0), ('FXVIe_PLUS_5V', 2.5),
+              ('FXVIe_PLUS_10V', 5.0), ('FXVIe_PLUS_20V', 10.0), ('FXVIe_PLUS_40V', 20.0)],
+        'I': [('FXVIe_PLUS_10UA', 5e-6), ('FXVIe_PLUS_100UA', 50e-6), ('FXVIe_PLUS_1MA', 500e-6),
+              ('FXVIe_PLUS_10MA', 5e-3), ('FXVIe_PLUS_100MA', 50e-3), ('FXVIe_PLUS_1A', 500e-3)],
+    },
+    'FPVIe': {
+        'V': [('FPVIe_100MV', 50e-3), ('FPVIe_1V', 0.5), ('FPVIe_2V', 1.0), ('FPVIe_5V', 2.5),
+              ('FPVIe_10V', 5.0), ('FPVIe_20V', 10.0), ('FPVIe_40V', 20.0), ('FPVIe_100V', 50.0)],
+        'I': [('FPVIe_10UA', 5e-6), ('FPVIe_100UA', 50e-6), ('FPVIe_1MA', 500e-6),
+              ('FPVIe_10MA', 5e-3), ('FPVIe_100MA', 50e-3), ('FPVIe_1A', 500e-3),
+              ('FPVIe_2A', 1.0), ('FPVIe_10A', 5.0)],
+    },
+}
+
+# R-POFF-06: RELAY_OFF 统一量程 (FPVIe 用 10MA 非 10A, 已对拍确认)
+RELAY_OFF_RANGES = {
+    'ACM200': ('ACM200_10V', 'ACM200_10MA'),
+    'FXVIe_PLUS': ('FXVIe_PLUS_10V', 'FXVIe_PLUS_10MA'),
+    'FPVIe': ('FPVIe_1V', 'FPVIe_10MA'),
+}
+
+# 继电器常量: FPVI 无 'e' (FPVI_RELAY_ON), 量程前缀有 (FPVIe_1V)
+RELAY_CONST = {
+    ('ACM200', True): 'ACM200_RELAY_ON', ('ACM200', False): 'ACM200_RELAY_OFF',
+    ('FXVIe_PLUS', True): 'FXVIe_PLUS_RELAY_ON', ('FXVIe_PLUS', False): 'FXVIe_PLUS_RELAY_OFF',
+    ('FPVIe', True): 'FPVI_RELAY_ON', ('FPVIe', False): 'FPVI_RELAY_OFF',
+}
+
+TYPE_PREFIX = {'ACM200': 'ACM200_', 'FXVIe_PLUS': 'FXVIe_PLUS_', 'FPVIe': 'FPVIe_'}
+
+# 框架全局对象, 不在本仓库 extern (代码直接用 FPVI 等)
+BUILTIN_TYPES = {'FPVI': 'FPVIe', 'FPVI_GP': 'FPVIe', 'QVM_GP': 'QVMe', 'QTMU_GP': 'QTMUe'}
+
+# 电源源表类型族 (QVMe/QTMUe/DCM 非电源, 不参与上电)
+POWER_TYPES = ('ACM200', 'FXVIe_PLUS', 'FPVIe')
+
+# R-FLT: FPVI 等电位固定量程 (reference TM600 实锤 10A)
+FPVI_EQUIPOTENTIAL_RANGE = ('FPVIe_1V', 'FPVIe_10A')
+# R-PON-08: 大电流三段式 SetClamp 默认 (fpvie.md 规则 25,25; H4 修复 reference 用 50,50)
+FPVI_CLAMP = (25, 25)
+# R-PON-02: MV 无 FI 最小量程
+DEFAULT_FI0_RANGE = ('10V', '10UA')
+# R-ST: 延迟常量
+D_MS = 'delay_ms(1);'
+D_US = 'delay_us(200);'
+D_US_HIGH_CURRENT = 'delay_us(2000);'
+D_US_500 = 'delay_us(500);'           # R-PON-09: 大量程→测量量程切换稳定 500us
+# R-PON-09: 小电流量程判定 (测量电流<100uA 时选用的量程后缀)
+SMALL_IRANGE_SUFFIXES = ('1UA', '10UA', '100UA')
+# R-PON-09: PIN 类型 → 两段式上电大挡位 (用户规则 2026-08-10 修正)
+#   power PIN (VAC/ACDRV/VIN/PMID/VBUS/VBAT/VSYS/VCC/VDRV/BST/SW/CFH/CFL/LED等): 先 100MA 上电稳定
+#   ATEST 类模拟 PIN (VDM/NTC/AMON等): 直接设测量量程, 无两段式
+#   数字 PIN (GPx/KLV/SNSP/SNSN等): 先 10MA 再切测量量程
+POWER_PIN_TOKENS = ('VAC', 'ACDRV', 'VIN', 'PMID', 'VBUS', 'VBAT', 'VSYS', 'VCC', 'VDRV',
+                    'BST', 'SW', 'CFH', 'CFL', 'LED')
+ATEST_PIN_TOKENS = ('VDM', 'NTC', 'AMON', 'ATEST')
+DIGITAL_PIN_TOKENS = ('GP', 'KLV', 'SNSP', 'SNSN')
+DEFAULT_TWO_STAGE_RANGE = '100MA'     # 未识别 PIN 默认按 power 处理
+# 普通上电 FV 源默认合规电流量程 (A)
+DEFAULT_IRANGE_A = 0.05            # → select_range(I, 0.05) = 100MA
+# FI 源默认合规电压量程 (AI.cpp 全部 iset 用 10V)
+DEFAULT_VRANGE_FI = '10V'
+# R-PON-08 / R-POFF-01: 大电流阈值 (≥1A 触发三段式)
+HIGH_CURRENT_THRESHOLD = 1.0
+
+
+# =====================================================================
+# 规则覆盖表 (核心交付物: agent 每条铁律 → 脚本函数)
+# =====================================================================
+
+RULE_COVERAGE = {
+    'R-PON-01': ['mode_for_cmd'],                                  # vset→FV / iset→FI
+    'R-PON-02': ['apply_mv_no_fi'],                                # MV无FI→FI=0+最小量程
+    'R-PON-03': ['parse_floating_pairs', 'resolve_all_sources'],   # 浮动源识别(pin含2)
+    'R-PON-04': ['select_range'],                                  # 量程≥2×取最小档
+    'R-PON-05': ['select_range'],                                  # 力值≤量程90%
+    'R-PON-06': ['gen_simple_power_on'],                           # 普通上电+delay_ms(1)
+    'R-PON-07': ['gen_floating_ramp'],                             # 浮动三阶段台阶≤5V
+    'R-PON-08': ['gen_high_current_init'],                         # 大电流三段式
+    'R-PON-09': ['pin_category', 'gen_two_stage_power_on', 'gen_simple_power_on'],  # 小电流上电按 PIN 类型 (power→100MA两段式/digital→10MA两段式/atest→直接测量量程)
+    'R-POFF-01': ['classify_power_off'],                           # 下电类型判定
+    'R-POFF-02': ['gen_normal_power_off'],                         # 普通三步
+    'R-POFF-03': ['gen_floating_power_off'],                       # 浮动反转 upSequence
+    'R-POFF-04': ['gen_floating_power_off'],                       # FPVI 最后 RELAY_OFF
+    'R-POFF-05': ['gen_high_current_off'],                         # 大电流 FI=0→FV=0→OFF
+    'R-POFF-06': ['relay_off_ranges'],                             # RELAY_OFF 统一量程
+    'R-FLT': ['gen_floating_ramp', 'gen_floating_power_off'],      # 等电位/ΔV/每步≤5V
+    'R-RNG': ['select_range'],                                     # ≥2×、≤90%
+    'R-SRC': ['parse_extern_types', 'resolve_source_type'],        # extern 类型权威
+    'R-ST': ['gen_floating_ramp', 'gen_floating_power_off', 'gen_high_current_init'],  # 延迟
+}
+
+
+# =====================================================================
+# A. 输入层
+# =====================================================================
+
+def read_enc(path):
+    """DLP 透明加密回退: utf-8-sig → utf-8 → gbk → latin-1"""
+    with open(path, 'rb') as f:
+        raw = f.read()
+    for enc in ('utf-8-sig', 'utf-8', 'gbk', 'latin-1'):
+        try:
+            return raw.decode(enc)
+        except (UnicodeDecodeError, ValueError):
+            continue
+    return raw.decode('utf-8', errors='replace')
+
+
+def load_json(path):
+    with io.open(path, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+
+def load_pin_map(path):
+    pm = load_json(path)
+    if 'pinMap' not in pm:
+        raise SystemExit('ERROR: --pin-map 缺少 pinMap 字段')
+    return pm
+
+
+def load_pin_channel_define(path=None):
+    if path and os.path.exists(path):
+        return parse_extern_types(read_enc(path))
+    return {}
+
+
+# =====================================================================
+# B. 解析层
+# =====================================================================
+
+EXTERN_RE = re.compile(r'extern\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)\s*;')
+
+
+def parse_extern_types(src):
+    """Pin_Channel_define.h extern 解析 → {objectName: typeName}
+    'extern FXVIe_PLUS SW1_SW2_FXVI;' → {'SW1_SW2_FXVI': 'FXVIe_PLUS'}
+    R-SRC: 类型以外 extern 声明为权威, 不靠对象名后缀猜测。"""
+    return {m.group(2): m.group(1) for m in EXTERN_RE.finditer(src)}
+
+
+def resolve_source_type(entry, extern_map):
+    """解析单 pin 源表类型 (R-SRC)。
+    顺序: pin-map 显式 type > extern 表 > builtin 表; 未命中 → None"""
+    if not entry:
+        return None
+    if entry.get('type'):
+        return entry['type']
+    obj = entry.get('object', '')
+    if obj in extern_map:
+        return extern_map[obj]
+    return BUILTIN_TYPES.get(obj)
+
+
+def parse_floating_pairs(meta):
+    """校验 floatingPairs[] (R-PON-03)。返回 [(pair, pinA大写, pinB大写)]。"""
+    out = []
+    for p in meta.get('floatingPairs') or []:
+        a = (p.get('pinA') or '').upper()
+        b = (p.get('pinB') or '').upper()
+        if a and b:
+            out.append((p, a, b))
+    return out
+
+
+def _floating_pins(floating_pairs):
+    return {a for _p, a, _b in floating_pairs} | {b for _p, _a, b in floating_pairs}
+
+
+def resolve_all_sources(meta, pin_map, extern_map, errors):
+    """非浮动电源源表列表 (R-PON-03: 浮动 pin 跳过, 由 gen_floating_ramp 处理)。
+    Source: {pin, object, type, cmd, mode, value, time, currentLimit, vRange, iRange, relay}"""
+    floating = _floating_pins(parse_floating_pairs(meta))
+    pm_map = (pin_map or {}).get('pinMap') or {}
+    current_limit = (pin_map or {}).get('currentLimit') or {}
+    sources = []
+    for hw in meta.get('hardwareInit') or []:
+        if hw.get('ignore'):
+            continue
+        cmd = (hw.get('cmd') or '').lower()
+        if cmd not in ('vset', 'iset', 'mv'):
+            continue
+        pin = (hw.get('pin') or '').upper()
+        if not pin:
+            continue
+        if pin in floating or '2' in pin:
+            continue  # 浮动源
+        entry = pm_map.get(pin)
+        if entry is None:
+            errors.append('未解析源表: pin=%s (查 SCH-Connect-Map)' % pin)
+            continue
+        stype = resolve_source_type(entry, extern_map)
+        if stype is None or stype not in POWER_TYPES:
+            errors.append('未知源表对象: %s (pin=%s, 类型=%s)' % (entry.get('object'), pin, stype))
+            continue
+        value = float(hw.get('value') or 0.0)
+        limit = float(current_limit.get(pin, DEFAULT_IRANGE_A))
+        if cmd == 'iset':
+            i_range = select_range(stype, 'I', value)
+            v_range = select_range(stype, 'V', 0.0)
+        else:  # vset / mv
+            v_range = select_range(stype, 'V', value)
+            i_range = select_range(stype, 'I', limit)
+        sources.append({
+            'pin': pin, 'object': entry['object'], 'type': stype,
+            'cmd': cmd, 'mode': mode_for_cmd(cmd), 'value': value,
+            'time': hw.get('time'), 'currentLimit': limit,
+            'vRange': v_range, 'iRange': i_range,
+            'relay': relay_const(stype, True),
+        })
+    return sources
+
+
+# =====================================================================
+# C. 量程/模式层
+# =====================================================================
+
+def mode_for_cmd(cmd):
+    """R-PON-01: vset→FV / iset→FI / mv→FV(测量源)"""
+    return 'FI' if (cmd or '').lower() == 'iset' else 'FV'
+
+
+def select_range(stype, kind, value):
+    """R-RNG: 量程≥2×设定值 且 力值≤90%, 取最接近的最小档。
+    kind: 'V'|'I'; value: V 或 A。表升序取第一个 table_max ≥ value (R-PON-04)。
+    等号边界 value==table_max 取本档 (如 FI=50mA → 100MA)。"""
+    table = RANGE_TABLES[stype][kind]
+    for name, table_max in table:
+        if value <= table_max:
+            return name
+    raise SystemExit('ERROR: %s %s 值 %s 超最大量程' % (stype, kind, value))
+
+
+def relay_off_ranges(stype):
+    """R-POFF-06: RELAY_OFF 统一量程"""
+    return RELAY_OFF_RANGES[stype]
+
+
+def relay_const(stype, on_off):
+    """继电器常量 (FPVI 无 'e')"""
+    return RELAY_CONST[(stype, bool(on_off))]
+
+
+def high_current_target(meta):
+    """iset ≥1A 的目标电流 (A); 无则 None。"""
+    for hw in meta.get('hardwareInit') or []:
+        if (hw.get('cmd') or '').lower() == 'iset':
+            v = float(hw.get('value') or 0.0)
+            if v >= HIGH_CURRENT_THRESHOLD:
+                return v
+    for p in meta.get('floatingPairs') or []:
+        if (p.get('type') or '').lower() == 'iset':
+            v = float(p.get('value') or p.get('target') or 0.0)
+            if v >= HIGH_CURRENT_THRESHOLD:
+                return v
+    return None
+
+
+def classify_power_off(power_state, meta):
+    """R-POFF-01: 下电类型判定 (floating: 有vset浮动对 / high_current: iset≥1A / normal)"""
+    pairs = parse_floating_pairs(meta)
+    if any((p.get('type') or '') == 'vset' for p, _a, _b in pairs):
+        return 'floating'
+    if high_current_target(meta) is not None:
+        return 'high_current'
+    return 'normal'
+
+
+# =====================================================================
+# D. 上电生成层
+# =====================================================================
+
+def _fmt(value):
+    """数值格式化: 5.0→'5', 3.7→'3.7' (C 风格)"""
+    return '%g' % value
+
+
+def _set_line(source, mode, value, v_range, i_range, relay):
+    return '%s.Set(%s, %s, %s, %s, %s);' % (
+        source['object'], mode, _fmt(value), v_range, i_range, relay)
+
+
+def _note(source, value):
+    """DFT 指令注释: vset[vbat,3.7] → VBAT=3.7V"""
+    return '// %s[%s,%s] → %s=%sV %s' % (
+        source['cmd'], source['pin'].lower(), _fmt(value),
+        source['pin'], _fmt(value), source['mode'])
+
+
+def apply_mv_no_fi(source):
+    """R-PON-02: MV 无 FI → FI=0 + 最小量程 10UA"""
+    v_off = TYPE_PREFIX[source['type']] + DEFAULT_FI0_RANGE[0]
+    i_off = TYPE_PREFIX[source['type']] + DEFAULT_FI0_RANGE[1]
+    return '%s.Set(FI, 0, %s, %s, %s);' % (source['object'], v_off, i_off, source['relay'])
+
+
+def _is_small_irange(i_range):
+    """R-PON-09: 小电流量程判定 (测量电流<100uA → 1UA/10UA/100UA)"""
+    return i_range.rstrip().endswith(SMALL_IRANGE_SUFFIXES)
+
+
+def pin_category(pin):
+    """R-PON-09: PIN 类型判定 → 'power' | 'atest' | 'digital'。
+    power PIN: VAC/ACDRV/VIN/PMID/VBUS/VBAT/VSYS/VCC/VDRV/BST/SW/CFH/CFL/LED 等
+    ATEST 类模拟 PIN: VDM/NTC/AMON 等 — 直接设测量量程, 无两段式
+    数字 PIN: GPx/KLV/SNSP/SNSN 等 — 先 10MA 再切测量量程
+    未识别 → 默认 'power' (保守: 两段式上电无害, 符合 power 归类)。"""
+    p = (pin or '').upper()
+    for tok in ATEST_PIN_TOKENS:
+        if p.startswith(tok):
+            return 'atest'
+    for tok in DIGITAL_PIN_TOKENS:
+        if p.startswith(tok):
+            return 'digital'
+    for tok in POWER_PIN_TOKENS:
+        if p.startswith(tok):
+            return 'power'
+    return 'power'
+
+
+def gen_two_stage_power_on(s, big_range_name):
+    """R-PON-09: 两段式上电 — 先大量程上电稳定 500us, 再切测量量程。
+    原理: 小量程测量电流稳定需要时间, 大量程上电加速电流稳定 (用户规则 2026-08-10)。
+    大挡按 PIN 类型: power→100MA, digital→10MA (用户修正 2026-08-10)。
+    输出: Set(FV,v,大挡) → delay_us(500) → Set(FV,v,测量量程)"""
+    big_range = TYPE_PREFIX[s['type']] + big_range_name
+    return [
+        '    // R-PON-09: 电流<100uA → %s 大量程上电稳定500us 后切测量量程 %s' % (big_range_name, s['iRange']),
+        '    ' + _set_line(s, 'FV', s['value'], s['vRange'], big_range, s['relay']),
+        '    ' + D_US_500,
+        '    ' + _set_line(s, 'FV', s['value'], s['vRange'], s['iRange'], s['relay']),
+    ]
+
+
+def gen_simple_power_on(sources, meta):
+    """R-PON-06: 普通上电 — 每条 Set(FV,value,vRange,iRange,RELAY_ON) + 组后 delay_ms(1)。
+    R-PON-02: mvNoFipins 里的 FV 源补 FI=0。
+    R-PON-09: 小电流量程 FV 上电按 PIN 类型处理:
+      power PIN → 两段式 (100MA→500us→测量量程); digital PIN → 两段式 (10MA→500us→测量量程);
+      ATEST 类模拟 PIN (VDM/NTC/AMON) → 直接设测量量程 (无两段式)。"""
+    lines = []
+    mv_no_fi = {p.upper() for p in (meta.get('mvNoFipins') or [])}
+    for s in sources:
+        lines.append('    ' + _note(s, s['value']))
+        cat = pin_category(s['pin'])
+        if s['mode'] == 'FV' and s['pin'] not in mv_no_fi and _is_small_irange(s['iRange']):
+            if cat == 'atest':
+                # ATEST 类模拟 PIN: 直接设测量量程, 无两段式
+                lines.append('    ' + _set_line(s, s['mode'], s['value'], s['vRange'], s['iRange'], s['relay']))
+            else:
+                big = '10MA' if cat == 'digital' else DEFAULT_TWO_STAGE_RANGE
+                lines.extend(gen_two_stage_power_on(s, big))
+        else:
+            lines.append('    ' + _set_line(s, s['mode'], s['value'], s['vRange'], s['iRange'], s['relay']))
+        if s['pin'] in mv_no_fi and s['mode'] == 'FV':
+            lines.append('    ' + apply_mv_no_fi(s))
+    if lines:
+        lines.append('    ' + D_MS)
+    return lines
+
+
+def build_up_seq_simple(sources):
+    return [{'source': s['object'], 'mode': s['mode'], 'value': s['value'],
+             'note': '%s[%s]' % (s['cmd'], s['pin'].lower()), 'delay': '1ms'} for s in sources]
+
+
+def compute_ramp_steps(ramp_profile, step_v=5.0, lead_v=5.0):
+    """TM600 权威台阶模式: 主pin领先companion约lead_v同步升, 每步step_v (R-PON-07)。
+    ramp_profile: [{'pin','targetV'}] 主pin在前。返回 [(pin→value dict), ...] 含初始全0。
+    TM600 验证: BST(20)/PMID(15) → [0,0],[5,0],[10,5],[15,10],[20,15]"""
+    if not ramp_profile:
+        return []
+    leader = ramp_profile[0]
+    followers = ramp_profile[1:]
+    steps = []
+    lv = 0.0
+    fvs = {f['pin']: 0.0 for f in followers}
+    steps.append(dict({leader['pin']: 0.0}, **fvs))
+    while lv < leader['targetV']:
+        lv = min(lv + step_v, leader['targetV'])
+        for f in followers:
+            want = max(0.0, lv - lead_v)
+            new = min(want, f['targetV'])
+            if new > fvs[f['pin']]:
+                fvs[f['pin']] = new
+        steps.append(dict({leader['pin']: lv}, **fvs))
+    return steps
+
+
+def gen_floating_ramp(floating_pairs, ramp_profile, sources_by_pin, meta):
+    """R-PON-07 + R-FLT: 浮动上电三阶段
+    1) FPVI 等电位 FV=0 (FPVIe_1V/FPVIe_10A) — 强制 PinA=PinB 基础
+    2) 非浮动源直接上电 (delay_us 200)
+    3) 台阶式 ramp (每步≤5V, delay_us(200), 主pin领先companion≈5V)
+    返回 (lines, up_seq)"""
+    lines = []
+    up_seq = []
+    fpvi = {'pin': 'FPVI', 'object': 'FPVI', 'type': 'FPVIe', 'cmd': 'vset', 'mode': 'FV',
+            'value': 0.0, 'time': None, 'currentLimit': 0.0,
+            'vRange': FPVI_EQUIPOTENTIAL_RANGE[0], 'iRange': FPVI_EQUIPOTENTIAL_RANGE[1],
+            'relay': relay_const('FPVIe', True)}
+
+    # 阶段1: FPVI 等电位
+    note = floating_pairs[0][0].get('fullNotation') or '浮动'
+    lines.append('    // FPVI初始化: FV=0 等电位 (%s 大电流预备)' % note)
+    lines.append('    ' + _set_line(fpvi, 'FV', 0.0, fpvi['vRange'], fpvi['iRange'], fpvi['relay']))
+    up_seq.append({'source': 'FPVI', 'mode': 'FV', 'value': 0.0, 'note': 'FPVI等电位', 'delay': '200us'})
+    lines.append('    ' + D_US)
+
+    # 阶段2: 非浮动源直接上电 + 参考端(pinB)固定 0V
+    floating = _floating_pins(floating_pairs)
+    normal_sources = [s for s in sources_by_pin.values() if s['pin'] not in floating]
+    ramp_pins = {f['pin'] for f in ramp_profile}
+    if normal_sources:
+        lines.append('    // 非浮动源直接上电 (无ramp需求)')
+        for s in normal_sources:
+            lines.append('    ' + _note(s, s['value']))
+            lines.append('    ' + _set_line(s, s['mode'], s['value'], s['vRange'], s['iRange'], s['relay']))
+            up_seq.append({'source': s['object'], 'mode': s['mode'], 'value': s['value'],
+                           'note': '%s[%s]' % (s['cmd'], s['pin'].lower()), 'delay': '200us'})
+        lines.append('    ' + D_US)
+    # 参考端 pinB 固定 0V (reference TM600: SW_ACM.Set(FV,0), ramp 期间 SW 电位确定)
+    ref_pins = [b for _p, _a, b in floating_pairs]
+    for pin in dict.fromkeys(ref_pins):
+        s = sources_by_pin.get(pin)
+        if s is not None and pin not in ramp_pins:
+            lines.append('    // %s 参考端固定 0V' % pin)
+            lines.append('    ' + _set_line(s, 'FV', 0.0, s['vRange'], s['iRange'], s['relay']))
+            up_seq.append({'source': s['object'], 'mode': 'FV', 'value': 0.0,
+                           'note': '%s参考端' % pin, 'delay': '200us'})
+            lines.append('    ' + D_US)
+
+    # 阶段3: 台阶 ramp (vRange 按每步 value 现算; 值不变则跳过, 与 reference 一致)
+    if ramp_profile:
+        steps = compute_ramp_steps(ramp_profile)
+        lines.append('    // %s 台阶式ramp: 主pin领先companion约5V (每步≤5V)' %
+                     ','.join(steps[0].keys()))
+        prev = {}
+        for idx, step in enumerate(steps):
+            for pin, val in step.items():
+                s = sources_by_pin.get(pin)
+                if s is None:
+                    continue
+                if prev.get(pin) == val:
+                    continue
+                prev[pin] = val
+                v_range = select_range(s['type'], 'V', val)
+                lines.append('    ' + _set_line(s, 'FV', val, v_range, s['iRange'], s['relay']))
+                up_seq.append({'source': s['object'], 'mode': 'FV', 'value': val,
+                               'note': '台阶%d' % idx, 'delay': '200us'})
+            lines.append('    ' + D_US)
+    return lines, up_seq
+
+
+def gen_high_current_init(target):
+    """R-PON-08: 大电流三段式 (Step4 measure 前) — FV=0→FI=0→Clamp→FI=target
+    输出到 ###SECTION:HIGH_CURRENT_INIT###, measure-agent 接续 MeasureVI。"""
+    v = 'FPVIe_1V'
+    i = select_range('FPVIe', 'I', target)
+    relay = relay_const('FPVIe', True)
+    return [
+        '    // FPVI大电流三段式: FV=0 → FI=0 → SetClamp → FI=target (R-PON-08)',
+        '    FPVI.Set(FV, 0, %s, %s, %s);' % (v, i, relay),
+        '    FPVI.Set(FI, 0, %s, %s, %s);' % (v, i, relay),
+        '    FPVI.SetClamp(%d, %d);' % FPVI_CLAMP,
+        '    FPVI.Set(FI, %s, %s, %s, %s);' % (_fmt(target), v, i, relay),
+        '    ' + D_US_HIGH_CURRENT,
+        '    // → measure-agent 接续: FPVI.MeasureVI(...) + FPVI.Set(FI,0,...)',
+    ]
+
+
+# =====================================================================
+# E. 下电生成层
+# =====================================================================
+
+def gen_normal_power_off(sources):
+    """R-POFF-02: 普通三步 — 全部归零(RELAY_ON保量程) → delay_ms(1) → 统一量程 RELAY_OFF"""
+    if not sources:
+        return []
+    lines = ['    // 步骤1: 所有源归零 (RELAY_ON 保持量程)']
+    for s in sources:
+        lines.append('    ' + _set_line(s, s['mode'], 0.0, s['vRange'], s['iRange'], s['relay']))
+    lines.append('    ' + D_MS)
+    lines.append('    // 步骤2: RELAY_OFF (统一量程)')
+    for s in sources:
+        v, i = relay_off_ranges(s['type'])
+        lines.append('    ' + _set_line(s, 'FV', 0.0, v, i, relay_const(s['type'], False)))
+    return lines
+
+
+def gen_floating_power_off(sources, floating_pairs, ramp_profile, sources_by_pin):
+    """R-POFF-03/04: 浮动下电 — 反转台阶(主pin先降) → 全归零 → delay_ms(1) →
+    RELAY_OFF 统一量程 → FPVI 永远最后 RELAY_OFF"""
+    lines = []
+    fpvi = {'pin': 'FPVI', 'object': 'FPVI', 'type': 'FPVIe', 'cmd': 'vset', 'mode': 'FV',
+            'value': 0.0, 'time': None, 'currentLimit': 0.0,
+            'vRange': 'FPVIe_1V', 'iRange': 'FPVIe_10MA', 'relay': relay_const('FPVIe', True)}
+
+    floating = _floating_pins(floating_pairs)
+    if ramp_profile:
+        steps = compute_ramp_steps(ramp_profile)
+        desc = list(reversed(steps[1:-1])) if len(steps) > 2 else []
+        lines.append('    // 台阶式下电: 主pin领先下降 (每步≤5V)')
+        prev = {}
+        for step in desc:
+            for pin, val in step.items():
+                s = sources_by_pin.get(pin)
+                if s is None or val == 0.0:
+                    continue
+                if prev.get(pin) == val:
+                    continue
+                prev[pin] = val
+                v_range = select_range(s['type'], 'V', val)
+                lines.append('    ' + _set_line(s, 'FV', val, v_range, s['iRange'], s['relay']))
+            lines.append('    ' + D_US)
+        lines.append('    // 台阶归零')
+        for pin in steps[0]:
+            s = sources_by_pin.get(pin)
+            if s is not None:
+                v_range = select_range(s['type'], 'V', 0.0)
+                lines.append('    ' + _set_line(s, 'FV', 0.0, v_range, s['iRange'], s['relay']))
+        lines.append('    ' + D_US)
+
+    # 非浮动源归零 + 参考端(pinB)归零
+    ramp_pins = {f['pin'] for f in ramp_profile}
+    for s in sources:
+        if s['pin'] not in floating:
+            lines.append('    ' + _set_line(s, s['mode'], 0.0, s['vRange'], s['iRange'], s['relay']))
+    for pin in dict.fromkeys(b for _p, _a, b in floating_pairs):
+        s = sources_by_pin.get(pin)
+        if s is not None and pin not in ramp_pins:
+            lines.append('    ' + _set_line(s, 'FV', 0.0, s['vRange'], s['iRange'], s['relay']))
+    lines.append('    ' + D_MS)
+
+    # RELAY_OFF 统一量程 (FPVI 最后, R-POFF-04)
+    lines.append('    // RELAY_OFF (统一量程) — FPVI最后断开')
+    all_sources = {s['pin']: s for s in sources}
+    all_sources.update(sources_by_pin)   # 含浮动源 (BTST/PMID/SW 等)
+    for s in all_sources.values():
+        v, i = relay_off_ranges(s['type'])
+        lines.append('    ' + _set_line(s, 'FV', 0.0, v, i, relay_const(s['type'], False)))
+    v, i = relay_off_ranges('FPVIe')
+    lines.append('    ' + _set_line(fpvi, 'FV', 0.0, v, i, relay_const('FPVIe', False)))
+    return lines
+
+
+def gen_high_current_off(target):
+    """R-POFF-05: 大电流下电 — FI=0 → FV=0 → RELAY_OFF"""
+    i = select_range('FPVIe', 'I', target)
+    return [
+        '    // FPVI大电流下电: FI=0 → FV=0 → RELAY_OFF (R-POFF-05)',
+        '    FPVI.Set(FI, 0, FPVIe_1V, %s, %s);' % (i, relay_const('FPVIe', True)),
+        '    FPVI.Set(FV, 0, FPVIe_1V, %s, %s);' % (i, relay_const('FPVIe', True)),
+        '    FPVI.Set(FV, 0, FPVIe_1V, FPVIe_10MA, %s);' % relay_const('FPVIe', False),
+    ]
+
+
+# =====================================================================
+# F. PowerState / 拼装层
+# =====================================================================
+
+def build_power_state(sources, floating_pairs, up_seq, meta):
+    """PowerState JSON 4 字段: sources[] / floatingPairs[] / upSequence[] / finalVoltages{}"""
+    final = {s['pin']: s['value'] for s in sources}
+    for prof in meta.get('rampProfile') or []:
+        final[prof['pin'].upper()] = float(prof['targetV'])
+    return {
+        'sources': [{'name': s['object'], 'mode': s['mode'], 'finalValue': s['value'],
+                     'vRange': s['vRange'], 'iRange': s['iRange']} for s in sources],
+        'floatingPairs': [{'type': p.get('type'), 'pinA': p.get('pinA'), 'pinB': p.get('pinB'),
+                           'deltaV': p.get('deltaV'), 'fullNotation': p.get('fullNotation')}
+                          for p, _a, _b in floating_pairs],
+        'upSequence': up_seq,
+        'finalVoltages': final,
+    }
+
+
+def generate_sections(meta, pin_map, extern_map):
+    """主生成。返回 (sections dict, state dict, errors, warns)。
+    sections: {'POWER_ON': [...], 'HIGH_CURRENT_INIT': [...]|None, 'POWER_OFF': [...]}"""
+    errors, warns = [], []
+    floating_pairs = parse_floating_pairs(meta)
+    sources = resolve_all_sources(meta, pin_map, extern_map, errors)
+    ramp_profile = [{'pin': r['pin'].upper(), 'targetV': float(r['targetV'])}
+                    for r in (meta.get('rampProfile') or [])]
+
+    # 浮动 pin (pinA 台阶 + pinB 参考端) 的 Source (台阶/参考端需要)
+    sources_by_pin = {s['pin']: s for s in sources}
+    pm_map = (pin_map or {}).get('pinMap') or {}
+    for _p, a, b in floating_pairs:
+        for pin in (a, b):
+            if pin not in sources_by_pin and pin in pm_map:
+                entry = pm_map[pin]
+                stype = resolve_source_type(entry, extern_map)
+                if stype and stype in POWER_TYPES:
+                    sources_by_pin[pin] = {'pin': pin, 'object': entry['object'], 'type': stype,
+                                           'cmd': 'vset', 'mode': 'FV', 'value': 0.0, 'time': None,
+                                           'currentLimit': 0.0, 'vRange': select_range(stype, 'V', 0.0),
+                                           'iRange': select_range(stype, 'I', DEFAULT_IRANGE_A),
+                                           'relay': relay_const(stype, True)}
+
+    # 上电
+    if floating_pairs:
+        on_lines, up_seq = gen_floating_ramp(floating_pairs, ramp_profile, sources_by_pin, meta)
+    else:
+        on_lines = gen_simple_power_on(sources, meta)
+        up_seq = build_up_seq_simple(sources)
+
+    # 大电流初始化 (Step4 measure 前)
+    hc_target = high_current_target(meta)
+    hc_lines = gen_high_current_init(hc_target) if hc_target is not None else None
+
+    # PowerState
+    state = build_power_state(sources, floating_pairs, up_seq, meta)
+
+    # 下电
+    poff_type = classify_power_off(state, meta)
+    if poff_type == 'floating':
+        off_lines = gen_floating_power_off(sources, floating_pairs, ramp_profile, sources_by_pin)
+    elif poff_type == 'high_current':
+        off_lines = gen_high_current_off(hc_target)
+    else:
+        off_lines = gen_normal_power_off(sources)
+
+    sections = {'POWER_ON': on_lines, 'HIGH_CURRENT_INIT': hc_lines, 'POWER_OFF': off_lines}
+    return sections, state, errors, warns
+
+
+def emit_sections(sections, state, mode, no_state):
+    if mode in ('both', 'power-on'):
+        print('###SECTION:POWER_ON###')
+        print('\n'.join(sections['POWER_ON']))
+        print()
+        if sections['HIGH_CURRENT_INIT']:
+            print('###SECTION:HIGH_CURRENT_INIT###')
+            print('\n'.join(sections['HIGH_CURRENT_INIT']))
+            print()
+    if mode in ('both', 'power-on', 'power-off') and not no_state:
+        print('###SECTION:POWER_STATE###')
+        print(json.dumps(state, ensure_ascii=False, indent=2))
+        print()
+    if mode in ('both', 'power-off'):
+        print('###SECTION:POWER_OFF###')
+        print('\n'.join(sections['POWER_OFF']))
+
+
+# =====================================================================
+# G. verify 对拍层
+# =====================================================================
+
+SET_RE = re.compile(r'(\w+)\.Set\((FV|FI),\s*([^,]+),\s*(\w+),\s*(\w+),\s*(\w+)\)\s*;')
+
+
+def fn_blocks(src):
+    blocks = []
+    for m in re.finditer(r'DUT_API int (TM\d+_\w+)\(short funcindex', src):
+        start = m.start()
+        end = src.find('DUT_API int TM', start + 1)
+        if end == -1:
+            end = len(src)
+        blocks.append((m.group(1), src[start:end]))
+    return blocks
+
+
+def split_by_step(block):
+    """按 '// ====== Step N:' 注释切段 → {step_num: text}"""
+    steps = {}
+    markers = list(re.finditer(r'//\s*=+\s*Step (\d+):', block))
+    for i, m in enumerate(markers):
+        nxt = markers[i + 1].start() if i + 1 < len(markers) else len(block)
+        steps[int(m.group(1))] = block[m.end():nxt]
+    return steps
+
+
+def extract_set_lines(text):
+    return [{'object': m.group(1), 'mode': m.group(2), 'value': float(m.group(3)),
+             'vRange': m.group(4), 'iRange': m.group(5), 'relay': m.group(6)}
+            for m in SET_RE.finditer(text)]
+
+
+def norm_range(r):
+    """量程归一化: 去前缀比档位 (FOVIe_10V=FXVIe_PLUS_10V=ACM200_10V → '10V')"""
+    return re.sub(r'^(ACM200|FXVIe_PLUS|FOVIe|FPVIe)_', '', r)
+
+
+def type_from_range(r):
+    """量程常量前缀 → extern 类型族 (FOVIe=FXVIe_PLUS; 处理 FXVIe_PLUS 双词)"""
+    if r.startswith('FXVIe_PLUS'):
+        return 'FXVIe_PLUS'
+    prefix = r.split('_')[0]
+    return 'FXVIe_PLUS' if prefix == 'FOVIe' else prefix
+
+
+def range_table_max(stype, kind, range_name):
+    """档位名 → table_max (满量程/2), 用于判手写档是否合规"""
+    bare = norm_range(range_name)
+    for name, tmax in RANGE_TABLES[stype][kind]:
+        if norm_range(name) == bare:
+            return tmax
+    return None
+
+
+def compare_sets(gen_lines, ref_lines):
+    """对拍: 生成 Set 行 vs 基准 Set 行 (按 object 配对)。
+    返回 (errors, warns)。强制字段不一致/违反规则→ERROR, 合规量程差异→WARN。"""
+    errors, warns = [], []
+    gen = extract_set_lines('\n'.join(gen_lines))
+    ref = extract_set_lines(ref_lines)
+
+    # 按 object 分组; 组内用 (mode,value,relay_is_on) 未用行配对, 优先 relay 同类
+    ref_by = {}
+    for i, r in enumerate(ref):
+        ref_by.setdefault(r['object'], []).append(i)
+    used = set()
+    for g in gen:
+        obj = g['object']
+        idxs = ref_by.get(obj, [])
+        if not idxs:
+            warns.append('%s: 生成有 Set(%s,%s) 但基准无 (脚本新增需确认)' % (obj, g['mode'], g['value']))
+            continue
+        cands = [i for i in idxs if i not in used and ref[i]['mode'] == g['mode']
+                 and abs(ref[i]['value'] - g['value']) < 1e-9]
+        if not cands:
+            warns.append('%s: 生成 Set(%s,%s) 基准无匹配值 (需确认)' % (obj, g['mode'], g['value']))
+            continue
+        same = [i for i in cands if ref[i]['relay'].endswith('RELAY_ON') == g['relay'].endswith('RELAY_ON')]
+        pick = (same or cands)[0]
+        used.add(pick)
+        best = ref[pick]
+        if best['relay'].endswith('RELAY_ON') != g['relay'].endswith('RELAY_ON'):
+            errors.append('%s: 继电器 ON/OFF 不一致 (生成 %s / 基准 %s)' % (obj, g['relay'], best['relay']))
+        # 强制量程: FV 的 vRange / FI 的 iRange
+        fg = g['vRange'] if g['mode'] == 'FV' else g['iRange']
+        fr = best['vRange'] if best['mode'] == 'FV' else best['iRange']
+        if norm_range(fg) != norm_range(fr):
+            kind = 'V' if g['mode'] == 'FV' else 'I'
+            stype = type_from_range(fg)
+            ref_tmax = range_table_max(stype, kind, fr) if stype in RANGE_TABLES else None
+            if ref_tmax is not None and g['value'] <= ref_tmax:
+                # 手写档满足 R-RNG (value ≤ table_max) 但偏大 → 松弛, WARN
+                warns.append('%s: 强制量程手写偏大 (生成 %s / 基准 %s, 基准合规但非最接近档)' % (obj, fg, fr))
+            else:
+                errors.append('%s: 强制量程不一致 (生成 %s / 基准 %s, 基准可能违反 R-RNG)' % (obj, fg, fr))
+        # 合规量程: FV 的 iRange / FI 的 vRange → WARN
+        cg = g['iRange'] if g['mode'] == 'FV' else g['vRange']
+        cr = best['iRange'] if best['mode'] == 'FV' else best['vRange']
+        if norm_range(cg) != norm_range(cr):
+            warns.append('%s: 合规量程差异 (生成 %s / 基准 %s, 可用 --current-limit 对齐)' % (obj, cg, cr))
+    return errors, warns
+
+
+def run_verify(args):
+    src = read_enc(args.verify_src if args.verify_src else args.verify)
+    blocks = dict(fn_blocks(src))
+    names = [args.verify_func] if args.verify_func else list(blocks.keys())
+    if args.verify_func and args.verify_func not in blocks:
+        print('*** FAIL ***: 基准文件无函数 %s' % args.verify_func)
+        return 1
+
+    meta = load_json(args.meta)
+    extern_map = load_pin_channel_define(args.define)
+    pin_map = load_pin_map(args.pin_map)
+    # 允许 --current-limit 覆盖 pin-map
+    if args.current_limit:
+        pin_map = dict(pin_map)
+        pin_map['currentLimit'] = load_json(args.current_limit)
+
+    all_errors, all_warns = [], []
+    checked = 0
+    for name in names:
+        block = blocks[name]
+        steps = split_by_step(block)
+        # Step2 上电 + Step4 大电流初始化(Set行) + Step5 下电
+        ref_lines = (steps.get(2, '') + '\n' + steps.get(4, '') + '\n' + steps.get(5, ''))
+        if not ref_lines.strip():
+            continue
+        sections, state, errs, warns = generate_sections(meta, pin_map, extern_map)
+        gen_lines = list(sections['POWER_ON'])
+        if sections['HIGH_CURRENT_INIT']:
+            gen_lines += sections['HIGH_CURRENT_INIT']
+        gen_lines += sections['POWER_OFF']
+        e, w = compare_sets(gen_lines, ref_lines)
+        all_errors.extend(errs)
+        all_warns.extend(warns)
+        all_errors.extend(e)
+        all_warns.extend(w)
+        checked += 1
+
+    print('[verify] 对拍 %d 个函数' % checked)
+    if all_errors:
+        print('*** FAIL ***')
+        for x in all_errors:
+            print('  -', x)
+        return 1
+    if all_warns and args.warn_as_error:
+        print('*** FAIL (warn-as-error) ***')
+        for x in all_warns:
+            print('  -', x)
+        return 1
+    if all_warns:
+        print('WARNINGS (%d):' % len(all_warns))
+        for x in all_warns:
+            print('  -', x)
+    print('POWER SEQUENCE PASSED')
+    return 0
+
+
+# =====================================================================
+# H. 规则审计层
+# =====================================================================
+
+def audit_rules():
+    """--audit-rules: 打印 RULE_COVERAGE + 机器自检 (函数存在 + 调用链可达)"""
+    import inspect
+    mod = sys.modules[__name__]
+    fns = {n: getattr(mod, n) for n in dir(mod) if callable(getattr(mod, n, None))}
+    fns = {n: f for n, f in fns.items() if getattr(f, '__module__', None) == __name__}
+    # 生成调用链根
+    roots = ['generate_sections', 'gen_simple_power_on', 'gen_floating_ramp',
+             'gen_high_current_init', 'gen_normal_power_off', 'gen_floating_power_off',
+             'gen_high_current_off', 'select_range', 'relay_off_ranges', 'relay_const',
+             'classify_power_off', 'parse_floating_pairs', 'resolve_all_sources',
+             'resolve_source_type', 'parse_extern_types', 'mode_for_cmd', 'apply_mv_no_fi']
+    # 调用图
+    callgraph = {}
+    for n, f in fns.items():
+        src = inspect.getsource(f)
+        callgraph[n] = {c for c in re.findall(r'\b([a-z_]\w*)\(', src) if c in fns}
+    reachable = set()
+    stack = list(roots)
+    while stack:
+        n = stack.pop()
+        if n in reachable:
+            continue
+        reachable.add(n)
+        stack.extend(callgraph.get(n, set()))
+
+    print('规则→函数覆盖映射表 (agent 铁律 → 脚本函数):')
+    print('%-10s %-50s %-6s' % ('规则ID', '函数', '状态'))
+    print('-' * 70)
+    problems = []
+    for rule, fn_list in RULE_COVERAGE.items():
+        for fn in fn_list:
+            ok = fn in fns
+            reach = fn in reachable
+            status = 'PASS' if (ok and reach) else 'FAIL'
+            print('%-10s %-50s %-6s' % (rule, fn, status))
+            if not ok:
+                problems.append('%s: 函数 %s 不存在' % (rule, fn))
+            elif not reach:
+                problems.append('%s: 函数 %s 不在生成调用链 (规则未被执行)' % (rule, fn))
+    if problems:
+        print('*** FAIL ***')
+        for p in problems:
+            print('  -', p)
+        return 1
+    print('RULE COVERAGE PASSED (%d 规则)' % len(RULE_COVERAGE))
+    return 0
+
+
+# =====================================================================
+# I. main
+# =====================================================================
+
+def main():
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except AttributeError:
+        pass
+    cfg = proj_config.load(proj_config.config_from_argv(sys.argv))
+    ap = argparse.ArgumentParser(description='上电/下电代码生成器')
+    ap.add_argument('--config', default=None, help='project_config.json (默认 workspace 根)')
+    ap.add_argument('--meta', help='TestItemMeta JSON')
+    ap.add_argument('--pin-map', help='pin→object 映射 JSON')
+    ap.add_argument('--define', default=cfg['inputs']['channelmap'], help='Pin_Channel_define.h')
+    ap.add_argument('--current-limit', help='覆盖 currentLimit JSON')
+    ap.add_argument('--ramp-profile', help='覆盖 rampProfile JSON')
+    ap.add_argument('--mode', choices=['both', 'power-on', 'power-off'], default='both')
+    ap.add_argument('--no-state', action='store_true')
+    ap.add_argument('--verify', help='对拍基准 .cpp (默认 AI.cpp)')
+    ap.add_argument('--verify-src', default=None, help='指定基准文件 (浮动大电流用 reference)')
+    ap.add_argument('--verify-func', default=None, help='指定对拍函数 TMxxx')
+    ap.add_argument('--warn-as-error', action='store_true')
+    ap.add_argument('--audit-rules', action='store_true')
+    args = ap.parse_args()
+
+    if args.audit_rules:
+        sys.exit(audit_rules())
+    if not args.meta:
+        ap.print_help()
+        sys.exit(2)
+
+    meta = load_json(args.meta)
+    if args.ramp_profile:
+        meta = dict(meta)
+        meta['rampProfile'] = load_json(args.ramp_profile)
+
+    if args.verify:
+        sys.exit(run_verify(args))
+
+    pin_map = load_pin_map(args.pin_map) if args.pin_map else None
+    if args.current_limit:
+        pin_map = dict(pin_map or {})
+        pin_map['currentLimit'] = load_json(args.current_limit)
+    extern_map = load_pin_channel_define(args.define)
+    sections, state, errors, warns = generate_sections(meta, pin_map, extern_map)
+    if errors:
+        print('*** FAIL ***')
+        for e in errors:
+            print('  -', e)
+        sys.exit(1)
+    if warns:
+        print('WARNINGS:')
+        for w in warns:
+            print('  -', w)
+    emit_sections(sections, state, args.mode, args.no_state)
+    sys.exit(0)
+
+
+if __name__ == '__main__':
+    main()

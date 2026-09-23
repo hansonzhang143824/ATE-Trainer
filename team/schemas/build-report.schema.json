@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "build-report.schema.json",
+  "type": "object",
+  "required": ["runId", "targetRoot", "configuration", "gates", "builds", "verdict", "limitations"],
+  "properties": {
+    "runId": {"type": "string"},
+    "targetRoot": {"const": "D:/PROJECT6-DALI/ForCodexDebug"},
+    "configuration": {"enum": ["Debug", "Release"]},
+    "gates": {"type": "array", "items": {"$ref": "#/$defs/run"}},
+    "builds": {"type": "array", "items": {"$ref": "#/$defs/run"}, "minItems": 1},
+    "diagnostics": {"type": "array", "items": {"type": "object"}},
+    "fixes": {"type": "array", "items": {"type": "object"}},
+    "verdict": {"enum": ["pass", "fail", "blocked"]},
+    "limitations": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+  },
+  "$defs": {"run": {"type": "object", "required": ["command", "cwd", "startedAt", "exitCode", "log", "logSha256"], "properties": {"command": {"type": "string"}, "cwd": {"type": "string"}, "startedAt": {"type": "string"}, "exitCode": {"type": "integer"}, "log": {"type": "string"}, "logSha256": {"type": "string"}}, "additionalProperties": true}},
+  "additionalProperties": true
+}

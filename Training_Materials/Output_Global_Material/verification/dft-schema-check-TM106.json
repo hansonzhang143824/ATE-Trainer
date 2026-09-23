@@ -1,0 +1,92 @@
+{
+  "tm": "TM106",
+  "artifactId": "dft-schema-check",
+  "contract": "team/expert-profiles/ptc-dft-expert/output-contract.schema.json (11 finalized items)",
+  "parsedRules": "User_input/DFT解析规则.txt",
+  "checks": [
+    {
+      "id": "top-required-7",
+      "pass": true,
+      "detail": "all 7 contract-required top-level keys present"
+    },
+    {
+      "id": "tm-pattern",
+      "pass": true,
+      "detail": "tm=TM106"
+    },
+    {
+      "id": "source-sha256",
+      "pass": true,
+      "detail": "matches reference hash computed from canonical workbook bytes"
+    },
+    {
+      "id": "source-location",
+      "pass": true,
+      "detail": "OVERVIEW row 10, the unique TM106 row"
+    },
+    {
+      "id": "rawintent-verbatim-29",
+      "pass": true,
+      "detail": "all 29 columns copied verbatim (CRLF preserved, empty cells = null)"
+    },
+    {
+      "id": "tc-identity",
+      "pass": true,
+      "detail": "Name column"
+    },
+    {
+      "id": "tc-istrim",
+      "pass": true,
+      "detail": "Trim column empty -> non-trim per rules"
+    },
+    {
+      "id": "tc-powersequence-shape",
+      "pass": true,
+      "detail": "4 vset entries from Code1+Code2, verbatim pluseTime strings"
+    },
+    {
+      "id": "tc-rampfrom-semantics",
+      "pass": true,
+      "detail": "same-Pin run: vbus 3->5 (from stage-1 direct set 3), then 5->3; direct 100e-6 entries carry no rampFrom"
+    },
+    {
+      "id": "tc-registerfieldintent",
+      "pass": true,
+      "detail": "en_tm[] + field[(DMUX_EN,1),(DMUX_SEL,19)] from Code2"
+    },
+    {
+      "id": "tc-measurement-syntax",
+      "pass": true,
+      "detail": "Check column V(DTEST0) matches rules syntax V(Pin)"
+    },
+    {
+      "id": "tc-involvedPins-nonempty",
+      "pass": true,
+      "detail": "vbat/vbus (vset pins) + DTEST0 (measurement pin)"
+    },
+    {
+      "id": "parsestatus-openitems-coherence",
+      "pass": true,
+      "detail": "selfResolved with empty openItems (resolutions documented in review, none unresolved)"
+    },
+    {
+      "id": "optional-fields-verbatim",
+      "pass": true,
+      "detail": "8 optional fields carry the row columns verbatim; remarks omitted (no such column; Notes mapped to notes)"
+    }
+  ],
+  "hashBinding": {
+    "dft-meta.json": "e7aae1ec145d98c7dc95890cae902c28211dd4177b2fe6b626623d102a7ccd63",
+    "dft-conditions.yaml": "8afec5cbe7c288a701f2f4a4b08a63b67d4a8e349358d2c22ceb74af12d6e4ee",
+    "dft-semantic-review.json": "b848ccce7baadd89d99d7873f3c7de43d9038cb1fd840e9bdca6f1c5a5b01c6f",
+    "workbook": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+    "yamlJsonSharedContentEqual": true
+  },
+  "officialGate": {
+    "command": "python scripts/validate_dft_outputs.py --tm TM106",
+    "status": "NOT_RUN",
+    "exitCode": null,
+    "reason": "process execution is unavailable in this training session: every pwsh invocation (including read-only probes) is rejected by the training boundary, and no other process channel is sanctioned",
+    "impact": "official gate exit code UNKNOWN; must be re-run in an execution-enabled session (round-1 rule: review re-bound here, gate re-run pending)"
+  }
+}

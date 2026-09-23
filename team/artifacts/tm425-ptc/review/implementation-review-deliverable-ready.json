@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "PTC-HANDOFF-V1",
+  "event": "deliverable_ready",
+  "status": "success",
+  "stage": "RULE_REVIEW_IMPLEMENTATION",
+  "verdict": "deliverable_ready",
+  "tm": "TM425",
+  "nextRole": "compile-diagnostician",
+  "artifact": "team/artifacts/tm425-ptc/review/implementation-review.json",
+  "sha256": "bcde5c610ec8257cb744d18085e403943d2b9a347418b59608691537be7e36dd",
+  "signedInputs": {
+    "implementationManifestPath": "implementation/implementation-manifest.json",
+    "implementationManifestSha256": "4fa81e08335cca3c7df226a2c68b720cbf23c8f1024b2c813a456776212838c7",
+    "methodContractPath": "method/tm425-test-method-contract.json",
+    "methodContractSha256": "81408a784f65f179e86bd04eb405e91abb085ddb73d6d12ee6e4b52041463b6b",
+    "strategyContractPath": "strategy/tm425-resource-config-contract.json",
+    "strategyContractSha256": "b5de503e74efa5dd051f2c57a23ec0a23e409e6452498ab1d78c83c8d1b19009"
+  }
+}

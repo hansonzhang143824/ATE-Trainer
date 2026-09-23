@@ -1,0 +1,23 @@
+前置：语法 OK（45848 B）
+  已补 serialization/encoding/bodyDefinition → 46558 B
+后置：语法 OK
+  run1 末行: RECEIPT-HISTORY D:\Newtest\DSH\ATE-Coding-Plat\team\art
+  run2 末行: RECEIPT-HISTORY D:\Newtest\DSH\ATE-Coding-Plat\team\art
+
+=== 收据 projectionSpec（现刻）===
+  exclude          ['generatedAt', 'receipts']
+  version          2
+  serialization    json.dumps(body, ensure_ascii=False, sort_keys=True) ，分隔符为 Python json 默认（', ' 与 ': '），无尾随换行
+  encoding         utf-8
+  bodyDefinition   body = {k: v for k, v in json.loads(<file bytes>.decode('utf-8-sig')).items() if k not in exclude} ⇒ 再按上述 seri
+  stabilityNote    核心不稳定来源是 `generatedAt`（每次生成）与 `receipts`（仅 at/lineCount 变）；两者均已排除 ⇒ v2 下 body 哈希**跨次生成稳定**（v1 未排 `receipts` ⇒ 
+  note             跨秒不变；跨版本不可混用 —— 排除表一变就必须换版本号（v2），不得沿用同名键
+
+=== 第三方复现自证（从**已落盘文件**重算 body）===
+  记录值（收据） = 9804fbe2272477ecf51de6162401ae295dad7a6aa0f865a00f3bd16f9517fa24
+  独立重算       = 9804fbe2272477ecf51de6162401ae295dad7a6aa0f865a00f3bd16f9517fa24
+  ⇒ **逐位相同 = True**
+  整文件 sha     = 551c38e5a58cf397d8dae83bd53e4ca3124632d91b46bd4820333f44bb558fd8（应与上面不同，因含 generatedAt/receipts）
+
+=== 并验证：我复算出的"旧值不可重现"原因（跨版本，按其判断）===
+  其试的五种约定均不命中我旧报的 52233dd1… —— 原因：该值对应**v1/更早字节**（跨版本比较，按 note 本就无效）

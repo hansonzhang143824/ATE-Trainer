@@ -1,0 +1,100 @@
+{
+  "runId": "tm108-v2-impl",
+  "task": "t7",
+  "checkedBy": "captain",
+  "reader": "python byte mode (DLP plaintext)",
+  "after": {
+    "sha256_plaintext": "b79b911a65a33abd62697f8576bd04b5022194751c9bfc5b174ecdab96d05d5a",
+    "bytes": 477123,
+    "utf8_bom": true,
+    "crlf_count": 9434,
+    "line_count": 9438,
+    "dut_api_count": 107,
+    "tm108_occurrence_lines": [
+      2150,
+      2166,
+      2193,
+      2207
+    ],
+    "function_line_span": [
+      2193,
+      2309
+    ],
+    "extracted_span": [
+      2123,
+      2311
+    ]
+  },
+  "before": {
+    "sha256_plaintext": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a",
+    "bytes": 469714,
+    "line_count": 9354,
+    "dut_api_count": 107,
+    "crlf_count": 9350,
+    "function_line_span": [
+      2155,
+      2225
+    ]
+  },
+  "checks": {
+    "file_changed": true,
+    "bom_preserved": true,
+    "crlf_delta": 84,
+    "signature_present_and_unchanged": true,
+    "dut_api_count_delta": 0,
+    "tm108_occurrences_now": 4,
+    "closure_set_13_65_present": true,
+    "k21_not_closed": true,
+    "no_cbite_release_added": true,
+    "cbite_seton_closure_lines": [
+      39,
+      95
+    ],
+    "csv_layer_alt_0x55_0x97_absent": true,
+    "tolerance_word_lines": [
+      "//   RT-4/OI-T4-09  no tolerance is published for \"rising vth 4.4 V, hys 0.35 V\"; none is invented"
+    ],
+    "numeric_tolerance_introduced": false,
+    "measurement_call_pair_present": true,
+    "register_writes_present": true,
+    "c1_window_lines": [
+      2150,
+      2309
+    ],
+    "c1_candidate_lines": [
+      "//   OI-T4-01/OI-T5-01  the DFT check pin V(DTEST0) is NOT equated with the nQON candidate - the"
+    ],
+    "c1_assertion_still_present": false,
+    "c1_pending_marker_present": true,
+    "c1_verdict": "OK - assertion gone",
+    "tm108_block_unchanged": false,
+    "tm108_block_diff_lines": 190,
+    "full_file_scope_check": {
+      "status": "CHECKED",
+      "backup": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm108-v2-trial\\implementation\\backup\\tm108-v2-impl__test.cpp.before",
+      "backup_matches_recorded_preimage": true,
+      "hunks_before_line/after_start/after_end": [
+        [
+          2147,
+          2147,
+          2194
+        ],
+        [
+          2165,
+          2203,
+          2262
+        ],
+        [
+          2199,
+          2265,
+          2304
+        ]
+      ],
+      "all_hunks_inside_tm108_span": true,
+      "tm108_span_after": [
+        2123,
+        2311
+      ]
+    }
+  }
+}

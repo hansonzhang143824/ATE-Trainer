@@ -1,0 +1,30 @@
+{
+  "runId": "TM108-IMPLEMENTATION-20260919",
+  "targetRoot": "D:/PROJECT6-DALI/ForCodexDebug",
+  "scope": [
+    "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp"
+  ],
+  "backups": [],
+  "changes": [
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "symbols": [
+        "TM108_HSKP_VAC1_PRST"
+      ],
+      "beforeSha256": "7b2476ce081612907b9619e466876ad086119c0334cb05dea9642ff0c3ecf573",
+      "afterSha256": "f4d011e99fe7942ccfa85301b9958b43806dd69b15ffba5b2352c3fe0431c249",
+      "planRefs": [
+        "team/artifacts/tm108-ptc/method/tm108-test-method-contract.json",
+        "strategy/register-config-evidence.json",
+        "implementation/register-writes.cpp"
+      ]
+    }
+  ],
+  "selfChecks": [
+    {
+      "command": "deterministic source assertions: unique symbol, exact generated register lines, signed scan/trigger sequence",
+      "exitCode": 0,
+      "log": "implementation/self-check.json"
+    }
+  ]
+}

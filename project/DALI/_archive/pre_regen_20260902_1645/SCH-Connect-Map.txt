@@ -1,0 +1,986 @@
+====================================================================================================
+SCH-Connect-Map — SCH-DALI.NET 源表→PIN/BUS 连接图
+规范: 原理图解析基本规则.txt 任务六 / 《通路有效性》: 最短路径 + Force/Sense 同时连通
+说明: Relay-ON=需SetOn闭合, Relay-NC=默认导通; 配对标注 [Kelvin]/[PC短接]/[单线]
+====================================================================================================
+
+## 列1: FPVIe → FPVIe BUS节点 (BUS继电器, FH+SH/FL+SL成组)
+  CH0 High(FH+SH): 成组✓  需闭合: 无(默认导通)
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> FPVIe0_FH_BUS_S1
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> FPVIe0_SH_BUS_S1
+  CH0 Low(FL+SL): 成组✓  需闭合: 无(默认导通)
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> FPVIe0_FL_BUS_S1
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> FPVIe0_SL_BUS_S1
+  CH1 High(FH+SH): 成组✓  需闭合: 无(默认导通)
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> FPVIe1_FH_BUS_S1
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> FPVIe1_SH_BUS_S1
+  CH1 Low(FL+SL): 成组✓  需闭合: 无(默认导通)
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> FPVIe1_FL_BUS_S1
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> FPVIe1_SL_BUS_S1
+
+## 列2: FPVIe → PIN (BUS继电器)
+  CH0 High -> ACDRV1  [Kelvin]  需闭合: K22,K30
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K30(Relay-ON) -> K22(Relay-ON) -> ACDRV1_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K30(Relay-ON) -> K22(Relay-ON) -> ACDRV1_S
+  CH0 High -> ACDRV2  [Kelvin]  需闭合: K23,K30
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K30(Relay-ON) -> K23(Relay-ON) -> ACDRV2_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K30(Relay-ON) -> K23(Relay-ON) -> ACDRV2_S
+  CH0 High -> ACDRV3  [Kelvin]  需闭合: K24,K30
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K30(Relay-ON) -> K24(Relay-ON) -> ACDRV3_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K30(Relay-ON) -> K24(Relay-ON) -> ACDRV3_S
+  CH0 Low -> AGND  [单线-仅SL] ⚠F/S未同时连通,非有效通路  需闭合: K138,K140
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K138(Relay-ON) -> K140(Relay-ON) -> AGND_S
+  CH0 High -> AMUX  [Kelvin]  需闭合: K154
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K154(Relay-ON) -> K155(Relay-NC) -> AMUX_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K154(Relay-ON) -> K155(Relay-NC) -> AMUX_S
+  CH0 Low -> AMUX  [Kelvin]  需闭合: K17,K18,K20
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K17(Relay-ON) -> K18(Relay-ON) -> K20(Relay-ON) -> AMUX_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K17(Relay-ON) -> K18(Relay-ON) -> K20(Relay-ON) -> AMUX_S
+  CH0 High -> BST  [Kelvin]  需闭合: K46,K48,K76
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K46(Relay-ON) -> K48(Relay-ON) -> K76(Relay-ON) -> BST_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K46(Relay-ON) -> K48(Relay-ON) -> K76(Relay-ON) -> BST_S
+  CH0 Low -> BST  [Kelvin]  需闭合: K109,K110,K138,K139,K145,K146
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K145(Relay-ON) -> K146(Relay-ON) -> K109(Relay-ON) -> K110(Relay-ON) -> BST_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K138(Relay-ON) -> K139(Relay-ON) -> K109(Relay-ON) -> K110(Relay-ON) -> BST_S
+  CH0 Low -> BST1  [Kelvin]  需闭合: K41
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K41(Relay-ON) -> K42(Relay-NC) -> K43(Relay-NC) -> BST1_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K41(Relay-ON) -> K42(Relay-NC) -> K43(Relay-NC) -> BST1_S
+  CH0 Low -> BST2  [Kelvin]  需闭合: K41,K43
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K41(Relay-ON) -> K42(Relay-NC) -> K43(Relay-ON) -> BST2_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K41(Relay-ON) -> K42(Relay-NC) -> K43(Relay-ON) -> BST2_S
+  CH0 High -> CC1  [Kelvin]  需闭合: K136,K137,K143,K144,K96
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K143(Relay-ON) -> K144(Relay-ON) -> K96(Relay-ON) -> K97(Relay-NC) -> K98(Relay-NC) -> CC1_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K137(Relay-ON) -> K136(Relay-ON) -> K96(Relay-ON) -> K97(Relay-NC) -> K98(Relay-NC) -> CC1_S
+  CH0 Low -> CC2  [Kelvin]  需闭合: K104,K105,K138,K139,K145,K146
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K145(Relay-ON) -> K146(Relay-ON) -> K104(Relay-ON) -> K105(Relay-ON) -> CC2_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K138(Relay-ON) -> K139(Relay-ON) -> K104(Relay-ON) -> K105(Relay-ON) -> CC2_S
+  CH0 High -> COMP  [Kelvin]  需闭合: K156,K157
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K156(Relay-ON) -> K157(Relay-ON) -> COMP_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K156(Relay-ON) -> K157(Relay-ON) -> COMP_S
+  CH0 High -> DMA_PA7  [Kelvin]  需闭合: K120,K136,K137,K143,K144
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K143(Relay-ON) -> K144(Relay-ON) -> K120(Relay-ON) -> K121(Relay-NC) -> DMA_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K137(Relay-ON) -> K136(Relay-ON) -> K120(Relay-ON) -> K121(Relay-NC) -> DMA_S
+  CH0 Low -> DMO_PC6  [Kelvin]  需闭合: K138,K139,K145,K146,K94,K95
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K145(Relay-ON) -> K146(Relay-ON) -> K94(Relay-ON) -> K95(Relay-ON) -> DMO_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K138(Relay-ON) -> K139(Relay-ON) -> K94(Relay-ON) -> K95(Relay-ON) -> DMO_S
+  CH0 Low -> DRVH1  [Kelvin]  需闭合: K3,K4
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K3(Relay-ON) -> K4(Relay-ON) -> DRVH1_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K3(Relay-ON) -> K4(Relay-ON) -> DRVH1_S
+  CH0 High -> HG1  [Kelvin]  需闭合: K62,K64
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K62(Relay-ON) -> K64(Relay-ON) -> HG1_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K62(Relay-ON) -> K64(Relay-ON) -> HG1_S
+  CH0 High -> HG2  [Kelvin]  需闭合: K83,K84
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K83(Relay-ON) -> K84(Relay-ON) -> HG2_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K83(Relay-ON) -> K84(Relay-ON) -> HG2_S
+  CH0 High -> INT_PA0  [Kelvin]  需闭合: K101,K136,K137,K143,K144
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K143(Relay-ON) -> K144(Relay-ON) -> K101(Relay-ON) -> K102(Relay-NC) -> INT_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K137(Relay-ON) -> K136(Relay-ON) -> K101(Relay-ON) -> K102(Relay-NC) -> INT_S
+  CH0 High -> KLV1  [Kelvin]  需闭合: K35
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K35(Relay-ON) -> K36(Relay-NC) -> K37(Relay-NC) -> KLV1_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K35(Relay-ON) -> K36(Relay-NC) -> K37(Relay-NC) -> KLV1_S
+  CH0 Low -> KLV1  [Kelvin]  需闭合: K73,K88,K89,K90,K91
+    S1_FPVIe_FL0 -> K89(Relay-ON) -> K90(Relay-ON) -> K73(Relay-ON) -> K36(Relay-NC) -> K37(Relay-NC) -> KLV1_F
+    S1_FPVIe_SL0 -> K88(Relay-ON) -> K91(Relay-ON) -> K73(Relay-ON) -> K36(Relay-NC) -> K37(Relay-NC) -> KLV1_F
+  CH0 High -> KLV2  [Kelvin]  需闭合: K35,K37
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K35(Relay-ON) -> K36(Relay-NC) -> K37(Relay-ON) -> KLV2_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K35(Relay-ON) -> K36(Relay-NC) -> K37(Relay-ON) -> KLV2_S
+  CH0 Low -> KLV2  [Kelvin]  需闭合: K37,K73,K88,K89,K90,K91
+    S1_FPVIe_FL0 -> K89(Relay-ON) -> K90(Relay-ON) -> K73(Relay-ON) -> K36(Relay-NC) -> K37(Relay-ON) -> KLV2_F
+    S1_FPVIe_SL0 -> K88(Relay-ON) -> K91(Relay-ON) -> K73(Relay-ON) -> K36(Relay-NC) -> K37(Relay-ON) -> KLV2_F
+  CH0 Low -> LG1  [Kelvin]  需闭合: K51
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K51(Relay-ON) -> K52(Relay-NC) -> LG1_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K51(Relay-ON) -> K52(Relay-NC) -> LG1_S
+  CH0 Low -> LG2  [Kelvin]  需闭合: K51,K52
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K51(Relay-ON) -> K52(Relay-ON) -> LG2_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K51(Relay-ON) -> K52(Relay-ON) -> LG2_S
+  CH0 High -> PA1  [Kelvin]  需闭合: K106,K136,K137,K143,K144
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K143(Relay-ON) -> K144(Relay-ON) -> K106(Relay-ON) -> K107(Relay-NC) -> PA1_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K137(Relay-ON) -> K136(Relay-ON) -> K106(Relay-ON) -> K107(Relay-NC) -> PA1_S
+  CH0 Low -> PA4  [Kelvin]  需闭合: K118,K138,K139,K145,K146
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K145(Relay-ON) -> K146(Relay-ON) -> K118(Relay-ON) -> K119(Relay-NC) -> PA4_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K138(Relay-ON) -> K139(Relay-ON) -> K118(Relay-ON) -> K119(Relay-NC) -> PA4_S
+  CH0 Low -> PA5  [Kelvin]  需闭合: K114,K138,K139,K145,K146
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K145(Relay-ON) -> K146(Relay-ON) -> K114(Relay-ON) -> K115(Relay-NC) -> PA5_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K138(Relay-ON) -> K139(Relay-ON) -> K114(Relay-ON) -> K115(Relay-NC) -> PA5_S
+  CH0 High -> PA6_PWM2  [Kelvin]  需闭合: K111,K136,K137,K143,K144
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K143(Relay-ON) -> K144(Relay-ON) -> K111(Relay-ON) -> K112(Relay-NC) -> PA6_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K137(Relay-ON) -> K136(Relay-ON) -> K111(Relay-ON) -> K112(Relay-NC) -> PA6_S
+  CH0 Low -> PB0_PWM1  [Kelvin]  需闭合: K109,K138,K139,K145,K146
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K145(Relay-ON) -> K146(Relay-ON) -> K109(Relay-ON) -> K110(Relay-NC) -> PB0_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K138(Relay-ON) -> K139(Relay-ON) -> K109(Relay-ON) -> K110(Relay-NC) -> PB0_S
+  CH0 High -> PB1  [Kelvin]  需闭合: K106,K107,K136,K137,K143,K144
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K143(Relay-ON) -> K144(Relay-ON) -> K106(Relay-ON) -> K107(Relay-ON) -> PB1_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K137(Relay-ON) -> K136(Relay-ON) -> K106(Relay-ON) -> K107(Relay-ON) -> PB1_S
+  CH0 Low -> PB2  [Kelvin]  需闭合: K114,K115,K138,K139,K145,K146
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K145(Relay-ON) -> K146(Relay-ON) -> K114(Relay-ON) -> K115(Relay-ON) -> PB2_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K138(Relay-ON) -> K139(Relay-ON) -> K114(Relay-ON) -> K115(Relay-ON) -> PB2_S
+  CH0 High -> PB3  [Kelvin]  需闭合: K136,K137,K143,K144,K96,K98
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K143(Relay-ON) -> K144(Relay-ON) -> K96(Relay-ON) -> K97(Relay-NC) -> K98(Relay-ON) -> PB3_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K137(Relay-ON) -> K136(Relay-ON) -> K96(Relay-ON) -> K97(Relay-NC) -> K98(Relay-ON) -> PB3_S
+  CH0 Low -> PB4  [Kelvin]  需闭合: K118,K119,K138,K139,K145,K146
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K145(Relay-ON) -> K146(Relay-ON) -> K118(Relay-ON) -> K119(Relay-ON) -> PB4_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K138(Relay-ON) -> K139(Relay-ON) -> K118(Relay-ON) -> K119(Relay-ON) -> PB4_S
+  CH0 High -> PB5  [Kelvin]  需闭合: K123,K136,K137,K143,K144
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K143(Relay-ON) -> K144(Relay-ON) -> K123(Relay-ON) -> K124(Relay-NC) -> PB5_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K137(Relay-ON) -> K136(Relay-ON) -> K123(Relay-ON) -> K124(Relay-NC) -> PB5_S
+  CH0 Low -> PB5  [Kelvin]  需闭合: K138,K139,K145,K146,K99
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K145(Relay-ON) -> K146(Relay-ON) -> K99(Relay-ON) -> K100(Relay-NC) -> PB5_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K138(Relay-ON) -> K139(Relay-ON) -> K99(Relay-ON) -> K100(Relay-NC) -> PB5_S
+  CH0 High -> PB6  [Kelvin]  需闭合: K116,K117,K136,K137,K143,K144
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K143(Relay-ON) -> K144(Relay-ON) -> K116(Relay-ON) -> K117(Relay-ON) -> PB6_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K137(Relay-ON) -> K136(Relay-ON) -> K116(Relay-ON) -> K117(Relay-ON) -> PB6_S
+  CH0 High -> PB7  [Kelvin]  需闭合: K116,K136,K137,K143,K144
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K143(Relay-ON) -> K144(Relay-ON) -> K116(Relay-ON) -> K117(Relay-NC) -> PB7_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K137(Relay-ON) -> K136(Relay-ON) -> K116(Relay-ON) -> K117(Relay-NC) -> PB7_S
+  CH0 High -> PC3  [Kelvin]  需闭合: K101,K102,K136,K137,K143,K144
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K143(Relay-ON) -> K144(Relay-ON) -> K101(Relay-ON) -> K102(Relay-ON) -> PC3_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K137(Relay-ON) -> K136(Relay-ON) -> K101(Relay-ON) -> K102(Relay-ON) -> PC3_S
+  CH0 Low -> PC4  [Kelvin]  需闭合: K100,K138,K139,K145,K146,K99
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K145(Relay-ON) -> K146(Relay-ON) -> K99(Relay-ON) -> K100(Relay-ON) -> PC4_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K138(Relay-ON) -> K139(Relay-ON) -> K99(Relay-ON) -> K100(Relay-ON) -> PC4_S
+  CH0 High -> PC5  [Kelvin]  需闭合: K111,K112,K136,K137,K143,K144
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K143(Relay-ON) -> K144(Relay-ON) -> K111(Relay-ON) -> K112(Relay-ON) -> PC5_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K137(Relay-ON) -> K136(Relay-ON) -> K111(Relay-ON) -> K112(Relay-ON) -> PC5_S
+  CH0 Low -> PC8  [Kelvin]  需闭合: K138,K139,K145,K146,K94
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K145(Relay-ON) -> K146(Relay-ON) -> K94(Relay-ON) -> K95(Relay-NC) -> PC8_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K138(Relay-ON) -> K139(Relay-ON) -> K94(Relay-ON) -> K95(Relay-NC) -> PC8_S
+  CH0 High -> PD2  [Kelvin]  需闭合: K120,K121,K136,K137,K143,K144
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K143(Relay-ON) -> K144(Relay-ON) -> K120(Relay-ON) -> K121(Relay-ON) -> PD2_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K137(Relay-ON) -> K136(Relay-ON) -> K120(Relay-ON) -> K121(Relay-ON) -> PD2_S
+  CH0 High -> PD3  [Kelvin]  需闭合: K136,K137,K143,K144,K7,K8
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K143(Relay-ON) -> K144(Relay-ON) -> K7(Relay-ON) -> K8(Relay-ON) -> PD3_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K137(Relay-ON) -> K136(Relay-ON) -> K7(Relay-ON) -> K8(Relay-ON) -> PD3_S
+  CH0 Low -> PD5  [Kelvin]  需闭合: K104,K138,K139,K145,K146
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K145(Relay-ON) -> K146(Relay-ON) -> K104(Relay-ON) -> K105(Relay-NC) -> PD5_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K138(Relay-ON) -> K139(Relay-ON) -> K104(Relay-ON) -> K105(Relay-NC) -> PD5_S
+  CH0 High -> PGND  [Kelvin]  需闭合: K154,K155
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K154(Relay-ON) -> K155(Relay-ON) -> PGND_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K154(Relay-ON) -> K155(Relay-ON) -> PGND_S
+  CH0 High -> PGND_WL  [Kelvin]  需闭合: K35,K36
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K35(Relay-ON) -> K36(Relay-ON) -> PGND_WL_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K35(Relay-ON) -> K36(Relay-ON) -> PGND_WL_S
+  CH0 Low -> PGND_WL  [Kelvin]  需闭合: K36,K73,K88,K89,K90,K91
+    S1_FPVIe_FL0 -> K89(Relay-ON) -> K90(Relay-ON) -> K73(Relay-ON) -> K36(Relay-ON) -> PGND_WL_F
+    S1_FPVIe_SL0 -> K88(Relay-ON) -> K91(Relay-ON) -> K73(Relay-ON) -> K36(Relay-ON) -> PGND_WL_F
+  CH0 High -> PMID  [Kelvin]  需闭合: K83
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K83(Relay-ON) -> K84(Relay-NC) -> PMID_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K83(Relay-ON) -> K84(Relay-NC) -> PMID_S
+  CH0 Low -> SCL  [Kelvin]  需闭合: K32
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K32(Relay-ON) -> K33(Relay-NC) -> S24_P1
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K32(Relay-ON) -> K33(Relay-NC) -> SCL_S
+  CH0 High -> SDA  [Kelvin]  需闭合: K58,K59
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K58(Relay-ON) -> K59(Relay-ON) -> S24_P2
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K58(Relay-ON) -> K59(Relay-ON) -> SDA_S
+  CH0 Low -> SW  [Kelvin]  需闭合: K60,K61
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K60(Relay-ON) -> K61(Relay-ON) -> SW_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K60(Relay-ON) -> K61(Relay-ON) -> SW_S
+  CH0 High -> SW1  [Kelvin]  需闭合: K46
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K46(Relay-ON) -> K48(Relay-NC) -> K49(Relay-NC) -> SW1_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K46(Relay-ON) -> K48(Relay-NC) -> K49(Relay-NC) -> SW1_S
+  CH0 Low -> SW1  [Kelvin]  需闭合: K47
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K47(Relay-ON) -> K50(Relay-NC) -> SW1_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K47(Relay-ON) -> K50(Relay-NC) -> SW1_S
+  CH0 High -> SW2  [Kelvin]  需闭合: K46,K49
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K46(Relay-ON) -> K48(Relay-NC) -> K49(Relay-ON) -> SW2_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K46(Relay-ON) -> K48(Relay-NC) -> K49(Relay-ON) -> SW2_S
+  CH0 Low -> SW2  [Kelvin]  需闭合: K47,K50
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K47(Relay-ON) -> K50(Relay-ON) -> SW2_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K47(Relay-ON) -> K50(Relay-ON) -> SW2_S
+  CH0 High -> VAC1  [Kelvin]  需闭合: K70,K87,K88,K90,K91
+    S1_FPVIe_FH0 -> K87(Relay-ON) -> K90(Relay-ON) -> K82(Relay-NC) -> K70(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1_F
+    S1_FPVIe_SH0 -> K88(Relay-ON) -> K91(Relay-ON) -> K82(Relay-NC) -> K70(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1_F
+  CH0 Low -> VAC1  [Kelvin]  需闭合: K17
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1_S
+  CH0 High -> VAC2  [Kelvin]  需闭合: K19,K70,K87,K88,K90,K91
+    S1_FPVIe_FH0 -> K87(Relay-ON) -> K90(Relay-ON) -> K82(Relay-NC) -> K70(Relay-ON) -> K18(Relay-NC) -> K19(Relay-ON) -> VAC2_F
+    S1_FPVIe_SH0 -> K88(Relay-ON) -> K91(Relay-ON) -> K82(Relay-NC) -> K70(Relay-ON) -> K18(Relay-NC) -> K19(Relay-ON) -> VAC2_F
+  CH0 Low -> VAC2  [Kelvin]  需闭合: K17,K19
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-ON) -> VAC2_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-ON) -> VAC2_S
+  CH0 High -> VAC3  [Kelvin]  需闭合: K18,K70,K87,K88,K90,K91
+    S1_FPVIe_FH0 -> K87(Relay-ON) -> K90(Relay-ON) -> K82(Relay-NC) -> K70(Relay-ON) -> K18(Relay-ON) -> K20(Relay-NC) -> VAC3_F
+    S1_FPVIe_SH0 -> K88(Relay-ON) -> K91(Relay-ON) -> K82(Relay-NC) -> K70(Relay-ON) -> K18(Relay-ON) -> K20(Relay-NC) -> VAC3_F
+  CH0 Low -> VAC3  [Kelvin]  需闭合: K17,K18
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K17(Relay-ON) -> K18(Relay-ON) -> K20(Relay-NC) -> VAC3_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K17(Relay-ON) -> K18(Relay-ON) -> K20(Relay-NC) -> VAC3_S
+  CH0 Low -> VAC_WL  [Kelvin]  需闭合: K32,K33
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K32(Relay-ON) -> K33(Relay-ON) -> VAC_WL_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K32(Relay-ON) -> K33(Relay-ON) -> VAC_WL_S
+  CH0 High -> VBAT  [Kelvin]  需闭合: K136,K137,K143,K144,K7
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K143(Relay-ON) -> K144(Relay-ON) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K137(Relay-ON) -> K136(Relay-ON) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT_S
+  CH0 Low -> VBUS  [Kelvin]  需闭合: K3
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K3(Relay-ON) -> K4(Relay-NC) -> VBUS_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K3(Relay-ON) -> K4(Relay-NC) -> VBUS_S
+  CH0 High -> VCC  [Kelvin]  需闭合: K25,K30
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K30(Relay-ON) -> K25(Relay-ON) -> VCC_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K30(Relay-ON) -> K25(Relay-ON) -> VCC_S
+  CH0 Low -> VCC  [Kelvin]  需闭合: K29
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K29(Relay-ON) -> K31(Relay-NC) -> VCC_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K29(Relay-ON) -> K31(Relay-NC) -> VCC_S
+  CH0 High -> VCN  [Kelvin]  需闭合: K156
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K156(Relay-ON) -> K157(Relay-NC) -> VCN_FORCE
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K156(Relay-ON) -> K157(Relay-NC) -> VCN_S
+  CH0 Low -> VCN  [Kelvin]  需闭合: K71,K88,K89,K90,K91
+    S1_FPVIe_FL0 -> K89(Relay-ON) -> K90(Relay-ON) -> K71(Relay-ON) -> VCN_FORCE
+    S1_FPVIe_SL0 -> K88(Relay-ON) -> K91(Relay-ON) -> K71(Relay-ON) -> VCN_FORCE
+  CH0 High -> VCP  [Kelvin]  需闭合: K68,K87,K88,K90,K91
+    S1_FPVIe_FH0 -> K87(Relay-ON) -> K90(Relay-ON) -> K82(Relay-NC) -> K68(Relay-ON) -> VCP_FORCE
+    S1_FPVIe_SH0 -> K88(Relay-ON) -> K91(Relay-ON) -> K82(Relay-NC) -> K68(Relay-ON) -> VCP_FORCE
+  CH0 Low -> VCP  [Kelvin]  需闭合: K60
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K60(Relay-ON) -> K61(Relay-NC) -> VCP_FORCE
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K60(Relay-ON) -> K61(Relay-NC) -> VCP_S
+  CH0 High -> VDM  [Kelvin]  需闭合: K58
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K58(Relay-ON) -> K59(Relay-NC) -> VDM_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K58(Relay-ON) -> K59(Relay-NC) -> VDM_S
+  CH0 Low -> VDM  [单线-仅FL] ⚠F/S未同时连通,非有效通路  需闭合: K142,K152
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K142(Relay-ON) -> K152(Relay-ON) -> VDM_F
+  CH0 Low -> VMCU  [Kelvin]  需闭合: K29,K31
+    S1_FPVIe_FL0 -> K89(Relay-NC) -> K29(Relay-ON) -> K31(Relay-ON) -> VMCU_F
+    S1_FPVIe_SL0 -> K88(Relay-NC) -> K29(Relay-ON) -> K31(Relay-ON) -> VMCU_S
+  CH0 High -> nQON  [Kelvin]  需闭合: K62
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K62(Relay-ON) -> K64(Relay-NC) -> nQON_F
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K62(Relay-ON) -> K64(Relay-NC) -> nQON_S
+  CH0 High -> nRST  [Kelvin]  需闭合: K123,K124,K136,K137,K143,K144
+    S1_FPVIe_FH0 -> K87(Relay-NC) -> K143(Relay-ON) -> K144(Relay-ON) -> K123(Relay-ON) -> K124(Relay-ON) -> nRST
+    S1_FPVIe_SH0 -> K88(Relay-NC) -> K137(Relay-ON) -> K136(Relay-ON) -> K123(Relay-ON) -> K124(Relay-ON) -> nRST
+  CH1 High -> ACDRV1  [Kelvin]  需闭合: K136,K137,K143,K144,K22,K30
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K144(Relay-ON) -> K143(Relay-ON) -> K30(Relay-ON) -> K22(Relay-ON) -> ACDRV1_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K30(Relay-ON) -> K22(Relay-ON) -> ACDRV1_S
+  CH1 High -> ACDRV2  [Kelvin]  需闭合: K136,K137,K143,K144,K23,K30
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K144(Relay-ON) -> K143(Relay-ON) -> K30(Relay-ON) -> K23(Relay-ON) -> ACDRV2_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K30(Relay-ON) -> K23(Relay-ON) -> ACDRV2_S
+  CH1 High -> ACDRV3  [Kelvin]  需闭合: K136,K137,K143,K144,K24,K30
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K144(Relay-ON) -> K143(Relay-ON) -> K30(Relay-ON) -> K24(Relay-ON) -> ACDRV3_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K30(Relay-ON) -> K24(Relay-ON) -> ACDRV3_S
+  CH1 Low -> AGND  [单线-仅SL] ⚠F/S未同时连通,非有效通路  需闭合: K139,K140
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K140(Relay-ON) -> AGND_S
+  CH1 High -> AMUX  [Kelvin]  需闭合: K136,K137,K143,K144,K154
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K144(Relay-ON) -> K143(Relay-ON) -> K154(Relay-ON) -> K155(Relay-NC) -> AMUX_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K154(Relay-ON) -> K155(Relay-NC) -> AMUX_S
+  CH1 Low -> AMUX  [Kelvin]  需闭合: K138,K139,K145,K146,K17,K18,K20
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K17(Relay-ON) -> K18(Relay-ON) -> K20(Relay-ON) -> AMUX_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K17(Relay-ON) -> K18(Relay-ON) -> K20(Relay-ON) -> AMUX_S
+  CH1 High -> BST  [Kelvin]  需闭合: K131,K132,K134,K135
+    S1_FPVIe_FH1 -> K131(Relay-ON) -> K134(Relay-ON) -> BST_F
+    S1_FPVIe_SH1 -> K132(Relay-ON) -> K135(Relay-ON) -> BST_S
+  CH1 Low -> BST  [Kelvin]  需闭合: K109,K110
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K109(Relay-ON) -> K110(Relay-ON) -> BST_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K109(Relay-ON) -> K110(Relay-ON) -> BST_S
+  CH1 Low -> BST1  [Kelvin]  需闭合: K138,K139,K145,K146,K41
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K41(Relay-ON) -> K42(Relay-NC) -> K43(Relay-NC) -> BST1_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K41(Relay-ON) -> K42(Relay-NC) -> K43(Relay-NC) -> BST1_S
+  CH1 Low -> BST2  [Kelvin]  需闭合: K138,K139,K145,K146,K41,K43
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K41(Relay-ON) -> K42(Relay-NC) -> K43(Relay-ON) -> BST2_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K41(Relay-ON) -> K42(Relay-NC) -> K43(Relay-ON) -> BST2_S
+  CH1 High -> CC1  [Kelvin]  需闭合: K96
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K96(Relay-ON) -> K97(Relay-NC) -> K98(Relay-NC) -> CC1_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K96(Relay-ON) -> K97(Relay-NC) -> K98(Relay-NC) -> CC1_S
+  CH1 Low -> CC2  [Kelvin]  需闭合: K104,K105
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K104(Relay-ON) -> K105(Relay-ON) -> CC2_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K104(Relay-ON) -> K105(Relay-ON) -> CC2_S
+  CH1 High -> COMP  [Kelvin]  需闭合: K136,K137,K143,K144,K156,K157
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K144(Relay-ON) -> K143(Relay-ON) -> K156(Relay-ON) -> K157(Relay-ON) -> COMP_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K156(Relay-ON) -> K157(Relay-ON) -> COMP_S
+  CH1 High -> DMA_PA7  [Kelvin]  需闭合: K120
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K120(Relay-ON) -> K121(Relay-NC) -> DMA_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K120(Relay-ON) -> K121(Relay-NC) -> DMA_S
+  CH1 Low -> DMO_PC6  [Kelvin]  需闭合: K94,K95
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K94(Relay-ON) -> K95(Relay-ON) -> DMO_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K94(Relay-ON) -> K95(Relay-ON) -> DMO_S
+  CH1 Low -> DRVH1  [Kelvin]  需闭合: K138,K139,K145,K146,K3,K4
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K3(Relay-ON) -> K4(Relay-ON) -> DRVH1_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K3(Relay-ON) -> K4(Relay-ON) -> DRVH1_S
+  CH1 High -> HG1  [Kelvin]  需闭合: K136,K137,K143,K144,K62,K64
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K144(Relay-ON) -> K143(Relay-ON) -> K62(Relay-ON) -> K64(Relay-ON) -> HG1_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K62(Relay-ON) -> K64(Relay-ON) -> HG1_S
+  CH1 High -> HG2  [Kelvin]  需闭合: K136,K137,K143,K144,K83,K84
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K144(Relay-ON) -> K143(Relay-ON) -> K83(Relay-ON) -> K84(Relay-ON) -> HG2_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K83(Relay-ON) -> K84(Relay-ON) -> HG2_S
+  CH1 High -> INT_PA0  [Kelvin]  需闭合: K101
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K101(Relay-ON) -> K102(Relay-NC) -> INT_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K101(Relay-ON) -> K102(Relay-NC) -> INT_S
+  CH1 High -> KLV1  [Kelvin]  需闭合: K136,K137,K143,K144,K35
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K144(Relay-ON) -> K143(Relay-ON) -> K35(Relay-ON) -> K36(Relay-NC) -> K37(Relay-NC) -> KLV1_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K35(Relay-ON) -> K36(Relay-NC) -> K37(Relay-NC) -> KLV1_S
+  CH1 High -> KLV2  [Kelvin]  需闭合: K136,K137,K143,K144,K35,K37
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K144(Relay-ON) -> K143(Relay-ON) -> K35(Relay-ON) -> K36(Relay-NC) -> K37(Relay-ON) -> KLV2_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K35(Relay-ON) -> K36(Relay-NC) -> K37(Relay-ON) -> KLV2_S
+  CH1 Low -> LG1  [Kelvin]  需闭合: K138,K139,K145,K146,K51
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K51(Relay-ON) -> K52(Relay-NC) -> LG1_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K51(Relay-ON) -> K52(Relay-NC) -> LG1_S
+  CH1 Low -> LG2  [Kelvin]  需闭合: K138,K139,K145,K146,K51,K52
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K51(Relay-ON) -> K52(Relay-ON) -> LG2_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K51(Relay-ON) -> K52(Relay-ON) -> LG2_S
+  CH1 High -> PA1  [Kelvin]  需闭合: K106
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K106(Relay-ON) -> K107(Relay-NC) -> PA1_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K106(Relay-ON) -> K107(Relay-NC) -> PA1_S
+  CH1 Low -> PA4  [Kelvin]  需闭合: K118
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K118(Relay-ON) -> K119(Relay-NC) -> PA4_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K118(Relay-ON) -> K119(Relay-NC) -> PA4_S
+  CH1 Low -> PA5  [Kelvin]  需闭合: K114
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K114(Relay-ON) -> K115(Relay-NC) -> PA5_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K114(Relay-ON) -> K115(Relay-NC) -> PA5_S
+  CH1 High -> PA6_PWM2  [Kelvin]  需闭合: K111
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K111(Relay-ON) -> K112(Relay-NC) -> PA6_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K111(Relay-ON) -> K112(Relay-NC) -> PA6_S
+  CH1 Low -> PB0_PWM1  [Kelvin]  需闭合: K109
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K109(Relay-ON) -> K110(Relay-NC) -> PB0_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K109(Relay-ON) -> K110(Relay-NC) -> PB0_S
+  CH1 High -> PB1  [Kelvin]  需闭合: K106,K107
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K106(Relay-ON) -> K107(Relay-ON) -> PB1_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K106(Relay-ON) -> K107(Relay-ON) -> PB1_S
+  CH1 Low -> PB2  [Kelvin]  需闭合: K114,K115
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K114(Relay-ON) -> K115(Relay-ON) -> PB2_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K114(Relay-ON) -> K115(Relay-ON) -> PB2_S
+  CH1 High -> PB3  [Kelvin]  需闭合: K96,K98
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K96(Relay-ON) -> K97(Relay-NC) -> K98(Relay-ON) -> PB3_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K96(Relay-ON) -> K97(Relay-NC) -> K98(Relay-ON) -> PB3_S
+  CH1 Low -> PB4  [Kelvin]  需闭合: K118,K119
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K118(Relay-ON) -> K119(Relay-ON) -> PB4_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K118(Relay-ON) -> K119(Relay-ON) -> PB4_S
+  CH1 High -> PB5  [Kelvin]  需闭合: K123
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K123(Relay-ON) -> K124(Relay-NC) -> PB5_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K123(Relay-ON) -> K124(Relay-NC) -> PB5_S
+  CH1 Low -> PB5  [Kelvin]  需闭合: K99
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K99(Relay-ON) -> K100(Relay-NC) -> PB5_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K99(Relay-ON) -> K100(Relay-NC) -> PB5_S
+  CH1 High -> PB6  [Kelvin]  需闭合: K116,K117
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K116(Relay-ON) -> K117(Relay-ON) -> PB6_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K116(Relay-ON) -> K117(Relay-ON) -> PB6_S
+  CH1 High -> PB7  [Kelvin]  需闭合: K116
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K116(Relay-ON) -> K117(Relay-NC) -> PB7_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K116(Relay-ON) -> K117(Relay-NC) -> PB7_S
+  CH1 High -> PC3  [Kelvin]  需闭合: K101,K102
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K101(Relay-ON) -> K102(Relay-ON) -> PC3_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K101(Relay-ON) -> K102(Relay-ON) -> PC3_S
+  CH1 Low -> PC4  [Kelvin]  需闭合: K100,K99
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K99(Relay-ON) -> K100(Relay-ON) -> PC4_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K99(Relay-ON) -> K100(Relay-ON) -> PC4_S
+  CH1 High -> PC5  [Kelvin]  需闭合: K111,K112
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K111(Relay-ON) -> K112(Relay-ON) -> PC5_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K111(Relay-ON) -> K112(Relay-ON) -> PC5_S
+  CH1 Low -> PC8  [Kelvin]  需闭合: K94
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K94(Relay-ON) -> K95(Relay-NC) -> PC8_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K94(Relay-ON) -> K95(Relay-NC) -> PC8_S
+  CH1 High -> PD2  [Kelvin]  需闭合: K120,K121
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K120(Relay-ON) -> K121(Relay-ON) -> PD2_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K120(Relay-ON) -> K121(Relay-ON) -> PD2_S
+  CH1 High -> PD3  [Kelvin]  需闭合: K7,K8
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K7(Relay-ON) -> K8(Relay-ON) -> PD3_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K7(Relay-ON) -> K8(Relay-ON) -> PD3_S
+  CH1 Low -> PD5  [Kelvin]  需闭合: K104
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K104(Relay-ON) -> K105(Relay-NC) -> PD5_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K104(Relay-ON) -> K105(Relay-NC) -> PD5_S
+  CH1 High -> PGND  [Kelvin]  需闭合: K136,K137,K143,K144,K154,K155
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K144(Relay-ON) -> K143(Relay-ON) -> K154(Relay-ON) -> K155(Relay-ON) -> PGND_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K154(Relay-ON) -> K155(Relay-ON) -> PGND_S
+  CH1 High -> PGND_WL  [Kelvin]  需闭合: K136,K137,K143,K144,K35,K36
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K144(Relay-ON) -> K143(Relay-ON) -> K35(Relay-ON) -> K36(Relay-ON) -> PGND_WL_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K35(Relay-ON) -> K36(Relay-ON) -> PGND_WL_S
+  CH1 High -> PMID  [Kelvin]  需闭合: K136,K137,K143,K144,K83
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K144(Relay-ON) -> K143(Relay-ON) -> K83(Relay-ON) -> K84(Relay-NC) -> PMID_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K83(Relay-ON) -> K84(Relay-NC) -> PMID_S
+  CH1 Low -> SCL  [Kelvin]  需闭合: K138,K139,K145,K146,K32
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K32(Relay-ON) -> K33(Relay-NC) -> S24_P1
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K32(Relay-ON) -> K33(Relay-NC) -> SCL_S
+  CH1 High -> SDA  [Kelvin]  需闭合: K136,K137,K143,K144,K58,K59
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K144(Relay-ON) -> K143(Relay-ON) -> K58(Relay-ON) -> K59(Relay-ON) -> S24_P2
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K58(Relay-ON) -> K59(Relay-ON) -> SDA_S
+  CH1 Low -> SW  [Kelvin]  需闭合: K132,K133,K134,K135
+    S1_FPVIe_FL1 -> K133(Relay-ON) -> K134(Relay-ON) -> SW_F
+    S1_FPVIe_SL1 -> K132(Relay-ON) -> K135(Relay-ON) -> SW_S
+  CH1 High -> SW1  [Kelvin]  需闭合: K136,K137,K143,K144,K46
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K144(Relay-ON) -> K143(Relay-ON) -> K46(Relay-ON) -> K48(Relay-NC) -> K49(Relay-NC) -> SW1_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K46(Relay-ON) -> K48(Relay-NC) -> K49(Relay-NC) -> SW1_S
+  CH1 Low -> SW1  [Kelvin]  需闭合: K138,K139,K145,K146,K47
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K47(Relay-ON) -> K50(Relay-NC) -> SW1_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K47(Relay-ON) -> K50(Relay-NC) -> SW1_S
+  CH1 High -> SW2  [Kelvin]  需闭合: K136,K137,K143,K144,K46,K49
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K144(Relay-ON) -> K143(Relay-ON) -> K46(Relay-ON) -> K48(Relay-NC) -> K49(Relay-ON) -> SW2_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K46(Relay-ON) -> K48(Relay-NC) -> K49(Relay-ON) -> SW2_S
+  CH1 Low -> SW2  [Kelvin]  需闭合: K138,K139,K145,K146,K47,K50
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K47(Relay-ON) -> K50(Relay-ON) -> SW2_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K47(Relay-ON) -> K50(Relay-ON) -> SW2_S
+  CH1 Low -> VAC1  [Kelvin]  需闭合: K138,K139,K145,K146,K17
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1_S
+  CH1 Low -> VAC2  [Kelvin]  需闭合: K138,K139,K145,K146,K17,K19
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-ON) -> VAC2_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-ON) -> VAC2_S
+  CH1 Low -> VAC3  [Kelvin]  需闭合: K138,K139,K145,K146,K17,K18
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K17(Relay-ON) -> K18(Relay-ON) -> K20(Relay-NC) -> VAC3_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K17(Relay-ON) -> K18(Relay-ON) -> K20(Relay-NC) -> VAC3_S
+  CH1 Low -> VAC_WL  [Kelvin]  需闭合: K138,K139,K145,K146,K32,K33
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K32(Relay-ON) -> K33(Relay-ON) -> VAC_WL_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K32(Relay-ON) -> K33(Relay-ON) -> VAC_WL_S
+  CH1 High -> VBAT  [Kelvin]  需闭合: K7
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT_S
+  CH1 Low -> VBUS  [Kelvin]  需闭合: K138,K139,K145,K146,K3
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K3(Relay-ON) -> K4(Relay-NC) -> VBUS_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K3(Relay-ON) -> K4(Relay-NC) -> VBUS_S
+  CH1 High -> VCC  [Kelvin]  需闭合: K136,K137,K143,K144,K25,K30
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K144(Relay-ON) -> K143(Relay-ON) -> K30(Relay-ON) -> K25(Relay-ON) -> VCC_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K30(Relay-ON) -> K25(Relay-ON) -> VCC_S
+  CH1 Low -> VCC  [Kelvin]  需闭合: K138,K139,K145,K146,K29
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K29(Relay-ON) -> K31(Relay-NC) -> VCC_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K29(Relay-ON) -> K31(Relay-NC) -> VCC_S
+  CH1 High -> VCN  [Kelvin]  需闭合: K136,K137,K143,K144,K156
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K144(Relay-ON) -> K143(Relay-ON) -> K156(Relay-ON) -> K157(Relay-NC) -> VCN_FORCE
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K156(Relay-ON) -> K157(Relay-NC) -> VCN_S
+  CH1 Low -> VCP  [Kelvin]  需闭合: K138,K139,K145,K146,K60
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K60(Relay-ON) -> K61(Relay-NC) -> VCP_FORCE
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K60(Relay-ON) -> K61(Relay-NC) -> VCP_S
+  CH1 High -> VDM  [Kelvin]  需闭合: K136,K137,K143,K144,K58
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K144(Relay-ON) -> K143(Relay-ON) -> K58(Relay-ON) -> K59(Relay-NC) -> VDM_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K58(Relay-ON) -> K59(Relay-NC) -> VDM_S
+  CH1 Low -> VDM  [单线-仅FL] ⚠F/S未同时连通,非有效通路  需闭合: K152
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K142(Relay-NC) -> K152(Relay-ON) -> VDM_F
+  CH1 Low -> VMCU  [Kelvin]  需闭合: K138,K139,K145,K146,K29,K31
+    S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K29(Relay-ON) -> K31(Relay-ON) -> VMCU_F
+    S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K29(Relay-ON) -> K31(Relay-ON) -> VMCU_S
+  CH1 High -> nQON  [Kelvin]  需闭合: K136,K137,K62,K66
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K141(Relay-NC) -> K66(Relay-ON) -> nQON_F
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K62(Relay-ON) -> K64(Relay-NC) -> nQON_S
+  CH1 High -> nRST  [Kelvin]  需闭合: K123,K124
+    S1_FPVIe_FH1 -> K131(Relay-NC) -> K123(Relay-ON) -> K124(Relay-ON) -> nRST
+    S1_FPVIe_SH1 -> K132(Relay-NC) -> K123(Relay-ON) -> K124(Relay-ON) -> nRST
+
+## 列3: QTMUe → PIN (BUS继电器)
+  注: QTMU不分Kelvin(仅FH, Low端=DGND), High端到达即闭环, 无F/S配对要求
+  ACDRV1 ← S10_CH0_A  [通路]  需闭合: K141,K22,K30
+    S10_CH0_A -> K141(Relay-ON) -> K30(Relay-ON) -> K22(Relay-ON) -> ACDRV1
+  ACDRV2 ← S10_CH0_A  [通路]  需闭合: K141,K23,K30
+    S10_CH0_A -> K141(Relay-ON) -> K30(Relay-ON) -> K23(Relay-ON) -> ACDRV2
+  ACDRV3 ← S10_CH0_A  [通路]  需闭合: K141,K24,K30
+    S10_CH0_A -> K141(Relay-ON) -> K30(Relay-ON) -> K24(Relay-ON) -> ACDRV3
+  AMUX ← S10_CH0_A  [通路]  需闭合: K141,K154
+    S10_CH0_A -> K141(Relay-ON) -> K154(Relay-ON) -> K155(Relay-NC) -> AMUX
+  BST ← S10_CH0_A  [通路]  需闭合: K141,K46,K48,K76
+    S10_CH0_A -> K141(Relay-ON) -> K46(Relay-ON) -> K48(Relay-ON) -> K76(Relay-ON) -> BST
+  CC1 ← S10_CH0_A  [通路]  需闭合: K96
+    S10_CH0_A -> K141(Relay-NC) -> K96(Relay-ON) -> K97(Relay-NC) -> K98(Relay-NC) -> CC1
+  COMP ← S10_CH0_A  [通路]  需闭合: K141,K156,K157
+    S10_CH0_A -> K141(Relay-ON) -> K156(Relay-ON) -> K157(Relay-ON) -> COMP
+  DMA_PA7 ← S10_CH0_A  [通路]  需闭合: K120
+    S10_CH0_A -> K141(Relay-NC) -> K120(Relay-ON) -> K121(Relay-NC) -> DMA_PA7
+  HG1 ← S10_CH0_A  [通路]  需闭合: K141,K62,K64
+    S10_CH0_A -> K141(Relay-ON) -> K62(Relay-ON) -> K64(Relay-ON) -> HG1
+  HG2 ← S10_CH0_A  [通路]  需闭合: K141,K83,K84
+    S10_CH0_A -> K141(Relay-ON) -> K83(Relay-ON) -> K84(Relay-ON) -> HG2
+  INT_PA0 ← S10_CH0_A  [通路]  需闭合: K101
+    S10_CH0_A -> K141(Relay-NC) -> K101(Relay-ON) -> K102(Relay-NC) -> INT_PA0
+  KLV1 ← S10_CH0_A  [通路]  需闭合: K141,K35
+    S10_CH0_A -> K141(Relay-ON) -> K35(Relay-ON) -> K36(Relay-NC) -> K37(Relay-NC) -> KLV1
+  KLV2 ← S10_CH0_A  [通路]  需闭合: K141,K35,K37
+    S10_CH0_A -> K141(Relay-ON) -> K35(Relay-ON) -> K36(Relay-NC) -> K37(Relay-ON) -> KLV2
+  PA1 ← S10_CH0_A  [通路]  需闭合: K106
+    S10_CH0_A -> K141(Relay-NC) -> K106(Relay-ON) -> K107(Relay-NC) -> PA1
+  PA6_PWM2 ← S10_CH0_A  [通路]  需闭合: K111
+    S10_CH0_A -> K141(Relay-NC) -> K111(Relay-ON) -> K112(Relay-NC) -> PA6_PWM2
+  PB1 ← S10_CH0_A  [通路]  需闭合: K106,K107
+    S10_CH0_A -> K141(Relay-NC) -> K106(Relay-ON) -> K107(Relay-ON) -> PB1
+  PB3 ← S10_CH0_A  [通路]  需闭合: K96,K98
+    S10_CH0_A -> K141(Relay-NC) -> K96(Relay-ON) -> K97(Relay-NC) -> K98(Relay-ON) -> PB3
+  PB5 ← S10_CH0_A  [通路]  需闭合: K123
+    S10_CH0_A -> K141(Relay-NC) -> K123(Relay-ON) -> K124(Relay-NC) -> PB5
+  PB6 ← S10_CH0_A  [通路]  需闭合: K116,K117
+    S10_CH0_A -> K141(Relay-NC) -> K116(Relay-ON) -> K117(Relay-ON) -> PB6
+  PB7 ← S10_CH0_A  [通路]  需闭合: K116
+    S10_CH0_A -> K141(Relay-NC) -> K116(Relay-ON) -> K117(Relay-NC) -> PB7
+  PC3 ← S10_CH0_A  [通路]  需闭合: K101,K102
+    S10_CH0_A -> K141(Relay-NC) -> K101(Relay-ON) -> K102(Relay-ON) -> PC3
+  PC5 ← S10_CH0_A  [通路]  需闭合: K111,K112
+    S10_CH0_A -> K141(Relay-NC) -> K111(Relay-ON) -> K112(Relay-ON) -> PC5
+  PD2 ← S10_CH0_A  [通路]  需闭合: K120,K121
+    S10_CH0_A -> K141(Relay-NC) -> K120(Relay-ON) -> K121(Relay-ON) -> PD2
+  PD3 ← S10_CH0_A  [通路]  需闭合: K7,K8
+    S10_CH0_A -> K141(Relay-NC) -> K7(Relay-ON) -> K8(Relay-ON) -> PD3
+  PGND ← S10_CH0_A  [通路]  需闭合: K141,K154,K155
+    S10_CH0_A -> K141(Relay-ON) -> K154(Relay-ON) -> K155(Relay-ON) -> PGND
+  PGND_WL ← S10_CH0_A  [通路]  需闭合: K141,K35,K36
+    S10_CH0_A -> K141(Relay-ON) -> K35(Relay-ON) -> K36(Relay-ON) -> PGND_WL
+  PMID ← S10_CH0_A  [通路]  需闭合: K141,K83
+    S10_CH0_A -> K141(Relay-ON) -> K83(Relay-ON) -> K84(Relay-NC) -> PMID
+  SDA ← S10_CH0_A  [通路]  需闭合: K141,K58,K59
+    S10_CH0_A -> K141(Relay-ON) -> K58(Relay-ON) -> K59(Relay-ON) -> SDA
+  SW1 ← S10_CH0_A  [通路]  需闭合: K141,K46
+    S10_CH0_A -> K141(Relay-ON) -> K46(Relay-ON) -> K48(Relay-NC) -> K49(Relay-NC) -> SW1
+  SW2 ← S10_CH0_A  [通路]  需闭合: K141,K46,K49
+    S10_CH0_A -> K141(Relay-ON) -> K46(Relay-ON) -> K48(Relay-NC) -> K49(Relay-ON) -> SW2
+  VBAT ← S10_CH0_A  [通路]  需闭合: K7
+    S10_CH0_A -> K141(Relay-NC) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT
+  VCC ← S10_CH0_A  [通路]  需闭合: K141,K25,K30
+    S10_CH0_A -> K141(Relay-ON) -> K30(Relay-ON) -> K25(Relay-ON) -> VCC
+  VCN ← S10_CH0_A  [通路]  需闭合: K141,K156
+    S10_CH0_A -> K141(Relay-ON) -> K156(Relay-ON) -> K157(Relay-NC) -> VCN
+  VDM ← S10_CH0_A  [通路]  需闭合: K141,K58
+    S10_CH0_A -> K141(Relay-ON) -> K58(Relay-ON) -> K59(Relay-NC) -> VDM
+  nRST ← S10_CH0_A  [通路]  需闭合: K123,K124
+    S10_CH0_A -> K141(Relay-NC) -> K123(Relay-ON) -> K124(Relay-ON) -> nRST
+
+## 列4: QVMe → PIN (BUS继电器)
+  注: QVM为2线Sense表(CH0+/CH0-), 有效测量需两端分别到达两个测量节点
+  ACDRV1 ← QVM高端  [通路]  需闭合: K137,K22,K30
+    S8_QVM_CH0+ -> K137(Relay-ON) -> K30(Relay-ON) -> K22(Relay-ON) -> ACDRV1
+  ACDRV2 ← QVM高端  [通路]  需闭合: K137,K23,K30
+    S8_QVM_CH0+ -> K137(Relay-ON) -> K30(Relay-ON) -> K23(Relay-ON) -> ACDRV2
+  ACDRV3 ← QVM高端  [通路]  需闭合: K137,K24,K30
+    S8_QVM_CH0+ -> K137(Relay-ON) -> K30(Relay-ON) -> K24(Relay-ON) -> ACDRV3
+  AMUX ← QVM高端  [通路]  需闭合: K137,K154
+    S8_QVM_CH0+ -> K137(Relay-ON) -> K154(Relay-ON) -> K155(Relay-NC) -> AMUX
+  AMUX ← QVM低端  [通路]  需闭合: K138,K17,K18,K20
+    S8_QVM_CH0- -> K138(Relay-ON) -> K17(Relay-ON) -> K18(Relay-ON) -> K20(Relay-ON) -> AMUX
+  BST ← QVM高端  [通路]  需闭合: K137,K46,K48,K76
+    S8_QVM_CH0+ -> K137(Relay-ON) -> K46(Relay-ON) -> K48(Relay-ON) -> K76(Relay-ON) -> BST
+  BST ← QVM低端  [通路]  需闭合: K109,K110,K139
+    S8_QVM_CH0- -> K139(Relay-ON) -> K109(Relay-ON) -> K110(Relay-ON) -> BST
+  BST1 ← QVM低端  [通路]  需闭合: K138,K41
+    S8_QVM_CH0- -> K138(Relay-ON) -> K41(Relay-ON) -> K42(Relay-NC) -> K43(Relay-NC) -> BST1
+  BST2 ← QVM低端  [通路]  需闭合: K138,K41,K43
+    S8_QVM_CH0- -> K138(Relay-ON) -> K41(Relay-ON) -> K42(Relay-NC) -> K43(Relay-ON) -> BST2
+  CC1 ← QVM高端  [通路]  需闭合: K136,K96
+    S8_QVM_CH0+ -> K136(Relay-ON) -> K96(Relay-ON) -> K97(Relay-NC) -> K98(Relay-NC) -> CC1
+  CC2 ← QVM低端  [通路]  需闭合: K104,K105,K139
+    S8_QVM_CH0- -> K139(Relay-ON) -> K104(Relay-ON) -> K105(Relay-ON) -> CC2
+  COMP ← QVM高端  [通路]  需闭合: K137,K156,K157
+    S8_QVM_CH0+ -> K137(Relay-ON) -> K156(Relay-ON) -> K157(Relay-ON) -> COMP
+  DMA_PA7 ← QVM高端  [通路]  需闭合: K120,K136
+    S8_QVM_CH0+ -> K136(Relay-ON) -> K120(Relay-ON) -> K121(Relay-NC) -> DMA_PA7
+  DMO_PC6 ← QVM低端  [通路]  需闭合: K139,K94,K95
+    S8_QVM_CH0- -> K139(Relay-ON) -> K94(Relay-ON) -> K95(Relay-ON) -> DMO_PC6
+  DRVH1 ← QVM低端  [通路]  需闭合: K138,K3,K4
+    S8_QVM_CH0- -> K138(Relay-ON) -> K3(Relay-ON) -> K4(Relay-ON) -> DRVH1
+  HG1 ← QVM高端  [通路]  需闭合: K137,K62,K64
+    S8_QVM_CH0+ -> K137(Relay-ON) -> K62(Relay-ON) -> K64(Relay-ON) -> HG1
+  HG2 ← QVM高端  [通路]  需闭合: K137,K83,K84
+    S8_QVM_CH0+ -> K137(Relay-ON) -> K83(Relay-ON) -> K84(Relay-ON) -> HG2
+  INT_PA0 ← QVM高端  [通路]  需闭合: K101,K136
+    S8_QVM_CH0+ -> K136(Relay-ON) -> K101(Relay-ON) -> K102(Relay-NC) -> INT_PA0
+  KLV1 ← QVM高端  [通路]  需闭合: K137,K35
+    S8_QVM_CH0+ -> K137(Relay-ON) -> K35(Relay-ON) -> K36(Relay-NC) -> K37(Relay-NC) -> KLV1
+  KLV2 ← QVM高端  [通路]  需闭合: K137,K35,K37
+    S8_QVM_CH0+ -> K137(Relay-ON) -> K35(Relay-ON) -> K36(Relay-NC) -> K37(Relay-ON) -> KLV2
+  LG1 ← QVM低端  [通路]  需闭合: K138,K51
+    S8_QVM_CH0- -> K138(Relay-ON) -> K51(Relay-ON) -> K52(Relay-NC) -> LG1
+  LG2 ← QVM低端  [通路]  需闭合: K138,K51,K52
+    S8_QVM_CH0- -> K138(Relay-ON) -> K51(Relay-ON) -> K52(Relay-ON) -> LG2
+  PA1 ← QVM高端  [通路]  需闭合: K106,K136
+    S8_QVM_CH0+ -> K136(Relay-ON) -> K106(Relay-ON) -> K107(Relay-NC) -> PA1
+  PA4 ← QVM低端  [通路]  需闭合: K118,K139
+    S8_QVM_CH0- -> K139(Relay-ON) -> K118(Relay-ON) -> K119(Relay-NC) -> PA4
+  PA5 ← QVM低端  [通路]  需闭合: K114,K139
+    S8_QVM_CH0- -> K139(Relay-ON) -> K114(Relay-ON) -> K115(Relay-NC) -> PA5
+  PA6_PWM2 ← QVM高端  [通路]  需闭合: K111,K136
+    S8_QVM_CH0+ -> K136(Relay-ON) -> K111(Relay-ON) -> K112(Relay-NC) -> PA6_PWM2
+  PB0_PWM1 ← QVM低端  [通路]  需闭合: K109,K139
+    S8_QVM_CH0- -> K139(Relay-ON) -> K109(Relay-ON) -> K110(Relay-NC) -> PB0_PWM1
+  PB1 ← QVM高端  [通路]  需闭合: K106,K107,K136
+    S8_QVM_CH0+ -> K136(Relay-ON) -> K106(Relay-ON) -> K107(Relay-ON) -> PB1
+  PB2 ← QVM低端  [通路]  需闭合: K114,K115,K139
+    S8_QVM_CH0- -> K139(Relay-ON) -> K114(Relay-ON) -> K115(Relay-ON) -> PB2
+  PB3 ← QVM高端  [通路]  需闭合: K136,K96,K98
+    S8_QVM_CH0+ -> K136(Relay-ON) -> K96(Relay-ON) -> K97(Relay-NC) -> K98(Relay-ON) -> PB3
+  PB4 ← QVM低端  [通路]  需闭合: K118,K119,K139
+    S8_QVM_CH0- -> K139(Relay-ON) -> K118(Relay-ON) -> K119(Relay-ON) -> PB4
+  PB5 ← QVM高端  [通路]  需闭合: K123,K136
+    S8_QVM_CH0+ -> K136(Relay-ON) -> K123(Relay-ON) -> K124(Relay-NC) -> PB5
+  PB5 ← QVM低端  [通路]  需闭合: K139,K99
+    S8_QVM_CH0- -> K139(Relay-ON) -> K99(Relay-ON) -> K100(Relay-NC) -> PB5
+  PB6 ← QVM高端  [通路]  需闭合: K116,K117,K136
+    S8_QVM_CH0+ -> K136(Relay-ON) -> K116(Relay-ON) -> K117(Relay-ON) -> PB6
+  PB7 ← QVM高端  [通路]  需闭合: K116,K136
+    S8_QVM_CH0+ -> K136(Relay-ON) -> K116(Relay-ON) -> K117(Relay-NC) -> PB7
+  PC3 ← QVM高端  [通路]  需闭合: K101,K102,K136
+    S8_QVM_CH0+ -> K136(Relay-ON) -> K101(Relay-ON) -> K102(Relay-ON) -> PC3
+  PC4 ← QVM低端  [通路]  需闭合: K100,K139,K99
+    S8_QVM_CH0- -> K139(Relay-ON) -> K99(Relay-ON) -> K100(Relay-ON) -> PC4
+  PC5 ← QVM高端  [通路]  需闭合: K111,K112,K136
+    S8_QVM_CH0+ -> K136(Relay-ON) -> K111(Relay-ON) -> K112(Relay-ON) -> PC5
+  PC8 ← QVM低端  [通路]  需闭合: K139,K94
+    S8_QVM_CH0- -> K139(Relay-ON) -> K94(Relay-ON) -> K95(Relay-NC) -> PC8
+  PD2 ← QVM高端  [通路]  需闭合: K120,K121,K136
+    S8_QVM_CH0+ -> K136(Relay-ON) -> K120(Relay-ON) -> K121(Relay-ON) -> PD2
+  PD3 ← QVM高端  [通路]  需闭合: K136,K7,K8
+    S8_QVM_CH0+ -> K136(Relay-ON) -> K7(Relay-ON) -> K8(Relay-ON) -> PD3
+  PD5 ← QVM低端  [通路]  需闭合: K104,K139
+    S8_QVM_CH0- -> K139(Relay-ON) -> K104(Relay-ON) -> K105(Relay-NC) -> PD5
+  PGND ← QVM高端  [通路]  需闭合: K137,K154,K155
+    S8_QVM_CH0+ -> K137(Relay-ON) -> K154(Relay-ON) -> K155(Relay-ON) -> PGND
+  PGND_WL ← QVM高端  [通路]  需闭合: K137,K35,K36
+    S8_QVM_CH0+ -> K137(Relay-ON) -> K35(Relay-ON) -> K36(Relay-ON) -> PGND_WL
+  PMID ← QVM高端  [通路]  需闭合: K137,K83
+    S8_QVM_CH0+ -> K137(Relay-ON) -> K83(Relay-ON) -> K84(Relay-NC) -> PMID
+  SCL ← QVM低端  [通路]  需闭合: K138,K32
+    S8_QVM_CH0- -> K138(Relay-ON) -> K32(Relay-ON) -> K33(Relay-NC) -> SCL
+  SDA ← QVM高端  [通路]  需闭合: K137,K58,K59
+    S8_QVM_CH0+ -> K137(Relay-ON) -> K58(Relay-ON) -> K59(Relay-ON) -> SDA
+  SW ← QVM低端  [通路]  需闭合: K138,K60,K61
+    S8_QVM_CH0- -> K138(Relay-ON) -> K60(Relay-ON) -> K61(Relay-ON) -> SW
+  SW1 ← QVM高端  [通路]  需闭合: K137,K46
+    S8_QVM_CH0+ -> K137(Relay-ON) -> K46(Relay-ON) -> K48(Relay-NC) -> K49(Relay-NC) -> SW1
+  SW1 ← QVM低端  [通路]  需闭合: K138,K47
+    S8_QVM_CH0- -> K138(Relay-ON) -> K47(Relay-ON) -> K50(Relay-NC) -> SW1
+  SW2 ← QVM高端  [通路]  需闭合: K137,K46,K49
+    S8_QVM_CH0+ -> K137(Relay-ON) -> K46(Relay-ON) -> K48(Relay-NC) -> K49(Relay-ON) -> SW2
+  SW2 ← QVM低端  [通路]  需闭合: K138,K47,K50
+    S8_QVM_CH0- -> K138(Relay-ON) -> K47(Relay-ON) -> K50(Relay-ON) -> SW2
+  VAC1 ← QVM低端  [通路]  需闭合: K138,K17
+    S8_QVM_CH0- -> K138(Relay-ON) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1
+  VAC2 ← QVM低端  [通路]  需闭合: K138,K17,K19
+    S8_QVM_CH0- -> K138(Relay-ON) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-ON) -> VAC2
+  VAC3 ← QVM低端  [通路]  需闭合: K138,K17,K18
+    S8_QVM_CH0- -> K138(Relay-ON) -> K17(Relay-ON) -> K18(Relay-ON) -> K20(Relay-NC) -> VAC3
+  VAC_WL ← QVM低端  [通路]  需闭合: K138,K32,K33
+    S8_QVM_CH0- -> K138(Relay-ON) -> K32(Relay-ON) -> K33(Relay-ON) -> VAC_WL
+  VBAT ← QVM高端  [通路]  需闭合: K136,K7
+    S8_QVM_CH0+ -> K136(Relay-ON) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT
+  VBUS ← QVM低端  [通路]  需闭合: K138,K3
+    S8_QVM_CH0- -> K138(Relay-ON) -> K3(Relay-ON) -> K4(Relay-NC) -> VBUS
+  VCC ← QVM高端  [通路]  需闭合: K137,K25,K30
+    S8_QVM_CH0+ -> K137(Relay-ON) -> K30(Relay-ON) -> K25(Relay-ON) -> VCC
+  VCC ← QVM低端  [通路]  需闭合: K138,K29
+    S8_QVM_CH0- -> K138(Relay-ON) -> K29(Relay-ON) -> K31(Relay-NC) -> VCC
+  VCN ← QVM高端  [通路]  需闭合: K137,K156
+    S8_QVM_CH0+ -> K137(Relay-ON) -> K156(Relay-ON) -> K157(Relay-NC) -> VCN
+  VCP ← QVM低端  [通路]  需闭合: K138,K60
+    S8_QVM_CH0- -> K138(Relay-ON) -> K60(Relay-ON) -> K61(Relay-NC) -> VCP
+  VDM ← QVM高端  [通路]  需闭合: K137,K58
+    S8_QVM_CH0+ -> K137(Relay-ON) -> K58(Relay-ON) -> K59(Relay-NC) -> VDM
+  VMCU ← QVM低端  [通路]  需闭合: K138,K29,K31
+    S8_QVM_CH0- -> K138(Relay-ON) -> K29(Relay-ON) -> K31(Relay-ON) -> VMCU
+  nQON ← QVM高端  [通路]  需闭合: K137,K62
+    S8_QVM_CH0+ -> K137(Relay-ON) -> K62(Relay-ON) -> K64(Relay-NC) -> nQON
+  nRST ← QVM高端  [通路]  需闭合: K123,K124,K136
+    S8_QVM_CH0+ -> K136(Relay-ON) -> K123(Relay-ON) -> K124(Relay-ON) -> nRST
+
+## 列5: ACM → PIN (Share继电器)
+  (本板卡无 ACM 源表)
+
+## 列6: ACM200 → PIN (Share继电器)
+  ACDRV1  [Kelvin]  需闭合: K22
+    F: S5_ACM200_FH1 -> K22(Relay-ON) -> ACDRV1_F
+    S: S5_ACM200_SH1 -> K22(Relay-ON) -> ACDRV1_S
+  ACDRV2  [Kelvin]  需闭合: K23
+    F: S5_ACM200_FH1 -> K23(Relay-ON) -> ACDRV2_F
+    S: S5_ACM200_SH1 -> K23(Relay-ON) -> ACDRV2_S
+  ACDRV3  [Kelvin]  需闭合: K24
+    F: S5_ACM200_FH1 -> K24(Relay-ON) -> ACDRV3_F
+    S: S5_ACM200_SH1 -> K24(Relay-ON) -> ACDRV3_S
+  BST  [Kelvin]  需闭合: K48,K76
+    F: S5_ACM200_FH5 -> K48(Relay-ON) -> K76(Relay-ON) -> BST_F
+    S: S5_ACM200_SH5 -> K48(Relay-ON) -> K76(Relay-ON) -> BST_S
+  BST1  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH4 -> K42(Relay-NC) -> K43(Relay-NC) -> BST1_F
+    S: S5_ACM200_SH4 -> K42(Relay-NC) -> K43(Relay-NC) -> BST1_S
+  BST2  [Kelvin]  需闭合: K43
+    F: S5_ACM200_FH4 -> K42(Relay-NC) -> K43(Relay-ON) -> BST2_F
+    S: S5_ACM200_SH4 -> K42(Relay-NC) -> K43(Relay-ON) -> BST2_S
+  CC1  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH13 -> K97(Relay-NC) -> K98(Relay-NC) -> CC1_F
+    S: S5_ACM200_SH13 -> K97(Relay-NC) -> K98(Relay-NC) -> CC1_S
+  CC2  [Kelvin]  需闭合: K105
+    F: S5_ACM200_FH16 -> K105(Relay-ON) -> CC2_F
+    S: S5_ACM200_SH16 -> K105(Relay-ON) -> CC2_S
+  COMP  [Kelvin]  需闭合: K157
+    F: S5_ACM200_FH11 -> K157(Relay-ON) -> COMP_F
+    S: S5_ACM200_SH11 -> K157(Relay-ON) -> COMP_S
+  DMA_PA7  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH23 -> K121(Relay-NC) -> DMA_F
+    S: S5_ACM200_SH23 -> K121(Relay-NC) -> DMA_S
+  DMO_PC6  [Kelvin]  需闭合: K95
+    F: S5_ACM200_FH12 -> K95(Relay-ON) -> DMO_F
+    S: S5_ACM200_SH12 -> K95(Relay-ON) -> DMO_S
+  DRVH1  [Kelvin]  需闭合: K4
+    F: S5_ACM200_FH10 -> K4(Relay-ON) -> DRVH1_F
+    S: S5_ACM200_SH10 -> K4(Relay-ON) -> DRVH1_S
+  HG1  [Kelvin]  需闭合: K64
+    F: S5_ACM200_FH9 -> K64(Relay-ON) -> HG1_F
+    S: S5_ACM200_SH9 -> K64(Relay-ON) -> HG1_S
+  INT_PA0  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH15 -> K102(Relay-NC) -> INT_F
+    S: S5_ACM200_SH15 -> K102(Relay-NC) -> INT_S
+  LG1  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH6 -> K52(Relay-NC) -> LG1_F
+    S: S5_ACM200_SH6 -> K52(Relay-NC) -> LG1_S
+  LG2  [Kelvin]  需闭合: K52
+    F: S5_ACM200_FH6 -> K52(Relay-ON) -> LG2_F
+    S: S5_ACM200_SH6 -> K52(Relay-ON) -> LG2_S
+  PA1  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH17 -> K107(Relay-NC) -> PA1_F
+    S: S5_ACM200_SH17 -> K107(Relay-NC) -> PA1_S
+  PA4  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH22 -> K119(Relay-NC) -> PA4_F
+    S: S5_ACM200_SH22 -> K119(Relay-NC) -> PA4_S
+  PA5  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH20 -> K115(Relay-NC) -> PA5_F
+    S: S5_ACM200_SH20 -> K115(Relay-NC) -> PA5_S
+  PA6_PWM2  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH19 -> K112(Relay-NC) -> PA6_F
+    S: S5_ACM200_SH19 -> K112(Relay-NC) -> PA6_S
+  PB0_PWM1  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH18 -> K110(Relay-NC) -> PB0_F
+    S: S5_ACM200_SH18 -> K110(Relay-NC) -> PB0_S
+  PB1  [Kelvin]  需闭合: K107
+    F: S5_ACM200_FH17 -> K107(Relay-ON) -> PB1_F
+    S: S5_ACM200_SH17 -> K107(Relay-ON) -> PB1_S
+  PB2  [Kelvin]  需闭合: K115
+    F: S5_ACM200_FH20 -> K115(Relay-ON) -> PB2_F
+    S: S5_ACM200_SH20 -> K115(Relay-ON) -> PB2_S
+  PB3  [Kelvin]  需闭合: K98
+    F: S5_ACM200_FH13 -> K97(Relay-NC) -> K98(Relay-ON) -> PB3_F
+    S: S5_ACM200_SH13 -> K97(Relay-NC) -> K98(Relay-ON) -> PB3_S
+  PB4  [Kelvin]  需闭合: K119
+    F: S5_ACM200_FH22 -> K119(Relay-ON) -> PB4_F
+    S: S5_ACM200_SH22 -> K119(Relay-ON) -> PB4_S
+  PB5  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH14 -> K100(Relay-NC) -> PB5_F
+    S: S5_ACM200_SH14 -> K100(Relay-NC) -> PB5_S
+  PB6  [Kelvin]  需闭合: K117
+    F: S5_ACM200_FH21 -> K117(Relay-ON) -> PB6_F
+    S: S5_ACM200_SH21 -> K117(Relay-ON) -> PB6_S
+  PB7  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH21 -> K117(Relay-NC) -> PB7_F
+    S: S5_ACM200_SH21 -> K117(Relay-NC) -> PB7_S
+  PC3  [Kelvin]  需闭合: K102
+    F: S5_ACM200_FH15 -> K102(Relay-ON) -> PC3_F
+    S: S5_ACM200_SH15 -> K102(Relay-ON) -> PC3_S
+  PC4  [Kelvin]  需闭合: K100
+    F: S5_ACM200_FH14 -> K100(Relay-ON) -> PC4_F
+    S: S5_ACM200_SH14 -> K100(Relay-ON) -> PC4_S
+  PC5  [Kelvin]  需闭合: K112
+    F: S5_ACM200_FH19 -> K112(Relay-ON) -> PC5_F
+    S: S5_ACM200_SH19 -> K112(Relay-ON) -> PC5_S
+  PC8  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH12 -> K95(Relay-NC) -> PC8_F
+    S: S5_ACM200_SH12 -> K95(Relay-NC) -> PC8_S
+  PD2  [Kelvin]  需闭合: K121
+    F: S5_ACM200_FH23 -> K121(Relay-ON) -> PD2_F
+    S: S5_ACM200_SH23 -> K121(Relay-ON) -> PD2_S
+  PD5  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH16 -> K105(Relay-NC) -> PD5_F
+    S: S5_ACM200_SH16 -> K105(Relay-NC) -> PD5_S
+  SCL  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH2 -> K33(Relay-NC) -> S24_P1
+    S: S5_ACM200_SH2 -> K33(Relay-NC) -> SCL_S
+  SDA  [Kelvin]  需闭合: K59
+    F: S5_ACM200_FH7 -> K59(Relay-ON) -> S24_P2
+    S: S5_ACM200_SH7 -> K59(Relay-ON) -> SDA_S
+  SW  [Kelvin]  需闭合: K61
+    F: S5_ACM200_FH8 -> K61(Relay-ON) -> SW_F
+    S: S5_ACM200_SH8 -> K61(Relay-ON) -> SW_S
+  SW1  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH5 -> K48(Relay-NC) -> K49(Relay-NC) -> SW1_F
+    S: S5_ACM200_SH5 -> K48(Relay-NC) -> K49(Relay-NC) -> SW1_S
+  SW2  [Kelvin]  需闭合: K49
+    F: S5_ACM200_FH5 -> K48(Relay-NC) -> K49(Relay-ON) -> SW2_F
+    S: S5_ACM200_SH5 -> K48(Relay-NC) -> K49(Relay-ON) -> SW2_S
+  VAC_WL  [通路]  需闭合: K33
+    F: S5_ACM200_FH2 -> K33(Relay-ON) -> VAC_WL_F
+    S: S5_ACM200_SH2 -> K33(Relay-ON) -> VAC_WL_S
+  VBUS  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH10 -> K4(Relay-NC) -> VBUS_F
+    S: S5_ACM200_SH10 -> K4(Relay-NC) -> VBUS_S
+  VCC  [Kelvin]  需闭合: K25
+    F: S5_ACM200_FH1 -> K25(Relay-ON) -> VCC_F
+    S: S5_ACM200_SH1 -> K25(Relay-ON) -> VCC_S
+  VCN  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH11 -> K157(Relay-NC) -> VCN_FORCE
+    S: S5_ACM200_SH11 -> K157(Relay-NC) -> VCN_S
+  VCP  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH8 -> K61(Relay-NC) -> VCP_FORCE
+    S: S5_ACM200_SH8 -> K61(Relay-NC) -> VCP_S
+  VDM  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH7 -> K59(Relay-NC) -> VDM_F
+    S: S5_ACM200_SH7 -> K59(Relay-NC) -> VDM_S
+  nQON  [Kelvin]  需闭合: 无(默认导通)
+    F: S5_ACM200_FH9 -> K64(Relay-NC) -> nQON_F
+    S: S5_ACM200_SH9 -> K64(Relay-NC) -> nQON_S
+  注: ACM200 Low端 FL/SL 分组接 AGND_F, 闭环经 AGND 回流
+
+## 列7: FXVIe_PLUS → PIN (Share继电器)
+  注: S3 端口 netlist 标为 FXVIe_PLUS (原 FOVIe 标签已由新网表修正); Low端 FL/SL 分组接 AGND_F
+  AMUX  [Kelvin]  需闭合: 无(默认导通)
+    F: S3_FXVIe_PLUS_FH3 -> K155(Relay-NC) -> AMUX_F
+    S: S3_FXVIe_PLUS_SH3 -> K155(Relay-NC) -> AMUX_S
+  HG2  [Kelvin]  需闭合: K84
+    F: S3_FXVIe_PLUS_FH1 -> K84(Relay-ON) -> HG2_F
+    S: S3_FXVIe_PLUS_SH1 -> K84(Relay-ON) -> HG2_S
+  PB5  [Kelvin]  需闭合: 无(默认导通)
+    F: S3_FXVIe_PLUS_FH4 -> K124(Relay-NC) -> PB5_F
+    S: S3_FXVIe_PLUS_SH4 -> K124(Relay-NC) -> PB5_S
+  PD3  [Kelvin]  需闭合: K8
+    F: S3_FXVIe_PLUS_FH5 -> K8(Relay-ON) -> PD3_F
+    S: S3_FXVIe_PLUS_SH5 -> K8(Relay-ON) -> PD3_S
+  PGND  [Kelvin]  需闭合: K155
+    F: S3_FXVIe_PLUS_FH3 -> K155(Relay-ON) -> PGND_F
+    S: S3_FXVIe_PLUS_SH3 -> K155(Relay-ON) -> PGND_S
+  PMID  [Kelvin]  需闭合: 无(默认导通)
+    F: S3_FXVIe_PLUS_FH1 -> K84(Relay-NC) -> PMID_F
+    S: S3_FXVIe_PLUS_SH1 -> K84(Relay-NC) -> PMID_S
+  SW1  [Kelvin]  需闭合: 无(默认导通)
+    F: S3_FXVIe_PLUS_FH0 -> K50(Relay-NC) -> SW1_F
+    S: S3_FXVIe_PLUS_SH0 -> K50(Relay-NC) -> SW1_S
+  SW2  [Kelvin]  需闭合: K50
+    F: S3_FXVIe_PLUS_FH0 -> K50(Relay-ON) -> SW2_F
+    S: S3_FXVIe_PLUS_SH0 -> K50(Relay-ON) -> SW2_S
+  V1P5_VDRV  [Kelvin]  需闭合: 无(默认导通)
+    F: S3_FXVIe_PLUS_FH6 -> K125(Relay-NC) -> V1P5_F
+    S: S3_FXVIe_PLUS_SH6 -> K125(Relay-NC) -> V1P5_S
+  VBAT  [Kelvin]  需闭合: 无(默认导通)
+    F: S3_FXVIe_PLUS_FH5 -> K8(Relay-NC) -> VBAT_F
+    S: S3_FXVIe_PLUS_SH5 -> K8(Relay-NC) -> VBAT_S
+  VCC  [Kelvin]  需闭合: 无(默认导通)
+    F: S3_FXVIe_PLUS_FH2 -> K31(Relay-NC) -> VCC_F
+    S: S3_FXVIe_PLUS_SH2 -> K31(Relay-NC) -> VCC_S
+  VMCU  [Kelvin]  需闭合: K31
+    F: S3_FXVIe_PLUS_FH2 -> K31(Relay-ON) -> VMCU_F
+    S: S3_FXVIe_PLUS_SH2 -> K31(Relay-ON) -> VMCU_S
+  nRST  [通路]  需闭合: K124
+    F: S3_FXVIe_PLUS_FH4 -> K124(Relay-ON) -> nRST
+    S: S3_FXVIe_PLUS_SH4 -> K124(Relay-ON) -> nRST
+
+## 列8: QTMUe → PIN (Share继电器)
+  注: QTMU不分Kelvin(仅FH, Low端=DGND), High端到达即闭环
+  VDM ← S10_CH0_B  [通路]  需闭合: K152
+    S10_CH0_B -> K152(Relay-ON) -> VDM
+  nQON ← S10_CH0_A  [通路]  需闭合: K66
+    S10_CH0_A -> K66(Relay-ON) -> nQON
+
+## 列9: QVMe → PIN (Share继电器)
+  AGND ← QVM低端  [通路]  需闭合: K140
+    S8_QVM_CH0- -> K140(Relay-ON) -> AGND
+
+## 列10: DCM → PIN (Share继电器)
+  注: DCM为数字源, 不分Kelvin, Low端=DGND, High端到达即闭环
+  SCL ← S24_P1  [通路] [直连]  需闭合: 无(默认导通)
+    S24_P1 -> SCL
+  SDA ← S24_P2  [通路] [直连]  需闭合: 无(默认导通)
+    S24_P2 -> SDA
+
+## 列11: 通路分类 (P2P / 上拉 / 下拉 / 稳压 / net短接)
+  注: 上拉/下拉按连接分类(不看电阻值), Kelvin(F↔S)排除; 稳压按电容值≥100nF 判; net短接=CSV ELECTRICAL_SHORT_GROUP/NET_TIE 直接导线同电气节点
+
+### P2P-到地 (PIN ↔ AGND, 需闭合 ≤2)
+  ACDRV1 ↔ AGND  需闭合: K26
+  ACDRV2 ↔ AGND  需闭合: K27
+  ACDRV3 ↔ AGND  需闭合: K28
+  HG1 ↔ AGND  需闭合: K56
+  HG2 ↔ AGND  需闭合: K55
+  KLV1 ↔ AGND  需闭合: K39
+  KLV2 ↔ AGND  需闭合: K40
+  LG1 ↔ AGND  需闭合: K54
+  LG2 ↔ AGND  需闭合: K53
+  NC ↔ AGND  需闭合: K151
+  VAC1 ↔ AGND  需闭合: K14
+  VAC2 ↔ AGND  需闭合: K15
+  VAC3 ↔ AGND  需闭合: K16
+
+### P2P-互短 (PIN ↔ PIN, 需闭合 ≤2)
+  KLV1 ↔ KLV2  需闭合: K38
+
+### 上拉 (PIN + 电阻 + 继电器 + 上拉电源)
+  PA0 上拉-源表  R_PA0_PU_S1  需闭合: K103,K128
+  PA1 上拉-源表  R_PA1_PU_S1  需闭合: K108,K128
+  PA6 上拉-源表  R_PA6_PU_S1  需闭合: K113,K128
+  PA7 上拉-源表  R_PA7_PU_S1  需闭合: K122,K128
+  SCL 上拉-固定5V  R_SCL_PU_S1  需闭合: K34
+  SDA 上拉-固定5V  R_SDA_PU_S1  需闭合: K63
+  nQON 上拉-固定5V  R_nQON_PU_S1  需闭合: K65
+
+### 下拉 (PIN + 电阻 + 继电器 + 地)
+  PA1 下拉  R_PA1_PD_S1  →AGND_F  需闭合: K149
+  PA4 下拉  R_PA4_PD_S1  →AGND_F  需闭合: K150
+  PC4 下拉  R_PC4_PD_S1  →AGND_F  需闭合: K148
+
+### 稳压 (PIN + 电容 ≥100nF + 继电器)
+  AGND_F 稳压  C2_GND_S1  C=100nF  需闭合: 无
+  AGND_F 稳压  C5_GND_S1  C=100nF  需闭合: 无
+  AGND_F 稳压  C7_GND_S1  C=100nF  需闭合: 无
+  PMID 稳压  Cap2_PMID_S1  C=4.7uF  需闭合: K85
+  SVLP 稳压  C4_SVLP_S1(NC)  C=100nF  需闭合: 无
+  SW 稳压  Cap_SW_BST_S1  C=220nF  需闭合: K57
+  SW1 稳压  Cap_SW1_BST1_S1  C=220nF  需闭合: K45
+  SW2 稳压  Cap_SW2_BST2_S1  C=220nF  需闭合: K44
+  U1_AMP_PS 稳压  CL_S1  C=4.7uF  需闭合: 无
+  U1_AMP_PS 稳压  CS_S1  C=100nF  需闭合: 无
+  U2_PS 稳压  C8_PWR_S1  C=100nF  需闭合: 无
+  U34_PS 稳压  C3_PWR_S1  C=100nF  需闭合: 无
+  U34_PS 稳压  C6_PWR_S1  C=100nF  需闭合: 无
+  V1P5_VDRV 稳压  Cap2_V1P5_S1  C=2.2uF  需闭合: K126
+  VAC1 稳压  Cap2_VAC_S1  C=4.7uF  需闭合: K21
+  VBAT 稳压  Cap2_VBAT_S1  C=4.7uF  需闭合: K13
+  VBUS 稳压  Cap2_VBUS_S1  C=4.7uF  需闭合: K5
+  VCC 稳压  Cap2_VCC_S1  C=4.7uF  需闭合: K0
+  VCP 稳压  C2_CS_S1  C=100nF  需闭合: K68
+
+### net短接 (直接导线 / net alias / NetTie 同电气节点)
+  [DIRECT_NET_ALIAS] FPVIe0_FH_PC_S1 ↔ FPVIe0_SH_PC_S1  (DIRECT_WIRE, CONFIRMED)
+  [DIRECT_NET_ALIAS] FPVIe0_FL_PC_S1 ↔ FPVIe0_SL_PC_S1  (DIRECT_WIRE, CONFIRMED)
+  注: F/S 短接组 (如 FL↔SL 或 FH↔SH) 表示 Force/Sense 已在板上短接, 通路即使后又分叉 force/sense 也不再是 Kelvin 四线走线
+
+## 附注: DUT PIN → 信号net 映射 (R3.8)
+  用户确认的短接PIN (netlist无记录, 共享节点视为同一电气节点):
+    PWM2 ↔ PA6  (合并为节点 PWM2_PA6... 追踪到任一即到达)
+  用户确认的 TP↔PIN 短接 (任务一Step6a, PIN 无同名net, 经测试点建立关系):
+    BST ↔ FPVIe1_FH/FL_PC_S1  (经 TP_BST 测试点)
+    PA0 ↔ INT_F/S_S1  (经 TP_PA0 测试点)
+    PA7 ↔ DMA_F/S_S1  (经 TP_PA7 测试点)
+    PC6 ↔ DMO_F/S_S1  (经 TP_PC6 测试点)
+    PWM1 ↔ PB0_F/S_S1  (经 TP_PWM1 测试点)
+    SCL ↔ S24_P1  (经 TP_SCL 测试点)
+    SDA ↔ S24_P2  (经 TP_SDA 测试点)
+    SW ↔ FPVIe1_FL/SL_PC_S1  (经 TP_SW 测试点)
+    VDRV ↔ V1P5_F/S_S1  (经 TP_VDRV 测试点)
+  无同名net, 经TP/继电器名映射(Step B):
+    PA0_F_S1 → INT_F_S1
+    PA0_S_S1 → INT_S_S1
+    PA7_F_S1 → DMA_F_S1
+    PA7_S_S1 → DMA_S_S1
+    PC6_F_S1 → DMO_F_S1
+    PC6_S_S1 → DMO_S_S1
+    PWM1_F_S1 → PB0_F_S1
+    PWM1_S_S1 → PB0_S_S1
+    PWM2_F_S1 → PA6_F_S1
+    PWM2_S_S1 → PA6_S_S1
+    SCL_F_S1 → S24_P1
+    SDA_F_S1 → S24_P2
+    VCN_F_S1 → VCN_FORCE_S1
+    VCP_F_S1 → VCP_FORCE_S1
+    VDRV_F_S1 → V1P5_F_S1
+    VDRV_S_S1 → V1P5_S_S1
+  短路PIN合并(同一信号net):
+    DMA_PA7 ← DMA_F_S1
+    DMA_PA7 ← DMA_S_S1
+    DMO_PC6 ← DMO_F_S1
+    DMO_PC6 ← DMO_S_S1
+    INT_PA0 ← INT_F_S1
+    INT_PA0 ← INT_S_S1
+    PA6_PWM2 ← PA6_F_S1
+    PA6_PWM2 ← PA6_S_S1
+    PB0_PWM1 ← PB0_F_S1
+    PB0_PWM1 ← PB0_S_S1
+    V1P5_VDRV ← V1P5_F_S1
+    V1P5_VDRV ← V1P5_S_S1
+
+## 附注: 本项目浮动源 vs 非浮动源 (2026-08-30)
+
+> 用途: 后续推断需要用到源表（选源 / 判浮动 / 判接 AGND）时，先查本清单确定该源的浮动状态，再查上表列1-10 具体通路。
+> 判定依据（用户权威规则 + 硬件手册 Rev2.13 + 本原理图 Low 端链路）:
+>   - 所有模拟源 (ACM/ACM200/FOVIe/FXVIe/FXVIe_PLUS/FPVIe/FPVIe_PLUS/QVM/HVIe/HPVIe) 本质浮动;
+>     "接 AGND" 是经继电器短接, 不闭合即仍浮动
+>   - FPVIe/QVM 一般不短接地 → 天然浮动 (FPVIe SL→AGND 需 K138/K139+K140 闭合才发生)
+>   - DCM/QTMU 非浮动, Low端=DGND (无继电器隔离)
+>   - 判断"当前是否浮动" = 看该源 Low 端路径上有无需闭合的继电器; 不闭合=浮动
+
+| 源表 | 卡号 (工位) | 浮动? | 判定依据 (本原理图 Low 端链路) |
+|------|------|:---:|------|
+| FPVIe (FPVI0/FPVI1) | S1/S2/S15/S16/S17/S18/S31/S32 | 浮动 | 每通道独立全浮动差分; SL→AGND 经 K138/K139+K140 (列1 L31-32/L257-258), 不闭合即浮动 |
+| ACM200 | S5/S6/S11/S12/S21/S22/S27/S28 | 浮动 | 2浮动单元×2组共FL/SL; Low端 FL/SL 分组接 AGND_F (列6 注 L801), 经继电器短接, 不闭合仍浮动 |
+| FXVIe_PLUS | S3/S4/S13/S14/S19/S20/S29/S30 | 浮动 | 2组共FL/SL; Low端 FL/SL 分组接 AGND_F (列7 注 L804), 经继电器短接, 不闭合仍浮动 |
+| QVMe | S7/S8 | 浮动 | 全浮动差分电压表; 低端可经 K140 接 AGND (列9 L853-854), 不闭合即浮动 |
+| QTMUe | S10/S23 | 非浮动 | 时间测量, 不分Kelvin, Low端=DGND (列8 注 L846) |
+| DCM | (本工程 Pin_Channel_define 无实例) | 非浮动 | 数字源, 不分Kelvin, Low端=DGND (列10 注 L857) |
+| ACM | (本工程无卡, 列5 L660 明示) | (无) | 无源表, 不参与判定 |

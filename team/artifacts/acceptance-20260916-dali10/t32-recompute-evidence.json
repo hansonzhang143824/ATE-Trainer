@@ -1,0 +1,169 @@
+{
+ "extractedAt": "2026-09-16T19:20:55+08:00",
+ "deployed": {
+  "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+  "sizeBytes": 469714,
+  "sha256": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a",
+  "lines": 9354,
+  "bom": false
+ },
+ "tokenCounts": {
+  "TM600_HS_RDSON": {
+   "raw": 2,
+   "commentsStripped": 1
+  },
+  "TM601_LS_RDSON": {
+   "raw": 2,
+   "commentsStripped": 1
+  },
+  "TM600": {
+   "raw": 11,
+   "commentsStripped": 1
+  },
+  "TM601": {
+   "raw": 10,
+   "commentsStripped": 1
+  },
+  "RDSON": {
+   "raw": 16,
+   "commentsStripped": 8
+  }
+ },
+ "invariantsCommentsStripped": {
+  "delay_ms(1)": 292,
+  "delay_ms(2)": 39,
+  "SetClamp(50,50)": 2,
+  "MeasureVI(200,5,FPVIe_MV_X10)": 2,
+  "bare 126": 0,
+  "K126_V1P5_CAP": 2,
+  "ERROR_RES": 4,
+  "K5_VBUS_Cap": 9,
+  "K44_Cap_SW2_BST2": 0,
+  "K45_Cap_SW1_BST1": 1,
+  "K57_CAP_BST_SW": 6,
+  "K109_BUSL1_PB0": 0,
+  "K110_ACM18_BST": 0,
+  "rampi_capv-or-rampv_capv": 82,
+  "K_FPVIH_TO_BST_B": 0,
+  "K83_BUSH0_PMID": 1
+ },
+ "invariantsExpected": {
+  "delay_ms(1)": 6,
+  "delay_ms(2)": 0,
+  "SetClamp(50,50)": 2,
+  "MeasureVI(200,5,FPVIe_MV_X10)": 2,
+  "bare 126": 0,
+  "K126_V1P5_CAP": 2,
+  "ERROR_RES": 2
+ },
+ "functions": {
+  "TM600_HS_RDSON": {
+   "found": true,
+   "startLine": 9057,
+   "endLine": 9204,
+   "blockChars": 9907,
+   "setOnCalls": [
+    [
+     "K83_BUSH0_PMID",
+     "K60_BUSL0_VCP",
+     "K61_ACM8_SW",
+     "K13_VBAT_Cap",
+     "K85_CAP_PMID",
+     "K57_CAP_BST_SW",
+     "K126_V1P5_CAP"
+    ]
+   ],
+   "K109": 0,
+   "K110": 0,
+   "K83": 3,
+   "K60": 3,
+   "K61": 3,
+   "K126_V1P5_CAP": 1,
+   "K57_CAP_BST_SW": 1
+  },
+  "TM601_LS_RDSON": {
+   "found": true,
+   "startLine": 9217,
+   "endLine": 9353,
+   "blockChars": 9976,
+   "setOnCalls": [
+    [
+     "K154_BUSH0_AMUX",
+     "K155_FOVI3_PGND",
+     "K60_BUSL0_VCP",
+     "K61_ACM8_SW",
+     "K13_VBAT_Cap",
+     "K85_CAP_PMID",
+     "K57_CAP_BST_SW",
+     "K126_V1P5_CAP"
+    ]
+   ],
+   "K109": 0,
+   "K110": 0,
+   "K83": 0,
+   "K60": 6,
+   "K61": 5,
+   "K126_V1P5_CAP": 1,
+   "K57_CAP_BST_SW": 2
+  }
+ },
+ "baseline": {
+  "path": "team/artifacts/acceptance-20260916-dali10/backups/test.cpp.before_TM600_TM601.bak",
+  "sizeBytes": 434629,
+  "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+  "hits": {
+   "TM600": 0,
+   "TM601": 0,
+   "RDSON": 0
+  }
+ },
+ "goldenNonCopy": {
+  "golden": {
+   "path": "knowledge/references/L4-Golden-code/tm600-normal-highcurrent.cpp",
+   "sizeBytes": 6106,
+   "sha256": "8cdb0be1dd8381008a6a6ca84743170d6e1cf6f5c84f21a1e2e947a0187b72ce"
+  },
+  "probeResults": [
+   {
+    "path": "./team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp",
+    "goldenDistinctiveLinesProbed": 28,
+    "hits": []
+   },
+   {
+    "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+    "goldenDistinctiveLinesProbed": 28,
+    "hits": []
+   }
+  ]
+ },
+ "develZeroWrite": {
+  "source/test.cpp": {
+   "target": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a",
+   "devel": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+   "identical": false,
+   "targetSize": 469714,
+   "develSize": 434629
+  },
+  "source/StdAfx.h": {
+   "target": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+   "devel": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+   "identical": true,
+   "targetSize": 56968,
+   "develSize": 56968
+  },
+  "source/sub.cpp": {
+   "target": "e86d49bef7ae725106311d8205df6dbc11184c7a0920eeaed416a515ac391470",
+   "devel": "e86d49bef7ae725106311d8205df6dbc11184c7a0920eeaed416a515ac391470",
+   "identical": true,
+   "targetSize": 121909,
+   "develSize": 121909
+  },
+  "source/Pin_Channel_define.h": {
+   "target": "d5ce16a0ae79549424110755e99d9ae74cce79d18b8a1eaae3fd5588df285e35",
+   "devel": "d5ce16a0ae79549424110755e99d9ae74cce79d18b8a1eaae3fd5588df285e35",
+   "identical": true,
+   "targetSize": 10934,
+   "develSize": 10934
+  }
+ }
+}

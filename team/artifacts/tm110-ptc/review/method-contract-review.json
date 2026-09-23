@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm110-method-contract-review",
+  "taskId": "TM110-PTC-RULE_REVIEW_METHOD",
+  "trial": "tm110-ptc",
+  "tm": "TM110",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_METHOD",
+  "verdict": "pass",
+  "reviewedContracts": {
+    "strategy": {
+      "path": "strategy/tm110-resource-config-contract.json",
+      "sha256": "45efd33e72e84fdee4d54534f1666e943aa9a128bf9c7cce63a3224921a51478"
+    },
+    "method": {
+      "path": "method/tm110-test-method-contract.json",
+      "sha256": "f8d835786b2c4f6363c49fdbd5b51962c43a9bfb006d459f4692055c7f3acf7b"
+    }
+  },
+  "checks": [
+    {
+      "id": "RC-1",
+      "result": "PASS",
+      "subject": "Signed inputs and strategy gate",
+      "detail": "Both signed strategy inputs match their recorded hashes; validate_strategy_contract.py passed."
+    },
+    {
+      "id": "RC-2",
+      "result": "PASS",
+      "subject": "Route and functional-relay closure",
+      "detail": "VBAT, VAC3 and nQON each retain selected Path-Proofs Force/Sense paths; final closure [13,18,65] includes required K13, K18 and K65 without a CBIT or source-end conflict."
+    },
+    {
+      "id": "RC-3",
+      "result": "PASS",
+      "subject": "Scan method",
+      "detail": "Prediction 4.4 V; Notes 3-5 V is closer than VSET 0-10 V, so the recorded NOTES selection is correct. Code2/Dynamic/Name identify VAC3; the Notes VAC1 label is treated only as a numeric range candidate. Rise uses TRIG_FALLING and Fall uses TRIG_RISING."
+    },
+    {
+      "id": "RC-4",
+      "result": "PASS",
+      "subject": "Measurement, shutdown and logging",
+      "detail": "Power phases, nQON observation, power-down and Rise/Fall/Hys logging are present. BST/SW differential is explicitly not applicable with endpoint evidence."
+    },
+    {
+      "id": "RC-5",
+      "result": "PASS",
+      "subject": "No invented acceptance criterion",
+      "detail": "ExpectValue is marked REFERENCE_ONLY and numericPassFail is NOT_SPECIFIED; no tolerance or numeric pass/fail rule was introduced."
+    }
+  ],
+  "blockingDefects": [],
+  "summary": {
+    "checksPassed": 5,
+    "blockingDefects": 0,
+    "nextRole": "ate-implementer"
+  },
+  "signedInputs": {
+    "methodContractSha256": "48e250980d4a24e8699b02f0751cceed6d014c41ccd1372ca1ddcbc802812aab",
+    "bindingType": "mechanical current-method receipt; reviewed method behavior unchanged"
+  }
+}

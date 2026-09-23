@@ -1,0 +1,2208 @@
+meta sha256 1f5eeb5e33372e197dbcb5d0ac2739e3166729f7210a5f7ca46a423dfcd9f7f1 funcs 99
+#### meta: names containing scope bases / keywords ####
+====================================================================================================
+{
+ "functionName": "TM000_IQ_STANDBY",
+ "testType": "normal",
+ "dftItem": "TM000",
+ "projectType": "一般测试项目",
+ "paramType": "一般",
+ "overview": {
+  "level": "Top",
+  "name": "Iq_Standby",
+  "desc": "Sleep Quiescent current\nw/o VAC_PLUG module on",
+  "expectValue": "23 w/o digital iq.",
+  "unit": "uA",
+  "test": "Direct",
+  "helper": ""
+ },
+ "params": [
+  {
+   "check": "MI",
+   "checkPin": "VBAT",
+   "dftItem": "TM000"
+  }
+ ],
+ "hardwareInit": [
+  {
+   "cmd": "vset",
+   "pin": "vbat",
+   "value": 4.4,
+   "time": "100e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "field"
+  }
+ ],
+ "registers": [],
+ "capAuthority": {
+  "powered_pins": [
+   "VBAT"
+  ],
+  "mi_pins": [
+   "VBAT"
+  ],
+  "ramp_pins": [],
+  "testpad_pins": []
+ }
+}
+====================================================================================================
+{
+ "functionName": "TM001_IIN_SUSPEND",
+ "testType": "normal",
+ "dftItem": "TM001",
+ "projectType": "一般测试项目",
+ "paramType": "一般",
+ "overview": {
+  "level": "Top",
+  "name": "Iin_Suspend",
+  "desc": "Operation Quiescent current",
+  "expectValue": "",
+  "unit": "uA",
+  "test": "Direct",
+  "helper": ""
+ },
+ "params": [
+  {
+   "check": "MI",
+   "checkPin": "VBAT",
+   "dftItem": "TM001"
+  }
+ ],
+ "hardwareInit": [
+  {
+   "cmd": "vset",
+   "pin": "vbat",
+   "value": 3.7,
+   "time": "100e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "en_tm"
+  },
+  {
+   "cmd": "field"
+  }
+ ],
+ "registers": [],
+ "capAuthority": {
+  "powered_pins": [
+   "VBAT"
+  ],
+  "mi_pins": [
+   "VBAT"
+  ],
+  "ramp_pins": [],
+  "testpad_pins": []
+ }
+}
+====================================================================================================
+{
+ "functionName": "TM001_2_IQ_SHIPMODE",
+ "testType": "normal",
+ "dftItem": "TM001_2",
+ "projectType": "一般测试项目",
+ "paramType": "一般",
+ "overview": {
+  "level": "Top",
+  "name": "Iq_Shipmode",
+  "desc": "Shipmode iq.",
+  "expectValue": "",
+  "unit": "uA",
+  "test": "Direct",
+  "helper": ""
+ },
+ "params": [
+  {
+   "check": "MI",
+   "checkPin": "VBAT",
+   "dftItem": "TM001_2"
+  }
+ ],
+ "hardwareInit": [
+  {
+   "cmd": "vset",
+   "pin": "vbat",
+   "value": 3.7,
+   "time": "100e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "vset",
+   "pin": "vac1",
+   "value": 5.0,
+   "time": "100e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "vset",
+   "pin": "vac1",
+   "value": 0.0,
+   "time": "100e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "en_tm"
+  },
+  {
+   "cmd": "field"
+  }
+ ],
+ "registers": [],
+ "capAuthority": {
+  "powered_pins": [
+   "VAC1",
+   "VBAT"
+  ],
+  "mi_pins": [
+   "VBAT"
+  ],
+  "ramp_pins": [],
+  "testpad_pins": []
+ }
+}
+====================================================================================================
+{
+ "functionName": "TM001_3_IQ_OPERATION",
+ "testType": "normal",
+ "dftItem": "TM001_3",
+ "projectType": "一般测试项目",
+ "paramType": "一般",
+ "overview": {
+  "level": "Top",
+  "name": "Iq_Operation",
+  "desc": "",
+  "expectValue": "",
+  "unit": "uA",
+  "test": "Direct",
+  "helper": ""
+ },
+ "params": [
+  {
+   "check": "MI",
+   "checkPin": "VBAT",
+   "dftItem": "TM001_3"
+  }
+ ],
+ "hardwareInit": [
+  {
+   "cmd": "vset",
+   "pin": "vbat",
+   "value": 3.7,
+   "time": "100e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "vset",
+   "pin": "vac1",
+   "value": 5.0,
+   "time": "100e-6",
+   "ignore": 0
+  }
+ ],
+ "registers": [],
+ "capAuthority": {
+  "powered_pins": [
+   "VAC1",
+   "VBAT"
+  ],
+  "mi_pins": [
+   "VBAT"
+  ],
+  "ramp_pins": [],
+  "testpad_pins": []
+ }
+}
+====================================================================================================
+{
+ "functionName": "TM102_HSKP_LP_ATEST0",
+ "testType": "normal",
+ "dftItem": "TM102",
+ "projectType": "一般测试项目",
+ "paramType": "一般",
+ "overview": {
+  "level": "HSKP",
+  "name": "LP_VBG_BF",
+  "desc": "low power bg_buf",
+  "expectValue": 1.27,
+  "unit": "V",
+  "test": "Direct",
+  "helper": ""
+ },
+ "params": [
+  {
+   "check": "MV",
+   "checkPin": "ATEST0",
+   "dftItem": "TM102"
+  }
+ ],
+ "hardwareInit": [
+  {
+   "cmd": "vset",
+   "pin": "vbat",
+   "value": 4.0,
+   "time": "100e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "vset",
+   "pin": "vdm",
+   "value": 1.2,
+   "time": "100e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "en_tm"
+  },
+  {
+   "cmd": "field"
+  }
+ ],
+ "registers": [],
+ "capAuthority": {
+  "powered_pins": [
+   "VBAT",
+   "VDM"
+  ],
+  "mi_pins": [],
+  "ramp_pins": [],
+  "testpad_pins": [
+   "VDM"
+  ]
+ }
+}
+====================================================================================================
+{
+ "functionName": "TM103_HSKP_LP_HR_0P5U",
+ "testType": "normal",
+ "dftItem": "TM103",
+ "projectType": "一般测试项目",
+ "paramType": "一般",
+ "overview": {
+  "level": "HSKP",
+  "name": "LP_HR_0P5U",
+  "desc": "IBP 0.5UA HR ",
+  "expectValue": 0.5,
+  "unit": "uA",
+  "test": "Direct",
+  "helper": ""
+ },
+ "params": [
+  {
+   "check": "MI",
+   "checkPin": "ATEST0",
+   "dftItem": "TM103"
+  }
+ ],
+ "hardwareInit": [
+  {
+   "cmd": "vset",
+   "pin": "vbat",
+   "value": 4.0,
+   "time": "100e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "vset",
+   "pin": "vdm",
+   "value": 1.0,
+   "time": "100e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "en_tm"
+  },
+  {
+   "cmd": "field"
+  }
+ ],
+ "registers": [],
+ "capAuthority": {
+  "powered_pins": [
+   "VBAT",
+   "VDM"
+  ],
+  "mi_pins": [
+   "ATEST0"
+  ],
+  "ramp_pins": [],
+  "testpad_pins": [
+   "VDM"
+  ]
+ }
+}
+====================================================================================================
+{
+ "functionName": "TM108_HSKP_VAC1_PRST",
+ "testType": "toggle",
+ "dftItem": "TM108",
+ "projectType": "一般测试项目(AWG)",
+ "paramType": "UVLO",
+ "overview": {
+  "level": "HSKP",
+  "name": "VAC1_PRST",
+  "desc": "VAC1 PRST CMOP threshold",
+  "expectValue": "rising vth 4.4V, hys 0.35V",
+  "unit": "V",
+  "test": "",
+  "helper": "ramp VAC , INT toggle"
+ },
+ "params": [
+  {
+   "check": "MV",
+   "checkPin": "DTEST0",
+   "dftItem": "TM108"
+  }
+ ],
+ "hardwareInit": [
+  {
+   "cmd": "vset",
+   "pin": "vbat",
+   "value": 3.0,
+   "time": "100e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "vset",
+   "pin": "vac1",
+   "value": 10.0,
+   "time": "1e-3",
+   "ignore": 0
+  },
+  {
+   "cmd": "vset",
+   "pin": "vac1",
+   "value": 0.0,
+   "time": "1e-3",
+   "ignore": 0
+  },
+  {
+   "cmd": "en_tm"
+  },
+  {
+   "cmd": "field"
+  }
+ ],
+ "registers": [],
+ "capAuthority": {
+  "powered_pins": [
+   "VAC1",
+   "VBAT"
+  ],
+  "mi_pins": [],
+  "ramp_pins": [
+   "VAC1"
+  ],
+  "testpad_pins": []
+ }
+}
+====================================================================================================
+{
+ "functionName": "TM109_HSKP_VAC2_PRST",
+ "testType": "toggle",
+ "dftItem": "TM109",
+ "projectType": "一般测试项目(AWG)",
+ "paramType": "UVLO",
+ "overview": {
+  "level": "HSKP",
+  "name": "VAC2_PRST",
+  "desc": "VAC2 PRST CMOP threshold",
+  "expectValue": "rising vth 4.4V, hys 0.35V",
+  "unit": "V",
+  "test": "",
+  "helper": "ramp VAC , INT toggle"
+ },
+ "params": [
+  {
+   "check": "MV",
+   "checkPin": "DTEST0",
+   "dftItem": "TM109"
+  }
+ ],
+ "hardwareInit": [
+  {
+   "cmd": "vset",
+   "pin": "vbat",
+   "value": 3.0,
+   "time": "100e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "vset",
+   "pin": "vac2",
+   "value": 10.0,
+   "time": "1e-3",
+   "ignore": 0
+  },
+  {
+   "cmd": "vset",
+   "pin": "vac2",
+   "value": 0.0,
+   "time": "1e-3",
+   "ignore": 0
+  },
+  {
+   "cmd": "en_tm"
+  },
+  {
+   "cmd": "field"
+  }
+ ],
+ "registers": [],
+ "capAuthority": {
+  "powered_pins": [
+   "VAC2",
+   "VBAT"
+  ],
+  "mi_pins": [],
+  "ramp_pins": [
+   "VAC2"
+  ],
+  "testpad_pins": []
+ }
+}
+====================================================================================================
+{
+ "functionName": "Trim_BG_RES_DIV",
+ "testType": "trim",
+ "dftItem": "TM135",
+ "projectType": "trim",
+ "paramType": "一般",
+ "overview": {
+  "level": "BG",
+  "name": "VREF_1P0",
+  "desc": "VREF_1P0 ACC",
+  "expectValue": 1,
+  "unit": "V",
+  "test": "",
+  "helper": ""
+ },
+ "params": [
+  {
+   "check": "MV",
+   "checkPin": "ATEST0",
+   "dftItem": "TM135"
+  }
+ ],
+ "hardwareInit": [
+  {
+   "cmd": "vset",
+   "pin": "vbat",
+   "value": 5.0,
+   "time": "100e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "en_tm"
+  },
+  {
+   "cmd": "field"
+  },
+  {
+   "cmd": "field"
+  }
+ ],
+ "registers": [],
+ "capAuthority": {
+  "powered_pins": [
+   "VBAT"
+  ],
+  "mi_pins": [],
+  "ramp_pins": [],
+  "testpad_pins": []
+ }
+}
+====================================================================================================
+{
+ "functionName": "TM641_BST_UV",
+ "testType": "toggle",
+ "dftItem": "TM641",
+ "projectType": "一般测试项目(AWG)",
+ "paramType": "一般",
+ "overview": {
+  "level": "BUBO",
+  "name": "BST UV",
+  "desc": "BST UV threshold",
+  "expectValue": "3.25 falling/3.45rising",
+  "unit": "V",
+  "test": "Indirect",
+  "helper": "ramp voltage between BST-SW, and check INT toggle"
+ },
+ "params": [],
+ "hardwareInit": [
+  {
+   "cmd": "vset",
+   "pin": "vbat",
+   "value": 3.5,
+   "time": "100e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "vset",
+   "pin": "pmid",
+   "value": 5.0,
+   "time": "100e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "vset",
+   "pin": "bst_sw",
+   "value": 5.0,
+   "time": "1e-3",
+   "ignore": 0
+  },
+  {
+   "cmd": "vset",
+   "pin": "vdrv",
+   "value": 5.0,
+   "time": "100e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "vset",
+   "pin": "sw",
+   "value": 3.0,
+   "time": "100e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "vset",
+   "pin": "bst_sw",
+   "value": 2.5,
+   "time": "10e-3",
+   "ignore": 0
+  },
+  {
+   "cmd": "vset",
+   "pin": "bst_sw",
+   "value": 4.0,
+   "time": "10e-3",
+   "ignore": 0
+  },
+  {
+   "cmd": "en_tm"
+  },
+  {
+   "cmd": "field"
+  },
+  {
+   "cmd": "field"
+  },
+  {
+   "cmd": "field"
+  },
+  {
+   "cmd": "field"
+  }
+ ],
+ "registers": [],
+ "capAuthority": {
+  "powered_pins": [
+   "BST-SW",
+   "BST_SW",
+   "PMID",
+   "SW",
+   "VBAT",
+   "VDRV"
+  ],
+  "mi_pins": [],
+  "ramp_pins": [
+   "BST_SW",
+   "SW"
+  ],
+  "testpad_pins": []
+ }
+}
+====================================================================================================
+{
+ "functionName": "TM1205_TRX_BST_UV_GD",
+ "testType": "toggle",
+ "dftItem": "TM1205",
+ "projectType": "一般测试项目(AWG)",
+ "paramType": "一般",
+ "overview": {
+  "level": "TRX",
+  "name": "TRX_BST_UV_GD",
+  "desc": "Test BST1-SW1, BST2-SW2的 UVLO阈值",
+  "expectValue": "",
+  "unit": "V",
+  "test": "",
+  "helper": ""
+ },
+ "params": [],
+ "hardwareInit": [
+  {
+   "cmd": "vset",
+   "pin": "vbat",
+   "value": 4.0,
+   "time": "100e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "vset",
+   "pin": "bst1_sw1",
+   "value": 4.0,
+   "time": "1000e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "vset",
+   "pin": "bst1_sw1",
+   "value": 0.0,
+   "time": "1000e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "vset",
+   "pin": "bst2_sw2",
+   "value": 4.0,
+   "time": "1000e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "vset",
+   "pin": "bst2_sw2",
+   "value": 0.0,
+   "time": "1000e-6",
+   "ignore": 0
+  },
+  {
+   "cmd": "en_tm"
+  },
+  {
+   "cmd": "field"
+  },
+  {
+   "cmd": "field"
+  }
+ ],
+ "registers": [],
+ "capAuthority": {
+  "powered_pins": [
+   "BST1_SW1",
+   "BST2_SW2",
+   "VBAT"
+  ],
+  "mi_pins": [],
+  "ramp_pins": [
+   "BST1_SW1",
+   "BST2_SW2"
+  ],
+  "testpad_pins": []
+ }
+}
+meta hits 11
+
+#### reg_config .sv ####
+====================================================================================================
+### tm600.sv 290574bcd198cb5e85429f8ae37f91ce97da31713cfc7075b9d07e57014bada0 utf-8-sig
+/////////////////////// Auto-generated AMS Test Code ////////////
+
+/////////////////////// Test: HS_RDSON ////////////
+
+// Test Item: TM600, generate time: 2026-05-15 16:48:30 //
+
+//////////////////generated by Tom/////////////////////////////
+
+
+
+`NVT_STIM.en_vsrc_vbat = 1;
+
+`NVT_STIM.vsrcVBAT.ramp_vsrc_val(3.5, 100e-6);
+
+#1000;
+
+// pin VBAT set to 3.5V
+
+//		vset[vbat,3.5,100e-6,0]
+
+`NVT_STIM.en_vsrc_pmid = 1;
+
+`NVT_STIM.vsrcPMID.ramp_vsrc_val(5, 100e-6);
+
+#1000;
+
+// pin PMID set to 5V
+
+//		vset[pmid,5,100e-6,0]
+
+`NVT_STIM.en_vsrc_bst_sw = 1;
+
+`NVT_STIM.vsrcBST_SW.ramp_vsrc_val(5, 1e-3);
+
+#1000;
+
+// pin BST_SW set to 5V
+
+//		vset[bst_sw,5,1e-3,0]
+
+`NVT_STIM.en_vsrc_vdrv = 1;
+
+`NVT_STIM.vsrcVDRV.ramp_vsrc_val(5, 100e-6);
+
+#1000;
+
+// pin VDRV set to 5V
+
+//		vset[vdrv,5,100e-6,0]
+
+
+
+entertestmode();
+
+//		en_tm[]
+
+I2CWriteSameData(DEV_ADDR, 0x10, 0x43);  // Write reg 0x10 = 67
+
+//		field[(WAKE_UP,1)]
+
+I2CWriteSameData(DEV_ADDR, 0x59, 0x20);  // Write reg 0x59 = 32
+
+I2CWriteSameData(DEV_ADDR, 0x5A, 0x02);  // Write reg 0x5A = 2
+
+I2CWriteSameData(DEV_ADDR, 0x61, 0x4B);  // Write reg 0x61 = 75
+
+//		field[(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(D2A_BUBO_TM_HSON,1)]
+
+
+
+#1000000;  // delay 1e-3s
+
+//		delay[1e-3]
+
+`NVT_STIM.en_isrc_sw = 1;
+
+`NVT_STIM.isrcSW.ramp_isrc_val(1, 1e-3);
+
+#1000;
+
+// pin SW current set to 1A
+
+//		iset[sw,1,1e-3,0]
+
+#2000000;  // delay 2e-3s
+
+//		delay[2e-3]
+
+$finish;
+
+//		finish[]
+
+
+
+/////////////////////// End of Auto-generated Code ////////////
+====================================================================================================
+### tm601.sv d250b43cdaba3513b031f6dfc5ffc4743f5c6058787709f7286122152948fade utf-8-sig
+/////////////////////// Auto-generated AMS Test Code ////////////
+
+/////////////////////// Test: LS_RDSON ////////////
+
+// Test Item: TM601, generate time: 2026-05-15 16:48:30 //
+
+//////////////////generated by Tom/////////////////////////////
+
+
+
+`NVT_STIM.en_vsrc_vbat = 1;
+
+`NVT_STIM.vsrcVBAT.ramp_vsrc_val(3.5, 100e-6);
+
+#1000;
+
+// pin VBAT set to 3.5V
+
+//		vset[vbat,3.5,100e-6,0]
+
+`NVT_STIM.en_vsrc_vdrv = 1;
+
+`NVT_STIM.vsrcVDRV.ramp_vsrc_val(5, 100e-6);
+
+#1000;
+
+// pin VDRV set to 5V
+
+//		vset[vdrv,5,100e-6,0]
+
+`NVT_STIM.en_vsrc_vbus = 1;
+
+`NVT_STIM.vsrcVBUS.ramp_vsrc_val(5, 100e-6);
+
+#1000;
+
+// pin VBUS set to 5V
+
+//		vset[vbus,5,100e-6,0]
+
+
+
+entertestmode();
+
+//		en_tm[]
+
+I2CWriteSameData(DEV_ADDR, 0x10, 0x43);  // Write reg 0x10 = 67
+
+//		field[(WAKE_UP,1)]
+
+I2CWriteSameData(DEV_ADDR, 0x59, 0x20);  // Write reg 0x59 = 32
+
+I2CWriteSameData(DEV_ADDR, 0x5A, 0x01);  // Write reg 0x5A = 1
+
+I2CWriteSameData(DEV_ADDR, 0x61, 0x4B);  // Write reg 0x61 = 75
+
+//		field[(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(D2A_BUBO_TM_LSON,1)]
+
+
+
+#5000000;  // delay 5e-3s
+
+//		delay[5e-3]
+
+`NVT_STIM.en_isrc_pmid_sw = 1;
+
+`NVT_STIM.isrcPMID_SW.ramp_isrc_val(1, 1e-3);
+
+#1000;
+
+// pin PMID_SW current set to 1A
+
+//		iset[pmid_sw,1,1e-3,0]
+
+#2000000;  // delay 2e-3s
+
+//		delay[2e-3]
+
+$finish;
+
+//		finish[]
+
+
+
+/////////////////////// End of Auto-generated Code ////////////
+====================================================================================================
+### rx_600.sv 05a0106e6ed71bd86ef81c45464a9c9ec97c0c0ed224c8a1eb471c9ee9fb9b5d utf-8-sig
+/////////////////////// Auto-generated AMS Test Code ////////////
+
+/////////////////////// Test: RX_wi_BUCK_Normal_sequence ////////////
+
+// Test Item: RX_600, generate time: 2026-07-01 10:32:31 //
+
+//////////////////generated by Tom/////////////////////////////
+
+
+
+`NVT_STIM.en_vsrc_vbat = 1;
+
+`NVT_STIM.vsrcVBAT.ramp_vsrc_val(4, 100e-6);
+
+#1000;
+
+// pin VBAT set to 4V
+
+//		vset[vbat,4,100e-6,0]
+
+`NVT_STIM.en_vsrc_vac1 = 1;
+
+`NVT_STIM.vsrcVAC1.ramp_vsrc_val(6, 100e-6);
+
+#1000;
+
+// pin VAC1 set to 6V
+
+//		vset[vac1,6,100e-6,0]
+
+`NVT_STIM.en_vac1_cable_insert = 1;  // plugin vac1
+
+//		plugin[vac1]
+
+en_tm();
+
+//		en_tm[]
+
+I2CWriteSameData(DEV_ADDR, 0xFF, 0x0C);  // Write reg 0xFF = 12
+
+//		field[(rx_mode_en,1),(mpp_en,1)] // enable rx function
+
+I2CWriteSameData(DEV_ADDR, 0x30, 0x20);  // Write reg 0x30 = 32
+
+//		field[(RX_SW_PING_DET,1)] // enable rx ping det
+
+I2CWriteSameData(DEV_ADDR, 0x33, 0x78);  // Write reg 0x33 = 120
+
+//		field[(RX_SW_PING_DET_QUIT_EN,1)] // enable rx ping quit shipmode
+
+I2CWriteSameData(DEV_ADDR, 0x32, 0x04);  // Write reg 0x32 = 4
+
+//		field[(FSK_ALLOW,1)]
+
+I2CWriteSameData(DEV_ADDR, 0x0C, 0x0C);  // Write reg 0xC = 12
+
+//		field[(VBUS_OVP,3)]
+
+I2CWriteSameData(DEV_ADDR, 0x10, 0x43);  // Write reg 0x10 = 67
+
+//		field[(wake_up,1)] // wake up
+
+I2CWriteSameData(DEV_ADDR, 0x08, 0x04);  // Write reg 0x8 = 4
+
+//		field[(ac1_gate_on,1)]
+
+#2000000;  // delay 2e-3s
+
+//		delay[2e-3]
+
+`NVT_STIM.en_vsrc_vrect = 1;
+
+`NVT_STIM.vsrcVRECT.ramp_vsrc_val(5, 100e-6);
+
+#1000;
+
+// pin VRECT set to 5V
+
+//		vset[vrect,5,100e-6,0]
+
+`NVT_STIM.reg_en_tx = 1;  // en_reg tx, 1
+
+//		en_reg[tx,1]
+
+tb.Ipwm.cyc = 7812;
+
+tb.Ipwm.duty = 2343;
+
+tb.Ipwm.shift = 3906;
+
+tb.Ipwm.en = 1;
+
+#1000;
+
+// PWM: 128000.0Hz, 30.0% duty, 0.0% shift
+
+//		pwm_set[128e3,30,0,1]
+
+#100000;  // delay 0.1e-3s
+
+//		delay[0.1e-3]
+
+tb.Ipwm.cyc = 7812;
+
+tb.Ipwm.duty = 3906;
+
+tb.Ipwm.shift = 3906;
+
+tb.Ipwm.en = 1;
+
+#1000;
+
+// PWM: 128000.0Hz, 50.0% duty, 0.0% shift
+
+//		pwm_set[128e3,50,0,1]
+
+#200000;  // delay 0.2e-3s
+
+//		delay[0.2e-3]
+
+I2CWriteSameData(DEV_ADDR, 0x08, 0x0C);  // Write reg 0x8 = 12
+
+//		field[(VBUS_PULLDOWN,1)] // VBUS pulldown
+
+
+
+I2CWriteSameData(DEV_ADDR, 0x23, 0x02);  // Write reg 0x23 = 2
+
+//		field[(POWERSTAGE_MODE,1)] // rx mode
+
+I2CWriteSameData(DEV_ADDR, 0x23, 0x06);  // Write reg 0x23 = 6
+
+//		field[(POWERSTAGE_EN,1)] // enable RX
+
+#2000000;  // delay 2e-3s
+
+//		delay[2e-3]
+
+I2CWriteSameData(DEV_ADDR, 0x08, 0x08);  // Write reg 0x8 = 8
+
+//		field[(ac1_gate_on,0)]
+
+I2CWriteSameData(DEV_ADDR, 0x09, 0x06);  // Write reg 0x9 = 6
+
+I2CWriteSameData(DEV_ADDR, 0x0E, 0x1B);  // Write reg 0xE = 27
+
+//		field[(IBUS_SET,27),(VBAT_CV,9),(BUBO_EN,1)]
+
+#2000000;  // delay 2e-3s
+
+//		delay[2e-3]
+
+`NVT_STIM.en_vsrc_vrect = 1;
+
+`NVT_STIM.vsrcVRECT.ramp_vsrc_val(9, 100e-6);
+
+#1000;
+
+// pin VRECT set to 9V
+
+//		vset[vrect,9,100e-6,0]
+
+#5000000;  // delay 5e-3s
+
+//		delay[5e-3]
+
+
+
+$finish;
+
+//		finish[]
+
+
+
+/////////////////////// End of Auto-generated Code ////////////
+====================================================================================================
+### rx_601.sv 57861fe7cecb0d74bd13f7c7ae5f0a6bd1fab9e054b62104f4b3bda1f9df92e2 utf-8-sig
+/////////////////////// Auto-generated AMS Test Code ////////////
+
+/////////////////////// Test: RX_wi_BUCK_Normal_sequence2 ////////////
+
+// Test Item: RX_601, generate time: 2026-07-01 10:32:31 //
+
+//////////////////generated by Tom/////////////////////////////
+
+
+
+`NVT_STIM.en_vsrc_vbat = 1;
+
+`NVT_STIM.vsrcVBAT.ramp_vsrc_val(4, 100e-6);
+
+#1000;
+
+// pin VBAT set to 4V
+
+//		vset[vbat,4,100e-6,0]
+
+`NVT_STIM.en_vsrc_vac1 = 1;
+
+`NVT_STIM.vsrcVAC1.ramp_vsrc_val(6, 100e-6);
+
+#1000;
+
+// pin VAC1 set to 6V
+
+//		vset[vac1,6,100e-6,0]
+
+`NVT_STIM.en_vac1_cable_insert = 1;  // plugin vac1
+
+//		plugin[vac1]
+
+en_tm();
+
+//		en_tm[]
+
+I2CWriteSameData(DEV_ADDR, 0xFF, 0x0C);  // Write reg 0xFF = 12
+
+//		field[(rx_mode_en,1),(mpp_en,1)] // enable rx function
+
+I2CWriteSameData(DEV_ADDR, 0x30, 0x20);  // Write reg 0x30 = 32
+
+//		field[(RX_SW_PING_DET,1)] // enable rx ping det
+
+I2CWriteSameData(DEV_ADDR, 0x33, 0x78);  // Write reg 0x33 = 120
+
+//		field[(RX_SW_PING_DET_QUIT_EN,1)] // enable rx ping quit shipmode
+
+I2CWriteSameData(DEV_ADDR, 0x32, 0x04);  // Write reg 0x32 = 4
+
+//		field[(FSK_ALLOW,1)]
+
+I2CWriteSameData(DEV_ADDR, 0x0C, 0x0C);  // Write reg 0xC = 12
+
+//		field[(VBUS_OVP,3)]
+
+I2CWriteSameData(DEV_ADDR, 0x10, 0x43);  // Write reg 0x10 = 67
+
+//		field[(wake_up,1)] // wake up
+
+#2000000;  // delay 2e-3s
+
+//		delay[2e-3]
+
+I2CWriteSameData(DEV_ADDR, 0x08, 0x04);  // Write reg 0x8 = 4
+
+//		field[(ac1_gate_on,1)]
+
+`NVT_STIM.en_vsrc_vrect = 1;
+
+`NVT_STIM.vsrcVRECT.ramp_vsrc_val(6, 100e-6);
+
+#1000;
+
+// pin VRECT set to 6V
+
+//		vset[vrect,6,100e-6,0]
+
+I2CWriteSameData(DEV_ADDR, 0x09, 0x06);  // Write reg 0x9 = 6
+
+I2CWriteSameData(DEV_ADDR, 0x0E, 0x07);  // Write reg 0xE = 7
+
+//		field[(IBUS_SET,7),(VBAT_CV,9),(BUBO_EN,1)] //IBUS=0.5A
+
+wait(tb.IDUT.Idig.d2a_bubo_en);  // wait for tb.IDUT.Idig.d2a_bubo_en
+
+//		wait[tb.IDUT.Idig.d2a_bubo_en]
+
+
+
+I2CWriteSameData(DEV_ADDR, 0x23, 0x02);  // Write reg 0x23 = 2
+
+//		field[(POWERSTAGE_MODE,1)] // rx mode
+
+I2CWriteSameData(DEV_ADDR, 0x23, 0x06);  // Write reg 0x23 = 6
+
+//		field[(POWERSTAGE_EN,1)] // enable RX
+
+wait(tb.IDUT.Idig.d2a_trx_en);  // wait for tb.IDUT.Idig.d2a_trx_en
+
+//		wait[tb.IDUT.Idig.d2a_trx_en]
+
+#500;  // delay 0.5e-6s
+
+//		delay[0.5e-6]
+
+`NVT_STIM.reg_en_tx = 1;  // en_reg tx, 1
+
+//		en_reg[tx,1]
+
+`NVT_STIM.reg_en_drvh = 1;  // en_reg drvh, 1
+
+//		en_reg[drvh,1]
+
+tb.Ipwm.cyc = 7812;
+
+tb.Ipwm.duty = 3906;
+
+tb.Ipwm.shift = 3906;
+
+tb.Ipwm.en = 1;
+
+#1000;
+
+// PWM: 128000.0Hz, 50.0% duty, 0.0% shift
+
+//		pwm_set[128e3,50,0,1]
+
+#300000;  // delay 0.3e-3s
+
+//		delay[0.3e-3]
+
+I2CWriteSameData(DEV_ADDR, 0x08, 0x00);  // Write reg 0x8 = 0
+
+//		field[(ac1_gate_on,0)]
+
+#300000;  // delay 0.3e-3s
+
+//		delay[0.3e-3]
+
+I2CWriteSameData(DEV_ADDR, 0x0E, 0x09);  // Write reg 0xE = 9
+
+//		field[(IBUS_SET,9)] //IBUS=0.6A
+
+#300000;  // delay 0.3e-3s
+
+//		delay[0.3e-3]
+
+I2CWriteSameData(DEV_ADDR, 0x0E, 0x0D);  // Write reg 0xE = 13
+
+//		field[(IBUS_SET,13)] //IBUS=0.8A
+
+#300000;  // delay 0.3e-3s
+
+//		delay[0.3e-3]
+
+I2CWriteSameData(DEV_ADDR, 0x0E, 0x11);  // Write reg 0xE = 17
+
+//		field[(IBUS_SET,17)] //IBUS=1A
+
+#300000;  // delay 0.3e-3s
+
+//		delay[0.3e-3]
+
+I2CWriteSameData(DEV_ADDR, 0x0E, 0x1B);  // Write reg 0xE = 27
+
+//		field[(IBUS_SET,27)] //IBUS=1.5A
+
+#300000;  // delay 0.3e-3s
+
+//		delay[0.3e-3]
+
+I2CWriteSameData(DEV_ADDR, 0x09, 0x02);  // Write reg 0x9 = 2
+
+I2CWriteSameData(DEV_ADDR, 0x23, 0x02);  // Write reg 0x23 = 2
+
+//		field[(BUBO_EN,0),(POWERSTAGE_EN,0)] //BUBO off
+
+#400000;  // delay 0.4e-3s
+
+//		delay[0.4e-3]
+
+`NVT_STIM.reg_en_tx = 0;  // en_reg tx, 0
+
+//		en_reg[tx,0]
+
+tb.Ipwm.cyc = 7812;
+
+tb.Ipwm.duty = 3906;
+
+tb.Ipwm.shift = 3906;
+
+tb.Ipwm.en = 0;
+
+#1000;
+
+// PWM: 128000.0Hz, 50.0% duty, 0.0% shift
+
+//		pwm_set[128e3,50,0,0]
+
+#400000;  // delay 0.4e-3s
+
+//		delay[0.4e-3]
+
+
+
+#2000000;  // delay 2e-3s
+
+//		delay[2e-3]
+
+$finish;
+
+//		finish[]
+
+
+
+/////////////////////// End of Auto-generated Code ////////////
+====================================================================================================
+### tm102.sv 687ffbf66fcdd5bdeb90e25b287b9f4592503e140e387dfee2f5690fc9a344dd utf-8-sig
+/////////////////////// Auto-generated AMS Test Code ////////////
+
+/////////////////////// Test: LP_VBG_BF ////////////
+
+// Test Item: TM102, generate time: 2026-05-15 16:48:30 //
+
+//////////////////generated by Tom/////////////////////////////
+
+
+
+`NVT_STIM.en_vsrc_vbat = 1;
+
+`NVT_STIM.vsrcVBAT.ramp_vsrc_val(4, 100e-6);
+
+#1000;
+
+// pin VBAT set to 4V
+
+//		vset[vbat,4,100e-6,0]
+
+
+
+entertestmode();
+
+//		en_tm[]
+
+`NVT_STIM.en_vsrc_vdm = 1;
+
+`NVT_STIM.vsrcVDM.ramp_vsrc_val(1.2, 100e-6);
+
+#1000;
+
+// pin VDM set to 1.2V
+
+//		vset[vdm,1.2,100e-6,0]
+
+I2CWriteSameData(DEV_ADDR, 0x57, 0x02);  // Write reg 0x57 = 2
+
+I2CWriteSameData(DEV_ADDR, 0x5E, 0x02);  // Write reg 0x5E = 2
+
+//		field[(EN_ATEST0,1),(ATEST0_MUX,2)]
+
+`NVT_STIM.en_vsrc_vdm = 0;  // disable vdm
+
+//		vset_off[vdm]
+
+
+
+#1000000;  // delay 1e-3s
+
+//		delay[1e-3]
+
+$finish;
+
+//		finish[]
+
+
+
+/////////////////////// End of Auto-generated Code ////////////
+====================================================================================================
+### tm103.sv 64767755a612140a3b2b2359ad1120eb9c364dba61e53aa8cc58c179d993ab79 utf-8-sig
+/////////////////////// Auto-generated AMS Test Code ////////////
+
+/////////////////////// Test: LP_HR_0P5U ////////////
+
+// Test Item: TM103, generate time: 2026-05-15 16:48:30 //
+
+//////////////////generated by Tom/////////////////////////////
+
+
+
+`NVT_STIM.en_vsrc_vbat = 1;
+
+`NVT_STIM.vsrcVBAT.ramp_vsrc_val(4, 100e-6);
+
+#1000;
+
+// pin VBAT set to 4V
+
+//		vset[vbat,4,100e-6,0]
+
+
+
+entertestmode();
+
+//		en_tm[]
+
+I2CWriteSameData(DEV_ADDR, 0x57, 0x02);  // Write reg 0x57 = 2
+
+I2CWriteSameData(DEV_ADDR, 0x5E, 0x04);  // Write reg 0x5E = 4
+
+//		field[(EN_ATEST0,1),(ATEST0_MUX,4)]
+
+`NVT_STIM.en_vsrc_vdm = 1;
+
+`NVT_STIM.vsrcVDM.ramp_vsrc_val(1, 100e-6);
+
+#1000;
+
+// pin VDM set to 1V
+
+//		vset[vdm,1,100e-6,0]
+
+
+
+#1000000;  // delay 1e-3s
+
+//		delay[1e-3]
+
+$finish;
+
+//		finish[]
+
+
+
+/////////////////////// End of Auto-generated Code ////////////
+====================================================================================================
+### tm108.sv 4d0ea5c30fe5369e98a6d81215bbfb5b5f41bf44ea1c5dbc8df94af75bb92dc1 utf-8-sig
+/////////////////////// Auto-generated AMS Test Code ////////////
+
+/////////////////////// Test: VAC1_PRST ////////////
+
+// Test Item: TM108, generate time: 2026-05-15 16:48:30 //
+
+//////////////////generated by Tom/////////////////////////////
+
+
+
+`NVT_STIM.en_vsrc_vbat = 1;
+
+`NVT_STIM.vsrcVBAT.ramp_vsrc_val(3, 100e-6);
+
+#1000;
+
+// pin VBAT set to 3V
+
+//		vset[vbat,3,100e-6,0]
+
+
+
+entertestmode();
+
+//		en_tm[]
+
+I2CWriteSameData(DEV_ADDR, 0x56, 0x16);  // Write reg 0x56 = 22
+
+I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // Write reg 0x57 = 8
+
+//		field[(DMUX_EN,1),(DMUX_SEL,22)]
+
+`NVT_STIM.en_vsrc_vac1 = 1;
+
+`NVT_STIM.vsrcVAC1.ramp_vsrc_val(10, 1e-3);
+
+#1000;
+
+// pin VAC1 set to 10V
+
+//		vset[vac1,10,1e-3,0]
+
+`NVT_STIM.en_vsrc_vac1 = 1;
+
+`NVT_STIM.vsrcVAC1.ramp_vsrc_val(0, 1e-3);
+
+#1000;
+
+// pin VAC1 set to 0V
+
+//		vset[vac1,0,1e-3,0]
+
+
+
+#1000000;  // delay 1e-3s
+
+//		delay[1e-3]
+
+$finish;
+
+//		finish[]
+
+
+
+/////////////////////// End of Auto-generated Code ////////////
+
+
+====================================================================================================
+### tm108_1.sv 85eebbfab1bdb7a4b0f546dae28fc8294c04505372a3e3425a8a4b85a743494f utf-8-sig
+/////////////////////// Auto-generated AMS Test Code ////////////
+
+/////////////////////// Test: VAC1_PRST_DMO_A ////////////
+
+// Test Item: TM108_1, generate time: 2026-05-15 16:48:30 //
+
+//////////////////generated by Tom/////////////////////////////
+
+
+
+`NVT_STIM.en_vsrc_vbat = 1;
+
+`NVT_STIM.vsrcVBAT.ramp_vsrc_val(3, 100e-6);
+
+#1000;
+
+// pin VBAT set to 3V
+
+//		vset[vbat,3,100e-6,0]
+
+wait_warmup();
+
+//		wait_warmup[]
+
+
+
+key1_open();
+
+//		key1_open[]
+
+I2CWriteSameData(DEV_ADDR, 0x56, 0x16);  // Write reg 0x56 = 22
+
+I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // Write reg 0x57 = 8
+
+//		field[(DMUX_EN,1),(DMUX_SEL,22)]
+
+I2CWriteSameData(DEV_ADDR, 0x71, 0x3B);  // Write reg 0x71 = 59
+
+//		field[(D2A_DMO_CHANNEL_SEL,1),(D2A_DMA_CHANNEL_SEL,1),(DM_CHANNEL_SEL_OVER_WRITE,1),(D2A_DMA_EN,1),(D2A_DMO_EN,1)]
+
+`NVT_STIM.en_vsrc_vac1 = 1;
+
+`NVT_STIM.vsrcVAC1.ramp_vsrc_val(10, 1e-3);
+
+#1000;
+
+// pin VAC1 set to 10V
+
+//		vset[vac1,10,1e-3,0]
+
+`NVT_STIM.en_vsrc_vac1 = 1;
+
+`NVT_STIM.vsrcVAC1.ramp_vsrc_val(0, 1e-3);
+
+#1000;
+
+// pin VAC1 set to 0V
+
+//		vset[vac1,0,1e-3,0]
+
+
+
+#1000000;  // delay 1e-3s
+
+//		delay[1e-3]
+
+$finish;
+
+//		finish[]
+
+
+
+/////////////////////// End of Auto-generated Code ////////////
+====================================================================================================
+### tm109.sv 235d9cee0da964489d53c9c70d2b3e932f98be24442ce9cd8d247716e7ad80d5 utf-8-sig
+/////////////////////// Auto-generated AMS Test Code ////////////
+
+/////////////////////// Test: VAC2_PRST ////////////
+
+// Test Item: TM109, generate time: 2026-05-15 16:48:30 //
+
+//////////////////generated by Tom/////////////////////////////
+
+
+
+`NVT_STIM.en_vsrc_vbat = 1;
+
+`NVT_STIM.vsrcVBAT.ramp_vsrc_val(3, 100e-6);
+
+#1000;
+
+// pin VBAT set to 3V
+
+//		vset[vbat,3,100e-6,0]
+
+
+
+entertestmode();
+
+//		en_tm[]
+
+I2CWriteSameData(DEV_ADDR, 0x56, 0x15);  // Write reg 0x56 = 21
+
+I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // Write reg 0x57 = 8
+
+//		field[(DMUX_EN,1),(DMUX_SEL,21)]
+
+`NVT_STIM.en_vsrc_vac2 = 1;
+
+`NVT_STIM.vsrcVAC2.ramp_vsrc_val(10, 1e-3);
+
+#1000;
+
+// pin VAC2 set to 10V
+
+//		vset[vac2,10,1e-3,0]
+
+`NVT_STIM.en_vsrc_vac2 = 1;
+
+`NVT_STIM.vsrcVAC2.ramp_vsrc_val(0, 1e-3);
+
+#1000;
+
+// pin VAC2 set to 0V
+
+//		vset[vac2,0,1e-3,0]
+
+
+
+#1000000;  // delay 1e-3s
+
+//		delay[1e-3]
+
+$finish;
+
+//		finish[]
+
+
+
+/////////////////////// End of Auto-generated Code ////////////
+====================================================================================================
+### tm135.sv 9a4d6989ba080e9c69fa8d79b9976d3f0f98f8f9ec587773f297afa4363a0a94 utf-8-sig
+/////////////////////// Auto-generated AMS Test Code ////////////
+
+/////////////////////// Test: VREF_1P0 ////////////
+
+// Test Item: TM135, generate time: 2026-05-15 16:48:30 //
+
+//////////////////generated by Tom/////////////////////////////
+
+
+
+`NVT_STIM.en_vsrc_vbat = 1;
+
+`NVT_STIM.vsrcVBAT.ramp_vsrc_val(5, 100e-6);
+
+#1000;
+
+// pin VBAT set to 5V
+
+//		vset[vbat,5,100e-6,0]
+
+entertestmode();
+
+//		en_tm[]
+
+
+
+I2CWriteSameData(DEV_ADDR, 0x10, 0x43);  // Write reg 0x10 = 67
+
+//		field[(WAKE_UP,1)]
+
+I2CWriteSameData(DEV_ADDR, 0x57, 0x02);  // Write reg 0x57 = 2
+
+I2CWriteSameData(DEV_ADDR, 0x5E, 0x0A);  // Write reg 0x5E = 10
+
+//		field[(EN_ATEST0,1),(ATEST0_MUX,10)]
+
+
+
+#1000000;  // delay 1e-3s
+
+//		delay[1e-3]
+
+$finish;
+
+//		finish[]
+
+
+
+/////////////////////// End of Auto-generated Code ////////////
+====================================================================================================
+### tm1205.sv 67bb9bd49159e5cab4b7e11ac4cda3ac732182003d7f7e6c647c4d2fae0f479a utf-8-sig
+/////////////////////// Auto-generated AMS Test Code ////////////
+
+/////////////////////// Test: TRX_BST_UV_GD ////////////
+
+// Test Item: TM1205, generate time: 2026-05-15 16:48:30 //
+
+//////////////////generated by Tom/////////////////////////////
+
+
+
+`NVT_STIM.en_vsrc_vbat = 1;
+
+`NVT_STIM.vsrcVBAT.ramp_vsrc_val(4, 100e-6);
+
+#1000;
+
+// pin VBAT set to 4V
+
+//		vset[vbat,4,100e-6,0]
+
+entertestmode();
+
+//		en_tm[]
+
+I2CWriteSameData(DEV_ADDR, 0x10, 0x43);  // Write reg 0x10 = 67
+
+//		field[(wake_up,1)]
+
+
+
+//		field[(wake_up,1)]
+
+I2CWriteSameData(DEV_ADDR, 0x67, 0x2F);  // Renew reg 0x67 = 47
+
+I2CWriteSameData(DEV_ADDR, 0x68, 0x30);  // Renew reg 0x68 = 48
+
+//		field_renew[(D2A_OVRD_SEL,47),(ovrd_value,3)]
+
+I2CWriteSameData(DEV_ADDR, 0x67, 0x2D);  // Renew reg 0x67 = 45
+
+I2CWriteSameData(DEV_ADDR, 0x68, 0x30);  // Renew reg 0x68 = 48
+
+//		field_renew[(D2A_OVRD_SEL,45),(ovrd_value,3)]
+
+I2CWriteSameData(DEV_ADDR, 0x67, 0x30);  // Renew reg 0x67 = 48
+
+I2CWriteSameData(DEV_ADDR, 0x68, 0x30);  // Renew reg 0x68 = 48
+
+//		field_renew[(D2A_OVRD_SEL,48),(ovrd_value,3)]
+
+I2CWriteSameData(DEV_ADDR, 0x5C, 0x02);  // Renew reg 0x5C = 2
+
+//		field_renew[(D2A_TRX_TM_BOOTGD_DEG_BYPASS,1)]
+
+#1000000;  // delay 1e-3s
+
+//		delay[1e-3]
+
+
+
+I2CWriteSameData(DEV_ADDR, 0x56, 0x39);  // Renew reg 0x56 = 57
+
+I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // Renew reg 0x57 = 8
+
+//		field_renew[(DMUX_EN,1),(DMUX_SEL,57)]
+
+`NVT_STIM.en_vsrc_bst1_sw1 = 1;
+
+`NVT_STIM.vsrcBST1_SW1.ramp_vsrc_val(4, 1000e-6);
+
+#1000;
+
+// pin BST1_SW1 set to 4V
+
+//		vset[bst1_sw1,4,1000e-6,0]
+
+`NVT_STIM.en_vsrc_bst1_sw1 = 1;
+
+`NVT_STIM.vsrcBST1_SW1.ramp_vsrc_val(0, 1000e-6);
+
+#1000;
+
+// pin BST1_SW1 set to 0V
+
+//		vset[bst1_sw1,0,1000e-6,0]
+
+#1000000;  // delay 1e-3s
+
+//		delay[1e-3]
+
+I2CWriteSameData(DEV_ADDR, 0x56, 0x3A);  // Renew reg 0x56 = 58
+
+I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // Renew reg 0x57 = 8
+
+//		field_renew[(DMUX_EN,1),(DMUX_SEL,58)]
+
+`NVT_STIM.en_vsrc_bst2_sw2 = 1;
+
+`NVT_STIM.vsrcBST2_SW2.ramp_vsrc_val(4, 1000e-6);
+
+#1000;
+
+// pin BST2_SW2 set to 4V
+
+//		vset[bst2_sw2,4,1000e-6,0]
+
+`NVT_STIM.en_vsrc_bst2_sw2 = 1;
+
+`NVT_STIM.vsrcBST2_SW2.ramp_vsrc_val(0, 1000e-6);
+
+#1000;
+
+// pin BST2_SW2 set to 0V
+
+//		vset[bst2_sw2,0,1000e-6,0]
+
+#1000000;  // delay 1e-3s
+
+//		delay[1e-3]
+
+
+
+$finish;
+
+//		finish[]
+
+
+
+/////////////////////// End of Auto-generated Code ////////////
+====================================================================================================
+### tm001_2.sv c18bf482a83af2af118686b821487533ae58ea8ed857e556aa0f1953d94b7553 utf-8-sig
+/////////////////////// Auto-generated AMS Test Code ////////////
+
+/////////////////////// Test: Iq_Shipmode ////////////
+
+// Test Item: TM001_2, generate time: 2026-05-15 16:48:30 //
+
+//////////////////generated by Tom/////////////////////////////
+
+
+
+`NVT_STIM.en_vsrc_vbat = 1;
+
+`NVT_STIM.vsrcVBAT.ramp_vsrc_val(3.7, 100e-6);
+
+#1000;
+
+// pin VBAT set to 3.7V
+
+//		vset[vbat,3.7,100e-6,0]
+
+`NVT_STIM.en_vsrc_vac1 = 1;
+
+`NVT_STIM.vsrcVAC1.ramp_vsrc_val(5, 100e-6);
+
+#1000;
+
+// pin VAC1 set to 5V
+
+//		vset[vac1,5,100e-6,0]
+
+entertestmode();
+
+//		en_tm[]
+
+
+
+I2CWriteSameData(DEV_ADDR, 0x29, 0x01);  // Write reg 0x29 = 1
+
+//		field[(SHIPMODE_EN,1)]
+
+`NVT_STIM.en_vsrc_vac1 = 1;
+
+`NVT_STIM.vsrcVAC1.ramp_vsrc_val(0, 100e-6);
+
+#1000;
+
+// pin VAC1 set to 0V
+
+//		vset[vac1,0,100e-6,0]
+
+#60000000;  // delay 60e-3s
+
+//		delay[60e-3]
+
+
+
+// Error: �����ʽ����: // Check IQ from VBAT
+
+//		// Check IQ from VBAT
+
+$finish;
+
+//		finish[]
+
+
+
+/////////////////////// End of Auto-generated Code ////////////
+====================================================================================================
+### tm100.sv f6ed7d935d19d41d6e8760110ddc7b6abf7d8f10499768a6f94229aba8c314db utf-8-sig
+/////////////////////// Auto-generated AMS Test Code ////////////
+
+/////////////////////// Test: VS_PRE ////////////
+
+// Test Item: TM100, generate time: 2026-05-15 16:48:30 //
+
+//////////////////generated by Tom/////////////////////////////
+
+
+
+`NVT_STIM.en_vsrc_vbat = 1;
+
+`NVT_STIM.vsrcVBAT.ramp_vsrc_val(4, 100e-6);
+
+#1000;
+
+// pin VBAT set to 4V
+
+//		vset[vbat,4,100e-6,0]
+
+
+
+entertestmode();
+
+//		en_tm[]
+
+I2CWriteSameData(DEV_ADDR, 0x57, 0x02);  // Write reg 0x57 = 2
+
+I2CWriteSameData(DEV_ADDR, 0x5E, 0x03);  // Write reg 0x5E = 3
+
+//		field[(EN_ATEST0,1),(ATEST0_MUX,3)]
+
+I2CWriteSameData(DEV_ADDR, 0x57, 0x06);  // Write reg 0x57 = 6
+
+I2CWriteSameData(DEV_ADDR, 0x5B, 0x50);  // Write reg 0x5B = 80
+
+//		field[(EN_ATEST1,1),(D2A_BUBO_ATEST1_MUX,5)]
+
+I2CWriteSameData(DEV_ADDR, 0x61, 0x4B);  // Write reg 0x61 = 75
+
+//		field[(D2A_BUBO_EN_FORCE_ON,1),(BUBO_MODE,0)]
+
+
+
+#1000000;  // delay 1e-3s
+
+//		delay[1e-3]
+
+$finish;
+
+//		finish[]
+
+
+
+/////////////////////// End of Auto-generated Code ////////////
+====================================================================================================
+### tm101.sv 2034793a711787b7a155b40594058fdce78469afaf8313887e3bd6b08093b2b1 utf-8-sig
+/////////////////////// Auto-generated AMS Test Code ////////////
+
+/////////////////////// Test: LP_VBG ////////////
+
+// Test Item: TM101, generate time: 2026-05-15 16:48:30 //
+
+//////////////////generated by Tom/////////////////////////////
+
+
+
+`NVT_STIM.en_vsrc_vbat = 1;
+
+`NVT_STIM.vsrcVBAT.ramp_vsrc_val(4, 100e-6);
+
+#1000;
+
+// pin VBAT set to 4V
+
+//		vset[vbat,4,100e-6,0]
+
+
+
+entertestmode();
+
+//		en_tm[]
+
+`NVT_STIM.en_vsrc_vdm = 1;
+
+`NVT_STIM.vsrcVDM.ramp_vsrc_val(1.2, 100e-6);
+
+#1000;
+
+// pin VDM set to 1.2V
+
+//		vset[vdm,1.2,100e-6,0]
+
+I2CWriteSameData(DEV_ADDR, 0x57, 0x02);  // Write reg 0x57 = 2
+
+I2CWriteSameData(DEV_ADDR, 0x5E, 0x01);  // Write reg 0x5E = 1
+
+//		field[(EN_ATEST0,1),(ATEST0_MUX,1)]
+
+`NVT_STIM.en_vsrc_vdm = 0;  // disable vdm
+
+//		vset_off[vdm]
+
+
+
+#1000000;  // delay 1e-3s
+
+//		delay[1e-3]
+
+$finish;
+
+//		finish[]
+
+
+
+/////////////////////// End of Auto-generated Code ////////////
+====================================================================================================
+### tm602.sv 2ef56dbd2fc81b5294a5615bcbb8525dd76c3f0e1321b3b609833f09e49005ae utf-8-sig
+/////////////////////// Auto-generated AMS Test Code ////////////
+
+/////////////////////// Test: VC_HIGH_CLAMP[1]&ISCALE_RATIO ////////////
+
+// Test Item: TM602, generate time: 2026-05-15 16:48:30 //
+
+//////////////////generated by Tom/////////////////////////////
+
+
+
+`NVT_STIM.en_vsrc_vbat = 1;
+
+`NVT_STIM.vsrcVBAT.ramp_vsrc_val(3.5, 100e-6);
+
+#1000;
+
+// pin VBAT set to 3.5V
+
+//		vset[vbat,3.5,100e-6,0]
+
+`NVT_STIM.en_vsrc_pmid = 1;
+
+`NVT_STIM.vsrcPMID.ramp_vsrc_val(5, 100e-6);
+
+#1000;
+
+// pin PMID set to 5V
+
+//		vset[pmid,5,100e-6,0]
+
+`NVT_STIM.en_vsrc_vdm = 1;
+
+`NVT_STIM.vsrcVDM.ramp_vsrc_val(2, 1e-3);
+
+#1000;
+
+// pin VDM set to 2V
+
+//		vset[vdm,2,1e-3,0]
+
+
+
+entertestmode();
+
+//		en_tm[]
+
+I2CWriteSameData(DEV_ADDR, 0x10, 0x43);  // Write reg 0x10 = 67
+
+I2CWriteSameData(DEV_ADDR, 0x57, 0x01);  // Write reg 0x57 = 1
+
+//		field[(WAKE_UP,1),(EN_I2C_CTRL,1)]
+
+I2CWriteSameData(DEV_ADDR, 0x0E, 0x59);  // Write reg 0xE = 89
+
+I2CWriteSameData(DEV_ADDR, 0x57, 0x03);  // Write reg 0x57 = 3
+
+I2CWriteSameData(DEV_ADDR, 0x59, 0x01);  // Write reg 0x59 = 1
+
+I2CWriteSameData(DEV_ADDR, 0x5B, 0x01);  // Write reg 0x5B = 1
+
+I2CWriteSameData(DEV_ADDR, 0x61, 0x59);  // Write reg 0x61 = 89
+
+I2CWriteSameData(DEV_ADDR, 0x70, 0x02);  // Write reg 0X70 = 2
+
+//		field[(D2A_BUBO_EN_FORCE_ON,1),(IBUS_SET,89),(VBUS_LOOP_DISABLE,1),(EN_ATEST0,1),(D2A_BUBO_ATEST0_MUX,1),(D2A_BUBO_TM_DIS_COMPH_SLP,1),(DIS_NTC_DETECTION_ANALOG,1),(BUBO_EA_CLAMP_H_VTH,0),(BUBO_SHORT_RCOMP,1)]
+
+I2CWriteSameData(DEV_ADDR, 0x59, 0x21);  // Write reg 0x59 = 33
+
+//		field[(D2A_BUBO_TM_DIS_CLK,1)]
+
+#50000000;  // delay 50e-3s
+
+//		delay[50e-3]
+
+I2CWriteSameData(DEV_ADDR, 0x59, 0x31);  // Write reg 0x59 = 49
+
+//		field[(D2A_BUBO_TM_ISCALE_DOWN,1)]
+
+
+
+#10000000;  // delay 10e-3s
+
+//		delay[10e-3]
+
+$finish;
+
+//		finish[]
+
+
+
+/////////////////////// End of Auto-generated Code ////////////
+
+#### source references (debug copy) ####
+ForCodexDebug test.cpp lines 8878 sha256 5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317 hits 89
+    8755 TM1205 | // TM1205: TRX_BST_UV_GD — BST1-SW1 / BST2-SW2 两组 BST UVLO 阈值 (Toggle)
+    8766 TM1205 | DUT_API int TM1205_TRX_BST_UV_GD(short funcindex, LPCTSTR funclabel)
+    2150 VAC1_PRST | // TM108: HSKP VAC1_PRST - VAC1 PRST CMP threshold (digital V(DTEST0))
+    2155 VAC1_PRST | DUT_API int TM108_HSKP_VAC1_PRST(short funcindex, LPCTSTR funclabel)
+    2158 VAC1_PRST | CParam *VAC1_PRST_Rise = StsGetParam(funcindex, "VAC1_PRST_Rise");
+    2158 VAC1_PRST | CParam *VAC1_PRST_Rise = StsGetParam(funcindex, "VAC1_PRST_Rise");
+    2159 VAC1_PRST | CParam *VAC1_PRST_Fall = StsGetParam(funcindex, "VAC1_PRST_Fall");
+    2159 VAC1_PRST | CParam *VAC1_PRST_Fall = StsGetParam(funcindex, "VAC1_PRST_Fall");
+    2160 VAC1_PRST | CParam *VAC1_PRST_Hys = StsGetParam(funcindex, "VAC1_PRST_Hys");
+    2160 VAC1_PRST | CParam *VAC1_PRST_Hys = StsGetParam(funcindex, "VAC1_PRST_Hys");
+    2220 VAC1_PRST | VAC1_PRST_Rise->SetTestResult(site, 0, rise_result[site]);
+    2221 VAC1_PRST | VAC1_PRST_Fall->SetTestResult(site, 0, fall_result[site]);
+    2222 VAC1_PRST | VAC1_PRST_Hys->SetTestResult(site, 0, hys[site]);
+    2228 VAC2_PRST | // TM109: HSKP VAC2_PRST - VAC2 PRST CMP threshold (digital V(DTEST0))
+    2233 VAC2_PRST | DUT_API int TM109_HSKP_VAC2_PRST(short funcindex, LPCTSTR funclabel)
+    2236 VAC2_PRST | CParam *VAC2_PRST_Rise = StsGetParam(funcindex, "VAC2_PRST_Rise");
+    2236 VAC2_PRST | CParam *VAC2_PRST_Rise = StsGetParam(funcindex, "VAC2_PRST_Rise");
+    2237 VAC2_PRST | CParam *VAC2_PRST_Fall = StsGetParam(funcindex, "VAC2_PRST_Fall");
+    2237 VAC2_PRST | CParam *VAC2_PRST_Fall = StsGetParam(funcindex, "VAC2_PRST_Fall");
+    2238 VAC2_PRST | CParam *VAC2_PRST_Hys = StsGetParam(funcindex, "VAC2_PRST_Hys");
+    2238 VAC2_PRST | CParam *VAC2_PRST_Hys = StsGetParam(funcindex, "VAC2_PRST_Hys");
+    2298 VAC2_PRST | VAC2_PRST_Rise->SetTestResult(site, 0, rise_result[site]);
+    2299 VAC2_PRST | VAC2_PRST_Fall->SetTestResult(site, 0, fall_result[site]);
+    2300 VAC2_PRST | VAC2_PRST_Hys->SetTestResult(site, 0, hys[site]);
+    1797 LP_HR_0P5U | // TM103: HSKP LP_HR_0P5U — IBP 0.5UA HR 电流测量 (MI, 测 I(ATEST0))
+    1802 LP_HR_0P5U | DUT_API int TM103_HSKP_LP_HR_0P5U(short funcindex, LPCTSTR funclabel)
+    1805 LP_HR_0P5U | CParam *LP_HR_0P5U = StsGetParam(funcindex, "LP_HR_0P5U");
+    1805 LP_HR_0P5U | CParam *LP_HR_0P5U = StsGetParam(funcindex, "LP_HR_0P5U");
+    1850 LP_HR_0P5U | LP_HR_0P5U->SetTestResult(site, 0, lp_hr_0p5u[site]);
+    1725 LP_VBG_BF | // TM102: HSKP ATEST0 — LP_VBG_BF 电压测量 (MV)
+    1733 LP_VBG_BF | CParam *LP_VBG_BF = StsGetParam(funcindex, "LP_VBG_BF");
+    1733 LP_VBG_BF | CParam *LP_VBG_BF = StsGetParam(funcindex, "LP_VBG_BF");
+    1756 LP_VBG_BF | // --- TM102: LP_VBG_BF (MV) ---
+    1762 LP_VBG_BF | //   field[(EN_ATEST0,1),(ATEST0_MUX,2)] → LP_VBG_BF 通路 (reg_config/tm102.sv)
+    1782 LP_VBG_BF | LP_VBG_BF->SetTestResult(site, 0, lp_vbg_bf[site]);
+    1317 BG_RES_DIV | CParam *BG_RES_DIV_PreRd = StsGetParam(funcindex, "BG_RES_DIV_PreRd");
+    1317 BG_RES_DIV | CParam *BG_RES_DIV_PreRd = StsGetParam(funcindex, "BG_RES_DIV_PreRd");
+    3924 BG_RES_DIV | // Trim_BG_RES_DIV (TM135) — BG 电阻分压 Trim (MV, mV)
+    3927 BG_RES_DIV | //      → 0x57=0x02, 0x5E=0x0A (ATEST0_MUX=10 → BG_RES_DIV) → vset_off[vdm]
+    3930 BG_RES_DIV | DUT_API int Trim_BG_RES_DIV(short funcindex, LPCTSTR funclabel)
+    3933 BG_RES_DIV | CParam *BG_RES_DIV_step0 = StsGetParam(funcindex, "BG_RES_DIV_step0");
+    3933 BG_RES_DIV | CParam *BG_RES_DIV_step0 = StsGetParam(funcindex, "BG_RES_DIV_step0");
+    3934 BG_RES_DIV | CParam *BG_RES_DIV_step1 = StsGetParam(funcindex, "BG_RES_DIV_step1");
+    3934 BG_RES_DIV | CParam *BG_RES_DIV_step1 = StsGetParam(funcindex, "BG_RES_DIV_step1");
+    3935 BG_RES_DIV | CParam *BG_RES_DIV_step2 = StsGetParam(funcindex, "BG_RES_DIV_step2");
+    3935 BG_RES_DIV | CParam *BG_RES_DIV_step2 = StsGetParam(funcindex, "BG_RES_DIV_step2");
+    3936 BG_RES_DIV | CParam *BG_RES_DIV_step3 = StsGetParam(funcindex, "BG_RES_DIV_step3");
+    3936 BG_RES_DIV | CParam *BG_RES_DIV_step3 = StsGetParam(funcindex, "BG_RES_DIV_step3");
+    3937 BG_RES_DIV | CParam *BG_RES_DIV_step4 = StsGetParam(funcindex, "BG_RES_DIV_step4");
+    3937 BG_RES_DIV | CParam *BG_RES_DIV_step4 = StsGetParam(funcindex, "BG_RES_DIV_step4");
+    3938 BG_RES_DIV | CParam *BG_RES_DIV_step5 = StsGetParam(funcindex, "BG_RES_DIV_step5");
+    3938 BG_RES_DIV | CParam *BG_RES_DIV_step5 = StsGetParam(funcindex, "BG_RES_DIV_step5");
+    3939 BG_RES_DIV | CParam *BG_RES_DIV_step6 = StsGetParam(funcindex, "BG_RES_DIV_step6");
+    3939 BG_RES_DIV | CParam *BG_RES_DIV_step6 = StsGetParam(funcindex, "BG_RES_DIV_step6");
+    3940 BG_RES_DIV | CParam *BG_RES_DIV_step7 = StsGetParam(funcindex, "BG_RES_DIV_step7");
+    3940 BG_RES_DIV | CParam *BG_RES_DIV_step7 = StsGetParam(funcindex, "BG_RES_DIV_step7");
+    3941 BG_RES_DIV | CParam *BG_RES_DIV_pre_value = StsGetParam(funcindex, "BG_RES_DIV_pre_value");
+    3941 BG_RES_DIV | CParam *BG_RES_DIV_pre_value = StsGetParam(funcindex, "BG_RES_DIV_pre_value");
+    3942 BG_RES_DIV | CParam *BG_RES_DIV_pre_bit = StsGetParam(funcindex, "BG_RES_DIV_pre_bit");
+    3942 BG_RES_DIV | CParam *BG_RES_DIV_pre_bit = StsGetParam(funcindex, "BG_RES_DIV_pre_bit");
+ForCodexDebug sub.cpp lines 3336 sha256 e86d49bef7ae725106311d8205df6dbc11184c7a0920eeaed416a515ac391470 hits 2
+    2978 BG_RES_DIV | // DALI: measure_bg_res_div �� TM135 Trim_BG_RES_DIV ���� (VDM MV, ���� mV)
+    2981 BG_RES_DIV | // �Ĵ����� test.cpp ������: 0x10=0x43, 0x57=0x02, 0x5E=0x0A (ATEST0_MUX=10 �� BG_RES_DIV)
+ForCodexDebug StdAfx.h lines 693 sha256 ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6 hits 0
+ForCodexDebug sub.h lines 153 sha256 fe4e2f504f63700233011ce7413a07469c63e1b74669c40788a2aaacc698887c hits 0
+ForCodexDebug spec.cpp lines 1664 sha256 43c968bebf31aa81c078af75f8e12da78f7ca61e38c80b4e270bdd31018f7d45 hits 0
+devel(readonly) test.cpp lines 8878 sha256 5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317 hits 89
+    8755 TM1205 | // TM1205: TRX_BST_UV_GD — BST1-SW1 / BST2-SW2 两组 BST UVLO 阈值 (Toggle)
+    8766 TM1205 | DUT_API int TM1205_TRX_BST_UV_GD(short funcindex, LPCTSTR funclabel)
+    2150 VAC1_PRST | // TM108: HSKP VAC1_PRST - VAC1 PRST CMP threshold (digital V(DTEST0))
+    2155 VAC1_PRST | DUT_API int TM108_HSKP_VAC1_PRST(short funcindex, LPCTSTR funclabel)
+    2158 VAC1_PRST | CParam *VAC1_PRST_Rise = StsGetParam(funcindex, "VAC1_PRST_Rise");
+    2158 VAC1_PRST | CParam *VAC1_PRST_Rise = StsGetParam(funcindex, "VAC1_PRST_Rise");
+    2159 VAC1_PRST | CParam *VAC1_PRST_Fall = StsGetParam(funcindex, "VAC1_PRST_Fall");
+    2159 VAC1_PRST | CParam *VAC1_PRST_Fall = StsGetParam(funcindex, "VAC1_PRST_Fall");
+    2160 VAC1_PRST | CParam *VAC1_PRST_Hys = StsGetParam(funcindex, "VAC1_PRST_Hys");
+    2160 VAC1_PRST | CParam *VAC1_PRST_Hys = StsGetParam(funcindex, "VAC1_PRST_Hys");
+    2220 VAC1_PRST | VAC1_PRST_Rise->SetTestResult(site, 0, rise_result[site]);
+    2221 VAC1_PRST | VAC1_PRST_Fall->SetTestResult(site, 0, fall_result[site]);
+    2222 VAC1_PRST | VAC1_PRST_Hys->SetTestResult(site, 0, hys[site]);
+    2228 VAC2_PRST | // TM109: HSKP VAC2_PRST - VAC2 PRST CMP threshold (digital V(DTEST0))
+    2233 VAC2_PRST | DUT_API int TM109_HSKP_VAC2_PRST(short funcindex, LPCTSTR funclabel)
+    2236 VAC2_PRST | CParam *VAC2_PRST_Rise = StsGetParam(funcindex, "VAC2_PRST_Rise");
+    2236 VAC2_PRST | CParam *VAC2_PRST_Rise = StsGetParam(funcindex, "VAC2_PRST_Rise");
+    2237 VAC2_PRST | CParam *VAC2_PRST_Fall = StsGetParam(funcindex, "VAC2_PRST_Fall");
+    2237 VAC2_PRST | CParam *VAC2_PRST_Fall = StsGetParam(funcindex, "VAC2_PRST_Fall");
+    2238 VAC2_PRST | CParam *VAC2_PRST_Hys = StsGetParam(funcindex, "VAC2_PRST_Hys");
+    2238 VAC2_PRST | CParam *VAC2_PRST_Hys = StsGetParam(funcindex, "VAC2_PRST_Hys");
+    2298 VAC2_PRST | VAC2_PRST_Rise->SetTestResult(site, 0, rise_result[site]);
+    2299 VAC2_PRST | VAC2_PRST_Fall->SetTestResult(site, 0, fall_result[site]);
+    2300 VAC2_PRST | VAC2_PRST_Hys->SetTestResult(site, 0, hys[site]);
+    1797 LP_HR_0P5U | // TM103: HSKP LP_HR_0P5U — IBP 0.5UA HR 电流测量 (MI, 测 I(ATEST0))
+    1802 LP_HR_0P5U | DUT_API int TM103_HSKP_LP_HR_0P5U(short funcindex, LPCTSTR funclabel)
+    1805 LP_HR_0P5U | CParam *LP_HR_0P5U = StsGetParam(funcindex, "LP_HR_0P5U");
+    1805 LP_HR_0P5U | CParam *LP_HR_0P5U = StsGetParam(funcindex, "LP_HR_0P5U");
+    1850 LP_HR_0P5U | LP_HR_0P5U->SetTestResult(site, 0, lp_hr_0p5u[site]);
+    1725 LP_VBG_BF | // TM102: HSKP ATEST0 — LP_VBG_BF 电压测量 (MV)
+    1733 LP_VBG_BF | CParam *LP_VBG_BF = StsGetParam(funcindex, "LP_VBG_BF");
+    1733 LP_VBG_BF | CParam *LP_VBG_BF = StsGetParam(funcindex, "LP_VBG_BF");
+    1756 LP_VBG_BF | // --- TM102: LP_VBG_BF (MV) ---
+    1762 LP_VBG_BF | //   field[(EN_ATEST0,1),(ATEST0_MUX,2)] → LP_VBG_BF 通路 (reg_config/tm102.sv)
+    1782 LP_VBG_BF | LP_VBG_BF->SetTestResult(site, 0, lp_vbg_bf[site]);
+    1317 BG_RES_DIV | CParam *BG_RES_DIV_PreRd = StsGetParam(funcindex, "BG_RES_DIV_PreRd");
+    1317 BG_RES_DIV | CParam *BG_RES_DIV_PreRd = StsGetParam(funcindex, "BG_RES_DIV_PreRd");
+    3924 BG_RES_DIV | // Trim_BG_RES_DIV (TM135) — BG 电阻分压 Trim (MV, mV)
+    3927 BG_RES_DIV | //      → 0x57=0x02, 0x5E=0x0A (ATEST0_MUX=10 → BG_RES_DIV) → vset_off[vdm]
+    3930 BG_RES_DIV | DUT_API int Trim_BG_RES_DIV(short funcindex, LPCTSTR funclabel)
+    3933 BG_RES_DIV | CParam *BG_RES_DIV_step0 = StsGetParam(funcindex, "BG_RES_DIV_step0");
+    3933 BG_RES_DIV | CParam *BG_RES_DIV_step0 = StsGetParam(funcindex, "BG_RES_DIV_step0");
+    3934 BG_RES_DIV | CParam *BG_RES_DIV_step1 = StsGetParam(funcindex, "BG_RES_DIV_step1");
+    3934 BG_RES_DIV | CParam *BG_RES_DIV_step1 = StsGetParam(funcindex, "BG_RES_DIV_step1");
+    3935 BG_RES_DIV | CParam *BG_RES_DIV_step2 = StsGetParam(funcindex, "BG_RES_DIV_step2");
+    3935 BG_RES_DIV | CParam *BG_RES_DIV_step2 = StsGetParam(funcindex, "BG_RES_DIV_step2");
+    3936 BG_RES_DIV | CParam *BG_RES_DIV_step3 = StsGetParam(funcindex, "BG_RES_DIV_step3");
+    3936 BG_RES_DIV | CParam *BG_RES_DIV_step3 = StsGetParam(funcindex, "BG_RES_DIV_step3");
+    3937 BG_RES_DIV | CParam *BG_RES_DIV_step4 = StsGetParam(funcindex, "BG_RES_DIV_step4");
+    3937 BG_RES_DIV | CParam *BG_RES_DIV_step4 = StsGetParam(funcindex, "BG_RES_DIV_step4");
+    3938 BG_RES_DIV | CParam *BG_RES_DIV_step5 = StsGetParam(funcindex, "BG_RES_DIV_step5");
+    3938 BG_RES_DIV | CParam *BG_RES_DIV_step5 = StsGetParam(funcindex, "BG_RES_DIV_step5");
+    3939 BG_RES_DIV | CParam *BG_RES_DIV_step6 = StsGetParam(funcindex, "BG_RES_DIV_step6");
+    3939 BG_RES_DIV | CParam *BG_RES_DIV_step6 = StsGetParam(funcindex, "BG_RES_DIV_step6");
+    3940 BG_RES_DIV | CParam *BG_RES_DIV_step7 = StsGetParam(funcindex, "BG_RES_DIV_step7");
+    3940 BG_RES_DIV | CParam *BG_RES_DIV_step7 = StsGetParam(funcindex, "BG_RES_DIV_step7");
+    3941 BG_RES_DIV | CParam *BG_RES_DIV_pre_value = StsGetParam(funcindex, "BG_RES_DIV_pre_value");
+    3941 BG_RES_DIV | CParam *BG_RES_DIV_pre_value = StsGetParam(funcindex, "BG_RES_DIV_pre_value");
+    3942 BG_RES_DIV | CParam *BG_RES_DIV_pre_bit = StsGetParam(funcindex, "BG_RES_DIV_pre_bit");
+    3942 BG_RES_DIV | CParam *BG_RES_DIV_pre_bit = StsGetParam(funcindex, "BG_RES_DIV_pre_bit");
+devel(readonly) sub.cpp lines 3336 sha256 e86d49bef7ae725106311d8205df6dbc11184c7a0920eeaed416a515ac391470 hits 2
+    2978 BG_RES_DIV | // DALI: measure_bg_res_div �� TM135 Trim_BG_RES_DIV ���� (VDM MV, ���� mV)
+    2981 BG_RES_DIV | // �Ĵ����� test.cpp ������: 0x10=0x43, 0x57=0x02, 0x5E=0x0A (ATEST0_MUX=10 �� BG_RES_DIV)
+devel(readonly) StdAfx.h lines 693 sha256 ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6 hits 0
+devel(readonly) sub.h lines 153 sha256 fe4e2f504f63700233011ce7413a07469c63e1b74669c40788a2aaacc698887c hits 0
+devel(readonly) spec.cpp lines 1664 sha256 43c968bebf31aa81c078af75f8e12da78f7ca61e38c80b4e270bdd31018f7d45 hits 0
+
+DONE

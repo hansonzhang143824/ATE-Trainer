@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "runId": "training-20260922t154456z-898b29e5",
+  "status": "blocked",
+  "target": {
+    "kind": "profile",
+    "profileId": "ptc-dft-expert"
+  },
+  "createdAt": "2026-09-22T15:44:56.532Z",
+  "updatedAt": "2026-09-22T15:50:03.993Z",
+  "testItems": [
+    "TM109"
+  ],
+  "startedAt": "2026-09-22T15:44:56.616Z",
+  "outcome": {
+    "mode": "BLOCKED",
+    "modelDispatched": true,
+    "childSessionId": "dfbf854e-46f4-4503-bef4-4855e2455f6a",
+    "reason": "training execution exceeded 300000 ms",
+    "evidence": "Training_Materials\\runs\\training-20260922t154456z-898b29e5\\evidence\\dft-terminal.json"
+  },
+  "finishedAt": "2026-09-22T15:50:03.993Z"
+}

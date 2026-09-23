@@ -1,0 +1,105 @@
+
+// =====================================================================
+// TM641: BUBO BST UV — BST UV threshold (Toggle, ramp BST 绝对电压 → 捕 DTEST0 翻转)
+// SW12_U1REF_BST_ACM 强制 BST 绝对电压 (对地), 非 BST-SW 差值 (TM640 下电注释实证):
+//   DFT 期待差值 2.5→4.0V, SW=3V → BST 绝对 ramp 5.5→7.0V; 触发点结果减 3V (SW 偏置) = 阈值
+// FPVI0 差值技巧: FV=2 固定 PMID-SW=2V, PMID_HG2 到 5V → SW 跟随到 3V (DFT vset[pmid,5] vset[sw,3])
+// DFT: vbat=3.5V pmid=5V bst_sw=5V vdrv=5V sw=3V → en_tm[] → 0x10=0x43 0x61=0x4B
+//   0x56=0x0B(DMUX_SEL=11) 0x57=0x08(DMUX_EN) → delay 10us → 0x59=0x20(DIS_CLK) → delay 100us
+//   → bst_sw 2.5→4.0 两段斜坡 (10e-3) delay 100us → delay 1ms finish, O=VBAT P=BST-SW
+// 观测: DTEST0 (nQON High-Z 读逻辑电平, 反向): 升扫 TRIG_FALLING / 降扫 TRIG_RISING (TM615/640 同)
+// 两段斜坡 → Toggle 3 参数 (R-HYS: Hys 电压→mV); BST-SW 台阶对: 每步 BST≥SW 且压差≤5V
+// 回环: VBAT + PMID(FPVI0 差值 2V) + BST(SW12_U1REF_BST_ACM) + VDRV + nQON 观测
+// =====================================================================
+DUT_API int TM641_BST_UV(short funcindex, LPCTSTR funclabel)
+{
+    //{{AFX_STS_PARAM_PROTOTYPES
+    CParam *BST_UV_Rise = StsGetParam(funcindex, "BST_UV_Rise");
+    CParam *BST_UV_Fall = StsGetParam(funcindex, "BST_UV_Fall");
+    CParam *BST_UV_Hys = StsGetParam(funcindex, "BST_UV_Hys");
+    //}}AFX_STS_PARAM_PROTOTYPES
+
+    double rise_result[SITE_NUM] = { 0 };
+    double fall_result[SITE_NUM] = { 0 };
+    double hys[SITE_NUM] = { 0 };
+
+    // ====== Step 1: Connect (继电器闭合) ======
+    // 电流通路: PMID→FPVI0 High (K_FPVIH_TO_PMID_A=K83); SW→FPVI0 Low (K60_BUSL0_VCP+K61_ACM8_SW); BST 供电 SW12_U1REF_BST_ACM (K48+K76)
+    // Cap2 (FR-001 按PIN): BST_SW 是 ramp 电压源 → 移除 K57_CAP_BST_SW (Cap 拖慢 ramp); PMID/VBAT 静态供电 → 闭合 K85_CAP_PMID + K13_VBAT_Cap
+    cbite.SetOn(K_FPVIH_TO_PMID_A, K60_BUSL0_VCP, K61_ACM8_SW, K13_VBAT_Cap, K85_CAP_PMID, K48_ACM5_AMP_REF, K76_ACM_BST, K65_nQON_PU, -1);
+    delay_ms(3);
+
+    // ====== Step 2: Power On (BST-SW 台阶上电, SW 钳位 3V) ======
+    FPVI0.Set(FV, 2, FPVIe_5V, FPVIe_1MA, FPVIe_RELAY_ON);  // PMID-SW=2V: PMID=2V, SW=0V (量程≥2×设定: 5V≥2×2V)
+    delay_us(200);
+    VBAT_PD3_FXVI.Set(FV, 3.5, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);  // VBAT=3.5V
+    SW12_U1REF_BST_ACM.Set(FV, 5, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);  // SW=0V, BST-SW=5V (BST=5V, 台阶对 BST≥SW)
+    V1P5_U34PS_FXVI.Set(FV, 5, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);  // VDRV=V1P5 短接
+    delay_us(200);
+    PMID_HG2_FXVI.Set(FV, 5, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);  // PMID=5V, SW 跟随到 3V (FPVI0 差值 2V)
+    delay_us(200);
+    SW12_U1REF_BST_ACM.Set(FV, 8, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);  // BST 绝对=8V: BST-SW=5V (SW=3V)
+    delay_ms(1);
+
+    // ====== Step 3: Register Config (寄存器配置, tm641.sv BST UV 序列) ======
+    entertestmode();
+    I2CWriteSameData(DEV_ADDR, 0x10, 0x43);  // WAKE_UP=1
+    I2CWriteSameData(DEV_ADDR, 0x61, 0x4B);  // D2A_BUBO_EN_FORCE_ON=1
+    I2CWriteSameData(DEV_ADDR, 0x56, 0x0B);  // DMUX_SEL=11
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // DMUX_EN=1
+    delay_us(10);                            // delay[10e-6]
+    I2CWriteSameData(DEV_ADDR, 0x59, 0x20);  // D2A_BUBO_TM_DIS_CLK=1
+    delay_us(100);                           // delay[100e-6]
+
+    // ====== Step 4: Measure (rampv_capv 电压 ramp, 捕 DTEST0 翻转) ======
+    // DFT 尾部: vset[bst_sw,2.5,10e-3] → vset[bst_sw,4,10e-3] 两段斜坡 → Toggle 3 参数 (升+降)
+    // SW12_U1REF_BST_ACM 是 BST 绝对电压: 绝对 5.5→7.0V = 差值 2.5→4.0V; 触发点减 SW 偏置 3V = BST-SW 阈值
+    // nQON 读数与 ramp 反向 (TM615 同): 升扫 TRIG_FALLING 捕 rise / 降扫 TRIG_RISING 捕 fall
+    double vth_r[SITE_NUM] = { 0 };
+    double vth_f[SITE_NUM] = { 0 };
+    test_method.rampv_capv(SW12_U1REF_BST_ACM, ACM200_10V, ACM200_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           5.5, 7.0, 200, 20, 1.65, TRIG_FALLING, vth_r);   // 升扫: BST-SW 2.5→4.0V
+    test_method.rampv_capv(SW12_U1REF_BST_ACM, ACM200_10V, ACM200_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           7.0, 5.5, 200, 20, 1.65, TRIG_RISING, vth_f);   // 降扫: BST-SW 4.0→2.5V
+    FOR_EACH_VALID_SITE(site)
+    {
+        rise_result[site] = vth_r[site] - 3.0;  // BST 绝对 → BST-SW 差值 (SW=3V 偏置扣除)
+        fall_result[site] = vth_f[site] - 3.0;
+    }
+    // Hys = Rise - Fall (Toggle 两段式 3 参数; R-HYS: Hys 电压→mV)
+    FOR_EACH_VALID_SITE(site)
+    {
+        hys[site] = (rise_result[site] - fall_result[site]) * 1e3;  // V → mV
+    }
+    delay_ms(1);                             // delay[1e-3] finish[]
+
+    // ====== Step 5: Power Off (BST-SW 反向台阶下电) ======
+    SW12_U1REF_BST_ACM.Set(FV, 3, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);  // BST: 8→3V, BST-SW: 5→0V (BST=SW=3V)
+    delay_us(200);
+    FPVI0.Set(FV, 0, FPVIe_5V, FPVIe_1MA, FPVIe_RELAY_ON);  // PMID-SW 差值 2→0: PMID=SW=3V
+    delay_us(200);
+    PMID_HG2_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);  // SW 跟随到 0V, BST-SW=3V
+    delay_us(200);
+    SW12_U1REF_BST_ACM.Set(FV, 0, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);
+    V1P5_U34PS_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10UA, ACM200_RELAY_ON);
+    delay_ms(1);
+    FPVI0.Set(FV, 0, FPVIe_10V, FPVIe_10MA, FPVIe_RELAY_OFF);
+    PMID_HG2_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+    SW12_U1REF_BST_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+    V1P5_U34PS_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+
+    // ====== Step 6: LogData ======
+    FOR_EACH_VALID_SITE(site)
+    {
+        BST_UV_Rise->SetTestResult(site, 0, rise_result[site]);
+        BST_UV_Fall->SetTestResult(site, 0, fall_result[site]);
+        BST_UV_Hys->SetTestResult(site, 0, hys[site]);
+    }
+    return 0;
+}

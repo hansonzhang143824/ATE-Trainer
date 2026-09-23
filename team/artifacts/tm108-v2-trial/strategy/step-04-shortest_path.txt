@@ -1,0 +1,66 @@
+TM108 relay workflow STEP4 SHORTEST-PATH (step 4/8) - owner=test-strategy-architect run=tm108-v2-trial
+flow: knowledge/references/L3-method/relay-design-flow.md:39-75
+closure-set source: proof required_on + full proof relay chain
+
+shortest path is ranked by the UNION SIZE of relays that must be actuated (required_on),
+which is the set the closure set is actuated from (setup-contract relayStatePolicy,
+locator team/artifacts/acceptance-20260916-dali10/setup-contract.json:3899-3902).
+
+-- VAC1_F_S1
+   rank1 union=0  S5_ACM200_FH0            req_on=[]               path_steps=2
+   rank2 union=1  S1_FPVIe_FL0             req_on=[17]             path_steps=4
+   rank3 union=2  S10_CH0_B                req_on=[17, 142]        path_steps=4
+   rank4 union=3  S1_FPVIe_FH0             req_on=[70, 87, 90]     path_steps=6
+   rank5 union=3  S1_FPVIe_FL1             req_on=[17, 145, 146]   path_steps=6
+
+-- VAC1_S_S1
+   rank1 union=0  S5_ACM200_SH0            req_on=[]               path_steps=2
+   rank2 union=1  S1_FPVIe_SL0             req_on=[17]             path_steps=4
+   rank3 union=2  S8_QVM_CH0-              req_on=[17, 138]        path_steps=4
+   rank4 union=3  S1_FPVIe_SL1             req_on=[17, 138, 139]   path_steps=6
+
+-- VBAT_F_S1
+   rank1 union=0  S3_FXVIe_PLUS_FH5        req_on=[]               path_steps=1
+   rank2 union=1  S10_CH0_A                req_on=[7]              path_steps=3
+   rank3 union=1  S1_FPVIe_FH1             req_on=[7]              path_steps=3
+   rank4 union=3  S1_FPVIe_FH0             req_on=[7, 143, 144]    path_steps=5
+   rank5 union=3  S8_QVM_CH0+              req_on=[7, 130, 136]    path_steps=6
+
+-- VBAT_S_S1
+   rank1 union=0  S3_FXVIe_PLUS_SH5        req_on=[]               path_steps=1
+   rank2 union=1  S1_FPVIe_SH1             req_on=[7]              path_steps=3
+   rank3 union=2  S10_CH0_A                req_on=[7, 130]         path_steps=6
+   rank4 union=3  S1_FPVIe_SH0             req_on=[7, 136, 137]    path_steps=5
+
+-- nQON_F_S1
+   rank1 union=0  S24_P0                   req_on=[]               path_steps=0
+   rank2 union=0  S5_ACM200_FH9            req_on=[]               path_steps=1
+   rank3 union=1  S10_CH0_A                req_on=[66]             path_steps=1
+   rank4 union=1  S1_FPVIe_FH0             req_on=[62]             path_steps=3
+   rank5 union=1  S1_FPVIe_FH1             req_on=[66]             path_steps=3
+   rank6 union=3  S8_QVM_CH0+              req_on=[66, 130, 136]   path_steps=6
+
+-- nQON_S_S1
+   rank1 union=0  S5_ACM200_SH9            req_on=[]               path_steps=1
+   rank2 union=1  S1_FPVIe_SH0             req_on=[62]             path_steps=3
+   rank3 union=3  S1_FPVIe_SH1             req_on=[62, 136, 137]   path_steps=5
+   rank4 union=3  S10_CH0_A                req_on=[62, 86, 141]    path_steps=6
+
+-- AGND_F_S1
+   rank1 union=0  S3_FXVIe_PLUS_FL(0-3)    req_on=[]               path_steps=0
+   rank2 union=0  S3_FXVIe_PLUS_FL(4-7)    req_on=[]               path_steps=0
+   rank3 union=0  S5_ACM200_FL(0-11)       req_on=[]               path_steps=0
+   rank4 union=0  S5_ACM200_FL(12-23)      req_on=[]               path_steps=0
+
+-- AGND_S_S1
+   rank1 union=0  S3_FXVIe_PLUS_SL(0-3)    req_on=[]               path_steps=0
+   rank2 union=0  S3_FXVIe_PLUS_SL(4-7)    req_on=[]               path_steps=0
+   rank3 union=0  S5_ACM200_SL(0-5)        req_on=[]               path_steps=0
+   rank4 union=0  S5_ACM200_SL(12-17)      req_on=[]               path_steps=0
+   rank5 union=0  S5_ACM200_SL(18-23)      req_on=[]               path_steps=0
+   rank6 union=0  S5_ACM200_SL(6-11)       req_on=[]               path_steps=0
+   rank7 union=1  S8_QVM_CH0-              req_on=[140]            path_steps=1
+   rank8 union=2  S1_FPVIe_SL0             req_on=[138, 140]       path_steps=3
+   rank9 union=2  S1_FPVIe_SL1             req_on=[139, 140]       path_steps=3
+   rank10 union=3  S10_CH0_B                req_on=[130, 139, 140]  path_steps=6
+

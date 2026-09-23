@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "policy": "Every legacy asset is either covered, merged, knowledge_only, or retired. Captain dispatch is denied for knowledge_only and retired entries.",
+  "entries": [
+    {"asset":"skills/nuvolta-codegen.md","disposition":"knowledge_only","replacement":"team/ptc/PTC_EXECUTION_AUTHORITY.md"},
+    {"asset":"skills/AGENT_MAP.md","disposition":"knowledge_only","replacement":"team/ptc/ptc_stage_registry.json"},
+    {"asset":"team/AGENT_RUNTIME_BASE.md","disposition":"knowledge_only","replacement":"team/ptc/ATE_PTC_RUNTIME.md"},
+    {"asset":"team/ROLE_ROUTING.md","disposition":"knowledge_only","replacement":"team/ptc/ptc_stage_registry.json"},
+    {"asset":"team/DIRECT_DISPATCH_STATE_MACHINE.md","disposition":"knowledge_only","replacement":"team/ptc/ptc_stage_registry.json"},
+    {"asset":"scripts/check_dft_pins.py","disposition":"merge","replacement":"scripts/validate_dft_outputs.py"},
+    {"asset":"scripts/gen_power_sequence.py","disposition":"merge","replacement":"scripts/ptc_contract_schema.py"},
+    {"asset":"scripts/check_library_files.py","disposition":"merge","replacement":"scripts/verify_implementation_batch.py"},
+    {"asset":"scripts/verify_awg_params.py","disposition":"knowledge_only","replacement":"future family-specific contract validator"},
+    {"asset":"scripts/verify_relay_trace.py","disposition":"merge","replacement":"scripts/validate_strategy_contract.py"},
+    {"asset":"scripts/verify_single_fn.py","disposition":"merge","replacement":"scripts/verify_implementation_batch.py"},
+    {"asset":"scripts/verify_material_receipt.py","disposition":"merge","replacement":"scripts/prepare_input_sync_v2.py"},
+    {"asset":"scripts/generate_schematic_from_csv.py","disposition":"retired","replacement":"scripts/generate_schematic_txt.py"},
+    {"asset":"scripts/derive_schematic_trial_outputs.py","disposition":"retired","replacement":"scripts/generate_schematic_txt.py"},
+    {"asset":"scripts/validate_schematic_text_outputs.py","disposition":"covered","replacement":"scripts/validate_schematic_outputs.py"},
+    {"asset":"scripts/amend_tm109_strategy_int_allocation.py","disposition":"retired","replacement":"none; historical one-off repair"},
+    {"asset":"scripts/verify_bst_sw_sequence.py","disposition":"knowledge_only","replacement":"family-specific future contract validator"},
+    {"asset":"scripts/verify_tm206_425.py","disposition":"knowledge_only","replacement":"family-specific future contract validator"}
+  ]
+}

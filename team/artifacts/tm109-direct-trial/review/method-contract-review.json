@@ -1,0 +1,242 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm109-method-contract-review",
+  "artifactKind": "rule-review",
+  "taskId": "TM109-RULE-REVIEW-METHOD",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_METHOD",
+  "projectId": "DALI",
+  "tm": "TM109",
+  "generatedAt": "2026-09-18 00:26:51 +08:00",
+  "verdict": "deliverable_ready",
+  "blockingDefects": [],
+  "reviewedArtifacts": [
+    {
+      "path": "team/artifacts/tm109-direct-trial/strategy/tm109-resource-config-contract.json",
+      "sha256": "a22502ece50f321312a466b77cfef5a40efe8f9a41995f7ee8af3b44048107e2",
+      "recomputedSha256": "a22502ece50f321312a466b77cfef5a40efe8f9a41995f7ee8af3b44048107e2",
+      "hashMatches": true,
+      "declaredBy": "strategy/deliverable-ready.json",
+      "role": "signed strategy resource/configuration contract"
+    },
+    {
+      "path": "team/artifacts/tm109-direct-trial/strategy/deliverable-ready.json",
+      "sha256": "356312954f2b27ce9e0a4dcc3784d01f0eae601db463f07c0b12e8aad40413cb",
+      "recomputedSha256": "356312954f2b27ce9e0a4dcc3784d01f0eae601db463f07c0b12e8aad40413cb",
+      "hashMatches": true,
+      "declaredBy": "method contract signedInputs[1].declaredSha256",
+      "role": "strategy handoff consumed by the method role"
+    },
+    {
+      "path": "team/artifacts/tm109-direct-trial/method/tm109-test-method-contract.json",
+      "sha256": "d9d7e10f9dc96730695a97a7e2b59b235987b3745689a3eaccc738a893000459",
+      "recomputedSha256": "d9d7e10f9dc96730695a97a7e2b59b235987b3745689a3eaccc738a893000459",
+      "hashMatches": true,
+      "declaredBy": "method/deliverable-ready.json",
+      "role": "signed test method contract"
+    },
+    {
+      "path": "team/artifacts/tm109-direct-trial/method/deliverable-ready.json",
+      "sha256": "2174275fefcc7fed2eaa1f5142aa0dead88519bc7d05a8a208e44dc9c0c033b3",
+      "recomputedSha256": "2174275fefcc7fed2eaa1f5142aa0dead88519bc7d05a8a208e44dc9c0c033b3",
+      "hashMatches": true,
+      "declaredBy": "self (measured at review time)",
+      "role": "method handoff"
+    }
+  ],
+  "hashVerification": {
+    "method": "python hashlib.sha256 over Path.read_bytes() (the project plaintext reader convention; the DLP-protected artifacts under team/artifacts differ from the native Windows digest of the same byte length)",
+    "result": "all four files match the digest declared for them; the strategy contract hash recorded inside the method contract's signedInputs and inside the method handoff's inputGate equals the recomputed value, so the method role did consume the same revision it declares"
+  },
+  "reviewBoundary": {
+    "inputsUsed": [
+      "team/artifacts/tm109-direct-trial/strategy/tm109-resource-config-contract.json",
+      "team/artifacts/tm109-direct-trial/strategy/deliverable-ready.json",
+      "team/artifacts/tm109-direct-trial/method/tm109-test-method-contract.json",
+      "team/artifacts/tm109-direct-trial/method/deliverable-ready.json"
+    ],
+    "ruleMaterialUsed": [
+      "team/roles/rule-reviewer.md (charter)",
+      "team/roles/rule-reviewer-snapshot-gate.md (frozen-snapshot/evidence-scope addendum)",
+      "team/DIRECT_DISPATCH_STATE_MACHINE.md (transition authority)",
+      "team/ptc/ATE_PTC_RUNTIME.md (review-chain and cost limits)"
+    ],
+    "notDone": [
+      "no re-derivation of the underlying DFT rows or schematic connectivity: the charter's first criterion is provenance (every resource/relay/register claim carries a source locator or an explicit unresolved marker), and the PTC input boundary for this task is the four listed files only",
+      "no source code inspection and no code change: no implementation exists at this gate",
+      "no edit of the reviewed artifacts, no helper agent, no downstream role started, no retry loop"
+    ],
+    "frozenRevision": "review/immutable-review-snapshot.json"
+  },
+  "checks": [
+    {
+      "id": "CHK-1",
+      "requirement": "resource, relay, and register claims retain source evidence or an explicit unresolved marker",
+      "result": "pass",
+      "evidence": [
+        "strategy: three resourceAllocation blocks (lines 234, 292, 369) each carry an evidence[] array (lines 282, 357, 395) citing SCH-Connect-Map.json pinCentric/sourceCentric records plus the rule-layer locator used for the choice",
+        "strategy: each relayGroups[] relayStates entry carries recordedToken plus a 'source' pointer (RG-1 line 426, RG-2 lines 454/465, RG-3 line 507)",
+        "strategy: functional relays that cannot be identified are marked UNRESOLVED with a reason (lines 433, 484, 518) and routed as conflict C-04 (line 654) plus open item OI-S-02 (line 780)",
+        "strategy registerDelta (line 586): both calls cite DFT.csv lines 30-31 verbatim plus dft-meta.json; the field expansion is explicitly 'UNRESOLVED' (line 616) rather than derived",
+        "strategy conflict statuses are explicit: C-01..C-07 all carry a locator and a status of 'registered, not resolved' / 'registered, carried forward' (lines 625-689)",
+        "method: the carried boundary is identical to the strategy fields (endpointMap sourceTable/slot/channel, ports, closureSet {19,70} and selectedPath all equal; registerDelta identical), and the method introduces no relay token absent from the strategy contract (RE-10)"
+      ]
+    },
+    {
+      "id": "CHK-2",
+      "requirement": "power phases, measurement path, limits, power-down, and Log are present",
+      "result": "pass",
+      "evidence": [
+        "power phases: MP-1 pre-state verification, MP-2 equipotential route closure, MP-3 VBAT initial-condition raise (categories power-up, lines 372/431/499); MP-4 configuration (line 562); MP-5 stimulus (line 646)",
+        "measurement path: measurementPlan (line 1098) with three forceMeasureEndpoints (VAC2 ACM200 S5 ch0 swept, VBAT FXVIe_PLUS S3 ch5 held, INT ACM200 S5 ch15 observation), range requirement, sweepOrStep, sample, calculation and siteHandling; executed by MP-6 (line 709) and MP-7 (line 783)",
+        "limits: limitPlan (line 1176) with VAC2_PRST_Rise (nominal 4.15 V), VAC2_PRST_Fall (DERIVED 3.8 V, LOG_ONLY) and VAC2_PRST_Hys (350 mV), each with source, class, toleranceStatus and judgement status; tolerance is UNRESOLVED with an explicit PENDING_LIMIT_RULING marker (lines 1186, 1205)",
+        "power-down: powerDownPlan (line 1221) with 6 ordered actions, actualNodeVoltages, a live-level differential check, safeEndState, registerPolicy and exceptionPath; executed by MP-9 (line 924) with the same 6 orderedActions (line 976) and by MP-10 (line 1013) with 5 orderedActions (line 1065)",
+        "Log: logPlan (line 1291) with rawValues, calculatedValues, judgement (including the PENDING_LIMIT_RULING marker), unit, precision, context, publication and failureContextRule (line 1330)"
+      ]
+    },
+    {
+      "id": "CHK-3",
+      "requirement": "every differential-voltage constraint is bounded for every phase or explicitly marked not applicable with evidence",
+      "result": "pass",
+      "evidence": [
+        "all 10 phases carry a bstSwCheck block (lines 400,467,531,614,678,741,815,884,956,1045) stating the bounded constraint '0 V <= BST_actual - SW_actual <= 5 V'",
+        "every one of them sets applicable=false, differenceV=null and result=NOT_APPLICABLE with a four-point proofBasis (endpoint enumeration, the only-actuated relays {19,70} carrying no BST/SW token, the register delta addressing neither node, and the verify_bst_sw_sequence.py target-set rule) plus a falsificationTrigger list",
+        "the same block is repeated for powerDownPlan (line 1268), and top-level bstSwApplicability states the rule, the derivation, the consequence and the gateEvidence",
+        "the gateEvidence claim about scripts/verify_bst_sw_sequence.py was spot-checked against the script itself and is accurate: derive_targets() matches rampi_capv at lines 100-114 and the empty-target case prints an empty PASS at lines 497-498",
+        "no phase leaves a differential quantity unbounded: the only other differential statements are the per-phase differentialChecks entries (22 in total), which are either NOT_APPLICABLE with a reason or a stated bounded comparison (e.g. the VAC2 sweep staying inside the DFT-declared envelope)"
+      ]
+    },
+    {
+      "id": "CHK-4",
+      "requirement": "method uncertainty is routed to its owner and is not silently converted into a fact",
+      "result": "pass",
+      "evidence": [
+        "four routedFindings (RF-01..RF-04, lines 1353/1366/1379/1390) each name routedTo, a closingSource, a questionForOwner and an explicit blockingForCodeWrite answer",
+        "nine open items MF-01..MF-09 (lines 1487-1573) each name an 'owner' (lines 1492-1573) with severity and blocking flags; blockingItems [MF-01, MF-02] and nonBlockingItems [MF-03..MF-09] agree between the contract and the handoff",
+        "no uncertainty is promoted to a fact: the falling-threshold nominal is classed DERIVED and marked LOG_ONLY_PENDING_RULING instead of being judged; the DFT argument semantics stay UNRESOLVED (OI-S-06) and the range enumeration is left to the implementer; the observation-pad identity stays a carried conflict (C-06 / OI-S-08 / RF-03)",
+        "the one conflict the method role resolved itself (CF-M1, trigger edge) is declared as resolved by evidence priority with the adopted value, the basis, the superseding authority and the impactIfWrong, so it is a stated decision, not a silent conversion",
+        "the method contract states its own provenance limit explicitly ('the DFT deliverables themselves were not re-read by this role; recorded verbatim inside the signed strategy contract'), so carried DFT text is not passed off as an independent reading",
+        "after decoding, both artifacts are valid UTF-8 with intact CJK text; the mojibake seen in a console dump is a console-codepage artifact, not artifact damage (RE-11)"
+      ]
+    }
+  ],
+  "gateApplicability": [
+    {
+      "gate": "python scripts/verify_review_snapshot.py create|verify",
+      "status": "NOT_APPLICABLE at RULE_REVIEW_METHOD",
+      "evidence": [
+        "scripts/verify_review_snapshot.py line 105 requires --implementation-manifest; the create path loads manifest['changes'] (line 39) and fails with 'implementation manifest has no changes[]' (line 41)",
+        "no implementation manifest and no implementation/ directory exist in team/artifacts/tm109-direct-trial at this stage (trial file listing shows only dft/, schematic/, strategy/, method/ and the stage files), and no production source has been written yet",
+        "the addendum team/roles/rule-reviewer-snapshot-gate.md scopes this gate to 'Before reviewing any implementation'"
+      ],
+      "substitute": "review/immutable-review-snapshot.json records the byte-exact sha256 of the four reviewed files; the digests were recomputed after the review artifacts were written and are unchanged, so the review revision is provably frozen"
+    },
+    {
+      "gate": "python scripts/verify_review_evidence_scope.py --evidence team/artifacts/tm109-direct-trial/review/review-evidence-scope.json",
+      "status": "PASS (exit 0)",
+      "output": "PASS: 11 bounded review evidence checks are valid",
+      "evidence": [
+        "review/review-evidence-scope.json declares 11 checks with named searched files, an explicit query, an observed candidateCount and line-record evidence; the two absence assertions are carried as assertionKind=absence with candidateCount=0 and an explicit pass conclusion"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "RV-01",
+      "severity": "low",
+      "class": "documentation finding",
+      "verdictImpact": "none",
+      "routedTo": "test-strategy-architect",
+      "topic": "closureDerivation.verifiedProperty enumerates five pin records while six TM109 pin instances exist",
+      "fact": "strategy contract line 153 states 'for the five TM109-relevant pin records the resources list equals exactly the relayChainUnion entries whose state is ON' and lists VBAT_F_S1, VAC2_F_S1, VAC2_S_S1, INT_F_S1, INT_S_S1; the TM109 endpoint set has six instances (endpointRequirements[] lines 160-163, 184-187, 209-212). VBAT_S_S1 is omitted from that enumeration although the same contract cites PIN_VBAT_S_S1 in RA-1's evidence (line 285).",
+      "impact": "no selection impact: the VBAT closure is empty (requiredActuationsCount 0) and the omitted record is the pin the RA-1 sense leg lands on, which RA-1 does cite.",
+      "action": "recorded only; the signed artifact is not edited by this role"
+    },
+    {
+      "id": "RV-02",
+      "severity": "low",
+      "class": "documentation finding",
+      "verdictImpact": "none",
+      "routedTo": "test-strategy-architect",
+      "topic": "revision-2 INT allocation versus two stale/conditional remnants in the same signed strategy contract",
+      "fact": "revision 2 made the INT source selection strategy-owned (revision.reason line 1074). resourceAllocation[RA-3] now records selectionState SELECTED / ACM200 S5 ch15 (lines 376-383), resourceSummary.sourceTablesSelected agrees (lines 909-913) and handoff.usableBoundaries agrees (line 1052). Against that, openItems[OI-S-03].description still says the endpoint's source table, slot and channel are 'recorded UNRESOLVED' (line 799), and relayGroups[RG-3] still words its isolation rule conditionally ('if the ACM200 ch15 candidate is used', line 523).",
+      "impact": "wording only: the operative fields agree four to one, so no downstream role reads two different boundaries. The method role self-reported the OI-S-03 half as RF-04; this review confirms it independently and adds the RG-3 conditional wording. No duplicate routing is created.",
+      "action": "recorded only; the signed artifact is not edited by this role"
+    },
+    {
+      "id": "RV-03",
+      "severity": "medium",
+      "class": "condition on the next stage (not a defect of the reviewed contracts)",
+      "routedTo": "user ruling",
+      "topic": "no numeric tolerance band exists, so the item cannot emit a pass/fail judgement yet",
+      "fact": "limitPlan gives VAC2_PRST_Rise a DFT nominal of 4.15 V and VAC2_PRST_Hys a DFT nominal of 350 mV, both with toleranceStatus UNRESOLVED (lines 1186, 1205) and judgement PENDING_LIMIT_RULING; the DFT supplies no numeric bound (carried item TM109-OI-2 / MF-04).",
+      "reviewerAssessment": "the method contract handles this correctly: it computes, publishes and logs the values, marks them explicitly unjudged, and forbids inventing a tolerance from the Golden, from chip knowledge or from experience (limitPlan.rules). The contract is therefore compliant; the residual is a project-level decision, not a contract defect.",
+      "conditionForImplementation": "the implementation stage must reproduce the PENDING_LIMIT_RULING marker and must not synthesize a tolerance band; until a ruling arrives the item publishes measured values without a pass/fail verdict.",
+      "neededToClose": "one user ruling supplying the numeric minimum/maximum (or the tolerance) for VAC2_PRST_Rise and VAC2_PRST_Hys"
+    },
+    {
+      "id": "RV-04",
+      "severity": "high",
+      "class": "condition on the next stage (not a defect of the reviewed contracts)",
+      "routedTo": "test-strategy-architect (closing source: schematic-expert or a user ruling)",
+      "topic": "the signed boundary leaves two functional relay identities unresolved while both closures are empty",
+      "fact": "MF-01 and MF-02 are declared blocking=true by the method contract (openItems lines 1487-1506; handoff.blockingItems) and are relay-identity gaps owned by the strategy role: (a) the FR-001 default Cap2/stabiliser relay for the powered VBAT pin is not identified in the frozen DALI relay table (strategy C-04 / OI-S-02), and (b) the INT Toggle observation closure is empty, with the pad structure (open-drain versus push-pull) and any pull-up relay unasserted (RF-02). RG-1 and RG-3 are both the empty closure set in the signed contract.",
+      "reviewerAssessment": "this is not a method defect: the method contract registers both gaps, routes both to their owner, forbids the implementer from selecting a relay, and states that the electrical method itself is complete without them. It is a resource/relay ownership question, and per ROLE_ROUTING ('resource, route, relay and register issues return to strategy') it belongs to the strategy role, not to a method rework.",
+      "conditionForImplementation": "the implementation stage may code MP-1..MP-10 inside the signed boundary, but it must not select a relay: coding the empty RG-1/RG-3 closures as-is means the FR-001 Cap2 default closure is omitted and, if the INT pad is open-drain, the observed transition may not be present at all. The Captain must either have MF-01/MF-02 closed by the strategy owner first, or record explicitly that the implementation proceeds with empty RG-1/RG-3 closures and that the item's observability is then unproven.",
+      "neededToClose": "the frozen relay instance for the VBAT Cap2 closure (or an explicit waiver) and the INT pull-up instance plus the pad structure (or a ruling that the pad is push-pull)"
+    }
+  ],
+  "methodReworkNotJustified": {
+    "rule": "AGENTS.md section 11.1: a method expert may be dispatched only when the reviewer proves that a signed method input is missing or contradictory; a code-review concern alone is not grounds to restart test-method work.",
+    "determination": "not proven. The method contract's inputs (the signed strategy contract and its handoff) are present, hash-matched and internally consistent with the method's carried boundary; no missing or contradictory signed method input was found. No method rework is requested."
+  },
+  "returnRouting": {
+    "owner": "rule-reviewer (this artifact)",
+    "routes": [
+      {
+        "to": "test-strategy-architect",
+        "items": [
+          "RV-01",
+          "RV-02"
+        ],
+        "nature": "documentation-only corrections in a signed artifact",
+        "blocking": false
+      },
+      {
+        "to": "test-strategy-architect (closing source schematic-expert or user ruling)",
+        "items": [
+          "MF-01 (RV-04a)",
+          "MF-02 (RV-04b)"
+        ],
+        "nature": "relay identity / observation closure - resource ownership",
+        "blocking": "blocking for a faithful FR-001 closure and for a proven INT observation; not blocking for the electrical method"
+      },
+      {
+        "to": "user ruling",
+        "items": [
+          "MF-04 / TM109-OI-2 (RV-03)",
+          "MF-03",
+          "MF-05",
+          "MF-07",
+          "RF-03"
+        ],
+        "nature": "numeric limits, observation-pad identity and other open decisions already routed by the method role",
+        "blocking": false
+      },
+      {
+        "to": "ate-implementer (next stage, subject to the two conditions)",
+        "items": [
+          "RV-03 condition",
+          "RV-04 condition"
+        ],
+        "nature": "proceed inside the signed boundary; may not select a relay, register value, tolerance or timing substitution"
+      }
+    ],
+    "nextStagePerPtcChain": "IMPLEMENTATION (the PTC runner is the dispatch authority for the successor)"
+  },
+  "limitations": [
+    "This is a rule review of provenance, completeness and routing. It does not re-derive the DFT row or the schematic connectivity, so a wrong-but-well-located hardware fact inside the strategy contract would pass this gate; the strategy role's own conflicts and open items are the declared instrument for that risk.",
+    "The implementation-snapshot gate could not run at this stage because no implementation manifest exists; its substitute is the byte-exact frozen revision record, and the gate must be run for the IMPLEMENTATION review.",
+    "The two conditions RV-03 and RV-04 are forwarding obligations for the next stage; they do not change this verdict, which states only that the reviewed contracts are rule-complete and hash-frozen."
+  ]
+}

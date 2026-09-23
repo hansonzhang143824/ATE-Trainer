@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "profileId": "compile-diagnostician",
+  "version": "v1",
+  "publishedAt": "2026-09-20T15:24:44.186073Z",
+  "executionClass": "compile-standard",
+  "evaluation": {
+    "verdict": "pass",
+    "failed": [],
+    "caseCount": 1,
+    "checks": [
+      {
+        "id": "assets",
+        "ok": true,
+        "detail": "all required assets present"
+      },
+      {
+        "id": "profile_metadata",
+        "ok": true,
+        "detail": "profile.yaml parsed and identified"
+      },
+      {
+        "id": "execution_class_registered",
+        "ok": true,
+        "detail": "executionClass 'compile-standard' is registered in the plugin policy registry"
+      },
+      {
+        "id": "execution_class_matches_profile_map",
+        "ok": true,
+        "detail": "plugin maps compile-diagnostician to 'compile-standard'"
+      },
+      {
+        "id": "declared_readable",
+        "ok": true,
+        "detail": "readable: ['<run>/implementation', '<run>/review', '<run>/method', 'approved VS project files']"
+      },
+      {
+        "id": "declared_writable",
+        "ok": true,
+        "detail": "writable: ['<run>/compile', 'ErrorLog/compile-diagnostician.log']"
+      },
+      {
+        "id": "declared_requiredGates",
+        "ok": true,
+        "detail": "requiredGates: ['scripts/run_ptc_incremental_compile.py']"
+      },
+      {
+        "id": "readable_has_no_retired_artifact",
+        "ok": true,
+        "detail": "readable declares no retired artifact"
+      },
+      {
+        "id": "output_contract",
+        "ok": true,
+        "detail": "object schema with required=['stage', 'mode', 'source', 'exitCode', 'elapsedSeconds', 'sourceSha256']"
+      },
+      {
+        "id": "case_index_matches_disk",
+        "ok": true,
+        "detail": "index ['TM106'] vs cases/ ['TM106']"
+      },
+      {
+        "id": "case_TM106",
+        "ok": true,
+        "detail": "case is complete and inside the allowed read scope"
+      },
+      {
+        "id": "preset_agreement",
+        "ok": true,
+        "detail": "preset.yml name matches displayName 'PTC Compile Diagnostician'"
+      },
+      {
+        "id": "boundary_regression",
+        "ok": true,
+        "detail": "plugin boundary suite passed"
+      }
+    ]
+  },
+  "files": {
+    "CHANGELOG.md": "c2861d3235efdab93589095336037a69b7f023b9577a2aa49dc2d10a573b5466",
+    "cases/TM106/expected.json": "ba90643fed1393232349f5b79b0172c8e74c9818d757a292a5bbae505ca9086f",
+    "evaluation/expected-results.json": "cc6ea720d1f23e5ad9a7b58f71ea3c68ba0da92767931edba2f37896da84cf80",
+    "instructions.md": "13820697d9906d760c3795bcf64efe3d72dd3ba53350c3f88fa4998b7a0b2fbe",
+    "output-contract.schema.json": "79120256fe76191a92d74082de0693c698b280b802c0ee70a5f217dffd6c7c70",
+    "profile.yaml": "ac08fbd9e4edadd1e070b63cf6e0993eb3ba35cd45b896345635c8527fcf1077",
+    "status.json": "e5a22f3f3264597ff1c61c28f327eb14be055d405c1720d9a438a488cced5583"
+  },
+  "digest": "e399c00ccd55101c6f14979a9114706bb6d735f9ae1df1b9531c274bf31d769e"
+}

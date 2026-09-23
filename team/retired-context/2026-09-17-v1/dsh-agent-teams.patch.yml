@@ -1,0 +1,48 @@
+# Project-local overlay for @nanmicoder/dsh-agent-teams 0.1.14.
+# It is intentionally not copied into the global DSH profile.
+- id: agent-teams
+  config:
+    stateDir: .agent-teams
+    memberProvider: spawn
+    memberMaxDepth: 1
+    maxMembers: 7
+    profiles:
+      ate-delivery:
+        description: DALI ATE production pipeline with persistent specialist roles and auditable file artifacts
+        taskPlanning: captain
+        protocol: >-
+          Captain builds a DAG for the requested TM scope. DFT and schematic analysis are independent
+          upstream tasks. Setup, strategy, implementation, independent rule review, repair loops, gates,
+          and compilation follow. All durable outputs are files under team/artifacts/<run-id>; messages are
+          short handoffs. Only D:/PROJECT6-DALI/ForCodexDebug may be modified or built. Never write to
+          D:/PROJECT6-DALI/devel. A downstream task may start only after required artifact validation passes.
+          Strategy owns per-TM resource allocation, ordered power/test/teardown phases, register provenance,
+          measurement and logging. Schema validation alone does not prove this handoff is complete.
+        executionPrompt: >-
+          Work in D:/Newtest/DSH/ATE-Coding-Plat. Read team/README.md, team/ROLE_ROUTING.md and your role charter before acting.
+          Use project_config.json as the sole path authority. Put complete outputs in
+          team/artifacts/<run-id>/ and return a compact handoff containing paths, SHA-256 hashes, evidence,
+          unresolved risks, and the intended next member. Preserve source encoding and the TSZ/DLP workflow.
+          Never modify the production tree D:/PROJECT6-DALI/devel.
+        members:
+          - name: dft-expert
+            role: Extract and validate DFT intent, limits, modes, pins, trims, and coverage into DFT IR
+            executionPrompt: Read team/roles/dft-expert.md completely and obey its contract.
+          - name: schematic-expert
+            role: Extract electrical connectivity, resources, relay paths, and safety constraints into schematic IR
+            executionPrompt: Read team/roles/schematic-expert.md completely and obey its contract.
+          - name: setup-architect
+            role: Own global relay, source, channel, TReg, power-sequence, and cleanup contracts
+            executionPrompt: Read team/roles/setup-architect.md completely and obey its contract.
+          - name: test-strategy-architect
+            role: Own per-TM resource selection, explicit electrical phases, register provenance, measurement, parameters and logs using validated Setup routes and matched golden cases
+            executionPrompt: Read team/roles/test-strategy-architect.md completely and obey its contract.
+          - name: ate-implementer
+            role: Map signed implementation-ready ATE plans to verified tester APIs without inventing electrical method or resource decisions
+            executionPrompt: Read team/roles/ate-implementer.md completely and obey its contract.
+          - name: rule-reviewer
+            role: Independently review generated code against accumulated rules and failure examples
+            executionPrompt: Read team/roles/rule-reviewer.md completely and obey its contract.
+          - name: compile-diagnostician
+            role: Run gates and compilation, classify diagnostics, fix syntax-only defects, and report closure
+            executionPrompt: Read team/roles/compile-diagnostician.md completely and obey its contract.

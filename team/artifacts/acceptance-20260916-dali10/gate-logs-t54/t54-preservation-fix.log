@@ -1,0 +1,11 @@
+生成器 9940 B
+  (a) 已改并集累积
+  (b) 已加 DO_NOT_TOUCH_PREFIXES
+  → 生成器现 10913 B
+  run1: 保留他方命名空间: setupArchitectFreezeAnchors
+  run2: 保留他方命名空间: setupArchitectFreezeAnchors
+Traceback (most recent call last):
+  File "D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10\gate-logs-t54\t54_fix_preservation_union.py", line 78, in <module>
+    A = json.load(io.open(os.path.join(HERE, 't28-anchors.json'), encoding='utf-8-sig'))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t54\\t28-anchors.json'

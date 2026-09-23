@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>工作流 Action 清单</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --surface:#ffffff; --surface2:#f0f2f5;
+    --text:#1a202c; --text-dim:#64748b; --border:#e2e8f0;
+    --accent:#2563eb; --accent-soft:#dbeafe;
+    --amber-bg:#fef3c7; --amber-fg:#92400e; --amber-line:#f59e0b;
+    --blue-bg:#dbeafe;  --blue-fg:#1e40af;  --blue-line:#3b82f6;
+    --gray-bg:#e2e8f0;  --gray-fg:#334155;  --gray-line:#64748b;
+    --purple-bg:#ede9fe;--purple-fg:#5b21b6;--purple-line:#8b5cf6;
+    --green-bg:#dcfce7; --green-fg:#166534; --green-line:#22c55e;
+    --p0-bg:#fee2e2; --p0-fg:#991b1b;
+    --p1-bg:#ffedd5; --p1-fg:#9a3412;
+    --p2-bg:#e2e8f0; --p2-fg:#334155;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0f172a; --surface:#1e293b; --surface2:#273449;
+      --text:#e2e8f0; --text-dim:#94a3b8; --border:#334155;
+      --accent:#60a5fa; --accent-soft:#1e3a5f;
+      --amber-bg:#3b2f0d; --amber-fg:#fbbf24; --amber-line:#f59e0b;
+      --blue-bg:#1e3a5f;  --blue-fg:#93c5fd;  --blue-line:#3b82f6;
+      --gray-bg:#334155;  --gray-fg:#cbd5e1;  --gray-line:#64748b;
+      --purple-bg:#2e1f4d;--purple-fg:#c4b5fd;--purple-line:#8b5cf6;
+      --green-bg:#14321f; --green-fg:#86efac; --green-line:#22c55e;
+      --p0-bg:#3b1414; --p0-fg:#fca5a5;
+      --p1-bg:#3b2410; --p1-fg:#fdba74;
+      --p2-bg:#334155; --p2-fg:#cbd5e1;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0f172a; --surface:#1e293b; --surface2:#273449;
+    --text:#e2e8f0; --text-dim:#94a3b8; --border:#334155;
+    --accent:#60a5fa; --accent-soft:#1e3a5f;
+    --amber-bg:#3b2f0d; --amber-fg:#fbbf24; --amber-line:#f59e0b;
+    --blue-bg:#1e3a5f;  --blue-fg:#93c5fd;  --blue-line:#3b82f6;
+    --gray-bg:#334155;  --gray-fg:#cbd5e1;  --gray-line:#64748b;
+    --purple-bg:#2e1f4d;--purple-fg:#c4b5fd;--purple-line:#8b5cf6;
+    --green-bg:#14321f; --green-fg:#86efac; --green-line:#22c55e;
+    --p0-bg:#3b1414; --p0-fg:#fca5a5;
+    --p1-bg:#3b2410; --p1-fg:#fdba74;
+    --p2-bg:#334155; --p2-fg:#cbd5e1;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6;font-size:15px}
+  .wrap{max-width:1120px;margin:0 auto;padding:28px 20px 80px}
+  h1{font-size:26px;margin:0 0 6px;letter-spacing:.3px}
+  h2{font-size:19px;margin:34px 0 12px;padding-left:10px;border-left:4px solid var(--accent)}
+  h3{font-size:15px;margin:22px 0 8px}
+  .sub{color:var(--text-dim);font-size:14px;margin:0 0 6px}
+  .meta-note{color:var(--text-dim);font-size:12.5px;margin-bottom:18px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin:12px 0}
+  .stats{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 4px}
+  .stat{border:1px solid var(--border);border-radius:8px;padding:6px 14px;background:var(--surface)}
+  .stat b{font-size:18px}
+  .legend{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:2px 11px;font-size:12.5px;font-weight:600;border:1px solid transparent}
+  .idx{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:26px;
+    border-radius:6px;background:var(--accent);color:#fff;font-weight:700;font-size:13px;
+    font-family:ui-monospace,Consolas,monospace;padding:0 8px;white-space:nowrap}
+  .idx.lg{min-width:52px;height:30px;font-size:15px;border-radius:7px}
+  code, .mono{font-family:ui-monospace,Consolas,"Courier New",monospace;font-size:12.5px}
+  .path{font-family:ui-monospace,Consolas,monospace;font-size:12px;color:var(--accent);
+    background:var(--accent-soft);padding:1px 7px;border-radius:5px;white-space:nowrap}
+  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px}
+  th,td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top}
+  th{background:var(--surface2);font-weight:600;white-space:nowrap}
+  tr{background:var(--surface)}
+  .scroll{overflow-x:auto;border:1px solid var(--border);border-radius:8px}
+  .st{display:inline-block;border-radius:5px;padding:1px 8px;font-size:12px;font-weight:700;white-space:nowrap;border:1px solid}
+  .st-skel{background:var(--amber-bg);color:var(--amber-fg);border-color:var(--amber-line)}
+  .st-todo{background:var(--blue-bg);color:var(--blue-fg);border-color:var(--blue-line)}
+  .st-block{background:var(--gray-bg);color:var(--gray-fg);border-color:var(--gray-line)}
+  .st-ext{background:var(--purple-bg);color:var(--purple-fg);border-color:var(--purple-line)}
+  .st-done{background:var(--green-bg);color:var(--green-fg);border-color:var(--green-line)}
+  .pri{display:inline-block;border-radius:5px;padding:0 7px;font-size:11.5px;font-weight:800;white-space:nowrap}
+  .p0{background:var(--p0-bg);color:var(--p0-fg)}
+  .p1{background:var(--p1-bg);color:var(--p1-fg)}
+  .p2{background:var(--p2-bg);color:var(--p2-fg)}
+  .step{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--border)}
+  .step:last-child{border-bottom:none}
+  .step .sname{font-weight:600;white-space:nowrap;min-width:150px}
+  .step .sact{flex:1}
+  .ok{color:var(--green-fg);font-weight:600}
+  .gap{color:var(--amber-fg)}
+  .dim{color:var(--text-dim)}
+  .deps{margin:8px 0;padding-left:20px}
+  .deps li{margin:5px 0}
+  .arrow{color:var(--text-dim);font-weight:600}
+  .flowlayer{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}
+  .flbox{flex:1 1 220px;border:1px solid var(--border);border-radius:9px;padding:12px 14px;background:var(--surface)}
+  .flbox h4{margin:0 0 6px;font-size:14px}
+  .flbox p{margin:0;font-size:12.5px;color:var(--text-dim)}
+  .layerbadge{display:inline-block;border-radius:5px;padding:1px 8px;font-size:12px;font-weight:700;margin-right:4px}
+  .L0{background:var(--green-bg);color:var(--green-fg)}
+  .L1{background:var(--blue-bg);color:var(--blue-fg)}
+  .L2{background:var(--amber-bg);color:var(--amber-fg)}
+  .REF{background:var(--purple-bg);color:var(--purple-fg)}
+  .foot{margin-top:30px;padding-top:14px;border-top:1px solid var(--border);color:var(--text-dim);font-size:12.5px}
+</style>
+
+<body>
+<div class="wrap">
+
+  <h1>工作流 Action 清单</h1>
+  <p class="sub">全景工作流 + 知识体系中「还需你补充/优化」的 14 个 Action，带唯一索引（A01–A14），按索引定位更新位置。</p>
+  <p class="meta-note">生成日期 2026-08-16 · 基线已完成项见文末 · 索引 = 唯一编号，日后更新靠它定位文件</p>
+
+  <div class="stats">
+    <div class="stat"><b>14</b> 个 Action（A01 ✅）</div>
+    <div class="stat"><b class="p0" style="color:var(--p0-fg)">3 × P0</b> 待做</div>
+    <div class="stat"><b class="p1" style="color:var(--p1-fg)">7 × P1</b> 知识补全</div>
+    <div class="stat"><b class="p2" style="color:var(--p2-fg)">3 × P2</b> 工具/收尾</div>
+  </div>
+
+  <div class="legend">
+    <span class="pill st-skel">🟡 骨架/空壳待填</span>
+    <span class="pill st-todo">⏳ 待建</span>
+    <span class="pill st-block">⏸ 阻塞（有依赖）</span>
+    <span class="pill st-ext">👤 外部依赖（他人负责）</span>
+    <span class="pill st-done">✅ 已完成</span>
+  </div>
+
+  <h2>一、在流程中看（主 Pipeline 环节 × Action）</h2>
+  <div class="card">
+    <p class="sub">主 Pipeline 共 Step0–Step10。已脚本化/模板化的环节标 <span class="ok">✅ 就绪</span>；缺内容的环节标 <span class="gap">缺口</span> 并挂 Action 索引。</p>
+
+    <div class="flowlayer">
+      <div class="flbox"><h4><span class="layerbadge L0">L0</span>入口/解析（原理图+DFT+pin校验）</h4><p>Step0–2 已脚本化（sch_parse / check_dft_pins / cbit 前置）<br><span class="ok">✅ 就绪</span></p></div>
+      <div class="flbox"><h4><span class="layerbadge L1">L1</span>分类 + 框架</h4><p>Step3 依赖 7 类判定<br><span class="idx">A01</span>✅ <span class="idx">A06</span> <span class="idx">A07</span></p></div>
+      <div class="flbox"><h4><span class="layerbadge L2">L2</span>继电器/上电/下电</h4><p>Step4/5/8<br><span class="idx">A05</span> <span class="idx">A04</span></p></div>
+      <div class="flbox"><h4><span class="layerbadge L1">L1</span>寄存器 + 测量</h4><p>Step6/7<br><span class="idx">A02</span> <span class="idx">A03</span> <span class="idx">A08</span></p></div>
+      <div class="flbox"><h4><span class="layerbadge REF">REF</span>Log + 收尾</h4><p>Step9/10 已模板化 + 门禁脚本<br><span class="ok">✅ 就绪</span></p></div>
+    </div>
+
+    <div class="step"><span class="sname">Step0 原理图解析</span><span class="sact">sch_parse.py → SCH-Connect-Map + Component-Statistic（有货先验：无 map 才 parse）<span class="ok">✅ 就绪</span></span></div>
+    <div class="step"><span class="sname">Step1 DFT + pin 校验</span><span class="sact">dft-parse → meta/YAML + check_dft_pins.py 三源三层校验（0 未命中放行）<span class="ok">✅ 就绪</span></span></div>
+    <div class="step"><span class="sname">Step2 cbit 前置</span><span class="sact">CBIT 定义 + 通路（gen_cbit_defines / gen_paths / gen_path_defines）<span class="ok">✅ 就绪</span></span></div>
+    <div class="step"><span class="sname">Step3 框架创建</span><span class="sact"><span class="ok">✅ 7 类项目结构类型判定已落地</span> → <span class="idx">A01</span> <span class="path">standards/test-types.md</span>（AWG/Trim 归测量方法层，非独立类）</span></div>
+    <div class="step"><span class="sname">Step4 继电器闭合</span><span class="sact"><span class="gap">11 步检查清单正文还在 memory</span>，knowledge 空壳 → <span class="idx">A05</span> <span class="path">experience/relay-check.md</span></span></div>
+    <div class="step"><span class="sname">Step5 上电</span><span class="sact"><span class="gap">上电绕法/台阶经验缺</span>（量程/不过冲/clamp）→ <span class="idx">A04</span> <span class="path">experience/power-sequence.md §上电</span></span></div>
+    <div class="step"><span class="sname">Step6 寄存器配置</span><span class="sact"><span class="gap">registermap 读取方法缺</span> → <span class="idx">A02</span> <span class="path">standards/register-config.md</span></span></div>
+    <div class="step"><span class="sname">Step7 测量</span><span class="sact"><span class="gap">采样/切量程/恢复经验缺</span> → <span class="idx">A03</span> <span class="path">experience/measurement.md</span>；函数复用条目缺 → <span class="idx">A08</span></span></div>
+    <div class="step"><span class="sname">Step8 下电</span><span class="sact"><span class="gap">下电次序/量程统一教训缺</span> → <span class="idx">A04</span> <span class="path">experience/power-sequence.md §下电</span></span></div>
+    <div class="step"><span class="sname">Step9 LogData</span><span class="sact">单位规则（R-LOG/R-HYS/R-VIR）<span class="ok">✅ 就绪</span></span></div>
+    <div class="step"><span class="sname">Step10 收尾双查</span><span class="sact">门禁脚本（check_testitems_meta / verify_relay_trace / verify_awg_params / fast_rebuild）<span class="ok">✅ 就绪</span></span></div>
+  </div>
+
+  <h2>二、在知识体系中看（四层 × Action）</h2>
+  <div class="card">
+    <p class="sub">四层分层：L0 规范 · L1 规则 · L2 经验/子函数 · 参考层。每条知识一个 ID 一个正文，缺正文处挂 Action 索引。</p>
+    <div class="scroll"><table>
+      <tr><th>层/组件</th><th>唯一家</th><th>现状</th><th>缺口 Action</th></tr>
+      <tr><td><span class="layerbadge L0">L0</span>规范层</td><td class="path">knowledge/sources/</td><td>10 源表已迁 + 系统函数 <span class="ok">✅</span></td><td class="dim">—</td></tr>
+      <tr><td><span class="layerbadge L1">L1</span>规则注册表</td><td class="path">standards/rules-registry.md</td><td>16 active 铁律 <span class="ok">✅</span></td><td class="dim">—</td></tr>
+      <tr><td><span class="layerbadge L1">L1</span>测试类型判定</td><td class="path">standards/test-types.md</td><td><span class="st st-done">✅ 完成</span> 7 类判定表</td><td><span class="idx">A01</span></td></tr>
+      <tr><td><span class="layerbadge L1">L1</span>寄存器配置</td><td class="path">standards/register-config.md</td><td><span class="st st-skel">🟡 骨架</span> 细节待填</td><td><span class="idx">A02</span></td></tr>
+      <tr><td><span class="layerbadge L1">L1</span>函数注册表</td><td class="path">standards/functions-registry.md</td><td><span class="st st-skel">🟡 待补</span> ramp64/shared_functions 条目未填</td><td><span class="idx">A08</span></td></tr>
+      <tr><td><span class="layerbadge L2">L2</span>测量经验</td><td class="path">experience/measurement.md</td><td><span class="st st-skel">🟡 空壳</span></td><td><span class="idx">A03</span></td></tr>
+      <tr><td><span class="layerbadge L2">L2</span>上下电经验</td><td class="path">experience/power-sequence.md</td><td><span class="st st-skel">🟡 空壳</span></td><td><span class="idx">A04</span></td></tr>
+      <tr><td><span class="layerbadge L2">L2</span>继电器检查</td><td class="path">experience/relay-check.md</td><td><span class="st st-skel">🟡 空壳</span> 正文在 memory</td><td><span class="idx">A05</span></td></tr>
+      <tr><td><span class="layerbadge REF">REF</span>案例四件套</td><td class="path">references/code·chip·method·debug/</td><td><span class="st st-skel">🟡 待归档</span> code/ 平铺 10 案例(含 OVP.cpp)，chip+method 覆盖 RDSON/UVLO/CurrentSense/CurrentThreshold</td><td><span class="idx">A06</span></td></tr>
+      <tr><td><span class="layerbadge REF">REF</span>材料索引</td><td class="path">references/param_type_index.md</td><td><span class="st st-skel">🟡 待补</span> 两层索引已建 8 参数行(含 VBAT OVP)</td><td><span class="idx">A07</span></td></tr>
+      <tr><td>工具</td><td class="path">gen_knowledge_audit.py</td><td><span class="st st-todo">⏳ 待建</span></td><td><span class="idx">A09</span></td></tr>
+      <tr><td>工具</td><td class="path">gen_rules_report.py</td><td><span class="st st-todo">⏳ 待建</span></td><td><span class="idx">A10</span></td></tr>
+      <tr><td>auto-memory</td><td class="path">nuvola-*.md（24 个）</td><td><span class="st st-block">⏸ 阻塞</span> 等知识补全才降指针</td><td><span class="idx">A11</span></td></tr>
+      <tr><td>文档</td><td class="path">CLAUDE.md</td><td><span class="st st-skel">🟡 过时</span> 2026-07-18</td><td><span class="idx">A12</span></td></tr>
+      <tr><td><span class="layerbadge L0">L0</span>ChannelMap</td><td class="path">Pin_Channel_define.h + Hardware-Config.h</td><td><span class="st st-ext">👤 外部</span> 他人负责</td><td><span class="idx">A13</span></td></tr>
+      <tr><td><span class="layerbadge L0">L0</span>Treg 定义</td><td class="path">standards/treg.md + Library-Functions/treg/</td><td><span class="st st-ext">👤 外部</span> 他人负责</td><td><span class="idx">A14</span></td></tr>
+    </table></div>
+  </div>
+
+  <h2>三、Action 总清单（按索引）</h2>
+  <div class="card">
+    <div class="scroll"><table>
+      <tr><th>索引</th><th>Action 内容</th><th>更新位置</th><th>状态</th><th>优先级</th><th>对应环节</th></tr>
+      <tr><td><span class="idx lg">A01</span></td><td>补 7 类项目结构类型判定表（Trim/Contact/OTP-Readback/OTP-Burn/P2P/Leakage/一般，命中即停）</td><td class="path">standards/test-types.md</td><td><span class="st st-done">✅ 完成</span></td><td><span class="pri p0">P0</span></td><td>Step3 分类</td></tr>
+      <tr><td><span class="idx lg">A02</span></td><td>补配置位置判定（test.cpp vs sub.cpp）+ registermap 读取方法 + 是否脚本化</td><td class="path">standards/register-config.md</td><td><span class="st st-skel">🟡 骨架</span></td><td><span class="pri p0">P0</span></td><td>Step6 寄存器</td></tr>
+      <tr><td><span class="idx lg">A03</span></td><td>补采样点数/间隔 + 切量程/clamp/大电流恢复 0 + 量程转换</td><td class="path">experience/measurement.md</td><td><span class="st st-skel">🟡 空壳</span></td><td><span class="pri p1">P1</span></td><td>Step7 测量</td></tr>
+      <tr><td><span class="idx lg">A04</span></td><td>补上电绕法/台阶（§上电）+ 下电次序/量程统一教训（§下电）</td><td class="path">experience/power-sequence.md</td><td><span class="st st-skel">🟡 空壳</span></td><td><span class="pri p1">P1</span></td><td>Step5/8 上下电</td></tr>
+      <tr><td><span class="idx lg">A05</span></td><td>补 11 步继电器检查清单正文（现正文在 memory nuvola-relay-checklist.md）</td><td class="path">experience/relay-check.md</td><td><span class="st st-skel">🟡 空壳</span></td><td><span class="pri p1">P1</span></td><td>Step4 继电器</td></tr>
+      <tr><td><span class="idx lg">A06</span></td><td>建 references 四件套目录 + 归档优秀案例/Block 介绍/典型方法/排查方法论</td><td class="path">references/code·chip·method·debug/</td><td><span class="st st-skel">🟡 待归档</span></td><td><span class="pri p1">P1</span></td><td>Step3 分类 + 案例贯穿</td></tr>
+      <tr><td><span class="idx lg">A07</span></td><td>按测试类型建索引（同名联动 chip/method/code/debug，非按步骤）</td><td class="path">references/param_type_index.md</td><td><span class="st st-skel">🟡 待补</span></td><td><span class="pri p1">P1</span></td><td>索引</td></tr>
+      <tr><td><span class="idx lg">A08</span></td><td>填 ramp64 + shared_functions 函数条目（名/签名/触发/语义/调用点）</td><td class="path">standards/functions-registry.md</td><td><span class="st st-skel">🟡 待补</span></td><td><span class="pri p1">P1</span></td><td>Step7 + 事前复用</td></tr>
+      <tr><td><span class="idx lg">A09</span></td><td>建完整性审计脚本（ID 连续/反向引用/来源清单对照）</td><td class="path">gen_knowledge_audit.py</td><td><span class="st st-todo">⏳ 待建</span></td><td><span class="pri p2">P2</span></td><td>审计（执行顺序第 5 步）</td></tr>
+      <tr><td><span class="idx lg">A10</span></td><td>建规则导出脚本（Excel+HTML，--changed 只看改动）</td><td class="path">gen_rules_report.py</td><td><span class="st st-todo">⏳ 待建</span></td><td><span class="pri p2">P2</span></td><td>review 导出</td></tr>
+      <tr><td><span class="idx lg">A11</span></td><td>nuvola-*.md 24 个降为指针（正文移 knowledge 后）</td><td class="path">auto-memory nuvola-*.md</td><td><span class="st st-block">⏸ 阻塞</span></td><td><span class="pri p1">P1</span></td><td>收尾</td></tr>
+      <tr><td><span class="idx lg">A12</span></td><td>CLAUDE.md 更新为 AGENT_MAP.md 当前状态（2026-07-18 过时）</td><td class="path">CLAUDE.md</td><td><span class="st st-skel">🟡 过时</span></td><td><span class="pri p2">P2</span></td><td>文档收尾</td></tr>
+      <tr><td><span class="idx lg">A13</span></td><td>源表+继电器定义（ChannelMap）</td><td class="path">工程源目录</td><td><span class="st st-ext">👤 外部</span></td><td><span class="pri p0">P0</span></td><td>Step3 前置（他人）</td></tr>
+      <tr><td><span class="idx lg">A14</span></td><td>Treg 定义（Trim Library-Functions）</td><td class="path">standards/treg.md + Library-Functions/treg/</td><td><span class="st st-ext">👤 外部</span></td><td><span class="pri p0">P0</span></td><td>Step4 前置（他人）</td></tr>
+    </table></div>
+  </div>
+
+  <h2>四、依赖关系（先做什么）</h2>
+  <div class="card">
+    <ul class="deps">
+      <li><span class="idx">A11</span> nuvola 降级 <span class="arrow">← 依赖</span> <span class="idx">A01</span> <span class="idx">A02</span> <span class="idx">A03</span> <span class="idx">A04</span> <span class="idx">A05</span>（知识补全后正文才有着落）</li>
+      <li><span class="idx">A09</span> <span class="idx">A10</span> 审计/导出 <span class="arrow">← 依赖</span> <span class="idx">A01</span>–<span class="idx">A08</span> 内容落地后才有审计对象</li>
+      <li><span class="idx">A06</span> <span class="idx">A07</span> references <span class="arrow">← 依赖</span> 你提供案例 / Block / 方法 / 排查材料</li>
+      <li><span class="idx">A13</span> <span class="idx">A14</span> <span class="arrow">← 依赖</span> 其他工程师交付定义文件</li>
+    </ul>
+    <p class="sub" style="margin-top:12px">建议顺序：<span class="idx">A01</span> → <span class="idx">A02</span> → <span class="idx">A05</span> → <span class="idx">A03</span> → <span class="idx">A04</span>（解锁 A11）→ <span class="idx">A06</span>/<span class="idx">A07</span>/<span class="idx">A08</span> → <span class="idx">A09</span>/<span class="idx">A10</span> → <span class="idx">A12</span>（A13/A14 随时催办，不阻塞主线）</p>
+  </div>
+
+  <h2>五、已完成基线（非待办）</h2>
+  <div class="card">
+    <ul class="deps">
+      <li><span class="st st-done">✅</span> L0 sources/ 10 源表已迁 + STS8300-*.md 已降指针</li>
+      <li><span class="st st-done">✅</span> L1 rules-registry 16 条铁律已建（R-LOG/R-VIR/R-SETON/R-HYS/FR-001/R-TRIM/R-REF 等）</li>
+      <li><span class="st st-done">✅</span> 三注册表核实已建（rules-registry / references/param_type_index / functions-registry）</li>
+      <li><span class="st st-done">✅</span> 根目录收敛：26 散件归档 + 活跃脚本保留</li>
+      <li><span class="st st-done">✅</span> K123/K7 命名统一 + gen_paths.py G6K 类型表修复</li>
+    </ul>
+  </div>
+
+  <div class="foot">
+    本清单由全景工作流盘点生成 · 单一入口 <code>工作流全景.md</code> · 细节 <code>knowledge/panorama.md</code> · 对应源清单 <code>现状盘点报告.md</code> / <code>讨论记录-知识分层方案.md</code>
+  </div>
+</div>
+</body>
+</html>

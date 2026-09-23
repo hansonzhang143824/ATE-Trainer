@@ -1,0 +1,26 @@
+TM108 relay workflow STEP1 FIND-PIN (step 1/8) - owner=test-strategy-architect run=tm108-v2-trial
+flow: knowledge/references/L3-method/relay-design-flow.md:39-75
+closure-set source: proof required_on + full proof relay chain
+
+DFT intent endpoints for TM108:
+  VBAT   power / static supply rail -> DFT Power column "VBAT"
+  VAC1   dynamic / scanned input -> DFT Dynamic column "VAC1"
+  DTEST0 check / observation -> DFT Check column "V(DTEST0)"
+board reference endpoints considered:
+  AGND   reference return (board-level; not a DFT column)
+  KLV1   NOT required by this TM (no DFT column, no ramp, no measurement)
+  KLV2   NOT required by this TM (no DFT column, no ramp, no measurement)
+basis: DFT Power='VBAT' / Dynamic='VAC1' / Check='V(DTEST0)' at project/DALI/meta/dali_tm_meta.json:1400-1402
+basis: DFT raw row team/artifacts/acceptance-20260916-dali10/dft-raw/overview-dump.txt:159-161
+basis: DFT conditions project/DALI/meta/test_conditions.yaml:255/259/260/267
+
+proof-backed terminals carrying those endpoints:
+  VAC1_F_S1  -> VAC1 force side                          accepted proofs=5
+  VAC1_S_S1  -> VAC1 sense side                          accepted proofs=4
+  VBAT_F_S1  -> VBAT force side                          accepted proofs=5
+  VBAT_S_S1  -> VBAT sense side                          accepted proofs=4
+  nQON_F_S1  -> observation candidate (nQON, force side) accepted proofs=6
+  nQON_S_S1  -> observation candidate (nQON, sense side) accepted proofs=4
+  AGND_F_S1  -> reference, force side                    accepted proofs=4
+  AGND_S_S1  -> reference, sense side                    accepted proofs=10
+

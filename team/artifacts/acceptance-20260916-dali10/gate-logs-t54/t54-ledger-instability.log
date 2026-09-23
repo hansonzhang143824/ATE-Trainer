@@ -1,0 +1,24 @@
+=== ① 现刻三值（核对其 ④）===
+  build-report.json = 35743 B
+  收据 = 1878 B
+  账本 = 35 行 / 55652 B
+  收据 self-report: size=35743 topLevelEntries=35
+  收据与现盘一致 = True
+
+=== ② 行为判定：跑一次，数新增行数 ===
+  单次运行新增行数 = 1
+  ⇒ 若为 1 ⇒ **不是**"每次追加两行"（"成对"另有他因，如我此前确曾成对调用）
+
+=== ③ 检查 history 行是否含**可变**字段（这会让它不稳定）===
+  行键 = ['subject', 'at', 'size', 'sha256', 'sha256_lf_normalized', 'topLevelEntries', 'reproducibleBodySha256', 'reproducibleNote', 'projectionSpec', 'standardTriHash', 'hashInvariance', 'isFrozen', 'countUnitNote', 'note', 'lineCount', 'prevLineSha256', 'ledger_self_sha256']
+  含动态字段 receipts / generatedAt 之类 = ['standardTriHash', 'countUnitNote']
+
+=== ④ 跨秒跑两次：history 行的**内容**（除 at/lineCount/链）是否稳定 ===
+  两次 history 行（去 at/链字段后）相同 = False
+  **不稳定字段 = ['sha256', 'sha256_lf_normalized']**
+    sha256: 1dbfe02253fade48c0b958f0197db3188bd5dd7763e481458a74a4705f26  →  4f2ad0006e116a40102669b7ed89f36453dc32355a3f9a911239650cc0ca
+    sha256_lf_normalized: 11eccdcb99aefc38a0bcc626f71c1447c038e04eec2e5f67922aea273923  →  f75dee16656d9744df362237c01b398dd5fe28401f2147090ae37a425e7d
+
+=== ⑤ projectionSpec 是否覆盖这些可变字段 ===
+  projectionSpec.exclude = ['generatedAt']
+  version = 1

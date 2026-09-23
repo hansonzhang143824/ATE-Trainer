@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm109-method-contract-review-self-check",
+  "taskId": "TM109-PTC-RULE_REVIEW_METHOD",
+  "trial": "tm109-ptc-v2",
+  "tm": "TM109",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_METHOD",
+  "signedInputs": {
+    "strategyContractSha256": "a48e55a350b5bdd1167f812823643bc2a860bdf0174cefe7ba950611e2070901",
+    "methodContractSha256": "0b1c49be36eec6657ed0bc6159444fa67a06ff833223f471ea8a62fcf68c1f6f",
+    "registerEvidenceSha256": "da86a402cfcae2f844d3b7d1100ce503001245fa36e77c8590a35b67db63d621"
+  },
+  "checks": [
+    {"id": "SC-1", "result": "PASS", "detail": "Strategy, method, and register-evidence hashes were independently recomputed."},
+    {"id": "SC-2", "result": "PASS", "detail": "TM109 strategy gate and the PTC output ABI validator both passed."},
+    {"id": "SC-3", "result": "PASS", "detail": "This review changed no strategy, method, register evidence, or project source file."}
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 2,
+  "project": "DALI",
+  "description": "User-confirmed project input locations. Read at the start of every project run.",
+  "projectDir": "project/DALI",
+  "roots": {
+    "input": "project/DALI/Input_GlobalMaterial",
+    "output": "project/DALI/Output_Global_Material",
+    "errorLog": "project/DALI/ErrorLog"
+  },
+  "inputs": {
+    "dft": "project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx",
+    "schematic": "project/DALI/Input_GlobalMaterial/Dali-SCH.csv",
+    "cbit": "project/DALI/Input_GlobalMaterial/CBIT表-DALI.xlsx",
+    "program": "D:/PROJECT6-DALI/ForCodexDebug/source"
+  },
+  "approval": {
+    "approvedBy": "NVT10241",
+    "approvedAt": "2026-09-18 13:01:55",
+    "inputsDigest": "4d5f3acbdcd35acf52997f8c6899773efe2102f18f5f4f10fab663db39dcde56"
+  }
+}

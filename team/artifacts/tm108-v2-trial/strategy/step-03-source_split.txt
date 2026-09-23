@@ -1,0 +1,14 @@
+TM108 relay workflow STEP3 SOURCE-SPLIT (step 3/8) - owner=test-strategy-architect run=tm108-v2-trial
+flow: knowledge/references/L3-method/relay-design-flow.md:39-75
+closure-set source: proof required_on + full proof relay chain
+
+branch rule (relay-design-flow.md:43-48 / path-principles.md:6): differential pin pair or
+heavy current -> scarce source (FPVIe/QVMe); otherwise the non-scarce families (ACM/FXVIe...).
+TM108 condition = voltage threshold toggle, no differential pair, no heavy current:
+  DFT Check is a single-ended digital observation V(DTEST0), not a two-pin differential
+  (project/DALI/meta/dali_tm_meta.json:1402); no iset[] current force appears in TM108
+  (project/DALI/meta/dali_tm_meta.json:1494 currentStimuli=[]).
+=> take the non-scarce branch (K): ACM200 / FXVIe_PLUS. FPVIe/QVMe remain second-choice and
+   the FPVIe capacity is preserved for the differential / high-current items as required by
+   the frozen baseline.
+

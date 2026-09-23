@@ -1,0 +1,289 @@
+{
+  "checkId": "tm109-method-self-check",
+  "taskId": "TM109-METHOD-R1",
+  "role": "test-method-expert",
+  "projectId": "DALI",
+  "tm": "TM109",
+  "generatedAt": "2026-09-18 00:10:06 +08:00",
+  "hashReader": "python hashlib over Path.read_bytes() (DLP plaintext); the native Windows hashing path returns ciphertext for these files",
+  "artifactHashes": {
+    "tm109-test-method-contract.json": "d9d7e10f9dc96730695a97a7e2b59b235987b3745689a3eaccc738a893000459",
+    "tm109-test-method-contract.md": "a9d7bd7043c08d5c591d13e7aa3905b28d9d8a4d9e2907f79e4058e3b8486c9c",
+    "self-check-tm109-method.py": "4d7a9fa7c236c5dff7c8c4dfa52be9dd4d659c07c1e49055560419f033b23d98",
+    "signed-strategy-contract.json": "a22502ece50f321312a466b77cfef5a40efe8f9a41995f7ee8af3b44048107e2",
+    "signed-strategy-deliverable-ready.json": "356312954f2b27ce9e0a4dcc3784d01f0eae601db463f07c0b12e8aad40413cb"
+  },
+  "results": [
+    {
+      "id": "SC-01",
+      "description": "method contract, signed strategy contract and strategy handoff all parse as JSON",
+      "status": "PASS",
+      "evidence": {
+        "contractSections": 29,
+        "strategySections": 27
+      }
+    },
+    {
+      "id": "SC-02",
+      "description": "signed strategy contract sha256 equals the digest recorded in the strategy handoff",
+      "status": "PASS",
+      "evidence": {
+        "recomputedPlaintext": "a22502ece50f321312a466b77cfef5a40efe8f9a41995f7ee8af3b44048107e2",
+        "handoffDeclared": "a22502ece50f321312a466b77cfef5a40efe8f9a41995f7ee8af3b44048107e2",
+        "reader": "Path.read_bytes via hashlib.sha256"
+      }
+    },
+    {
+      "id": "SC-03",
+      "description": "the sha256 this contract records for its signed input equals the recomputed plaintext digest",
+      "status": "PASS",
+      "evidence": {
+        "recorded": [
+          "a22502ece50f321312a466b77cfef5a40efe8f9a41995f7ee8af3b44048107e2",
+          "356312954f2b27ce9e0a4dcc3784d01f0eae601db463f07c0b12e8aad40413cb"
+        ],
+        "recomputed": "a22502ece50f321312a466b77cfef5a40efe8f9a41995f7ee8af3b44048107e2"
+      }
+    },
+    {
+      "id": "SC-04",
+      "description": "strategy handoff is a deliverable_ready event routed to test-method-expert",
+      "status": "PASS",
+      "evidence": {
+        "event": "deliverable_ready",
+        "fromRole": "test-strategy-architect",
+        "nextRole": "test-method-expert",
+        "taskId": "TM109-STRATEGY-R1"
+      }
+    },
+    {
+      "id": "SC-05",
+      "description": "contract verdict is deliverable_ready and every mandated section is present",
+      "status": "PASS",
+      "evidence": {
+        "verdict": "deliverable_ready",
+        "missingSections": []
+      }
+    },
+    {
+      "id": "SC-06",
+      "description": "every planned phase carries all mandated fields with non-empty values",
+      "status": "PASS",
+      "evidence": {
+        "phaseCount": 10,
+        "violations": []
+      }
+    },
+    {
+      "id": "SC-07",
+      "description": "every phase evaluates 0 V <= BST_actual - SW_actual <= 5 V, with a derivation and a falsification trigger where it is not applicable",
+      "status": "PASS",
+      "evidence": {
+        "violations": [],
+        "resultPerPhase": {
+          "MP-1": "NOT_APPLICABLE",
+          "MP-2": "NOT_APPLICABLE",
+          "MP-3": "NOT_APPLICABLE",
+          "MP-4": "NOT_APPLICABLE",
+          "MP-5": "NOT_APPLICABLE",
+          "MP-6": "NOT_APPLICABLE",
+          "MP-7": "NOT_APPLICABLE",
+          "MP-8": "NOT_APPLICABLE",
+          "MP-9": "NOT_APPLICABLE",
+          "MP-10": "NOT_APPLICABLE"
+        },
+        "gateEvidence": "python scripts/verify_bst_sw_sequence.py prints '[scan] test.cpp 无 rampi_capv 电流斜坡测试项 (非 ZCD/OCP 家族), 空 PASS' and exits 0 for an item with no current ramp; TM109 is such an item"
+      }
+    },
+    {
+      "id": "SC-08",
+      "description": "every strategy-owned source, route, slot, channel, closure set and register value is carried verbatim (nothing changed or added)",
+      "status": "PASS",
+      "evidence": {
+        "violations": [],
+        "endpointsChecked": [
+          "EP-INT",
+          "EP-VAC2",
+          "EP-VBAT"
+        ],
+        "registerDelta": [
+          [
+            1,
+            "entertestmode",
+            null,
+            null
+          ],
+          [
+            2,
+            "I2CWriteSameData",
+            "0x55",
+            "0x96"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "SC-09",
+      "description": "measurement plan defines endpoints, range, sweep or step, sampling, calculation, limit and site handling",
+      "status": "PASS",
+      "evidence": {
+        "missing": []
+      }
+    },
+    {
+      "id": "SC-10",
+      "description": "limits keep their DFT provenance, the falling value is marked DERIVED, and the missing tolerance keeps the judgement pending",
+      "status": "PASS",
+      "evidence": {
+        "VAC2_PRST_Rise": {
+          "nominal": 4.15,
+          "unit": "V",
+          "class": "FACT (DFT text)",
+          "judgement": "PENDING_LIMIT_RULING",
+          "toleranceStatus": "UNRESOLVED — the DFT states no numeric minimum, maximum or pass-fail bound (strategy TM109-OI-2)"
+        },
+        "VAC2_PRST_Fall": {
+          "nominal": 3.8,
+          "unit": "V",
+          "class": "DERIVED (the DFT states no falling value: strategy TM109-OI-5)",
+          "judgement": "LOG_ONLY_PENDING_RULING",
+          "toleranceStatus": null
+        },
+        "VAC2_PRST_Hys": {
+          "nominal": 350,
+          "unit": "mV",
+          "class": "FACT (DFT text) with a unit conversion",
+          "judgement": "PENDING_LIMIT_RULING",
+          "toleranceStatus": "UNRESOLVED (strategy TM109-OI-2)"
+        }
+      }
+    },
+    {
+      "id": "SC-11",
+      "description": "power-down is ordered (sources to zero before the path relays open), has a safe end state and forbids invented register writes",
+      "status": "PASS",
+      "evidence": {
+        "order": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "safeEndState": "VAC2 and VBAT at 0 V, the RG-2 path relays K19 and K70 open, all sources with their instrument relays off, the ACM200 ch15 monitor detached, and the register state left exactly as the DFT delta defined it",
+        "registerPolicy": "no register write is performed in the power-down: neither the DFT nor the signed contract declares an exit-test-mode action, and inventing one would be a change outside this role's boundary"
+      }
+    },
+    {
+      "id": "SC-12",
+      "description": "log plan defines raw values, calculated values, judgement, unit, precision and context",
+      "status": "PASS",
+      "evidence": {
+        "missing": []
+      }
+    },
+    {
+      "id": "SC-13",
+      "description": "Golden applicability is judged per dimension against parameter type, topology, relative voltages, DFT operation point, source mode and resource boundary",
+      "status": "PASS",
+      "evidence": {
+        "dimensions": [
+          "parameter type",
+          "DUT topology / observation form",
+          "key relative voltages",
+          "DFT operation point",
+          "source operating mode",
+          "resource boundary"
+        ],
+        "conclusionStartsWith": "partial"
+      }
+    },
+    {
+      "id": "SC-14",
+      "description": "every method evidence entry states a source, a locator, an applicability of direct/partial/unavailable and a reason",
+      "status": "PASS",
+      "evidence": {
+        "violations": [],
+        "count": 15
+      }
+    },
+    {
+      "id": "SC-15",
+      "description": "every routed finding names an owner, a closing source and the fact that raised it; the contract claims no strategy edit",
+      "status": "PASS",
+      "evidence": {
+        "violations": [],
+        "findings": [
+          "RF-01",
+          "RF-02",
+          "RF-03",
+          "RF-04"
+        ],
+        "strategyArtifactsUnmodified": "no file under team/artifacts/tm109-direct-trial/strategy was written, edited or regenerated by this role; the strategy contract sha256 re-verified after this contract was written is unchanged"
+      }
+    },
+    {
+      "id": "SC-16",
+      "description": "the method output directory contains only this task's declared artifacts",
+      "status": "PASS",
+      "evidence": {
+        "present": [
+          "deliverable-ready.json",
+          "self-check-tm109-method.json",
+          "self-check-tm109-method.py",
+          "tm109-test-method-contract.json",
+          "tm109-test-method-contract.md"
+        ],
+        "allowed": [
+          "deliverable-ready.json",
+          "self-check-tm109-method.json",
+          "self-check-tm109-method.py",
+          "tm109-test-method-contract.json",
+          "tm109-test-method-contract.md"
+        ]
+      }
+    },
+    {
+      "id": "SC-17",
+      "description": "phase ids are unique and every phase states the actual node voltages for VBAT, VAC2, INT, BST and SW",
+      "status": "PASS",
+      "evidence": {
+        "phaseIds": [
+          "MP-1",
+          "MP-2",
+          "MP-3",
+          "MP-4",
+          "MP-5",
+          "MP-6",
+          "MP-7",
+          "MP-8",
+          "MP-9",
+          "MP-10"
+        ],
+        "nodeKeysPresent": true
+      }
+    },
+    {
+      "id": "SC-18",
+      "description": "deliverable-ready.json is a deliverable_ready event bound to this contract by sha256",
+      "status": "PASS",
+      "evidence": {
+        "event": "deliverable_ready",
+        "declared": "d9d7e10f9dc96730695a97a7e2b59b235987b3745689a3eaccc738a893000459",
+        "recomputed": "d9d7e10f9dc96730695a97a7e2b59b235987b3745689a3eaccc738a893000459",
+        "nextRole": "ate-implementer",
+        "blockingItems": [
+          "MF-01",
+          "MF-02"
+        ]
+      }
+    }
+  ],
+  "counts": {
+    "pass": 18,
+    "fail": 0,
+    "pending": 0
+  },
+  "overall": "PASS"
+}

@@ -1,0 +1,118 @@
+{
+  "event": "deliverable_ready",
+  "status": "success",
+  "fromRole": "rule-reviewer",
+  "nextRole": "ate-implementer",
+  "taskId": "TM109-RULE-REVIEW-METHOD",
+  "tm": "TM109",
+  "projectId": "DALI",
+  "stage": "RULE_REVIEW_METHOD",
+  "verdict": "deliverable_ready",
+  "artifact": "team/artifacts/tm109-direct-trial/review/method-contract-review.json",
+  "sha256": "deb628ef4532d29fe06a8431994c8b9a122233e4b8cce9cd0b5a0e2b8c07795f",
+  "artifacts": [
+    {
+      "path": "team/artifacts/tm109-direct-trial/review/method-contract-review.json",
+      "sha256": "deb628ef4532d29fe06a8431994c8b9a122233e4b8cce9cd0b5a0e2b8c07795f",
+      "role": "rule review verdict (findings, checks, return routing)"
+    },
+    {
+      "path": "team/artifacts/tm109-direct-trial/review/review-evidence-scope.json",
+      "sha256": "3403b024704ab21b58673ff0df90433ad10fad69ec6d0e2c774fb63497305884",
+      "role": "bounded review evidence for the mandatory evidence-scope gate"
+    },
+    {
+      "path": "team/artifacts/tm109-direct-trial/review/immutable-review-snapshot.json",
+      "sha256": "873e01723ad2bb1bc6c9cde9fbf499a6c4471c39ad48e94ccee154a9c01a4eeb",
+      "role": "frozen revision record of the four reviewed files"
+    },
+    {
+      "path": "team/artifacts/tm109-direct-trial/review/self-check-tm109-method-review.json",
+      "sha256": "computed in that file's own outputs[] entry",
+      "role": "role self-check"
+    }
+  ],
+  "reviewedInputs": [
+    {
+      "path": "team/artifacts/tm109-direct-trial/strategy/tm109-resource-config-contract.json",
+      "sha256": "a22502ece50f321312a466b77cfef5a40efe8f9a41995f7ee8af3b44048107e2",
+      "hashMatchesDeclared": true
+    },
+    {
+      "path": "team/artifacts/tm109-direct-trial/strategy/deliverable-ready.json",
+      "sha256": "356312954f2b27ce9e0a4dcc3784d01f0eae601db463f07c0b12e8aad40413cb",
+      "hashMatchesDeclared": true
+    },
+    {
+      "path": "team/artifacts/tm109-direct-trial/method/tm109-test-method-contract.json",
+      "sha256": "d9d7e10f9dc96730695a97a7e2b59b235987b3745689a3eaccc738a893000459",
+      "hashMatchesDeclared": true
+    },
+    {
+      "path": "team/artifacts/tm109-direct-trial/method/deliverable-ready.json",
+      "sha256": "2174275fefcc7fed2eaa1f5142aa0dead88519bc7d05a8a208e44dc9c0c033b3",
+      "hashMatchesDeclared": true
+    }
+  ],
+  "reviewedArtifactsUnmodified": true,
+  "checksResult": {
+    "resource/relay/register provenance or explicit unresolved marker": "pass",
+    "power phases, measurement path, limits, power-down and Log present": "pass",
+    "every differential-voltage constraint bounded or explicitly not applicable with evidence": "pass",
+    "method uncertainty routed to its owner and not silently converted into a fact": "pass"
+  },
+  "gates": {
+    "verify_review_snapshot.py": "NOT_APPLICABLE at RULE_REVIEW_METHOD: the script requires --implementation-manifest (line 105) and no implementation manifest exists yet (no implementation artifact in the trial). Substitute: review/immutable-review-snapshot.json frozen revision, all four digests re-verified unchanged after the review was written. The gate must run for the IMPLEMENTATION review.",
+    "verify_review_evidence_scope.py": "PASS (exit 0), 11 bounded checks validated, evidence file team/artifacts/tm109-direct-trial/review/review-evidence-scope.json"
+  },
+  "blockingDefects": [],
+  "findings": [
+    {
+      "id": "RV-01",
+      "severity": "low",
+      "routedTo": "test-strategy-architect",
+      "blocking": false,
+      "topic": "closureDerivation enumerates five of six TM109 pin records (VBAT_S_S1 omitted); documentation only"
+    },
+    {
+      "id": "RV-02",
+      "severity": "low",
+      "routedTo": "test-strategy-architect",
+      "blocking": false,
+      "topic": "revision-2 INT selection versus stale OI-S-03 wording and conditional RG-3 isolation wording; operative fields agree"
+    },
+    {
+      "id": "RV-03",
+      "severity": "medium",
+      "routedTo": "user ruling",
+      "blocking": false,
+      "topic": "no numeric tolerance (TM109-OI-2 / MF-04): the item publishes unjudged values with a PENDING_LIMIT_RULING marker until ruled"
+    },
+    {
+      "id": "RV-04",
+      "severity": "high",
+      "routedTo": "test-strategy-architect (closing source schematic-expert or user ruling)",
+      "blocking": "for code write faithfulness and INT observability, not for the electrical method",
+      "topic": "MF-01 VBAT Cap2 relay identity and MF-02 INT Toggle observation closure / pull-up identity remain unresolved with empty RG-1 and RG-3 closures"
+    }
+  ],
+  "methodReworkRequested": false,
+  "methodReworkBasis": "No signed method input was proven missing or contradictory, so AGENTS.md section 11.1 does not open a test-method task.",
+  "permittedNextAction": "Proceed to the implementation stage inside the signed resource, method and review boundaries. Do not select a relay, change a register value, invent a numeric tolerance, or substitute a timing, node voltage or capture value. Carry RV-03 and RV-04 forward as explicit conditions: the item cannot emit a pass/fail verdict until a tolerance is ruled, and the empty RG-1/RG-3 closures leave the FR-001 Cap2 closure omitted and the INT observation unproven until MF-01/MF-02 close.",
+  "returnRouting": {
+    "toStrategy": [
+      "RV-01",
+      "RV-02",
+      "MF-01",
+      "MF-02"
+    ],
+    "toUserRuling": [
+      "RV-03 (MF-04 / TM109-OI-2)",
+      "MF-03",
+      "MF-05",
+      "MF-07",
+      "RF-03"
+    ],
+    "toNextStage": "ate-implementer with the RV-03 and RV-04 conditions"
+  }
+}

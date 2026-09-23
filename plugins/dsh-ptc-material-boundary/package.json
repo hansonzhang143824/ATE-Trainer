@@ -1,0 +1,12 @@
+{
+  "name": "dsh-ptc-material-boundary",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": { ".": "./lib/index.js", "./package.json": "./package.json" },
+  "files": ["lib", "test", "cordis.patch.yml"],
+  "scripts": { "test": "node test/all.test.mjs" },
+  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } },
+  "engines": { "node": ">=20" }
+}

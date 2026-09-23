@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm109-method-contract-review-deliverable-ready",
+  "taskId": "TM109-PTC-RULE_REVIEW_METHOD",
+  "trial": "tm109-ptc-v2",
+  "tm": "TM109",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_METHOD",
+  "event": "deliverable_ready",
+  "status": "success",
+  "verdict": "deliverable_ready",
+  "findingsArtifact": "review/method-contract-review.json",
+  "selfCheck": "review/method-contract-review-self-check.json",
+  "signedInputs": {
+    "strategyContractSha256": "a48e55a350b5bdd1167f812823643bc2a860bdf0174cefe7ba950611e2070901",
+    "methodContractSha256": "0b1c49be36eec6657ed0bc6159444fa67a06ff833223f471ea8a62fcf68c1f6f",
+    "registerEvidenceSha256": "da86a402cfcae2f844d3b7d1100ce503001245fa36e77c8590a35b67db63d621"
+  },
+  "nextRole": "ate-implementer"
+}

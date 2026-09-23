@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "profileId": "ptc-dft-expert",
+  "caseId": "TM106",
+  "expectedVerdict": "pass",
+  "canonicalInput": "project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx",
+  "expectedReadSources": [
+    "project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx"
+  ],
+  "expectedOutputs": [
+    "project/DALI/Output_Global_Material/dft/TM106/dft-meta.json",
+    "project/DALI/Output_Global_Material/dft/TM106/dft-conditions.yaml",
+    "project/DALI/Output_Global_Material/dft/TM106/dft-semantic-review.json"
+  ],
+  "gate": "scripts/validate_dft_outputs.py",
+  "semanticTruthStatus": "PENDING_DOMAIN_INPUT",
+  "semanticTruthNote": "The structural contract, the canonical input identity and the read-source boundary are machine-checkable and are asserted here. The expected DFT SEMANTIC values for TM106 (what the condition should mean) are domain truth that only a DFT expert can supply; until that input exists this case does not assert them, and no evaluation may claim it did."
+}

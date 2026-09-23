@@ -1,0 +1,16 @@
+=== 域化执行（域 + 文件数 与结果一起打印）===
+  **域 D = team/artifacts/acceptance-20260916-dali10(本 run 产物域) ∪ scripts(scripts/)**
+  域内文件数 = **1430**（本次现算）
+  探针实效（应 3）= 3 ⇒ **仪器已抵达进程** = True
+  跑前 1430 → 跑后 1432 文件
+  diff：新增 2 ｜ 变化 0 ｜ 消失 0
+  允许集 = {--in 副本, --out 目标}
+
+  **断言（域化形式）**：**在 域 D = {team/artifacts/acceptance-20260916-dali10(本 run 产物域) ∪ scripts(scripts/)}，你扫时 1430 文件 内，除允许集 {--in 副本, --out 目标} 外，无文件发生 (path,size,sha256) 变化**
+  域外（结构上无法覆盖）：.agent-teams/** ｜ knowledge/** ｜ **目标树**
+
+=== 写入纪律登记（域化要求）===
+  已并入 → 53727 B
+
+  清理后活档 sha = 6edfc659e930d5bdc5ddfcd2
+  登记 = 53727 B ｜ 标题 43 ｜ 唯一 43 ｜ 重复 无

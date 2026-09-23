@@ -1,0 +1,47 @@
+{
+  "runId": "tm108-v2-impl",
+  "task": "t7",
+  "recordedBy": "captain",
+  "reader": "python byte mode (DLP plaintext)",
+  "files": {
+    "test.cpp": {
+      "path": "D:\\PROJECT6-DALI\\ForCodexDebug\\source\\test.cpp",
+      "bytes": 469714,
+      "sha256_plaintext": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a",
+      "utf8_bom": true,
+      "crlf_count": 9350,
+      "line_count": 9354,
+      "dut_api_count": 107,
+      "tm108": {
+        "symbol": "DUT_API int TM108_HSKP_VAC1_PRST",
+        "start_line": 2155,
+        "end_line": 2225,
+        "comment_line": 2150,
+        "occurrence_lines": [
+          2150,
+          2155
+        ],
+        "block_sha256_plaintext": "7ac885f959e1c03f0df79c831f763e036304a6c31fc9e71a170a5db05de8ffb4",
+        "block_line_count": 71
+      }
+    },
+    "sub.cpp": {
+      "path": "D:\\PROJECT6-DALI\\ForCodexDebug\\source\\sub.cpp",
+      "bytes": 121909,
+      "sha256_plaintext": "e86d49bef7ae725106311d8205df6dbc11184c7a0920eeaed416a515ac391470",
+      "utf8_bom": true,
+      "crlf_count": 3335,
+      "line_count": 3336,
+      "dut_api_count": 0
+    },
+    "StdAfx.h": {
+      "path": "D:\\PROJECT6-DALI\\ForCodexDebug\\source\\StdAfx.h",
+      "bytes": 56968,
+      "sha256_plaintext": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+      "utf8_bom": false,
+      "crlf_count": 692,
+      "line_count": 693,
+      "dut_api_count": 0
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm106-method-contract-review-deliverable-ready",
+  "taskId": "TM106-PTC-RULE_REVIEW_METHOD",
+  "trial": "tm106-ptc",
+  "tm": "TM106",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_METHOD",
+  "event": "deliverable_ready",
+  "status": "success",
+  "verdict": "deliverable_ready",
+  "findingsArtifact": "review/method-contract-review.json",
+  "selfCheck": "review/method-contract-review-self-check.json",
+  "nextRole": "ate-implementer"
+}

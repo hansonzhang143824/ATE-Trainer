@@ -1,0 +1,33 @@
+部署态 test.cpp  469714 B / 15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a
+payload          39457 B / 2d0984d992d5d8cb11868660b29cf2c7786ff27367bd7b24b80df4ccf48997f9
+
+=== A) §4 交叉验证：payload vs 部署态 SetOn 的"闭错/漏闭"区分 ===
+  payload SetOn 行: [(219, [13, 57, 60, 61, 83, 85, 109, 110, 126]), (426, [13, 57, 60, 61, 85, 126, 154, 155])]
+     L219   含48/76=False 含109/110=True 
+  payload 全部 SetOn: [(219, [13, 57, 60, 61, 83, 85, 109, 110, 126]), (426, [13, 57, 60, 61, 85, 126, 154, 155])]
+
+  部署态 TM600/TM601 SetOn（按函数块）:
+     TM600_HS_RDSON   [13, 57, 60, 61, 83, 85, 126]  含48/76=False 含109/110=False
+     TM601_LS_RDSON   [13, 57, 60, 61, 85, 126, 154, 155]  含48/76=False 含109/110=False
+
+=== B) §1 行为证据核对：所引行号与内容 ===
+  L6997  // BST ← SW12_U1REF_BST_ACM: K48_ACM5_AMP_REF + K76_ACM_BST (FH5→BST)
+  L7000  cbite.SetOn(K_FPVIH_TO_PGND_A, K60_BUSL0_VCP, K61_ACM8_SW, K13_VBAT_Cap, K57_CAP_BST_SW, K48_ACM5_AMP_REF, K76_ACM_BST, K85_CAP_PMID, K65_nQON_PU, -1);
+  L7087  cbite.SetOn(K_FPVIH_TO_PMID_A, K60_BUSL0_VCP, K61_ACM8_SW, K13_VBAT_Cap, K57_CAP_BST_SW, K48_ACM5_AMP_REF, K76_ACM_BST, K85_CAP_PMID, K65_nQON_PU, -1);
+  L7170  cbite.SetOn(K_FPVIH_TO_PMID_A, K60_BUSL0_VCP, K61_ACM8_SW, K13_VBAT_Cap, K57_CAP_BST_SW, K48_ACM5_AMP_REF, K76_ACM_BST, K85_CAP_PMID, K65_nQON_PU, -1);
+  L7513  cbite.SetOn(K_FPVIH_TO_PMID_A, K60_BUSL0_VCP, K61_ACM8_SW, K13_VBAT_Cap, K57_CAP_BST_SW, K48_ACM5_AMP_REF, K76_ACM_BST, K65_nQON_PU, -1);
+  L7598  // ⚠ K48/K76 与 ACM200_FH5(SW12_U1REF_BST_ACM) 共用接入 BST → 该源全程 RELAY_OFF 不驱动
+  L7621  // ⚠ K48/K76 同时把 ACM200_FH5(SW12_U1REF_BST_ACM) 输出端接 BST → 该源全程 RELAY_OFF 不驱动
+
+  —— 这些行是否同时出现 SW12_U1REF_BST_ACM 与 ACM200_FH5 / K48 / K76 ——
+  L6997  宏名=True  FH5=False K48=True  K76=True
+  L7000  宏名=False FH5=False K48=True  K76=True
+  L7087  宏名=False FH5=False K48=True  K76=True
+  L7170  宏名=False FH5=False K48=True  K76=True
+  L7513  宏名=False FH5=False K48=True  K76=True
+  L7598  宏名=True  FH5=True  K48=True  K76=True
+  L7621  宏名=True  FH5=True  K48=True  K76=True
+
+=== C) K_BST_ACM / K48_ACM5_AMP_REF 的调用点计数（文档证据 vs 行为证据）===
+  部署态 test.cpp   K_BST_ACM=0   K48_ACM5_AMP_REF=8   K76_ACM_BST=8   K110_ACM18_BST=0
+  payload        K_BST_ACM=0   K48_ACM5_AMP_REF=0   K76_ACM_BST=0   K110_ACM18_BST=2

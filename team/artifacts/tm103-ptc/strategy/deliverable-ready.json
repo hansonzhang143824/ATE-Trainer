@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 2,
+  "artifactId": "tm103-strategy-deliverable-ready",
+  "taskId": "TM103-PTC-STRATEGY",
+  "trial": "tm103-ptc",
+  "tm": "TM103",
+  "role": "test-strategy-architect",
+  "stage": "STRATEGY",
+  "event": "deliverable_ready",
+  "status": "success",
+  "verdict": "deliverable_ready",
+  "generatedAt": "2026-09-18T03:26:07.226Z",
+  "sha256": "a081ef45971712fb6815b5aabb99b0e3bfbb6a3f9be39557d73ccc2a4f0a1aa9",
+  "sha256Scope": "byte SHA-256 of team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json, computed with python hashlib.sha256 over the file bytes (the same computation the STRATEGY gate performs)",
+  "contract": "team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json",
+  "selfCheck": "team/artifacts/tm103-ptc/strategy/self-check.json",
+  "nextRole": "test-method-expert",
+  "resolvedFindings": [],
+  "resolvedFindingsNote": "no routed correction finding was delivered with this dispatch; the re-dispatch instruction was the mandatory top-level pinResolution block, which this revision adds",
+  "pinResolution": {
+    "logicalSignal": "ATEST0",
+    "physicalDutPin": "VDM",
+    "resolutionState": "RESOLVED",
+    "componentsStatisticLocator": "team/artifacts/tm103-ptc/schematic/Components-Statistic.json dutKelvinPins[63] === \"VDM\"",
+    "equalsManifestMonitorDutPin": true
+  },
+  "endpointSet": [
+    "VBAT",
+    "VDM"
+  ],
+  "selectedSourceTables": [
+    "VBAT_PD3_FXVI",
+    "VDM_SDA_ACM"
+  ],
+  "setOnClosure": [
+    13
+  ],
+  "gateCommand": "python scripts/validate_strategy_contract.py team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json team/artifacts/tm103-ptc/strategy/deliverable-ready.json --expected-monitor VDM --manifest team/artifacts/tm103-ptc/input-manifest.json",
+  "gateResult": "PASS"
+}

@@ -1,0 +1,260 @@
+### channel map (Component-Statistic.txt) rows whose port or device net relates to the TM108 path
+   87| S10_0                              -> QTMU_S1                                  (QTMUe)
+   88| S10_1                              -> QTMU_S2                                  (QTMUe)
+   89| S10_2                              -> QTMU_S3                                  (QTMUe)
+   90| S10_3                              -> QTMU_S4                                  (QTMUe)
+   91| S11_0                              -> VAC123_AMUX_ACM                          (ACM200)
+  103| S11_2                              -> SCL_VACWL_ACM                            (ACM200)
+  114| S11_9                              -> NQON_HG1_ACM                             (ACM200)
+  115| S12_0                              -> VAC123_AMUX_ACM                          (ACM200)
+  127| S12_2                              -> SCL_VACWL_ACM                            (ACM200)
+  138| S12_9                              -> NQON_HG1_ACM                             (ACM200)
+  144| S13_5                              -> VBAT_PD3_FXVI                            (FXVIe_PLUS)
+  152| S14_5                              -> VBAT_PD3_FXVI                            (FXVIe_PLUS)
+  168| S19_5                              -> VBAT_PD3_FXVI                            (FXVIe_PLUS)
+  178| S20_5                              -> VBAT_PD3_FXVI                            (FXVIe_PLUS)
+  181| S21_0                              -> VAC123_AMUX_ACM                          (ACM200)
+  193| S21_2                              -> SCL_VACWL_ACM                            (ACM200)
+  204| S21_9                              -> NQON_HG1_ACM                             (ACM200)
+  205| S22_0                              -> VAC123_AMUX_ACM                          (ACM200)
+  217| S22_2                              -> SCL_VACWL_ACM                            (ACM200)
+  228| S22_9                              -> NQON_HG1_ACM                             (ACM200)
+  229| S23_0                              -> QTMU_S5                                  (QTMUe)
+  230| S23_1                              -> QTMU_S6                                  (QTMUe)
+  231| S23_2                              -> QTMU_S7                                  (QTMUe)
+  232| S23_3                              -> QTMU_S8                                  (QTMUe)
+  233| S27_0                              -> VAC123_AMUX_ACM                          (ACM200)
+  245| S27_2                              -> SCL_VACWL_ACM                            (ACM200)
+  256| S27_9                              -> NQON_HG1_ACM                             (ACM200)
+  257| S28_0                              -> VAC123_AMUX_ACM                          (ACM200)
+  269| S28_2                              -> SCL_VACWL_ACM                            (ACM200)
+  280| S28_9                              -> NQON_HG1_ACM                             (ACM200)
+  286| S29_5                              -> VBAT_PD3_FXVI                            (FXVIe_PLUS)
+  296| S30_5                              -> VBAT_PD3_FXVI                            (FXVIe_PLUS)
+  308| S3_5                               -> VBAT_PD3_FXVI                            (FXVIe_PLUS)
+  316| S4_5                               -> VBAT_PD3_FXVI                            (FXVIe_PLUS)
+  319| S5_0                               -> VAC123_AMUX_ACM                          (ACM200)
+  331| S5_2                               -> SCL_VACWL_ACM                            (ACM200)
+  342| S5_9                               -> NQON_HG1_ACM                             (ACM200)
+  343| S6_0                               -> VAC123_AMUX_ACM                          (ACM200)
+  355| S6_2                               -> SCL_VACWL_ACM                            (ACM200)
+  366| S6_9                               -> NQON_HG1_ACM                             (ACM200)
+  376| S10_CH0_A                          -> QTMU_S1                                  (QTMUe)
+  377| S10_CH0_B                          -> QTMU_S1                                  (QTMUe)
+  382| S5_ACM200_FH0                      -> VAC123_AMUX_ACM                          (ACM200)
+  394| S5_ACM200_FH2                      -> SCL_VACWL_ACM                            (ACM200)
+  405| S5_ACM200_FH9                      -> NQON_HG1_ACM                             (ACM200)
+  406| S5_ACM200_FL(0-11)                 -> VAC123_AMUX_ACM                          (ACM200)
+  408| S5_ACM200_SH0                      -> VAC123_AMUX_ACM                          (ACM200)
+  420| S5_ACM200_SH2                      -> SCL_VACWL_ACM                            (ACM200)
+  431| S5_ACM200_SH9                      -> NQON_HG1_ACM                             (ACM200)
+  432| S5_ACM200_SL(0-5)                  -> VAC123_AMUX_ACM                          (ACM200)
+
+### map pin sections
+---- VBAT_F_S1
+H   832|   VBAT  [Kelvin]  需闭合: 无(默认导通)
+R   833| S3_FXVIe_PLUS_FH5 -> K8(Relay-NC) -> VBAT_F
+R   834| S3_FXVIe_PLUS_SH5 -> K8(Relay-NC) -> VBAT_S
+B   514| S10_CH0_A -> K141(Relay-NC) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT
+B   639| S8_QVM_CH0+ -> K136(Relay-ON) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT
+IR pin sources=['S10_CH0_A', 'S1_FPVIe_FH0', 'S1_FPVIe_FH1', 'S3_FXVIe_PLUS_FH5', 'S8_QVM_CH0+'] reqRelays=[7, 130, 136, 143, 144] nets=['NetCap1_VBAT_S1_1'] proofs=5 kelvin=['PASS', 'PASS', 'PASS']
+IR path from=S10_CH0_A|S1_FPVIe_FH0|S1_FPVIe_FH1|S3_FXVIe_PLUS_FH5|S8_QVM_CH0+ conf=direct
+IR chain K130_KELVIN1_F_S1        ON
+IR chain K131_KELVIN1_S1S2        NC
+IR chain K132_KELVIN1_S1          NC
+IR chain K136_QVMH_BUS0_S1        ON
+IR chain K141_QTMU_BUSA_S1S2      NC
+IR chain K143_DCM_BUS0_H_S1       ON
+IR chain K144_DCM_BUS1_H_S1       ON
+IR chain K7_BUSH_VBAT_S1          ON
+IR chain K87_KELVIN0_S1S2         NC
+IR chain K8_PD3_S1                NC
+
+---- VBAT_S_S1
+H   832|   VBAT  [Kelvin]  需闭合: 无(默认导通)
+R   833| S3_FXVIe_PLUS_FH5 -> K8(Relay-NC) -> VBAT_F
+R   834| S3_FXVIe_PLUS_SH5 -> K8(Relay-NC) -> VBAT_S
+B   514| S10_CH0_A -> K141(Relay-NC) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT
+B   639| S8_QVM_CH0+ -> K136(Relay-ON) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT
+IR pin sources=['S10_CH0_A', 'S1_FPVIe_SH0', 'S1_FPVIe_SH1', 'S3_FXVIe_PLUS_SH5'] reqRelays=[7, 130, 136, 137] nets=['NetK8_PD3_S1_2'] proofs=4 kelvin=['PASS', 'PASS', 'PASS']
+IR path from=S10_CH0_A|S1_FPVIe_SH0|S1_FPVIe_SH1|S3_FXVIe_PLUS_SH5 conf=direct
+IR chain K130_KELVIN1_F_S1        ON
+IR chain K131_KELVIN1_S1S2        NC
+IR chain K132_KELVIN1_S1          NC
+IR chain K136_QVMH_BUS0_S1        ON
+IR chain K137_QVMH_BUS1_S1        ON
+IR chain K141_QTMU_BUSA_S1S2      NC
+IR chain K7_BUSH_VBAT_S1          ON
+IR chain K88_KELVIN0_S1           NC
+IR chain K8_PD3_S1                NC
+
+---- VAC1_F_S1
+B   631| S8_QVM_CH0- -> K138(Relay-ON) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1
+IR pin sources=['S10_CH0_B', 'S1_FPVIe_FH0', 'S1_FPVIe_FL0', 'S1_FPVIe_FL1', 'S5_ACM200_FH0'] reqRelays=[17, 70, 87, 90, 142, 145, 146] nets=['NetCap1_VAC1_S1_1'] proofs=5 kelvin=['PASS', 'PASS', 'PASS']
+IR path from=S10_CH0_B|S1_FPVIe_FH0|S1_FPVIe_FL0|S1_FPVIe_FL1|S5_ACM200_FH0 conf=direct
+IR chain K133_KELVIN1_S1S2        NC
+IR chain K142_QTMU_BUSB_S1S2      ON
+IR chain K145_DCM_BUS0_L_S1       ON
+IR chain K146_DCM_BUS1_L_S1       ON
+IR chain K17_BUSL_VAC_S1          ON
+IR chain K18_VAC3_S1              NC
+IR chain K19_VAC2_S1              NC
+IR chain K70_VAC_F_S1             ON
+IR chain K82_R_CS_S1S2            NC
+IR chain K87_KELVIN0_S1S2         ON
+IR chain K89_KELVIN0_S1S2         NC
+IR chain K90_PC0_Force_S1         ON
+
+---- VAC1_S_S1
+B   631| S8_QVM_CH0- -> K138(Relay-ON) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1
+IR pin sources=['S1_FPVIe_SL0', 'S1_FPVIe_SL1', 'S5_ACM200_SH0', 'S8_QVM_CH0-'] reqRelays=[17, 138, 139] nets=['NetK19_VAC2_S1_7'] proofs=4 kelvin=['PASS', 'PASS', 'PASS']
+IR path from=S1_FPVIe_SL0|S1_FPVIe_SL1|S5_ACM200_SH0|S8_QVM_CH0- conf=direct
+IR chain K132_KELVIN1_S1          NC
+IR chain K138_QVML_BUS0_S1        ON
+IR chain K139_QVML_BUS1_S1        ON
+IR chain K17_BUSL_VAC_S1          ON
+IR chain K18_VAC3_S1              NC
+IR chain K19_VAC2_S1              NC
+IR chain K88_KELVIN0_S1           NC
+
+---- nQON_F_S1
+H   798|   nQON  [Kelvin]  需闭合: 无(默认导通)
+R   799| S5_ACM200_FH9 -> K64(Relay-NC) -> nQON_F
+R   800| S5_ACM200_SH9 -> K64(Relay-NC) -> nQON_S
+B   655| S8_QVM_CH0+ -> K137(Relay-ON) -> K62(Relay-ON) -> K64(Relay-NC) -> nQON
+B   850| S10_CH0_A -> K66(Relay-ON) -> nQON
+IR pin sources=['S10_CH0_A', 'S1_FPVIe_FH0', 'S1_FPVIe_FH1', 'S24_P0', 'S5_ACM200_FH9', 'S8_QVM_CH0+'] reqRelays=[62, 66, 130, 136] nets=['NetK64_HG1_S1_7'] proofs=6 kelvin=['PASS', 'PASS', 'PASS']
+IR path from=S10_CH0_A|S1_FPVIe_FH0|S1_FPVIe_FH1|S24_P0|S5_ACM200_FH9|S8_QVM_CH0+ conf=direct
+IR chain K130_KELVIN1_F_S1        ON
+IR chain K131_KELVIN1_S1S2        NC
+IR chain K132_KELVIN1_S1          NC
+IR chain K136_QVMH_BUS0_S1        ON
+IR chain K141_QTMU_BUSA_S1S2      NC
+IR chain K62_BUS_FH_QON_S1        ON
+IR chain K64_HG1_S1               NC
+IR chain K66_TMU_nQON_S1          ON
+IR chain K87_KELVIN0_S1S2         NC
+
+---- nQON_S_S1
+H   798|   nQON  [Kelvin]  需闭合: 无(默认导通)
+R   799| S5_ACM200_FH9 -> K64(Relay-NC) -> nQON_F
+R   800| S5_ACM200_SH9 -> K64(Relay-NC) -> nQON_S
+B   655| S8_QVM_CH0+ -> K137(Relay-ON) -> K62(Relay-ON) -> K64(Relay-NC) -> nQON
+B   850| S10_CH0_A -> K66(Relay-ON) -> nQON
+IR pin sources=['S10_CH0_A', 'S1_FPVIe_SH0', 'S1_FPVIe_SH1', 'S5_ACM200_SH9'] reqRelays=[62, 86, 136, 137, 141] nets=['NetK64_HG1_S1_2'] proofs=4 kelvin=['PASS', 'PASS', 'PASS']
+IR path from=S10_CH0_A|S1_FPVIe_SH0|S1_FPVIe_SH1|S5_ACM200_SH9 conf=direct
+IR chain K132_KELVIN1_S1          NC
+IR chain K136_QVMH_BUS0_S1        ON
+IR chain K137_QVMH_BUS1_S1        ON
+IR chain K141_QTMU_BUSA_S1S2      ON
+IR chain K62_BUS_SH_QON_S1        ON
+IR chain K64_HG1_S1               NC
+IR chain K86_KELVIN0_F_S1         ON
+IR chain K87_KELVIN0_S1S2         NC
+IR chain K88_KELVIN0_S1           NC
+
+---- AGND_F_S1
+B   854| S8_QVM_CH0- -> K140(Relay-ON) -> AGND
+IR pin sources=['S3_FXVIe_PLUS_FL(0-3)', 'S3_FXVIe_PLUS_FL(4-7)', 'S5_ACM200_FL(0-11)', 'S5_ACM200_FL(12-23)'] reqRelays=[] nets=['AGND_F_S1'] proofs=4 kelvin=[]
+IR path from=S3_FXVIe_PLUS_FL(0-3)|S3_FXVIe_PLUS_FL(4-7)|S5_ACM200_FL(0-11)|S5_ACM200_FL(12-23) conf=direct
+
+---- AGND_S_S1
+B   854| S8_QVM_CH0- -> K140(Relay-ON) -> AGND
+IR pin sources=['S10_CH0_B', 'S1_FPVIe_SL0', 'S1_FPVIe_SL1', 'S3_FXVIe_PLUS_SL(0-3)', 'S3_FXVIe_PLUS_SL(4-7)', 'S5_ACM200_SL(0-5)', 'S5_ACM200_SL(12-17)', 'S5_ACM200_SL(18-23)', 'S5_ACM200_SL(6-11)', 'S8_QVM_CH0-'] reqRelays=[130, 138, 139, 140] nets=['NetK92_AGND_F2S_S1_2'] proofs=10 kelvin=[]
+IR path from=S10_CH0_B|S1_FPVIe_SL0|S1_FPVIe_SL1|S3_FXVIe_PLUS_SL(0-3)|S3_FXVIe_PLUS_SL(4-7)|S5_ACM200_SL(0-5)|S5_ACM200_SL(12-17)|S5_ACM200_SL(18-23)|S5_ACM200_SL(6-11)|S8_QVM_CH0- conf=direct
+IR chain K130_KELVIN1_S_S1        ON
+IR chain K132_KELVIN1_S1          NC
+IR chain K133_KELVIN1_S1S2        NC
+IR chain K138_QVML_BUS0_S1        ON
+IR chain K139_QVML_BUS1_S1        ON
+IR chain K140_QVML_AGND_S1        ON
+IR chain K142_QTMU_BUSB_S1S2      NC
+IR chain K88_KELVIN0_S1           NC
+
+---- AMUX_F_S1
+H   805|   AMUX  [Kelvin]  需闭合: 无(默认导通)
+R   806| S3_FXVIe_PLUS_FH3 -> K155(Relay-NC) -> AMUX_F
+R   807| S3_FXVIe_PLUS_SH3 -> K155(Relay-NC) -> AMUX_S
+B   460| S10_CH0_A -> K141(Relay-ON) -> K154(Relay-ON) -> K155(Relay-NC) -> AMUX
+B   533| S8_QVM_CH0+ -> K137(Relay-ON) -> K154(Relay-ON) -> K155(Relay-NC) -> AMUX
+B   535| S8_QVM_CH0- -> K138(Relay-ON) -> K17(Relay-ON) -> K18(Relay-ON) -> K20(Relay-ON) -> AMUX
+IR pin sources=['S10_CH0_A', 'S10_CH0_B', 'S1_FPVIe_FH0', 'S1_FPVIe_FH1', 'S1_FPVIe_FL0', 'S1_FPVIe_FL1', 'S3_FXVIe_PLUS_FH3', 'S5_ACM200_FH0', 'S8_QVM_CH0+'] reqRelays=[17, 18, 20, 86, 137, 141, 142, 143, 144, 145, 146, 154] nets=['NetK20_AMUX_S1_4'] proofs=9 kelvin=['PASS', 'PASS', 'PASS', 'PASS', 'PASS', 'PASS', 'PASS']
+IR path from=S10_CH0_A|S10_CH0_B|S1_FPVIe_FH0|S1_FPVIe_FH1|S1_FPVIe_FL0|S1_FPVIe_FL1|S3_FXVIe_PLUS_FH3|S5_ACM200_FH0|S8_QVM_CH0+ conf=direct
+IR chain K131_KELVIN1_S1S2        NC
+IR chain K133_KELVIN1_S1S2        NC
+IR chain K137_QVMH_BUS1_S1        ON
+IR chain K141_QTMU_BUSA_S1S2      ON
+IR chain K142_QTMU_BUSB_S1S2      ON
+IR chain K143_DCM_BUS0_H_S1       ON
+IR chain K144_DCM_BUS1_H_S1       ON
+IR chain K145_DCM_BUS0_L_S1       ON
+IR chain K146_DCM_BUS1_L_S1       ON
+IR chain K154_BUSH_AMUX_S1        ON
+IR chain K155_FOVI_PGND_S1        NC
+IR chain K17_BUSL_VAC_S1          ON
+IR chain K18_VAC3_S1              ON
+IR chain K20_AMUX_S1              ON
+IR chain K86_KELVIN0_F_S1         ON
+IR chain K87_KELVIN0_S1S2         NC
+IR chain K88_KELVIN0_S1           NC
+IR chain K89_KELVIN0_S1S2         NC
+
+---- AMUX_S_S1
+H   805|   AMUX  [Kelvin]  需闭合: 无(默认导通)
+R   806| S3_FXVIe_PLUS_FH3 -> K155(Relay-NC) -> AMUX_F
+R   807| S3_FXVIe_PLUS_SH3 -> K155(Relay-NC) -> AMUX_S
+B   460| S10_CH0_A -> K141(Relay-ON) -> K154(Relay-ON) -> K155(Relay-NC) -> AMUX
+B   533| S8_QVM_CH0+ -> K137(Relay-ON) -> K154(Relay-ON) -> K155(Relay-NC) -> AMUX
+B   535| S8_QVM_CH0- -> K138(Relay-ON) -> K17(Relay-ON) -> K18(Relay-ON) -> K20(Relay-ON) -> AMUX
+IR pin sources=['S10_CH0_A', 'S1_FPVIe_SH0', 'S1_FPVIe_SH1', 'S1_FPVIe_SL0', 'S1_FPVIe_SL1', 'S3_FXVIe_PLUS_SH3', 'S5_ACM200_SH0', 'S8_QVM_CH0-'] reqRelays=[17, 18, 20, 86, 136, 137, 138, 139, 141, 154] nets=['NetK20_AMUX_S1_5'] proofs=8 kelvin=['PASS', 'PASS', 'PASS', 'PASS', 'PASS', 'PASS', 'PASS']
+IR path from=S10_CH0_A|S1_FPVIe_SH0|S1_FPVIe_SH1|S1_FPVIe_SL0|S1_FPVIe_SL1|S3_FXVIe_PLUS_SH3|S5_ACM200_SH0|S8_QVM_CH0- conf=direct
+IR chain K132_KELVIN1_S1          NC
+IR chain K136_QVMH_BUS0_S1        ON
+IR chain K137_QVMH_BUS1_S1        ON
+IR chain K138_QVML_BUS0_S1        ON
+IR chain K139_QVML_BUS1_S1        ON
+IR chain K141_QTMU_BUSA_S1S2      ON
+IR chain K154_BUSH_AMUX_S1        ON
+IR chain K155_FOVI_PGND_S1        NC
+IR chain K17_BUSL_VAC_S1          ON
+IR chain K18_VAC3_S1              ON
+IR chain K20_AMUX_S1              ON
+IR chain K86_KELVIN0_F_S1         ON
+IR chain K87_KELVIN0_S1S2         NC
+IR chain K88_KELVIN0_S1           NC
+
+### relay default state (IR relays[].state) vs map tokens for relays on the TM108 pin paths
+K7    IR=[] tokens=['ON'] n=12 lines=[151, 152, 211, 212, 371, 372, 419, 420, 500, 514, 607, 639]
+K8    IR=[] tokens=['NC', 'ON'] n=16 lines=[151, 152, 211, 212, 371, 372, 419, 420, 500, 514, 607, 639]
+K13   IR=[] tokens=[] n=0 lines=[]
+K17   IR=[] tokens=['ON'] n=20 lines=[37, 38, 193, 194, 199, 200, 205, 206, 263, 264, 407, 408]
+K18   IR=[] tokens=['NC', 'ON'] n=26 lines=[37, 38, 190, 191, 193, 194, 196, 197, 199, 200, 202, 203]
+K19   IR=[] tokens=['NC', 'ON'] n=14 lines=[190, 191, 193, 194, 196, 197, 199, 200, 407, 408, 410, 411]
+K20   IR=[] tokens=['NC', 'ON'] n=12 lines=[37, 38, 202, 203, 205, 206, 263, 264, 413, 414, 535, 635]
+K21   IR=[] tokens=[] n=0 lines=[]
+K62   IR=[] tokens=['ON'] n=10 lines=[70, 71, 243, 244, 296, 297, 446, 470, 557, 655]
+K64   IR=[] tokens=['NC', 'ON'] n=14 lines=[70, 71, 243, 244, 296, 297, 446, 470, 557, 655, 700, 701]
+K65   IR=[] tokens=[] n=0 lines=[]
+K66   IR=[] tokens=['ON'] n=2 lines=[445, 850]
+K70   IR=[] tokens=['ON'] n=6 lines=[190, 191, 196, 197, 202, 203]
+K82   IR=[] tokens=['NC'] n=8 lines=[190, 191, 196, 197, 202, 203, 229, 230]
+K86   IR=[] tokens=[] n=0 lines=[]
+K87   IR=[] tokens=['NC', 'ON'] n=41 lines=[9, 23, 26, 29, 34, 40, 52, 58, 61, 70, 73, 76]
+K88   IR=[] tokens=['NC', 'ON'] n=77 lines=[10, 13, 24, 27, 30, 32, 35, 38, 41, 44, 47, 50]
+K89   IR=[] tokens=['NC', 'ON'] n=36 lines=[12, 37, 43, 46, 49, 55, 64, 67, 82, 88, 91, 94]
+K90   IR=[] tokens=['ON'] n=8 lines=[82, 88, 163, 190, 196, 202, 226, 229]
+K92   IR=[] tokens=[] n=0 lines=[]
+K130  IR=[] tokens=[] n=0 lines=[]
+K136  IR=[] tokens=['ON'] n=51 lines=[53, 62, 77, 98, 107, 113, 119, 125, 131, 134, 137, 143]
+K137  IR=[] tokens=['ON'] n=55 lines=[53, 62, 77, 98, 107, 113, 119, 125, 131, 134, 137, 143]
+K138  IR=[] tokens=['ON'] n=48 lines=[32, 44, 56, 65, 101, 104, 110, 116, 122, 128, 140, 146]
+K139  IR=[] tokens=['ON'] n=42 lines=[44, 56, 65, 101, 104, 110, 116, 122, 128, 140, 146, 155]
+K140  IR=[] tokens=['ON'] n=3 lines=[32, 258, 854]
+K141  IR=[] tokens=['NC', 'ON'] n=36 lines=[445, 454, 456, 458, 460, 462, 464, 466, 468, 470, 472, 474]
+K142  IR=[] tokens=['NC', 'ON'] n=2 lines=[238, 440]
+K143  IR=[] tokens=['ON'] n=34 lines=[52, 61, 76, 97, 106, 112, 118, 124, 130, 133, 136, 142]
+K144  IR=[] tokens=['ON'] n=34 lines=[52, 61, 76, 97, 106, 112, 118, 124, 130, 133, 136, 142]
+K145  IR=[] tokens=['ON'] n=29 lines=[43, 55, 64, 100, 103, 109, 115, 121, 127, 139, 145, 154]
+K146  IR=[] tokens=['ON'] n=29 lines=[43, 55, 64, 100, 103, 109, 115, 121, 127, 139, 145, 154]
+K154  IR=[] tokens=['ON'] n=12 lines=[34, 35, 157, 158, 260, 261, 377, 378, 460, 502, 533, 611]
+K155  IR=[] tokens=['NC', 'ON'] n=16 lines=[34, 35, 157, 158, 260, 261, 377, 378, 460, 502, 533, 611]

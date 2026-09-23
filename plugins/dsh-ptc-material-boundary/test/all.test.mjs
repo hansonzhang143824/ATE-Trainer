@@ -1,0 +1,11 @@
+import './policy.test.mjs';
+import './captain-entry.test.mjs';
+import './dft-fastpath.test.mjs';
+import './path-boundary.test.mjs';
+import './guard-mount.test.mjs';
+import './dispatch-receipt.test.mjs';
+import './dispatch-profile.test.mjs';
+import './dispatch-pinned-source.test.mjs';
+import './receipt-identity.test.mjs';
+import './training-boundary.test.mjs';
+import './session-preset-mirror.test.mjs';

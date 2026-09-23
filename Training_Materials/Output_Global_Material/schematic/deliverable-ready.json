@@ -1,0 +1,37 @@
+{
+  "event": "deliverable_ready",
+  "status": "success",
+  "stage": "INPUT_SYNC",
+  "role": "schematic-expert",
+  "verdict": "deliverable_ready",
+  "tm": "TM103",
+  "trial": "tm103-ptc",
+  "generatedAt": "2026-09-18 13:06:13",
+  "sourceSha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a",
+  "canonicalInput": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\Dali-SCH.csv",
+  "artifacts": [
+    {
+      "name": "SCH-Connect-Map.json",
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\SCH-Connect-Map.json",
+      "bytes": 622290,
+      "sha256": "cde2109b461199bc5b62a145d40be8c156727f040ada0045dc0833bb3d9bab67",
+      "sourceSha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a"
+    },
+    {
+      "name": "Components-Statistic.json",
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Components-Statistic.json",
+      "bytes": 2864,
+      "sha256": "07e0def5ac33c1d965592ccbb8d7842185e92a286e163720c70120fc9bc04f0c",
+      "sourceSha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a"
+    },
+    {
+      "name": "schematic-ir.json",
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\schematic-ir.json",
+      "bytes": 543015,
+      "sha256": "ac25cd67043a2a7fbadc266073f7bee81c39896caa2fb6243ce60f518c22a38a",
+      "sourceSha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a"
+    }
+  ],
+  "productsDirectory": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic",
+  "nextStep": "captain re-runs the gate: python scripts/ate_ptc_runner.py --tm TM103 --trial-dir team/artifacts/tm103-ptc --command next"
+}

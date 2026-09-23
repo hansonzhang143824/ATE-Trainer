@@ -1,0 +1,9 @@
+[material-gate] receipt=D:\Newtest\DSH\ATE-Coding-Plat\project\DALI\material_receipts.json
+[material-gate] entries=2 read-proof=on mode=soft FAIL=0 GAP=0 WARN=2
+
+WARNINGS:
+  - TM641: 读证豁免（2026-09-13 补录: TM641 生成于 2026-08-30, 当时材料门无读证机制; 原收据三路径为旧前缀(chip//method//code/)已全部失效, 本次仅修路径至 L1-chip//L3-method//L4-Golden-code/, 不追溯伪造读证。）
+  - TM1205_TRX_BST_UV_GD: 读证豁免（2026-09-13 补录: 本 TM 是该 Diff Pair golden 的**来源**(先有 TM1205, 后提炼登记进 L4), 生成时不存在此 golden 可读 ⇒ 读证不适用。实际依据=_awg_verify/TM1205_draft.cpp 草稿 + test.cpp TM641 同构 + L3 方法文档(relay-design-flow §五 / diff-pair-spec)。**如实记录流程偏离: 真实生成时未跑材料门, 且未走索引读 golden。**）
+
+材料门 PASS（有可参考的案例 + 读证齐）
+

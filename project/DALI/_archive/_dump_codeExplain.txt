@@ -1,0 +1,19 @@
+	default	all vsrc/isrc is off.
+cap at VCC, cap at BST to SW.
+	Command	Explain
+	vset[pinName,
+pinVoltToGnd,
+rampTime,
+switchOnAftSrcReady]	*Vsource is regard to PGND.
+*switchOnAftSrcReady=0; => switch(between src and chip pad) is on before source ramp ramp.
+*switchOnAftSrcReady=1; => switch(between src and chip pad) is on after source ramp ramp.
+	iset[pinName,
+pinCurrentToGnd,
+rampTime,
+switchOnAftSrcReady]	*Isource is regard to PGND. ex: 1 means 1A current from pin to PGND.
+*switchOnAftSrcReady=0; => switch(between src and chip pad) is on before source ramp ramp.
+*switchOnAftSrcReady=1; => switch(between src and chip pad) is on after source ramp ramp.
+	field[(regName1,regValue)
+,(regName2,regValue)]	*regNamex is from register map field. should be upper case in this command.
+*regValue is decimal value. it fits human reading and calculation.
+	check[(atest0, value)]	* in develop, not ready

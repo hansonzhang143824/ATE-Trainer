@@ -1,0 +1,25 @@
+import sys,io,os,hashlib,time
+sys.stdout=io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8',errors='replace')
+d=r'D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10'
+p=os.path.join(d,'review-handoff-note-plan-side.md')
+r=open(p,'rb').read(); t=r.decode('utf-8-sig')
+print('=== the file they measured and I measured: SAME BYTES? ===')
+print('  size   : %d B'%len(r))
+print('  sha256 : %s'%hashlib.sha256(r).hexdigest())
+print('  mtime  : %s'%time.strftime('%H:%M:%S',time.localtime(os.stat(p).st_mtime)))
+print('  they say: 43,294 / 18043e4155cdef43e30c7b93dd105854739e282049d28bf75546f8e5299fc2aa @22:09:40')
+print()
+print('=== their check vs the actual stale content ===')
+print('  "BLOCKED pending `t43`" (their check)      = %d'%t.count('BLOCKED pending `t43`'))
+print('  "BLOCKED" (any form)                       = %d'%t.count('BLOCKED'))
+print('  "RETAIN `K109`/`K110` this round"          = %d'%t.count('RETAIN `K109`/`K110` this round'))
+print('  "retain `K109`/`K110` this round"          = %d'%t.count('retain `K109`/`K110` this round'))
+print('  "--check-extra` not to be enabled"         = %d'%t.count('`--check-extra` not to be enabled'))
+print('  "keep `--check-extra` disabled"            = %d'%t.count('keep `--check-extra` disabled'))
+print('  "contract `rev 25`"                        = %d'%t.count('contract `rev 25`'))
+print('  "INTERSECTION"                             = %d'%t.count('INTERSECTION'))
+print()
+print('=== the operative lines, re-read from THESE bytes ===')
+for i,l in enumerate(t.split('\n')):
+    if 'INTERSECTION' in l or 'RETAIN' in l or 'retain `K109' in l:
+        print('  L%-5d %s'%(i+1,l.strip()[:150]))

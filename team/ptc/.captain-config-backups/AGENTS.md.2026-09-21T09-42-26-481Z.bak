@@ -1,0 +1,18 @@
+# ATE PTC Direct Runtime
+
+`team/ptc/ptc_stage_registry.json` is the only authority for PTC stage, owner, gate and test family. Legacy Skills and state machines are reference material only.
+
+## Captain entry
+
+1. Classify the request with `team/ptc/CAPTAIN_ENTRY_FLOW.md`. Ordinary conversation is answered directly; expert optimization changes the named role and its checks. A project-delivery request starts a new delivery.
+2. In a new ATE Captain conversation, the user only names test items or a range, for example “TM102、TM105” or “TM106 到 TM110”. Captain confirms the current `Project_Info.json` when needed, then internally calls `scripts/captain_delivery_entry.py`. The user never supplies a batch id or runs a Python command.
+3. Captain reads only that entry’s JSON. It automatically creates a unique batch, binds the approved project configuration, runs INPUT_SYNC, and returns the one role or source-role list to dispatch. A range includes only DFT items that exist; an explicitly named missing TM is reported in one short sentence.
+4. After a role’s terminal report, Captain internally calls `advance_batch(batchId)`. It refreshes INPUT_SYNC manifests when source roles finish, then returns the next whole-batch stage. Every dispatch carries all TMs waiting at that stage.
+5. The normal Captain batch uses fast delivery after every TM reaches `RULE_REVIEW_IMPLEMENTATION`. It still enforces the input boundary, hash binding, minimum implementation verification and compile. It becomes `FAST_DELIVERY_PENDING_AUDIT`; it is not COMPLETE. Captain never resumes the independent audit on its own. Resume only when the user later asks for it explicitly.
+6. On a real block, report the one short cause and stop. Do not alter paths, source hashes, electrical values or sources to work around it.
+
+## Boundaries
+
+- Parsing roles read only `project/DALI/Input_GlobalMaterial` and write only `project/DALI/Output_Global_Material` or `project/DALI/ErrorLog`.
+- Strategy, method, review, implementation and compile roles read their signed contracts, validated parsing products and the approved VS project.
+- The stage chain remains `INPUT_SYNC -> STRATEGY -> METHOD -> RULE_REVIEW_METHOD -> IMPLEMENTATION -> RULE_REVIEW_IMPLEMENTATION -> COMPILE -> COMPLETE`.

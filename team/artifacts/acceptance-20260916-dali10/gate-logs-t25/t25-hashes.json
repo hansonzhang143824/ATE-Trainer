@@ -1,0 +1,523 @@
+{
+  "generatedBy": "python 3.12 (DLP-authorized reader)",
+  "root": "D:\\Newtest\\DSH\\ATE-Coding-Plat",
+  "targets": [
+    {
+      "path": "scripts/run_gates.ps1",
+      "exists": true,
+      "size": 9763,
+      "sha256": "dd2a4337f22d339a4a0f866c43d1843413db8f1d9e726c07bf8fbcaa5ab310b9",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'\\xef\\xbb\\xbf# run_gates.p'"
+    },
+    {
+      "path": "scripts/verify_relay_trace.py",
+      "exists": true,
+      "size": 21068,
+      "sha256": "65e0c67f827bf4ff6e6d1b3a45bf3b76058815f8d4df501b19a3271f06410f9c",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'# -*- coding: ut'"
+    },
+    {
+      "path": "scripts/gate_baseline.json",
+      "exists": true,
+      "size": 28,
+      "sha256": "021015da84e6fd4c54a595796e1bad73e18c57db94f856871d5667044302cb1d",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'\\xef\\xbb\\xbf{\\r\\n    \"cbit\"'"
+    },
+    {
+      "path": "project/DALI/meta/dali_tm_meta.json",
+      "exists": true,
+      "size": 146180,
+      "sha256": "1c8496645492f7b75abf3a89f95679291490399d62f4a1a34d6cc5d8b1aa2693",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'{\\r\\n  \"_comment\":'"
+    },
+    {
+      "path": "team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp",
+      "exists": true,
+      "size": 35014,
+      "sha256": "444810dde99f79ed1ef1939bb1659d5769f547bfc1103e9b9187ee46f455675c",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'\\xef\\xbb\\xbf// =========='"
+    },
+    {
+      "path": "project/DALI/SCH-Connect-Map.txt",
+      "exists": true,
+      "size": 66403,
+      "sha256": "cc8009fbb27eef0cf29b45e4e50b05e1b5d7b5d49095a32005261a79d83cb427",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'================'"
+    },
+    {
+      "path": "project_config.json",
+      "exists": true,
+      "size": 2102,
+      "sha256": "3c2c29ce2d3e3ffa8046b480fa031b02224371b0776dd9a3560238363a43d9d6",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'{\\n  \"_\\xe8\\xaf\\xb4\\xe6\\x98\\x8e\": \"'"
+    },
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "exists": true,
+      "size": 462848,
+      "sha256": "3dbceb496d79d7d08631713b98e46c0c2ba6163eaf5356a87dded677e35ba479",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'\\xef\\xbb\\xbf/************'"
+    },
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h",
+      "exists": true,
+      "size": 56968,
+      "sha256": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+      "readsAs": "plaintext",
+      "utf8Decodable": false,
+      "head": "b'// stdafx.h : in'"
+    },
+    {
+      "path": "D:/PROJECT6-DALI/devel/source/test.cpp",
+      "exists": true,
+      "size": 434629,
+      "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'\\xef\\xbb\\xbf/************'"
+    },
+    {
+      "path": "D:/PROJECT6-DALI/devel/source/StdAfx.h",
+      "exists": true,
+      "size": 56968,
+      "sha256": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+      "readsAs": "plaintext",
+      "utf8Decodable": false,
+      "head": "b'// stdafx.h : in'"
+    }
+  ],
+  "gateLogs": [
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\awg.log",
+      "exists": true,
+      "size": 211,
+      "sha256": "c9bb8ff5a8feb147e6c9b1be3fe9b8eaea989504441d90bfe46c3597739fa9fa",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'[scan] D:\\\\PROJEC'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\bst-sw.log",
+      "exists": true,
+      "size": 174,
+      "sha256": "0fbf0cd3232508e70121188483ed5144dc48b88fb06a600a870a3322a2de6729",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'[scan] D:\\\\PROJEC'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\cbit.log",
+      "exists": true,
+      "size": 4782,
+      "sha256": "2fb094e5b188af1b79ce0d5d33715b2cd5f8a75746ba493415cdf4de32cd3f38",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'\\xe5\\x9f\\xba\\xe5\\x87\\x86\\xe5\\xaf\\xb9\\xe6\\x8b\\x8d (D:'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\input-sync.log",
+      "exists": true,
+      "size": 1305,
+      "sha256": "9446e598676c003fd585655eb841e1abc86fcc3b48399f43d924265960f43aa1",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'================'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\material-audit.log",
+      "exists": true,
+      "size": 78,
+      "sha256": "f2a0901f017baf73000373d5362ebdfff51a00523dc962bd7db901238cd1a134",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'[material-gate] '"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\material-status.log",
+      "exists": true,
+      "size": 374,
+      "sha256": "64f2da5610848666f70b9cc14721a4ef6f02d9a347d8e599ced8fe6098fb4ae3",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'[material-status'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\material.log",
+      "exists": true,
+      "size": 928,
+      "sha256": "aa1a164622646bbd2971a9dab2e73cf0abcd5297d8f702447620989f3892ee46",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'[material-gate] '"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\merge.log",
+      "exists": true,
+      "size": 177,
+      "sha256": "4ee031bab921b20d33b3d93468618c7d52a6c8ba0df80d72ed7b0d93a3be844e",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'[rules] merge_ru'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\meta.log",
+      "exists": true,
+      "size": 89,
+      "sha256": "0e061bfbcc2c1eb6c5312a9bb150df0f05cec37bc454762d00be4319126b7e9a",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'[ok] --require-a'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\path-def.log",
+      "exists": true,
+      "size": 268,
+      "sha256": "c403234f5e2167d9020d6c5dfb730d4858fb3944e30c96ac5719d8c293ac575b",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'=== \\xe9\\x80\\x9a\\xe8\\xb7\\xaf\\xe7\\xbb\\xa7\\xe7\\x94\\xb5'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\relay-trace-after-f2.log",
+      "exists": true,
+      "size": 797,
+      "sha256": "81c891bc48f3a77777117769e4442b1759ec9c02151b4bee7445e582dbc4a9a3",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'[relay] \\xe6\\xa3\\x80\\xe6\\x9f\\xa5 t'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\relay-trace.log",
+      "exists": true,
+      "size": 799,
+      "sha256": "af1bf602e220b442e5edc6b72f24cc5aa6f6c1b2b85981ca5978e55b3ad7c943",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'[relay] \\xe6\\xa3\\x80\\xe6\\x9f\\xa5 t'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\run-gates-stdout.log",
+      "exists": true,
+      "size": 1996,
+      "sha256": "28e18862de907dea832aa76242014e51afe72d0b2903a563524e63c699821bd2",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'\\xe5\\x9f\\xba\\xe7\\xba\\xbf(\\xe5\\xad\\x98\\xe9\\x87\\x8f\\xe7\\xba\\xa2'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\smoke.log",
+      "exists": true,
+      "size": 126,
+      "sha256": "b4338ad79ce250d6a0efdf68cb4ae307b3b9f720e1cb58d18c730ed2ac3a983f",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'[scan] D:\\\\PROJEC'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\t25-f3-sandbox.json",
+      "exists": true,
+      "size": 2618,
+      "sha256": "6dee7d737ddc7ca6a7ff7dcafe20c57c817e54339572ad9e04eccb44e4e729b3",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'{\\r\\n  \"constantUn'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\t25-proofs.json",
+      "exists": true,
+      "size": 18095,
+      "sha256": "649d878caaac8a8c5c38b490a5484c8b57293cec3c99b046633bffbe59e357ad",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'{\\r\\n  \"root\": \"D:'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\t25-variant-matrix.json",
+      "exists": true,
+      "size": 19324,
+      "sha256": "b489031135e924250e5353ea1853e887d606fb4492ef76dea7af163e8da13969",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'{\\r\\n  \"v1\": [\\r\\n  '"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\t25_apply.py",
+      "exists": true,
+      "size": 9058,
+      "sha256": "66e1cba18d967a60ebb395e5af376757fca87f91d14b7220df3fb3034835e653",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'# -*- coding: ut'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\t25_apply2.py",
+      "exists": true,
+      "size": 2056,
+      "sha256": "79f4d4b080b63c7f04402e5c8033a5cdfa2042927596c1cf3b5d8341c9602199",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'# -*- coding: ut'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\t25_f3_sandbox.py",
+      "exists": true,
+      "size": 4842,
+      "sha256": "0e8d900abb0f9d06dbb3e10e8fd63f1d957ae84b4355862b731b838cf79157f6",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'# -*- coding: ut'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\t25_hashes.py",
+      "exists": true,
+      "size": 3170,
+      "sha256": "d101aa7236190e9a96c1ee3ba443e0170212c8dfa4c843bf9443e1f7d5eeae24",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'# -*- coding: ut'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\t25_proofs.py",
+      "exists": true,
+      "size": 11281,
+      "sha256": "aece7c8d2bc45d33d9c5d3286114f27ce1755cd8654a5513bbac0a3de1f1ed2e",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'# -*- coding: ut'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\t25_variant_matrix.py",
+      "exists": true,
+      "size": 3846,
+      "sha256": "1f48b535805ff8df195369ee613256cc3aa1439dbe8c77fa6d64573cbd9f82db",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'# -*- coding: ut'"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\awg.log",
+      "exists": true,
+      "size": 211,
+      "sha256": "c9bb8ff5a8feb147e6c9b1be3fe9b8eaea989504441d90bfe46c3597739fa9fa",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'[scan] D:\\\\PROJEC'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\bst-sw.log",
+      "exists": true,
+      "size": 174,
+      "sha256": "0fbf0cd3232508e70121188483ed5144dc48b88fb06a600a870a3322a2de6729",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'[scan] D:\\\\PROJEC'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\cbit.log",
+      "exists": true,
+      "size": 4782,
+      "sha256": "2fb094e5b188af1b79ce0d5d33715b2cd5f8a75746ba493415cdf4de32cd3f38",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'\\xe5\\x9f\\xba\\xe5\\x87\\x86\\xe5\\xaf\\xb9\\xe6\\x8b\\x8d (D:'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\input-sync.log",
+      "exists": true,
+      "size": 1305,
+      "sha256": "9446e598676c003fd585655eb841e1abc86fcc3b48399f43d924265960f43aa1",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'================'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\material-audit.log",
+      "exists": true,
+      "size": 78,
+      "sha256": "f2a0901f017baf73000373d5362ebdfff51a00523dc962bd7db901238cd1a134",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'[material-gate] '"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\material-status.log",
+      "exists": true,
+      "size": 374,
+      "sha256": "64f2da5610848666f70b9cc14721a4ef6f02d9a347d8e599ced8fe6098fb4ae3",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'[material-status'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\material.log",
+      "exists": true,
+      "size": 928,
+      "sha256": "aa1a164622646bbd2971a9dab2e73cf0abcd5297d8f702447620989f3892ee46",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'[material-gate] '"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\merge.log",
+      "exists": true,
+      "size": 177,
+      "sha256": "4ee031bab921b20d33b3d93468618c7d52a6c8ba0df80d72ed7b0d93a3be844e",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'[rules] merge_ru'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\meta.log",
+      "exists": true,
+      "size": 89,
+      "sha256": "0e061bfbcc2c1eb6c5312a9bb150df0f05cec37bc454762d00be4319126b7e9a",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'[ok] --require-a'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\path-def.log",
+      "exists": true,
+      "size": 268,
+      "sha256": "c403234f5e2167d9020d6c5dfb730d4858fb3944e30c96ac5719d8c293ac575b",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'=== \\xe9\\x80\\x9a\\xe8\\xb7\\xaf\\xe7\\xbb\\xa7\\xe7\\x94\\xb5'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\relay-trace-after-f2.log",
+      "exists": true,
+      "size": 797,
+      "sha256": "81c891bc48f3a77777117769e4442b1759ec9c02151b4bee7445e582dbc4a9a3",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'[relay] \\xe6\\xa3\\x80\\xe6\\x9f\\xa5 t'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\relay-trace.log",
+      "exists": true,
+      "size": 799,
+      "sha256": "af1bf602e220b442e5edc6b72f24cc5aa6f6c1b2b85981ca5978e55b3ad7c943",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'[relay] \\xe6\\xa3\\x80\\xe6\\x9f\\xa5 t'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\run-gates-stdout.log",
+      "exists": true,
+      "size": 1996,
+      "sha256": "28e18862de907dea832aa76242014e51afe72d0b2903a563524e63c699821bd2",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'\\xe5\\x9f\\xba\\xe7\\xba\\xbf(\\xe5\\xad\\x98\\xe9\\x87\\x8f\\xe7\\xba\\xa2'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\smoke.log",
+      "exists": true,
+      "size": 126,
+      "sha256": "b4338ad79ce250d6a0efdf68cb4ae307b3b9f720e1cb58d18c730ed2ac3a983f",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'[scan] D:\\\\PROJEC'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\t25-f3-sandbox.json",
+      "exists": true,
+      "size": 2618,
+      "sha256": "6dee7d737ddc7ca6a7ff7dcafe20c57c817e54339572ad9e04eccb44e4e729b3",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'{\\r\\n  \"constantUn'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\t25-proofs.json",
+      "exists": true,
+      "size": 18095,
+      "sha256": "649d878caaac8a8c5c38b490a5484c8b57293cec3c99b046633bffbe59e357ad",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'{\\r\\n  \"root\": \"D:'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\t25-variant-matrix.json",
+      "exists": true,
+      "size": 19324,
+      "sha256": "b489031135e924250e5353ea1853e887d606fb4492ef76dea7af163e8da13969",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'{\\r\\n  \"v1\": [\\r\\n  '"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\t25_apply.py",
+      "exists": true,
+      "size": 9058,
+      "sha256": "66e1cba18d967a60ebb395e5af376757fca87f91d14b7220df3fb3034835e653",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'# -*- coding: ut'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\t25_apply2.py",
+      "exists": true,
+      "size": 2056,
+      "sha256": "79f4d4b080b63c7f04402e5c8033a5cdfa2042927596c1cf3b5d8341c9602199",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'# -*- coding: ut'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\t25_f3_sandbox.py",
+      "exists": true,
+      "size": 4842,
+      "sha256": "0e8d900abb0f9d06dbb3e10e8fd63f1d957ae84b4355862b731b838cf79157f6",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'# -*- coding: ut'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\t25_hashes.py",
+      "exists": true,
+      "size": 3170,
+      "sha256": "d101aa7236190e9a96c1ee3ba443e0170212c8dfa4c843bf9443e1f7d5eeae24",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'# -*- coding: ut'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\t25_proofs.py",
+      "exists": true,
+      "size": 11281,
+      "sha256": "aece7c8d2bc45d33d9c5d3286114f27ce1755cd8654a5513bbac0a3de1f1ed2e",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'# -*- coding: ut'"
+    },
+    {
+      "path": "team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\t25_variant_matrix.py",
+      "exists": true,
+      "size": 3846,
+      "sha256": "1f48b535805ff8df195369ee613256cc3aa1439dbe8c77fa6d64573cbd9f82db",
+      "readsAs": "plaintext",
+      "utf8Decodable": true,
+      "head": "b'# -*- coding: ut'"
+    }
+  ]
+}

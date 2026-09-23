@@ -1,0 +1,375 @@
+{
+  "schemaVersion": "PTC-METHOD-V3",
+  "artifactId": "TM105-test-method-contract",
+  "artifactKind": "test-method-contract",
+  "tm": "TM105",
+  "trial": "tm105-ptc",
+  "role": "test-method-expert",
+  "stage": "METHOD",
+  "verdict": "deliverable_ready",
+  "title": "VSPRE maximum comparator threshold scan",
+  "signedInputBoundary": {
+    "strategyContract": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm105-ptc\\strategy\\tm105-resource-config-contract.json",
+    "dftMeta": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM105\\dft-meta.json"
+  },
+  "signedInputs": {
+    "strategyContractPath": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm105-ptc\\strategy\\tm105-resource-config-contract.json",
+    "strategyContractSha256": "79e039bd36956bac36f66ea5dd0bce406f34743ab0334764b791632433c77e6a",
+    "dftMetaPath": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM105\\dft-meta.json",
+    "dftMetaSha256": "c1d79a723a0e976ccd580ff611621181f9c9e34c152199e1b4f8b352252eb42f",
+    "registerEvidencePath": "team/artifacts/tm105-ptc/strategy/register-config-evidence.json",
+    "registerEvidenceSha256": "76475f44d96a5f77d8ae61cbd591608703bd1f56d17e545be9368856a85fab6d"
+  },
+  "classification": {
+    "parameterName": "VSPRE_MAX_CMP",
+    "isTrim": false,
+    "hasRamp": true,
+    "measurement": {
+      "check": "V(DTEST0)",
+      "quantity": "VOLTAGE",
+      "isToggle": true,
+      "resultTypes": [
+        "Rise",
+        "Fall"
+      ],
+      "resultTypeProvenance": [
+        {
+          "type": "Rise",
+          "state": "SOURCE_DECLARED"
+        },
+        {
+          "type": "Fall",
+          "state": "SOURCE_DECLARED"
+        },
+        {
+          "type": "Hys",
+          "state": "DERIVED",
+          "derivation": "rising threshold minus falling threshold"
+        }
+      ]
+    }
+  },
+  "methodFamily": "scan",
+  "resourceBoundary": {
+    "allocations": [
+      {
+        "endpointId": "VBAT",
+        "dutPin": "VBAT",
+        "selectionState": "SELECTED",
+        "sourceTable": "VBAT_PD3_FXVI",
+        "instrumentCategory": "FXVIe_PLUS",
+        "ports": [
+          "S3_FXVIe_PLUS_FH5",
+          "S3_FXVIe_PLUS_SH5"
+        ],
+        "selectedPath": "S3_FXVIe_PLUS_FH5 -> VBAT_F_S1 ; S3_FXVIe_PLUS_SH5 -> VBAT_S_S1",
+        "requiredActuations": [],
+        "physicalProofs": [
+          {
+            "sourcePort": "S3_FXVIe_PLUS_FH5",
+            "dutPin": "VBAT_F_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S3_FXVIe_PLUS_FH5;dut_pin=VBAT_F_S1]"
+          },
+          {
+            "sourcePort": "S3_FXVIe_PLUS_SH5",
+            "dutPin": "VBAT_S_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S3_FXVIe_PLUS_SH5;dut_pin=VBAT_S_S1]"
+          }
+        ],
+        "functionalRelays": [
+          {
+            "id": "K13",
+            "state": "ON",
+            "reason": "DFT functional relay rule"
+          }
+        ],
+        "evidenceChain": {
+          "dftEndpointLocator": "project/DALI/Output_Global_Material/dft/TM105/dft-meta.json:testCondition.involvedPins",
+          "sourceTableLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h:_PIN_CHANNEL_DEFINE_VBAT_PD3_FXVI_ and extern VBAT_PD3_FXVI",
+          "schematicRouteLocator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs",
+          "relayDefinitionLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h plus Path-Proofs.json required_on",
+          "registerConfigurationLocator": "team/artifacts/tm105-ptc/strategy/register-config-evidence.json"
+        }
+      },
+      {
+        "endpointId": "VAC1",
+        "dutPin": "VAC1",
+        "selectionState": "SELECTED",
+        "sourceTable": "VAC123_AMUX_ACM",
+        "instrumentCategory": "ACM200",
+        "ports": [
+          "S5_ACM200_FH0",
+          "S5_ACM200_SH0"
+        ],
+        "selectedPath": "S5_ACM200_FH0 -> VAC1_F_S1 ; S5_ACM200_SH0 -> VAC1_S_S1",
+        "requiredActuations": [],
+        "physicalProofs": [
+          {
+            "sourcePort": "S5_ACM200_FH0",
+            "dutPin": "VAC1_F_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S5_ACM200_FH0;dut_pin=VAC1_F_S1]"
+          },
+          {
+            "sourcePort": "S5_ACM200_SH0",
+            "dutPin": "VAC1_S_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S5_ACM200_SH0;dut_pin=VAC1_S_S1]"
+          }
+        ],
+        "functionalRelays": [],
+        "evidenceChain": {
+          "dftEndpointLocator": "project/DALI/Output_Global_Material/dft/TM105/dft-meta.json:testCondition.involvedPins",
+          "sourceTableLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h:_PIN_CHANNEL_DEFINE_VAC123_AMUX_ACM_ and extern VAC123_AMUX_ACM",
+          "schematicRouteLocator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs",
+          "relayDefinitionLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h plus Path-Proofs.json required_on",
+          "registerConfigurationLocator": "team/artifacts/tm105-ptc/strategy/register-config-evidence.json"
+        }
+      },
+      {
+        "endpointId": "nQON",
+        "dutPin": "nQON",
+        "selectionState": "SELECTED",
+        "sourceTable": "NQON_HG1_ACM",
+        "instrumentCategory": "ACM200",
+        "ports": [
+          "S5_ACM200_FH9",
+          "S5_ACM200_SH9"
+        ],
+        "selectedPath": "S5_ACM200_FH9 -> nQON_F_S1 ; S5_ACM200_SH9 -> nQON_S_S1",
+        "requiredActuations": [],
+        "physicalProofs": [
+          {
+            "sourcePort": "S5_ACM200_FH9",
+            "dutPin": "nQON_F_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S5_ACM200_FH9;dut_pin=nQON_F_S1]"
+          },
+          {
+            "sourcePort": "S5_ACM200_SH9",
+            "dutPin": "nQON_S_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S5_ACM200_SH9;dut_pin=nQON_S_S1]"
+          }
+        ],
+        "functionalRelays": [
+          {
+            "id": "K65",
+            "state": "ON",
+            "reason": "DFT functional relay rule"
+          }
+        ],
+        "evidenceChain": {
+          "dftEndpointLocator": "project/DALI/Output_Global_Material/dft/TM105/dft-meta.json:testCondition.involvedPins",
+          "sourceTableLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h:_PIN_CHANNEL_DEFINE_NQON_HG1_ACM_ and extern NQON_HG1_ACM",
+          "schematicRouteLocator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs",
+          "relayDefinitionLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h plus Path-Proofs.json required_on",
+          "registerConfigurationLocator": "team/artifacts/tm105-ptc/strategy/register-config-evidence.json"
+        }
+      }
+    ],
+    "functionalRelayIds": [
+      "K13",
+      "K65"
+    ],
+    "registerConfiguration": {
+      "evidencePath": "team/artifacts/tm105-ptc/strategy/register-config-evidence.json",
+      "evidenceSha256": "76475f44d96a5f77d8ae61cbd591608703bd1f56d17e545be9368856a85fab6d",
+      "sourcePath": "project/DALI/reg_config/tm105.sv",
+      "sourceSha256": "6ac1c0fb9527275d24f4f6f727d8a8bd0d43b81edd1930428c90d69ee4719bc8",
+      "orderedWrites": [
+        {
+          "sourceLine": 14,
+          "sourceText": "I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // Write reg 0x57 = 8",
+          "address": "0X57",
+          "value": "0X08"
+        }
+      ]
+    }
+  },
+  "methodEvidence": [
+    {
+      "source": "DFT testCondition",
+      "locator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM105\\dft-meta.json:testCondition",
+      "usedFor": "test semantics and power sequence"
+    },
+    {
+      "source": "signed strategy",
+      "locator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm105-ptc\\strategy\\tm105-resource-config-contract.json",
+      "usedFor": "source tables, routes, relays and register source"
+    }
+  ],
+  "methodPhases": [
+    {
+      "id": "MP-01",
+      "name": "safe_start",
+      "actions": [
+        "Verify selected sources are 0 V.",
+        "Close functional relays: K13, K65."
+      ],
+      "exitCondition": "sources off and functional relays closed"
+    },
+    {
+      "id": "MP-02",
+      "name": "static_power",
+      "actions": [
+        "VBAT=4 V, current limit 100e-6; DFT vset[vbat,4,100e-6,0]"
+      ],
+      "exitCondition": "Code1 power present"
+    },
+    {
+      "id": "MP-03",
+      "name": "test_mode_and_registers",
+      "actions": [
+        "entertestmode();",
+        "I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // Write reg 0x57 = 8"
+      ],
+      "exitCondition": "test mode and source-verified registers active"
+    },
+    {
+      "id": "MP-04",
+      "name": "rising_scan",
+      "actions": [
+        "Ramp VAC1 from 0 V to 10 V while monitoring V(DTEST0).",
+        "By user global rule, rising scan records the FALLING result."
+      ],
+      "exitCondition": "FALLING edge result captured or declared no-transition"
+    },
+    {
+      "id": "MP-05",
+      "name": "falling_scan",
+      "actions": [
+        "Ramp VAC1 from 10 V to 0 V while monitoring V(DTEST0).",
+        "By user global rule, falling scan records the RISING result."
+      ],
+      "exitCondition": "RISING edge result captured or declared no-transition"
+    },
+    {
+      "id": "MP-06",
+      "name": "result_calculation",
+      "actions": [
+        "Publish FALLING threshold, RISING threshold, and hysteresis = RISING - FALLING."
+      ],
+      "exitCondition": "three per-site results available"
+    },
+    {
+      "id": "MP-07",
+      "name": "power_down",
+      "actions": [
+        "Set VAC1=0 V.",
+        "Set VBAT=0 V.",
+        "Open K13 and K65."
+      ],
+      "exitCondition": "all sources read 0 V and relays are open"
+    }
+  ],
+  "measurementPlan": {
+    "technique": "two-direction VAC1 threshold scan with nQON observation",
+    "forceSenseBoundary": [
+      {
+        "sourcePort": "S3_FXVIe_PLUS_FH5",
+        "dutPin": "VBAT_F_S1",
+        "requiredOn": [],
+        "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S3_FXVIe_PLUS_FH5;dut_pin=VBAT_F_S1]"
+      },
+      {
+        "sourcePort": "S3_FXVIe_PLUS_SH5",
+        "dutPin": "VBAT_S_S1",
+        "requiredOn": [],
+        "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S3_FXVIe_PLUS_SH5;dut_pin=VBAT_S_S1]"
+      },
+      {
+        "sourcePort": "S5_ACM200_FH0",
+        "dutPin": "VAC1_F_S1",
+        "requiredOn": [],
+        "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S5_ACM200_FH0;dut_pin=VAC1_F_S1]"
+      },
+      {
+        "sourcePort": "S5_ACM200_SH0",
+        "dutPin": "VAC1_S_S1",
+        "requiredOn": [],
+        "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S5_ACM200_SH0;dut_pin=VAC1_S_S1]"
+      },
+      {
+        "sourcePort": "S5_ACM200_FH9",
+        "dutPin": "nQON_F_S1",
+        "requiredOn": [],
+        "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S5_ACM200_FH9;dut_pin=nQON_F_S1]"
+      },
+      {
+        "sourcePort": "S5_ACM200_SH9",
+        "dutPin": "nQON_S_S1",
+        "requiredOn": [],
+        "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S5_ACM200_SH9;dut_pin=nQON_S_S1]"
+      }
+    ],
+    "measurementPin": "V(DTEST0)",
+    "quantity": "VOLTAGE",
+    "scanRangeResolution": {
+      "state": "DFT_HELPER_DECLARED",
+      "source": "testCondition.scanIntent",
+      "rangeV": [
+        0,
+        10
+      ],
+      "risingResult": "FALLING",
+      "fallingResult": "RISING",
+      "userGlobalRule": "falling sweep uses RISING; rising sweep uses FALLING"
+    },
+    "sweeps": [
+      {
+        "direction": "RISING",
+        "fromV": 0,
+        "toV": 10,
+        "result": "FALLING"
+      },
+      {
+        "direction": "FALLING",
+        "fromV": 10,
+        "toV": 0,
+        "result": "RISING"
+      }
+    ],
+    "resultTypes": [
+      "FALLING",
+      "RISING",
+      "HYS"
+    ],
+    "resultPublisher": {
+      "kind": "set_test_result",
+      "minimumCount": 3,
+      "resultNames": [
+        "FALLING",
+        "RISING",
+        "HYS"
+      ]
+    }
+  },
+  "powerDownPlan": {
+    "actions": [
+      "Set VAC1=0 V.",
+      "Set VBAT=0 V.",
+      "Open K13 and K65."
+    ],
+    "safeEndState": "all selected sources at 0 V; selected functional relays open"
+  },
+  "logPlan": {
+    "requiredResults": [
+      "FALLING",
+      "RISING",
+      "HYS"
+    ],
+    "context": [
+      "per-site source values",
+      "relay state",
+      "register write source lines"
+    ]
+  },
+  "openItems": [],
+  "handoff": {
+    "nextStage": "RULE_REVIEW_METHOD",
+    "instruction": "Review this exact signed method contract before implementation."
+  }
+}

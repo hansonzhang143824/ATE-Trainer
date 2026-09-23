@@ -1,0 +1,21 @@
+=== ① 我的 postReplace 日志用的是哪版 payload ===
+   === ① 他方四项数值断言复核（现算）===
+   t35-contract-reconciliation.md        49554 B  52ef07b7b9cbe415790ac215920735c1fd77d75245bbbdb63622044aff3a2233
+   payload (DELIVERED)                   39457 B  2d0984d992d5d8cb11868660b29cf2c7786ff27367bd7b24b80df4ccf48997f9
+   内容键 t29 PER-FUNCTION JUSTIFICATION ×1
+   内容键 K109_BUSL1_PB0               ×2
+   内容键 K110_ACM18_BST               ×2
+   内容键 SW12_U1REF_BST_ACM           ×12
+   DEPLOYED test.cpp                    469714 B  15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a
+
+=== ② 现盘两态 ===
+  payload    43806 B  66abc088ae6bd5f9b9d72016
+  部署态      469714 B  15c7d2b8d37b15648d552ad5
+
+=== ③ 契约现盘 ===
+  revision = 36 ; size = 376308 B
+  bst2sw.closedRelayNumbers = [48, 60, 61, 76]
+
+=== ④ 两态对期望的满足度（现算）===
+  TM600_HS_RDSON   exp=[48, 60, 61, 76, 83]     部署态 missing=[48, 76]     payload missing=[]
+  TM601_LS_RDSON   exp=[60, 61, 154, 155]       部署态 missing=[]           payload missing=[]

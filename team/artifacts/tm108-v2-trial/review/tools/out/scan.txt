@@ -1,0 +1,1441 @@
+=== 1. TM108 body extraction ===
+after  sig line 2193 body lines 117 banner lines 44
+before sig line 2155 body lines 71 banner lines 6
+
+=== 2. "Step N" headings present in the CHANGED region (before vs after) ===
+  BEFORE line 1368: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 1374: // ====== Step 2: Power On (上电) ======
+  BEFORE line 1383: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 1386: // ====== Step 4: Measure (逐参数配置寄存器 + 测量) ======
+  BEFORE line 1413: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 1418: // ====== Step 6: LogData ======
+  BEFORE line 1440: // ====== Step 1: Connect ======
+  BEFORE line 1445: // ====== Step 2: Power On ======
+  BEFORE line 1451: // ====== Step 3: Register Config ======
+  BEFORE line 1459: // ====== Step 4: Measure (MI) ======
+  BEFORE line 1467: // ====== Step 5: Power Off ======
+  BEFORE line 1472: // ====== Step 6: LogData ======
+  BEFORE line 1493: // ====== Step 1: Connect ======
+  BEFORE line 1499: // ====== Step 2: Power On ======
+  BEFORE line 1509: // ====== Step 3: Register Config ======
+  BEFORE line 1515: // ====== Step 4: Measure (MI) ======
+  BEFORE line 1525: // ====== Step 5: Power Off ======
+  BEFORE line 1532: // ====== Step 6: LogData ======
+  BEFORE line 1553: // ====== Step 1: Connect ======
+  BEFORE line 1557: // ====== Step 2: Power On ======
+  BEFORE line 1567: // ====== Step 3: Register Config ======
+  BEFORE line 1570: // ====== Step 4: Measure (MI) ======
+  BEFORE line 1578: // ====== Step 5: Power Off ======
+  BEFORE line 1585: // ====== Step 6: LogData ======
+  BEFORE line 1609: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 1616: // ====== Step 2: Power On (上电) ======
+  BEFORE line 1621: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 1625: // ====== Step 4: Measure (配置寄存器+测量) ======
+  BEFORE line 1646: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 1653: // ====== Step 6: LogData ======
+  BEFORE line 1675: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 1682: // ====== Step 2: Power On (上电) ======
+  BEFORE line 1687: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 1691: // ====== Step 4: Measure (配置寄存器+测量) ======
+  BEFORE line 1709: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 1716: // ====== Step 6: LogData ======
+  BEFORE line 1738: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 1745: // ====== Step 2: Power On (上电) ======
+  BEFORE line 1750: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 1754: // ====== Step 4: Measure (配置寄存器+测量) ======
+  BEFORE line 1772: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 1779: // ====== Step 6: LogData ======
+  BEFORE line 1810: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 1817: // ====== Step 2: Power On (上电) ======
+  BEFORE line 1822: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 1826: // ====== Step 4: Measure (配置寄存器+测量) ======
+  BEFORE line 1840: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 1847: // ====== Step 6: LogData ======
+  BEFORE line 1870: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 1877: // ====== Step 2: Power On (上电) ======
+  BEFORE line 1882: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 1885: // ====== Step 4: Measure (配置寄存器+测量) ======
+  BEFORE line 1899: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 1906: // ====== Step 6: LogData ======
+  BEFORE line 1931: // ====== Step 1: Connect ======
+  BEFORE line 1939: // ====== Step 2: Power On ======
+  BEFORE line 1944: // ====== Step 3: Register Config ======
+  BEFORE line 1949: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 1972: // ====== Step 5: Power Off (three-step) ======
+  BEFORE line 1981: // ====== Step 6: LogData ======
+  BEFORE line 2010: // ====== Step 1: Connect ======
+  BEFORE line 2018: // ====== Step 2: Power On ======
+  BEFORE line 2023: // ====== Step 3: Register Config ======
+  BEFORE line 2029: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 2052: // ====== Step 5: Power Off (three-step) ======
+  BEFORE line 2061: // ====== Step 6: LogData ======
+  BEFORE line 2089: // ====== Step 1: Connect ======
+  BEFORE line 2097: // ====== Step 2: Power On ======
+  BEFORE line 2102: // ====== Step 3: Register Config ======
+  BEFORE line 2108: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 2131: // ====== Step 5: Power Off (three-step) ======
+  BEFORE line 2140: // ====== Step 6: LogData ======
+  BEFORE line 2167: // ====== Step 1: Connect ======
+  BEFORE line 2174: // ====== Step 2: Power On ======
+  BEFORE line 2179: // ====== Step 3: Register Config ======
+  BEFORE line 2185: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 2208: // ====== Step 5: Power Off (three-step) ======
+  BEFORE line 2217: // ====== Step 6: LogData ======
+  BEFORE line 2245: // ====== Step 1: Connect ======
+  BEFORE line 2252: // ====== Step 2: Power On ======
+  BEFORE line 2257: // ====== Step 3: Register Config ======
+  BEFORE line 2263: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 2286: // ====== Step 5: Power Off (three-step) ======
+  BEFORE line 2295: // ====== Step 6: LogData ======
+  BEFORE line 2323: // ====== Step 1: Connect ======
+  BEFORE line 2330: // ====== Step 2: Power On ======
+  BEFORE line 2335: // ====== Step 3: Register Config ======
+  BEFORE line 2341: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 2364: // ====== Step 5: Power Off (three-step) ======
+  BEFORE line 2373: // ====== Step 6: LogData ======
+  BEFORE line 2402: // ====== Step 1: Connect ======
+  BEFORE line 2409: // ====== Step 2: Power On ======
+  BEFORE line 2414: // ====== Step 3: Register Config ======
+  BEFORE line 2420: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 2443: // ====== Step 5: Power Off (three-step) ======
+  BEFORE line 2452: // ====== Step 6: LogData ======
+  BEFORE line 2481: // ====== Step 1: Connect ======
+  BEFORE line 2488: // ====== Step 2: Power On ======
+  BEFORE line 2494: // ====== Step 3: Register Config ======
+  BEFORE line 2501: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 2524: // ====== Step 5: Power Off (three-step) ======
+  BEFORE line 2533: // ====== Step 6: LogData ======
+  BEFORE line 2561: // ====== Step 1: Connect ======
+  BEFORE line 2568: // ====== Step 2: Power On ======
+  BEFORE line 2573: // ====== Step 3: Register Config ======
+  BEFORE line 2576: // ====== Step 4: Measure (rampv_capi: VCC ramp, 捕 I(VBAT) 触发点) ======
+  BEFORE line 2600: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 2607: // ====== Step 6: LogData ======
+  BEFORE line 2630: // ====== Step 1: Connect ======
+  BEFORE line 2639: // ====== Step 2: Power On ======
+  BEFORE line 2648: // ====== Step 3: Register Config ======
+  BEFORE line 2653: // ====== Step 4: Measure ======
+  BEFORE line 2663: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 2674: // ====== Step 6: LogData ======
+  BEFORE line 2695: // ====== Step 1: Connect ======
+  BEFORE line 2703: // ====== Step 2: Power On ======
+  BEFORE line 2710: // ====== Step 3: Register Config ======
+  BEFORE line 2713: // ====== Step 4: Measure ======
+  BEFORE line 2723: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 2732: // ====== Step 6: LogData ======
+  BEFORE line 2753: // ====== Step 1: Connect ======
+  BEFORE line 2760: // ====== Step 2: Power On ======
+  BEFORE line 2765: // ====== Step 3: Register Config ======
+  BEFORE line 2768: // ====== Step 4: Measure ======
+  BEFORE line 2778: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 2785: // ====== Step 6: LogData ======
+  BEFORE line 2806: // ====== Step 1: Connect ======
+  BEFORE line 2813: // ====== Step 2: Power On ======
+  BEFORE line 2818: // ====== Step 3: Register Config ======
+  BEFORE line 2821: // ====== Step 4: Measure ======
+  BEFORE line 2831: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 2838: // ====== Step 6: LogData ======
+  BEFORE line 2859: // ====== Step 1: Connect ======
+  BEFORE line 2867: // ====== Step 2: Power On ======
+  BEFORE line 2874: // ====== Step 3: Register Config ======
+  BEFORE line 2877: // ====== Step 4: Measure ======
+  BEFORE line 2887: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 2896: // ====== Step 6: LogData ======
+  BEFORE line 2921: // ====== Step 1: Connect ======
+  BEFORE line 2929: // ====== Step 2: Power On ======
+  BEFORE line 2934: // ====== Step 3: Register Config ======
+  BEFORE line 2940: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 2962: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 2971: // ====== Step 6: LogData ======
+  BEFORE line 2994: // ====== Step 1: Connect ======
+  BEFORE line 3001: // ====== Step 2: Power On ======
+  BEFORE line 3006: // ====== Step 3: Register Config ======
+  BEFORE line 3012: // ====== Step 4: Measure ======
+  BEFORE line 3022: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 3029: // ====== Step 6: LogData ======
+  BEFORE line 3050: // ====== Step 1: Connect ======
+  BEFORE line 3057: // ====== Step 2: Power On ======
+  BEFORE line 3062: // ====== Step 3: Register Config ======
+  BEFORE line 3068: // ====== Step 4: Measure ======
+  BEFORE line 3078: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 3085: // ====== Step 6: LogData ======
+  BEFORE line 3106: // ====== Step 1: Connect ======
+  BEFORE line 3114: // ====== Step 2: Power On ======
+  BEFORE line 3121: // ====== Step 3: Register Config ======
+  BEFORE line 3126: // ====== Step 4: Measure ======
+  BEFORE line 3136: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 3145: // ====== Step 6: LogData ======
+  BEFORE line 3166: // ====== Step 1: Connect ======
+  BEFORE line 3173: // ====== Step 2: Power On ======
+  BEFORE line 3178: // ====== Step 3: Register Config ======
+  BEFORE line 3184: // ====== Step 4: Measure ======
+  BEFORE line 3194: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 3201: // ====== Step 6: LogData ======
+  BEFORE line 3222: // ====== Step 1: Connect ======
+  BEFORE line 3230: // ====== Step 2: Power On ======
+  BEFORE line 3237: // ====== Step 3: Register Config ======
+  BEFORE line 3240: // ====== Step 4: Measure ======
+  BEFORE line 3250: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 3259: // ====== Step 6: LogData ======
+  BEFORE line 3284: // ====== Step 1: Connect ======
+  BEFORE line 3292: // ====== Step 2: Power On ======
+  BEFORE line 3299: // ====== Step 3: Register Config ======
+  BEFORE line 3309: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 3331: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 3340: // ====== Step 6: LogData ======
+  BEFORE line 3367: // ====== Step 1: Connect ======
+  BEFORE line 3376: // ====== Step 2: Power On ======
+  BEFORE line 3385: // ====== Step 3: Register Config ======
+  BEFORE line 3395: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 3417: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 3428: // ====== Step 6: LogData ======
+  BEFORE line 3455: // ====== Step 1: Connect ======
+  BEFORE line 3462: // ====== Step 2: Power On ======
+  BEFORE line 3468: // ====== Step 3: Register Config ======
+  BEFORE line 3477: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 3499: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 3508: // ====== Step 6: LogData ======
+  BEFORE line 3537: // ====== Step 1: Connect ======
+  BEFORE line 3544: // ====== Step 2: Power On ======
+  BEFORE line 3550: // ====== Step 3: Register Config ======
+  BEFORE line 3559: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 3581: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 3590: // ====== Step 6: LogData ======
+  BEFORE line 3614: // ====== Step 1: Connect ======
+  BEFORE line 3621: // ====== Step 2: Power On ======
+  BEFORE line 3626: // ====== Step 3: Register Config ======
+  BEFORE line 3631: // ====== Step 4: Measure ======
+  BEFORE line 3647: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 3654: // ====== Step 6: LogData ======
+  BEFORE line 3677: // ====== Step 1: Connect ======
+  BEFORE line 3685: // ====== Step 2: Power On ======
+  BEFORE line 3692: // ====== Step 3: Register Config ======
+  BEFORE line 3697: // ====== Step 4: Measure ======
+  BEFORE line 3711: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 3720: // ====== Step 6: LogData ======
+  BEFORE line 3816: // ====== Step 1: Connect ======
+  BEFORE line 3824: // ====== Step 2: Power On ======
+  BEFORE line 3831: // ====== Step 3: Register Config ======
+  BEFORE line 3839: // ====== Step 4: Measure (VDM FV=1V, Trim execute 写 EFUSE + MI) ======
+  BEFORE line 3846: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 3872: // ====== Step 1: Connect ======
+  BEFORE line 3880: // ====== Step 2: Power On ======
+  BEFORE line 3887: // ====== Step 3: Register Config ======
+  BEFORE line 3892: // ====== Step 4: Measure ======
+  BEFORE line 3906: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 3915: // ====== Step 6: LogData ======
+  BEFORE line 3953: // ====== Step 1: Connect ======
+  BEFORE line 3960: // ====== Step 2: Power On ======
+  BEFORE line 3965: // ====== Step 3: Register Config ======
+  BEFORE line 3973: // ====== Step 4: Measure (VDM high-Z, Trim execute 写 EFUSE + MV) ======
+  BEFORE line 3979: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 4002: // ====== Step 1: Connect ======
+  BEFORE line 4009: // ====== Step 2: Power On ======
+  BEFORE line 4014: // ====== Step 3: Register Config ======
+  BEFORE line 4019: // ====== Step 4: Measure ======
+  BEFORE line 4032: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 4039: // ====== Step 6: LogData ======
+  BEFORE line 4061: // ====== Step 1: Connect ======
+  BEFORE line 4068: // ====== Step 2: Power On ======
+  BEFORE line 4073: // ====== Step 3: Register Config ======
+  BEFORE line 4084: // ====== Step 4: Measure ======
+  BEFORE line 4094: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 4101: // ====== Step 6: LogData ======
+  BEFORE line 4122: // ====== Step 1: Connect ======
+  BEFORE line 4129: // ====== Step 2: Power On ======
+  BEFORE line 4134: // ====== Step 3: Register Config ======
+  BEFORE line 4145: // ====== Step 4: Measure ======
+  BEFORE line 4155: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 4162: // ====== Step 6: LogData ======
+  BEFORE line 4210: // ====== Step 1: Connect ======
+  BEFORE line 4217: // ====== Step 2: Power On ======
+  BEFORE line 4222: // ====== Step 3: Register Config ======
+  BEFORE line 4230: // ====== Step 4: Measure (VDM high-Z, Trim execute 写 EFUSE + MV) ======
+  BEFORE line 4236: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 4263: // ====== Step 1: Connect ======
+  BEFORE line 4271: // ====== Step 2: Power On ======
+  BEFORE line 4277: // ====== Step 3: Register Config ======
+  BEFORE line 4283: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 4305: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 4314: // ====== Step 6: LogData ======
+  BEFORE line 4341: // ====== Step 1: Connect ======
+  BEFORE line 4349: // ====== Step 2: Power On ======
+  BEFORE line 4355: // ====== Step 3: Register Config ======
+  BEFORE line 4361: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 4383: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 4392: // ====== Step 6: LogData ======
+  BEFORE line 4417: // ====== Step 1: Connect ======
+  BEFORE line 4424: // ====== Step 2: Power On ======
+  BEFORE line 4429: // ====== Step 3: Register Config ======
+  BEFORE line 4436: // ====== Step 4: Measure ======
+  BEFORE line 4449: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 4456: // ====== Step 6: LogData ======
+  BEFORE line 4478: // ====== Step 1: Connect ======
+  BEFORE line 4485: // ====== Step 2: Power On ======
+  BEFORE line 4490: // ====== Step 3: Register Config ======
+  BEFORE line 4497: // ====== Step 4: Measure ======
+  BEFORE line 4509: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 4516: // ====== Step 6: LogData ======
+  BEFORE line 4538: // ====== Step 1: Connect ======
+  BEFORE line 4545: // ====== Step 2: Power On ======
+  BEFORE line 4553: // ====== Step 3: Register Config ======
+  BEFORE line 4563: // ====== Step 4: Measure ======
+  BEFORE line 4571: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 4578: // ====== Step 6: LogData ======
+  BEFORE line 4600: // ====== Step 1: Connect ======
+  BEFORE line 4607: // ====== Step 2: Power On ======
+  BEFORE line 4612: // ====== Step 3: Register Config ======
+  BEFORE line 4618: // ====== Step 4: Measure ======
+  BEFORE line 4636: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 4643: // ====== Step 6: LogData (单参数组, 记录 4V 档结果) ======
+  BEFORE line 4668: // ====== Step 1: Connect ======
+  BEFORE line 4676: // ====== Step 2: Power On ======
+  BEFORE line 4682: // ====== Step 3: Register Config ======
+  BEFORE line 4691: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 4714: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 4723: // ====== Step 6: LogData ======
+  BEFORE line 4749: // ====== Step 1: Connect ======
+  BEFORE line 4757: // ====== Step 2: Power On ======
+  BEFORE line 4763: // ====== Step 3: Register Config ======
+  BEFORE line 4772: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 4794: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 4803: // ====== Step 6: LogData ======
+  BEFORE line 4830: // ====== Step 1: Connect ======
+  BEFORE line 4838: // ====== Step 2: Power On ======
+  BEFORE line 4844: // ====== Step 3: Register Config ======
+  BEFORE line 4853: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 4875: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 4884: // ====== Step 6: LogData ======
+  BEFORE line 4910: // ====== Step 1: Connect ======
+  BEFORE line 4918: // ====== Step 2: Power On ======
+  BEFORE line 4924: // ====== Step 3: Register Config ======
+  BEFORE line 4933: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 4955: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 4964: // ====== Step 6: LogData ======
+  BEFORE line 4992: // ====== Step 1: Connect ======
+  BEFORE line 5000: // ====== Step 2: Power On ======
+  BEFORE line 5006: // ====== Step 3: Register Config ======
+  BEFORE line 5018: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 5040: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 5049: // ====== Step 6: LogData ======
+  BEFORE line 5076: // ====== Step 1: Connect ======
+  BEFORE line 5084: // ====== Step 2: Power On ======
+  BEFORE line 5090: // ====== Step 3: Register Config ======
+  BEFORE line 5102: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 5124: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 5133: // ====== Step 6: LogData ======
+  BEFORE line 5158: // ====== Step 1: Connect ======
+  BEFORE line 5165: // ====== Step 2: Power On ======
+  BEFORE line 5170: // ====== Step 3: Register Config ======
+  BEFORE line 5182: // ====== Step 4: Measure ======
+  BEFORE line 5195: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 5202: // ====== Step 6: LogData ======
+  BEFORE line 5225: // ====== Step 1: Connect ======
+  BEFORE line 5232: // ====== Step 2: Power On ======
+  BEFORE line 5237: // ====== Step 3: Register Config ======
+  BEFORE line 5249: // ====== Step 4: Measure ======
+  BEFORE line 5262: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 5269: // ====== Step 6: LogData ======
+  BEFORE line 5292: // ====== Step 1: Connect ======
+  BEFORE line 5300: // ====== Step 2: Power On ======
+  BEFORE line 5305: // ====== Step 3: Register Config ======
+  BEFORE line 5312: // ====== Step 4: Measure ======
+  BEFORE line 5327: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 5336: // ====== Step 6: LogData ======
+  BEFORE line 5359: // ====== Step 1: Connect ======
+  BEFORE line 5367: // ====== Step 2: Power On ======
+  BEFORE line 5372: // ====== Step 3: Register Config ======
+  BEFORE line 5379: // ====== Step 4: Measure ======
+  BEFORE line 5394: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 5403: // ====== Step 6: LogData ======
+  BEFORE line 5452: // ====== Step 1: Connect ======
+  BEFORE line 5460: // ====== Step 2: Power On ======
+  BEFORE line 5465: // ====== Step 3: Register Config (不含 CSpec) ======
+  BEFORE line 5472: // ====== Step 4: Trim execute (measure_osc_64k 写 0xF2 + QTMU 测频) ======
+  BEFORE line 5476: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 5524: // ====== Step 1: Connect ======
+  BEFORE line 5532: // ====== Step 2: Power On ======
+  BEFORE line 5537: // ====== Step 3: Register Config (不含 CSpec) ======
+  BEFORE line 5546: // ====== Step 4: Trim execute (measure_osc_4p5m 写 F1/F2 + QTMU 测频) ======
+  BEFORE line 5549: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 5568: // ====== Step 1: Connect ======
+  BEFORE line 5576: // ====== Step 2: Power On ======
+  BEFORE line 5581: // ====== Step 3: Register Config ======
+  BEFORE line 5589: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 5613: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 5622: // ====== Step 6: LogData ======
+  BEFORE line 5651: // ====== Step 1: Connect ======
+  BEFORE line 5659: // ====== Step 2: Power On ======
+  BEFORE line 5664: // ====== Step 3: Register Config ======
+  BEFORE line 5674: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 5698: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 5707: // ====== Step 6: LogData ======
+  BEFORE line 5736: // ====== Step 1: Connect ======
+  BEFORE line 5744: // ====== Step 2: Power On ======
+  BEFORE line 5749: // ====== Step 3: Register Config ======
+  BEFORE line 5761: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 5785: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 5794: // ====== Step 6: LogData ======
+  BEFORE line 5821: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 5829: // ====== Step 2: Power On (上电) ======
+  BEFORE line 5834: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 5842: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 5866: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 5875: // ====== Step 6: LogData (测试结果) ======
+  BEFORE line 5903: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 5910: // ====== Step 2: Power On (上电) ======
+  BEFORE line 5915: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 5924: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 5948: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 5957: // ====== Step 6: LogData (测试结果) ======
+  BEFORE line 5985: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 5992: // ====== Step 2: Power On (上电) ======
+  BEFORE line 5997: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 6005: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 6029: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 6038: // ====== Step 6: LogData (测试结果) ======
+  BEFORE line 6066: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 6074: // ====== Step 2: Power On (上电) ======
+  BEFORE line 6079: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 6088: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 6112: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 6121: // ====== Step 6: LogData (测试结果) ======
+  BEFORE line 6149: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 6156: // ====== Step 2: Power On (上电) ======
+  BEFORE line 6161: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 6170: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 6194: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 6203: // ====== Step 6: LogData (测试结果) ======
+  BEFORE line 6231: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 6238: // ====== Step 2: Power On (上电) ======
+  BEFORE line 6243: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 6251: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 6275: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 6284: // ====== Step 6: LogData (测试结果) ======
+  BEFORE line 6312: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 6319: // ====== Step 2: Power On (上电) ======
+  BEFORE line 6324: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 6332: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 6356: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 6365: // ====== Step 6: LogData (测试结果) ======
+  BEFORE line 6393: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 6400: // ====== Step 2: Power On (上电) ======
+  BEFORE line 6405: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 6414: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  BEFORE line 6438: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 6447: // ====== Step 6: LogData (测试结果) ======
+  BEFORE line 6471: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 6479: // ====== Step 2: Power On (上电) ======
+  BEFORE line 6485: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 6494: // ====== Step 4: Measure (VDM 高阻 MV 测 ATEST0 = channel voutp) ======
+  BEFORE line 6504: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 6513: // ====== Step 6: LogData (测试结果) ======
+  BEFORE line 6535: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 6543: // ====== Step 2: Power On (上电) ======
+  BEFORE line 6549: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 6558: // ====== Step 4: Measure (VDM 高阻 MV 测 ATEST0 = channel voutp) ======
+  BEFORE line 6568: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 6577: // ====== Step 6: LogData (测试结果) ======
+  BEFORE line 6599: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 6607: // ====== Step 2: Power On (上电) ======
+  BEFORE line 6613: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 6622: // ====== Step 4: Measure (VDM 高阻 MV 测 ATEST0 = channel voutp) ======
+  BEFORE line 6632: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 6641: // ====== Step 6: LogData (测试结果) ======
+  BEFORE line 6663: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 6671: // ====== Step 2: Power On (上电) ======
+  BEFORE line 6679: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 6688: // ====== Step 4: Measure (VDM 高阻 MV 测 ATEST0 = channel voutp) ======
+  BEFORE line 6698: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 6707: // ====== Step 6: LogData (测试结果) ======
+  BEFORE line 6752: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 6759: // ====== Step 2: Power On (上电) ======
+  BEFORE line 6764: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 6772: // ====== Step 4: Trim execute (measure 写 EFUSE + VDM MV) ======
+  BEFORE line 6781: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 6844: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 6851: // ====== Step 2: Power On (上电) ======
+  BEFORE line 6856: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 6864: // ====== Step 4: Trim execute (measure 写 EFUSE + VDM MV) ======
+  BEFORE line 6871: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 6918: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 6925: // ====== Step 2: Power On (上电) ======
+  BEFORE line 6930: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 6938: // ====== Step 4: Trim execute (measure 写 EFUSE + VDM MV) ======
+  BEFORE line 6945: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 6993: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 7002: // ====== Step 2: Power On (上电) ======
+  BEFORE line 7013: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 7028: // ====== Step 4: Measure (rampi_capv 电流 ramp, 捕 DTEST0 翻转) ======
+  BEFORE line 7038: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 7055: // ====== Step 6: LogData ======
+  BEFORE line 7081: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 7090: // ====== Step 2: Power On (BST-SW 台阶上电) ======
+  BEFORE line 7103: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 7119: // ====== Step 4: Measure (rampi_capv 电流 ramp, 捕 DTEST0 翻转) ======
+  BEFORE line 7128: // ====== Step 5: Power Off (BST-SW 反向台阶下电) ======
+  BEFORE line 7145: // ====== Step 6: LogData ======
+  BEFORE line 7168: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 7173: // ====== Step 2: Power On (BST-SW 台阶上电) ======
+  BEFORE line 7187: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 7205: // ====== Step 4: Measure (rampi_capv 电流 ramp, 捕 DTEST0 翻转) ======
+  BEFORE line 7214: // ====== Step 5: Power Off (BST-SW 反向台阶下电) ======
+  BEFORE line 7233: // ====== Step 6: LogData ======
+  BEFORE line 7258: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 7266: // ====== Step 2: Power On (上电) ======
+  BEFORE line 7273: // ====== Step 3: Register Config (寄存器配置) ======
+  BEFORE line 7283: // ====== Step 4: Measure (COMP pad 高阻 V(COMP)) ======
+  BEFORE line 7293: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 7302: // ====== Step 6: LogData ======
+  BEFORE line 7330: // ====== Step 1: Connect ======
+  BEFORE line 7339: // ====== Step 2: Power On ======
+  BEFORE line 7344: // ====== Step 3: Register Config ======
+  BEFORE line 7357: // ====== Step 4: Measure (rampv_capv: ramp AMUX V, 捕 nQON/DTEST0 翻转) ======
+  BEFORE line 7380: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 7391: // ====== Step 6: LogData ======
+  BEFORE line 7423: // ====== Step 1: Connect ======
+  BEFORE line 7432: // ====== Step 2: Power On ======
+  BEFORE line 7437: // ====== Step 3: Register Config ======
+  BEFORE line 7447: // ====== Step 4: Measure (rampv_capi: ramp AMUX V, 捕 I(ATEST0) 电流穿越) ======
+  BEFORE line 7469: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 7480: // ====== Step 6: LogData ======
+  BEFORE line 7511: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 7516: // ====== Step 2: Power On (BST-SW 台阶上电 + VDM) ======
+  BEFORE line 7530: // ====== Step 3: Register Config (寄存器配置, tm640.sv OCP 序列) ======
+  BEFORE line 7547: // ====== Step 4: Measure (rampi_capv 电流 ramp, 捕 DTEST0 翻转) ======
+  BEFORE line 7563: // ====== Step 5: Power Off (BST-SW 反向台阶下电) ======
+  BEFORE line 7584: // ====== Step 6: LogData ======
+  BEFORE line 7618: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 7626: // ====== Step 2: Power On (SW 钉死 3V 绝对, FPVI0 建 BST-SW 差分台阶) ======
+  BEFORE line 7639: // ====== Step 3: Register Config (寄存器配置, tm641.sv BST UV 序列) ======
+  BEFORE line 7649: // ====== Step 4: Measure (FPVI0 差分 ramp BST-SW, 捕 DTEST0 翻转) ======
+  BEFORE line 7673: // ====== Step 5: Power Off (BST-SW 反向台阶下电) ======
+  BEFORE line 7691: // ====== Step 6: LogData ======
+  BEFORE line 7729: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 7737: // ====== Step 2: Power On (BST-SW 差分浮动台阶 + VBAT) ======
+  BEFORE line 7749: // ====== Step 3: Register Config (tm643.sv VBAT_LOOP 序列, 观测改 DTEST0/nQON) ======
+  BEFORE line 7765: // ====== Step 4: Measure (VBAT 两段 ramp 捕 DTEST0/nQON 翻转) ======
+  BEFORE line 7790: // ====== Step 5: Power Off (BST-SW 反向台阶下电) ======
+  BEFORE line 7805: // ====== Step 6: LogData ======
+  BEFORE line 7839: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 7845: // ====== Step 2: Power On (Buck: VBAT=4.4V, VBUS=5V) ======
+  BEFORE line 7857: // ====== Step 3: Register Config (tm700.sv: 双 pad 同时使能, chop 保持默认开) ======
+  BEFORE line 7865: // ====== Step 4: Measure (1A/2A/0.5A 三点精度, Buck 负电流 VBUS→PMID) ======
+  BEFORE line 7889: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 7905: // ====== Step 6: LogData ======
+  BEFORE line 7937: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 7943: // ====== Step 2: Power On (Boost: VBAT=4.4V, PMID=5V) ======
+  BEFORE line 7955: // ====== Step 3: Register Config (tm701.sv: 双 pad + BUBO_MODE=1, chop 保持默认开) ======
+  BEFORE line 7964: // ====== Step 4: Measure (1A/2A/0.5A 三点精度, Boost 正电流 PMID→VBUS) ======
+  BEFORE line 7988: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 8004: // ====== Step 6: LogData ======
+  BEFORE line 8036: // ====== Step 1: Connect (继电器闭合, 同 TM700 Buck) ======
+  BEFORE line 8042: // ====== Step 2: Power On (Buck: VBAT=4.4V, VBUS=5V) ======
+  BEFORE line 8054: // ====== Step 3: Register Config (tm702_1.sv: 同 TM700, BUBO_MODE=0 无 0x09) ======
+  BEFORE line 8062: // ====== Step 4: Measure (1A/3A 两点, Buck 负电流 VBUS→PMID) ======
+  BEFORE line 8093: // ====== Step 5: Power Off (三步下电, 同 TM700) ======
+  BEFORE line 8109: // ====== Step 6: LogData ======
+  BEFORE line 8207: // ====== Step 1: Connect (继电器闭合, Boost 电流环) ======
+  BEFORE line 8213: // ====== Step 2: Power On (Boost: VBAT=4.4V, PMID=5V) ======
+  BEFORE line 8225: // ====== Step 3: Register Config (tm702.sv: 双 pad + BUBO_MODE=1 + off_chop=1) ======
+  BEFORE line 8235: // ====== Step 4: Trim execute (measure_ibus_sns_gain: force 1A/3A 两点做差 → mohm, target 198) ======
+  BEFORE line 8238: // ====== Step 5: Power Off (Boost 三步下电) ======
+  BEFORE line 8299: // ====== Step 1: Connect (继电器闭合, Boost 电流环, 同 TM702) ======
+  BEFORE line 8303: // ====== Step 2: Power On (Boost: VBAT=4.4V, PMID=5V) ======
+  BEFORE line 8315: // ====== Step 3: Register Config (tm703.sv: 双 pad + BUBO_MODE=1 + off_chop=1) ======
+  BEFORE line 8325: // ====== Step 4: Trim execute (measure_ibus_sns_ea_os: force 2A → Vos mV, target 0) ======
+  BEFORE line 8328: // ====== Step 5: Power Off (Boost 三步下电) ======
+  BEFORE line 8368: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 8377: // ====== Step 2: Power On (上电) ======
+  BEFORE line 8382: // ====== Step 3: Register Config (寄存器配置, reg_config/tm1004.sv) ======
+  BEFORE line 8395: // ====== Step 4: Measure (VCP 升+降 ramp 捕 DTEST0/nQON 翻转) ======
+  BEFORE line 8420: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 8429: // ====== Step 6: LogData ======
+  BEFORE line 8458: // ====== Step 1: Connect (继电器闭合, 同 TM1004) ======
+  BEFORE line 8462: // ====== Step 2: Power On (上电) ======
+  BEFORE line 8466: // ====== Step 3: Register Config (寄存器配置, reg_config/tm1006.sv) ======
+  BEFORE line 8477: // ====== Step 4: Measure (VCP 过零 ramp 捕 DTEST0/nQON 翻转) ======
+  BEFORE line 8500: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 8509: // ====== Step 6: LogData ======
+  BEFORE line 8533: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 8540: // ====== Step 2: Power On (上电) ======
+  BEFORE line 8544: // ====== Step 3: Register Config (寄存器配置, reg_config/tm1007.sv) ======
+  BEFORE line 8552: // ====== Step 4: Measure (VDM=1V FV, 测 I(ATEST0)) ======
+  BEFORE line 8562: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 8569: // ====== Step 6: LogData ======
+  BEFORE line 8591: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 8595: // ====== Step 2: Power On (上电) ======
+  BEFORE line 8599: // ====== Step 3: Register Config (寄存器配置, reg_config/tm1008.sv) ======
+  BEFORE line 8607: // ====== Step 4: Measure (VDM 高阻 FI=0 测 V(ATEST0)) ======
+  BEFORE line 8617: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 8624: // ====== Step 6: LogData ======
+  BEFORE line 8647: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 8655: // ====== Step 2: Power On (上电) ======
+  BEFORE line 8659: // ====== Step 3: Register Config (寄存器配置, reg_config/tm1009.sv) ======
+  BEFORE line 8667: // ====== Step 4: Measure (SW1 1.2V→0V, 测短路电流) ======
+  BEFORE line 8681: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 8688: // ====== Step 6: LogData ======
+  BEFORE line 8711: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 8715: // ====== Step 2: Power On (上电) ======
+  BEFORE line 8719: // ====== Step 3: Register Config (寄存器配置, reg_config/tm1100.sv) ======
+  BEFORE line 8730: // ====== Step 4: Measure (VDM 高阻 FI=0 测 V(ATEST0)) ======
+  BEFORE line 8739: // ====== Step 5: Power Off (三步下电) ======
+  BEFORE line 8746: // ====== Step 6: LogData ======
+  BEFORE line 8786: // ====== Step 1: Connect (继电器闭合) ======
+  BEFORE line 8794: // ====== Step 2: Power On (VBAT 台阶, DFT: vbat=4V) ======
+  BEFORE line 8801: // ====== Step 3: Register Config (tm1205.sv 权威序列) ======
+  BEFORE line 8810: // ====== Step 4: Measure (两路串行, 各 Toggle 双扫捕 nQON 翻转) ======
+  BEFORE line 8857: // ====== Step 5: Power Off ======
+  BEFORE line 8866: // ====== Step 6: LogData ======
+  BEFORE line 9067: // ====== Step 1: Connect ======
+  BEFORE line 9082: delay_ms(3);  // NOT in the pulse window: power-up relay settle after Step 1, before any force
+  BEFORE line 9085: // ====== Step 2: Power On (BST staircase, BST always leads PMID by 5 V) ======
+  BEFORE line 9118: // ====== Step 3: Register Config (reg_config/tm600.sv; BD-03) ======
+  BEFORE line 9126: // ====== Step 4: Measure (three-stage high-current init, then a short 1 A pulse) ======
+  BEFORE line 9173: // ====== Step 5: Power Off (FET kept on, BST and PMID ramp down together) ======
+  BEFORE line 9198: // ====== Step 6: LogData ======
+  BEFORE line 9227: // ====== Step 1: Connect ======
+  BEFORE line 9256: delay_ms(3);  // NOT in the pulse window: power-up relay settle after Step 1, before any force
+  BEFORE line 9259: // ====== Step 2: Power On ======
+  BEFORE line 9274: // ====== Step 3: Register Config (reg_config/tm601.sv; BD-03) ======
+  BEFORE line 9284: // ====== Step 4: Measure (three-stage init, then a short 1 A pulse) ======
+  BEFORE line 9332: // ====== Step 5: Power Off (no bootstrap ramp: the LS FET has no bootstrap) ======
+  BEFORE line 9347: // ====== Step 6: LogData ======
+  --
+  AFTER line 1368: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 1374: // ====== Step 2: Power On (上电) ======
+  AFTER line 1383: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 1386: // ====== Step 4: Measure (逐参数配置寄存器 + 测量) ======
+  AFTER line 1413: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 1418: // ====== Step 6: LogData ======
+  AFTER line 1440: // ====== Step 1: Connect ======
+  AFTER line 1445: // ====== Step 2: Power On ======
+  AFTER line 1451: // ====== Step 3: Register Config ======
+  AFTER line 1459: // ====== Step 4: Measure (MI) ======
+  AFTER line 1467: // ====== Step 5: Power Off ======
+  AFTER line 1472: // ====== Step 6: LogData ======
+  AFTER line 1493: // ====== Step 1: Connect ======
+  AFTER line 1499: // ====== Step 2: Power On ======
+  AFTER line 1509: // ====== Step 3: Register Config ======
+  AFTER line 1515: // ====== Step 4: Measure (MI) ======
+  AFTER line 1525: // ====== Step 5: Power Off ======
+  AFTER line 1532: // ====== Step 6: LogData ======
+  AFTER line 1553: // ====== Step 1: Connect ======
+  AFTER line 1557: // ====== Step 2: Power On ======
+  AFTER line 1567: // ====== Step 3: Register Config ======
+  AFTER line 1570: // ====== Step 4: Measure (MI) ======
+  AFTER line 1578: // ====== Step 5: Power Off ======
+  AFTER line 1585: // ====== Step 6: LogData ======
+  AFTER line 1609: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 1616: // ====== Step 2: Power On (上电) ======
+  AFTER line 1621: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 1625: // ====== Step 4: Measure (配置寄存器+测量) ======
+  AFTER line 1646: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 1653: // ====== Step 6: LogData ======
+  AFTER line 1675: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 1682: // ====== Step 2: Power On (上电) ======
+  AFTER line 1687: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 1691: // ====== Step 4: Measure (配置寄存器+测量) ======
+  AFTER line 1709: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 1716: // ====== Step 6: LogData ======
+  AFTER line 1738: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 1745: // ====== Step 2: Power On (上电) ======
+  AFTER line 1750: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 1754: // ====== Step 4: Measure (配置寄存器+测量) ======
+  AFTER line 1772: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 1779: // ====== Step 6: LogData ======
+  AFTER line 1810: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 1817: // ====== Step 2: Power On (上电) ======
+  AFTER line 1822: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 1826: // ====== Step 4: Measure (配置寄存器+测量) ======
+  AFTER line 1840: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 1847: // ====== Step 6: LogData ======
+  AFTER line 1870: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 1877: // ====== Step 2: Power On (上电) ======
+  AFTER line 1882: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 1885: // ====== Step 4: Measure (配置寄存器+测量) ======
+  AFTER line 1899: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 1906: // ====== Step 6: LogData ======
+  AFTER line 1931: // ====== Step 1: Connect ======
+  AFTER line 1939: // ====== Step 2: Power On ======
+  AFTER line 1944: // ====== Step 3: Register Config ======
+  AFTER line 1949: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 1972: // ====== Step 5: Power Off (three-step) ======
+  AFTER line 1981: // ====== Step 6: LogData ======
+  AFTER line 2010: // ====== Step 1: Connect ======
+  AFTER line 2018: // ====== Step 2: Power On ======
+  AFTER line 2023: // ====== Step 3: Register Config ======
+  AFTER line 2029: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 2052: // ====== Step 5: Power Off (three-step) ======
+  AFTER line 2061: // ====== Step 6: LogData ======
+  AFTER line 2089: // ====== Step 1: Connect ======
+  AFTER line 2097: // ====== Step 2: Power On ======
+  AFTER line 2102: // ====== Step 3: Register Config ======
+  AFTER line 2108: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 2131: // ====== Step 5: Power Off (three-step) ======
+  AFTER line 2140: // ====== Step 6: LogData ======
+  AFTER line 2205: // ====== Step 1: Connect ======
+  AFTER line 2221: // ====== Step 2: Power On ======
+  AFTER line 2230: // ====== Step 3: Register Config (P3 staircase, method sec.3 P3) ======
+  AFTER line 2276: // ====== Step 5: Power Off (P7 zero + hold -> P8 release, method sec.5, R-POFF) ======
+  AFTER line 2277: // Step 1-3 of the power-down plan: zero every source while HOLDING its working range and
+  AFTER line 2285: // Step 4-6: release the three channels with the unified RELAY_OFF range pairs
+  AFTER line 2294: // ====== Step 6: LogData (method sec.6 logPlan) ======
+  AFTER line 2329: // ====== Step 1: Connect ======
+  AFTER line 2336: // ====== Step 2: Power On ======
+  AFTER line 2341: // ====== Step 3: Register Config ======
+  AFTER line 2347: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 2370: // ====== Step 5: Power Off (three-step) ======
+  AFTER line 2379: // ====== Step 6: LogData ======
+  AFTER line 2407: // ====== Step 1: Connect ======
+  AFTER line 2414: // ====== Step 2: Power On ======
+  AFTER line 2419: // ====== Step 3: Register Config ======
+  AFTER line 2425: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 2448: // ====== Step 5: Power Off (three-step) ======
+  AFTER line 2457: // ====== Step 6: LogData ======
+  AFTER line 2486: // ====== Step 1: Connect ======
+  AFTER line 2493: // ====== Step 2: Power On ======
+  AFTER line 2498: // ====== Step 3: Register Config ======
+  AFTER line 2504: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 2527: // ====== Step 5: Power Off (three-step) ======
+  AFTER line 2536: // ====== Step 6: LogData ======
+  AFTER line 2565: // ====== Step 1: Connect ======
+  AFTER line 2572: // ====== Step 2: Power On ======
+  AFTER line 2578: // ====== Step 3: Register Config ======
+  AFTER line 2585: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 2608: // ====== Step 5: Power Off (three-step) ======
+  AFTER line 2617: // ====== Step 6: LogData ======
+  AFTER line 2645: // ====== Step 1: Connect ======
+  AFTER line 2652: // ====== Step 2: Power On ======
+  AFTER line 2657: // ====== Step 3: Register Config ======
+  AFTER line 2660: // ====== Step 4: Measure (rampv_capi: VCC ramp, 捕 I(VBAT) 触发点) ======
+  AFTER line 2684: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 2691: // ====== Step 6: LogData ======
+  AFTER line 2714: // ====== Step 1: Connect ======
+  AFTER line 2723: // ====== Step 2: Power On ======
+  AFTER line 2732: // ====== Step 3: Register Config ======
+  AFTER line 2737: // ====== Step 4: Measure ======
+  AFTER line 2747: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 2758: // ====== Step 6: LogData ======
+  AFTER line 2779: // ====== Step 1: Connect ======
+  AFTER line 2787: // ====== Step 2: Power On ======
+  AFTER line 2794: // ====== Step 3: Register Config ======
+  AFTER line 2797: // ====== Step 4: Measure ======
+  AFTER line 2807: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 2816: // ====== Step 6: LogData ======
+  AFTER line 2837: // ====== Step 1: Connect ======
+  AFTER line 2844: // ====== Step 2: Power On ======
+  AFTER line 2849: // ====== Step 3: Register Config ======
+  AFTER line 2852: // ====== Step 4: Measure ======
+  AFTER line 2862: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 2869: // ====== Step 6: LogData ======
+  AFTER line 2890: // ====== Step 1: Connect ======
+  AFTER line 2897: // ====== Step 2: Power On ======
+  AFTER line 2902: // ====== Step 3: Register Config ======
+  AFTER line 2905: // ====== Step 4: Measure ======
+  AFTER line 2915: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 2922: // ====== Step 6: LogData ======
+  AFTER line 2943: // ====== Step 1: Connect ======
+  AFTER line 2951: // ====== Step 2: Power On ======
+  AFTER line 2958: // ====== Step 3: Register Config ======
+  AFTER line 2961: // ====== Step 4: Measure ======
+  AFTER line 2971: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 2980: // ====== Step 6: LogData ======
+  AFTER line 3005: // ====== Step 1: Connect ======
+  AFTER line 3013: // ====== Step 2: Power On ======
+  AFTER line 3018: // ====== Step 3: Register Config ======
+  AFTER line 3024: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 3046: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 3055: // ====== Step 6: LogData ======
+  AFTER line 3078: // ====== Step 1: Connect ======
+  AFTER line 3085: // ====== Step 2: Power On ======
+  AFTER line 3090: // ====== Step 3: Register Config ======
+  AFTER line 3096: // ====== Step 4: Measure ======
+  AFTER line 3106: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 3113: // ====== Step 6: LogData ======
+  AFTER line 3134: // ====== Step 1: Connect ======
+  AFTER line 3141: // ====== Step 2: Power On ======
+  AFTER line 3146: // ====== Step 3: Register Config ======
+  AFTER line 3152: // ====== Step 4: Measure ======
+  AFTER line 3162: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 3169: // ====== Step 6: LogData ======
+  AFTER line 3190: // ====== Step 1: Connect ======
+  AFTER line 3198: // ====== Step 2: Power On ======
+  AFTER line 3205: // ====== Step 3: Register Config ======
+  AFTER line 3210: // ====== Step 4: Measure ======
+  AFTER line 3220: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 3229: // ====== Step 6: LogData ======
+  AFTER line 3250: // ====== Step 1: Connect ======
+  AFTER line 3257: // ====== Step 2: Power On ======
+  AFTER line 3262: // ====== Step 3: Register Config ======
+  AFTER line 3268: // ====== Step 4: Measure ======
+  AFTER line 3278: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 3285: // ====== Step 6: LogData ======
+  AFTER line 3306: // ====== Step 1: Connect ======
+  AFTER line 3314: // ====== Step 2: Power On ======
+  AFTER line 3321: // ====== Step 3: Register Config ======
+  AFTER line 3324: // ====== Step 4: Measure ======
+  AFTER line 3334: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 3343: // ====== Step 6: LogData ======
+  AFTER line 3368: // ====== Step 1: Connect ======
+  AFTER line 3376: // ====== Step 2: Power On ======
+  AFTER line 3383: // ====== Step 3: Register Config ======
+  AFTER line 3393: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 3415: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 3424: // ====== Step 6: LogData ======
+  AFTER line 3451: // ====== Step 1: Connect ======
+  AFTER line 3460: // ====== Step 2: Power On ======
+  AFTER line 3469: // ====== Step 3: Register Config ======
+  AFTER line 3479: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 3501: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 3512: // ====== Step 6: LogData ======
+  AFTER line 3539: // ====== Step 1: Connect ======
+  AFTER line 3546: // ====== Step 2: Power On ======
+  AFTER line 3552: // ====== Step 3: Register Config ======
+  AFTER line 3561: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 3583: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 3592: // ====== Step 6: LogData ======
+  AFTER line 3621: // ====== Step 1: Connect ======
+  AFTER line 3628: // ====== Step 2: Power On ======
+  AFTER line 3634: // ====== Step 3: Register Config ======
+  AFTER line 3643: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 3665: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 3674: // ====== Step 6: LogData ======
+  AFTER line 3698: // ====== Step 1: Connect ======
+  AFTER line 3705: // ====== Step 2: Power On ======
+  AFTER line 3710: // ====== Step 3: Register Config ======
+  AFTER line 3715: // ====== Step 4: Measure ======
+  AFTER line 3731: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 3738: // ====== Step 6: LogData ======
+  AFTER line 3761: // ====== Step 1: Connect ======
+  AFTER line 3769: // ====== Step 2: Power On ======
+  AFTER line 3776: // ====== Step 3: Register Config ======
+  AFTER line 3781: // ====== Step 4: Measure ======
+  AFTER line 3795: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 3804: // ====== Step 6: LogData ======
+  AFTER line 3900: // ====== Step 1: Connect ======
+  AFTER line 3908: // ====== Step 2: Power On ======
+  AFTER line 3915: // ====== Step 3: Register Config ======
+  AFTER line 3923: // ====== Step 4: Measure (VDM FV=1V, Trim execute 写 EFUSE + MI) ======
+  AFTER line 3930: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 3956: // ====== Step 1: Connect ======
+  AFTER line 3964: // ====== Step 2: Power On ======
+  AFTER line 3971: // ====== Step 3: Register Config ======
+  AFTER line 3976: // ====== Step 4: Measure ======
+  AFTER line 3990: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 3999: // ====== Step 6: LogData ======
+  AFTER line 4037: // ====== Step 1: Connect ======
+  AFTER line 4044: // ====== Step 2: Power On ======
+  AFTER line 4049: // ====== Step 3: Register Config ======
+  AFTER line 4057: // ====== Step 4: Measure (VDM high-Z, Trim execute 写 EFUSE + MV) ======
+  AFTER line 4063: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 4086: // ====== Step 1: Connect ======
+  AFTER line 4093: // ====== Step 2: Power On ======
+  AFTER line 4098: // ====== Step 3: Register Config ======
+  AFTER line 4103: // ====== Step 4: Measure ======
+  AFTER line 4116: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 4123: // ====== Step 6: LogData ======
+  AFTER line 4145: // ====== Step 1: Connect ======
+  AFTER line 4152: // ====== Step 2: Power On ======
+  AFTER line 4157: // ====== Step 3: Register Config ======
+  AFTER line 4168: // ====== Step 4: Measure ======
+  AFTER line 4178: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 4185: // ====== Step 6: LogData ======
+  AFTER line 4206: // ====== Step 1: Connect ======
+  AFTER line 4213: // ====== Step 2: Power On ======
+  AFTER line 4218: // ====== Step 3: Register Config ======
+  AFTER line 4229: // ====== Step 4: Measure ======
+  AFTER line 4239: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 4246: // ====== Step 6: LogData ======
+  AFTER line 4294: // ====== Step 1: Connect ======
+  AFTER line 4301: // ====== Step 2: Power On ======
+  AFTER line 4306: // ====== Step 3: Register Config ======
+  AFTER line 4314: // ====== Step 4: Measure (VDM high-Z, Trim execute 写 EFUSE + MV) ======
+  AFTER line 4320: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 4347: // ====== Step 1: Connect ======
+  AFTER line 4355: // ====== Step 2: Power On ======
+  AFTER line 4361: // ====== Step 3: Register Config ======
+  AFTER line 4367: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 4389: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 4398: // ====== Step 6: LogData ======
+  AFTER line 4425: // ====== Step 1: Connect ======
+  AFTER line 4433: // ====== Step 2: Power On ======
+  AFTER line 4439: // ====== Step 3: Register Config ======
+  AFTER line 4445: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 4467: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 4476: // ====== Step 6: LogData ======
+  AFTER line 4501: // ====== Step 1: Connect ======
+  AFTER line 4508: // ====== Step 2: Power On ======
+  AFTER line 4513: // ====== Step 3: Register Config ======
+  AFTER line 4520: // ====== Step 4: Measure ======
+  AFTER line 4533: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 4540: // ====== Step 6: LogData ======
+  AFTER line 4562: // ====== Step 1: Connect ======
+  AFTER line 4569: // ====== Step 2: Power On ======
+  AFTER line 4574: // ====== Step 3: Register Config ======
+  AFTER line 4581: // ====== Step 4: Measure ======
+  AFTER line 4593: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 4600: // ====== Step 6: LogData ======
+  AFTER line 4622: // ====== Step 1: Connect ======
+  AFTER line 4629: // ====== Step 2: Power On ======
+  AFTER line 4637: // ====== Step 3: Register Config ======
+  AFTER line 4647: // ====== Step 4: Measure ======
+  AFTER line 4655: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 4662: // ====== Step 6: LogData ======
+  AFTER line 4684: // ====== Step 1: Connect ======
+  AFTER line 4691: // ====== Step 2: Power On ======
+  AFTER line 4696: // ====== Step 3: Register Config ======
+  AFTER line 4702: // ====== Step 4: Measure ======
+  AFTER line 4720: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 4727: // ====== Step 6: LogData (单参数组, 记录 4V 档结果) ======
+  AFTER line 4752: // ====== Step 1: Connect ======
+  AFTER line 4760: // ====== Step 2: Power On ======
+  AFTER line 4766: // ====== Step 3: Register Config ======
+  AFTER line 4775: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 4798: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 4807: // ====== Step 6: LogData ======
+  AFTER line 4833: // ====== Step 1: Connect ======
+  AFTER line 4841: // ====== Step 2: Power On ======
+  AFTER line 4847: // ====== Step 3: Register Config ======
+  AFTER line 4856: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 4878: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 4887: // ====== Step 6: LogData ======
+  AFTER line 4914: // ====== Step 1: Connect ======
+  AFTER line 4922: // ====== Step 2: Power On ======
+  AFTER line 4928: // ====== Step 3: Register Config ======
+  AFTER line 4937: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 4959: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 4968: // ====== Step 6: LogData ======
+  AFTER line 4994: // ====== Step 1: Connect ======
+  AFTER line 5002: // ====== Step 2: Power On ======
+  AFTER line 5008: // ====== Step 3: Register Config ======
+  AFTER line 5017: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 5039: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 5048: // ====== Step 6: LogData ======
+  AFTER line 5076: // ====== Step 1: Connect ======
+  AFTER line 5084: // ====== Step 2: Power On ======
+  AFTER line 5090: // ====== Step 3: Register Config ======
+  AFTER line 5102: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 5124: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 5133: // ====== Step 6: LogData ======
+  AFTER line 5160: // ====== Step 1: Connect ======
+  AFTER line 5168: // ====== Step 2: Power On ======
+  AFTER line 5174: // ====== Step 3: Register Config ======
+  AFTER line 5186: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 5208: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 5217: // ====== Step 6: LogData ======
+  AFTER line 5242: // ====== Step 1: Connect ======
+  AFTER line 5249: // ====== Step 2: Power On ======
+  AFTER line 5254: // ====== Step 3: Register Config ======
+  AFTER line 5266: // ====== Step 4: Measure ======
+  AFTER line 5279: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 5286: // ====== Step 6: LogData ======
+  AFTER line 5309: // ====== Step 1: Connect ======
+  AFTER line 5316: // ====== Step 2: Power On ======
+  AFTER line 5321: // ====== Step 3: Register Config ======
+  AFTER line 5333: // ====== Step 4: Measure ======
+  AFTER line 5346: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 5353: // ====== Step 6: LogData ======
+  AFTER line 5376: // ====== Step 1: Connect ======
+  AFTER line 5384: // ====== Step 2: Power On ======
+  AFTER line 5389: // ====== Step 3: Register Config ======
+  AFTER line 5396: // ====== Step 4: Measure ======
+  AFTER line 5411: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 5420: // ====== Step 6: LogData ======
+  AFTER line 5443: // ====== Step 1: Connect ======
+  AFTER line 5451: // ====== Step 2: Power On ======
+  AFTER line 5456: // ====== Step 3: Register Config ======
+  AFTER line 5463: // ====== Step 4: Measure ======
+  AFTER line 5478: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 5487: // ====== Step 6: LogData ======
+  AFTER line 5536: // ====== Step 1: Connect ======
+  AFTER line 5544: // ====== Step 2: Power On ======
+  AFTER line 5549: // ====== Step 3: Register Config (不含 CSpec) ======
+  AFTER line 5556: // ====== Step 4: Trim execute (measure_osc_64k 写 0xF2 + QTMU 测频) ======
+  AFTER line 5560: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 5608: // ====== Step 1: Connect ======
+  AFTER line 5616: // ====== Step 2: Power On ======
+  AFTER line 5621: // ====== Step 3: Register Config (不含 CSpec) ======
+  AFTER line 5630: // ====== Step 4: Trim execute (measure_osc_4p5m 写 F1/F2 + QTMU 测频) ======
+  AFTER line 5633: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 5652: // ====== Step 1: Connect ======
+  AFTER line 5660: // ====== Step 2: Power On ======
+  AFTER line 5665: // ====== Step 3: Register Config ======
+  AFTER line 5673: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 5697: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 5706: // ====== Step 6: LogData ======
+  AFTER line 5735: // ====== Step 1: Connect ======
+  AFTER line 5743: // ====== Step 2: Power On ======
+  AFTER line 5748: // ====== Step 3: Register Config ======
+  AFTER line 5758: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 5782: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 5791: // ====== Step 6: LogData ======
+  AFTER line 5820: // ====== Step 1: Connect ======
+  AFTER line 5828: // ====== Step 2: Power On ======
+  AFTER line 5833: // ====== Step 3: Register Config ======
+  AFTER line 5845: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 5869: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 5878: // ====== Step 6: LogData ======
+  AFTER line 5905: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 5913: // ====== Step 2: Power On (上电) ======
+  AFTER line 5918: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 5926: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 5950: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 5959: // ====== Step 6: LogData (测试结果) ======
+  AFTER line 5987: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 5994: // ====== Step 2: Power On (上电) ======
+  AFTER line 5999: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 6008: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 6032: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 6041: // ====== Step 6: LogData (测试结果) ======
+  AFTER line 6069: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 6076: // ====== Step 2: Power On (上电) ======
+  AFTER line 6081: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 6089: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 6113: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 6122: // ====== Step 6: LogData (测试结果) ======
+  AFTER line 6150: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 6158: // ====== Step 2: Power On (上电) ======
+  AFTER line 6163: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 6172: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 6196: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 6205: // ====== Step 6: LogData (测试结果) ======
+  AFTER line 6233: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 6240: // ====== Step 2: Power On (上电) ======
+  AFTER line 6245: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 6254: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 6278: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 6287: // ====== Step 6: LogData (测试结果) ======
+  AFTER line 6315: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 6322: // ====== Step 2: Power On (上电) ======
+  AFTER line 6327: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 6335: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 6359: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 6368: // ====== Step 6: LogData (测试结果) ======
+  AFTER line 6396: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 6403: // ====== Step 2: Power On (上电) ======
+  AFTER line 6408: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 6416: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 6440: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 6449: // ====== Step 6: LogData (测试结果) ======
+  AFTER line 6477: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 6484: // ====== Step 2: Power On (上电) ======
+  AFTER line 6489: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 6498: // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+  AFTER line 6522: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 6531: // ====== Step 6: LogData (测试结果) ======
+  AFTER line 6555: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 6563: // ====== Step 2: Power On (上电) ======
+  AFTER line 6569: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 6578: // ====== Step 4: Measure (VDM 高阻 MV 测 ATEST0 = channel voutp) ======
+  AFTER line 6588: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 6597: // ====== Step 6: LogData (测试结果) ======
+  AFTER line 6619: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 6627: // ====== Step 2: Power On (上电) ======
+  AFTER line 6633: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 6642: // ====== Step 4: Measure (VDM 高阻 MV 测 ATEST0 = channel voutp) ======
+  AFTER line 6652: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 6661: // ====== Step 6: LogData (测试结果) ======
+  AFTER line 6683: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 6691: // ====== Step 2: Power On (上电) ======
+  AFTER line 6697: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 6706: // ====== Step 4: Measure (VDM 高阻 MV 测 ATEST0 = channel voutp) ======
+  AFTER line 6716: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 6725: // ====== Step 6: LogData (测试结果) ======
+  AFTER line 6747: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 6755: // ====== Step 2: Power On (上电) ======
+  AFTER line 6763: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 6772: // ====== Step 4: Measure (VDM 高阻 MV 测 ATEST0 = channel voutp) ======
+  AFTER line 6782: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 6791: // ====== Step 6: LogData (测试结果) ======
+  AFTER line 6836: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 6843: // ====== Step 2: Power On (上电) ======
+  AFTER line 6848: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 6856: // ====== Step 4: Trim execute (measure 写 EFUSE + VDM MV) ======
+  AFTER line 6865: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 6928: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 6935: // ====== Step 2: Power On (上电) ======
+  AFTER line 6940: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 6948: // ====== Step 4: Trim execute (measure 写 EFUSE + VDM MV) ======
+  AFTER line 6955: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 7002: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 7009: // ====== Step 2: Power On (上电) ======
+  AFTER line 7014: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 7022: // ====== Step 4: Trim execute (measure 写 EFUSE + VDM MV) ======
+  AFTER line 7029: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 7077: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 7086: // ====== Step 2: Power On (上电) ======
+  AFTER line 7097: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 7112: // ====== Step 4: Measure (rampi_capv 电流 ramp, 捕 DTEST0 翻转) ======
+  AFTER line 7122: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 7139: // ====== Step 6: LogData ======
+  AFTER line 7165: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 7174: // ====== Step 2: Power On (BST-SW 台阶上电) ======
+  AFTER line 7187: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 7203: // ====== Step 4: Measure (rampi_capv 电流 ramp, 捕 DTEST0 翻转) ======
+  AFTER line 7212: // ====== Step 5: Power Off (BST-SW 反向台阶下电) ======
+  AFTER line 7229: // ====== Step 6: LogData ======
+  AFTER line 7252: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 7257: // ====== Step 2: Power On (BST-SW 台阶上电) ======
+  AFTER line 7271: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 7289: // ====== Step 4: Measure (rampi_capv 电流 ramp, 捕 DTEST0 翻转) ======
+  AFTER line 7298: // ====== Step 5: Power Off (BST-SW 反向台阶下电) ======
+  AFTER line 7317: // ====== Step 6: LogData ======
+  AFTER line 7342: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 7350: // ====== Step 2: Power On (上电) ======
+  AFTER line 7357: // ====== Step 3: Register Config (寄存器配置) ======
+  AFTER line 7367: // ====== Step 4: Measure (COMP pad 高阻 V(COMP)) ======
+  AFTER line 7377: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 7386: // ====== Step 6: LogData ======
+  AFTER line 7414: // ====== Step 1: Connect ======
+  AFTER line 7423: // ====== Step 2: Power On ======
+  AFTER line 7428: // ====== Step 3: Register Config ======
+  AFTER line 7441: // ====== Step 4: Measure (rampv_capv: ramp AMUX V, 捕 nQON/DTEST0 翻转) ======
+  AFTER line 7464: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 7475: // ====== Step 6: LogData ======
+  AFTER line 7507: // ====== Step 1: Connect ======
+  AFTER line 7516: // ====== Step 2: Power On ======
+  AFTER line 7521: // ====== Step 3: Register Config ======
+  AFTER line 7531: // ====== Step 4: Measure (rampv_capi: ramp AMUX V, 捕 I(ATEST0) 电流穿越) ======
+  AFTER line 7553: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 7564: // ====== Step 6: LogData ======
+  AFTER line 7595: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 7600: // ====== Step 2: Power On (BST-SW 台阶上电 + VDM) ======
+  AFTER line 7614: // ====== Step 3: Register Config (寄存器配置, tm640.sv OCP 序列) ======
+  AFTER line 7631: // ====== Step 4: Measure (rampi_capv 电流 ramp, 捕 DTEST0 翻转) ======
+  AFTER line 7647: // ====== Step 5: Power Off (BST-SW 反向台阶下电) ======
+  AFTER line 7668: // ====== Step 6: LogData ======
+  AFTER line 7702: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 7710: // ====== Step 2: Power On (SW 钉死 3V 绝对, FPVI0 建 BST-SW 差分台阶) ======
+  AFTER line 7723: // ====== Step 3: Register Config (寄存器配置, tm641.sv BST UV 序列) ======
+  AFTER line 7733: // ====== Step 4: Measure (FPVI0 差分 ramp BST-SW, 捕 DTEST0 翻转) ======
+  AFTER line 7757: // ====== Step 5: Power Off (BST-SW 反向台阶下电) ======
+  AFTER line 7775: // ====== Step 6: LogData ======
+  AFTER line 7813: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 7821: // ====== Step 2: Power On (BST-SW 差分浮动台阶 + VBAT) ======
+  AFTER line 7833: // ====== Step 3: Register Config (tm643.sv VBAT_LOOP 序列, 观测改 DTEST0/nQON) ======
+  AFTER line 7849: // ====== Step 4: Measure (VBAT 两段 ramp 捕 DTEST0/nQON 翻转) ======
+  AFTER line 7874: // ====== Step 5: Power Off (BST-SW 反向台阶下电) ======
+  AFTER line 7889: // ====== Step 6: LogData ======
+  AFTER line 7923: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 7929: // ====== Step 2: Power On (Buck: VBAT=4.4V, VBUS=5V) ======
+  AFTER line 7941: // ====== Step 3: Register Config (tm700.sv: 双 pad 同时使能, chop 保持默认开) ======
+  AFTER line 7949: // ====== Step 4: Measure (1A/2A/0.5A 三点精度, Buck 负电流 VBUS→PMID) ======
+  AFTER line 7973: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 7989: // ====== Step 6: LogData ======
+  AFTER line 8021: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 8027: // ====== Step 2: Power On (Boost: VBAT=4.4V, PMID=5V) ======
+  AFTER line 8039: // ====== Step 3: Register Config (tm701.sv: 双 pad + BUBO_MODE=1, chop 保持默认开) ======
+  AFTER line 8048: // ====== Step 4: Measure (1A/2A/0.5A 三点精度, Boost 正电流 PMID→VBUS) ======
+  AFTER line 8072: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 8088: // ====== Step 6: LogData ======
+  AFTER line 8120: // ====== Step 1: Connect (继电器闭合, 同 TM700 Buck) ======
+  AFTER line 8126: // ====== Step 2: Power On (Buck: VBAT=4.4V, VBUS=5V) ======
+  AFTER line 8138: // ====== Step 3: Register Config (tm702_1.sv: 同 TM700, BUBO_MODE=0 无 0x09) ======
+  AFTER line 8146: // ====== Step 4: Measure (1A/3A 两点, Buck 负电流 VBUS→PMID) ======
+  AFTER line 8177: // ====== Step 5: Power Off (三步下电, 同 TM700) ======
+  AFTER line 8193: // ====== Step 6: LogData ======
+  AFTER line 8291: // ====== Step 1: Connect (继电器闭合, Boost 电流环) ======
+  AFTER line 8297: // ====== Step 2: Power On (Boost: VBAT=4.4V, PMID=5V) ======
+  AFTER line 8309: // ====== Step 3: Register Config (tm702.sv: 双 pad + BUBO_MODE=1 + off_chop=1) ======
+  AFTER line 8319: // ====== Step 4: Trim execute (measure_ibus_sns_gain: force 1A/3A 两点做差 → mohm, target 198) ======
+  AFTER line 8322: // ====== Step 5: Power Off (Boost 三步下电) ======
+  AFTER line 8383: // ====== Step 1: Connect (继电器闭合, Boost 电流环, 同 TM702) ======
+  AFTER line 8387: // ====== Step 2: Power On (Boost: VBAT=4.4V, PMID=5V) ======
+  AFTER line 8399: // ====== Step 3: Register Config (tm703.sv: 双 pad + BUBO_MODE=1 + off_chop=1) ======
+  AFTER line 8409: // ====== Step 4: Trim execute (measure_ibus_sns_ea_os: force 2A → Vos mV, target 0) ======
+  AFTER line 8412: // ====== Step 5: Power Off (Boost 三步下电) ======
+  AFTER line 8452: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 8461: // ====== Step 2: Power On (上电) ======
+  AFTER line 8466: // ====== Step 3: Register Config (寄存器配置, reg_config/tm1004.sv) ======
+  AFTER line 8479: // ====== Step 4: Measure (VCP 升+降 ramp 捕 DTEST0/nQON 翻转) ======
+  AFTER line 8504: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 8513: // ====== Step 6: LogData ======
+  AFTER line 8542: // ====== Step 1: Connect (继电器闭合, 同 TM1004) ======
+  AFTER line 8546: // ====== Step 2: Power On (上电) ======
+  AFTER line 8550: // ====== Step 3: Register Config (寄存器配置, reg_config/tm1006.sv) ======
+  AFTER line 8561: // ====== Step 4: Measure (VCP 过零 ramp 捕 DTEST0/nQON 翻转) ======
+  AFTER line 8584: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 8593: // ====== Step 6: LogData ======
+  AFTER line 8617: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 8624: // ====== Step 2: Power On (上电) ======
+  AFTER line 8628: // ====== Step 3: Register Config (寄存器配置, reg_config/tm1007.sv) ======
+  AFTER line 8636: // ====== Step 4: Measure (VDM=1V FV, 测 I(ATEST0)) ======
+  AFTER line 8646: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 8653: // ====== Step 6: LogData ======
+  AFTER line 8675: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 8679: // ====== Step 2: Power On (上电) ======
+  AFTER line 8683: // ====== Step 3: Register Config (寄存器配置, reg_config/tm1008.sv) ======
+  AFTER line 8691: // ====== Step 4: Measure (VDM 高阻 FI=0 测 V(ATEST0)) ======
+  AFTER line 8701: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 8708: // ====== Step 6: LogData ======
+  AFTER line 8731: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 8739: // ====== Step 2: Power On (上电) ======
+  AFTER line 8743: // ====== Step 3: Register Config (寄存器配置, reg_config/tm1009.sv) ======
+  AFTER line 8751: // ====== Step 4: Measure (SW1 1.2V→0V, 测短路电流) ======
+  AFTER line 8765: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 8772: // ====== Step 6: LogData ======
+  AFTER line 8795: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 8799: // ====== Step 2: Power On (上电) ======
+  AFTER line 8803: // ====== Step 3: Register Config (寄存器配置, reg_config/tm1100.sv) ======
+  AFTER line 8814: // ====== Step 4: Measure (VDM 高阻 FI=0 测 V(ATEST0)) ======
+  AFTER line 8823: // ====== Step 5: Power Off (三步下电) ======
+  AFTER line 8830: // ====== Step 6: LogData ======
+  AFTER line 8870: // ====== Step 1: Connect (继电器闭合) ======
+  AFTER line 8878: // ====== Step 2: Power On (VBAT 台阶, DFT: vbat=4V) ======
+  AFTER line 8885: // ====== Step 3: Register Config (tm1205.sv 权威序列) ======
+  AFTER line 8894: // ====== Step 4: Measure (两路串行, 各 Toggle 双扫捕 nQON 翻转) ======
+  AFTER line 8941: // ====== Step 5: Power Off ======
+  AFTER line 8950: // ====== Step 6: LogData ======
+  AFTER line 9151: // ====== Step 1: Connect ======
+  AFTER line 9166: delay_ms(3);  // NOT in the pulse window: power-up relay settle after Step 1, before any force
+  AFTER line 9169: // ====== Step 2: Power On (BST staircase, BST always leads PMID by 5 V) ======
+  AFTER line 9202: // ====== Step 3: Register Config (reg_config/tm600.sv; BD-03) ======
+  AFTER line 9210: // ====== Step 4: Measure (three-stage high-current init, then a short 1 A pulse) ======
+  AFTER line 9257: // ====== Step 5: Power Off (FET kept on, BST and PMID ramp down together) ======
+  AFTER line 9282: // ====== Step 6: LogData ======
+  AFTER line 9311: // ====== Step 1: Connect ======
+  AFTER line 9340: delay_ms(3);  // NOT in the pulse window: power-up relay settle after Step 1, before any force
+  AFTER line 9343: // ====== Step 2: Power On ======
+  AFTER line 9358: // ====== Step 3: Register Config (reg_config/tm601.sv; BD-03) ======
+  AFTER line 9368: // ====== Step 4: Measure (three-stage init, then a short 1 A pulse) ======
+  AFTER line 9416: // ====== Step 5: Power Off (no bootstrap ramp: the LS FET has no bootstrap) ======
+  AFTER line 9431: // ====== Step 6: LogData ======
+  --
+
+=== 3. logging / output primitives in the WHOLE after-file ===
+  SetTestResult                      before=188    after=188   
+  LogData                            before=91     after=91    
+  printf/TRACE/OutputDebugString     before=4      after=4     
+  Log/WriteLog/AddLog/LogMessage     before=13     after=14    
+  CParam decl/usage                  before=668    after=668   
+  StsGetParam                        before=672    after=672   
+
+  distinct callable names matching log|trace|report|print|record|output (whole file):
+    ['LogData', 'STSSetInitSelectDialog', 'registerActivationTrace', 'relayActuationTrace']
+  -- occurrences WITH word boundary, whole file:
+     LogData                                  14
+     STSSetInitSelectDialog                   2
+     registerActivationTrace                  1
+     relayActuationTrace                      1
+
+=== 4. in-TM logging calls actually present in the TM108 body (after) ===
+   SetTestResult occurrences in TM108 body: 3
+     2304: VAC1_PRST_Rise->SetTestResult(site, 0, rise_result[site]);
+     2305: VAC1_PRST_Fall->SetTestResult(site, 0, fall_result[site]);
+     2306: VAC1_PRST_Hys->SetTestResult(site, 0, hys[site]);
+
+=== 5. cbite / relay actuation inventory, WHOLE file ===
+  before: SetOn=130  SetOff=0  RelayOff=0  Reset=0  \.Off\(=0  DelayOff=0  SetOffAll=0
+  after: SetOn=132  SetOff=0  RelayOff=0  Reset=0  \.Off\(=0  DelayOff=0  SetOffAll=0
+  cbite token count before=104 after=107
+
+=== 6. K17_BUSL_VAC occurrences, WHOLE file ===
+  BEFORE: 0 hit(s)
+  AFTER: 3 hit(s)
+     2162: //   relays     : P1 closure set {13,65} (cbite.SetOn, both functional relays); K17_BUSL_VAC is
+     2208: // (K8, K18, K19, K64, K17_BUSL_VAC) is at its inherited default-conducting state.
+     2214: // K17_BUSL_VAC: required CLOSED by the strategy contract (sec.6 G1) but the contract assigns
+
+=== 7. relay macro tokens inside TM108 body (after) ===
+  tokens: ['K13_VBAT_Cap', 'K17_BUSL_VAC', 'K21_VAC_Cap', 'K65_nQON_PU'] counts: {'K13_VBAT_Cap': 3, 'K17_BUSL_VAC': 2, 'K21_VAC_Cap': 1, 'K65_nQON_PU': 2}
+   K47    present in body: False
+   K48    present in body: False
+   K57    present in body: False
+   K61    present in body: False
+   K76    present in body: False
+   K109   present in body: False
+   K110   present in body: False
+   K141   present in body: False
+   K142   present in body: False
+   K86    present in body: False
+   K130   present in body: False
+
+=== 8. numeric relay literals in TM108 body ===
+     2208: // (K8, K18, K19, K64, K17_BUSL_VAC) is at its inherited default-conducting state.
+     2209: // VBAT -> VBAT_PD3_FXVI: K8 default NC; the powered rail needs its cap gate -> K13_VBAT_Cap
+     2210: // VAC1 -> VAC123_AMUX_ACM: K18/K19 default NC (default conduction is what selects VAC1);
+     2212: // observation -> NQON_HG1_ACM: K64 default NC contact + K65_nQON_PU 5 V pull-up (open drain);
+     2218: cbite.SetOn(K13_VBAT_Cap, K65_nQON_PU, -1);
+
+=== 9. count of DUT_API TM symbols ===
+  DUT_API ... ( occurrences: 98
+  TM108 signature occurrences: 1
+
+=== 10. manifest/selfcheck numeric claims re-checked ===
+  non-comment lines before=5628 after=5628 (manifest/t7-selfcheck claim 5625/5625)
+  manifest sourceLocationBefore=2154  actual=2155
+  manifest sourceLocationAfter =2192  actual=2193
+
+=== 11. K13 / keep-open cross-check against R1 ===
+     2162: //   relays     : P1 closure set {13,65} (cbite.SetOn, both functional relays); K17_BUSL_VAC is
+     2167: //   isolation  : K21_VAC_Cap, K14_VAC1_P2P, K70/K87/K90/K82, K141/K142, K86/K130 stay
+     2187: //                does NOT contain 13 (or 65) and every mention of K13 there requires closure, so R1
+     2188: //                and I3 agree - K13 closed from P1 through P7 and released at P8 (see captain-precheck/
+     2208: // (K8, K18, K19, K64, K17_BUSL_VAC) is at its inherited default-conducting state.
+     2209: // VBAT -> VBAT_PD3_FXVI: K8 default NC; the powered rail needs its cap gate -> K13_VBAT_Cap
+     2211: //   VAC1 is the scanned input, so K21_VAC_Cap must stay un-actuated - no cap across the node
+     2212: // observation -> NQON_HG1_ACM: K64 default NC contact + K65_nQON_PU 5 V pull-up (open drain);
+     2214: // K17_BUSL_VAC: required CLOSED by the strategy contract (sec.6 G1) but the contract assigns
+     2218: cbite.SetOn(K13_VBAT_Cap, K65_nQON_PU, -1);
+     2279: // setpoints of this step are 0 V. K13_VBAT_Cap is still closed here, which is the intended
+
+=== 12. all distinct numeric literals in TM108 body (contract-traceability input) ===
+   ['0', '1', '3', '20', '0.0', '1e3', '200', '1.65', '10.0']
+
+=== 13. 1.65 occurrences whole file ===
+  before=154 after=154
+     1951: // capture the source voltage at the instant V(nQON) crosses the 1.65V threshold
+     1954: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     1957: 0.0, 10.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     1958: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     1961: 10.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     2031: // capture the source voltage at the instant V(nQON) crosses the 1.65V threshold
+     2034: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     2037: 3.0, 5.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     2038: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     2041: 5.0, 3.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     2110: // capture the source voltage at the instant V(nQON) crosses the 1.65V threshold
+     2113: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     2116: 2.0, 5.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     2117: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     2120: 5.0, 2.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     2173: //                1.65 V, TRIG_FALLING on the rise and TRIG_RISING on the fall (method sec.4
+     2213: //   the pull-up is what makes a 1.65 V capture level a mid-scale logic threshold
+     2255: 0.0, 10.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     2262: 10.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     2351: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     2354: 0.0, 10.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     2355: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     2358: 10.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     2429: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     2432: 0.0, 10.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     2433: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     2436: 10.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     2506: // capture the source voltage at the instant V(nQON) crosses the 1.65V threshold
+     2509: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     2512: 0.0, 5.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     2513: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     2516: 5.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     2587: // capture the source voltage at the instant V(nQON) crosses the 1.65V threshold
+     2590: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     2593: 0.0, 4.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     2594: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     2597: 4.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     3027: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     3030: 0.0, 5.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     3031: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     3034: 5.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     3396: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     3399: 0.0, 4.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     3400: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     3403: 4.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     3482: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     3485: 0.0, 4.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     3486: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     3489: 4.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     3564: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     3567: 0.0, 3.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     3568: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     3571: 3.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     3646: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     3649: 0.0, 4.5, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     3650: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     3653: 4.5, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     4370: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     4373: 0.0, 3.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     4374: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     4377: 3.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     4448: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     4451: 0.0, 3.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     4452: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     4455: 3.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     4779: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     4782: 0.0, 5.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     4783: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     4786: 5.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     4859: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     4862: 0.0, 5.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     4863: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     4866: 5.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     4940: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     4943: 0.0, 5.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     4944: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     4947: 5.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     5020: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     5023: 0.0, 5.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     5024: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     5027: 5.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     5105: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     5108: 0.0, 4.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     5109: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     5112: 4.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     5189: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     5192: 0.0, 4.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     5193: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     5196: 4.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     5678: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     5681: 4.0, 7.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     5682: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     5685: 7.0, 4.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     5763: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     5766: 4.0, 15.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     5767: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     5770: 15.0, 4.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     5850: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     5853: 4.0, 20.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     5854: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     5857: 20.0, 4.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     5931: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     5934: 3.7, 4.5, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     5935: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     5938: 4.5, 3.7, 200, 20, 1.65, TRIG_RISING, vth_f);
+     6013: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     6016: 0.0, 5.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     6017: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     6020: 5.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     6094: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     6097: 0.0, 5.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     6098: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     6101: 5.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     6177: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     6180: 4.0, 7.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     6181: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     6184: 7.0, 4.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     6259: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     6262: 0.0, 5.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     6263: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     6266: 5.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     6340: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     6343: 0.0, 5.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     6344: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     6347: 5.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     6421: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     6424: 0.0, 5.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     6425: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     6428: 5.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     6503: // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+     6506: 0.0, 5.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     6507: // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+     6510: 5.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     7120: 0.2, -0.2, 200, 20, 1.65, TRIG_RISING, ls_zcd);
+     7210: -0.2, 0.2, 200, 20, 1.65, TRIG_RISING, hs_zcd);
+     7296: 0.0, -3.0, 200, 20, 1.65, TRIG_RISING, hs_neg);  // [B] rising / [C] 0->-3A
+     7443: // 上行 ramp: nQON 下降沿穿过 1.65V (inverted) → 捕获 rise 阈值
+     7448: 1.3, 1.5, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     7449: // 下行 ramp: nQON 上升沿穿过 1.65V (inverted) → 捕获 fall 阈值
+     7452: 1.5, 1.3, 200, 20, 1.65, TRIG_RISING, vth_f);
+     7638: 0.0, -3.0, 200, 20, 1.65, TRIG_RISING, boost_ocp);
+     7741: 2.5, 4.0, 200, 20, 1.65, TRIG_FALLING, vth_r);   // 升扫: BST-SW 2.5→4.0V
+     7744: 4.0, 2.5, 200, 20, 1.65, TRIG_RISING, vth_f);   // 降扫: BST-SW 4.0→2.5V
+     7858: 5.0, 3.0, 200, 20, 1.65, TRIG_RISING, vth_f);   // 降扫 5→3V: fall 阈值
+     7861: 3.0, 5.0, 200, 20, 1.65, TRIG_FALLING, vth_r);   // 升扫 3→5V: rise 阈值
+     8486: 0.0, 2.0, 200, 20, 1.65, TRIG_FALLING, vth_r);  // 升扫: rise 阈值
+     8489: 2.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);   // 降扫: fall 阈值
+     8568: -0.5, 0.5, 200, 20, 1.65, TRIG_FALLING, vth_r);  // 升扫: rise 过零点
+     8571: 0.5, -0.5, 200, 20, 1.65, TRIG_RISING, vth_f);   // 降扫: fall 过零点
+     8784: //      → VDM 高阻 FI=0 测 V(ATEST0), 期望 1.65V
+     8902: 0, -4, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     8906: -4, 0, 200, 20, 1.65, TRIG_RISING, vth_f);
+     8926: 0, -4, 200, 20, 1.65, TRIG_FALLING, vth_r);
+     8929: -4, 0, 200, 20, 1.65, TRIG_RISING, vth_f);

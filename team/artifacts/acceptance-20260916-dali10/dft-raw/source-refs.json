@@ -1,0 +1,976 @@
+{
+  "ForCodexDebug/test.cpp": {
+    "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+    "encoding": "utf-8-sig",
+    "lineCount": 8878,
+    "hits": [
+      {
+        "pattern": "TM1205",
+        "line": 8755,
+        "text": "// TM1205: TRX_BST_UV_GD — BST1-SW1 / BST2-SW2 两组 BST UVLO 阈值 (Toggle)"
+      },
+      {
+        "pattern": "TM1205",
+        "line": 8766,
+        "text": "DUT_API int TM1205_TRX_BST_UV_GD(short funcindex, LPCTSTR funclabel)"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2150,
+        "text": "// TM108: HSKP VAC1_PRST - VAC1 PRST CMP threshold (digital V(DTEST0))"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2155,
+        "text": "DUT_API int TM108_HSKP_VAC1_PRST(short funcindex, LPCTSTR funclabel)"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2158,
+        "text": "CParam *VAC1_PRST_Rise = StsGetParam(funcindex, \"VAC1_PRST_Rise\");"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2158,
+        "text": "CParam *VAC1_PRST_Rise = StsGetParam(funcindex, \"VAC1_PRST_Rise\");"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2159,
+        "text": "CParam *VAC1_PRST_Fall = StsGetParam(funcindex, \"VAC1_PRST_Fall\");"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2159,
+        "text": "CParam *VAC1_PRST_Fall = StsGetParam(funcindex, \"VAC1_PRST_Fall\");"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2160,
+        "text": "CParam *VAC1_PRST_Hys = StsGetParam(funcindex, \"VAC1_PRST_Hys\");"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2160,
+        "text": "CParam *VAC1_PRST_Hys = StsGetParam(funcindex, \"VAC1_PRST_Hys\");"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2220,
+        "text": "VAC1_PRST_Rise->SetTestResult(site, 0, rise_result[site]);"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2221,
+        "text": "VAC1_PRST_Fall->SetTestResult(site, 0, fall_result[site]);"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2222,
+        "text": "VAC1_PRST_Hys->SetTestResult(site, 0, hys[site]);"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2228,
+        "text": "// TM109: HSKP VAC2_PRST - VAC2 PRST CMP threshold (digital V(DTEST0))"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2233,
+        "text": "DUT_API int TM109_HSKP_VAC2_PRST(short funcindex, LPCTSTR funclabel)"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2236,
+        "text": "CParam *VAC2_PRST_Rise = StsGetParam(funcindex, \"VAC2_PRST_Rise\");"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2236,
+        "text": "CParam *VAC2_PRST_Rise = StsGetParam(funcindex, \"VAC2_PRST_Rise\");"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2237,
+        "text": "CParam *VAC2_PRST_Fall = StsGetParam(funcindex, \"VAC2_PRST_Fall\");"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2237,
+        "text": "CParam *VAC2_PRST_Fall = StsGetParam(funcindex, \"VAC2_PRST_Fall\");"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2238,
+        "text": "CParam *VAC2_PRST_Hys = StsGetParam(funcindex, \"VAC2_PRST_Hys\");"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2238,
+        "text": "CParam *VAC2_PRST_Hys = StsGetParam(funcindex, \"VAC2_PRST_Hys\");"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2298,
+        "text": "VAC2_PRST_Rise->SetTestResult(site, 0, rise_result[site]);"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2299,
+        "text": "VAC2_PRST_Fall->SetTestResult(site, 0, fall_result[site]);"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2300,
+        "text": "VAC2_PRST_Hys->SetTestResult(site, 0, hys[site]);"
+      },
+      {
+        "pattern": "LP_HR_0P5U",
+        "line": 1797,
+        "text": "// TM103: HSKP LP_HR_0P5U — IBP 0.5UA HR 电流测量 (MI, 测 I(ATEST0))"
+      },
+      {
+        "pattern": "LP_HR_0P5U",
+        "line": 1802,
+        "text": "DUT_API int TM103_HSKP_LP_HR_0P5U(short funcindex, LPCTSTR funclabel)"
+      },
+      {
+        "pattern": "LP_HR_0P5U",
+        "line": 1805,
+        "text": "CParam *LP_HR_0P5U = StsGetParam(funcindex, \"LP_HR_0P5U\");"
+      },
+      {
+        "pattern": "LP_HR_0P5U",
+        "line": 1805,
+        "text": "CParam *LP_HR_0P5U = StsGetParam(funcindex, \"LP_HR_0P5U\");"
+      },
+      {
+        "pattern": "LP_HR_0P5U",
+        "line": 1850,
+        "text": "LP_HR_0P5U->SetTestResult(site, 0, lp_hr_0p5u[site]);"
+      },
+      {
+        "pattern": "LP_VBG_BF",
+        "line": 1725,
+        "text": "// TM102: HSKP ATEST0 — LP_VBG_BF 电压测量 (MV)"
+      },
+      {
+        "pattern": "LP_VBG_BF",
+        "line": 1733,
+        "text": "CParam *LP_VBG_BF = StsGetParam(funcindex, \"LP_VBG_BF\");"
+      },
+      {
+        "pattern": "LP_VBG_BF",
+        "line": 1733,
+        "text": "CParam *LP_VBG_BF = StsGetParam(funcindex, \"LP_VBG_BF\");"
+      },
+      {
+        "pattern": "LP_VBG_BF",
+        "line": 1756,
+        "text": "// --- TM102: LP_VBG_BF (MV) ---"
+      },
+      {
+        "pattern": "LP_VBG_BF",
+        "line": 1762,
+        "text": "//   field[(EN_ATEST0,1),(ATEST0_MUX,2)] → LP_VBG_BF 通路 (reg_config/tm102.sv)"
+      },
+      {
+        "pattern": "LP_VBG_BF",
+        "line": 1782,
+        "text": "LP_VBG_BF->SetTestResult(site, 0, lp_vbg_bf[site]);"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 1317,
+        "text": "CParam *BG_RES_DIV_PreRd = StsGetParam(funcindex, \"BG_RES_DIV_PreRd\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 1317,
+        "text": "CParam *BG_RES_DIV_PreRd = StsGetParam(funcindex, \"BG_RES_DIV_PreRd\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3924,
+        "text": "// Trim_BG_RES_DIV (TM135) — BG 电阻分压 Trim (MV, mV)"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3927,
+        "text": "//      → 0x57=0x02, 0x5E=0x0A (ATEST0_MUX=10 → BG_RES_DIV) → vset_off[vdm]"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3930,
+        "text": "DUT_API int Trim_BG_RES_DIV(short funcindex, LPCTSTR funclabel)"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3933,
+        "text": "CParam *BG_RES_DIV_step0 = StsGetParam(funcindex, \"BG_RES_DIV_step0\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3933,
+        "text": "CParam *BG_RES_DIV_step0 = StsGetParam(funcindex, \"BG_RES_DIV_step0\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3934,
+        "text": "CParam *BG_RES_DIV_step1 = StsGetParam(funcindex, \"BG_RES_DIV_step1\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3934,
+        "text": "CParam *BG_RES_DIV_step1 = StsGetParam(funcindex, \"BG_RES_DIV_step1\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3935,
+        "text": "CParam *BG_RES_DIV_step2 = StsGetParam(funcindex, \"BG_RES_DIV_step2\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3935,
+        "text": "CParam *BG_RES_DIV_step2 = StsGetParam(funcindex, \"BG_RES_DIV_step2\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3936,
+        "text": "CParam *BG_RES_DIV_step3 = StsGetParam(funcindex, \"BG_RES_DIV_step3\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3936,
+        "text": "CParam *BG_RES_DIV_step3 = StsGetParam(funcindex, \"BG_RES_DIV_step3\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3937,
+        "text": "CParam *BG_RES_DIV_step4 = StsGetParam(funcindex, \"BG_RES_DIV_step4\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3937,
+        "text": "CParam *BG_RES_DIV_step4 = StsGetParam(funcindex, \"BG_RES_DIV_step4\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3938,
+        "text": "CParam *BG_RES_DIV_step5 = StsGetParam(funcindex, \"BG_RES_DIV_step5\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3938,
+        "text": "CParam *BG_RES_DIV_step5 = StsGetParam(funcindex, \"BG_RES_DIV_step5\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3939,
+        "text": "CParam *BG_RES_DIV_step6 = StsGetParam(funcindex, \"BG_RES_DIV_step6\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3939,
+        "text": "CParam *BG_RES_DIV_step6 = StsGetParam(funcindex, \"BG_RES_DIV_step6\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3940,
+        "text": "CParam *BG_RES_DIV_step7 = StsGetParam(funcindex, \"BG_RES_DIV_step7\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3940,
+        "text": "CParam *BG_RES_DIV_step7 = StsGetParam(funcindex, \"BG_RES_DIV_step7\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3941,
+        "text": "CParam *BG_RES_DIV_pre_value = StsGetParam(funcindex, \"BG_RES_DIV_pre_value\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3941,
+        "text": "CParam *BG_RES_DIV_pre_value = StsGetParam(funcindex, \"BG_RES_DIV_pre_value\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3942,
+        "text": "CParam *BG_RES_DIV_pre_bit = StsGetParam(funcindex, \"BG_RES_DIV_pre_bit\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3942,
+        "text": "CParam *BG_RES_DIV_pre_bit = StsGetParam(funcindex, \"BG_RES_DIV_pre_bit\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3943,
+        "text": "CParam *BG_RES_DIV_post_bit = StsGetParam(funcindex, \"BG_RES_DIV_post_bit\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3943,
+        "text": "CParam *BG_RES_DIV_post_bit = StsGetParam(funcindex, \"BG_RES_DIV_post_bit\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3944,
+        "text": "CParam *BG_RES_DIV_updated = StsGetParam(funcindex, \"BG_RES_DIV_updated\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3944,
+        "text": "CParam *BG_RES_DIV_updated = StsGetParam(funcindex, \"BG_RES_DIV_updated\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3945,
+        "text": "CParam *BG_RES_DIV_guessed = StsGetParam(funcindex, \"BG_RES_DIV_guessed\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3945,
+        "text": "CParam *BG_RES_DIV_guessed = StsGetParam(funcindex, \"BG_RES_DIV_guessed\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3946,
+        "text": "CParam *BG_RES_DIV_target = StsGetParam(funcindex, \"BG_RES_DIV_target\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3946,
+        "text": "CParam *BG_RES_DIV_target = StsGetParam(funcindex, \"BG_RES_DIV_target\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3947,
+        "text": "CParam *BG_RES_DIV_post_value = StsGetParam(funcindex, \"BG_RES_DIV_post_value\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3947,
+        "text": "CParam *BG_RES_DIV_post_value = StsGetParam(funcindex, \"BG_RES_DIV_post_value\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3948,
+        "text": "CParam *BG_RES_DIV_post_rt = StsGetParam(funcindex, \"BG_RES_DIV_post_rt\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3948,
+        "text": "CParam *BG_RES_DIV_post_rt = StsGetParam(funcindex, \"BG_RES_DIV_post_rt\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3951,
+        "text": "TRIM_NODE &BG_RES_DIV = trim_reg.trim(\"bg_res_div\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3967,
+        "text": "// field[(EN_ATEST0,1),(ATEST0_MUX,10)] -> BG_RES_DIV 通路"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3977,
+        "text": "BG_RES_DIV.execute(measure_bg_res_div, spec, funcindex, funclabel, 1, 0, 0, 0);"
+      },
+      {
+        "pattern": "IQ_STANDBY",
+        "line": 1358,
+        "text": "DUT_API int TM000_IQ_STANDBY(short funcindex, LPCTSTR funclabel)"
+      },
+      {
+        "pattern": "IIN_SUSPEND",
+        "line": 1432,
+        "text": "DUT_API int TM001_IIN_SUSPEND(short funcindex, LPCTSTR funclabel)"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 7606,
+        "text": "DUT_API int TM641_BST_UV(short funcindex, LPCTSTR funclabel)"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 7609,
+        "text": "CParam *BST_UV_Rise = StsGetParam(funcindex, \"BST_UV_Rise\");"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 7609,
+        "text": "CParam *BST_UV_Rise = StsGetParam(funcindex, \"BST_UV_Rise\");"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 7610,
+        "text": "CParam *BST_UV_Fall = StsGetParam(funcindex, \"BST_UV_Fall\");"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 7610,
+        "text": "CParam *BST_UV_Fall = StsGetParam(funcindex, \"BST_UV_Fall\");"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 7611,
+        "text": "CParam *BST_UV_Hys = StsGetParam(funcindex, \"BST_UV_Hys\");"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 7611,
+        "text": "CParam *BST_UV_Hys = StsGetParam(funcindex, \"BST_UV_Hys\");"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 7694,
+        "text": "BST_UV_Rise->SetTestResult(site, 0, rise_result[site]);"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 7695,
+        "text": "BST_UV_Fall->SetTestResult(site, 0, fall_result[site]);"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 7696,
+        "text": "BST_UV_Hys->SetTestResult(site, 0, hys[site]);"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 8755,
+        "text": "// TM1205: TRX_BST_UV_GD — BST1-SW1 / BST2-SW2 两组 BST UVLO 阈值 (Toggle)"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 8766,
+        "text": "DUT_API int TM1205_TRX_BST_UV_GD(short funcindex, LPCTSTR funclabel)"
+      }
+    ]
+  },
+  "ForCodexDebug/sub.cpp": {
+    "sha256": "e86d49bef7ae725106311d8205df6dbc11184c7a0920eeaed416a515ac391470",
+    "encoding": "utf-8-sig",
+    "lineCount": 3336,
+    "hits": [
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 2978,
+        "text": "// DALI: measure_bg_res_div �� TM135 Trim_BG_RES_DIV ���� (VDM MV, ���� mV)"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 2981,
+        "text": "// �Ĵ����� test.cpp ������: 0x10=0x43, 0x57=0x02, 0x5E=0x0A (ATEST0_MUX=10 �� BG_RES_DIV)"
+      }
+    ]
+  },
+  "ForCodexDebug/StdAfx.h": {
+    "sha256": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+    "encoding": "gbk",
+    "lineCount": 693,
+    "hits": []
+  },
+  "ForCodexDebug/sub.h": {
+    "sha256": "fe4e2f504f63700233011ce7413a07469c63e1b74669c40788a2aaacc698887c",
+    "encoding": "utf-8-sig",
+    "lineCount": 153,
+    "hits": []
+  },
+  "ForCodexDebug/spec.cpp": {
+    "sha256": "43c968bebf31aa81c078af75f8e12da78f7ca61e38c80b4e270bdd31018f7d45",
+    "encoding": "gbk",
+    "lineCount": 1664,
+    "hits": []
+  },
+  "devel(readonly)/test.cpp": {
+    "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+    "encoding": "utf-8-sig",
+    "lineCount": 8878,
+    "hits": [
+      {
+        "pattern": "TM1205",
+        "line": 8755,
+        "text": "// TM1205: TRX_BST_UV_GD — BST1-SW1 / BST2-SW2 两组 BST UVLO 阈值 (Toggle)"
+      },
+      {
+        "pattern": "TM1205",
+        "line": 8766,
+        "text": "DUT_API int TM1205_TRX_BST_UV_GD(short funcindex, LPCTSTR funclabel)"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2150,
+        "text": "// TM108: HSKP VAC1_PRST - VAC1 PRST CMP threshold (digital V(DTEST0))"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2155,
+        "text": "DUT_API int TM108_HSKP_VAC1_PRST(short funcindex, LPCTSTR funclabel)"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2158,
+        "text": "CParam *VAC1_PRST_Rise = StsGetParam(funcindex, \"VAC1_PRST_Rise\");"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2158,
+        "text": "CParam *VAC1_PRST_Rise = StsGetParam(funcindex, \"VAC1_PRST_Rise\");"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2159,
+        "text": "CParam *VAC1_PRST_Fall = StsGetParam(funcindex, \"VAC1_PRST_Fall\");"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2159,
+        "text": "CParam *VAC1_PRST_Fall = StsGetParam(funcindex, \"VAC1_PRST_Fall\");"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2160,
+        "text": "CParam *VAC1_PRST_Hys = StsGetParam(funcindex, \"VAC1_PRST_Hys\");"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2160,
+        "text": "CParam *VAC1_PRST_Hys = StsGetParam(funcindex, \"VAC1_PRST_Hys\");"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2220,
+        "text": "VAC1_PRST_Rise->SetTestResult(site, 0, rise_result[site]);"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2221,
+        "text": "VAC1_PRST_Fall->SetTestResult(site, 0, fall_result[site]);"
+      },
+      {
+        "pattern": "VAC1_PRST",
+        "line": 2222,
+        "text": "VAC1_PRST_Hys->SetTestResult(site, 0, hys[site]);"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2228,
+        "text": "// TM109: HSKP VAC2_PRST - VAC2 PRST CMP threshold (digital V(DTEST0))"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2233,
+        "text": "DUT_API int TM109_HSKP_VAC2_PRST(short funcindex, LPCTSTR funclabel)"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2236,
+        "text": "CParam *VAC2_PRST_Rise = StsGetParam(funcindex, \"VAC2_PRST_Rise\");"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2236,
+        "text": "CParam *VAC2_PRST_Rise = StsGetParam(funcindex, \"VAC2_PRST_Rise\");"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2237,
+        "text": "CParam *VAC2_PRST_Fall = StsGetParam(funcindex, \"VAC2_PRST_Fall\");"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2237,
+        "text": "CParam *VAC2_PRST_Fall = StsGetParam(funcindex, \"VAC2_PRST_Fall\");"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2238,
+        "text": "CParam *VAC2_PRST_Hys = StsGetParam(funcindex, \"VAC2_PRST_Hys\");"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2238,
+        "text": "CParam *VAC2_PRST_Hys = StsGetParam(funcindex, \"VAC2_PRST_Hys\");"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2298,
+        "text": "VAC2_PRST_Rise->SetTestResult(site, 0, rise_result[site]);"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2299,
+        "text": "VAC2_PRST_Fall->SetTestResult(site, 0, fall_result[site]);"
+      },
+      {
+        "pattern": "VAC2_PRST",
+        "line": 2300,
+        "text": "VAC2_PRST_Hys->SetTestResult(site, 0, hys[site]);"
+      },
+      {
+        "pattern": "LP_HR_0P5U",
+        "line": 1797,
+        "text": "// TM103: HSKP LP_HR_0P5U — IBP 0.5UA HR 电流测量 (MI, 测 I(ATEST0))"
+      },
+      {
+        "pattern": "LP_HR_0P5U",
+        "line": 1802,
+        "text": "DUT_API int TM103_HSKP_LP_HR_0P5U(short funcindex, LPCTSTR funclabel)"
+      },
+      {
+        "pattern": "LP_HR_0P5U",
+        "line": 1805,
+        "text": "CParam *LP_HR_0P5U = StsGetParam(funcindex, \"LP_HR_0P5U\");"
+      },
+      {
+        "pattern": "LP_HR_0P5U",
+        "line": 1805,
+        "text": "CParam *LP_HR_0P5U = StsGetParam(funcindex, \"LP_HR_0P5U\");"
+      },
+      {
+        "pattern": "LP_HR_0P5U",
+        "line": 1850,
+        "text": "LP_HR_0P5U->SetTestResult(site, 0, lp_hr_0p5u[site]);"
+      },
+      {
+        "pattern": "LP_VBG_BF",
+        "line": 1725,
+        "text": "// TM102: HSKP ATEST0 — LP_VBG_BF 电压测量 (MV)"
+      },
+      {
+        "pattern": "LP_VBG_BF",
+        "line": 1733,
+        "text": "CParam *LP_VBG_BF = StsGetParam(funcindex, \"LP_VBG_BF\");"
+      },
+      {
+        "pattern": "LP_VBG_BF",
+        "line": 1733,
+        "text": "CParam *LP_VBG_BF = StsGetParam(funcindex, \"LP_VBG_BF\");"
+      },
+      {
+        "pattern": "LP_VBG_BF",
+        "line": 1756,
+        "text": "// --- TM102: LP_VBG_BF (MV) ---"
+      },
+      {
+        "pattern": "LP_VBG_BF",
+        "line": 1762,
+        "text": "//   field[(EN_ATEST0,1),(ATEST0_MUX,2)] → LP_VBG_BF 通路 (reg_config/tm102.sv)"
+      },
+      {
+        "pattern": "LP_VBG_BF",
+        "line": 1782,
+        "text": "LP_VBG_BF->SetTestResult(site, 0, lp_vbg_bf[site]);"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 1317,
+        "text": "CParam *BG_RES_DIV_PreRd = StsGetParam(funcindex, \"BG_RES_DIV_PreRd\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 1317,
+        "text": "CParam *BG_RES_DIV_PreRd = StsGetParam(funcindex, \"BG_RES_DIV_PreRd\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3924,
+        "text": "// Trim_BG_RES_DIV (TM135) — BG 电阻分压 Trim (MV, mV)"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3927,
+        "text": "//      → 0x57=0x02, 0x5E=0x0A (ATEST0_MUX=10 → BG_RES_DIV) → vset_off[vdm]"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3930,
+        "text": "DUT_API int Trim_BG_RES_DIV(short funcindex, LPCTSTR funclabel)"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3933,
+        "text": "CParam *BG_RES_DIV_step0 = StsGetParam(funcindex, \"BG_RES_DIV_step0\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3933,
+        "text": "CParam *BG_RES_DIV_step0 = StsGetParam(funcindex, \"BG_RES_DIV_step0\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3934,
+        "text": "CParam *BG_RES_DIV_step1 = StsGetParam(funcindex, \"BG_RES_DIV_step1\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3934,
+        "text": "CParam *BG_RES_DIV_step1 = StsGetParam(funcindex, \"BG_RES_DIV_step1\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3935,
+        "text": "CParam *BG_RES_DIV_step2 = StsGetParam(funcindex, \"BG_RES_DIV_step2\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3935,
+        "text": "CParam *BG_RES_DIV_step2 = StsGetParam(funcindex, \"BG_RES_DIV_step2\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3936,
+        "text": "CParam *BG_RES_DIV_step3 = StsGetParam(funcindex, \"BG_RES_DIV_step3\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3936,
+        "text": "CParam *BG_RES_DIV_step3 = StsGetParam(funcindex, \"BG_RES_DIV_step3\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3937,
+        "text": "CParam *BG_RES_DIV_step4 = StsGetParam(funcindex, \"BG_RES_DIV_step4\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3937,
+        "text": "CParam *BG_RES_DIV_step4 = StsGetParam(funcindex, \"BG_RES_DIV_step4\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3938,
+        "text": "CParam *BG_RES_DIV_step5 = StsGetParam(funcindex, \"BG_RES_DIV_step5\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3938,
+        "text": "CParam *BG_RES_DIV_step5 = StsGetParam(funcindex, \"BG_RES_DIV_step5\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3939,
+        "text": "CParam *BG_RES_DIV_step6 = StsGetParam(funcindex, \"BG_RES_DIV_step6\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3939,
+        "text": "CParam *BG_RES_DIV_step6 = StsGetParam(funcindex, \"BG_RES_DIV_step6\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3940,
+        "text": "CParam *BG_RES_DIV_step7 = StsGetParam(funcindex, \"BG_RES_DIV_step7\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3940,
+        "text": "CParam *BG_RES_DIV_step7 = StsGetParam(funcindex, \"BG_RES_DIV_step7\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3941,
+        "text": "CParam *BG_RES_DIV_pre_value = StsGetParam(funcindex, \"BG_RES_DIV_pre_value\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3941,
+        "text": "CParam *BG_RES_DIV_pre_value = StsGetParam(funcindex, \"BG_RES_DIV_pre_value\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3942,
+        "text": "CParam *BG_RES_DIV_pre_bit = StsGetParam(funcindex, \"BG_RES_DIV_pre_bit\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3942,
+        "text": "CParam *BG_RES_DIV_pre_bit = StsGetParam(funcindex, \"BG_RES_DIV_pre_bit\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3943,
+        "text": "CParam *BG_RES_DIV_post_bit = StsGetParam(funcindex, \"BG_RES_DIV_post_bit\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3943,
+        "text": "CParam *BG_RES_DIV_post_bit = StsGetParam(funcindex, \"BG_RES_DIV_post_bit\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3944,
+        "text": "CParam *BG_RES_DIV_updated = StsGetParam(funcindex, \"BG_RES_DIV_updated\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3944,
+        "text": "CParam *BG_RES_DIV_updated = StsGetParam(funcindex, \"BG_RES_DIV_updated\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3945,
+        "text": "CParam *BG_RES_DIV_guessed = StsGetParam(funcindex, \"BG_RES_DIV_guessed\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3945,
+        "text": "CParam *BG_RES_DIV_guessed = StsGetParam(funcindex, \"BG_RES_DIV_guessed\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3946,
+        "text": "CParam *BG_RES_DIV_target = StsGetParam(funcindex, \"BG_RES_DIV_target\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3946,
+        "text": "CParam *BG_RES_DIV_target = StsGetParam(funcindex, \"BG_RES_DIV_target\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3947,
+        "text": "CParam *BG_RES_DIV_post_value = StsGetParam(funcindex, \"BG_RES_DIV_post_value\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3947,
+        "text": "CParam *BG_RES_DIV_post_value = StsGetParam(funcindex, \"BG_RES_DIV_post_value\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3948,
+        "text": "CParam *BG_RES_DIV_post_rt = StsGetParam(funcindex, \"BG_RES_DIV_post_rt\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3948,
+        "text": "CParam *BG_RES_DIV_post_rt = StsGetParam(funcindex, \"BG_RES_DIV_post_rt\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3951,
+        "text": "TRIM_NODE &BG_RES_DIV = trim_reg.trim(\"bg_res_div\");"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3967,
+        "text": "// field[(EN_ATEST0,1),(ATEST0_MUX,10)] -> BG_RES_DIV 通路"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 3977,
+        "text": "BG_RES_DIV.execute(measure_bg_res_div, spec, funcindex, funclabel, 1, 0, 0, 0);"
+      },
+      {
+        "pattern": "IQ_STANDBY",
+        "line": 1358,
+        "text": "DUT_API int TM000_IQ_STANDBY(short funcindex, LPCTSTR funclabel)"
+      },
+      {
+        "pattern": "IIN_SUSPEND",
+        "line": 1432,
+        "text": "DUT_API int TM001_IIN_SUSPEND(short funcindex, LPCTSTR funclabel)"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 7606,
+        "text": "DUT_API int TM641_BST_UV(short funcindex, LPCTSTR funclabel)"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 7609,
+        "text": "CParam *BST_UV_Rise = StsGetParam(funcindex, \"BST_UV_Rise\");"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 7609,
+        "text": "CParam *BST_UV_Rise = StsGetParam(funcindex, \"BST_UV_Rise\");"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 7610,
+        "text": "CParam *BST_UV_Fall = StsGetParam(funcindex, \"BST_UV_Fall\");"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 7610,
+        "text": "CParam *BST_UV_Fall = StsGetParam(funcindex, \"BST_UV_Fall\");"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 7611,
+        "text": "CParam *BST_UV_Hys = StsGetParam(funcindex, \"BST_UV_Hys\");"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 7611,
+        "text": "CParam *BST_UV_Hys = StsGetParam(funcindex, \"BST_UV_Hys\");"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 7694,
+        "text": "BST_UV_Rise->SetTestResult(site, 0, rise_result[site]);"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 7695,
+        "text": "BST_UV_Fall->SetTestResult(site, 0, fall_result[site]);"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 7696,
+        "text": "BST_UV_Hys->SetTestResult(site, 0, hys[site]);"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 8755,
+        "text": "// TM1205: TRX_BST_UV_GD — BST1-SW1 / BST2-SW2 两组 BST UVLO 阈值 (Toggle)"
+      },
+      {
+        "pattern": "BST_UV",
+        "line": 8766,
+        "text": "DUT_API int TM1205_TRX_BST_UV_GD(short funcindex, LPCTSTR funclabel)"
+      }
+    ]
+  },
+  "devel(readonly)/sub.cpp": {
+    "sha256": "e86d49bef7ae725106311d8205df6dbc11184c7a0920eeaed416a515ac391470",
+    "encoding": "utf-8-sig",
+    "lineCount": 3336,
+    "hits": [
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 2978,
+        "text": "// DALI: measure_bg_res_div �� TM135 Trim_BG_RES_DIV ���� (VDM MV, ���� mV)"
+      },
+      {
+        "pattern": "BG_RES_DIV",
+        "line": 2981,
+        "text": "// �Ĵ����� test.cpp ������: 0x10=0x43, 0x57=0x02, 0x5E=0x0A (ATEST0_MUX=10 �� BG_RES_DIV)"
+      }
+    ]
+  },
+  "devel(readonly)/StdAfx.h": {
+    "sha256": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+    "encoding": "gbk",
+    "lineCount": 693,
+    "hits": []
+  },
+  "devel(readonly)/sub.h": {
+    "sha256": "fe4e2f504f63700233011ce7413a07469c63e1b74669c40788a2aaacc698887c",
+    "encoding": "utf-8-sig",
+    "lineCount": 153,
+    "hits": []
+  },
+  "devel(readonly)/spec.cpp": {
+    "sha256": "43c968bebf31aa81c078af75f8e12da78f7ca61e38c80b4e270bdd31018f7d45",
+    "encoding": "gbk",
+    "lineCount": 1664,
+    "hits": []
+  }
+}

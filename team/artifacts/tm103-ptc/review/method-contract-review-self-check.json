@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm103-method-contract-review-self-check",
+  "taskId": "TM103-PTC-RULE_REVIEW_METHOD",
+  "trial": "tm103-ptc",
+  "tm": "TM103",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_METHOD",
+  "generatedAt": "2026-09-18T03:11:04.951Z",
+  "checks": [
+    {
+      "id": "SC-1",
+      "item": "Both binding role contracts read before acting",
+      "result": "PASS",
+      "evidence": "team/roles/rule-reviewer.md and team/roles/rule-reviewer-snapshot-gate.md read in full, plus team/ptc/OUTPUT_CONTRACTS.md (RULE_REVIEW_METHOD section) and team/ptc/ATE_PTC_RUNTIME.md."
+    },
+    {
+      "id": "SC-2",
+      "item": "Snapshot created before any inspection; only copies inspected",
+      "result": "PASS",
+      "evidence": "python scripts/verify_review_snapshot.py create returned exit 0 ('PASS: created 4 byte-exact review copies'). Every contract read came from team/artifacts/tm103-ptc/review/copy/."
+    },
+    {
+      "id": "SC-3",
+      "item": "Snapshot re-verified immediately before the verdict",
+      "result": "PASS",
+      "evidence": "python scripts/verify_review_snapshot.py verify returned exit 0 ('PASS: frozen snapshot is current and byte-exact'), so live strategy/method contracts still equal the reviewed revision. No revision drift."
+    },
+    {
+      "id": "SC-4",
+      "item": "Bounded evidence produced and accepted",
+      "result": "PASS",
+      "evidence": "review/review-evidence-scope.json written and python scripts/verify_review_evidence_scope.py exited 0. Every check names its searched files, query, candidate count and evidence."
+    },
+    {
+      "id": "SC-5",
+      "item": "No pass verdict rests on a zero-candidate presence/capability claim",
+      "result": "PASS",
+      "evidence": "The only zero-candidate assertions are explicit absence assertions (no bound-like key in dali_tm_meta.json), each concluded pass/fail explicitly. The one place where a claimed zero-count did not reproduce is recorded as finding F-1 with candidateCount 2 rather than passed."
+    },
+    {
+      "id": "SC-6",
+      "item": "Strategy and method contracts are internally consistent",
+      "result": "PASS",
+      "evidence": "endpoints {VBAT,VDM}, source tables VBAT_PD3_FXVI / VDM_SDA_ACM, setOnClosure [13], mustRemainUnactuated [8,7,59,58,152], register delta 0x57=0x02 / 0x5E=0x04 and the strategy sha256 binding all agree between the two frozen copies."
+    },
+    {
+      "id": "SC-7",
+      "item": "R- rules cited by both contracts were checked against the project rule set",
+      "result": "PASS",
+      "evidence": "R-RNG, R-PON-01/04/06/07/08/09, R-POFF-02..06, R-SETON/E011, FR-001 Cap2, anti-short, R-BST-SW, H011/R034, E025, test-types class 7 and the six-step framework template were read at their cited locations in knowledge/ and Library-Functions/."
+    },
+    {
+      "id": "SC-8",
+      "item": "No invented limit or tolerance",
+      "result": "PASS",
+      "evidence": "measurementPlan.limit is UNRESOLVED_NO_PROJECT_AUTHORITY with null bounds and this judgement was independently re-verified: 0 bound-like keys in dali_tm_meta.json, 0 default MI tolerance in knowledge/standards, DFT row carries only ExpectValue/Unit."
+    },
+    {
+      "id": "SC-9",
+      "item": "No re-allocated source, relay or register; exclusive SetOn respected",
+      "result": "PASS",
+      "evidence": "The method contract repeats the signed allocations verbatim and contains exactly one SetOn-family command in the whole file (PH-02, K13_VBAT_Cap) with no SetOff and no second SetOn."
+    },
+    {
+      "id": "SC-10",
+      "item": "AMUX never driven or measured",
+      "result": "PASS",
+      "evidence": "AMUX occurs twice in the method contract: one quoted rule citation and one explicit 'declared non-endpoint, not allocated, not driven, not measured'. No phase, setpoint, measurement or log entry names AMUX."
+    },
+    {
+      "id": "SC-11",
+      "item": "Every claimed source/relay backed by a named project artifact",
+      "result": "PASS",
+      "evidence": "Direct reads of project/DALI/Pin_Channel_define.h:12,:22 and project/DALI/SCH-Connect-Map.txt:795-797, :801, :804, :814-816, :832-834, :914 reproduced the cited content; relay identities K8/K7/K13/K59/K58/K152 all resolve to a project path line and a CBIT bit."
+    },
+    {
+      "id": "SC-12",
+      "item": "Reviewer made no edit to any reviewed artifact and created no helper",
+      "result": "PASS",
+      "evidence": "The strategy contract, method contract, their handoffs and all project code are untouched; the only writes are the three review deliverables plus the two gate inputs the runtime mandates (review/contract-manifest.json, review/immutable-review-snapshot.json, review/copy/, review/review-evidence-scope.json). No subagent, no second review, no script collection."
+    },
+    {
+      "id": "SC-13",
+      "item": "Terminal verdict is internally consistent",
+      "result": "PASS",
+      "evidence": "verdict=pass with blockingDefects empty; the one substantive finding (F-1) changes no value, limit, allocation or sequence, so it does not restore test-method work and does not constitute a missing or contradictory signed method input."
+    }
+  ],
+  "limitations": [
+    "Trial schematic/dft intermediate artifacts (SCH-Connect-Map.json consistencyNotes, openQuestions, outOfScopeFlagsForDownstream) are outside the runner-listed boundary; their content was accepted as quoted inside the frozen revision, which is recorded as F-3.",
+    "The two project gates (validate_strategy_contract.py, validate_ptc_output_contracts.py) were re-run against the live paths at snapshot time; the snapshot gate proves those live bytes equal the reviewed copies."
+  ]
+}

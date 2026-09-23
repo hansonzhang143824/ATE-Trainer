@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 2,
+  "stage": "INPUT_SYNC",
+  "tm": "TM109",
+  "canonicalInputs": {
+    "dft": {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\input\\DFT.csv",
+      "sha256": "ce69dce829a1473f1c7fd2ec7d55014b9e2fcf85262301169c654100b5461541",
+      "rowCount": 1,
+      "rawRows": [
+        {
+          "Item": "TM109",
+          "Function Name": "",
+          "ShortName": "VAC2_PRST",
+          "ExpectValue": "rising vth 4.15V, hys 0.35V",
+          "Unit": "V",
+          "Trim": "",
+          "Record": "",
+          "Hardware_initial": "vset[vbat,4.2,100e-6,0]",
+          "Software_initial": "\tentertestmode();\n\tI2CWriteSameData(DEV_ADDR, 0x55, 0x96);\t//\t\tfield[(EN_DTEST0,1),(DTEST0_MUX,22)]",
+          "Dynamic": "vset[vac2,3.8,100e-6,1]\nvset[vac2,4.4,1e-3,1]\nvset[vac2,4.1,100e-6,1]\nvset[vac2,3.5,1e-3,1]",
+          "Check": "INT",
+          "Type": "Toggle, MV"
+        }
+      ],
+      "requiredOutputs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-direct-trial\\dft\\dft-meta.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-direct-trial\\dft\\dft-conditions.yaml"
+      ],
+      "missingOrStaleOutputs": [],
+      "status": "ready"
+    },
+    "schematic": {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\schematic-ir.json",
+      "sha256": "35fdd1582958eb6e4fd63e29da59dec63dfe19e3fd6198d8cc8b8f727a5c7ff5",
+      "requiredOutputs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-direct-trial\\schematic\\SCH-Connect-Map.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-direct-trial\\schematic\\Components-Statistic.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-direct-trial\\schematic\\schematic-ir.json"
+      ],
+      "missingOrStaleOutputs": [],
+      "status": "ready"
+    }
+  },
+  "dispatchableRoles": [],
+  "status": "ready"
+}

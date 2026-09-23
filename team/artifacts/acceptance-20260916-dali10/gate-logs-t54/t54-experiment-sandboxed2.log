@@ -1,0 +1,16 @@
+=== 补输入重定向 --in ===
+  已加入 --in → 12203 B
+  语法 OK
+
+=== 重跑实验（--in 副本 + --out 沙箱 + 跑后断言）===
+  输入副本注入 3 条（第三方前缀 qaProbeAnchors）
+  exit=0
+    [out-redirect] 输出目标 = D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10\gate-logs-t28\t28-anchors.json.sbx-out
+    [in-redirect] 读取目标 = D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10\gate-logs-t28\t28-anchors.json.sbx-in
+    保留他方命名空间: qaProbeAnchors, setupArchitectFreezeAnchors
+  qaProbeAnchors.anchors = 3 条（应 3）⇒ 3 条全在 = True
+  setupArchitectFreezeAnchors 在 = True
+  输出只写沙箱：t28-anchors.json.sbx-out 存在=True；canonical 未收到输出 = True
+
+=== 跑后断言（固定动作）===
+  assert 通过：活档 sha 前后一致（6edfc659e930d5bdc5ddfcd2）✓

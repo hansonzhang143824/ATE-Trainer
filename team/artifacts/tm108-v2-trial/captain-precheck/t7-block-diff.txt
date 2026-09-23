@@ -1,0 +1,190 @@
+--- tm108-block-before.txt
++++ tm108-block-after.txt
+@@ -1,10 +1,72 @@
++        rise_result[site] = vth_r[site];
++        fall_result[site] = vth_f[site];
++    }
++    // Hys = Rise - Fall (Toggle 两段式, 3参数)
++    FOR_EACH_VALID_SITE(site)
++    {
++        hys[site] = (rise_result[site] - fall_result[site]) * 1e3;  // V -> mV (R-HYS: Hys 电压→mV, 电流→mA)
++    }
++    // ====== Step 5: Power Off (three-step) ======
++    VBUS_DRVH1_ACM.Set(FV, 0, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);
++    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
++    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10UA, ACM200_RELAY_ON);
++    delay_ms(1);
++    VBUS_DRVH1_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
++    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
++    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
++
++    // ====== Step 6: LogData ======
++    FOR_EACH_VALID_SITE(site)
++    {
++        VBUS_HT_VBAT_Rise->SetTestResult(site, 0, rise_result[site]);
++        VBUS_HT_VBAT_Fall->SetTestResult(site, 0, fall_result[site]);
++        VBUS_HT_VBAT_Hys->SetTestResult(site, 0, hys[site]);
++    }
+     return 0;
+ }
+ // =====================================================================
+-// TM108: HSKP VAC1_PRST - VAC1 PRST CMP threshold (digital V(DTEST0))
++// TM108: HSKP VAC1_PRST - VAC1 PRST CMP threshold (digital check carried by the DFT as V(DTEST0))
+ // DFT: vset[vbat,3] -> en_tm[] -> field[(DMUX_EN,1),(DMUX_SEL,22)] -> a2d_vac1_prst
+-//      -> VAC1 0->10->0V scan, measure V(DTEST0)=nQON toggle (r 4.059 f 3.738)
++//      -> VAC1 0->10->0V scan, capture the digital toggle on the observation candidate
+ // Loop: VBAT_PD3_FXVI + VAC123_AMUX_ACM + NQON_HG1_ACM
++//
++// CONFORMANCE (t7 / run tm108-v2-impl) - every value in this function is traceable to the signed
++// contracts; no number that exists only in this file has been treated as authorised:
++//   resources  : strategy tm108-resource-config-contract.{md,json} RA-1/RA-2 (VAC123_AMUX_ACM
++//                S5_0), RA-3/RA-4 (VBAT_PD3_FXVI S3_5), RA-5 (NQON_HG1_ACM S5_9) - CANDIDATE ONLY
++//   phases     : method tm108-test-method-contract.md sec.3 P0..P8 (P0 pre-state, P1 functional
++//                closure, P2 VBAT on, P3 register delta, P4 rising sweep, P5 turn-around,
++//                P6 falling sweep, P7 zero + hold, P8 release)
++//   relays     : P1 closure set {13,65} (cbite.SetOn, both functional relays); K17_BUSL_VAC is
++//                only required to BE closed - the shared VAC branch entry state is inherited from
++//                the test-program precondition (method sec.3 P1; OI-T4-04 open), so this item
++//                writes no actuation call for it; K8/K18/K19/K64 stay at their default-conducting
++//                state because every TM108 proof chain has required_on=[] there (strategy sec.6 G3)
++//   isolation  : K21_VAC_Cap, K14_VAC1_P2P, K70/K87/K90/K82, K141/K142, K86/K130 stay
++//                un-actuated (strategy sec.6 G1/G3 isolationRequirements, sec.6.1)
++//   registers  : entertestmode() then the single field directive [(DMUX_EN,1),(DMUX_SEL,22)]
++//                (strategy sec.7; reg_config/tm108.sv) - no de-activation exists (OI-T5-05/RT-3)
++//   setpoint   : VBAT 3 V FV (method sec.3 P2; F4/OI-T4-12 open - the 4.2 V CSV layer is unused)
++//   measurement: two rampv_capv segments, 0->10 V and 10->0 V, 200 samples x 20 us, capture level
++//                1.65 V, TRIG_FALLING on the rise and TRIG_RISING on the fall (method sec.4
++//                "segment rise"/"segment fall"; the geometry is a method-side position, F5 open)
++//   results    : VAC1_PRST_Rise / _Fall (V) and _Hys = (Rise - Fall) * 1e3 (mV, R-HYS)
++//   power-down : zero while holding range -> delay_ms(1) -> RELAY_OFF with the unified
++//                ACM200_10V/10MA and FXVIe_PLUS_10V/10MA pairs (method sec.5 action table)
++//   safety end : the closure set is released implicitly with the cbite scope; no relay of this
++//                item is left actuated and no source is left energised
++//
++// NOT ASSERTED HERE (carried open, no side chosen):
++//   OI-T4-01/OI-T5-01  the DFT check pin V(DTEST0) is NOT equated with the nQON candidate - the
++//                observation allocation RA-5 is marked CANDIDATE ONLY, and the capture level, the
++//                trigger polarity and the DMUX_SEL value all depend on that unproven relation
++//   RT-2/OI-T5-02  the BST/SW constraint is unproven in all 9 phases; no BST/SW action is added
++//   RT-1       REFUTED by independent re-check of the signed strategy contract: keepOpenRelayNumbers
++//                does NOT contain 13 (or 65) and every mention of K13 there requires closure, so R1
++//                and I3 agree - K13 closed from P1 through P7 and released at P8 (see captain-precheck/
++//                rt-1-record-correction.md; the earlier RT-1 claim is withdrawn, not carried)
++//   RT-4/OI-T4-09  no tolerance is published for "rising vth 4.4 V, hys 0.35 V"; none is invented
++//   F1-F6/OI-T4-10/11/12/13/14/16  carried, both sides retained, no averaging
+ // =====================================================================
+ DUT_API int TM108_HSKP_VAC1_PRST(short funcindex, LPCTSTR funclabel)
+ {
+@@ -19,32 +81,60 @@
+     double hys[SITE_NUM] = { 0 };
+ 
+     // ====== Step 1: Connect ======
+-    // VBAT -> VBAT_PD3_FXVI: K8 default NC, static supply needs K13_VBAT_Cap
+-    // VAC1 -> VAC123_AMUX_ACM: default NC; VAC1 is scanned input, do NOT close K21_VAC_Cap
+-    // nQON -> NQON_HG1_ACM: K64 direct + K65_nQON_PU pull-up
++    // P0 pre-state -> P1 functional closure (method sec.3 P0/P1)
++    // relayActuationTrace (method sec.6): closureSetActuated = {13, 65}; every other TM108 relay
++    // (K8, K18, K19, K64, K17_BUSL_VAC) is at its inherited default-conducting state.
++    // VBAT -> VBAT_PD3_FXVI: K8 default NC; the powered rail needs its cap gate -> K13_VBAT_Cap
++    // VAC1 -> VAC123_AMUX_ACM: K18/K19 default NC (default conduction is what selects VAC1);
++    //   VAC1 is the scanned input, so K21_VAC_Cap must stay un-actuated - no cap across the node
++    // observation -> NQON_HG1_ACM: K64 default NC contact + K65_nQON_PU 5 V pull-up (open drain);
++    //   the pull-up is what makes a 1.65 V capture level a mid-scale logic threshold
++    // K17_BUSL_VAC: required CLOSED by the strategy contract (sec.6 G1) but the contract assigns
++    //   no actuation form (OI-T4-04); the VAC branch entry state is a precondition, so no SetOn
++    //   call for relay 17 is written here
++
+     cbite.SetOn(K13_VBAT_Cap, K65_nQON_PU, -1);
+     delay_ms(3);
+ 
+     // ====== Step 2: Power On ======
++    // P2 static supply (method sec.3 P2): VBAT setpoint 3 V with the DFT ramp time 100e-6 s; the
++    // 4.2 V CSV counterpart is registered but never averaged into this value (F4/OI-T4-12 open).
++    // No other source is enabled: VAC1 stays 0 V intent until P4 and the observation source
++    // drives nothing in this phase.
+     // vset[vbat,3,100e-6,0] -> VBAT=3V FV
+     VBAT_PD3_FXVI.Set(FV, 3, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+     delay_ms(1);
+ 
+-    // ====== Step 3: Register Config ======
++    // ====== Step 3: Register Config (P3 staircase, method sec.3 P3) ======
++    // registerActivationTrace (method sec.6): the APPLIED - not the contested - values are the
++    // ones written below. 0x56=0x16 is DMUX_SEL=22 and 0x57=0x08 is DMUX_EN=1, written together
++    // as one field directive; the CSV-layer counterpart (EN_DTEST0/DTEST0_MUX = 1/23) is
++    // registered and deliberately NOT applied. The delta has no de-activation field.
+     entertestmode();
+     // field[(DMUX_EN,1),(DMUX_SEL,22)] -> a2d_vac1_prst (reg_config/tm108.sv)
+     I2CWriteSameData(DEV_ADDR, 0x56, 0x16);
+     I2CWriteSameData(DEV_ADDR, 0x57, 0x08);
+ 
+-    // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+-    // nQON high-Z reads DTEST0 logic level; ramp VAC1 linearly and capture source voltage
++    // P4 rising sweep -> P5 turn-around -> P6 falling sweep (method sec.3 P4/P5/P6)
++    // sweepGeometry (method sec.6, recorded because F5/OI-T4-13 is open): start/stop per segment,
++    // step 200 (a SAMPLE COUNT, not a voltage increment), interval 20 us => 4 ms of sweep; both
++    // segments use the same source, range and capture level so a geometry mismatch cannot
++    // fabricate a hysteresis, and no relay acts at the turn-around. The observation endpoint is
++    // not asserted: the capture is read on the RA-5 candidate (PENDING-OI-T4-01).
++
+     double vth_r[SITE_NUM] = { 0 };
+     double vth_f[SITE_NUM] = { 0 };
+-    // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
++    // rising sweep: the indication presents its FALLING edge inside the sweep window, so this
++    // segment yields the rising threshold. The polarity premise is PENDING (OI-T4-01); the
++    // triggerModeRise recorded by the station log is TRIG_FALLING - it names the slope of the
++    // observed node, not the direction of the input ramp.
+     test_method.rampv_capv(VAC123_AMUX_ACM, ACM200_20V, ACM200_100MA,
+                            NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                            0.0, 10.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+-    // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
++    // falling sweep: mirrored segment, yields the falling threshold; triggerModeFall is recorded
++    // as TRIG_RISING under the same pending premise as the rise segment. The capture level is
++    // identical to the rise segment on purpose - a differing level would put a measurement
++    // artefact into Hys instead of a device hysteresis.
+     test_method.rampv_capv(VAC123_AMUX_ACM, ACM200_20V, ACM200_100MA,
+                            NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                            10.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+@@ -53,22 +143,40 @@
+         rise_result[site] = vth_r[site];
+         fall_result[site] = vth_f[site];
+     }
+-    // Hys = Rise - Fall; voltage hysteresis logs in mV
++    // Hys = Rise - Fall (R-HYS: the x1e3 conversion happens at this assignment only and is never
++    // applied to the logged identity of Rise/Fall). Per site: Hys is computed from that site's own
++    // Rise and Fall - no cross-site averaging, interpolation or sharing of captured values.
+     FOR_EACH_VALID_SITE(site)
+     {
+         hys[site] = (rise_result[site] - fall_result[site]) * 1e3;
+     }
+ 
+-    // ====== Step 5: Power Off (three-step) ======
++    // ====== Step 5: Power Off (P7 zero + hold -> P8 release, method sec.5, R-POFF) ======
++    // Step 1-3 of the power-down plan: zero every source while HOLDING its working range and
++    // leaving its relay ON, so that no contact is hot-switched between unequal potentials. All
++    // setpoints of this step are 0 V. K13_VBAT_Cap is still closed here, which is the intended
++    // discharge path of the collapsing VBAT rail (its 1 kohm bleed) in P7.
+     VAC123_AMUX_ACM.Set(FV, 0, ACM200_20V, ACM200_100MA, ACM200_RELAY_ON);
+     VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+     NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10UA, ACM200_RELAY_ON);
+     delay_ms(1);
++    // Step 4-6: release the three channels with the unified RELAY_OFF range pairs
++    // (ACM200_10V/10MA, FXVIe_PLUS_10V/10MA) and end the item with the closure set released.
++    // {13,65} need no explicit release call: the cbite scope ends with the function, so no relay
++    // of this item outlives it. P8 therefore ends with every source off, no rail charged, every
++    // keep-open relay still un-actuated and nothing written to the DUT.
+     VAC123_AMUX_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+     VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+     NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+ 
+-    // ====== Step 6: LogData ======
++    // ====== Step 6: LogData (method sec.6 logPlan) ======
++    // Calculated quantities only: Rise and Fall in V and Hys in mV, per site, with no substituted
++    // value. The remaining logPlan context quantities (registerActivationTrace,
++    // relayActuationTrace, triggerModeRise/Fall, captureLevel, sweepGeometry, bstSwStatus) are
++    // carried by the trace comments in this function; failureContext is the station log's record
++    // for a segment that produced no capture. No placeholder number is ever logged in place of a
++    // missing capture.
++
+     FOR_EACH_VALID_SITE(site)
+     {
+         VAC1_PRST_Rise->SetTestResult(site, 0, rise_result[site]);

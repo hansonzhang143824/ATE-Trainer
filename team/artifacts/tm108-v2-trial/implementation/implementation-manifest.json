@@ -1,0 +1,421 @@
+{
+  "runId": "tm108-v2-impl",
+  "task": "t7",
+  "owner": "ate-implementer",
+  "tm": "TM108",
+  "dftName": "VAC1_PRST",
+  "implementedSymbol": "TM108_HSKP_VAC1_PRST",
+  "targetRoot": "D:/PROJECT6-DALI/ForCodexDebug",
+  "date": "2026-09-17",
+
+  "readerDiscipline": {
+    "rule": "test.cpp / sub.cpp / StdAfx.h under the target are DLP transparent-encrypted; every read, write and hash of them was performed with python byte mode (open(p,'rb') / open(p,'wb')), preserving the UTF-8 BOM and CRLF.",
+    "readerUsed": "python byte mode only (C:/Users/nvt10241/AppData/Local/Programs/Python/Python312/python.exe)",
+    "forbiddenReaders": ["pwsh Get-Content", "pwsh Select-String", "pwsh Get-FileHash", "any .NET file API"],
+    "hashLabel": "all hashes below are PLAINTEXT sha256 computed by python byte mode over the decoded-verbatim byte stream (CIPHERTEXT digests are deliberately not recorded here)",
+    "hazardObserved": "a pwsh Get-Content/Set-Content text pipeline used on a workspace helper file returned the TSZ# ciphertext header and destroyed that helper file; this confirms the trap and the reason the helper files are written and edited only through the python/agent file tools",
+    "lineNumbering": "ALL line numbers in this manifest, in t7-selfcheck.md and in t11-selfcheck.md use ONE 1-based DISPLAY-line convention: decode the file (utf-8-sig), split the decoded text on LF (\\n), and drop the single trailing empty element. test.cpp carries 3 bare-LF terminators (display lines 1393, 4639 and 4698 in the delivered revision), so splitting on CRLF instead of LF yields numbers exactly one LOWER for every line after 1393 - that undeclared off-by-one is what review finding RF-04 items 1 and 4 measured. Every number quoted in this manifest was recomputed under the LF convention with python byte mode by the scripts kept beside this file (_t11_analyze.py, _t11_diff.py, _t11_edit_test.py, _t11_verify.py).",
+    "revisionTrail": "t7 (2026-09-17) delivered b79b911a...d5a. t8 (rule-reviewer) returned needs-revision with RF-01 (blocker, owner test-method-expert) and RF-02/RF-03/RF-04 (low, owner ate-implementer). t11 (ate-implementer, 2026-09-17) closed RF-02, RF-03 and RF-04 by comment/documentation-only edits and re-published the hash binding; RF-01 was NOT touched (out of scope, different owner)."
+  },
+
+  "signedContracts": [
+    {
+      "id": "I1",
+      "path": "team/artifacts/tm108-v2-trial/strategy/tm108-resource-config-contract.md",
+      "sha256": "6F6057721062E97EBDA53531383AFF22A91BD0AA8141AADC6BAFC5EF448FE6E4",
+      "verifiedByImplementer": true,
+      "reader": "python byte mode"
+    },
+    {
+      "id": "I2",
+      "path": "team/artifacts/tm108-v2-trial/strategy/tm108-resource-config-contract.json",
+      "sha256": "FBA489B5D8CA06A12D74C187EDBBFE1E2F3FC2D564B27DC6AB8B092F8BD3E4B9",
+      "verifiedByImplementer": true,
+      "reader": "python byte mode"
+    },
+    {
+      "id": "I3",
+      "path": "team/artifacts/tm108-v2-trial/method/tm108-test-method-contract.md",
+      "sha256": "8EB56D24678406219FE83C3D9E7F09D7D3EC5C39A7A52403F72464802FCA1FA7",
+      "verifiedByImplementer": true,
+      "reader": "python byte mode"
+    },
+    {
+      "id": "I4",
+      "path": "team/artifacts/tm108-v2-trial/method/tm108-test-method-contract.json",
+      "sha256": "F947E6C626D32A01FB159C57C32A8F9CC0E9CEFF60B45EA445610123CC3C0E21",
+      "verifiedByImplementer": true,
+      "reader": "python byte mode"
+    },
+    {
+      "id": "I5",
+      "path": "team/artifacts/tm108-v2-trial/method/bst-sw-phase-check.md",
+      "sha256": "FA41E471AE549AB0AFFCF629FC1D691703281A08498CFE10C26D926C4D115E54",
+      "verifiedByImplementer": true,
+      "reader": "python byte mode"
+    },
+    {
+      "id": "I6",
+      "path": "team/artifacts/tm108-v2-trial/captain-precheck/oi-t4-01-status-addendum.md",
+      "sha256": "626BB270BF2B803AA1E5EE1318F9DFFC36D6C12254FFA5F745133A32EA12B9BF",
+      "verifiedByImplementer": true,
+      "reader": "python byte mode"
+    },
+    {
+      "id": "I7",
+      "path": "team/artifacts/tm108-v2-trial/captain-precheck/protocol-runtime-memory.md",
+      "sha256": "28B9E154648F75B60349A9F16286D695D1C3F8E3BEE02B8DE82DEBF74837D993",
+      "verifiedByImplementer": true,
+      "note": "re-hash as required by the task contract table"
+    },
+    {
+      "id": "I8a",
+      "path": "team/TEAM_ARCHITECTURE_V2.md",
+      "sha256": "E03F6CF04190F7923C575F1A5D987350E7B29D478A8C84F4346BCCE91BC75551",
+      "verifiedByImplementer": true,
+      "note": "implementer charter lines 294-395"
+    },
+    {
+      "id": "I8b",
+      "path": "team/ROLE_ROUTING.md",
+      "sha256": "3D1526E969F2017A76D69E40376AE394E20D822E3230667C8E91283767890961",
+      "verifiedByImplementer": true
+    },
+    {
+      "id": "I9",
+      "path": "team/schemas/implementation-manifest.schema.json",
+      "sha256": "2F5AF49431A4D958131629A47F5228DC59DCC904CFEE81691FB9BD8A4D650F6D",
+      "verifiedByImplementer": true,
+      "note": "targetRoot const = D:/PROJECT6-DALI/ForCodexDebug (matches this manifest)"
+    },
+    {
+      "id": "T7",
+      "path": "team/artifacts/tm108-v2-trial/implementation/t7-task-contract.md",
+      "sha256": "13A155431803BFF23759476366D6F01C031E738F6E1B2DA70691CFB9A16CCC9B",
+      "verifiedByImplementer": true,
+      "note": "this task's own contract, hashed for the record"
+    }
+  ],
+
+  "authorityOrder": [
+    "1. user ruling (current)",
+    "2. I1/I2 signed resource+config contract and I3/I4 signed test method contract",
+    "3. current VS project / API facts",
+    "4. active implementation rules",
+    "5. the already-implemented function - a DOWNSTREAM CONSUMER, never an authority"
+  ],
+
+  "vsProject": {
+    "solutionPath": "NOT DETERMINED BY THIS TASK - no build was run and no .sln/.vcxproj was opened",
+    "projectPath": "D:/PROJECT6-DALI/ForCodexDebug (pin fixed by I9)",
+    "targetSourceFile": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+    "buildScope": "not exercised - compilation belongs to compile-diagnostician"
+  },
+
+  "scope": [
+    "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp :: TM108_HSKP_VAC1_PRST only (comment/trace conformity; no executable statement changed)",
+    "no change to sub.cpp, to any other TM, or to any file under D:/PROJECT6-DALI/devel (frozen, never opened)"
+  ],
+
+  "targetSourceFiles": [
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "createOrModify": "modify",
+      "reason": "TM108_HSKP_VAC1_PRST already exists here and is the registered symbol for this DFT item; the item had to be brought into conformance with I1-I4."
+    },
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/sub.cpp",
+      "createOrModify": "unmodified",
+      "reason": "I3 sec.11 hands the implementer test.cpp (the main TM function); nothing in I3 requires a sub.cpp callback for TM108 (no Trim framework, no measure_xxx binding - strategy sec.1 trim=null). Verified 0 'TM108' occurrences in sub.cpp (python byte mode plaintext read, sha256 e86d49be...470)."
+    }
+  ],
+
+  "targetSymbols": [
+    {
+      "tm": "TM108",
+      "function": "TM108_HSKP_VAC1_PRST",
+      "registrationPoint": "existing DUT_API function in source/test.cpp; signature unchanged",
+      "signature": "DUT_API int TM108_HSKP_VAC1_PRST(short funcindex, LPCTSTR funclabel)",
+      "sourceLocationBefore": "test.cpp:2155 (plaintext, python byte mode; display-line convention per readerDiscipline.lineNumbering)",
+      "sourceLocationAfter": "test.cpp:2193 (plaintext, python byte mode; identical to the t7 revision - the t11 edit inserted no comment line above the signature, so this number did not move)"
+    }
+  ],
+
+  "backups": [
+    {
+      "original": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "backup": "team/artifacts/tm108-v2-trial/implementation/backup/tm108-v2-impl__test.cpp.before",
+      "sha256": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a",
+      "hashKind": "plaintext",
+      "reader": "python byte mode (open(p,'rb'))",
+      "size": 469714,
+      "bom": true,
+      "crlf": 9350,
+      "byteExactCopyVerified": true
+    },
+    {
+      "original": "D:/PROJECT6-DALI/ForCodexDebug/source/sub.cpp",
+      "backup": "team/artifacts/tm108-v2-trial/implementation/backup/tm108-v2-impl__sub.cpp.before",
+      "sha256": "e86d49bef7ae725106311d8205df6dbc11184c7a0920eeaed416a515ac391470",
+      "hashKind": "plaintext",
+      "reader": "python byte mode (open(p,'rb'))",
+      "size": 121909,
+      "note": "backup taken for completeness; sub.cpp was NOT modified (backup is byte-identical to the live file)"
+    }
+  ],
+
+  "changes": [
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "symbols": ["TM108_HSKP_VAC1_PRST"],
+      "beforeSha256": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a",
+      "afterSha256": "456fba2ce30aea904ed852175dad5724cea06347d989beff0b7af752dc486eaa",
+      "hashKind": "plaintext",
+      "reader": "python byte mode (open(p,'rb'))",
+      "sizeBefore": 469714,
+      "sizeAfter": 477760,
+      "bomBefore": true,
+      "bomAfter": true,
+      "crlfBefore": 9350,
+      "crlfAfter": 9440,
+      "bareLfBefore": 3,
+      "bareLfAfter": 3,
+      "linesBefore": 9353,
+      "linesAfter": 9443,
+      "intermediateStateSha256": "8498c304ba4752ffcc44c646bdff9649006bb0a858b25db099368bdfa4ae9871",
+      "intermediateStateNote": "after the FIRST edit pass of t7 (before the RT-1 banner correction recorded in deviations DEV-5); kept for audit only - it is NOT the delivered state",
+      "intermediateStateSha256_2": "b79b911a65a33abd62697f8576bd04b5022194751c9bfc5b174ecdab96d05d5a",
+      "intermediateStateNote_2": "the t7-DELIVERED revision (477123 B, 9437 lines, CRLF 9434, bare LF 3) - the revision reviewed by rule-reviewer as t8, byte-identical to review/copy/test.cpp. Superseded by the t11 comment-only revision now recorded in afterSha256; kept for audit only and it is NOT the delivered state.",
+      "changeKind": "comments only - zero executable statements added, removed or altered (5628 non-comment lines before and after, byte-identical as a sequence; corrected from the t7 figure '5625' per review finding RF-04 item 2 and recomputed by python byte mode on both the backup and the delivered file)",
+      "changedLineRangeBefore": "2150..2217 (display lines per readerDiscipline.lineNumbering, python byte mode)",
+      "changedLineRangeAfter": "2150..2307 (display lines, python byte mode; the t7 revision was 2150..2301 - the t11 revision adds 6 further comment lines, all inside the same TM108 banner/body)",
+      "addedLineCount": 103,
+      "removedLineCount": 13,
+      "enclosingBlock": "backup: TM108 comment banner 2149..2154 plus the body of TM108_HSKP_VAC1_PRST 2155..2225; delivered: TM108 comment banner 2149..2192 plus the body of TM108_HSKP_VAC1_PRST 2193..2315 (corrected from the t7 '2148..2152 / 2154..2224' per review finding RF-04 item 4)",
+      "planRefs": [
+        "I1/I2 strategy sec.6 G1/G3 + sec.6.1 (closure set {13,65}; K17 required-closed with no assigned actuation form; isolation set; default-conducting relays)",
+        "I1/I2 strategy sec.7 registerDelta (entertestmode + single field [(DMUX_EN,1),(DMUX_SEL,22)]; no de-activation)",
+        "I1/I2 strategy sec.5 RA-1..RA-5 (VAC123_AMUX_ACM S5_0, VBAT_PD3_FXVI S3_5, NQON_HG1_ACM S5_9 CANDIDATE ONLY)",
+        "I3/I4 method sec.3 P0 (pre-state), P1 (closure + delay_ms(3) + K17 pre-state), P2 (VBAT 3 V, 100e-6 s ramp, delay_ms(1)), P3 (testmode then the delta, pending OI-T4-01)",
+        "I3/I4 method sec.3 P4 (0->10 V, 200 x 20 us, 1.65 V, TRIG_FALLING), P5 (turn-around, no relay action), P6 (10->0 V mirrored, TRIG_RISING)",
+        "I3/I4 method sec.4 measurementPlan + calculation (Rise/Fall in V; Hys = (Rise-Fall)*1e3 mV per R-HYS; per-site only)",
+        "I3/I4 method sec.5 powerDownPlan actions 1-6 (zero while holding range -> delay_ms(1) -> unified RELAY_OFF ranges -> release the closures)",
+        "I3/I4 method sec.6 logPlan (per-site results + the raw-context trace quantities + failureContext rule)",
+        "I3/I4 method sec.7 + bst-sw-phase-check.md (9/9 phases unproven -> no BST/SW action added)",
+        "I3/I4 method sec.9 OI-T5-01/OI-T5-02/OI-T5-05 and sec.10-11 RT-2/RT-3/RT-4 carried open",
+        "I6 OI-T4-01 remains UNRESOLVED - the DFT check pin V(DTEST0) is not equated with the nQON candidate anywhere in the code",
+        "captain-precheck/rt-1-record-correction.md (RT-1 refuted) + captain-notes-t7.md sec.1 (RT-4 has no code-side limit) + sec.3 (DMUX_SEL=22 is implemented as the signed value)"
+      ],
+      "apiMappings": [
+        {"api": "cbite.SetOn", "args": ["K13_VBAT_Cap", "K65_nQON_PU", "-1"], "planRef": "method sec.3 P1 + strategy sec.6 G3 closureSetActuated=[13,65]"},
+        {"api": "delay_ms", "args": ["3"], "planRef": "method sec.3 P1 delay (site delay after closure, contract md :225-226)"},
+        {"api": "VBAT_PD3_FXVI.Set", "args": ["FV", "3", "FXVIe_PLUS_10V", "FXVIe_PLUS_100MA", "FXVIe_PLUS_RELAY_ON"], "planRef": "method sec.3 P2 + strategy RA-3/RA-4"},
+        {"api": "delay_ms", "args": ["1"], "planRef": "method sec.3 P2 delay (method-side hold)"},
+        {"api": "entertestmode", "args": [], "planRef": "method sec.3 P3 step 1 + strategy sec.7"},
+        {"api": "I2CWriteSameData", "args": ["DEV_ADDR", "0x56", "0x16"], "planRef": "strategy sec.7 registerDelta DMUX_SEL=22 (reg_config/tm108.sv:14)"},
+        {"api": "I2CWriteSameData", "args": ["DEV_ADDR", "0x57", "0x08"], "planRef": "strategy sec.7 registerDelta DMUX_EN=1 (reg_config/tm108.sv:15)"},
+        {"api": "test_method.rampv_capv", "args": ["VAC123_AMUX_ACM", "ACM200_20V", "ACM200_100MA", "NQON_HG1_ACM", "ACM200_10V", "ACM200_10UA", "0.0", "10.0", "200", "20", "1.65", "TRIG_FALLING", "vth_r"], "planRef": "method sec.4 segment rise"},
+        {"api": "test_method.rampv_capv", "args": ["VAC123_AMUX_ACM", "ACM200_20V", "ACM200_100MA", "NQON_HG1_ACM", "ACM200_10V", "ACM200_10UA", "10.0", "0.0", "200", "20", "1.65", "TRIG_RISING", "vth_f"], "planRef": "method sec.4 segment fall"},
+        {"api": "VAC123_AMUX_ACM.Set / VBAT_PD3_FXVI.Set / NQON_HG1_ACM.Set", "args": ["FV,0 while holding range, RELAY_ON"], "planRef": "method sec.5 power-down actions 1-3"},
+        {"api": "delay_ms", "args": ["1"], "planRef": "method sec.5 power-down action 4 (R-POFF step 2)"},
+        {"api": "VAC123_AMUX_ACM.Set / VBAT_PD3_FXVI.Set / NQON_HG1_ACM.Set", "args": ["RELAY_OFF with the unified ACM200_10V/10MA and FXVIe_PLUS_10V/10MA pairs"], "planRef": "method sec.5 power-down action 5"},
+        {"api": "CParam::SetTestResult", "args": ["site", "0", "VAC1_PRST_Rise|_Fall|_Hys"], "planRef": "method sec.6 logPlan calculated quantities"}
+      ],
+      "note": "This change set is comment/trace only. No API call was added, removed or re-valued; the apiMappings above are the full call inventory of the touched function, listed so that every call argument can be traced to a contract reference. t11 added no API call and no release call either: the delivered TM108 body contains exactly the same executable statements as the t7 revision and as the backup - the only text-level difference introduced by t11 is comment wording (3 comment lines reworded, 4 comment lines inserted, 2 comment lines reworded within their original line count)."
+    }
+  ],
+
+  "trimImplementation": {
+    "applicable": false,
+    "basis": "strategy sec.1 (trim=null, no treg name collision) - the Trim framework is not triggered, so no TREgName/measureFunction/executeBinding exists for TM108"
+  },
+
+  "selfChecks": [
+    {
+      "command": "python byte-mode read + sha256 of D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp before edit",
+      "exitCode": 0,
+      "log": "sha256 15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a (plaintext), size 469714, BOM true, CRLF 9350 - reproduces the t7 task-contract sec.2 target state exactly"
+    },
+    {
+      "command": "python byte-mode read + sha256 of D:/PROJECT6-DALI/ForCodexDebug/source/sub.cpp",
+      "exitCode": 0,
+      "log": "sha256 e86d49bef7ae725106311d8205df6dbc11184c7a0920eeaed416a515ac391470 (plaintext), size 121909, 'TM108' occurrences 0 -> sub.cpp not required by I3, left unmodified"
+    },
+    {
+      "command": "python byte-mode sha256 of I1,I2,I3,I4,I5,I6,I7,I8a,I8b,I9",
+      "exitCode": 0,
+      "log": "all ten hashes reproduce the values recorded in the t7 task contract sec.1 and the re-hash rows (see signedContracts); no hash-mismatch, so no BLOCKED escalation was required"
+    },
+    {
+      "command": "python byte-mode in-place edit of source/test.cpp (BOM + CRLF preserved, 0x0D0A joined) - t7 pass, superseded",
+      "exitCode": 0,
+      "log": "t7 state: sha256 b79b911a65a33abd62697f8576bd04b5022194751c9bfc5b174ecdab96d05d5a (plaintext), size 477123, BOM true, CRLF 9434, bare LF 3 (unchanged). Now recorded as intermediateStateSha256_2; NOT the delivered state."
+    },
+    {
+      "command": "t11: python byte-mode in-place COMMENT edit of source/test.cpp (_t11_edit_test.py --write), BOM + CRLF preserved",
+      "exitCode": 0,
+      "log": "delivered state: sha256 456fba2ce30aea904ed852175dad5724cea06347d989beff0b7af752dc486eaa (plaintext), size 477760, lines 9443, BOM true, CRLF 9440, bare LF 3 (unchanged). Read-back after the write was compared byte-for-byte with the in-memory image that all the guards below had already validated. Line delta +6 = 4 comment lines inserted for the restored Step 4 heading + 2 comment lines added by the RF-02 rewording in the power-down block; the RF-02 banner rewording at 2178-2179 kept its original line count, so the signature line did not move."
+    },
+    {
+      "command": "python diff of non-comment lines before/after the whole file",
+      "exitCode": 0,
+      "log": "5628 non-comment lines before and after (corrected from the t7 figure '5625' per review finding RF-04 item 2), sequences byte-identical -> no executable statement was added, removed or changed anywhere in the file"
+    },
+    {
+      "command": "python prefix/suffix byte-equality check against the pre-change file",
+      "exitCode": 0,
+      "log": "prefix byte-identical, suffix identical; every diff opcode falls inside display lines 2150..2307 of the delivered revision (and 2150..2217 of the backup) - the TM108 banner + TM108_HSKP_VAC1_PRST body only (corrected from the t7 range 2149..2216 per review finding RF-04 item 4)"
+    },
+    {
+      "command": "python check of the required symbol signature and count",
+      "exitCode": 0,
+      "log": "'DUT_API int TM108_HSKP_VAC1_PRST(short funcindex, LPCTSTR funclabel)' present exactly once (test.cpp:2193 in the delivered revision; corrected from the t7 figure '2191' per review finding RF-04 item 1); 98 DUT_API TM symbols exist in the file (corrected from the t7 figure '95' per review finding RF-04 item 3), none of them touched by this change; 107 'DUT_API int ' declarations exist in total, as the captain's criterion E17 also measured"
+    },
+    {
+      "command": "t11: python non-comment-line sequence compare - DELIVERED vs BACKUP, and DELIVERED vs the t7 revision (review/copy/test.cpp)",
+      "exitCode": 0,
+      "log": "5628 non-comment lines in all three states and the sequence is byte-identical in both comparisons. Stronger still, the whole-comment-stripped whitespace-normalised text is byte-identical: sha256 0341d69a9b23ffb62bff99e0c777392a609bef1a2316ce66664e460714cb739f, 236169 characters, for the backup and the delivered file alike - the same digest the t8 review measured. No executable statement of test.cpp changed in t11."
+    },
+    {
+      "command": "t11: python guards on the delivered file - signature, symbol counts, TM108 span, step headings, scope confinement, frozen parameters, absence of any release call",
+      "exitCode": 0,
+      "log": "signature present exactly once at test.cpp:2193 (unmoved); 98 'DUT_API int TM<n>' declarations and 107 'DUT_API int' declarations (both unmoved); TM108 span 2193..2315 (was 2193..2309); the TM108 step headings now read 1,2,3,4,5,6 at lines 2205 / 2221 / 2230 / 2240 / 2280 / 2300 - the Step 4 heading RF-03 found missing is restored at line 2240; all 3 diff hunks fall inside backup 2150..2217 / delivered 2150..2307, with the prefix (lines 1..2148, i.e. TM107 and everything before) and the suffix (everything after the TM108 closing brace, i.e. TM109 and beyond) byte-identical; each frozen parameter occurs exactly once and verbatim in the body (cbite.SetOn closure {13,65}, delay_ms(3), the VBAT 3 V range/limit pair, 0x56=0x16, 0x57=0x08, 0.0->10.0 and 10.0->0.0 with 200 / 20 / 1.65 / TRIG_FALLING and TRIG_RISING, Hys *1e3); 'SetOff' / 'RelayOff' / '.Off(' / 'DelayOff' / 'SetOffAll' / 'Release' still occur 0 times as calls - the single 'Release' text hit is the pre-existing file-header line 56 - so NO release call was added, exactly as the t8 repair condition for RF-02 requires."
+    },
+    {
+      "command": "python relay/BST-SW guard scan inside the TM108 body",
+      "exitCode": 0,
+      "log": "relay macro inventory in the body: K13_VBAT_Cap, K65_nQON_PU (the {13,65} closure), K21_VAC_Cap (isolation, text only), K17_BUSL_VAC (text only); no K47/K48/K57/K61/K76/K109/K110/K141/K142/K86/K130 token appears; BST/SW driving actions = 0; no numeric relay literal is written anywhere in the body (SetOn takes the pinned StdAfx.h macros only)"
+    },
+    {
+      "command": "python byte-mode check that the master file under D:/PROJECT6-DALI/devel and every other project file is untouched",
+      "exitCode": 0,
+      "log": "this role opened only source/test.cpp (write) and source/sub.cpp, source/StdAfx.h, source/BoardCheck.h (read); nothing under D:/PROJECT6-DALI/devel was read or written"
+    },
+    {
+      "command": "build / compile",
+      "exitCode": 0,
+      "log": "NOT RUN BY THIS ROLE - deliberately out of charter (compilation belongs to compile-diagnostician). The exit code 0 recorded here refers to the python check above, not to a build."
+    }
+  ],
+
+  "verificationNotPerformed": [
+    "no compilation, no linking, no preprocessor run (compile-diagnostician's gate)",
+    "no static analyser and no code-review verdict (rule-reviewer's gate)",
+    "no hardware execution, no bench measurement, no station log output inspection",
+    "the meta-generator regex compatibility of the signature was checked only as a text match, not by running the generator",
+    "t11: no re-review of the revised revision - RF-02, RF-03 and RF-04 are closed by this role's own measurement and are NOT self-adjudicated; rule-reviewer owns the verdict. The three findings are non-blocking (low) and RF-01 remains open with test-method-expert.",
+    "t11: the framework behaviour that R3 sec.5 action 6 depends on (per-item relay reset when the cbite scope ends) was NOT verified and could not be verified from this role - that is exactly why the code now states it as an assumption and names compile-diagnostician as the confirming party. The assertion was reworded; the underlying uncertainty is unchanged and remains residual risk RR-01 / gate G-09.",
+    "t11: the delivered TM108 step headings were checked as text only, not by running any codebase structure or documentation generator."
+  ],
+
+  "deviations": [
+    {
+      "id": "DEV-1",
+      "subject": "RT-1 claim about K13 - WITHDRAWN by this role after independent re-check",
+      "handling": "I3 sec.10 (RT-1 at :637) and the t7 task contract sec.5 assert a contradiction between R1's G3 closure set and R1's own keep-open set. This role first repeated that assertion; it does NOT survive re-checking. Python byte-mode reads of I1/I2 show: resourceSummary.keepOpenRelayNumbers = [14,15,16,21,38,39,40,70,82,86,87,90,92,130,141,142] (relay 13 and relay 65 are absent), relayGroups[G3].closureSetActuatedThisStage = [13,65], and md :245 '动作（必须闭） = 13, 65'. The cited 'contract md :574' is out of range (R1 md is 441 lines). Every mention of K13 in R1 requires closure, so R1 and I3 AGREE and there was never a contradiction to resolve. Conclusion: RT-1 is a false positive, nothing is returned to test-strategy-architect, and no R1 contradiction is claimed anywhere in this delivery. Disposition (unchanged, and independently required by both contracts): K13_VBAT_Cap is closed for the item's active phases (G3 functional relay, md :221/:245/:313) and released in the power-down P8 per I3. The banner comment records exactly that. Evidence: captain-precheck/rt-1-record-correction.md sec.2-3 plus this role's own re-verification.",
+      "ownerOfResolution": "none required (captain already refuted RT-1; this role's correction is aligned with that ruling)",
+      "changedCode": "comment corrected; no executable statement changed"
+    },
+    {
+      "id": "DEV-2",
+      "subject": "K17_BUSL_VAC required-closed but no actuation call written",
+      "handling": "kept as is. The strategy contract requires K17 to BE in the closed state (sec.6 G1, contract md :199, :245-246) and assigns no actuation form (OI-T4-04); the method contract states that no actuation call for K17 is written and that the form belongs to the implementer under OI-T4-04 (contract md :199). This role measured the working tree: K17_BUSL_VAC occurs exactly 3 times in test.cpp and all 3 are inside the TM108 trace comments added by this change - before the change the token occurred 0 times, i.e. no TM in the file ever actuates relay 17, so the VAC-branch closed state is an inherited precondition rather than an item action. Adding a SetOn call would have invented an actuation decision the contract does not make, so none is added; the inherited precondition is now documented in the code (this is the only place the token appears).",
+      "ownerOfResolution": "schematic-expert + captain (OI-T4-04)",
+      "changedCode": false
+    },
+    {
+      "id": "DEV-3",
+      "subject": "logPlan raw-context quantities are carried as trace comments, not as new log API calls",
+      "handling": "I3 sec.6 logPlan asks for registerActivationTrace, relayActuationTrace, triggerModeRise/Fall, captureLevel and sweepGeometry as raw context, and forbids substitutes for a missing capture. The working tree exposes no additional text-logging primitive inside a TM (verified: no log API other than CParam::SetTestResult occurs in test.cpp), and the three result parameters are already written per site. This role therefore made every one of those context quantities explicit and verifiable in the function's own trace comments, and added no invented log API call, no invented log field and no placeholder value. If review requires these quantities to be emitted into the station log as records, that is an API/form decision that must be returned to this owner as a concrete need - it is NOT decided here.",
+      "ownerOfResolution": "ate-implementer (on a concrete need from rule-reviewer) with test-method-expert for the log plan",
+      "changedCode": false,
+      "t8Outcome": "t8 (rule-reviewer) raised this as the BLOCKING finding RF-01 and routed it to test-method-expert as a contract-vs-capability finding, explicitly NOT to this role ('the missing capability is a property of the platform and the signed boundary, not a defect the implementer could fix without inventing an API. No executable line of test.cpp needs to change to close RF-01'). t11 therefore did NOT touch it: no logging call, no API call and no placeholder value was added, removed or reworded."
+    },
+    {
+      "id": "DEV-4",
+      "subject": "helper scripts and the pre-change backup live in the implementation artifact directory",
+      "handling": "the t7 write whitelist covers test.cpp/sub.cpp plus implementation-manifest.json and t7-selfcheck.md; the pre-change backup required by t7 sec.6.2 and the generator scripts that produced the evidence had to be written somewhere. They were placed under team/artifacts/tm108-v2-trial/implementation/ (backup/ subdirectory + _t7_*.py helpers) so that the evidence is reproducible and auditable and no project file outside the whitelist was created. The temporary _t7_*.py helpers were deleted again before this task ended, so the only durable writes are the four authorised paths plus the two backups.",
+      "changedCode": false
+    },
+    {
+      "id": "DEV-5",
+      "subject": "mid-task evidence changed a stated conclusion - the RT-1 banner line was corrected after the first edit pass",
+      "handling": "while t7 ran, the captain published captain-precheck/rt-1-record-correction.md (refuting RT-1) and reframed captain-notes-t7.md sec.2. This role re-verified the premise against I1/I2 by python byte mode before acting (keepOpenRelayNumbers excludes 13/65; G3 closure = [13,65]; R1 md has 441 lines so ':574' is out of range), then corrected the RT-1 line in the code banner. Consequence for the audit trail: the delivered test.cpp is the SECOND state of this edit (sha256 b79b911a...d5a, 477123 B); the first state (sha256 8498c304...871, 477016 B) is recorded in changes[0].intermediateStateSha256 and is NOT the delivered artifact. The pre-change backup remains the byte-exact original (15c7d2b8...c01a).",
+      "changedCode": "comment corrected; no executable statement changed"
+    },
+    {
+      "id": "DEV-6",
+      "subject": "RF-03 handling choice - the dropped Step 4 heading is RESTORED (not merely annotated), with deliberately non-sibling wording",
+      "handling": "t8 RF-03 found that the t7 edit replaced '// ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======' (backup :2185) with the P4/P5/P6 marker line, leaving TM108's step sequence as 1,2,3,5,6 while TM107 (:2108) and TM109 (:2347) keep 1..6. This role re-measured the delivered file before editing and found exactly one defect: a MISSING heading between Step 3 (:2230) and the P4 marker. There is no out-of-order step heading - the other 'Step 4' token inside the span is the power-down sub-step reference '// Step 4-6: release the three channels...', which is not a step heading - so the captain's quick-scan token list 'Step 1,2,3,5,1,4,6' is explained without an ordering fault. DECISION: restore the heading form the sibling items use rather than leave a declared deviation, because the numbering scheme is the file's own navigational convention for every one of the ~110 TMs and a lone gap defeats a reader walking an item by step number. The restored text is '====== Step 4: Measure (library AWG ramp, capture on the observation candidate) ======' at :2240, followed by the existing P4/P5/P6 marker line and a 3-line note. WHY THE WORDING DIFFERS FROM THE SIBLINGS: the sibling text says 'trigger-capture DTEST0 toggle', and re-using it verbatim would re-introduce exactly the V(DTEST0)==nQON assertion that the t7 change removed and that review item C1 verified as gone. The deviation is therefore made explicit in the code itself rather than left silent, which is the alternative t11 was authorised to choose.",
+      "ownerOfResolution": "none required - comment-only, inside this role's decision rights (charter sec.1.4)",
+      "changedCode": "comment inserted; no executable statement changed"
+    },
+    {
+      "id": "DEV-7",
+      "subject": "RF-02 handling choice - the framework release is reworded as an assumption, and NO release call is added",
+      "handling": "t8 RF-02 scored two code comments that asserted, in the indicative mood, that the test framework releases the {13,65} closure when the cbite scope ends with the function: :2178-2179 (banner 'safety end' row) and :2287-2289 (P8 discussion). Both were reworded so that (a) the release is stated as an ASSUMPTION about the cbite scope, (b) it is marked NOT verified in this run, (c) compile-diagnostician is named as the confirming party, and (d) the safe-end-state sentence is conditional on that confirmation. NO release call and no other API call was added: 'SetOff', 'RelayOff', '.Off(', 'DelayOff', 'SetOffAll' and 'Release' all still occur 0 times as calls in the delivered file, and the executable content is byte-identical to the backup. The P8 discussion was NOT removed. The banner rewording at :2178-2179 was deliberately kept to the original two lines so that the signature line would not move; the P8 rewording needed two extra lines, which shifts only lines below the signature. This is the ASSERTION that RF-02 scores - it is separate from the ABSENCE of the release call, which t8 waived as WF-01, and the reworded text does not contradict that waiver.",
+      "ownerOfResolution": "compile-diagnostician / test framework for the confirmed behaviour (residual risk RR-01, gate G-09); wording is this role's",
+      "changedCode": "comment reworded; no executable statement changed, no release call added"
+    }
+  ],
+
+  "openItems": [
+    {"id": "OI-T4-01", "severity": "blocker-for-observation-endpoint", "status": "CARRIED - unresolved, user-frozen, not closed/relabelled/sided by this role", "effect": "the DFT check pin V(DTEST0) is not equated with the nQON candidate anywhere in the code; the RA-5 allocation stays CANDIDATE ONLY", "owner": "dft-expert + test-strategy-architect + captain"},
+    {"id": "OI-T5-01", "severity": "blocker-for-observation-decisions", "status": "CARRIED", "effect": "observation endpoint identity, trigger polarity, capture-level validity and DMUX_SEL=22 sufficiency remain pending; no premise was promoted to fact", "owner": "dft-expert + test-strategy-architect + test-method-expert"},
+    {"id": "OI-T5-02", "severity": "high", "status": "CARRIED with RT-2", "effect": "BST/SW constraint unproven in all 9 phases; no BST/SW driving action was added (verified 0 in the TM108 body)", "owner": "dft-expert + test-strategy-architect + test-method-expert"},
+    {"id": "RT-1", "severity": "n/a", "status": "REFUTED - NOT carried as an engineering item, and no R1 contradiction is claimed", "effect": "python byte-mode re-check of I1/I2 shows keepOpenRelayNumbers excludes 13 and 65 and every R1 mention of K13 requires closure (md :221 G3 functional relay, :245 relay list 13,65 under 动作必须闭, :313), so R1 and I3 agree; K13 is closed for the active phases and released at P8 (both contracts require the same state) and no work is returned to test-strategy-architect", "owner": "none required"},
+    {"id": "RT-2", "severity": "return", "status": "CARRIED", "effect": "K57 state not expressible from the signed boundary; no K57 action written", "owner": "test-strategy-architect"},
+    {"id": "RT-4", "severity": "return", "status": "CARRIED", "effect": "no tolerance published for 'rising vth 4.4 V, hys 0.35 V'; no tolerance invented and no pass/fail criterion written", "owner": "test-strategy-architect / captain"},
+    {"id": "F1", "mapsTo": "OI-T4-09", "status": "CARRIED - both sides retained (4.4 V vs 4.15 V), no averaging, no selection", "owner": "dft-expert + captain"},
+    {"id": "F2", "mapsTo": "OI-T4-10", "status": "CARRIED - DMUX_SEL 22 vs 23; the applied value (22) is logged as applied, the CSV counterpart is recorded as not applied", "owner": "dft-expert + test-strategy-architect"},
+    {"id": "F3", "mapsTo": "OI-T4-11", "status": "CARRIED - V(DTEST0) vs Check=INT", "owner": "dft-expert + captain"},
+    {"id": "F4", "mapsTo": "OI-T4-12", "status": "CARRIED - VBAT 3 V vs 4.2 V; the code applies 3 V and never averages", "owner": "captain + dft-expert"},
+    {"id": "F5", "mapsTo": "OI-T4-13", "status": "CARRIED - sweep geometry 0->10->0 V vs 3~5 V @1 V/ms vs 3.8->4.4->4.1->3.5 V; the applied geometry is recorded as a method-side position", "owner": "captain + dft-expert"},
+    {"id": "F6", "mapsTo": "OI-T4-14", "status": "CARRIED - Notes 1 V/ms vs Code 10 V/1e-3 s", "owner": "dft-expert + captain"},
+    {"id": "OI-T4-16", "severity": "low", "status": "CARRIED - frozen-baseline scopePins/relaySet divergence; no Setup change authorized or made", "owner": "setup-architect + captain"},
+    {"id": "OI-T4-04", "severity": "medium", "status": "CARRIED - K17 actuation form still undecided by the contract; this role wrote no actuation call (DEV-2)", "owner": "schematic-expert + captain"},
+    {"id": "OI-T5-05", "severity": "low", "status": "CARRIED with RT-3 - the delta has no de-activation field; nothing is un-written at the end of the item", "owner": "test-strategy-architect + setup-architect"}
+  ],
+
+  "reviewFindingsAddressedByT11": [
+    {
+      "id": "RF-02",
+      "severity": "low",
+      "ownerFromReview": "ate-implementer",
+      "reviewerRequirement": "Reword test.cpp:2178-2179 and :2287-2289 so the implicit release is presented as an assumption about the cbite scope still to be confirmed against the framework (naming the framework or compile-diagnostician as the confirming party), and so the safe-end-state sentence reads as conditional on that confirmation. Do NOT add any release call and do NOT remove the P8 discussion - wording only, inside comments.",
+      "actionTaken": "Both comment blocks reworded. :2178-2179 now reads 'safety end : no relay of this item is left actuated and no source energised ONLY IF the cbite scope resets the closure - ASSUMED, NOT verified (compile-diagnostician's item).' :2287-2291 (was :2287-2289) now conditions the whole safe-end-state sentence on the unconfirmed reset and keeps the full P8 description. No release call was added and no API call of any kind was added or removed.",
+      "evidence": "delivered test.cpp:2178-2179 and :2287-2291; _t11_verify.py section 8 (SetOff / RelayOff / .Off( / DelayOff / SetOffAll / Release all 0 as calls); _t11_verify.py section 3 (executable content byte-identical to the backup)",
+      "status": "CLOSED BY THIS ROLE - not self-adjudicated; rule-reviewer owns the verdict",
+      "doesNotContradict": "WF-01 - RF-02 scores the ASSERTION, not the absence of the release call; the waiver is untouched and the code now states the assumption openly instead of claiming the behaviour"
+    },
+    {
+      "id": "RF-03",
+      "severity": "low",
+      "ownerFromReview": "ate-implementer",
+      "reviewerRequirement": "Restore a 'Step 4' heading for the P4/P5/P6 region (the contract phase markers may stay on the same or following lines) so that TM108's step sequence is 1..6 like every other item in the file. Comment-only.",
+      "actionTaken": "Re-measured first; found a MISSING heading after Step 3 and no out-of-order heading. Restored '====== Step 4: Measure (library AWG ramp, capture on the observation candidate) ======' at :2240 with the phase markers on the following lines, and added a 3-line note stating explicitly why the sibling wording 'trigger-capture DTEST0 toggle' is not reused. TM108 now reads Step 1 :2205, Step 2 :2221, Step 3 :2230, Step 4 :2240, Step 5 :2280, Step 6 :2300.",
+      "evidence": "_t11_verify.py section 7 (step headings) and section 6 (TM107 Step 4 at :2108 and TM109 Step 4 at :2353 untouched, both inside the byte-identical prefix/suffix)",
+      "status": "CLOSED BY THIS ROLE - not self-adjudicated; rule-reviewer owns the verdict"
+    },
+    {
+      "id": "RF-04",
+      "severity": "low",
+      "ownerFromReview": "ate-implementer",
+      "reviewerRequirement": "Correct the four numbers in t7-selfcheck.md:129, :130, :131, :132 and the two sourceLocation values in implementation-manifest.json targetSymbols[0] (or state explicitly which line-numbering convention is in use and apply it consistently across both artifacts), so that a reviewer following the manifest arrives at the intended line and can reproduce the stated counts.",
+      "actionTaken": "All four numbers recomputed from scratch with python byte mode and corrected in both artifacts, AND the convention is now declared: readerDiscipline.lineNumbering states the single 1-based display-line convention (split the decoded text on LF, drop the trailing empty element) and records that the file's 3 bare-LF terminators are the source of the undeclared off-by-one. signature :2191 -> :2193; '5625 non-comment lines' -> 5628; '95 TM symbols' -> 98; changed-range '2149-2216' -> backup 2150..2217 / delivered 2150..2307; sourceLocationBefore 2154 -> 2155; sourceLocationAfter 2192 -> 2193. The remaining navigational refs in t7-selfcheck.md section 3 were re-derived from the SequenceMatcher opcode map and corrected where they measurably missed - see t11-selfcheck.md section 4 for the full before/after table.",
+      "evidence": "_t11_analyze.py, _t11_diff.py, _t11_verify.py output; t11-selfcheck.md section 4 (number reconciliation table incl. the captain's criterion E17)",
+      "status": "CLOSED BY THIS ROLE - not self-adjudicated; rule-reviewer owns the verdict"
+    },
+    {
+      "id": "RF-01",
+      "severity": "blocker",
+      "ownerFromReview": "test-method-expert",
+      "reviewerRequirement": "Re-issue R3 sec.6 logPlan so it is executable inside the signed boundary, or downgrade the raw-context rows to source-comment documentation; routing note: 'No executable line of test.cpp needs to change to close RF-01.'",
+      "actionTaken": "NOT TOUCHED - out of t11's scope and owned by test-method-expert (working in parallel). No logging call, no API call, no placeholder value and no contract row was added, removed or reworded by t11.",
+      "evidence": "delivered test.cpp:2301-2308 (the SetTestResult reporting block, unchanged); the non-comment sequence equals the backup byte-for-byte",
+      "status": "STILL OPEN - remains the single blocking finding; t9/compile stays held until rule-reviewer puts a pass on the record"
+    }
+  ],
+
+  "statusLabel": "IMPLEMENTATION REVISED BY T11 (RF-02/RF-03/RF-04 closed by comment/documentation-only edits) - NOT RE-REVIEWED AND NOT COMPILED. The t8 rule review returned needs-revision on the blocking RF-01 (logPlan contract-vs-capability, owner test-method-expert), so the compile gate t9 remains held until rule-reviewer puts a pass on the record; this manifest records only what this role changed and verified, and this role does not adjudicate the review outcome."
+}

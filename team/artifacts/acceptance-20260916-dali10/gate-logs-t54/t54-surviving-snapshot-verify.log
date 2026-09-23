@@ -1,0 +1,24 @@
+=== 快照目录内容 ===
+  setup-contract-build.py                    191623 B
+  setup-contract-pin.json                      8555 B
+  setup-contract.json                        354106 B
+
+=== 独立现算（不采信任何字面）===
+  路径   = team/artifacts/acceptance-20260916-dali10/backups/t53-20260916-211719/setup-contract.json
+  size   = 354106 B
+  sha256 = 78cfc954b73a007e8cc210c1033ec35b23e7dec1724eec6665717a4dcb111388
+  revision = 28
+  aliasResolution[bst2sw].resolution.closedRelayNumbers = [110, 61]
+
+=== 与其申报值比对 ===
+  size 一致          = True
+  sha 前缀一致       = True
+  closed 一致        = True
+  revision==28       = True
+
+=== 结论 ===
+  独立复核通过 = True
+  ⇒ 其 rev 28 的两项判定（"门禁当时读到的字段仍是 [110,61]"、"修订当时只加未撤"）
+     **有字节级证据、可第三方复核**，不再依赖其字面。
+  ⇒ 同时为纪律 #3 提供**唯一反例式证明**：五个中间态中仅此一个可复核，
+     原因正是"覆写前先复制了字节"。

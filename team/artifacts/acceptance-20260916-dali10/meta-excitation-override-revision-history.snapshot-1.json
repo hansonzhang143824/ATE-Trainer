@@ -1,0 +1,83 @@
+{
+  "purpose": "Audit chain for meta-excitation-override.json (t26). Requested by compile-diagnostician and needed by t9's evidence pack: reviewers ACCEPTED specific revisions, and without snapshots a third party cannot verify that later revisions were additive.",
+  "createdAt": "2026-09-16 19:13:13",
+  "currentRevision": "t26-correction-8",
+  "currentSnapshot": {
+    "path": "team/artifacts/acceptance-20260916-dali10/meta-excitation-override.t26-correction-8.json",
+    "sizeBytes": 26999,
+    "sha256": "62f2da6f0996ee5afd4e828d59da5a80f7da8fe89e1302632f2e1411380ae5ec",
+    "note": "byte copy of the live artifact taken without modifying it, so the live hash is unchanged"
+  },
+  "history": [
+    {
+      "revision": "t26-correction-1",
+      "sizeBytes": 11511,
+      "sha256": "238b2b6c43d535c815034cdf67ea459d01efcf94aa94bc58f2c2c03d79190b10",
+      "contentAvailable": false,
+      "evidenceOfExistence": "review/t26-independent-review.md (18:57:27) quotes size+hash",
+      "review": "review/t26-independent-review.md"
+    },
+    {
+      "revision": "t26-correction-2",
+      "sizeBytes": 14246,
+      "sha256": "b3dd2095e757dcd572db65e9bf706546adb484d6eab33c284ae2f73451435f46",
+      "contentAvailable": false,
+      "evidenceOfExistence": "review/t26-independent-review-2.md + -3.md quote size+hash",
+      "review": "T26-F1 filed here; T26-F2 added in -3"
+    },
+    {
+      "revision": "t26-correction-3",
+      "sizeBytes": 17081,
+      "sha256": "d45194221c47545e4305cad78c7f0f283db8011e3d92ad59cb11dca5f01735b7",
+      "contentAvailable": false,
+      "evidenceOfExistence": "review/t26-independent-review-4.md (19:03:03) + t26-correction-3-confirmation.md (19:04:28) quote size+hash",
+      "review": "ACCEPT (T26-F1 closed, no new findings)"
+    },
+    {
+      "revision": "t26-correction-4",
+      "sizeBytes": 19157,
+      "sha256": "4b28d464f0411e03462c16d30d1d6830302bc38f7789d73910c6976fbd062b8b",
+      "contentAvailable": false,
+      "evidenceOfExistence": "compile-diagnostician and rule-reviewer both recomputed this hash",
+      "review": "NO dedicated review artifact - gap recorded"
+    },
+    {
+      "revision": "t26-correction-5",
+      "sizeBytes": 21773,
+      "sha256": "38880b78f896f4d9c786d23c2cc96e477d96472ef6d6aa741a9e81d1990e705c",
+      "contentAvailable": false,
+      "evidenceOfExistence": "review/t26-correction-5-acceptance.md (19:06:57) quotes size+hash",
+      "review": "ACCEPT"
+    },
+    {
+      "revision": "t26-correction-6",
+      "sizeBytes": 24424,
+      "sha256": "1af63a29f1e45cb38535d4ecf558d3364f8994c931cc4739e9c0c2ecbee2ccb0",
+      "contentAvailable": false,
+      "evidenceOfExistence": "review/t26-correction-6-increment-acceptance.md (19:08:30) quotes size+hash; rule-reviewer named this hash as its FINAL judgement point",
+      "review": "ACCEPT of the increment; sole delta from -5 = inputSyncGreenWhileUndetectable + reviewRound4"
+    },
+    {
+      "revision": "t26-correction-7",
+      "sizeBytes": 27517,
+      "sha256": "4de0ec9b0db2a1af21b834929b95aa0c2c0252fee24ab5571a4a7680e066c3de",
+      "contentAvailable": false,
+      "evidenceOfExistence": "this record (written by the author at creation time)",
+      "review": "ledger replacement; no review artifact - produced at the reviewer's request"
+    },
+    {
+      "revision": "t26-correction-8",
+      "sizeBytes": 26999,
+      "sha256": "62f2da6f0996ee5afd4e828d59da5a80f7da8fe89e1302632f2e1411380ae5ec",
+      "contentAvailable": true,
+      "snapshot": "meta-excitation-override.t26-correction-8.json",
+      "review": "awaiting rule-reviewer re-anchoring: option (A) re-accept this revision, or (B) name it canonical"
+    }
+  ],
+  "knownGaps": [
+    "revisions 1..7 were overwritten in place: their CONTENT is not recoverable, only their sizes/hashes (quoted in the review artifacts above)",
+    "therefore the assertion 'corrections 5/6/7 are additive only' rests on (i) the review artifacts' quoted hashes and (ii) the author's record - from this revision on, a snapshot is taken before every further edit",
+    "correction-4 has no dedicated review artifact"
+  ],
+  "goingForwardRule": "before any further edit, snapshot the then-current artifact as meta-excitation-override.<revision>.json and append its size+hash here."
+}

@@ -1,0 +1,555 @@
+{
+  "schemaVersion": 1,
+  "artifact": "test-strategy-contract",
+  "taskId": "TM109-STRATEGY",
+  "role": "test-strategy-architect",
+  "stage": "STRATEGY",
+  "projectId": "DALI",
+  "tm": "TM109",
+  "generatedAt": "2026-09-18 01:14:16 +08:00",
+  "verdict": "pass",
+  "charterBoundary": {
+    "owned": [
+      "project/parameter type, function architecture",
+      "endpoint list, named source allocation, verified route, path/force-sense/functional/isolation relays",
+      "relay groups (complete SetOn closure), register delta, conflicts, evidence"
+    ],
+    "notDone": [
+      "no power-up/power-down sequence, ramp rate, delay, sampling window, calculation, limit or Log decision (test-method-expert)",
+      "no C++/SDK/API, range enum or cbite.SetOn call (ate-implementer)",
+      "no DFT re-parse and no schematic re-parse; upstream artifacts consumed as signed",
+      "no resolution of any DFT conflict by this role's own reasoning"
+    ]
+  },
+  "inputs": {
+    "dispatchManifest": {
+      "path": "team/artifacts/tm109-ptc-v2/input-manifest.json",
+      "sha256": "not recorded by the runner; read in place",
+      "statusRead": "ready"
+    },
+    "dft": {
+      "deliverable": "team/artifacts/tm109-ptc-v2/dft/dft-meta.json",
+      "sha256": "816506a8bb183d7a754334d62bcbc906cbdae85249a610d16b2161d7737f329f",
+      "companion": "team/artifacts/tm109-ptc-v2/dft/dft-conditions.yaml",
+      "companionSha256": "e9de1abbb8ad0d8bdd5a77bbf27fa0b55302cffbf90595379e3371d0baf09350",
+      "sourceSha256": "ce69dce829a1473f1c7fd2ec7d55014b9e2fcf85262301169c654100b5461541",
+      "sourceSha256MatchesManifest": true,
+      "verdict": "generated (per dft-meta.json)"
+    },
+    "schematic": {
+      "deliverables": [
+        {
+          "path": "team/artifacts/tm109-ptc-v2/schematic/SCH-Connect-Map.json",
+          "sha256": "5886070110fce6474b6d84f4b9ec62ef16cd6ed25c0c230b0f2d5297f176d84b"
+        },
+        {
+          "path": "team/artifacts/tm109-ptc-v2/schematic/Components-Statistic.json",
+          "sha256": "1b0a706e7bebf6b3ad0d06a8c162104ff47023fd7bb8fcddf850fdd0f568ce44"
+        },
+        {
+          "path": "team/artifacts/tm109-ptc-v2/schematic/schematic-ir.json",
+          "sha256": "5893c60b145e73e29038b7d033600ba8b0b96de068385e463b6dc14438381286"
+        }
+      ],
+      "sourceSha256": "35fdd1582958eb6e4fd63e29da59dec63dfe19e3fd6198d8cc8b8f727a5c7ff5",
+      "sourceSha256MatchesManifest": true
+    },
+    "intentResolution": {
+      "path": "project/DALI/meta/intent-resolutions.json",
+      "sha256": "b4238a12ce9ee1766563b56e828756fbf2dc2da2dde745efba3a004bed7a7858",
+      "sha256MatchesManifest": true,
+      "status": "resolved",
+      "authority": "accepted project baseline",
+      "applied": "binding for every TM109 DFT conflict; used instead of this role's own reasoning"
+    },
+    "hashMethod": "python 3 hashlib.sha256 over raw bytes. Python is used because the Windows pwsh/Get-FileHash/.NET file layer in this runtime reads some project paths through a DLP shadow layer and returns a different digest for the same path and length (documented in dft-meta.json source.hashVerificationNote)."
+  },
+  "binding": {
+    "statement": "team/artifacts/tm109-ptc-v2/input-manifest.json#canonicalInputs.intentResolution (status resolved) governs every TM109 DFT conflict and the stimulus/register framing of this contract.",
+    "applied": {
+      "item": "VAC2_PRST",
+      "staticSupplies": [
+        {
+          "pin": "VBAT",
+          "voltageV": 3
+        }
+      ],
+      "sweptPin": "VAC2",
+      "registerWrites": [
+        {
+          "address": "0x56",
+          "value": "0x15"
+        },
+        {
+          "address": "0x57",
+          "value": "0x08"
+        }
+      ],
+      "monitorIntent": "DTEST0/nQON logic toggle"
+    },
+    "conflictHandlingApplied": "project/DALI/input/DFT.csv TM109's copied VAC3 stimulus field is treated as conflict evidence only, never as a stimulus or route authority."
+  },
+  "projectType": {
+    "value": "general test item (一般测试项目) - Toggle / threshold AWG",
+    "rule": "knowledge/standards/test-types.md #7 (hit order 1-6 miss: not Trim, not Contact, not OTP/MTP Readback or Burn, not P2P, not Leakage)",
+    "dftField": "Type = \"Toggle, MV\" (project/DALI/input/DFT.csv:34)",
+    "confidence": "direct"
+  },
+  "parameterType": {
+    "value": "UVLO family - PRST (power-on-reset threshold)",
+    "detail": "VAC2 power-on-reset rising threshold with hysteresis",
+    "rule": "knowledge/standards/test-types.md parameter-type table #4 (UVLO / OVP / PRST / VBAT_LOW / RECHG)",
+    "corroboration": "OVERVIEW description \"VAC2 PRST CMOP threshold\" (project/DALI/_archive/_dump_OVERVIEW.txt:148); the project DTEST map entry index 21 is named a2d_vac2_prst (project/DALI/_archive/_dump_DTESTMAP.txt:23)",
+    "confidence": "direct"
+  },
+  "functionArchitecture": {
+    "value": "single-pin threshold toggle (AWG): one swept voltage channel on VAC2 vs DUT ground, with the internal a2d_vac2_prst comparator output muxed to DTEST0 and captured as a logic toggle on the open-drain pad",
+    "measurementMethodClass": "AWG (ramp + toggle capture); knowledge/standards/toggle-awg-rules.md",
+    "differentialPair": false,
+    "highCurrent": false,
+    "trim": false,
+    "monitorType": "open-drain digital output - requires an external pull-up relay",
+    "rampSegmentsObservedInDft": "4 vset steps on the single pin vac2 (3.8, 4.4, 4.1, 3.5) = one rising segment followed by one falling segment",
+    "methodOwnership": "ramp start/stop/step, timing, trigger edge, sampling, calculation, limit and Log belong to test-method-expert; this contract fixes only resources, routes, relays and registers"
+  },
+  "endpointRequirements": [
+    {
+      "pin": "VBAT",
+      "role": "static supply (power) / force-sense",
+      "requirement": "FV 3.0 V static, Kelvin force+sense, not ramped, not current-measured",
+      "status": "resolved"
+    },
+    {
+      "pin": "VAC2",
+      "role": "swept stimulus (AWG ramp source) / force-sense",
+      "requirement": "FV ramp on the VAC2 pin, Kelvin force+sense, kept off the scarce floating-source buses",
+      "status": "resolved"
+    },
+    {
+      "pin": "nQON",
+      "role": "monitor (digital capture of the DTEST0 mux output)",
+      "requirement": "observe the open-drain DTEST0 pad output while DMUX_SEL selects A2D_VAC2_PRST; external pull-up required",
+      "status": "resolved_primary"
+    },
+    {
+      "pin": "INT (INT_PA0, net-shorted to PA0 through TP_PA0)",
+      "role": "monitor - alternative reading of the DFT Check literal",
+      "requirement": "the DFT/OVERVIEW check literal is \"INT\"; if that literal governs, the same DTEST0 toggle is captured on the INT/PA0 pad instead",
+      "status": "open_alternative_nonblocking",
+      "note": "Both candidate monitor channels require zero SetOn relays and use different ACM200 channels, so the relay closure set is identical under either reading."
+    }
+  ],
+  "resourceAllocation": [
+    {
+      "pin": "VBAT",
+      "sourceTable": "FXVIe_PLUS",
+      "sourceObject": "VBAT_PD3_FXVI",
+      "channel": "channel 5; site-1 terminals S3_FXVIe_PLUS_FH5 (force) and S3_FXVIe_PLUS_SH5 (sense)",
+      "selectedPath": {
+        "force": "S3_FXVIe_PLUS_FH5 -> K8_PD3 (pin6->pin7, state NC) -> VBAT_F (NetCap1_VBAT_S1_1)",
+        "sense": "S3_FXVIe_PLUS_SH5 -> K8_PD3 (pin3->pin2, state NC) -> VBAT_S (NetK8_PD3_S1_2)"
+      },
+      "pathRelaysToEnergize": [],
+      "selectionBasis": "single PIN, no differential pair and no high current -> non-scarce source (relay-design-flow step 3, branch N=no -> K); FXVIe_PLUS channel 5 is the channel whose published macro is literally VBAT_PD3_FXVI; the route is the shortest available (one relay hop) and needs no SetOn closure at all; K8's NC contact routes the channel to VBAT (energizing K8 would route it to PD3 and disconnect the supply)",
+      "evidence": [
+        "project/DALI/Pin_Channel_define.h:12 (_PIN_CHANNEL_DEFINE_VBAT_PD3_FXVI_ = \"S3_5,...\")",
+        "project/DALI/Pin_Channel_define.h:93 (extern FXVIe_PLUS VBAT_PD3_FXVI)",
+        "project/DALI/input/recover_stdafx.h.txt:163 (K8_FOVI5_PD3 = 8)",
+        "project/DALI/path_proofs.json.txt:42288-42321 (accepted proof S3_FXVIe_PLUS_FH5 -> VBAT_F_S1, required_on=[], terminal_stop=true, role_match=true)",
+        "project/DALI/path_proofs.json.txt:42908-42941 (accepted proof S3_FXVIe_PLUS_SH5 -> VBAT_S_S1, required_on=[], terminal_stop=true, role_match=true)",
+        "project/DALI/SCH-Connect-Map.txt:210-212 and :832-834"
+      ]
+    },
+    {
+      "pin": "VAC2",
+      "sourceTable": "ACM200",
+      "sourceObject": "VAC123_AMUX_ACM",
+      "channel": "channel 0; site-1 terminals S5_ACM200_FH0 (force) and S5_ACM200_SH0 (sense)",
+      "selectedPath": {
+        "force": "VAC_FORCE_S1 -> K18_VAC3 (state NC) -> K19_VAC2 (state ON) -> VAC2_F (NetCap1_VAC2_S1_1)",
+        "sense": "VAC_SENSE_S1 -> K18_VAC3 (state NC) -> K19_VAC2 (state ON) -> VAC2_S (NetK19_VAC2_S1_5)"
+      },
+      "pathRelaysToEnergize": [
+        "K19_ACM0_VAC2"
+      ],
+      "selectionBasis": "single PIN, no differential pair and no high current -> non-scarce source; the anti-short rule requires the source channel that reaches only the target pin, and names VAC123_AMUX_ACM for VAC1/VAC2/VAC3; K19 is the published ACM200-channel-0 -> VAC2 share relay, so with K18/K20 de-energized only VAC2 is connected and VAC1/VAC3/AMUX stay isolated",
+      "evidence": [
+        "project/DALI/Pin_Channel_define.h:15 (_PIN_CHANNEL_DEFINE_VAC123_AMUX_ACM_ = \"S5_0,...\")",
+        "project/DALI/Pin_Channel_define.h:96 (extern ACM200 VAC123_AMUX_ACM)",
+        "project/DALI/input/recover_stdafx.h.txt:174 (K19_ACM0_VAC2 = 19), :173 (K18_ACM0_VAC3 = 18), :175 (K20_ACM0_AMUX = 20)",
+        "project/DALI/path_proofs.json.txt:43159-43214 (accepted proof S5_ACM200_FH0 -> VAC2_F_S1, path K18 NC then K19 ON, required_on=[19], terminal_stop=true, role_match=true, cbit S34_CBIT19)",
+        "project/DALI/path_proofs.json.txt:45923-45978 (accepted proof S5_ACM200_SH0 -> VAC2_S_S1, path K18 NC then K19 ON, required_on=[19], terminal_stop=true, role_match=true, cbit S34_CBIT19)",
+        "project/DALI/SCH-Connect-Map.txt:195-200 (CH0 High / CH0 Low -> VAC2 rows)",
+        "knowledge/standards/relay-checklist.md (anti-short rule: prefer the channel that reaches only the target pin; example names VAC123_AMUX_ACM)"
+      ]
+    },
+    {
+      "pin": "nQON (DTEST0 pad)",
+      "sourceTable": "ACM200",
+      "sourceObject": "NQON_HG1_ACM",
+      "channel": "channel 9; site-1 terminals S5_ACM200_FH9 (force) and S5_ACM200_SH9 (sense)",
+      "selectedPath": {
+        "force": "S5_ACM200_FH9 -> K64_ACM9_HG1 (state NC) -> nQON_F (NetK64_HG1_S1_7)",
+        "sense": "S5_ACM200_SH9 -> K64_ACM9_HG1 (state NC) -> nQON_S"
+      },
+      "pathRelaysToEnergize": [],
+      "functionalRelays": [
+        "K65_nQON_PU"
+      ],
+      "selectionBasis": "the monitor intent is the DTEST0 logic toggle and the project TestIO table publishes DTEST0 on the nQON pad; ACM200 channel 9 is the channel whose macro is NQON_HG1_ACM, its route needs no path relay, and K64's NC contact routes the channel to nQON (energizing K64 would route it to HG1 and disconnect the monitor); because the pad is open-drain, the pull-up relay must be closed to read a high level",
+      "evidence": [
+        "team/artifacts/tm109-ptc-v2/input-manifest.json#canonicalInputs.intentResolution.entry.decision.monitorIntent (\"DTEST0/nQON logic toggle\")",
+        "project/DALI/_archive/_dump_TestIO.txt:2 (nQON -> DTEST0, SCAN_OUT)",
+        "project/DALI/_archive/_dump_OVERVIEW.txt:149-150 (\"mux A2D_VAC2_PRST to dtest0\", check endpoint V(DTEST0))",
+        "project/DALI/_archive/_dump_DTESTMAP.txt:23 (index 21 = a2d_vac2_prst)",
+        "project/DALI/Pin_Channel_define.h:24 (_PIN_CHANNEL_DEFINE_NQON_HG1_ACM_ = \"S5_9,...\"), :105 (extern ACM200 NQON_HG1_ACM)",
+        "project/DALI/input/recover_stdafx.h.txt:227 (K64_ACM9_HG1 = 64), :228 (K65_nQON_PU = 65)",
+        "project/DALI/path_proofs.json.txt:45744-45777 (accepted proof S5_ACM200_FH9 -> nQON_F_S1, required_on=[], terminal_stop=true, role_match=true)",
+        "project/DALI/SCH-Connect-Map.txt:798-800 (nQON [Kelvin], 需闭合: 无(默认导通)) and :891 (nQON 上拉-固定5V, 需闭合: K65)",
+        "knowledge/hardware/relays.md:142-150 (open-drain pull-up rule; DALI instance K65_nQON_PU; the functions that observe DTEST0 include TM105~113, so TM109 must close it)",
+        "knowledge/references/00-index.md:20 (ATEST0->VDM analog / DTEST0->nQON digital)"
+      ]
+    },
+    {
+      "pin": "INT / INT_PA0 (alternative monitor channel)",
+      "sourceTable": "ACM200",
+      "sourceObject": "PA0_PC3_ACM",
+      "channel": "channel 15; site-1 terminals S5_ACM200_FH15 / S5_ACM200_SH15",
+      "selectedPath": {
+        "force": "S5_ACM200_FH15 -> K102_ACM15_PC3 (state NC) -> INT_F",
+        "sense": "S5_ACM200_SH15 -> K102_ACM15_PC3 (state NC) -> INT_S"
+      },
+      "pathRelaysToEnergize": [],
+      "applicability": "alternative only - recorded because the DFT Check column and OVERVIEW notes say \"INT\" while the binding's monitorIntent and the TestIO pad table say DTEST0/nQON. Must not be energized in the same group as the nQON monitor path.",
+      "evidence": [
+        "project/DALI/input/DFT.csv:34 (Check = INT)",
+        "project/DALI/_archive/_dump_OVERVIEW.txt:150 (\"check int pin toggle\") and :154 (\"ramp VAC , INT toggle\")",
+        "project/DALI/Pin_Channel_define.h:30 (_PIN_CHANNEL_DEFINE_PA0_PC3_ACM_ = \"S5_15,...\"), :111 (extern ACM200 PA0_PC3_ACM)",
+        "project/DALI/input/recover_stdafx.h.txt:268 (K102_ACM15_PC3 = 102)",
+        "project/DALI/SCH-Connect-Map.txt:702-704 (INT_PA0 [Kelvin], 需闭合: 无(默认导通)), :929 and :938-939 (PA0 <-> INT via TP_PA0)"
+      ]
+    }
+  ],
+  "relayGroups": [
+    {
+      "groupId": "G1",
+      "stage": "measurement group (VBAT powered at 3.0 V, VAC2 swept, DTEST0 toggle captured)",
+      "setOn": [
+        "K13_VBAT_Cap",
+        "K19_ACM0_VAC2",
+        "K65_nQON_PU"
+      ],
+      "setOnSemantics": "cbite.SetOn is exclusive and full-set: only the relays listed here are energized; every other relay stays in its de-energized default state.",
+      "pathRelays": [
+        "K19_ACM0_VAC2"
+      ],
+      "forceSenseRelays": [],
+      "functionalRelays": [
+        {
+          "relay": "K13_VBAT_Cap",
+          "function": "VBAT regulation capacitor (Cap2_VBAT_S1, C=4.7uF)",
+          "rule": "FR-001 default-closed for a powered PIN that is neither current-measured nor ramped; knowledge/hardware/relays.md:136-138 names TM105~110 among the functions that must close K13_VBAT_Cap"
+        },
+        {
+          "relay": "K65_nQON_PU",
+          "function": "nQON/DTEST0 external pull-up to fixed 5 V (R_nQON_PU_S1)",
+          "rule": "open-drain capture requires the pull-up; knowledge/hardware/relays.md:142-150 names TM105~113 among the functions that must close K65_nQON_PU"
+        }
+      ],
+      "isolationRequirements": [
+        {
+          "relay": "K18_ACM0_VAC3",
+          "requiredState": "de-energized",
+          "reason": "VAC3 share selector on the same VAC tree; energizing it would move the VAC channel from VAC2 to VAC3"
+        },
+        {
+          "relay": "K20_ACM0_AMUX",
+          "requiredState": "de-energized",
+          "reason": "AMUX share selector on the same VAC tree"
+        },
+        {
+          "relay": "K21_VAC_Cap",
+          "requiredState": "de-energized",
+          "reason": "VAC regulation capacitor sits on the swept VAC node; the ramp-source Cap exemption removes it (knowledge/hardware/relays.md:124-138; the repair ledger added K21 only to TM114/115/128, not to TM105~110 which contains TM109)"
+        },
+        {
+          "relay": "K8_FOVI5_PD3",
+          "requiredState": "de-energized",
+          "reason": "its NC contact is what routes FXVIe_PLUS channel 5 to VBAT; energizing it would route the supply to PD3"
+        },
+        {
+          "relay": "K64_ACM9_HG1",
+          "requiredState": "de-energized",
+          "reason": "its NC contact is what routes ACM200 channel 9 to nQON; energizing it would route the monitor channel to HG1"
+        },
+        {
+          "relay": "K17_BUSL_VAC (17)",
+          "requiredState": "de-energized",
+          "reason": "FPVIe0 low-bus entry to the VAC node; must stay open so the scarce floating-source bus is not tied to the swept pin"
+        },
+        {
+          "relay": "K70_R5M_VAC_F (70)",
+          "requiredState": "de-energized",
+          "reason": "FPVIe0 high-bus entry to the VAC node; must stay open for the same reason"
+        },
+        {
+          "relay": "K14_VAC1_P2P, K15_VAC2_P2P, K16_VAC3_P2P",
+          "requiredState": "de-energized",
+          "reason": "P2P-to-AGND shorting relays; this item needs no PIN-to-ground short and K15 would ground the swept pin"
+        },
+        {
+          "relay": "K66_TMU_nQON (66)",
+          "requiredState": "de-energized",
+          "reason": "alternative nQON driver (QTMU channel 0 A); not used"
+        },
+        {
+          "relay": "K62_BUS0_FH_QON (62)",
+          "requiredState": "de-energized",
+          "reason": "alternative nQON entry (FPVIe BUS0 FH leg); not used"
+        },
+        {
+          "relay": "K102_ACM15_PC3",
+          "requiredState": "de-energized",
+          "reason": "must stay in its NC state only if the INT alternative monitor channel were selected instead of nQON"
+        }
+      ],
+      "conflictStatus": "no conflict; multi-source check clean (VBAT = FXVIe_PLUS ch5, VAC2 = ACM200 ch0, monitor = ACM200 ch9): no shared relay, no shared bus, no non-target DUT pin driven, and the two ACM200 channels are distinct",
+      "timeDivisionRequired": false,
+      "groupCount": 1
+    }
+  ],
+  "registerDelta": [
+    {
+      "address": "0x56",
+      "value": "0x15",
+      "fields": [
+        {
+          "field": "DMUX_EN",
+          "value": 1
+        },
+        {
+          "field": "DMUX_SEL",
+          "value": 21,
+          "meaning": "selects a2d_vac2_prst and muxes it to DTEST0"
+        }
+      ],
+      "source": "team/artifacts/tm109-ptc-v2/input-manifest.json#canonicalInputs.intentResolution.entry.decision.registerWrites (authoritative); corroborated by project/DALI/reg_config/tm109.sv:14 (field[(DMUX_EN,1),(DMUX_SEL,21)]) and project/DALI/_archive/_dump_DTESTMAP.txt:23 (index 21 = a2d_vac2_prst)",
+      "scope": "TM109 only"
+    },
+    {
+      "address": "0x57",
+      "value": "0x08",
+      "fields": [
+        {
+          "field": "UNKNOWN(field name not documented in project evidence)",
+          "value": "0x08"
+        }
+      ],
+      "source": "team/artifacts/tm109-ptc-v2/input-manifest.json#canonicalInputs.intentResolution.entry.decision.registerWrites (authoritative); corroborated by project/DALI/reg_config/tm109.sv:15 and project/DALI/_archive/append_tm108_112.py:144",
+      "scope": "TM109 only",
+      "openItem": "TM109-OI-1"
+    },
+    {
+      "address": "mode-entry",
+      "value": "entertestmode()",
+      "fields": [],
+      "source": "project/DALI/input/DFT.csv:30 (Software_initial) and project/DALI/reg_config/tm109.sv:12",
+      "scope": "TM109 only"
+    },
+    {
+      "address": "0x55",
+      "value": "0x96",
+      "fields": [
+        {
+          "field": "EN_DTEST0",
+          "value": 1
+        },
+        {
+          "field": "DTEST0_MUX",
+          "value": 22
+        }
+      ],
+      "status": "recorded_not_used",
+      "reason": "DFT-source evidence only. The resolved project input governs the register writes for TM109, so this DFT write is superseded and is not a register authority. Independent check: the project DTEST map pairs DTEST0_MUX/DMUX value 22 with a2d_vac1_prst and 21 with a2d_vac2_prst, so the DFT field is also inconsistent with the item name; this role does not adjudicate that conflict.",
+      "source": "project/DALI/input/DFT.csv:31 (Software_initial trailing comment); project/DALI/_archive/_dump_DTESTMAP.txt:22-23"
+    }
+  ],
+  "conflicts": [
+    {
+      "id": "TM109-C1",
+      "kind": "dft_stimulus_pin",
+      "status": "resolved_by_binding",
+      "detail": "The DFT.csv TM109 Dynamic/monitor fields originally named VAC3 while the item, OVERVIEW and reg_config identify VAC2. The binding resolves it to VAC2. The corrected DFT.csv on disk already carries vac2 in all four Dynamic steps (dft-meta.json sourceCorrection, before/after sha b92d203f.../ce69dce8...).",
+      "handlingApplied": "VAC2 is the swept pin; no VAC3 route was created."
+    },
+    {
+      "id": "TM109-C2",
+      "kind": "register_map",
+      "status": "resolved_by_binding",
+      "detail": "DFT.csv writes 0x55=0x96 with field[(EN_DTEST0,1),(DTEST0_MUX,22)]; the binding writes 0x56=0x15 (DMUX_EN=1, DMUX_SEL=21) and 0x57=0x08. The two describe the same monitor intent on different register maps.",
+      "handlingApplied": "Only the binding's writes are in the contract; the DFT write is registered as conflict evidence (see registerDelta entry 4)."
+    },
+    {
+      "id": "TM109-C3",
+      "kind": "vbat_value",
+      "status": "resolved_by_binding",
+      "detail": "DFT.csv Hardware_initial says vset[vbat,4.2,100e-6,0]; the binding and OVERVIEW and reg_config/tm109.sv all give VBAT = 3.0 V.",
+      "handlingApplied": "VBAT = 3.0 V."
+    },
+    {
+      "id": "TM109-C4",
+      "kind": "limit_value",
+      "status": "open_not_resolved_here",
+      "detail": "DFT.csv ExpectValue = \"rising vth 4.15V, hys 0.35V\"; OVERVIEW = \"rising vth 4.4V, hys 0.35V\"; a bench record on the same OVERVIEW row reads r 4.079 / f 3.748. The binding adjudicates no limit value.",
+      "handlingApplied": "Recorded only. Limits and pass/fail are outside this role's charter (test-method-expert)."
+    },
+    {
+      "id": "TM109-C5",
+      "kind": "monitor_pin_literal",
+      "status": "open_nonblocking",
+      "detail": "DFT.csv Check column = \"INT\" and OVERVIEW says \"check int pin toggle\" / \"INT toggle\"; the binding's monitorIntent says \"DTEST0/nQON logic toggle\" and the project TestIO table publishes the DTEST0 pad as nQON.",
+      "handlingApplied": "Primary monitor channel = nQON (binding + TestIO pad identity); the INT/PA0 channel is recorded as the alternative. Both need zero SetOn relays, so the relay closure set is the same under either reading and this does not block the method handoff."
+    }
+  ],
+  "evidenceIndex": [
+    {
+      "ref": "team/artifacts/tm109-ptc-v2/input-manifest.json",
+      "used": "dispatch manifest and binding (intentResolution)"
+    },
+    {
+      "ref": "project/DALI/meta/intent-resolutions.json",
+      "sha256": "b4238a12ce9ee1766563b56e828756fbf2dc2da2dde745efba3a004bed7a7858",
+      "used": "canonical project adjudication for TM109"
+    },
+    {
+      "ref": "project/DALI/reg_config/tm109.sv:6-26",
+      "used": "VBAT 3 V, register 0x56=0x15 (DMUX_EN=1,DMUX_SEL=21), 0x57=0x08"
+    },
+    {
+      "ref": "project/DALI/input/DFT.csv:30-34",
+      "used": "Scoped DFT row: ShortName, ExpectValue, Hardware_initial, Software_initial, Dynamic, Check, Type"
+    },
+    {
+      "ref": "project/DALI/_archive/_dump_OVERVIEW.txt:148-155",
+      "used": "TM109 project overview row: description, expect value, Power/Dynamic/Check columns, notes"
+    },
+    {
+      "ref": "project/DALI/_archive/_dump_DTESTMAP.txt:23",
+      "used": "DTEST0/DMUX index 21 = a2d_vac2_prst"
+    },
+    {
+      "ref": "project/DALI/_archive/_dump_TestIO.txt:2",
+      "used": "pad table: nQON = DTEST0 digital test pad"
+    },
+    {
+      "ref": "project/DALI/Pin_Channel_define.h:12,15,24,30",
+      "used": "published channel macros for VBAT_PD3_FXVI, VAC123_AMUX_ACM, NQON_HG1_ACM, PA0_PC3_ACM"
+    },
+    {
+      "ref": "project/DALI/input/recover_stdafx.h.txt:163,168,172-176,224,227-229,268",
+      "used": "published relay macro names and numbers"
+    },
+    {
+      "ref": "project/DALI/path_proofs.json.txt:42288-42321,42908-42941,43159-43214,45923-45978,45744-45777",
+      "used": "accepted per-source path proofs with required_on, terminal_stop and role_match validation"
+    },
+    {
+      "ref": "project/DALI/SCH-Connect-Map.txt:189-212,409-420,632-639,702-704,793-800,832-834,878,891,913-914",
+      "used": "connect-map rows for VAC/VBAT/nQON/INT and the column-11 functional classes"
+    },
+    {
+      "ref": "knowledge/references/L3-method/relay-design-flow.md",
+      "used": "mandatory eight-step relay flow"
+    },
+    {
+      "ref": "knowledge/standards/relay-checklist.md",
+      "used": "closed-loop rules, BUS-relay decision table, Cap2 rule, anti-short rule, functional relay classes"
+    },
+    {
+      "ref": "knowledge/hardware/relays.md:120-158",
+      "used": "Cap2 default-closed rule with the TM105~110 K13 list; open-drain pull-up rule with the TM105~113 K65 list"
+    },
+    {
+      "ref": "knowledge/standards/test-types.md",
+      "used": "project structure type #7 and parameter type #4 (PRST)"
+    },
+    {
+      "ref": "knowledge/standards/toggle-awg-rules.md",
+      "used": "Toggle/AWG is an add-on measurement method; two ramp segments"
+    },
+    {
+      "ref": "knowledge/references/00-index.md:20",
+      "used": "DTEST0 -> nQON pad identity"
+    },
+    {
+      "ref": "knowledge/references/L4-Golden-code/toggle-template.cpp",
+      "used": "mechanism reference only (different project: other relay/channel/register names). Used to corroborate the structure (Cap relays closed, ramp channel per VAC pin, DMUX select, three Rise/Fall/Hys parameters); no relay identity or value was copied from it."
+    },
+    {
+      "ref": "project/DALI/test-strategy-contract.md:138-150",
+      "used": "prior project-draft strategy row for TM109. Used as cross-check only: it agrees on the VAC2 stimulus target, the VAC123_AMUX_ACM source object, the DMUX_SEL=21 register and a V(TEST/DMUX) monitor; it left the monitor pad unresolved and listed K17+K19 as the VAC2 closure, which this contract corrects to K19 alone on the strength of the accepted path proofs and the published K19_ACM0_VAC2 macro. No relay identity was copied from it."
+    }
+  ],
+  "openItems": [
+    {
+      "id": "TM109-OI-1",
+      "severity": "low",
+      "type": "undocumented_register_field",
+      "description": "The field name and meaning of register 0x57 = 0x08 is not documented in any project input found in this boundary.",
+      "owner": "user / project owner",
+      "impact": "The value is authoritative and must be written as 0x15/0x08 into 0x56/0x57; only the field annotation is missing."
+    },
+    {
+      "id": "TM109-OI-2",
+      "severity": "medium",
+      "type": "monitor_pin_literal",
+      "description": "DFT Check literal \"INT\" versus the binding's \"DTEST0/nQON\" monitor intent (conflict TM109-C5).",
+      "owner": "user or commander ruling",
+      "impact": "Selection between two ACM200 monitor channels (ch9 nQON vs ch15 INT/PA0). Relay closure and register delta are unaffected."
+    },
+    {
+      "id": "TM109-OI-3",
+      "severity": "high",
+      "type": "limit_conflict",
+      "description": "ExpectValue 4.15 V (DFT.csv) versus 4.4 V (OVERVIEW) rising threshold; hysteresis 0.35 V is consistent. The binding adjudicates no limit.",
+      "owner": "test-method-expert / user",
+      "impact": "Out of this role's charter; the method expert has no single binding-sourced rising-threshold value."
+    },
+    {
+      "id": "TM109-OI-4",
+      "severity": "low",
+      "type": "unmodelled_multi_site_arbitration",
+      "description": "The schematic deliverable states that no cross-site (_S1S2) relay arbitration for simultaneous multi-site execution was modelled in the source IR.",
+      "owner": "ate-implementer / setup architect",
+      "impact": "K19 and K65 are declared on the site-1 instances; multi-site parallel execution needs the site instance mapping confirmed at implementation time.",
+      "source": "team/artifacts/tm109-ptc-v2/schematic/SCH-Connect-Map.json consistencyNotes"
+    },
+    {
+      "id": "TM109-OI-5",
+      "severity": "low",
+      "type": "unpublished_hardware_data",
+      "description": "The schematic deliverable lists unpublished relay contact current rating and undocumented sense-path series resistance versus the FPVIe sense input impedance.",
+      "owner": "not applicable to this item",
+      "impact": "TM109 is a voltage-only threshold test with no high-current or floating-source loop, so neither limitation binds this contract. Recorded for downstream awareness.",
+      "source": "team/artifacts/tm109-ptc-v2/schematic/SCH-Connect-Map.json hazards/openQuestions"
+    }
+  ],
+  "handoff": {
+    "nextRole": "test-method-expert",
+    "permittedNextAction": "Design methodPhases, measurementPlan, power-down and logPlan strictly inside the resource, relay-group and register boundaries declared here.",
+    "mustBeTreatedAsFixed": [
+      "VBAT -> VBAT_PD3_FXVI (FXVIe_PLUS channel 5), route relays to energize: none",
+      "VAC2 -> VAC123_AMUX_ACM (ACM200 channel 0), route relay to energize: K19_ACM0_VAC2",
+      "monitor -> NQON_HG1_ACM (ACM200 channel 9), no path relay, functional pull-up K65_nQON_PU required",
+      "functional relay K13_VBAT_Cap required; K21_VAC_Cap required open",
+      "register delta 0x56=0x15 and 0x57=0x08 plus entertestmode()",
+      "single relay group G1 with exclusive SetOn; no time division"
+    ],
+    "mustNotBeChanged": [
+      "no source, channel, path, relay, functional relay or register value may be replaced by the method expert",
+      "a method need that is not inside this contract must be returned to test-strategy-architect, not substituted"
+    ],
+    "blockingItems": [],
+    "blockingNote": "No blocking item. All four routes are proved by accepted project path proofs with terminal_stop=true and role_match=true, and every relay in the closure set is backed by a published project macro name and number."
+  }
+}

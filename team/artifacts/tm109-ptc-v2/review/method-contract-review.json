@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm109-method-contract-review",
+  "taskId": "TM109-PTC-RULE_REVIEW_METHOD",
+  "trial": "tm109-ptc-v2",
+  "tm": "TM109",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_METHOD",
+  "verdict": "pass",
+  "signedInputs": {
+    "strategyContractPath": "strategy/tm109-resource-config-contract.json",
+    "strategyContractSha256": "a48e55a350b5bdd1167f812823643bc2a860bdf0174cefe7ba950611e2070901",
+    "methodContractPath": "method/tm109-test-method-contract.json",
+    "methodContractSha256": "0b1c49be36eec6657ed0bc6159444fa67a06ff833223f471ea8a62fcf68c1f6f",
+    "registerEvidencePath": "strategy/register-config-evidence.json",
+    "registerEvidenceSha256": "da86a402cfcae2f844d3b7d1100ce503001245fa36e77c8590a35b67db63d621"
+  },
+  "checks": [
+    {"id": "RC-1", "result": "PASS", "subject": "Signed strategy, method, and register evidence", "detail": "All three current files match the recorded SHA-256 values. The register evidence is verified against TM109 DFT Code2 and preserves 0x56=0x15 then 0x57=0x08."},
+    {"id": "RC-2", "result": "PASS", "subject": "Source, Force/Sense, and functional closure", "detail": "VBAT, VAC2, and nQON each retain signed Force and Sense Path-Proofs. The exclusive one-call closure [13,19,65] contains VAC2 path relay K19 and functional relays K13/K65; selected NC relays K8/K18/K64 remain unactuated. No CBIT-state or shared-source-end conflict is present."},
+    {"id": "RC-3", "result": "PASS", "subject": "Scan range and trigger directions", "detail": "The 4.4 V prediction selects Notes 3-5 V over VSET 0-10 V under the user rule. VAC2 is fixed by Code2, Dynamic, Name, and strategy; Notes VAC1 supplies only the numeric range candidate. Rise is 3-to-5 V with TRIG_FALLING; Fall is 5-to-3 V with TRIG_RISING."},
+    {"id": "RC-4", "result": "PASS", "subject": "Measurement and acceptance treatment", "detail": "nQON observation, per-site Rise/Fall/Hys logging, and invalid-capture handling are present. ExpectValue is REFERENCE_ONLY and numericPassFail is NOT_SPECIFIED; no numeric limit or tolerance was created."},
+    {"id": "RC-5", "result": "PASS", "subject": "Safe cleanup", "detail": "Both normal and fault paths drive VAC2 and VBAT to zero before relay release, leave no active SetOn relays, and retain DFT finish[] after the safe zero/off state. BST/SW differential is explicitly not applicable with endpoint proof."}
+  ],
+  "blockingDefects": [],
+  "summary": {"checksPassed": 5, "blockingDefects": 0, "nextRole": "ate-implementer"}
+}

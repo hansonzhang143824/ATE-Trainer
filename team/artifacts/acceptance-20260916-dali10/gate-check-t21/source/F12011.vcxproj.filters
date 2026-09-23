@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{16db0509-ab84-437b-a4bb-2eab62f9e16a}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{ac5cf7d1-80f6-4147-95b4-db6cfe20d762}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{bb37b165-4408-47c7-ac75-189fb42bcbe5}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="F12011.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BoardCheck.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Coutlier.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="diags.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FMEA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="inireader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shmoo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="spec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sub.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tempchar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Test_Method.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="treg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BoardCheck.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Coutlier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FMEA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inireader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LogDataStruct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pin_Channel_define.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shmoo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="spec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sub.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tempchar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Test_Method.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="treg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\NU1201.spec" />
+    <None Include="..\NU1201.treg" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,31 @@
+=== ① 到 BST 的需闭合串 (L42/43/44) ===
+  L42   CH0 Low -> BST  [Kelvin]  需闭合: K109,K110,K138,K139,K145,K146
+  L43   S1_FPVIe_FL0 -> K89(Relay-NC) -> K145(Relay-ON) -> K146(Relay-ON) -> K109(Relay-ON) -> K110(Relay-ON) -> BST_F
+  L44   S1_FPVIe_SL0 -> K88(Relay-NC) -> K138(Relay-ON) -> K139(Relay-ON) -> K109(Relay-ON) -> K110(Relay-ON) -> BST_S
+
+=== ② 到 PB0 的两组路线 (L109/110 = FPVIe 侧; L724/725 = ACM 仪器侧) ===
+  L109  S1_FPVIe_FL0 -> K89(Relay-NC) -> K145(Relay-ON) -> K146(Relay-ON) -> K109(Relay-ON) -> K110(Relay-NC) -> PB0_F
+  L110  S1_FPVIe_SL0 -> K88(Relay-NC) -> K138(Relay-ON) -> K139(Relay-ON) -> K109(Relay-ON) -> K110(Relay-NC) -> PB0_S
+  L724  F: S5_ACM200_FH18 -> K110(Relay-NC) -> PB0_F
+  L725  S: S5_ACM200_SH18 -> K110(Relay-NC) -> PB0_S
+
+  → K110 在各行的状态: [(43, 'ON'), (44, 'ON'), (109, 'NC'), (110, 'NC'), (724, 'NC'), (725, 'NC')]
+  → 判读: 到 BST 的串上 K110 = Relay-ON（需激磁）; 到 PB0 的串上 K110 = Relay-NC（未激磁时落 PB0）
+
+=== ③ 契约期望 vs payload 实际 ===
+  aliasResolution[bst2sw].closedRelayNumbers = [110, 61]
+  relayChain = [{"relay": "K110_ACM18_BST", "number": 110, "state": "SetOn (ACM200 S5_FH18 -> BST)"}, {"relay": "K61_ACM8_SW", "number": 61, "state": "SetOn (ACM200 S5_FH8 -> SW)"}]
+  TM600_HS_RDSON 实际闭合数字集合 = [13, 57, 60, 61, 83, 85, 126]
+  契约期望 ⊆ 实际 ? False  缺失 = [110]
+  pinRouteTable.BST 中 needsClosed 含 K110 的路线 = [('列2: FPVIe → PIN (BUS继电器) | CH0 Low', [109, 110, 138, 139, 145, 146], 42), ('列2: FPVIe → PIN (BUS继电器) | CH1 Low', [109, 110], 268)]
+  ⇒ 路由枚举侧亦要求 K110（与 aliasResolution 同向）: True
+
+=== ④ t30 断言输出（K110 方向核对）===
+  [t30] 生效作用范围 = ['TM600_HS_RDSON', 'TM601_LS_RDSON']
+  [t30] TM600_HS_RDSON: 契约声明必需 [60, 61, 83, 110] vs payload SetOn 比对完成, 缺失=[110] (缺失数 1)
+  [t30] TM601_LS_RDSON: 契约声明必需 [60, 61, 154, 155] vs payload SetOn 比对完成, 缺失=[] (缺失数 0)
+  [t30] 契约来源: setup-contract.json rev=24 | 判据: setup-contract.json aliasResolution[*].resolution.closedRelayNumbers (indexed by usedByTm / tmDeltas.<TM>.aliasesUsed); route enumerations (pinRouteTable) and the relaySet budget pool are locators only
+  exit = 1
+
+  结论: 断言要求"契约声明必需的 K110 必须出现在 SetOn 中" —— 与 SCH L42/43/L724 的方向一致，
+        不是把"该闭的"判成"不该闭"。我此前对 L109/110 的定性错误已在此更正。

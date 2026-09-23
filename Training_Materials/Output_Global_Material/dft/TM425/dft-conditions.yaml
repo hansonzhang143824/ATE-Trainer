@@ -1,0 +1,60 @@
+schemaVersion: 1
+artifact: "dft-conditions"
+projectId: "DALI"
+tm: "TM425"
+sourcePath: "D:\\Newtest\\DSH\\ATE-Coding-Flow\\project\\DALI\\Input_GlobalMaterial\\Dali_testmode.xlsx"
+sourceSheet: "OVERVIEW"
+sourceSha256: "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b"
+rawIntent:
+  Item: "TM425"
+  Level: "MNT"
+  Name: "MNT_1P2V_BUF"
+  Description: "internal 1.2V voltage refernce"
+  ExpectValue: 1.2
+  Unit: "V"
+  Test: "Direct"
+  Special: ""
+  Purpose: "debug"
+  Trim: "Y"
+  Notes: "TRIM_MNT_V1P2_BUF"
+  Code1: "vset[vbat,4.4,100e-6,0]"
+  Code2: "en_tm[]\nfield[(WAKE_UP,1),(EN_ATEST1,1),(ATEST1_MUX,2),(DIS_NTC_DETECTION_ANALOG,1)]"
+  Code3: "delay[2e-3]\nfinish[0]"
+  Power: "VBAT"
+  Dynamic: ""
+  Check: "V(ATEST1)"
+  isCodeGen: "Y"
+  isRun: ""
+  Assign: ""
+  State__AMS_Validation: "Done"
+  State_Bench_Validation: ""
+  is_CP_test?: ""
+  CP_comment: ""
+  State_ATE_Validation: ""
+  HELPER: ""
+  de_test: 1.197
+  aetest: "Bench Pass, 测试值1.197V, able to trim"
+  is_test: "checked"
+derivedTokens:
+  vsetPins: ["vbat"]
+testCondition:
+  identity: {"testItem": "TM425", "level": "MNT", "parameterName": "MNT_1P2V_BUF", "description": "internal 1.2V voltage refernce", "purpose": "debug", "unit": "V"}
+  remarks: "TRIM_MNT_V1P2_BUF"
+  expectedValue: 1.2
+  isTrim: true
+  powerSequence: [{"column": "Code1", "order": 1, "sourceOrder": 1, "pin": "vbat", "args": ["4.4", "100e-6", "0"], "raw": "vset[vbat,4.4,100e-6,0]", "directPowerOn": true}]
+  staticPower: [{"column": "Code1", "order": 1, "sourceOrder": 1, "pin": "vbat", "args": ["4.4", "100e-6", "0"], "raw": "vset[vbat,4.4,100e-6,0]", "directPowerOn": true}]
+  directPowerActions: [{"column": "Code1", "order": 1, "sourceOrder": 1, "pin": "vbat", "args": ["4.4", "100e-6", "0"], "raw": "vset[vbat,4.4,100e-6,0]", "directPowerOn": true}]
+  hasRamp: false
+  ramps: []
+  helperIntent: ""
+  scanIntent: {"state": "NOT_DECLARED", "source": "HELPER", "raw": "", "entries": []}
+  dynamicPins: []
+  highCurrent: {"state": "NOT_DECLARED", "evidenceColumns": ["Name", "Description", "Notes", "Special"]}
+  differentialVoltage: {"state": "NOT_DECLARED", "evidenceColumns": ["Name", "Description", "Notes", "Special"]}
+  internalComparison: {"state": "NOT_DECLARED", "expression": "", "sourceText": ""}
+  involvedPins: {"vsetPins": ["vbat"], "logicalCheck": "V(ATEST1)"}
+  measurement: {"check": "V(ATEST1)", "quantity": "VOLTAGE", "isToggle": false, "resultTypes": ["Measurement"], "resultTypeProvenance": [{"type": "Measurement", "state": "SOURCE_DECLARED"}]}
+  registerFieldIntent: ["(WAKE_UP,1),(EN_ATEST1,1),(ATEST1_MUX,2),(DIS_NTC_DETECTION_ANALOG,1)"]
+  referenceValue: 1.2
+  notes: "TRIM_MNT_V1P2_BUF"

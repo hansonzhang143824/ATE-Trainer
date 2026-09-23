@@ -1,0 +1,21 @@
+=== ① 复现其广度结论 ===
+  多值宏 = 209 ; 单值宏 = 282
+  多值宏中被 parse_defines 收录且截断的 = 209 ⇒ 比例 = 209/209 = 100%
+
+=== ② 判据真正消费的集合（cap_defs 只收录 cap_pin 非空者）===
+  cap 家族（cap_pin 非空）总量 = 19
+  其中**多值宏** = 0 []
+  其中单值宏     = 19
+
+=== ③ L316 那个比较的两个操作数 ===
+  LHS defines[name]（name ∈ cap_defs ⊆ cap 家族）
+  RHS canon_by_ch（键 = 通道号）
+  ⇒ 只有当 LHS 是"通道号"时比较才有意义 ⇒ 由 **单值 Cap 宏** 提供（如 K21_VAC_Cap=21）
+
+=== 结论 ===
+  ✅ cap 家族**无多值宏** ⇒ L316 的比较不受截断影响；
+     L376 的 n 之后未再参与数值比较 ⇒ **relay-trace 的 PASS 不依赖被截断值** ⇒
+     该 PASS 可以作为"多值宏路线"的证据（不是被截断值造成的假通过）。
+
+⚠️ **更正横幅（2026-09-16，之后复核发现）**：本日志上文"n 之后未再参与数值比较 / PASS 不受影响"**已作废** —— `n` 在 **L401 `if n in on_set` / L403 `if n in nc_set`** 被当数字使用，而 `r` 来自 `parse_setons()`（不做宏展开）⇒ **多值宏只校验首值 ⇒ 属欠严（under-strict）**。
+现口径见 `t54-gate-failopen-forms.md` 形态 1 与 `build-report.json` 的 `gateFailOpenForms` / `withdrawnClaims`。

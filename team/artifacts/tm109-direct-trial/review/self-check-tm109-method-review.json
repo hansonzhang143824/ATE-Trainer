@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm109-method-review-self-check",
+  "artifactKind": "role-self-check",
+  "taskId": "TM109-RULE-REVIEW-METHOD",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_METHOD",
+  "projectId": "DALI",
+  "tm": "TM109",
+  "generatedAt": "2026-09-18 00:26:51 +08:00",
+  "result": "PASS",
+  "checks": [
+    {
+      "id": "SC-1",
+      "what": "charter loaded before acting (team/roles/rule-reviewer.md) and the frozen-snapshot/evidence-scope addendum plus the transition authority were read as rule material",
+      "result": "done"
+    },
+    {
+      "id": "SC-2",
+      "what": "only the four runner-listed inputs were used as review inputs; no historical trial, no DFT/schematic re-derivation, no source-code inspection",
+      "result": "done"
+    },
+    {
+      "id": "SC-3",
+      "what": "all four reviewed inputs hash-match the digest declared for them, with the project plaintext reader",
+      "result": "done",
+      "evidence": "a22502ec... strategy contract, 35631295... strategy handoff, d9d7e10f... method contract, 2174275f... method handoff"
+    },
+    {
+      "id": "SC-4",
+      "what": "the four charter criteria for a METHOD review were each evaluated and passed",
+      "result": "pass",
+      "evidence": "review/method-contract-review.json checks CHK-1..CHK-4"
+    },
+    {
+      "id": "SC-5",
+      "what": "the carried method boundary was compared field by field against the signed strategy contract (endpointMap table/slot/channel/ports/closureSet/selectedPath, registerDelta) and no drift was found",
+      "result": "pass"
+    },
+    {
+      "id": "SC-6",
+      "what": "no relay, resource or register was introduced by the method contract that is absent from the signed strategy contract",
+      "result": "pass",
+      "evidence": "method-only relay numbers = [] ; actuated set {19,70} is strategy-owned"
+    },
+    {
+      "id": "SC-7",
+      "what": "the mandatory evidence-scope gate was run and passed",
+      "result": "PASS: 11 bounded review evidence checks are valid\r\nexit=0",
+      "evidence": "review/review-evidence-scope.json (11 bounded checks)"
+    },
+    {
+      "id": "SC-8",
+      "what": "the implementation-snapshot gate was assessed for applicability and recorded as NOT_APPLICABLE at this stage with evidence (no implementation manifest exists)",
+      "result": "recorded",
+      "evidence": "review/method-contract-review.json gateApplicability[0]"
+    },
+    {
+      "id": "SC-9",
+      "what": "the reviewed artifacts were re-hashed after the review artifacts were written and are byte-identical to the reviewed revision",
+      "result": "unchanged",
+      "evidence": "strategy contract a22502ec..., strategy handoff 35631295..., method contract d9d7e10f..., method handoff 2174275f..."
+    },
+    {
+      "id": "SC-10",
+      "what": "no code and no reviewed artifact was edited; every file written is inside the review output directory",
+      "result": "confirmed",
+      "evidence": "output directory listing contains only the review artifacts"
+    },
+    {
+      "id": "SC-11",
+      "what": "no helper agent, AgentTeams call, Goal, Ralph round, polling loop or retry was used, and no downstream role was started",
+      "result": "confirmed"
+    },
+    {
+      "id": "SC-12",
+      "what": "the verdict and the return routing were both produced, and no blocking defect was found",
+      "result": "deliverable_ready with RV-01..RV-04 routed"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "team/artifacts/tm109-direct-trial/review/method-contract-review.json",
+      "sha256": "",
+      "role": "review verdict, checks, findings, return routing"
+    },
+    {
+      "path": "team/artifacts/tm109-direct-trial/review/method-contract-review-deliverable-ready.json",
+      "sha256": "",
+      "role": "ready handoff"
+    },
+    {
+      "path": "team/artifacts/tm109-direct-trial/review/review-evidence-scope.json",
+      "sha256": "",
+      "role": "bounded evidence for the mandatory gate"
+    },
+    {
+      "path": "team/artifacts/tm109-direct-trial/review/immutable-review-snapshot.json",
+      "sha256": "",
+      "role": "frozen revision record of the reviewed files"
+    },
+    {
+      "path": "team/artifacts/tm109-direct-trial/review/self-check-tm109-method-review.json",
+      "sha256": "this file",
+      "role": "role self-check"
+    }
+  ],
+  "notDone": [
+    "no re-derivation of DFT rows or schematic connectivity (outside this role's input boundary and outside a rule review's criterion, which is provenance)",
+    "no implementation snapshot gate (no implementation exists yet; the gate must run for the IMPLEMENTATION review)",
+    "no numeric tolerance was invented and no relay identity was chosen: RV-03 and RV-04 are routed to their owners instead"
+  ]
+}

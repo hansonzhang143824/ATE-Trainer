@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "profileId": "ptc-dft-expert",
+  "version": "v2",
+  "publishedAt": "2026-09-19T11:29:29.666151Z",
+  "executionClass": "input-dft",
+  "evaluation": {
+    "verdict": "pass",
+    "failed": [],
+    "caseCount": 1,
+    "checks": [
+      {
+        "id": "assets",
+        "ok": true,
+        "detail": "all required assets present"
+      },
+      {
+        "id": "profile_metadata",
+        "ok": true,
+        "detail": "profile.yaml parsed and identified"
+      },
+      {
+        "id": "execution_class_registered",
+        "ok": true,
+        "detail": "executionClass 'input-dft' is registered in the plugin policy registry"
+      },
+      {
+        "id": "execution_class_matches_profile_map",
+        "ok": true,
+        "detail": "plugin maps ptc-dft-expert to 'input-dft'"
+      },
+      {
+        "id": "declared_readable",
+        "ok": true,
+        "detail": "readable: ['project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx', 'project/DALI/Output_Global_Material/dft/<TM>']"
+      },
+      {
+        "id": "declared_writable",
+        "ok": true,
+        "detail": "writable: ['project/DALI/Output_Global_Material/dft/<TM>', 'project/DALI/ErrorLog/dft-expert.log']"
+      },
+      {
+        "id": "declared_requiredGates",
+        "ok": true,
+        "detail": "requiredGates: ['scripts/validate_dft_outputs.py']"
+      },
+      {
+        "id": "output_contract",
+        "ok": true,
+        "detail": "object schema with required=['tm', 'sourceSha256', 'rawIntent', 'testCondition']"
+      },
+      {
+        "id": "case_index_matches_disk",
+        "ok": true,
+        "detail": "index ['TM106'] vs cases/ ['TM106']"
+      },
+      {
+        "id": "case_TM106",
+        "ok": true,
+        "detail": "case is complete and inside the input root"
+      },
+      {
+        "id": "preset_agreement",
+        "ok": true,
+        "detail": "preset.yml name matches displayName 'PTC DFT Expert'"
+      },
+      {
+        "id": "boundary_regression",
+        "ok": true,
+        "detail": "plugin boundary suite passed"
+      }
+    ]
+  },
+  "files": {
+    "CHANGELOG.md": "7cdd0f60348be542ffaf39770abe97b1aab967bf1e915fb3bbf3a1e82788370e",
+    "cases/TM106/expected.json": "dd79afd35a9ecec8014d36944b2250f56a2cbe50acd01372f6cd79d2ba6db19b",
+    "evaluation/expected-results.json": "1efa0ec7b1606d2d701c0c3c5d500345ee151d7299ab11fd5499280697cfe047",
+    "instructions.md": "f19b7bb954947ac3313275cc32556fe354ca756e43f3834ba01571d6473606f6",
+    "output-contract.schema.json": "258285d24d949391787f1994745980a5f4e7982ae51ea81eda4c357a6eb8c243",
+    "profile.yaml": "3256959f4bb60241df9598ad691be5d0d1ed4d9275f1ed89ee6cabb8968179dd",
+    "status.json": "9216bb36c207e463cb2e68d6b235684eb2caf9ad4f64d587f898c369966ae8a7"
+  },
+  "digest": "fce216012d9b2cf66c09642e32e682f618bf2f13ab574c27f83810e5d04c55d4"
+}

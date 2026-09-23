@@ -1,0 +1,19 @@
+========================================================================
+INPUT SYNC — 输入同步一致性门 (流水线之前)
+========================================================================
+
+[DFT 组]  Dali_testmode.xlsx → 派生产物
+  [OK  ] ① DFT↔meta       dali_tm_meta.json             meta._syncStamp.dftSha256 vs sha256(DFT)
+  [OK  ] ② meta↔YAML      test_conditions.yaml          yaml._sync.metaSha256 vs sha256(meta)
+  [OK  ] ③ YAML↔DFT       test_conditions.yaml          yaml._sync.dftSha256 vs sha256(DFT) (跨 meta 追溯一致性)
+
+[SCH 组]  Dali-SCH.csv → 派生产物
+  [OK  ] ③ csv(manifest)  validation_manifest.json.txt  manifest.input.sha256 vs sha256(csv)
+  [OK  ] ③ map(产物)        SCH-Connect-Map.txt           manifest.artifacts.sch_connect_map_sha256 vs sha256(产物)
+  [OK  ] ③ statistic(产物)  Component-Statistic.txt       manifest.artifacts.component_statistic_sha256 vs sha256(产物)
+
+------------------------------------------------------------------------
+INPUT SYNC: **IN SYNC** — 输入与派生文件全部同版本, 无需修改任何产物。
+            (可直接进 Step0/CBIT-Definition/生成循环; 跳过一切重生成)
+------------------------------------------------------------------------
+

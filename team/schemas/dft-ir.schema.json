@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dft-ir.schema.json",
+  "title": "ATE DFT intermediate representation",
+  "type": "object",
+  "required": ["runId", "scope", "source", "items", "openQuestions"],
+  "properties": {
+    "runId": {"type": "string", "minLength": 1},
+    "scope": {"type": "array", "items": {"type": "string"}, "minItems": 1, "uniqueItems": true},
+    "source": {"$ref": "#/$defs/evidence"},
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["tm", "name", "testType", "stimuli", "measurements", "evidence", "confidence"],
+        "properties": {
+          "tm": {"type": "string", "pattern": "^TM[0-9]+(?:_[0-9]+)?$"},
+          "name": {"type": "string"},
+          "testType": {"type": "array", "items": {"enum": ["normal", "toggle", "trim", "awg", "high-current", "differential", "grouped"]}, "minItems": 1, "uniqueItems": true},
+          "stimuli": {"type": "array", "items": {"type": "object"}},
+          "measurements": {"type": "array", "items": {"type": "object"}, "minItems": 1},
+          "limits": {"type": "array", "items": {"type": "object"}},
+          "sequence": {"type": "array", "items": {"type": "string"}},
+          "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}, "minItems": 1},
+          "ambiguities": {"type": "array", "items": {"type": "string"}},
+          "confidence": {"enum": ["high", "medium", "low"]}
+        },
+        "additionalProperties": true
+      }
+    },
+    "openQuestions": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {"evidence": {"type": "object", "required": ["path", "locator", "sha256"], "properties": {"path": {"type": "string"}, "locator": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[A-Fa-f0-9]{64}$"}}, "additionalProperties": true}},
+  "additionalProperties": true
+}

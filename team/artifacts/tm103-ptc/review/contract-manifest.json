@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "kind": "signed-contract-manifest",
+  "stage": "RULE_REVIEW_METHOD",
+  "tm": "TM103",
+  "runId": "tm103-ptc",
+  "note": "Frozen revision of the four runner-listed signed inputs for RULE_REVIEW_METHOD. No production source is in scope at this stage.",
+  "changes": [
+    {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm103-ptc\\strategy\\tm103-resource-config-contract.json",
+      "afterSha256": "92eb967dcc96807010c811e4c4d46ddc205ec2d1dd467dcd8d238bb249c6954a",
+      "role": "signed-strategy-contract"
+    },
+    {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm103-ptc\\strategy\\deliverable-ready.json",
+      "afterSha256": "8ee5da2a165b17db4762c50c2192cecdc0be30140e3131f579d66091d1115c7b",
+      "role": "signed-strategy-handoff"
+    },
+    {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm103-ptc\\method\\tm103-test-method-contract.json",
+      "afterSha256": "210d6058f99287ee22e89ca7d8accbd597d08b102f5b8cca622b6686f879a79a",
+      "role": "signed-method-contract"
+    },
+    {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm103-ptc\\method\\deliverable-ready.json",
+      "afterSha256": "8b394b4bf22af94eb87a37e2b43b7c8c44a966a036c9cc6bcc301540eea00e17",
+      "role": "signed-method-handoff"
+    }
+  ]
+}

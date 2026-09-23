@@ -1,0 +1,675 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm109-resource-config-contract",
+  "artifactKind": "resource-config-contract",
+  "taskId": "TM109-STRATEGY-R1",
+  "role": "test-strategy-architect",
+  "stage": "STRATEGY",
+  "projectId": "DALI",
+  "tm": "TM109",
+  "generatedAt": "2026-09-17 22:47:44 +08:00",
+  "verdict": "generated",
+  "contractFieldSet": "TEAM_ARCHITECTURE_V2.md section 5 (输出：资源与配置契约): TM / projectType / parameterType / functionArchitecture / endpointRequirements[] / resourceAllocation[] / relayGroups[] / registerDelta[] / evidence[] / openItems[]",
+  "inputs": [
+    {
+      "name": "DFT.csv (canonical DFT source)",
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\input\\DFT.csv",
+      "sha256": "ce69dce829a1473f1c7fd2ec7d55014b9e2fcf85262301169c654100b5461541",
+      "sha256MatchesInputManifest": true,
+      "verifiedWith": "python scripts/hash_ate_plaintext.py project/DALI/input/DFT.csv (this session)",
+      "role": "DFT intent for TM109 (data record 9 of 35, physical lines 30-34)"
+    },
+    {
+      "name": "schematic-ir.json (canonical schematic input)",
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\schematic-ir.json",
+      "sha256": "35fdd1582958eb6e4fd63e29da59dec63dfe19e3fd6198d8cc8b8f727a5c7ff5",
+      "sha256MatchesInputManifest": true,
+      "verifiedWith": "python scripts/hash_ate_plaintext.py project/DALI/schematic-ir.json (this session)",
+      "role": "frozen physical-connectivity source for this trial"
+    },
+    {
+      "name": "dft-meta.json (frozen DFT deliverable)",
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-direct-trial\\dft\\dft-meta.json",
+      "sha256": "816506a8bb183d7a754334d62bcbc906cbdae85249a610d16b2161d7737f329f",
+      "verifiedWith": "python scripts/hash_ate_plaintext.py (this session)",
+      "role": "TM109 DFT intent, source locations, registered open items"
+    },
+    {
+      "name": "dft-conditions.yaml (frozen DFT deliverable)",
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-direct-trial\\dft\\dft-conditions.yaml",
+      "sha256": "e9de1abbb8ad0d8bdd5a77bbf27fa0b55302cffbf90595379e3371d0baf09350",
+      "verifiedWith": "python scripts/hash_ate_plaintext.py (this session)",
+      "role": "TM109 raw intent and derived vset pin tokens"
+    },
+    {
+      "name": "SCH-Connect-Map.json (frozen schematic deliverable)",
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-direct-trial\\schematic\\SCH-Connect-Map.json",
+      "sha256": "5886070110fce6474b6d84f4b9ec62ef16cd6ed25c0c230b0f2d5297f176d84b",
+      "verifiedWith": "python scripts/hash_ate_plaintext.py (this session)",
+      "role": "candidate path / relay chain projection (pinCentric, sourceCentric, relayChainIndex)"
+    },
+    {
+      "name": "Components-Statistic.json (frozen schematic deliverable)",
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-direct-trial\\schematic\\Components-Statistic.json",
+      "sha256": "1b0a706e7bebf6b3ad0d06a8c162104ff47023fd7bb8fcddf850fdd0f568ce44",
+      "verifiedWith": "python scripts/hash_ate_plaintext.py (this session)",
+      "role": "declared counts only (read at key level); NOT relied upon for any selection in this contract"
+    },
+    {
+      "name": "schematic-ir.json (frozen schematic deliverable, trial copy of same engine output)",
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-direct-trial\\schematic\\schematic-ir.json",
+      "sha256": "5893c60b145e73e29038b7d033600ba8b0b96de068385e463b6dc14438381286",
+      "verifiedWith": "python scripts/hash_ate_plaintext.py (this session)",
+      "role": "paths[] / pins[] / relays[] / nets[] machine-readable projection"
+    },
+    {
+      "name": "input-manifest.json (INPUT_SYNC gate)",
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-direct-trial\\input-manifest.json",
+      "sha256": "efd312aab867275eb7f2d16cab3facff67bcc7fdfabf0c194cb48d73679a84ec",
+      "verifiedWith": "python scripts/hash_ate_plaintext.py (this session)",
+      "role": "stage gate: status ready; both inputs ready; missingOrStaleOutputs empty"
+    }
+  ],
+  "classification": {
+    "projectType": {
+      "value": "normal (一般测试项目)",
+      "evidence": [
+        "DFT.csv line 34, column Type = \"Toggle, MV\" and column Trim = \"\" (empty) and column Record = \"\" (empty)",
+        "dft-meta.json tms.TM109.identity.trimFlag = \"\" and recordFlag = \"\"",
+        "knowledge/standards/test-types.md:47-60 project-structure decision table: rows 1-6 (Trim / Contact / OTP readback / OTP burn / P2P leakage / Leakage) are not triggered by any TM109 DFT field; the residual class (row 7, 一般测试项目) applies"
+      ],
+      "confidence": "direct (DFT fields) + rule-layer table",
+      "notDecidedHere": "the measurement method (AWG/toggle capture vs static IV) is a test-method-stage decision and is NOT fixed by this contract"
+    },
+    "parameterType": {
+      "value": "UVLO family, specific parameter PRST",
+      "evidence": [
+        "DFT.csv line 30, column ShortName = \"VAC2_PRST\"",
+        "DFT.csv line 30, column ExpectValue = \"rising vth 4.15V, hys 0.35V\" (threshold + hysteresis form)",
+        "knowledge/standards/test-types.md:36 — UVLO family covers UVLO / OVP / PRST / VBAT_LOW / RECHG",
+        "knowledge/references/L3-method/voltage-threshold-ate.md:11-22 — PRST = power-on reset threshold; representative project named VAC1_PRST; naming Pin+suffix(_Rising/_Falling/_Hys)",
+        "knowledge/references/L1-chip/UVLO.md:16-22 — the indicator signal of this family is muxed to an indicator PIN"
+      ],
+      "confidence": "direct (short name + expect-value form) + rule-layer family table",
+      "notDecidedHere": "Rising/Falling/Hys parameter decomposition, capture edges and limit arithmetic are method-stage work"
+    },
+    "functionArchitecture": {
+      "value": "single TM109 item function; one stimulus endpoint (VAC2) plus one check endpoint (INT) plus one initial-condition rail (VBAT)",
+      "functionCount": 1,
+      "subFunctionRequired": "UNRESOLVED",
+      "subFunctionBoundary": "whether a sub-function is needed, and whether toggle capture uses an AWG test_method member, is not decidable from the frozen DFT/schematic deliverables in this trial; not decided here",
+      "resourceBoundary": {
+        "differentialPair": {
+          "value": "not present in the DFT stimulus",
+          "evidence": "DFT.csv lines 31-34, column Dynamic: all four steps address the single token vac2; dft-meta.json tms.TM109.explicitRelations.dynamicTargetPinConsistent = \"vac2 across all 4 steps\"",
+          "class": "FACT"
+        },
+        "highCurrent": {
+          "value": "not declared by the DFT",
+          "evidence": "DFT.csv line 30 columns Hardware_initial/Software_initial and lines 31-34 column Dynamic contain only vset[] actions; no iset[] action and no current magnitude is labelled (dft-meta.json tms.TM109.pinConditions.argSemantics states no argument position is assigned a meaning)",
+          "class": "FACT about the DFT text; the meaning of argsRaw[1..2] is UNRESOLVED (OI-S-06)"
+        },
+        "fpviScarcityConsumed": {
+          "value": "0 FPVIe channels consumed by the routes selected in this contract",
+          "evidence": "resourceAllocation[] below selects FXVIe_PLUS and ACM200 only",
+          "class": "FACT (consequence of this contract's selections)"
+        }
+      }
+    }
+  },
+  "pinBindingBasis": {
+    "tmAgnosticHardwareFacts": [
+      "nets[] membership (e.g. NetCap1_VAC2_S1_1 member VAC2_F_S1; NetK102_PC3_S1_7 members INT_F_S1 and PA0_F_S1)",
+      "DUT pin list with F/S roles and per-pin candidate source ports",
+      "relays[] table (101 entries: number, name, instance, single-value state, dutPins)",
+      "per-pin relayChainUnion (relay instance + chain-context state) and per-pin resources list",
+      "per-source-port reachable DUT pin list (sourceCentric records)"
+    ],
+    "tm109SpecificChoices": [
+      "the TM109 endpoint set {VBAT, VAC2, INT} derived from the DFT fields (Hardware_initial token vbat, Dynamic token vac2, Check token INT)",
+      "the source selection, closure sets, isolation constraints and relay groups recorded below"
+    ],
+    "bindingInference": {
+      "rule": "case-insensitive exact match of the DFT pin token to a frozen DUT-pin base name",
+      "applied": "vbat -> VBAT (instances VBAT_F_S1, VBAT_S_S1); vac2 -> VAC2 (instances VAC2_F_S1, VAC2_S_S1); INT -> INT (instances INT_F_S1, INT_S_S1)",
+      "corroboration": "DFT ShortName \"VAC2_PRST\" independently contains the VAC2 token",
+      "class": "INFERENCE (name match); no frozen deliverable asserts a DFT-token to DUT-net cross-reference — dft-meta.json TM109-OI-1 corroboratingLocators states DFT.csv contains no pin-name cross-reference table",
+      "locator": "DFT.csv line 30 (Hardware_initial, ShortName, Check) and lines 31-34 (Dynamic); SCH-Connect-Map.json candidatePaths.pinCentric ids PIN_VBAT_F_S1, PIN_VBAT_S_S1, PIN_VAC2_F_S1, PIN_VAC2_S_S1, PIN_INT_F_S1, PIN_INT_S_S1"
+    },
+    "sourceIrCaveat": {
+      "value": "perTmPinBinding = UNKNOWN(UNSPECIFIED)",
+      "evidence": [
+        "SCH-Connect-Map.json tmScope.perTmPinBinding = \"UNKNOWN(UNSPECIFIED)\"",
+        "SCH-Connect-Map.json tmScope.consequence = \"The source IR asserts physical connectivity only; it binds no pin, source, or path to TM109. ... Any TM109 pin subset must come from the strategy layer, not from this artifact.\"",
+        "team/artifacts/tm109-direct-trial/schematic/schematic-ir.json pinsPerTm = \"UNKNOWN(UNSPECIFIED)\""
+      ],
+      "consequenceForThisContract": "every connectivity fact below is TM-agnostic project hardware fact; the TM109 endpoint subset and every selection are marked as this role's TM-specific choice (see tmAgnosticHardwareFacts / tm109SpecificChoices)",
+      "class": "FACT (declared by the frozen deliverable)"
+    }
+  },
+  "closureDerivation": {
+    "method": "per-pin actuation set (relays whose chain-context state is ON, i.e. not default-conducting) intersected with the source port's own resource list",
+    "whyNotPerPath": "the frozen trial deliverables publish per-pin aggregated sets (candidatePaths.pinCentric[].resources = paths[].resources) and per-pin relayChainUnion; the authoritative per-path field (required_on) is not among this trial's deliverables — see OI-S-01",
+    "verifiedProperty": "for the five TM109-relevant pin records the resources list equals exactly the relayChainUnion entries whose state is ON (VBAT_F_S1 -> [7,130,136,143,144]; VAC2_F_S1 -> [17,19,70,87,90,142,145,146]; VAC2_S_S1 -> [17,19,138,139]; INT_F_S1 -> [101,130,136,143,144]; INT_S_S1 -> [101,130,136,137])",
+    "evidenceClass": "DERIVED (from two published frozen fields); every activation count below is an upper-bound estimate of the per-path count, not a measured per-path fact"
+  },
+  "endpointRequirements": [
+    {
+      "endpointId": "EP-VBAT",
+      "dutPin": "VBAT",
+      "instances": ["VBAT_F_S1", "VBAT_S_S1"],
+      "requirementRole": "initial-condition rail (hardware initial state of the item)",
+      "rawDftToken": "vset[vbat,4.2,100e-6,0]",
+      "dftField": "Hardware_initial",
+      "dftLocator": "DFT.csv line 30",
+      "forceSenseMonitorFunctional": "drive (force) with optional Kelvin sense leg; no functional relay identified; no monitor role asserted",
+      "candidateSourcePorts": ["S3_FXVIe_PLUS_FH5", "S3_FXVIe_PLUS_SH5", "S1_FPVIe_FH0", "S1_FPVIe_FH1", "S1_FPVIe_SH0", "S1_FPVIe_SH1", "S8_QVM_CH0+", "S10_CH0_A"],
+      "candidateEvidence": "SCH-Connect-Map.json candidatePaths.pinCentric PIN_VBAT_F_S1.from / PIN_VBAT_S_S1.from"
+    },
+    {
+      "endpointId": "EP-VAC2",
+      "dutPin": "VAC2",
+      "instances": ["VAC2_F_S1", "VAC2_S_S1"],
+      "requirementRole": "stimulus endpoint (four DFT-ordered vset steps, verbatim: 3.8 / 4.4 / 4.1 / 3.5)",
+      "rawDftToken": "vset[vac2,3.8,100e-6,1]; vset[vac2,4.4,1e-3,1]; vset[vac2,4.1,100e-6,1]; vset[vac2,3.5,1e-3,1]",
+      "dftField": "Dynamic",
+      "dftLocator": "DFT.csv lines 31-34",
+      "forceSenseMonitorFunctional": "drive (force) plus Kelvin sense leg on the same instrument channel; no functional relay identified",
+      "candidateSourcePorts": ["S5_ACM200_FH0", "S5_ACM200_SH0", "S10_CH0_B", "S1_FPVIe_FH0", "S1_FPVIe_FL0", "S1_FPVIe_FL1", "S1_FPVIe_SL0", "S1_FPVIe_SL1", "S8_QVM_CH0-"],
+      "candidateEvidence": "SCH-Connect-Map.json candidatePaths.pinCentric PIN_VAC2_F_S1.from / PIN_VAC2_S_S1.from"
+    },
+    {
+      "endpointId": "EP-INT",
+      "dutPin": "INT",
+      "instances": ["INT_F_S1", "INT_S_S1"],
+      "requirementRole": "check endpoint (DFT Check column)",
+      "rawDftToken": "INT",
+      "dftField": "Check",
+      "dftLocator": "DFT.csv line 34, column Check",
+      "forceSenseMonitorFunctional": "UNRESOLVED — this contract does not decide which instrument observes the check endpoint (see OI-S-03 and conflict C-06); it registers the reachable resources only",
+      "candidateSourcePorts": ["S5_ACM200_FH15", "S5_ACM200_SH15", "S24_P14", "S1_FPVIe_FH0", "S1_FPVIe_FH1", "S1_FPVIe_SH0", "S1_FPVIe_SH1", "S8_QVM_CH0+", "S10_CH0_A"],
+      "candidateEvidence": "SCH-Connect-Map.json candidatePaths.pinCentric PIN_INT_F_S1.from / PIN_INT_S_S1.from"
+    }
+  ],
+  "resourceAllocation": [
+    {
+      "allocationId": "RA-1",
+      "endpointId": "EP-VBAT",
+      "dutPin": "VBAT",
+      "pinInstances": ["VBAT_F_S1", "VBAT_S_S1"],
+      "sourceTable": "FXVIe_PLUS",
+      "slot": "S3",
+      "channel": "5",
+      "ports": ["S3_FXVIe_PLUS_FH5 (force)", "S3_FXVIe_PLUS_SH5 (sense)"],
+      "selectionState": "SELECTED",
+      "selectedPath": "S3_FXVIe_PLUS_FH5 -> K8_PD3_S1(un-actuated) -> VBAT_F_S1; S3_FXVIe_PLUS_SH5 -> K8_PD3_S1(un-actuated) -> VBAT_S_S1",
+      "requiredActuations": [],
+      "requiredActuationsCount": 0,
+      "derivedRanking": [
+        {"sourcePort": "S3_FXVIe_PLUS_FH5", "derivedActuationCount": 0},
+        {"sourcePort": "S10_CH0_A", "derivedActuationCount": 2, "note": "sourceType is an inference from a slot name — conflict C-03"},
+        {"sourcePort": "S1_FPVIe_FH0", "derivedActuationCount": 3},
+        {"sourcePort": "S8_QVM_CH0+", "derivedActuationCount": 3}
+      ],
+      "notRequiredBySelectedRoute": [7, 130, 131, 132, 136, 141, 143, 144, 8],
+      "evidence": [
+        "SCH-Connect-Map.json candidatePaths.sourceCentric SRC_S3_FXVIe_PLUS_FH5: \"to\" = PD3_F_S1|VBAT_F_S1, resources = [\"8\"]",
+        "SCH-Connect-Map.json candidatePaths.pinCentric PIN_VBAT_F_S1: resources = [7,130,136,143,144] (K8 absent from the actuation set) and relayChainUnion entry [\"K8_PD3_S1\",\"NC\"]",
+        "SCH-Connect-Map.json candidatePaths.pinCentric PIN_VBAT_S_S1.from contains S3_FXVIe_PLUS_SH5",
+        "knowledge/references/L3-method/path-principles.md:11 — measured ranking: VBAT: FXVIe_PLUS ch5 (K8 default conducting = 0) < FPVIe CH1 (1) < FPVIe CH0 (5)"
+      ],
+      "confidence": "route direct (source record reaches the pin); activation count DERIVED (closureDerivation)",
+      "class": "INFERENCE (state reading: the record's own token for this chain is NC = un-actuated/default-conducting; see conflict C-01)"
+    },
+    {
+      "allocationId": "RA-2",
+      "endpointId": "EP-VAC2",
+      "dutPin": "VAC2",
+      "pinInstances": ["VAC2_F_S1", "VAC2_S_S1"],
+      "sourceTable": "ACM200",
+      "slot": "S5",
+      "channel": "0",
+      "ports": ["S5_ACM200_FH0 (force)", "S5_ACM200_SH0 (sense)"],
+      "selectionState": "SELECTED",
+      "selectedPath": "S5_ACM200_FH0 -> K19_VAC2_S1(actuated) -> K70_VAC_F_S1(actuated) -> VAC2_F_S1; S5_ACM200_SH0 -> K19_VAC2_S1(actuated) -> VAC2_S_S1",
+      "requiredActuations": [19, 70],
+      "requiredActuationsCount": 2,
+      "requiredActuationsByLeg": {
+        "forceLeg": [19, 70],
+        "senseLeg": [19],
+        "unionCount": 2
+      },
+      "derivedRanking": [
+        {"sourcePort": "S5_ACM200_FH0", "derivedActuationCount": 2},
+        {"sourcePort": "S10_CH0_B", "derivedActuationCount": 3, "note": "sourceType inference — conflict C-03"},
+        {"sourcePort": "S1_FPVIe_FH0", "derivedActuationCount": 4},
+        {"sourcePort": "S1_FPVIe_FL0", "derivedActuationCount": 6}
+      ],
+      "notRequiredBySelectedRoute": [17, 87, 90, 133, 142, 145, 146, 138, 139, 82, 18, 20, 68],
+      "evidence": [
+        "SCH-Connect-Map.json candidatePaths.sourceCentric SRC_S5_ACM200_FH0: \"to\" contains VAC1_F_S1|VAC2_F_S1|VAC3_F_S1|AMUX_F_S1|VCP_F_S1, resources = [\"18\",\"19\",\"20\",\"68\",\"70\"]",
+        "SCH-Connect-Map.json candidatePaths.sourceCentric SRC_S5_ACM200_SH0: \"to\" contains VAC2_S_S1, resources = [\"18\",\"19\",\"20\"]",
+        "SCH-Connect-Map.json candidatePaths.pinCentric PIN_VAC2_F_S1: resources = [17,19,70,87,90,142,145,146]; relayChainUnion contains [\"K19_VAC2_S1\",\"ON\"] and [\"K70_VAC_F_S1\",\"ON\"]",
+        "SCH-Connect-Map.json candidatePaths.pinCentric PIN_VAC2_S_S1: resources = [17,19,138,139]; relayChainUnion contains [\"K19_VAC2_S1\",\"ON\"]",
+        "knowledge/references/L3-method/path-principles.md:28 — FPVIe does not perform single-ended-to-ground drive (rule-layer exclusion of the FPVIe candidates for a single-ended stimulus); :46 capability whitelist for high-current / true-differential / fv>40V does not apply here",
+        "knowledge/standards/relay-checklist.md:8-13 — non-floating sources (ACM, ACM200, FXVIe_PLUS) close the loop through the tester AGND reference"
+      ],
+      "confidence": "route direct; activation count DERIVED; source choice supported by both the shortest-path count and the rule-layer single-ended exclusion of FPVIe",
+      "class": "INFERENCE (per-source count derived; see conflict C-01 and OI-S-01)"
+    },
+    {
+      "allocationId": "RA-3",
+      "endpointId": "EP-INT",
+      "dutPin": "INT",
+      "pinInstances": ["INT_F_S1", "INT_S_S1"],
+      "sourceTable": "UNRESOLVED",
+      "slot": "UNRESOLVED",
+      "channel": "UNRESOLVED",
+      "ports": [],
+      "selectionState": "UNRESOLVED",
+      "whyUnresolved": "two candidates tie at zero required actuations, and choosing between them is an observation-resource decision that this stage is instructed not to make; no direct frozen evidence ranks one above the other",
+      "candidateSet": [
+        {"sourcePort": "S5_ACM200_FH15", "sourceTable": "ACM200", "slot": "S5", "channel": "15", "derivedActuationCount": 0, "evidence": "sourceCentric SRC_S5_ACM200_FH15: to = INT_F_S1|PA0_F_S1|PC3_F_S1, resources = [\"102\"]; pinCentric PIN_INT_F_S1 resources = [101,130,136,143,144] so the intersection is empty; the INT_F_S1 chain token for K102_PC3_S1 is NC"},
+        {"sourcePort": "S5_ACM200_SH15", "sourceTable": "ACM200", "slot": "S5", "channel": "15", "derivedActuationCount": 0, "evidence": "sourceCentric SRC_S5_ACM200_SH15: to = INT_S_S1|PA0_S_S1|PC3_S_S1, resources = [\"102\"]; pinCentric PIN_INT_S_S1 resources = [101,130,136,137] so the intersection is empty"},
+        {"sourcePort": "S24_P14", "sourceTable": "DCM (as recorded)", "slot": "S24", "channel": "14", "derivedActuationCount": 0, "evidence": "sourceCentric SRC_S24_P14: to = INT_F_S1|PA0_F_S1, resources = []", "note": "capability, role and domain of this port are not asserted by the frozen deliverables (OI-S-05)"},
+        {"sourcePort": "S10_CH0_A", "sourceTable": "QTMU (inference from slot name)", "slot": "S10", "channel": "0", "derivedActuationCount": 2},
+        {"sourcePort": "S1_FPVIe_FH0", "sourceTable": "FPVIe", "slot": "S1", "channel": "0", "derivedActuationCount": 3},
+        {"sourcePort": "S8_QVM_CH0+", "sourceTable": "QVM", "slot": "S8", "channel": "0", "derivedActuationCount": 3}
+      ],
+      "notRequiredBySelectedRoute": [101, 130, 131, 132, 136, 137, 141, 143, 144],
+      "evidence": [
+        "SCH-Connect-Map.json candidatePaths.pinCentric PIN_INT_F_S1.from = S10_CH0_A|S1_FPVIe_FH0|S1_FPVIe_FH1|S24_P14|S5_ACM200_FH15|S8_QVM_CH0+; resources = [101,130,136,143,144]; relayChainUnion contains [\"K101_BUS_FH_PA0_S1\",\"ON\"] and [\"K102_PC3_S1\",\"NC\"]",
+        "SCH-Connect-Map.json candidatePaths.pinCentric PIN_INT_S_S1.from = S10_CH0_A|S1_FPVIe_SH0|S1_FPVIe_SH1|S5_ACM200_SH15; resources = [101,130,136,137]"
+      ],
+      "confidence": "reachability direct; ranking DERIVED; selection not made",
+      "class": "UNRESOLVED (deliberately not invented)"
+    }
+  ],
+  "relayGroups": [
+    {
+      "groupId": "RG-1",
+      "endpointId": "EP-VBAT",
+      "stage": "standing resource state (no phase ordering asserted by this contract)",
+      "purpose": "hold the VBAT rail from FXVIe_PLUS ch5",
+      "pathRelays": [],
+      "relayStates": [
+        {"relay": "K8_PD3", "number": 8, "instance": "K8_PD3_S1", "state": "un-actuated (default conducting path in this chain)", "recordedToken": "NC", "source": "SCH-Connect-Map.json candidatePaths.pinCentric PIN_VBAT_F_S1 relayChainUnion"}
+      ],
+      "forceSenseRelays": [],
+      "functionalRelays": [
+        {"relay": "VBAT Cap2 (device group Kxx_VBAT_Cap)", "state": "UNRESOLVED", "reason": "no relay in the frozen table carries a Cap naming; see conflict C-04 and OI-S-02"}
+      ],
+      "isolationRequirements": [
+        "K8_PD3_S1 must remain un-actuated on this route (it selects the PD3/VBAT pair on the FXVIe_PLUS ch5 leg)",
+        "K7_BUSH_VBAT_S1, K143_DCM_BUS0_H_S1, K144_DCM_BUS1_H_S1, K130_KELVIN1_F_S1, K136_QVMH_BUS0_S1, K131_KELVIN1_S1S2, K132_KELVIN1_S1, K141_QTMU_BUSA_S1S2 are not part of the selected closure set; they belong to the FPVIe/QVM/QTMU/DCM BUS candidate routes to the same pin (recorded in the same pin record's relayChainUnion)"
+      ],
+      "conflictStatus": "no shared relay with RG-2 or RG-3 (disjoint closure sets)"
+    },
+    {
+      "groupId": "RG-2",
+      "endpointId": "EP-VAC2",
+      "stage": "standing resource state (no phase ordering asserted by this contract)",
+      "purpose": "connect ACM200 ch0 to VAC2 (force leg to VAC2_F, sense leg to VAC2_S)",
+      "pathRelays": [
+        {"relay": "K19_VAC2", "number": 19, "instance": "K19_VAC2_S1", "state": "actuated", "recordedToken": "ON", "usedBy": ["force leg", "sense leg"]},
+        {"relay": "K70_VAC_F", "number": 70, "instance": "K70_VAC_F_S1", "state": "actuated", "recordedToken": "ON", "usedBy": ["force leg"]}
+      ],
+      "forceSenseRelays": {
+        "forceLeg": [19, 70],
+        "senseLeg": [19],
+        "kelvinNote": "VAC2_F_S1 and VAC2_S_S1 are distinct DUT pins on distinct nets (NetCap1_VAC2_S1_1 / NetK19_VAC2_S1_5), so the ACM200 ch0 force/sense pair reaches two separate pins; the sense leg adds no relay beyond K19"
+      },
+      "functionalRelays": [
+        {"relay": "VAC Cap2 (device group Kxx_VAC_Cap)", "state": "UNRESOLVED", "reason": "no relay in the frozen table carries a Cap naming; see conflict C-04 and OI-S-02"}
+      ],
+      "isolationRequirements": [
+        "Share/select siblings on the same ACM200 ch0 force group must stay un-actuated: K18_VAC3_S1 (VAC3 side), K20_AMUX_S1 (AMUX side), K68_VCP_F_S1 (VCP side); the group's resource list [18,19,20,68,70] spans five different DUT pins, so actuating more than the target side would land the same instrument on a non-target pin",
+        "K82_R_CS_S1S2, K87_KELVIN0_S1S2, K89_KELVIN0_S1S2, K90_PC0_Force_S1, K133_KELVIN1_S1S2, K142_QTMU_BUSB_S1S2, K145_DCM_BUS0_L_S1, K146_DCM_BUS1_L_S1, K138_QVML_BUS0_S1, K139_QVML_BUS1_S1, K17_BUSL_VAC_S1 are not required by the selected route"
+      ],
+      "conflictStatus": "no shared relay with RG-1 or RG-3"
+    },
+    {
+      "groupId": "RG-3",
+      "endpointId": "EP-INT",
+      "stage": "standing resource state (allocation UNRESOLVED)",
+      "purpose": "reach the check endpoint INT",
+      "pathRelays": [],
+      "relayStates": [],
+      "forceSenseRelays": [],
+      "functionalRelays": [
+        {"relay": "INT pull-up relay", "state": "UNRESOLVED", "reason": "the frozen relay table contains no entry whose name carries a PU/pull-up token; see conflict C-04 and OI-S-02"}
+      ],
+      "isolationRequirements": [
+        "if the ACM200 ch15 candidate is used: K102_PC3_S1 must remain un-actuated, because the INT_F_S1 record's own chain token for it is NC while PC3_F_S1 is a separate candidate sink of the same source port (INFERENCE, direction not re-proved here — OI-S-03)",
+        "K101_BUS_FH_PA0_S1, K130_KELVIN1_F_S1, K136_QVMH_BUS0_S1, K137_QVMH_BUS1_S1, K143_DCM_BUS0_H_S1, K144_DCM_BUS1_H_S1, K131_KELVIN1_S1S2, K132_KELVIN1_S1, K141_QTMU_BUSA_S1S2 are not required by the candidate routes with zero actuations"
+      ],
+      "sharedNodeFacts": [
+        "NetK102_PC3_S1_7 members: INT_F_S1, PA0_F_S1 (the check endpoint's force node and PA0's force node are one electrical node)",
+        "NetK102_PC3_S1_2 members: INT_S_S1, PA0_S_S1 (same for the sense nodes)"
+      ],
+      "conflictStatus": "no shared relay with RG-1 or RG-2; endpoint allocation itself is UNRESOLVED"
+    }
+  ],
+  "relayDesignFlow": {
+    "mandatoryFlow": "knowledge/references/L3-method/relay-design-flow.md (eight steps, mandatory per TM)",
+    "steps": [
+      {"step": 1, "node": "I 找 PIN", "performed": "extracted the TM109 endpoint list from the DFT fields", "result": "VBAT (Hardware_initial), VAC2 (Dynamic x4), INT (Check)"},
+      {"step": 2, "node": "J 找通路", "performed": "searched the frozen connect map / IR pin-centric and source-centric records for every endpoint instance", "result": "candidate source port sets recorded in endpointRequirements[] and resourceAllocation[]; no reachability gap for VBAT or VAC2"},
+      {"step": 3, "node": "N 分流判断 / S / W / K", "performed": "checked the DFT for a differential pin group or a high-current requirement, then enumerated non-scarce source paths", "result": "no differential pair and no high-current command in the DFT -> non-scarce enumeration (ACM200 / FXVIe_PLUS / DCM / QTMU-as-recorded); FPVIe candidates enumerated but the single-ended drive exclusion (path-principles.md:28) keeps them unselected"},
+      {"step": 4, "node": "C 最短通路选择", "performed": "computed the derived actuation count for each candidate and ranked them per endpoint", "result": "VBAT: FXVIe_PLUS ch5 = 0 (selected); VAC2: ACM200 ch0 = 2 (selected); INT: two candidates at 0 (UNRESOLVED)"},
+      {"step": 5, "node": "T / X / E / P 局部冲突", "performed": "compared the selected closures against each other", "result": "closures are disjoint ({}, {19,70}); no local conflict; no time-multiplexing needed between the selected routes at strategy level; the fallback chain (second-shortest / current-only) was not needed"},
+      {"step": 6, "node": "B / M / G 全局冲突", "performed": "checked multi-source sharing, shared BUS relays, non-target pin entry and functional/isolation relays", "result": "two shared-group facts recorded (ACM200 ch0 group spanning AMUX/VAC1/VAC2/VAC3/VCP; ACM200 ch15 group spanning INT/PA0/PC3) plus the INT_F=PA0_F and INT_S=PA0_S net identity; no non-target DUT pin is driven by the selected VBAT/VAC2 closures (the selected chains terminate on the target pins' own nets only)"},
+      {"step": 7, "node": "Q / H 闭合分组", "performed": "decided whether the closure set must be split into multiple relay states", "result": "no time-multiplexing conflict among the selected routes was found, so no split is required by this contract; the three groups are per-endpoint resource states, not a phase sequence"},
+      {"step": 8, "node": "V 输出闭合集", "performed": "emitted the closure sets, states, negative/isolation lists and unresolved entries", "result": "relayGroups[] above; the cbite.SetOn call construction (the flow's terminal action) belongs to the implementation stage and is not produced here"}
+    ]
+  },
+  "registerDelta": [
+    {
+      "order": 1,
+      "call": "entertestmode",
+      "argsRaw": [],
+      "source": "DFT.csv Software_initial (lines 30-31) verbatim; dft-meta.json tms.TM109.dftRegisterConfig.calls[0]",
+      "scope": "per-TM item",
+      "type": "unlock-call (no register value asserted here)"
+    },
+    {
+      "order": 2,
+      "call": "I2CWriteSameData",
+      "deviceAddrSymbol": "DEV_ADDR",
+      "reg": "0x55",
+      "data": "0x96",
+      "source": "DFT.csv Software_initial (lines 30-31) verbatim; dft-meta.json tms.TM109.dftRegisterConfig.calls[1]",
+      "dftFieldCommentVerbatim": "field[(EN_DTEST0,1),(DTEST0_MUX,22)]",
+      "fields": [
+        {"field": "EN_DTEST0", "annotationValueVerbatim": "1", "class": "DFT annotation, not an independently derived bit field"},
+        {"field": "DTEST0_MUX", "annotationValueVerbatim": "22", "class": "DFT annotation, not an independently derived bit field"}
+      ],
+      "scope": "per-TM item delta (this contract asserts no global Setup register state)",
+      "fieldExpansion": "UNRESOLVED — dft-meta.json tms.TM109.dftRegisterConfig.note states DFT.csv supplies no register map and that field names, widths and values are neither re-derived nor expanded; this contract keeps that position (OI-S-06 companion)"
+    },
+    {
+      "rule": "register writes require the test-mode unlock sequence first",
+      "ruleSource": "knowledge/standards/register-config.md:12-22",
+      "appliesTo": "the delta above",
+      "boundaryNote": "the placement/ordering of this configuration inside the item flow is a test-method-stage decision and is not decided here; global Setup register state belongs to the setup-architect baseline (knowledge/standards/register-config.md:40 boundary rule)"
+    }
+  ],
+  "conflicts": [
+    {
+      "id": "C-01",
+      "severity": "medium",
+      "topic": "relay state semantics inside the frozen chain records",
+      "fact": "each pin record publishes one chain-context state per relay (e.g. [\"K19_VAC2_S1\",\"ON\"] in the VAC2 records but [\"K19_VAC2_S1\",\"NC\"] in the VAC1 records), the map declares these states are chain-context and not a global schedule, and the relays[] table carries only a single value per relay",
+      "locator": "SCH-Connect-Map.json consistencyNotes[1]; SCH-Connect-Map.json relayChainIndex.entries for numbers 4, 8, 18, 19 (statesObserved = [\"NC\",\"ON\"]); schedule-ir relays[] single-valued \"state\"",
+      "consequence": "a single-valued state token cannot by itself prove which relays a specific route must actuate; this contract therefore derives counts by intersecting the pin actuation set with the source port's resource list and marks every count DERIVED",
+      "status": "registered, not resolved"
+    },
+    {
+      "id": "C-02",
+      "severity": "medium",
+      "topic": "per-TM pin binding is not asserted by the frozen schematic deliverable",
+      "fact": "perTmPinBinding = UNKNOWN(UNSPECIFIED) and the map explicitly states it binds no pin, source or path to TM109",
+      "locator": "SCH-Connect-Map.json tmScope.perTmPinBinding / tmScope.consequence; schematic-ir.json pinsPerTm",
+      "consequence": "every selection in this contract is this role's TM-specific choice over TM-agnostic hardware facts; the DFT-token to DUT-pin binding is an INFERENCE (pinBindingBasis.bindingInference)",
+      "status": "registered, carried forward"
+    },
+    {
+      "id": "C-03",
+      "severity": "low",
+      "topic": "source type of S10_CH0_A / S10_CH0_B is an inference from a slot name",
+      "fact": "\"Source type of S10_CH0_A/B is inferred from a slot name and needs confirmation\"",
+      "locator": "SCH-Connect-Map.json outOfScopeFlagsForDownstream[3]; candidatePaths.sourceCentric SRC_S10_CH0_A.sourceType = \"QTMU\"",
+      "consequence": "the QTMU candidates are listed as candidate rows only and are not selected",
+      "status": "registered, not resolved"
+    },
+    {
+      "id": "C-04",
+      "severity": "high",
+      "topic": "knowledge-layer relay names do not exist in the frozen DALI relay table",
+      "fact": "knowledge/standards/relay-checklist.md:40-41 names the DALI Cap family K13_VBAT_Cap / K21_VAC_Cap / K0_VCC_Cap / K5_VBUS_Cap, and knowledge/hardware/pin-resource-map.md:35-45 names K35_VAC_SHARE, K36_VAC_SHARE2, K43_SDA_INT, K58_INT_PU; the frozen DALI relay table has 101 entries, none named *_Cap or *_PU, numbers 0 / 5 / 13 / 21 are absent, and numbers 35 / 36 / 43 / 58 carry the names K35_BUSH_KLV, K36_PGND_WL, K43_BST2, K58_BUSH_VDM",
+      "locator": "SCH-Connect-Map.json relays[] (101 entries) and relayChainIndex.resolvedRelayCount = 101; knowledge/standards/relay-checklist.md:40-41; knowledge/hardware/pin-resource-map.md:35-45",
+      "consequence": "no Cap2 or pull-up functional relay identity is adopted from the knowledge layer; both are recorded UNRESOLVED in relayGroups[] and OI-S-02 (evidence priority: current project schematic facts outrank active standards, and the conflict is not normalized)",
+      "status": "registered, not resolved"
+    },
+    {
+      "id": "C-05",
+      "severity": "low",
+      "topic": "the check endpoint's node is electrically shared with another DUT pin",
+      "fact": "NetK102_PC3_S1_7 members are INT_F_S1 and PA0_F_S1; NetK102_PC3_S1_2 members are INT_S_S1 and PA0_S_S1",
+      "locator": "schematic-ir.json nets[] entries NetK102_PC3_S1_7 / NetK102_PC3_S1_2; SCH-Connect-Map.json candidatePaths.pinCentric PIN_INT_F_S1.nets",
+      "consequence": "any resource landed on the INT node also lands on PA0_F_S1 / PA0_S_S1; recorded as a hardware fact for the isolation review, not resolved",
+      "status": "registered, not resolved"
+    },
+    {
+      "id": "C-06",
+      "severity": "medium",
+      "topic": "the DFT check token and the register annotation do not name the same pad, and no frozen deliverable binds them",
+      "fact": "the DFT Check column carries \"INT\" while the same row's Software_initial configures field[(EN_DTEST0,1),(DTEST0_MUX,22)]; no frozen deliverable in this trial binds a DTEST0 pad (or its mux value 22) to any DUT pin",
+      "locator": "DFT.csv line 30 column Check and lines 30-31 column Software_initial; dft-meta.json tms.TM109.dftRegisterConfig.calls[1].dftFieldComment",
+      "consequence": "this contract allocates reachable resources for the INT pin and does NOT assert which pad carries the indicator signal; the observation-endpoint identity is therefore left to the method stage or a ruling (OI-S-03). No interpretation of the DTEST0/INT observation semantics is made here",
+      "status": "registered, not resolved"
+    },
+    {
+      "id": "C-07",
+      "severity": "low",
+      "topic": "the DFT stimulus states no second-edge value while the register annotation is silent, alongside a falling-direction stimulus",
+      "fact": "carried forward from the DFT stage as TM109-OI-5; recorded verbatim in openItems[] below",
+      "locator": "dft-meta.json tms.TM109.openItems[id=TM109-OI-5]",
+      "consequence": "no falling-threshold value is computed, derived or asserted by this contract",
+      "status": "registered, carried forward verbatim"
+    }
+  ],
+  "openItems": [
+    {
+      "id": "TM109-OI-2",
+      "carriedForwardVerbatim": true,
+      "type": "missing_numeric_limit",
+      "severity": "high",
+      "description": "TM109 states its expectation only as descriptive text. DFT.csv provides no numeric minimum, maximum, or pass-fail bound.",
+      "evidence": [{"locator": "DFT.csv line 30, column ExpectValue / Unit", "value": "rising vth 4.15V, hys 0.35V / V"}],
+      "requiredRuling": "Confirm whether the descriptive threshold text is sufficient as the acceptance source, or supply the numeric pass-fail bounds for TM109.",
+      "resolutionAuthority": "user ruling; DFT expert must not synthesize limits",
+      "downstreamImpact": "test-method-expert has no DFT-sourced limit to judge against.",
+      "statusFromDftStage": "non-blocking (dft-meta.json handoff.nonBlockingItems)"
+    },
+    {
+      "id": "TM109-OI-3",
+      "carriedForwardVerbatim": true,
+      "type": "missing_explicit_timing",
+      "severity": "medium",
+      "description": "TM109's row states no ramp rate, delay, settle time, or sampling window for the four Dynamic steps.",
+      "evidence": [{"locator": "DFT.csv lines 31-34, column Dynamic", "value": "four vset steps with no accompanying delay[] or ramp specification"}],
+      "requiredRuling": "Confirm that DFT is intentionally silent on timing for TM109 and that timing is to be owned downstream by test-method-expert.",
+      "resolutionAuthority": "user ruling or downstream owner; DFT expert must not supply timing",
+      "downstreamImpact": "test-method-expert must own all ramp/delay/sample decisions without a DFT-stated constraint.",
+      "statusFromDftStage": "non-blocking (dft-meta.json handoff.nonBlockingItems)"
+    },
+    {
+      "id": "TM109-OI-4",
+      "carriedForwardVerbatim": true,
+      "type": "empty_source_field",
+      "severity": "low",
+      "description": "The 'Function Name' cell is empty for TM109, so no function name is available from the DFT source.",
+      "evidence": [{"locator": "DFT.csv line 30, column Function Name", "value": "(empty)"}],
+      "requiredRuling": "None required for parsing; recorded so no downstream role treats an absent function name as an omission of this artifact.",
+      "resolutionAuthority": "informational",
+      "downstreamImpact": "downstream naming must be derived from ShortName 'VAC2_PRST' or from a ruling, not from an assumed function name.",
+      "statusFromDftStage": "non-blocking (dft-meta.json handoff.nonBlockingItems)"
+    },
+    {
+      "id": "TM109-OI-5",
+      "carriedForwardVerbatim": true,
+      "type": "unstated_second_edge_limit",
+      "severity": "low",
+      "description": "The ExpectValue text names only a rising threshold plus hysteresis, while the Dynamic stimulus also contains falling steps. DFT.csv states no falling-threshold value.",
+      "evidence": [
+        {"locator": "DFT.csv line 30, column ExpectValue", "value": "rising vth 4.15V, hys 0.35V"},
+        {"locator": "DFT.csv lines 32-34, column Dynamic", "value": "4.4 -> 4.1 -> 3.5, i.e. transitions in the decreasing direction"}
+      ],
+      "rawFactOnly": "Recorded as an absence in the source. No falling-threshold value is computed, derived, or asserted by this artifact.",
+      "requiredRuling": "Confirm whether the falling-direction steps are in scope for TM109's judgement and, if so, supply the falling-threshold limit.",
+      "resolutionAuthority": "user ruling; DFT expert must not compute a second-edge limit",
+      "downstreamImpact": "test-method-expert cannot judge the falling steps against a DFT-stated limit.",
+      "statusFromDftStage": "non-blocking (dft-meta.json handoff.nonBlockingItems)"
+    },
+    {
+      "id": "OI-S-01",
+      "type": "missing_per_path_closure_field",
+      "severity": "medium",
+      "kind": "定点补证",
+      "description": "The frozen deliverables publish per-pin aggregated actuation sets (resources) and per-pin relayChainUnion only. The authoritative per-path required_on list is not among this trial's deliverables, so every per-source activation count in this contract is a derived estimate rather than a published per-path fact.",
+      "evidence": [{"locator": "SCH-Connect-Map.json candidatePaths.pinCentric[].resources (aggregated per pin); SCH-Connect-Map.json consistencyNotes[1]; closureDerivation block in this contract"}],
+      "exactSourceThatWouldCloseIt": "the schematic-validation path-proof record (required_on per path) bound to the same source hash, or an explicit schematic-expert statement of the per-path closure sets",
+      "owner": "schematic-expert (supplementation) or user ruling on accepting derived counts",
+      "blocking": false
+    },
+    {
+      "id": "OI-S-02",
+      "type": "functional_relay_identity_unresolved",
+      "severity": "high",
+      "kind": "定点补证",
+      "description": "No Cap2 relay for VBAT or VAC2 and no pull-up relay for the check endpoint can be identified from the frozen DALI relay table; the knowledge layer names such relays but those names/numbers are not present in the frozen table (conflict C-04).",
+      "evidence": [{"locator": "SCH-Connect-Map.json relays[] (101 entries, none named *_Cap or *_PU; numbers 0/5/13/21/103 absent) vs knowledge/standards/relay-checklist.md:40-41 and knowledge/hardware/pin-resource-map.md:35-45"}],
+      "exactSourceThatWouldCloseIt": "the project CBIT/relay definition source (StdAfx.h / CBIT table) at the frozen revision, or a schematic-expert statement of the Cap and pull-up relay identities",
+      "owner": "schematic-expert / setup-architect (baseline) — not resolved by this role",
+      "blocking": false
+    },
+    {
+      "id": "OI-S-03",
+      "type": "endpoint_resource_unresolved",
+      "severity": "medium",
+      "kind": "定点补证",
+      "description": "The check endpoint INT has two candidate routes with zero required actuations (ACM200 ch15 force/sense ports and S24_P14), so relay count does not order them, and choosing the observing instrument is not this stage's decision. The endpoint's source table, slot and channel are therefore recorded UNRESOLVED with the full candidate set.",
+      "evidence": [{"locator": "resourceAllocation[] allocationId RA-3 candidateSet; SCH-Connect-Map.json candidatePaths.sourceCentric SRC_S5_ACM200_FH15 (resources [102]) and SRC_S24_P14 (resources [])"}],
+      "exactSourceThatWouldCloseIt": "a test-method-stage observation decision inside the frozen boundaries, or a user ruling on the observing resource for the check endpoint; also closes if a frozen deliverable binds the DFT check token to a specific instrument path",
+      "owner": "test-method-expert (observation design within these boundaries) or user ruling",
+      "blocking": false
+    },
+    {
+      "id": "OI-S-04",
+      "type": "inferred_source_type",
+      "severity": "low",
+      "kind": "定点补证",
+      "description": "The type of S10_CH0_A / S10_CH0_B is inferred from a slot name and needs confirmation (conflict C-03).",
+      "evidence": [{"locator": "SCH-Connect-Map.json outOfScopeFlagsForDownstream[3]"}],
+      "exactSourceThatWouldCloseIt": "the project channel-binding definition at the frozen revision, or a schematic-expert confirmation of the S10 slot type",
+      "owner": "schematic-expert",
+      "blocking": false
+    },
+    {
+      "id": "OI-S-05",
+      "type": "port_capability_unknown",
+      "severity": "low",
+      "kind": "定点补证",
+      "description": "S24_P14 is recorded with type DCM, channel 14 and role F but with empty role/domain strings; its capability and intended use are not asserted by the frozen deliverables.",
+      "evidence": [{"locator": "SCH-Connect-Map.json candidatePaths.sourceCentric SRC_S24_P14 (sourceRole \"\", sourceDomain \"\")"}],
+      "exactSourceThatWouldCloseIt": "the project channel-binding definition or instrument capability table at the frozen revision",
+      "owner": "schematic-expert / setup-architect",
+      "blocking": false
+    },
+    {
+      "id": "OI-S-06",
+      "type": "unlabelled_dft_arguments",
+      "severity": "medium",
+      "kind": "定点补证",
+      "description": "DFT.csv labels no vset/iset argument position; the third and fourth arguments (100e-6 / 1e-3 and the trailing 1) and the Hardware_initial arguments (100e-6, 0) are recorded positionally and verbatim only. No voltage/current/range/limit meaning is assigned by this contract, so capability checks (current magnitude, range) cannot be completed from this source.",
+      "evidence": [{"locator": "dft-meta.json tms.TM109.pinConditions.argSemantics; DFT.csv line 30 column Hardware_initial and lines 31-34 column Dynamic"}],
+      "exactSourceThatWouldCloseIt": "a DFT argument-semantics key or a user ruling on the vset argument vector",
+      "owner": "user ruling (or DFT source correction)",
+      "blocking": false
+    },
+    {
+      "id": "OI-S-07",
+      "type": "chain_state_semantics",
+      "severity": "medium",
+      "kind": "定点补证",
+      "description": "Chain-context relay state tokens (ON vs NC) versus actuation semantics are not defined inside the frozen deliverables; this contract reads NC as the un-actuated/default-conducting contact because that is how the same record uses the token for a zero-actuation route, and marks the reading as INFERENCE (conflict C-01).",
+      "evidence": [{"locator": "SCH-Connect-Map.json consistencyNotes[1]; relayChainIndex.entries numbers 4/8/18/19 statesObserved = [\"NC\",\"ON\"]"}],
+      "exactSourceThatWouldCloseIt": "the map legend / parse rule definition at the frozen revision, or a schematic-expert statement of the token semantics",
+      "owner": "schematic-expert",
+      "blocking": false
+    },
+    {
+      "id": "OI-S-08",
+      "type": "indicator_pad_identity",
+      "severity": "medium",
+      "kind": "定点补证",
+      "description": "The DFT check token \"INT\" and the configured DTEST0 mux annotation coexist without any frozen deliverable binding the two (conflict C-06). No observation-semantics interpretation is made by this contract.",
+      "evidence": [{"locator": "DFT.csv line 30 column Check; DFT.csv lines 30-31 column Software_initial (field[(EN_DTEST0,1),(DTEST0_MUX,22)])"}],
+      "exactSourceThatWouldCloseIt": "a user ruling on the item's observation pad, or a DFT/register-map artifact binding DTEST0_MUX=22 to a DUT pin",
+      "owner": "user ruling or test-method-expert with a signed input",
+      "blocking": false
+    },
+    {
+      "id": "OI-S-09",
+      "type": "completeness_of_relay_table",
+      "severity": "low",
+      "kind": "定点补证",
+      "description": "The frozen relay table contains 101 entries and every entry carries a dutPins list; the deliverables do not state whether this set is the complete relay population of the board, so the absence of a Cap/pull-up entry (C-04) cannot be converted into a claim about the hardware.",
+      "evidence": [{"locator": "SCH-Connect-Map.json counts.relays = 101 / relayChainIndex.resolvedRelayCount = 101; SCH-Connect-Map.json candidatePathCoverage"}],
+      "exactSourceThatWouldCloseIt": "a schematic-expert statement of the board relay population at the frozen revision",
+      "owner": "schematic-expert",
+      "blocking": false
+    }
+  ],
+  "resourceSummary": {
+    "sourceTablesSelected": [{"table": "FXVIe_PLUS", "slot": "S3", "channel": "5", "endpoint": "VBAT"}],
+    "sourceTablesSelectedForStimulus": [{"table": "ACM200", "slot": "S5", "channel": "0", "endpoint": "VAC2"}],
+    "sourceTablesUnresolved": [{"endpoint": "INT", "candidateTables": ["ACM200 ch15", "DCM S24_P14 (as recorded)", "QTMU S10_CH0_A (type inferred)", "FPVIe ch0", "QVM ch0+"]}],
+    "relaysActuatedByThisContract": [19, 70],
+    "relaysActuatedCount": 2,
+    "fpvieChannelsConsumed": 0,
+    "timeMultiplexingRequired": false,
+    "blockingConflicts": []
+  },
+  "evidence": [
+    {"file": "project/DALI/input/DFT.csv", "sha256": "ce69dce829a1473f1c7fd2ec7d55014b9e2fcf85262301169c654100b5461541", "locator": "data record 9 of 35; physical lines 30-34; columns Item / Function Name / ShortName / ExpectValue / Unit / Trim / Record / Hardware_initial / Software_initial / Dynamic / Check / Type; columns in scope: Hardware_initial, Software_initial, Dynamic, Check, Type, ShortName, ExpectValue", "class": "current project DFT fact (frozen)"},
+    {"file": "project/DALI/schematic-ir.json", "sha256": "35fdd1582958eb6e4fd63e29da59dec63dfe19e3fd6198d8cc8b8f727a5c7ff5", "locator": "canonical connectivity source referenced by the frozen schematic deliverables", "class": "current project schematic fact (frozen)"},
+    {"file": "team/artifacts/tm109-direct-trial/input-manifest.json", "sha256": "efd312aab867275eb7f2d16cab3facff67bcc7fdfabf0c194cb48d73679a84ec", "locator": "canonicalInputs.dft.status = ready, canonicalInputs.schematic.status = ready, missingOrStaleOutputs = []", "class": "stage gate evidence"},
+    {"file": "team/artifacts/tm109-direct-trial/dft/dft-meta.json", "sha256": "816506a8bb183d7a754334d62bcbc906cbdae85249a610d16b2161d7737f329f", "locator": "tms.TM109.identity / rawIntent.rawRow / pinConditions (hardwareInitial, dynamic, checkEndpoint, argSemantics) / limits / dftRegisterConfig / explicitRelations / openItems / handoff / sourceLocations.tm109RecordSpan", "class": "dependency artifact (frozen DFT deliverable)"},
+    {"file": "team/artifacts/tm109-direct-trial/dft/dft-conditions.yaml", "sha256": "e9de1abbb8ad0d8bdd5a77bbf27fa0b55302cffbf90595379e3371d0baf09350", "locator": "rawIntent.rawRow + derivedTokens.vsetPins", "class": "dependency artifact (frozen DFT deliverable)"},
+    {"file": "team/artifacts/tm109-direct-trial/schematic/SCH-Connect-Map.json", "sha256": "5886070110fce6474b6d84f4b9ec62ef16cd6ed25c0c230b0f2d5297f176d84b", "locator": "tmScope / candidatePaths.pinCentric (PIN_VBAT_F_S1, PIN_VBAT_S_S1, PIN_VAC2_F_S1, PIN_VAC2_S_S1, PIN_INT_F_S1, PIN_INT_S_S1) / candidatePaths.sourceCentric (SRC_S3_FXVIe_PLUS_FH5/SH5, SRC_S5_ACM200_FH0/SH0/FH15/SH15, SRC_S10_CH0_A/B, SRC_S1_FPVIe_FH0/SH0/FL0/SL0, SRC_S8_QVM_CH0+/-, SRC_S24_P14) / relayChainIndex / consistencyNotes / outOfScopeFlagsForDownstream / counts", "class": "dependency artifact (frozen schematic deliverable)"},
+    {"file": "team/artifacts/tm109-direct-trial/schematic/schematic-ir.json", "sha256": "5893c60b145e73e29038b7d033600ba8b0b96de068385e463b6dc14438381286", "locator": "paths[] records for VBAT_F_S1 / VBAT_S_S1 / VAC2_F_S1 / VAC2_S_S1 / INT_F_S1 / INT_S_S1; relays[] (101 entries); pins[]; nets[] (NetCap1_VBAT_S1_1, NetCap1_VAC2_S1_1, NetK19_VAC2_S1_5, NetK102_PC3_S1_7, NetK102_PC3_S1_2); pinsPerTm", "class": "dependency artifact (frozen schematic deliverable)"},
+    {"file": "team/artifacts/tm109-direct-trial/schematic/Components-Statistic.json", "sha256": "1b0a706e7bebf6b3ad0d06a8c162104ff47023fd7bb8fcddf850fdd0f568ce44", "locator": "declared counts (key level only)", "class": "frozen deliverable, not relied upon for any selection"},
+    {"file": "knowledge/references/L3-method/relay-design-flow.md", "locator": "lines 36-75 (eight-step main flow) and 78-88 (execution key points)", "class": "active standard (mandatory process)"},
+    {"file": "knowledge/references/L3-method/path-principles.md", "locator": "line 6 (precision gate), line 8 (shortest path), line 11 (measured VBAT ranking), line 19-24 (relay sharing/conflict degradation), line 28 (single-ended-to-ground excludes FPVIe), lines 32-37 (capability whitelist)", "class": "active standard (route rules)"},
+    {"file": "knowledge/standards/relay-checklist.md", "locator": "lines 6-13 (closed-loop rule for non-floating vs floating sources), lines 19-24 (BUS relay decision table), lines 27-41 (Cap2 rule and DALI Cap family), lines 44-50 (anti-short rule, Share relays), lines 52-69 (path classification)", "class": "active standard (relay rules)"},
+    {"file": "knowledge/standards/test-types.md", "locator": "line 36 (UVLO family incl. PRST), line 60 (general test item class), lines 76-86 (threshold tests are AWG; method choice is not made here)", "class": "active standard (type rules)"},
+    {"file": "knowledge/references/L3-method/voltage-threshold-ate.md", "locator": "lines 11-22 (PRST naming and representative project), line 32 (observation and edge convention — referenced only, not decided here)", "class": "active standard (method reference)"},
+    {"file": "knowledge/references/L1-chip/UVLO.md", "locator": "lines 7-22 (threshold + hysteresis concept; indicator pin of the family)", "class": "chip knowledge reference"},
+    {"file": "knowledge/standards/register-config.md", "locator": "lines 12-22 (test-mode unlock before register writes), line 40 (global Setup vs per-TM delta boundary)", "class": "active standard (register rules)"},
+    {"file": "knowledge/hardware/pin-resource-map.md", "locator": "lines 5-19 (pin to resource quick table), lines 32-45 (relay quick table)", "class": "active standard/quick reference — its relay names conflict with the frozen project table, see C-04"}
+  ],
+  "charterBoundary": {
+    "decided": [
+      "classification (project type, parameter type, function architecture and resource boundary)",
+      "named source table / channel allocation for VBAT and VAC2 with closure sets and relay states",
+      "reachable-resource candidate set for the INT check endpoint (selection deliberately UNRESOLVED)",
+      "functional and isolation relay requirements and the negative (do-not-actuate) lists",
+      "per-TM register delta and its source",
+      "registered conflicts and open items with locators"
+    ],
+    "notDecided": [
+      "measurement sequencing, power-up/power-down ordering, ramps, delays, sampling, limits/pass-fail criteria and logging (test-method-expert)",
+      "production code, cbite.SetOn call construction, ranges or library calls (ate-implementer)",
+      "global Setup resource baseline and AGND/machine-reference bonding (setup-architect)",
+      "the observing instrument for the check endpoint (OI-S-03)",
+      "the identity of Cap2 / pull-up functional relays (OI-S-02)",
+      "any interpretation of the DTEST0 / INT observation semantics (C-06 / OI-S-08)"
+    ],
+    "conflictPolicy": "every conflict and absence is registered with a locator and carried forward; none is resolved or normalized by this role"
+  },
+  "handoff": {
+    "nextRole": "test-method-expert",
+    "requiredGate": "test-strategy-architect deliverable_ready (this contract) per team/ROLE_ROUTING.md:44",
+    "usableBoundaries": [
+      "VBAT: FXVIe_PLUS S3 ch5 (FH5 force + SH5 sense) with the closure set empty; K8_PD3 un-actuated",
+      "VAC2: ACM200 S5 ch0 (FH0 force + SH0 sense) with the closure set {K19_VAC2, K70_VAC_F}; the ACM200 ch0 group's other select relays (K18/K20/K68) must stay un-actuated",
+      "INT: reachable resources listed with zero-actuation candidates; the observing instrument is NOT fixed by this contract"
+    ],
+    "blockingItems": [],
+    "nonBlockingItems": ["TM109-OI-2", "TM109-OI-3", "TM109-OI-4", "TM109-OI-5", "OI-S-01", "OI-S-02", "OI-S-03", "OI-S-04", "OI-S-05", "OI-S-06", "OI-S-07", "OI-S-08", "OI-S-09"],
+    "returnRule": "if the method requires a resource, relay state or register configuration not present in this contract (in particular a fixed observation instrument for the check endpoint or the functional Cap2/pull-up relay identity), return to test-strategy-architect for supplementation instead of substituting another source (team/ROLE_ROUTING.md:15)",
+    "gateSatisfied": "both upstream inputs are ready in input-manifest.json and both canonical source hashes were re-verified with python scripts/hash_ate_plaintext.py in this session"
+  }
+}

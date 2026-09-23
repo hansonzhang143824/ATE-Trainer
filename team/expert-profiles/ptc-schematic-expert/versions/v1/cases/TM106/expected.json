@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "profileId": "ptc-schematic-expert",
+  "caseId": "TM106",
+  "expectedVerdict": "pass",
+  "canonicalInput": "project/DALI/Input_GlobalMaterial/Dali-SCH.csv",
+  "expectedReadSources": [
+    "project/DALI/Input_GlobalMaterial/Dali-SCH.csv",
+    "project/DALI/Input_GlobalMaterial/sch_confirmed.json",
+    "project/DALI/Input_GlobalMaterial/CBIT表-DALI.xlsx"
+  ],
+  "forbiddenInputs": [
+    "project/DALI/schematic-ir.json"
+  ],
+  "expectedOutputs": [
+    "project/DALI/Output_Global_Material/schematic/SCH-Connect-Map.txt",
+    "project/DALI/Output_Global_Material/schematic/SCH-Connect-Map.json",
+    "project/DALI/Output_Global_Material/schematic/Component-Statistic.txt",
+    "project/DALI/Output_Global_Material/schematic/Components-Statistic.json",
+    "project/DALI/Output_Global_Material/schematic/Path-Proofs.txt",
+    "project/DALI/Output_Global_Material/schematic/Path-Proofs.json",
+    "project/DALI/Output_Global_Material/schematic/schematic-receipt.json"
+  ],
+  "gate": "scripts/validate_schematic_outputs.py",
+  "sharedAcrossTms": true,
+  "sharedAcrossTmsNote": "One schematic product serves every TM in the batch; the case is listed under TM106 because that is the batch the first-batch loop runs.",
+  "semanticTruthStatus": "PENDING_DOMAIN_INPUT",
+  "semanticTruthNote": "The structural contract, the canonical input identity, the forbidden old-IR input and the read-source boundary are machine-checkable and are asserted here. The expected schematic SEMANTICS (which net is which path, whether a confirmed mapping is trustworthy) is domain truth only a schematic expert can supply; until that input exists this case does not assert it."
+}

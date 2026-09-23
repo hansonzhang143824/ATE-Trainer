@@ -1,0 +1,37 @@
+{
+  "caseId": "TM106",
+  "canonicalInput": "team/artifacts/dali-20260919-145154-tm106-tm108-tm425/tm106/method/tm106-test-method-contract.json",
+  "expectedReadSources": [
+    "team/artifacts/dali-20260919-145154-tm106-tm108-tm425/tm106/method/tm106-test-method-contract.json",
+    "team/artifacts/dali-20260919-145154-tm106-tm108-tm425/tm106/implementation/implementation-manifest.json",
+    "team/artifacts/dali-20260919-145154-tm106-tm108-tm425/tm106/review/method-contract-review.json",
+    "team/ptc/ATE_PTC_RUNTIME.md",
+    "team/ptc/legacy_migration_ledger.json"
+  ],
+  "expectedOutputs": [
+    "team/expert-profiles/evolution-expert/proposals/<proposal-id>.json"
+  ],
+  "proposalSchema": {
+    "required": [
+      "proposalId",
+      "evidenceBatch",
+      "evidenceArtifacts",
+      "ruleChange",
+      "rationale",
+      "status"
+    ],
+    "statusEnum": [
+      "PROPOSED",
+      "ACCEPTED",
+      "REJECTED"
+    ]
+  },
+  "hardRules": [
+    "Never auto-publish an active rule change",
+    "Never alter a current TM contract",
+    "Never modify published expert versions or production code",
+    "Never block delivery work"
+  ],
+  "semanticTruthStatus": "PENDING_DOMAIN_INPUT",
+  "semanticTruthNote": "The golden case asserts proposal schema and evidence binding only; whether a rule change is genuinely an improvement stays a domain-owner decision."
+}

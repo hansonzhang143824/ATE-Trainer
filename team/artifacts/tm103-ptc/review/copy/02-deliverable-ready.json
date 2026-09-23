@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm103-strategy-deliverable-ready",
+  "taskId": "TM103-PTC-STRATEGY",
+  "trial": "tm103-ptc",
+  "tm": "TM103",
+  "role": "test-strategy-architect",
+  "stage": "STRATEGY",
+  "event": "deliverable_ready",
+  "status": "success",
+  "verdict": "deliverable_ready",
+  "generatedAt": "2026-09-18T03:02:04.146Z",
+  "sha256": "92eb967dcc96807010c811e4c4d46ddc205ec2d1dd467dcd8d238bb249c6954a",
+  "sha256Scope": "byte SHA-256 of team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json, computed with python hashlib.sha256 over the file bytes (the same computation the STRATEGY gate performs)",
+  "contract": "team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json",
+  "selfCheck": "team/artifacts/tm103-ptc/strategy/self-check.json",
+  "nextRole": "test-method-expert",
+  "resolvedFindings": [],
+  "resolvedFindingsNote": "no routed correction finding was delivered with this dispatch, so this replacement contract acknowledges none",
+  "endpointSet": [
+    "VBAT",
+    "VDM"
+  ],
+  "selectedSourceTables": [
+    "VBAT_PD3_FXVI",
+    "VDM_SDA_ACM"
+  ],
+  "setOnClosure": [
+    13
+  ],
+  "gateCommand": "python scripts/validate_strategy_contract.py team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json team/artifacts/tm103-ptc/strategy/deliverable-ready.json --expected-monitor VDM --manifest team/artifacts/tm103-ptc/input-manifest.json",
+  "gateResult": "PASS (see self-check.json)"
+}

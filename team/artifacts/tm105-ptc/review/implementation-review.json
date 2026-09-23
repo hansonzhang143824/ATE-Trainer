@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 2,
+  "artifactId": "tm105-implementation-review",
+  "taskId": "TM105-PTC-RULE_REVIEW_IMPLEMENTATION",
+  "trial": "tm105-ptc",
+  "tm": "TM105",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_IMPLEMENTATION",
+  "verdict": "pass",
+  "signedInputs": {
+    "implementationManifestPath": "implementation/implementation-manifest.json",
+    "implementationManifestSha256": "49fef734b6898fabb66b368d9c4291599555148037859e306a826e7514e29319",
+    "methodContractPath": "method/tm105-test-method-contract.json",
+    "methodContractSha256": "59b543ddf2dffb8cd04ce76a89fa97003de51021fd7edda0192ba302306b07f9",
+    "strategyContractPath": "strategy/tm105-resource-config-contract.json",
+    "strategyContractSha256": "79e039bd36956bac36f66ea5dd0bce406f34743ab0334764b791632433c77e6a"
+  },
+  "parameterType": {
+    "methodFamily": "scan",
+    "isTrim": false,
+    "hasRamp": true
+  },
+  "checks": [
+    {
+      "id": "IR-1",
+      "result": "PASS",
+      "detail": "当前 test.cpp 哈希与实现清单一致，且只有一个 DUT_API 实现。"
+    },
+    {
+      "id": "IR-2",
+      "result": "PASS",
+      "detail": "0→10 V 上扫记录 FALLING，10→0 V 下扫记录 RISING，符合全局扫描规则。"
+    },
+    {
+      "id": "IR-3",
+      "result": "PASS",
+      "detail": "寄存器原文、通路/功能继电器、上电注释和三项结果发布均通过确定性检查。"
+    }
+  ],
+  "deterministicVerifier": {
+    "command": "python scripts/verify_implementation_batch.py team/artifacts/tm102-ptc team/artifacts/tm105-ptc team/artifacts/tm425-ptc",
+    "result": {
+      "trial": "tm105-ptc",
+      "tm": "TM105",
+      "symbol": "TM105_HSKP_VSPRE_MAX_CMP",
+      "methodFamily": "scan",
+      "sourceSha256": "2ed19d63e8d761efcfbf7eaf187ee4e36e9a492bc965c94759e568dd7ff2c90c",
+      "status": "PASS"
+    }
+  },
+  "blockingDefects": [],
+  "summary": {
+    "checksPassed": 3,
+    "blockingDefects": 0,
+    "nextRole": "compile-diagnostician"
+  }
+}

@@ -1,0 +1,36 @@
+Dali-SCH.csv 307157 B / 04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a ; 行数 1338
+
+=== (ii) site-5 ACM200 F 脚后缀集合 ===
+  S5_ACM200_FH<n> 的 n 集合 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+  规模 = 24
+
+=== (i)+(iii) 控制组：每个 ACM 脚所在 net 与 K 继电器 peers ===
+  FH4   net=NetK41_BUS_FL_BST_S1_2           K-peers=['K41_BUS_FL_BST_S1', 'K42_AMP_PS_S1']
+  FH5   net=NetK46_BUS_FH_SW1_S1_2           K-peers=['K46_BUS_FH_SW1_S1', 'K48_AMP_REF_S1']
+  FH7   net=NetK58_BUSH_VDM_S1_4             K-peers=['K58_BUSH_VDM_S1', 'K59_SDA_S1']
+  FH8   net=NetK60_BUSL_VCP_S1_4             K-peers=['K60_BUSL_VCP_S1', 'K61_SW_S1']
+  FH18  net=NetK109_BUSL_PB0_S1_4            K-peers=['K109_BUSL_PB0_S1', 'K110_BST_S1']
+
+=== ch5 网 与 ch18 网的完整成员（决定性分离）===
+  ch5  (FH5)   member=S5_ACM200_FH5    net=NetK46_BUS_FH_SW1_S1_2
+       K46_BUS_FH_SW1_S1.2      K46_BUS_FH_SW1_S1
+       K48_AMP_REF_S1.6         K48_AMP_REF_S1
+       S5_ACM200_FH5            
+  ch5  (SH5)   member=S5_ACM200_SH5    net=NetK46_BUS_SH_SW1_S1_2
+       K46_BUS_SH_SW1_S1.2      K46_BUS_SH_SW1_S1
+       K48_AMP_REF_S1.3         K48_AMP_REF_S1
+       S5_ACM200_SH5            
+  ch18 (FH18)  member=S5_ACM200_FH18   net=NetK109_BUSL_PB0_S1_4
+       K109_BUSL_PB0_S1.4       K109_BUSL_PB0_S1
+       K110_BST_S1.6            K110_BST_S1
+       S5_ACM200_FH18           
+  ch18 (SH18)  member=S5_ACM200_SH18   net=NetK109_BUSL_PB0_S1_5
+       K109_BUSL_PB0_S1.5       K109_BUSL_PB0_S1
+       K110_BST_S1.3            K110_BST_S1
+       S5_ACM200_SH18           
+
+=== 判读 ===
+  若 FH5 所在网含 K48 而不含 K110，且 FH18 所在网含 K110 而不含 K48/K76：
+   ⇒ schematic-expert 的控制组成立：**后缀即通道号；ch5=K48、ch18=K110 是两个不同通道**
+   ⇒ 结合 StdAfx.h「唯一一条 ACM200[] -> BST 宏 = K_BST_ACM = 48,76」，
+     则 `SW12_U1REF_BST_ACM`（宏 = S5_5 等 8 个 site 的 channel 5）**走 [48,76]，不走 K110**

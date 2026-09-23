@@ -1,0 +1,1664 @@
+{
+  "runId": "acceptance-20260916-dali10",
+  "generatedBy": "schematic-expert (supplementary evidence for t3 setup contract / t4 strategy)",
+  "purpose": "Answer which instrument reaches PMID / SW / PGND for a single-ended voltage measurement, what F/S character each route has, and whether a usable Kelvin sense pair exists on PMID<->SW and SW<->PGND.",
+  "sources": [
+    {
+      "path": "D:/Newtest/DSH/ATE-Coding-Plat/team/artifacts/acceptance-20260916-dali10/schematic-validation/path_proofs.json.txt",
+      "locator": "accepted_path_proofs (native_csv_graph_v2, status=PASS)",
+      "sha256": "eda90a922b2d9e68ed3ac3736986a64ba57ec4fe243701b0d7b2123796ba4863"
+    },
+    {
+      "path": "D:/Newtest/DSH/ATE-Coding-Plat/project/DALI/Dali-SCH.csv",
+      "locator": "pin-level relay nets (Designator/PinNumber/NetName)",
+      "sha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a"
+    },
+    {
+      "path": "D:/Newtest/DSH/ATE-Coding-Plat/project/DALI/SCH-Connect-Map.txt",
+      "locator": "route headers with [Kelvin]/[单线]/[PC短接] annotations and 需闭合 groups",
+      "sha256": "cc8009fbb27eef0cf29b45e4e50b05e1b5d7b5d49095a32005261a79d83cb427"
+    },
+    {
+      "path": "D:/Newtest/DSH/ATE-Coding-Plat/knowledge/sources/hardware-specs.md",
+      "locator": "module table lines 9-32 (channels / floating / ranges)",
+      "sha256": "9cb211105dab4f980de799a4702f359b35a1fc952ee27cffd55e3950f383eef4"
+    },
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h",
+      "locator": "_PIN_CHANNEL_DEFINE_* channel bindings",
+      "sha256": "d5ce16a0ae79549424110755e99d9ae74cce79d18b8a1eaae3fd5588df285e35"
+    },
+    {
+      "path": "D:/Newtest/DSH/ATE-Coding-Plat/knowledge/hardware/relays.md",
+      "locator": "L33-48 MOS default-open vs G6K default-NC; L175-184 FPVIe domain constraint",
+      "sha256": "8029ee13690ca2158e48ea002bad69f2d943d76126bb133b4e54b8401934fcdb"
+    }
+  ],
+  "nodeReachability": {
+    "PMID": {
+      "instruments": [
+        "FPVIe",
+        "FXVIe_PLUS",
+        "QTMU",
+        "QVM"
+      ],
+      "acceptedPathCount": 9,
+      "unreachable": false
+    },
+    "SW": {
+      "instruments": [
+        "ACM200",
+        "FPVIe",
+        "QTMU",
+        "QVM"
+      ],
+      "acceptedPathCount": 9,
+      "unreachable": false
+    },
+    "PGND": {
+      "instruments": [
+        "FPVIe",
+        "FXVIe_PLUS",
+        "QTMU",
+        "QVM"
+      ],
+      "acceptedPathCount": 9,
+      "unreachable": false
+    }
+  },
+  "unreachableNodes": [],
+  "singleEndedEvidence": {
+    "PMID": {
+      "reachable": [
+        {
+          "instrument": "FPVIe",
+          "forceTerminals": [
+            {
+              "port": "S1_FPVIe_FH0",
+              "dutPin": "PMID_F_S1",
+              "requiredOn": [
+                83
+              ]
+            },
+            {
+              "port": "S1_FPVIe_FH1",
+              "dutPin": "PMID_F_S1",
+              "requiredOn": [
+                83,
+                143,
+                144
+              ]
+            }
+          ],
+          "senseTerminals": [
+            {
+              "port": "S1_FPVIe_SH0",
+              "dutPin": "PMID_S_S1",
+              "requiredOn": [
+                83
+              ]
+            },
+            {
+              "port": "S1_FPVIe_SH1",
+              "dutPin": "PMID_S_S1",
+              "requiredOn": [
+                83,
+                136,
+                137
+              ]
+            }
+          ],
+          "twoWireBridged": []
+        },
+        {
+          "instrument": "FXVIe_PLUS",
+          "forceTerminals": [
+            {
+              "port": "S3_FXVIe_PLUS_FH1",
+              "dutPin": "PMID_F_S1",
+              "requiredOn": []
+            }
+          ],
+          "senseTerminals": [
+            {
+              "port": "S3_FXVIe_PLUS_SH1",
+              "dutPin": "PMID_S_S1",
+              "requiredOn": []
+            }
+          ],
+          "twoWireBridged": []
+        },
+        {
+          "instrument": "QTMU",
+          "forceTerminals": [
+            {
+              "port": "S10_CH0_A",
+              "dutPin": "PMID_F_S1",
+              "requiredOn": [
+                83,
+                141
+              ]
+            }
+          ],
+          "senseTerminals": [
+            {
+              "port": "S10_CH0_A",
+              "dutPin": "PMID_S_S1",
+              "requiredOn": [
+                83,
+                86,
+                141
+              ]
+            }
+          ],
+          "twoWireBridged": [
+            "S10_CH0_A"
+          ]
+        },
+        {
+          "instrument": "QVM",
+          "forceTerminals": [
+            {
+              "port": "S8_QVM_CH0+",
+              "dutPin": "PMID_F_S1",
+              "requiredOn": [
+                83,
+                86,
+                137
+              ]
+            }
+          ],
+          "senseTerminals": [],
+          "twoWireBridged": [
+            "S8_QVM_CH0+"
+          ]
+        }
+      ],
+      "hasTrueFourWireInstrument": [
+        "FPVIe",
+        "FXVIe_PLUS"
+      ],
+      "singleEndedMeasurable": true,
+      "note": "every listed instrument can force 0 A and read back V(pin) against its own low reference (AGND_F for the analogue sources, DGND for QTMU); a Kelvin-grade single-ended read needs the instrument in the trueFourWire list"
+    },
+    "SW": {
+      "reachable": [
+        {
+          "instrument": "ACM200",
+          "forceTerminals": [
+            {
+              "port": "S5_ACM200_FH8",
+              "dutPin": "SW_F_S1",
+              "requiredOn": [
+                61
+              ]
+            }
+          ],
+          "senseTerminals": [
+            {
+              "port": "S5_ACM200_SH8",
+              "dutPin": "SW_S_S1",
+              "requiredOn": [
+                61
+              ]
+            }
+          ],
+          "twoWireBridged": []
+        },
+        {
+          "instrument": "FPVIe",
+          "forceTerminals": [
+            {
+              "port": "S1_FPVIe_FL0",
+              "dutPin": "SW_F_S1",
+              "requiredOn": [
+                60,
+                61
+              ]
+            },
+            {
+              "port": "S1_FPVIe_FL1",
+              "dutPin": "SW_F_S1",
+              "requiredOn": [
+                133,
+                134
+              ]
+            }
+          ],
+          "senseTerminals": [
+            {
+              "port": "S1_FPVIe_SL0",
+              "dutPin": "SW_S_S1",
+              "requiredOn": [
+                60,
+                61
+              ]
+            },
+            {
+              "port": "S1_FPVIe_SL1",
+              "dutPin": "SW_S_S1",
+              "requiredOn": [
+                132,
+                135
+              ]
+            }
+          ],
+          "twoWireBridged": []
+        },
+        {
+          "instrument": "QTMU",
+          "forceTerminals": [
+            {
+              "port": "S10_CH0_B",
+              "dutPin": "SW_F_S1",
+              "requiredOn": [
+                60,
+                61,
+                142
+              ]
+            }
+          ],
+          "senseTerminals": [
+            {
+              "port": "S10_CH0_B",
+              "dutPin": "SW_S_S1",
+              "requiredOn": [
+                130,
+                132,
+                135
+              ]
+            }
+          ],
+          "twoWireBridged": [
+            "S10_CH0_B"
+          ]
+        },
+        {
+          "instrument": "QVM",
+          "forceTerminals": [],
+          "senseTerminals": [
+            {
+              "port": "S8_QVM_CH0-",
+              "dutPin": "SW_S_S1",
+              "requiredOn": [
+                60,
+                61,
+                138
+              ]
+            }
+          ],
+          "twoWireBridged": []
+        }
+      ],
+      "hasTrueFourWireInstrument": [
+        "ACM200",
+        "FPVIe"
+      ],
+      "singleEndedMeasurable": true,
+      "note": "every listed instrument can force 0 A and read back V(pin) against its own low reference (AGND_F for the analogue sources, DGND for QTMU); a Kelvin-grade single-ended read needs the instrument in the trueFourWire list"
+    },
+    "PGND": {
+      "reachable": [
+        {
+          "instrument": "FPVIe",
+          "forceTerminals": [
+            {
+              "port": "S1_FPVIe_FH0",
+              "dutPin": "PGND_F_S1",
+              "requiredOn": [
+                154,
+                155
+              ]
+            },
+            {
+              "port": "S1_FPVIe_FH1",
+              "dutPin": "PGND_F_S1",
+              "requiredOn": [
+                143,
+                144,
+                154,
+                155
+              ]
+            }
+          ],
+          "senseTerminals": [
+            {
+              "port": "S1_FPVIe_SH0",
+              "dutPin": "PGND_S_S1",
+              "requiredOn": [
+                154,
+                155
+              ]
+            },
+            {
+              "port": "S1_FPVIe_SH1",
+              "dutPin": "PGND_S_S1",
+              "requiredOn": [
+                136,
+                137,
+                154,
+                155
+              ]
+            }
+          ],
+          "twoWireBridged": []
+        },
+        {
+          "instrument": "FXVIe_PLUS",
+          "forceTerminals": [
+            {
+              "port": "S3_FXVIe_PLUS_FH3",
+              "dutPin": "PGND_F_S1",
+              "requiredOn": [
+                155
+              ]
+            }
+          ],
+          "senseTerminals": [
+            {
+              "port": "S3_FXVIe_PLUS_SH3",
+              "dutPin": "PGND_S_S1",
+              "requiredOn": [
+                155
+              ]
+            }
+          ],
+          "twoWireBridged": []
+        },
+        {
+          "instrument": "QTMU",
+          "forceTerminals": [
+            {
+              "port": "S10_CH0_A",
+              "dutPin": "PGND_F_S1",
+              "requiredOn": [
+                141,
+                154,
+                155
+              ]
+            }
+          ],
+          "senseTerminals": [
+            {
+              "port": "S10_CH0_A",
+              "dutPin": "PGND_S_S1",
+              "requiredOn": [
+                86,
+                141,
+                154,
+                155
+              ]
+            }
+          ],
+          "twoWireBridged": [
+            "S10_CH0_A"
+          ]
+        },
+        {
+          "instrument": "QVM",
+          "forceTerminals": [
+            {
+              "port": "S8_QVM_CH0+",
+              "dutPin": "PGND_F_S1",
+              "requiredOn": [
+                86,
+                137,
+                154,
+                155
+              ]
+            }
+          ],
+          "senseTerminals": [],
+          "twoWireBridged": [
+            "S8_QVM_CH0+"
+          ]
+        }
+      ],
+      "hasTrueFourWireInstrument": [
+        "FPVIe",
+        "FXVIe_PLUS"
+      ],
+      "singleEndedMeasurable": true,
+      "note": "every listed instrument can force 0 A and read back V(pin) against its own low reference (AGND_F for the analogue sources, DGND for QTMU); a Kelvin-grade single-ended read needs the instrument in the trueFourWire list"
+    }
+  },
+  "forceSenseBridgeRelays": [
+    {
+      "designator": "K86_KELVIN0_F_S1",
+      "role": "FPVIe0 high force<->sense bridge",
+      "pins": [
+        {
+          "pin": "1",
+          "net": "NetK86_KELVIN0_F_S1_1"
+        },
+        {
+          "pin": "2",
+          "net": "NetK86_KELVIN0_F_S1_2"
+        }
+      ],
+      "requiresOn": true,
+      "acceptedProofUsersByInstrument": {
+        "QTMU": 27,
+        "QVM": 14
+      },
+      "interpretation": "closing this relay merges the force and sense conductors of its row, i.e. it forces 2-wire operation; it is required only by the routes flagged 单线 (QTMU / QVM), never by a 4-wire FPVIe route",
+      "evidence": [
+        {
+          "path": "D:/Newtest/DSH/ATE-Coding-Plat/project/DALI/Dali-SCH.csv",
+          "locator": "Designator=K86_KELVIN0_F_S1",
+          "sha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a"
+        }
+      ]
+    },
+    {
+      "designator": "K86_KELVIN0_S_S1",
+      "role": "FPVIe0 low force<->sense bridge",
+      "pins": [
+        {
+          "pin": "1",
+          "net": "NetK86_KELVIN0_S_S1_1"
+        },
+        {
+          "pin": "2",
+          "net": "NetK86_KELVIN0_S_S1_2"
+        }
+      ],
+      "requiresOn": true,
+      "acceptedProofUsersByInstrument": {
+        "QTMU": 27,
+        "QVM": 14
+      },
+      "interpretation": "closing this relay merges the force and sense conductors of its row, i.e. it forces 2-wire operation; it is required only by the routes flagged 单线 (QTMU / QVM), never by a 4-wire FPVIe route",
+      "evidence": [
+        {
+          "path": "D:/Newtest/DSH/ATE-Coding-Plat/project/DALI/Dali-SCH.csv",
+          "locator": "Designator=K86_KELVIN0_S_S1",
+          "sha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a"
+        }
+      ]
+    },
+    {
+      "designator": "K130_KELVIN1_F_S1",
+      "role": "FPVIe1 high force<->sense bridge",
+      "pins": [
+        {
+          "pin": "1",
+          "net": "NetK130_KELVIN1_F_S1_1"
+        },
+        {
+          "pin": "2",
+          "net": "NetK130_KELVIN1_F_S1_2"
+        }
+      ],
+      "requiresOn": true,
+      "acceptedProofUsersByInstrument": {
+        "QTMU": 33,
+        "QVM": 18
+      },
+      "interpretation": "closing this relay merges the force and sense conductors of its row, i.e. it forces 2-wire operation; it is required only by the routes flagged 单线 (QTMU / QVM), never by a 4-wire FPVIe route",
+      "evidence": [
+        {
+          "path": "D:/Newtest/DSH/ATE-Coding-Plat/project/DALI/Dali-SCH.csv",
+          "locator": "Designator=K130_KELVIN1_F_S1",
+          "sha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a"
+        }
+      ]
+    },
+    {
+      "designator": "K130_KELVIN1_S_S1",
+      "role": "FPVIe1 low force<->sense bridge",
+      "pins": [
+        {
+          "pin": "1",
+          "net": "NetK130_KELVIN1_S_S1_1"
+        },
+        {
+          "pin": "2",
+          "net": "NetK130_KELVIN1_S_S1_2"
+        }
+      ],
+      "requiresOn": true,
+      "acceptedProofUsersByInstrument": {
+        "QTMU": 33,
+        "QVM": 18
+      },
+      "interpretation": "closing this relay merges the force and sense conductors of its row, i.e. it forces 2-wire operation; it is required only by the routes flagged 单线 (QTMU / QVM), never by a 4-wire FPVIe route",
+      "evidence": [
+        {
+          "path": "D:/Newtest/DSH/ATE-Coding-Plat/project/DALI/Dali-SCH.csv",
+          "locator": "Designator=K130_KELVIN1_S_S1",
+          "sha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a"
+        }
+      ]
+    },
+    {
+      "designator": "K92_AGND_F2S_S1",
+      "role": "AGND_F force<->sense bridge",
+      "pins": [
+        {
+          "pin": "1",
+          "net": "AGND_F_S1"
+        },
+        {
+          "pin": "2",
+          "net": "NetK92_AGND_F2S_S1_2"
+        }
+      ],
+      "requiresOn": false,
+      "acceptedProofUsersByInstrument": {},
+      "interpretation": "closing this relay merges the force and sense conductors of its row, i.e. it forces 2-wire operation; it is required only by the routes flagged 单线 (QTMU / QVM), never by a 4-wire FPVIe route",
+      "evidence": [
+        {
+          "path": "D:/Newtest/DSH/ATE-Coding-Plat/project/DALI/Dali-SCH.csv",
+          "locator": "Designator=K92_AGND_F2S_S1",
+          "sha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a"
+        }
+      ]
+    }
+  ],
+  "kelvinPairCandidates": [
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 0,
+      "highTerminal": {
+        "node": "BST",
+        "force": "S1_FPVIe_FH0",
+        "sense": "S1_FPVIe_SH0"
+      },
+      "lowTerminal": {
+        "node": "SW",
+        "force": "S1_FPVIe_FL0",
+        "sense": "S1_FPVIe_SL0"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        46,
+        48,
+        60,
+        61,
+        76
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 0,
+      "highTerminal": {
+        "node": "BST",
+        "force": "S1_FPVIe_FH0",
+        "sense": "S1_FPVIe_SH0"
+      },
+      "lowTerminal": {
+        "node": "VBUS",
+        "force": "S1_FPVIe_FL0",
+        "sense": "S1_FPVIe_SL0"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        3,
+        46,
+        48,
+        76
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 0,
+      "highTerminal": {
+        "node": "PGND",
+        "force": "S1_FPVIe_FH0",
+        "sense": "S1_FPVIe_SH0"
+      },
+      "lowTerminal": {
+        "node": "BST",
+        "force": "S1_FPVIe_FL0",
+        "sense": "S1_FPVIe_SL0"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        109,
+        110,
+        138,
+        139,
+        145,
+        146,
+        154,
+        155
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 0,
+      "highTerminal": {
+        "node": "PGND",
+        "force": "S1_FPVIe_FH0",
+        "sense": "S1_FPVIe_SH0"
+      },
+      "lowTerminal": {
+        "node": "SW",
+        "force": "S1_FPVIe_FL0",
+        "sense": "S1_FPVIe_SL0"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        60,
+        61,
+        154,
+        155
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 0,
+      "highTerminal": {
+        "node": "PGND",
+        "force": "S1_FPVIe_FH0",
+        "sense": "S1_FPVIe_SH0"
+      },
+      "lowTerminal": {
+        "node": "VBUS",
+        "force": "S1_FPVIe_FL0",
+        "sense": "S1_FPVIe_SL0"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        3,
+        154,
+        155
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 0,
+      "highTerminal": {
+        "node": "PMID",
+        "force": "S1_FPVIe_FH0",
+        "sense": "S1_FPVIe_SH0"
+      },
+      "lowTerminal": {
+        "node": "BST",
+        "force": "S1_FPVIe_FL0",
+        "sense": "S1_FPVIe_SL0"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        83,
+        109,
+        110,
+        138,
+        139,
+        145,
+        146
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 0,
+      "highTerminal": {
+        "node": "PMID",
+        "force": "S1_FPVIe_FH0",
+        "sense": "S1_FPVIe_SH0"
+      },
+      "lowTerminal": {
+        "node": "SW",
+        "force": "S1_FPVIe_FL0",
+        "sense": "S1_FPVIe_SL0"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        60,
+        61,
+        83
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 0,
+      "highTerminal": {
+        "node": "PMID",
+        "force": "S1_FPVIe_FH0",
+        "sense": "S1_FPVIe_SH0"
+      },
+      "lowTerminal": {
+        "node": "VBUS",
+        "force": "S1_FPVIe_FL0",
+        "sense": "S1_FPVIe_SL0"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        3,
+        83
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 0,
+      "highTerminal": {
+        "node": "VBAT",
+        "force": "S1_FPVIe_FH0",
+        "sense": "S1_FPVIe_SH0"
+      },
+      "lowTerminal": {
+        "node": "BST",
+        "force": "S1_FPVIe_FL0",
+        "sense": "S1_FPVIe_SL0"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        7,
+        109,
+        110,
+        136,
+        137,
+        138,
+        139,
+        143,
+        144,
+        145,
+        146
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 0,
+      "highTerminal": {
+        "node": "VBAT",
+        "force": "S1_FPVIe_FH0",
+        "sense": "S1_FPVIe_SH0"
+      },
+      "lowTerminal": {
+        "node": "SW",
+        "force": "S1_FPVIe_FL0",
+        "sense": "S1_FPVIe_SL0"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        7,
+        60,
+        61,
+        136,
+        137,
+        143,
+        144
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 0,
+      "highTerminal": {
+        "node": "VBAT",
+        "force": "S1_FPVIe_FH0",
+        "sense": "S1_FPVIe_SH0"
+      },
+      "lowTerminal": {
+        "node": "VBUS",
+        "force": "S1_FPVIe_FL0",
+        "sense": "S1_FPVIe_SL0"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        3,
+        7,
+        136,
+        137,
+        143,
+        144
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 1,
+      "highTerminal": {
+        "node": "BST",
+        "force": "S1_FPVIe_FH1",
+        "sense": "S1_FPVIe_SH1"
+      },
+      "lowTerminal": {
+        "node": "SW",
+        "force": "S1_FPVIe_FL1",
+        "sense": "S1_FPVIe_SL1"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        131,
+        132,
+        133,
+        134,
+        135
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 1,
+      "highTerminal": {
+        "node": "BST",
+        "force": "S1_FPVIe_FH1",
+        "sense": "S1_FPVIe_SH1"
+      },
+      "lowTerminal": {
+        "node": "VBUS",
+        "force": "S1_FPVIe_FL1",
+        "sense": "S1_FPVIe_SL1"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        3,
+        131,
+        132,
+        134,
+        135,
+        138,
+        139,
+        145,
+        146
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 1,
+      "highTerminal": {
+        "node": "PGND",
+        "force": "S1_FPVIe_FH1",
+        "sense": "S1_FPVIe_SH1"
+      },
+      "lowTerminal": {
+        "node": "BST",
+        "force": "S1_FPVIe_FL1",
+        "sense": "S1_FPVIe_SL1"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        109,
+        110,
+        136,
+        137,
+        143,
+        144,
+        154,
+        155
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 1,
+      "highTerminal": {
+        "node": "PGND",
+        "force": "S1_FPVIe_FH1",
+        "sense": "S1_FPVIe_SH1"
+      },
+      "lowTerminal": {
+        "node": "SW",
+        "force": "S1_FPVIe_FL1",
+        "sense": "S1_FPVIe_SL1"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        143,
+        144,
+        154,
+        155
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 1,
+      "highTerminal": {
+        "node": "PGND",
+        "force": "S1_FPVIe_FH1",
+        "sense": "S1_FPVIe_SH1"
+      },
+      "lowTerminal": {
+        "node": "VBUS",
+        "force": "S1_FPVIe_FL1",
+        "sense": "S1_FPVIe_SL1"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        3,
+        136,
+        137,
+        138,
+        139,
+        143,
+        144,
+        145,
+        146,
+        154,
+        155
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 1,
+      "highTerminal": {
+        "node": "PMID",
+        "force": "S1_FPVIe_FH1",
+        "sense": "S1_FPVIe_SH1"
+      },
+      "lowTerminal": {
+        "node": "BST",
+        "force": "S1_FPVIe_FL1",
+        "sense": "S1_FPVIe_SL1"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        83,
+        109,
+        110,
+        136,
+        137,
+        143,
+        144
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 1,
+      "highTerminal": {
+        "node": "PMID",
+        "force": "S1_FPVIe_FH1",
+        "sense": "S1_FPVIe_SH1"
+      },
+      "lowTerminal": {
+        "node": "SW",
+        "force": "S1_FPVIe_FL1",
+        "sense": "S1_FPVIe_SL1"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        83,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        143,
+        144
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 1,
+      "highTerminal": {
+        "node": "PMID",
+        "force": "S1_FPVIe_FH1",
+        "sense": "S1_FPVIe_SH1"
+      },
+      "lowTerminal": {
+        "node": "VBUS",
+        "force": "S1_FPVIe_FL1",
+        "sense": "S1_FPVIe_SL1"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        3,
+        83,
+        136,
+        137,
+        138,
+        139,
+        143,
+        144,
+        145,
+        146
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 1,
+      "highTerminal": {
+        "node": "VBAT",
+        "force": "S1_FPVIe_FH1",
+        "sense": "S1_FPVIe_SH1"
+      },
+      "lowTerminal": {
+        "node": "BST",
+        "force": "S1_FPVIe_FL1",
+        "sense": "S1_FPVIe_SL1"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        7,
+        109,
+        110
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 1,
+      "highTerminal": {
+        "node": "VBAT",
+        "force": "S1_FPVIe_FH1",
+        "sense": "S1_FPVIe_SH1"
+      },
+      "lowTerminal": {
+        "node": "SW",
+        "force": "S1_FPVIe_FL1",
+        "sense": "S1_FPVIe_SL1"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        7,
+        132,
+        133,
+        134,
+        135
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    },
+    {
+      "instrument": "FPVIe",
+      "site": "S1",
+      "channel": 1,
+      "highTerminal": {
+        "node": "VBAT",
+        "force": "S1_FPVIe_FH1",
+        "sense": "S1_FPVIe_SH1"
+      },
+      "lowTerminal": {
+        "node": "VBUS",
+        "force": "S1_FPVIe_FL1",
+        "sense": "S1_FPVIe_SL1"
+      },
+      "hasForceAndSenseOnBothEnds": true,
+      "unionRelays": [
+        3,
+        7,
+        138,
+        139,
+        145,
+        146
+      ],
+      "forceSenseBridgeRelays": [],
+      "fourWireKelvinPossible": true,
+      "touchesPcNets": false
+    }
+  ],
+  "requiredPairAssertions": [
+    {
+      "expectedPair": {
+        "instrument": "FPVIe",
+        "channel": 0,
+        "high": "PGND",
+        "low": "SW"
+      },
+      "found": true
+    },
+    {
+      "expectedPair": {
+        "instrument": "FPVIe",
+        "channel": 0,
+        "high": "PMID",
+        "low": "SW"
+      },
+      "found": true
+    },
+    {
+      "expectedPair": {
+        "instrument": "FPVIe",
+        "channel": 1,
+        "high": "BST",
+        "low": "SW"
+      },
+      "found": true
+    }
+  ],
+  "channelOptionsForRequiredPairs": [
+    {
+      "tm": "TM600",
+      "pair": "PMID<->SW",
+      "options": [
+        {
+          "instrument": "FPVIe",
+          "channel": 0,
+          "highTerminalNode": "PMID",
+          "lowTerminalNode": "SW",
+          "unionRelays": [
+            60,
+            61,
+            83
+          ],
+          "relayCount": 3,
+          "borrowsSharedBusRelays": [],
+          "fourWireKelvinPossible": true,
+          "recommended": true,
+          "recommendationReason": "cheapest of 2 wirings available for TM600 (3 relays)"
+        },
+        {
+          "instrument": "FPVIe",
+          "channel": 1,
+          "highTerminalNode": "PMID",
+          "lowTerminalNode": "SW",
+          "unionRelays": [
+            83,
+            132,
+            133,
+            134,
+            135,
+            136,
+            137,
+            143,
+            144
+          ],
+          "relayCount": 9,
+          "borrowsSharedBusRelays": [
+            {
+              "relay": 136,
+              "role": "QVMH_BUS0",
+              "alsoNeededByTms": [
+                "TM000",
+                "TM001",
+                "TM102",
+                "TM103",
+                "TM108",
+                "TM109",
+                "TM1205",
+                "TM135",
+                "TM600",
+                "TM601"
+              ]
+            },
+            {
+              "relay": 137,
+              "role": "QVMH_BUS1",
+              "alsoNeededByTms": [
+                "TM000",
+                "TM001",
+                "TM102",
+                "TM103",
+                "TM108",
+                "TM109",
+                "TM1205",
+                "TM135",
+                "TM600",
+                "TM601"
+              ]
+            },
+            {
+              "relay": 143,
+              "role": "DCM_BUS0_H",
+              "alsoNeededByTms": [
+                "TM000",
+                "TM001",
+                "TM102",
+                "TM103",
+                "TM108",
+                "TM109",
+                "TM1205",
+                "TM135",
+                "TM600",
+                "TM601"
+              ]
+            },
+            {
+              "relay": 144,
+              "role": "DCM_BUS1_H",
+              "alsoNeededByTms": [
+                "TM000",
+                "TM001",
+                "TM102",
+                "TM103",
+                "TM108",
+                "TM109",
+                "TM1205",
+                "TM135",
+                "TM600",
+                "TM601"
+              ]
+            }
+          ],
+          "fourWireKelvinPossible": true,
+          "recommended": false,
+          "recommendationReason": "costs 9 relays instead of 3"
+        }
+      ],
+      "optionCount": 2,
+      "note": "more than one FPVIe channel can serve this pair; within one item each pair needs its own channel because an FPVIe channel has exactly one high and one low terminal"
+    },
+    {
+      "tm": "TM601",
+      "pair": "SW<->PGND",
+      "options": [
+        {
+          "instrument": "FPVIe",
+          "channel": 0,
+          "highTerminalNode": "PGND",
+          "lowTerminalNode": "SW",
+          "unionRelays": [
+            60,
+            61,
+            154,
+            155
+          ],
+          "relayCount": 4,
+          "borrowsSharedBusRelays": [],
+          "fourWireKelvinPossible": true,
+          "recommended": true,
+          "recommendationReason": "cheapest of 2 wirings available for TM601 (4 relays)"
+        },
+        {
+          "instrument": "FPVIe",
+          "channel": 1,
+          "highTerminalNode": "PGND",
+          "lowTerminalNode": "SW",
+          "unionRelays": [
+            132,
+            133,
+            134,
+            135,
+            136,
+            137,
+            143,
+            144,
+            154,
+            155
+          ],
+          "relayCount": 10,
+          "borrowsSharedBusRelays": [
+            {
+              "relay": 136,
+              "role": "QVMH_BUS0",
+              "alsoNeededByTms": [
+                "TM000",
+                "TM001",
+                "TM102",
+                "TM103",
+                "TM108",
+                "TM109",
+                "TM1205",
+                "TM135",
+                "TM600",
+                "TM601"
+              ]
+            },
+            {
+              "relay": 137,
+              "role": "QVMH_BUS1",
+              "alsoNeededByTms": [
+                "TM000",
+                "TM001",
+                "TM102",
+                "TM103",
+                "TM108",
+                "TM109",
+                "TM1205",
+                "TM135",
+                "TM600",
+                "TM601"
+              ]
+            },
+            {
+              "relay": 143,
+              "role": "DCM_BUS0_H",
+              "alsoNeededByTms": [
+                "TM000",
+                "TM001",
+                "TM102",
+                "TM103",
+                "TM108",
+                "TM109",
+                "TM1205",
+                "TM135",
+                "TM600",
+                "TM601"
+              ]
+            },
+            {
+              "relay": 144,
+              "role": "DCM_BUS1_H",
+              "alsoNeededByTms": [
+                "TM000",
+                "TM001",
+                "TM102",
+                "TM103",
+                "TM108",
+                "TM109",
+                "TM1205",
+                "TM135",
+                "TM600",
+                "TM601"
+              ]
+            }
+          ],
+          "fourWireKelvinPossible": true,
+          "recommended": false,
+          "recommendationReason": "costs 10 relays instead of 4"
+        }
+      ],
+      "optionCount": 2,
+      "note": "more than one FPVIe channel can serve this pair; within one item each pair needs its own channel because an FPVIe channel has exactly one high and one low terminal"
+    },
+    {
+      "tm": "TM600",
+      "pair": "BST<->SW",
+      "options": [
+        {
+          "instrument": "FPVIe",
+          "channel": 0,
+          "highTerminalNode": "BST",
+          "lowTerminalNode": "SW",
+          "unionRelays": [
+            46,
+            48,
+            60,
+            61,
+            76
+          ],
+          "relayCount": 5,
+          "borrowsSharedBusRelays": [],
+          "fourWireKelvinPossible": true,
+          "recommended": false,
+          "recommendationReason": "costs 5 relays instead of 5 and needs FPVIe channel 0, which TM600 already needs for another pair of the same item"
+        },
+        {
+          "instrument": "FPVIe",
+          "channel": 1,
+          "highTerminalNode": "BST",
+          "lowTerminalNode": "SW",
+          "unionRelays": [
+            131,
+            132,
+            133,
+            134,
+            135
+          ],
+          "relayCount": 5,
+          "borrowsSharedBusRelays": [],
+          "fourWireKelvinPossible": true,
+          "recommended": true,
+          "recommendationReason": "cheapest channel available for TM600 (5 relays) and the only free one besides the 0 wiring"
+        }
+      ],
+      "optionCount": 2,
+      "note": "more than one FPVIe channel can serve this pair; within one item each pair needs its own channel because an FPVIe channel has exactly one high and one low terminal"
+    }
+  ],
+  "channelAllocationPerTm": {
+    "TM600": {
+      "channelsUsed": [
+        0,
+        1
+      ],
+      "pairsAssigned": {
+        "PMID<->SW": 0,
+        "BST<->SW": 1
+      }
+    },
+    "TM601": {
+      "channelsUsed": [
+        0
+      ],
+      "pairsAssigned": {
+        "SW<->PGND": 0
+      }
+    }
+  },
+  "dfdPairVerdicts": [
+    {
+      "pair": "PMID<->SW",
+      "tm": "TM600",
+      "kelvinPairAvailable": true,
+      "terminals": "S1_FPVIe channel 0: FH0/SH0 -> PMID (K83), FL0/SL0 -> SW (K60,K61)",
+      "unionRelays": [
+        60,
+        61,
+        83
+      ],
+      "fourWireProper": true,
+      "senseKind": "differential Kelvin across two DUT pins, genuine 4-wire (BUS route never enters the PC nets)",
+      "caveat": "this consumes FPVIe channel 0 of site 1; TM600 also needs channel 1 for the BST-SW 5V loop, so both channels are used by one item",
+      "evidence": [
+        {
+          "path": "D:/Newtest/DSH/ATE-Coding-Plat/team/artifacts/acceptance-20260916-dali10/schematic-validation/path_proofs.json.txt",
+          "locator": "S1_FPVIe_FH0/SH0 -> PMID_*_S1 req=[83]; S1_FPVIe_FL0/SL0 -> SW_*_S1 req=[60,61]",
+          "sha256": "eda90a922b2d9e68ed3ac3736986a64ba57ec4fe243701b0d7b2123796ba4863"
+        }
+      ]
+    },
+    {
+      "pair": "SW<->PGND",
+      "tm": "TM601",
+      "kelvinPairAvailable": true,
+      "terminals": "S1_FPVIe channel 0, inverted orientation: FH0/SH0 -> PGND (K154,K155), FL0/SL0 -> SW (K60,K61)",
+      "unionRelays": [
+        60,
+        61,
+        154,
+        155
+      ],
+      "fourWireProper": true,
+      "senseKind": "differential Kelvin across two DUT pins, genuine 4-wire; PGND is the HIGH terminal because it hangs off FPVIe0_FH_BUS_S1 while SW hangs off FPVIe0_FL_BUS_S1",
+      "caveat": "channel 0 is also the PMID<->SW pair of TM600, so TM600 and TM601 can never run in the same function on the same site; and K93_AGND2PGND must stay OPEN or the PGND node is tied to AGND_F and the return current flows through the K93 contact",
+      "evidence": [
+        {
+          "path": "D:/Newtest/DSH/ATE-Coding-Plat/team/artifacts/acceptance-20260916-dali10/schematic-validation/path_proofs.json.txt",
+          "locator": "S1_FPVIe_FH0/SH0 -> PGND_*_S1 req=[154,155]; S1_FPVIe_FL0/SL0 -> SW_*_S1 req=[60,61]",
+          "sha256": "eda90a922b2d9e68ed3ac3736986a64ba57ec4fe243701b0d7b2123796ba4863"
+        },
+        {
+          "path": "D:/Newtest/DSH/ATE-Coding-Plat/project/DALI/Dali-SCH.csv",
+          "locator": "K154_BUSH_AMUX_S1 pin3=FPVIe0_FH_BUS_S1 pin6=FPVIe0_SH_BUS_S1; K60_BUSL_VCP_S1 pin3=FPVIe0_FL_BUS_S1 pin6=FPVIe0_SL_BUS_S1",
+          "sha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a"
+        }
+      ]
+    },
+    {
+      "pair": "BST<->SW (TM600 bootstrap rail)",
+      "tm": "TM600",
+      "kelvinPairAvailable": true,
+      "terminals": "S1_FPVIe channel 1: FH1/SH1 -> BST (K131,K134 / K132,K135), FL1/SL1 -> SW (K133,K134 / K132,K135)",
+      "unionRelays": [
+        131,
+        132,
+        133,
+        134,
+        135
+      ],
+      "fourWireProper": true,
+      "senseKind": "differential Kelvin across two DUT pins via the PC1 force/sense relay K134/K135 pair",
+      "caveat": "Uses the PC1 channel relays K134_PC1_Force / K135_PC1_Sense; they are not among the FPVIe0 PC nets that are board-shorted, so Kelvin separation holds here",
+      "evidence": [
+        {
+          "path": "D:/Newtest/DSH/ATE-Coding-Plat/team/artifacts/acceptance-20260916-dali10/schematic-validation/path_proofs.json.txt",
+          "locator": "S1_FPVIe_FH1 -> BST_F_S1 req=[131,134]; S1_FPVIe_FL1 -> SW_F_S1 req=[133,134]",
+          "sha256": "eda90a922b2d9e68ed3ac3736986a64ba57ec4fe243701b0d7b2123796ba4863"
+        }
+      ]
+    }
+  ],
+  "nonKelvinInstruments": [
+    {
+      "instrument": "QTMUe",
+      "why": "single line per channel with the low side on DGND (bus-topology.md 2.3); reaches SW_S through the PC1 sense relays K130/K132/K135 and PMID_S through the force<->sense bridge K86",
+      "usableFor": "DC / Iq / toggle / timing items only",
+      "invalidFor": "mOhm differential RDSON",
+      "evidence": [
+        {
+          "path": "D:/Newtest/DSH/ATE-Coding-Plat/knowledge/hardware/bus-topology.md",
+          "locator": "L57-81 digital sources unify low to DGND; L75 QTMU BUS is 1 line",
+          "sha256": "4658b2b470aaa67b5895cfd20f67abfd8981be9da0d0a682cb9913513308ed35"
+        },
+        {
+          "path": "D:/Newtest/DSH/ATE-Coding-Plat/team/artifacts/acceptance-20260916-dali10/schematic-validation/path_proofs.json.txt",
+          "locator": "S10_CH0_A -> PMID_S_S1 req=[83,86,141]; S10_CH0_B -> SW_S_S1 req=[130,132,135]",
+          "sha256": "eda90a922b2d9e68ed3ac3736986a64ba57ec4fe243701b0d7b2123796ba4863"
+        }
+      ]
+    },
+    {
+      "instrument": "QVMe",
+      "why": "floating voltmeter with sense lines only (no force); CH0+ taps the FPVIe0 SH bus and reaches the PMID_F/S or PGND_F/S nets, CH0- reaches SW_S. Because one lead lands on a force net the pair is a mixed F/S pair, not a Kelvin sense pair",
+      "usableFor": "independent differential voltage read of limited accuracy",
+      "invalidFor": "the mOhm Kelvin sense of TM600/TM601",
+      "evidence": [
+        {
+          "path": "D:/Newtest/DSH/ATE-Coding-Plat/team/artifacts/acceptance-20260916-dali10/schematic-validation/path_proofs.json.txt",
+          "locator": "S8_QVM_CH0+ -> PMID_F_S1 req=[83,86,137]; S8_QVM_CH0- -> SW_S_S1 req=[60,61,138]",
+          "sha256": "eda90a922b2d9e68ed3ac3736986a64ba57ec4fe243701b0d7b2123796ba4863"
+        }
+      ]
+    },
+    {
+      "instrument": "ACM200",
+      "why": "reaches SW only (S5_ACM200_FH8/SH8, req K61) and cannot reach PMID or PGND at all; +-200 mA range",
+      "usableFor": "SW single-ended Kelvin reads up to 200 mA",
+      "invalidFor": "the 1 A TM600/TM601 force",
+      "evidence": [
+        {
+          "path": "D:/Newtest/DSH/ATE-Coding-Plat/team/artifacts/acceptance-20260916-dali10/schematic-validation/path_proofs.json.txt",
+          "locator": "S5_ACM200_FH8/SH8 -> SW_*_S1 req=[61]",
+          "sha256": "eda90a922b2d9e68ed3ac3736986a64ba57ec4fe243701b0d7b2123796ba4863"
+        },
+        {
+          "path": "D:/Newtest/DSH/ATE-Coding-Plat/knowledge/sources/hardware-specs.md",
+          "locator": "L16 ACM200 +-200m/100m/10m ... A",
+          "sha256": "9cb211105dab4f980de799a4702f359b35a1fc952ee27cffd55e3950f383eef4"
+        }
+      ]
+    },
+    {
+      "instrument": "FXVIe_PLUS",
+      "why": "4-wire Kelvin on a single pin (PMID default through K84 with no SetOn, PGND through K155) but its low side returns to AGND_F, so it cannot form a floating pair across SW",
+      "usableFor": "single-ended Kellex read of PMID or PGND",
+      "invalidFor": "a PMID-SW or SW-PGND differential pair",
+      "evidence": [
+        {
+          "path": "D:/Newtest/DSH/ATE-Coding-Plat/team/artifacts/acceptance-20260916-dali10/schematic-validation/path_proofs.json.txt",
+          "locator": "S3_FXVIe_PLUS_FH1/SH1 -> PMID_*_S1 req=[]; S3_FXVIe_PLUS_FH3/SH3 -> PGND_*_S1 req=[155]",
+          "sha256": "eda90a922b2d9e68ed3ac3736986a64ba57ec4fe243701b0d7b2123796ba4863"
+        },
+        {
+          "path": "D:/Newtest/DSH/ATE-Coding-Plat/project/DALI/SCH-Connect-Map.txt",
+          "locator": "L820-822 FXVIe_PLUS -> PMID 需闭合: 无(默认导通)",
+          "sha256": "cc8009fbb27eef0cf29b45e4e50b05e1b5d7b5d49095a32005261a79d83cb427"
+        }
+      ]
+    }
+  ],
+  "blockingDecisionsForStrategy": [
+    {
+      "id": "SD-1",
+      "severity": "high",
+      "decision": "TM600 and TM601 must be separate functions: both need FPVIe channel 0 of the same site for the Kelvin force/sense pair, and TM600 additionally needs channel 1 for BST-SW.",
+      "why": "FPVIe provides only 2 independently floating channels per site (hardware-specs.md L17)",
+      "resolutionOwner": "test-strategy-architect (t4) with setup-architect (t3)"
+    },
+    {
+      "id": "SD-2",
+      "severity": "high",
+      "decision": "Keep K86_KELVIN0_FS and K130_KELVIN1_FS OPEN for TM600/TM601.",
+      "why": "these bridges merge force and sense on their row; every QTMU/QVM route requires them, no 4-wire FPVIe route does. Closing them silently degrades the mOhm measurement to 2-wire.",
+      "resolutionOwner": "setup-architect (t3)"
+    },
+    {
+      "id": "SD-3",
+      "severity": "high",
+      "decision": "Keep K93_AGND2PGND OPEN during TM601 (and state it explicitly in the cleanup block).",
+      "why": "K93 SetOn ties AGND_F to PGND_F and PGND_S; with the 1 A return flowing through PGND this both shorts the ground reference and puts 1 A through the K93 contact.",
+      "resolutionOwner": "setup-architect (t3)"
+    },
+    {
+      "id": "SD-4",
+      "severity": "medium",
+      "decision": "Fix the loop orientation explicitly: PMID<->SW = channel 0 high to low; SW<->PGND = channel 0 low (SW) to high (PGND).",
+      "why": "PMID and PGND hang off FPVIe0_FH_BUS_S1 while SW hangs off FPVIe0_FL_BUS_S1; dft-ir.json words TM601 as PMID(High)/SW(Low), which is the opposite orientation.",
+      "resolutionOwner": "setup-architect (t3) + test-strategy-architect (t4)"
+    },
+    {
+      "id": "SD-5",
+      "severity": "medium",
+      "decision": "Do not plan a Kelvin measurement through the FPVIe0 PC nets (K90/K91 + K82_R_CS): the PC nets are board-shorted F<->S and carry the 100 mohm / 5 mohm shunts.",
+      "why": "10 mohm DUT against a 100 mohm shunt in the same path",
+      "resolutionOwner": "test-strategy-architect (t4)"
+    }
+  ]
+}

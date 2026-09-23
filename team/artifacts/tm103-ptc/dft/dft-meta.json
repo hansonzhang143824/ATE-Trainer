@@ -1,0 +1,451 @@
+{
+  "schemaVersion": 2,
+  "artifactId": "dft-meta",
+  "artifactKind": "dft-meta",
+  "stage": "dft",
+  "taskId": "TM103-DFT",
+  "trial": "tm103-ptc",
+  "projectId": "DALI",
+  "tm": "TM103",
+  "generatedAt": "2026-09-18T03:54:29.894Z",
+  "generator": {
+    "role": "dft-expert",
+    "roleContract": "team/roles/dft-expert.md",
+    "tooling": "python standard library + openpyxl read of the workbook; no package install, no pip, no network",
+    "hashRule": "canonical ATE input digests come only from `python scripts/hash_ate_plaintext.py <path>` (DLP TSZ# transparent protection); Get-FileHash, certutil, [IO.File]::ReadAllBytes and Get-Content -AsByteStream are forbidden for canonical inputs"
+  },
+  "sourcePath": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Dali_testmode.xlsx",
+  "sourcePathProjectRelative": "project/DALI/Dali_testmode.xlsx",
+  "sourceSha256": "84c2d7cfe619a5a397b5f779514d43c9248ccd039a50cf8c91a637dcc1fc10cd",
+  "source": {
+    "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Dali_testmode.xlsx",
+    "pathProjectRelative": "project/DALI/Dali_testmode.xlsx",
+    "kind": "project DFT workbook (canonical DFT authority)",
+    "declaredBy": "Project_Info.json inputs.dft (approval.approvedBy NVT10241, approval.approvedAt 2026-09-18 11:50:03)",
+    "filenameRule": "filename contains 'testmode' inside project_config.json -> project_dir (project/DALI)",
+    "sheet": "OVERVIEW",
+    "sheetsPresent": [
+      "OVERVIEW",
+      "codeExplain"
+    ],
+    "sheetsRead": [
+      "OVERVIEW"
+    ],
+    "sheetsNotRead": [
+      "codeExplain"
+    ],
+    "sheetRule": "Only the OVERVIEW sheet is a DFT source; no other sheet of the workbook is read.",
+    "sha256": "84c2d7cfe619a5a397b5f779514d43c9248ccd039a50cf8c91a637dcc1fc10cd",
+    "sha256Kind": "plaintext digest",
+    "hashCommand": "python scripts/hash_ate_plaintext.py project\\DALI\\Dali_testmode.xlsx",
+    "hashCommandExitCode": 0,
+    "manifestBinding": "team/artifacts/tm103-ptc/input-manifest.json -> canonicalInputs.dft.sha256 (exact match)",
+    "rowLocator": "OVERVIEW physical row 7 (row 1 is the header row), column Item = TM103",
+    "overviewPhysicalRows": 23,
+    "overviewDataRows": 22,
+    "matchedRowsForTm": 1,
+    "otherTmRowsInSheet": 19
+  },
+  "identity": {
+    "item": "TM103",
+    "level": "HSKP",
+    "name": "LP_HR_0P5U",
+    "shortName": "LP_HR_0P5U",
+    "description": "IBP 0.5UA HR ",
+    "test": "Direct",
+    "purpose": "Debug",
+    "power": "VBAT",
+    "isCodeGen": "Y",
+    "isRun": "",
+    "trim": "",
+    "functionName": "",
+    "functionNameNote": "The workbook OVERVIEW schema has no 'Function Name' column (that column exists only in the retired flat export); the workbook identity field is 'Name'/LP_HR_0P5U.",
+    "recordFlag": "The workbook OVERVIEW schema has no 'Record' column; the workbook locator is OVERVIEW physical row 7."
+  },
+  "rawIntent": {
+    "note": "Verbatim OVERVIEW row for TM103 exactly as read from the governed workbook, unmodified. No source value was corrected, reordered, re-typed or dropped. Column keys are the original OVERVIEW header texts (embedded newlines preserved).",
+    "sourceColumnKeysAreVerbatimHeader": true,
+    "rawRow": {
+      "Item": "TM103",
+      "Level": "HSKP",
+      "Name": "LP_HR_0P5U",
+      "Description": "IBP 0.5UA HR ",
+      "ExpectValue": 0.5,
+      "Unit": "uA",
+      "Test": "Direct",
+      "Special": "",
+      "Purpose": "Debug",
+      "Trim": "",
+      "Notes": "",
+      "Code1": "vset[vbat,4,100e-6,0]",
+      "Code2": "en_tm[]\nfield[(EN_ATEST0,1),(ATEST0_MUX,4)]\nvset[vdm,1,100e-6,0]",
+      "Code3": "delay[1e-3]\nfinish[]",
+      "Power": "VBAT",
+      "Dynamic": "",
+      "Check": "I(ATEST0)",
+      "isCodeGen": "Y",
+      "isRun": "",
+      "Assign": "",
+      "State \nAMS\nValidation": "Done",
+      "State\nBench Validation": "",
+      "is CP test?": "",
+      "CP comment": "",
+      "State\nATE Validation": "",
+      "HELPER": "",
+      "de test": "0.5uA",
+      "aetest": "",
+      "is test": "checked"
+    },
+    "unnamedColumnCount": 7,
+    "unnamedColumnValue": "",
+    "unnamedColumnNote": "The OVERVIEW header repeats 7 columns with an empty header; every such cell of the TM103 row is empty."
+  },
+  "pinConditions": {
+    "sourceFieldTokens": {
+      "Code1": {
+        "raw": "vset[vbat,4,100e-6,0]",
+        "vsetTokens": [
+          "vset[vbat,4,100e-6,0]"
+        ]
+      },
+      "Code2": {
+        "raw": "en_tm[]\nfield[(EN_ATEST0,1),(ATEST0_MUX,4)]\nvset[vdm,1,100e-6,0]",
+        "vsetTokens": [
+          "vset[vdm,1,100e-6,0]"
+        ],
+        "fieldToken": "field[(EN_ATEST0,1),(ATEST0_MUX,4)]",
+        "enTm": "en_tm[]"
+      },
+      "Code3": {
+        "raw": "delay[1e-3]\nfinish[]",
+        "actionTokens": [
+          "delay[1e-3]",
+          "finish[]"
+        ]
+      },
+      "Dynamic": {
+        "raw": "",
+        "note": "empty in the governed workbook row"
+      }
+    },
+    "dftHardwareInitial": {
+      "keyNameNote": "Key retained for citation continuity with earlier TM103 artifacts; it now carries the GOVERNING workbook hardware-initial source column (Code1), not the retired flat export's Hardware_initial column.",
+      "workbookColumn": "Code1",
+      "raw": "vset[vbat,4,100e-6,0]",
+      "vsetTokens": [
+        {
+          "raw": "vset[vbat,4,100e-6,0]",
+          "args": [
+            "vbat",
+            "4",
+            "100e-6",
+            "0"
+          ],
+          "onPin": "vbat",
+          "authority": "governing-dft-workbook-overview-row7"
+        }
+      ],
+      "authorityStatus": "governing"
+    },
+    "legacyCopyHardwareInitial": {
+      "keyNameIsRetiredSourceField": true,
+      "retiredSourceColumn": "Hardware_initial",
+      "raw": "vset[vbat,4.2,100e-6,0]\nvset[amux,1,100e-6,0]",
+      "vsetTokens": [
+        {
+          "raw": "vset[vbat,4.2,100e-6,0]",
+          "args": [
+            "vbat",
+            "4.2",
+            "100e-6",
+            "0"
+          ],
+          "onPin": "vbat",
+          "authority": "retired-flat-export-legacy-copy"
+        },
+        {
+          "raw": "vset[amux,1,100e-6,0]",
+          "args": [
+            "amux",
+            "1",
+            "100e-6",
+            "0"
+          ],
+          "onPin": "amux",
+          "authority": "retired-flat-export-legacy-copy"
+        }
+      ],
+      "authorityStatus": "superseded-by-adjudication; see adjudicatedDivergence, resolution project/DALI/meta/intent-resolutions.json#/resolutions/TM103"
+    },
+    "dftDynamicTokens": {
+      "raw": "",
+      "workbookColumn": "Dynamic",
+      "note": "DFT Dynamic field is empty for TM103 (governed workbook OVERVIEW physical row 7, column Dynamic). The DFT states no swept/ramped sequence in Dynamic for this item."
+    },
+    "governingConditions": {
+      "attributedTo": "project/DALI/meta/intent-resolutions.json#/resolutions/TM103",
+      "resolutionStatus": "resolved",
+      "authority": "accepted project baseline",
+      "staticSupplies": [
+        {
+          "pin": "VBAT",
+          "voltageV": 4
+        }
+      ],
+      "sweptPin": "VDM",
+      "registerWrites": [
+        {
+          "address": "0x57",
+          "value": "0x02"
+        },
+        {
+          "address": "0x5E",
+          "value": "0x04"
+        }
+      ],
+      "monitorIntent": "I(ATEST0) IBP_HR 0.5 uA current, forced/measured on the VDM pin",
+      "monitorDutPin": "VDM",
+      "supportingEvidence": [
+        "project/DALI/Dali_testmode.xlsx!/OVERVIEW row 7 (read directly by this role: Code1 vset[vbat,4,100e-6,0]; Code2 field[(EN_ATEST0,1),(ATEST0_MUX,4)] + vset[vdm,1,100e-6,0]; Check I(ATEST0); ExpectValue 0.5 uA)",
+        "project/DALI/meta/dali_tm_meta.json (functions[item=TM103], source=Dali_testmode.xlsx)",
+        "project/DALI/reg_config/tm103.sv (vsrcVBAT ramp to 4 V; I2CWriteSameData 0x57=0x02; 0x5E=0x04; vsrcVDM ramp to 1 V)",
+        "team/artifacts/acceptance-20260916-dali10/dft-ir.json:2669 (registered: TM103 has three register/observation stories)"
+      ],
+      "valueProvenance": {
+        "VBAT=4.0V": "decision.staticSupplies[0].voltageV; corroborated by the governed workbook OVERVIEW row 7 Code1 vset[vbat,4,100e-6,0]",
+        "sweptPin=VDM": "decision.sweptPin; corroborated by the governed workbook OVERVIEW row 7 Code2 vset[vdm,1,100e-6,0]",
+        "0x57=0x02, 0x5E=0x04": "decision.registerWrites; the governed workbook states the equivalent field intent field[(EN_ATEST0,1),(ATEST0_MUX,4)] and states no register address bytes, so the address/value encoding is project-baseline provenance, not a DFT-stated byte",
+        "VDM=1V": "resolution evidence (governing workbook OVERVIEW row 7 and project/DALI/reg_config/tm103.sv); no numeric VDM voltage is stated in the decision fields"
+      }
+    },
+    "logicalMonitorLabel": {
+      "label": "I(ATEST0)",
+      "locator": "OVERVIEW physical row 7, column Check (verbatim: \"I(ATEST0)\")",
+      "labelKind": "logical monitor/observation intent stated by the DFT source; I(ATEST0) is not asserted by this role to be a physical DUT pin",
+      "resolutionPointer": "project/DALI/meta/intent-resolutions.json#/resolutions/TM103 declares decision.monitorDutPin = VDM; that binding is project-adjudicated evidence cited here, not derived or re-decided by the DFT stage",
+      "boundaryNote": "Resolving a DFT logical label into exactly one physical DUT pin is the strategy stage's job against the trial Components-Statistic/DUT pin list. The DFT stage preserves the original label and locator."
+    },
+    "interpretationBoundary": "The DFT stage records the literal vset/field/en_tm/delay/finish tokens and their source column locators only. It does not interpret the meaning of the 3rd and 4th vset arguments, does not convert any logical label into a physical pin, and does not select resources, relays, instruments or methods."
+  },
+  "limits": {
+    "expectValue": 0.5,
+    "expectedDeTest": "0.5uA",
+    "unit": "uA",
+    "check": "I(ATEST0)",
+    "checkGoverning": "I(ATEST0)",
+    "checkLegacyCopy": "AMUX",
+    "note": "Recorded as DFT/project intent only. This role does not select, widen, compute or own limits; limit ownership stays with the test-method stage. The DFT states a single expected value 0.5 uA with no tolerance."
+  },
+  "dftRegisterConfig": {
+    "dftRowFieldToken": {
+      "raw": "field[(EN_ATEST0,1),(ATEST0_MUX,4)]",
+      "locator": "OVERVIEW physical row 7, column Code2",
+      "authority": "governing-dft-workbook-overview-row"
+    },
+    "dftRowWrites": [],
+    "dftRowWritesNote": "The governed workbook OVERVIEW row states register FIELD intent (field[(EN_ATEST0,1),(ATEST0_MUX,4)]) and no register address/value byte pair; the 0x56=0x22 write belongs to the retired flat export only (see adjudicatedDivergence).",
+    "retiredCopyWrites": [
+      {
+        "address": "0x56",
+        "value": "0x22",
+        "raw": "I2CWriteSameData(DEV_ADDR, 0x56, 0x22);",
+        "authority": "retired-flat-export-legacy-copy",
+        "authorityStatus": "superseded-by-adjudication"
+      }
+    ],
+    "governingWrites": [
+      {
+        "address": "0x57",
+        "value": "0x02",
+        "source": "project/DALI/meta/intent-resolutions.json#/resolutions/TM103 decision.registerWrites[0]"
+      },
+      {
+        "address": "0x5E",
+        "value": "0x04",
+        "source": "project/DALI/meta/intent-resolutions.json#/resolutions/TM103 decision.registerWrites[1]"
+      }
+    ],
+    "ownershipNote": "This role records which register intent the DFT row states and which bytes the accepted project baseline fixes. It does not select, add or re-derive register configuration; strategy owns register configuration."
+  },
+  "explicitRelations": {
+    "testModeEntry": "en_tm[]",
+    "dftRowSequence": [
+      "en_tm[]",
+      "field[(EN_ATEST0,1),(ATEST0_MUX,4)]",
+      "vset[vbat,4,100e-6,0]",
+      "vset[vdm,1,100e-6,0]",
+      "delay[1e-3]",
+      "finish[]"
+    ],
+    "dftRowSequenceNote": "Order as written: Code1 then Code2 then Code3 (the workbook column order that the project workbook itself uses: Code1 = rail setup, Code2 = test-mode entry/field/sweep, Code3 = delay/finish).",
+    "legacyCopySequence": [
+      "entertestmode()",
+      "I2CWriteSameData(DEV_ADDR, 0x56, 0x22)",
+      "vset[vbat,4.2,100e-6,0]",
+      "vset[amux,1,100e-6,0]"
+    ],
+    "note": "The DFT states no timing, ramp, delay-relative-to-observation or relative-voltage relation for TM103 beyond the literal delay[1e-3] token in Code3 and finish[] to end the item."
+  },
+  "adjudicatedDivergence": {
+    "status": "adjudicated",
+    "blocking": false,
+    "resolutionId": "project/DALI/meta/intent-resolutions.json#/resolutions/TM103",
+    "resolutionFile": "project/DALI/meta/intent-resolutions.json",
+    "resolutionFileSha256": "ab7d2a01708b7796a44c71b646a1afd613a76d06dd7650a176ae5cb8e41a2c61",
+    "resolutionFileHashCommand": "python scripts/hash_ate_plaintext.py project\\DALI\\meta\\intent-resolutions.json",
+    "resolutionStatus": "resolved",
+    "authority": "accepted project baseline",
+    "recordedBy": "captain, PTC INPUT_SYNC gate: transcribed from the governing DFT workbook; no new electrical value was decided here",
+    "divergentSources": {
+      "governing": {
+        "path": "project/DALI/Dali_testmode.xlsx!/OVERVIEW physical row 7",
+        "sha256": "84c2d7cfe619a5a397b5f779514d43c9248ccd039a50cf8c91a637dcc1fc10cd",
+        "kind": "canonical DFT source"
+      },
+      "retired": {
+        "path": "project/DALI/_archive/DFT.csv.legacy-not-a-dft-source",
+        "formerPath": "project/DALI/input/DFT.csv",
+        "recordedInResolutionAs": "project/DALI/input/DFT.csv",
+        "recordPhysicalLines": "12-14",
+        "sha256": "ce69dce829a1473f1c7fd2ec7d55014b9e2fcf85262301169c654100b5461541",
+        "hashCommand": "python scripts/hash_ate_plaintext.py project\\DALI\\_archive\\DFT.csv.legacy-not-a-dft-source",
+        "kind": "retired flat export; NOT a DFT source (see openItems TM103-OI-1 for the locator drift in the resolution record)"
+      }
+    },
+    "verbatimRetiredRowFields": {
+      "Item": "TM103",
+      "Function Name": "",
+      "ShortName": "LP_HR_0P5U",
+      "ExpectValue": "0.5",
+      "Unit": "uA",
+      "Trim": "",
+      "Record": "",
+      "Hardware_initial": "vset[vbat,4.2,100e-6,0]\nvset[amux,1,100e-6,0]",
+      "Software_initial": "\tentertestmode();\n\tI2CWriteSameData(DEV_ADDR, 0x56, 0x22);//\t\tfield[(EN_ATEST0,1),(ATEST0_MUX,4)], LP_HR_0P5U",
+      "Dynamic": "",
+      "Check": "AMUX",
+      "Type": "MI"
+    },
+    "divergences": [
+      {
+        "field": "Hardware_initial vs Code1",
+        "dftValue": "vset[vbat,4.2,100e-6,0]",
+        "governingValue": "vset[vbat,4,100e-6,0] (VBAT = 4 V)",
+        "kind": "voltage"
+      },
+      {
+        "field": "Hardware_initial vs Code2",
+        "dftValue": "vset[amux,1,100e-6,0]",
+        "governingValue": "vset[vdm,1,100e-6,0] (swept/forced pin is VDM)",
+        "kind": "pin-identity"
+      },
+      {
+        "field": "Software_initial vs Code2",
+        "dftValue": "I2CWriteSameData(DEV_ADDR, 0x56, 0x22)",
+        "governingValue": "field[(EN_ATEST0,1),(ATEST0_MUX,4)], recorded in the accepted baseline as 0x57=0x02 and 0x5E=0x04",
+        "kind": "register-byte"
+      },
+      {
+        "field": "Check",
+        "dftValue": "AMUX",
+        "governingValue": "I(ATEST0)",
+        "kind": "monitor-label"
+      }
+    ],
+    "resolutionFactVerbatim": "The DFT.csv row carries a legacy copy of the same test (Hardware_initial vset[vbat,4.2,100e-6,0] + vset[amux,1,100e-6,0]; Software_initial I2CWriteSameData(0x56,0x22)), while the governing workbook OVERVIEW row 7, dali_tm_meta.json and reg_config/tm103.sv all specify vset[vbat,4,...] + field[(EN_ATEST0,1),(ATEST0_MUX,4)] + vset[vdm,1,...].",
+    "resolutionHandlingVerbatim": "Do not use the copied DFT.csv Hardware_initial/Software_initial fields as stimulus, route or register authority. VBAT=4 V, VDM=1 V and EN_ATEST0=1/ATEST0_MUX=4 (0x57=0x02, 0x5E=0x04) govern. The current implementation in test.cpp already follows the governing values.",
+    "resolutionScopeVerbatim": "This resolution adjudicates only the DFT source contradiction. Relay and instrument selection remain the strategy architect's job and must use project schematic/CBIT evidence.",
+    "handlingByThisRole": "Recorded verbatim as evidence. The adjudication was not re-opened, the retired flat export was not modified or moved, nothing was silently corrected, and this divergence is not a blocking item."
+  },
+  "nonBlockingObservations": [
+    {
+      "id": "TM103-NBO-LEGACY-ROW-INTERNAL-INCONSISTENCY",
+      "field": "retired Software_initial cell",
+      "observation": "The retired row's executed statement I2CWriteSameData(DEV_ADDR, 0x56, 0x22) contradicts its own trailing comment field[(EN_ATEST0,1),(ATEST0_MUX,4)] inside the same cell.",
+      "classification": "internal inconsistency of the already-adjudicated legacy copy",
+      "coveredBy": "project/DALI/meta/intent-resolutions.json#/resolutions/TM103",
+      "reasoning": "Both the stale write and the field intent sit inside the single retired Software_initial cell, and the adjudication already rules which side governs (the field intent, 0x57=0x02 / 0x5E=0x04). No separate contradiction is opened.",
+      "blocking": false
+    }
+  ],
+  "openItems": [
+    {
+      "id": "TM103-OI-1",
+      "kind": "project-meta-locator-drift",
+      "status": "open, not adjudicated by this role",
+      "blocking": false,
+      "affectsSourceIntent": false,
+      "fact": "project/DALI/meta/intent-resolutions.json#/resolutions/TM103 records conflict.source as \"project/DALI/input/DFT.csv\", but no such file exists: project/DALI/input/ contains no DFT.csv, and the retired flat export now lives at project/DALI/_archive/DFT.csv.legacy-not-a-dft-source (plaintext SHA-256 ce69dce829a1473f1c7fd2ec7d55014b9e2fcf85262301169c654100b5461541), whose TM103 record at physical lines 12-14 is byte-identical in content to the copy the resolution describes.",
+      "whyOpen": "It is a stale locator in a project-owned meta file, not an electrical contradiction between DFT facts. This role owns project meta but not the adjudication record, so it reports the drift instead of editing the resolution.",
+      "needsDecisionBefore": "nothing in the DFT stage; no DFT value, stimulus, sweep, monitor label or register byte is in question",
+      "evidence": [
+        "directory listing of project/DALI/input/ (NU6801QDNB.treg, PINLIST.txt, UI界面.txt, CBIT表.xlsx, NU6810-HIB-Site1.NET, _tm113_215_overview.txt, _regconfig_113_215.txt, recover_stdafx.h.txt, recover_stdafx.h.txt.bak_unify_k7_20260816) - no DFT.csv",
+        "glob project/DALI/**/DFT* -> only _archive/DFT_restored.csv.legacy-not-a-dft-source and _archive/DFT.csv.legacy-not-a-dft-source",
+        "python scripts/hash_ate_plaintext.py project\\DALI\\_archive\\DFT.csv.legacy-not-a-dft-source -> ce69dce829a1473f1c7fd2ec7d55014b9e2fcf85262301169c654100b5461541"
+      ]
+    }
+  ],
+  "parseStatus": {
+    "status": "parsed",
+    "sourceReadable": true,
+    "sourceHashVerified": true,
+    "sheetRead": "OVERVIEW",
+    "rowsMatchedForTm": 1,
+    "columnsInSheet": 36,
+    "columnsCaptured": 29,
+    "missingFields": [],
+    "unparsableFields": [],
+    "emptyFields": [
+      "Special",
+      "Trim",
+      "Notes",
+      "Dynamic",
+      "isRun",
+      "Assign",
+      "State\nBench Validation",
+      "is CP test?",
+      "CP comment",
+      "State\nATE Validation",
+      "HELPER",
+      "aetest"
+    ]
+  },
+  "coverage": {
+    "scope": "TM103 only",
+    "sheet": "OVERVIEW",
+    "overviewPhysicalRows": 23,
+    "overviewDataRows": 22,
+    "itemBearingRows": 20,
+    "tmPrefixedRows": 20,
+    "recordsScoped": 1,
+    "duplicateTm103Records": 0,
+    "excludedTmRecords": 19,
+    "sheetsExcluded": [
+      "codeExplain"
+    ],
+    "note": "Scoped coverage proven by exactly one OVERVIEW row whose Item equals TM103 (physical row 7) out of 20 TM-prefixed rows in the sheet; no duplicate TM103 record and no other sheet was read."
+  },
+  "handoff": {
+    "verdict": "generated",
+    "permittedNextStage": "strategic resource/relay/register selection reads dft-meta.json and dft-conditions.yaml; the logical monitor label I(ATEST0) must be resolved to one physical DUT pin against the trial Components-Statistic before any allocation",
+    "blockingItems": [],
+    "nonBlockingItems": [
+      "TM103-OI-1",
+      "TM103-NBO-LEGACY-ROW-INTERNAL-INCONSISTENCY"
+    ],
+    "resolvedItemsReferenced": [
+      "project/DALI/meta/intent-resolutions.json#/resolutions/TM103"
+    ],
+    "boundaryHandoff": "DFT source intent only. No resource, relay, instrument, method, limit or code selection is made or implied by this artifact."
+  },
+  "selfCheck": {
+    "dft-meta.json sourceSha256 equals input-manifest canonicalInputs.dft.sha256": true,
+    "dft-conditions.yaml sourceSha256 equals the same digest": true,
+    "source read via the mandated plaintext hasher only": true,
+    "only the OVERVIEW sheet of the workbook was read": true,
+    "recorded divergence is verbatim and references the existing resolution": true,
+    "no adjudication was re-opened and nothing was silently corrected": true,
+    "no DFT logical label was resolved into a physical pin": true,
+    "no resource, relay, instrument, method, limit or code selected": true
+  }
+}

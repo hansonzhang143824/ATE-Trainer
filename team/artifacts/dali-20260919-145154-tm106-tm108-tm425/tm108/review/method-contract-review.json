@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "artifactId": "tm108-method-contract-review",
+  "trial": "tm108",
+  "tm": "TM108",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_METHOD",
+  "verdict": "pass",
+  "reviewMode": "deterministic_batch",
+  "checks": [
+    {
+      "id": "MR-01",
+      "result": "PASS",
+      "subject": "signed inputs and structure"
+    },
+    {
+      "id": "MR-02",
+      "result": "PASS",
+      "subject": "routes and functional relays"
+    },
+    {
+      "id": "MR-03",
+      "result": "PASS",
+      "subject": "register source and Code2 binding"
+    },
+    {
+      "id": "MR-04",
+      "result": "PASS",
+      "subject": "scan procedure, results and shutdown"
+    }
+  ],
+  "blockingDefects": [],
+  "summary": {
+    "checksPassed": 4,
+    "blockingDefects": 0,
+    "nextRole": "ate-implementer"
+  },
+  "signedInputs": {
+    "methodContractSha256": "5afeb060a4f168a24a3351b9e22aba987905db8bccf54c6cc3712ffc490b5b57",
+    "strategyContractSha256": "ecf16d1e1a3ce038121f69592242f1beed401f4404f99fe1d6100759def8f31e"
+  }
+}

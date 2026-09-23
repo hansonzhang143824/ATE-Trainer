@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 8,
+  "stage": "INPUT_SYNC",
+  "tm": "TM425",
+  "materialRoots": {
+    "input": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial",
+    "output": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material",
+    "errorLog": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\ErrorLog"
+  },
+  "canonicalInputs": {
+    "dft": {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\Dali_testmode.xlsx",
+      "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "sheet": "OVERVIEW",
+      "rowCount": 1,
+      "rawRows": [
+        {
+          "Item": "TM425",
+          "Level": "MNT",
+          "Name": "MNT_1P2V_BUF",
+          "Description": "internal 1.2V voltage refernce",
+          "ExpectValue": 1.2,
+          "Unit": "V",
+          "Test": "Direct",
+          "Special": "",
+          "Purpose": "debug",
+          "Trim": "Y",
+          "Notes": "TRIM_MNT_V1P2_BUF",
+          "Code1": "vset[vbat,4.4,100e-6,0]",
+          "Code2": "en_tm[]\nfield[(WAKE_UP,1),(EN_ATEST1,1),(ATEST1_MUX,2),(DIS_NTC_DETECTION_ANALOG,1)]",
+          "Code3": "delay[2e-3]\nfinish[0]",
+          "Power": "VBAT",
+          "Dynamic": "",
+          "Check": "V(ATEST1)",
+          "isCodeGen": "Y",
+          "isRun": "",
+          "Assign": "",
+          "State \nAMS\nValidation": "Done",
+          "State\nBench Validation": "",
+          "is CP test?": "",
+          "CP comment": "",
+          "State\nATE Validation": "",
+          "HELPER": "",
+          "": "",
+          "de test": 1.197,
+          "aetest": "Bench Pass, 测试值1.197V, able to trim",
+          "is test": "checked"
+        }
+      ],
+      "declaredPins": [
+        "VBAT"
+      ],
+      "checkLabel": "V(ATEST1)",
+      "requiredOutputs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM425\\dft-meta.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM425\\dft-conditions.yaml",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM425\\dft-semantic-review.json"
+      ],
+      "missingOrStaleOutputs": [],
+      "status": "ready"
+    },
+    "schematic": {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\Dali-SCH.csv",
+      "sha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a",
+      "requiredOutputs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\SCH-Connect-Map.txt",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\SCH-Connect-Map.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Component-Statistic.txt",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Components-Statistic.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Path-Proofs.txt",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Path-Proofs.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\schematic-receipt.json"
+      ],
+      "missingOrStaleOutputs": [],
+      "status": "ready"
+    },
+    "intentResolution": {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\meta\\intent-resolutions.json",
+      "sha256": "ab7d2a01708b7796a44c71b646a1afd613a76d06dd7650a176ae5cb8e41a2c61",
+      "entry": null,
+      "status": "not_declared",
+      "gate": "informational only; this file never blocks a run"
+    },
+    "specialPinInformation": {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\DALI-special-information.json",
+      "sha256": "86d11d43f8602cba604605fc015ba75a2d04a079345a5084f7442053c796d188",
+      "document": {
+        "schemaVersion": 1,
+        "project": "DALI",
+        "purpose": "Authoritative DALI special logical-pin mapping when ordinary schematic and VS evidence cannot resolve a logical test label, or when those sources conflict.",
+        "mappings": [
+          {
+            "logicalLabel": "DTEST0",
+            "aliases": [
+              "DEST0",
+              "V(DTEST0)",
+              "V(DEST0)"
+            ],
+            "physicalDutPin": "nQON",
+            "pinClass": "digital_mux_pin",
+            "authority": "project user ruling"
+          },
+          {
+            "logicalLabel": "ATEST0",
+            "aliases": [
+              "V(ATEST0)"
+            ],
+            "physicalDutPin": "AMUX",
+            "pinClass": "analog_mux_pin",
+            "authority": "project user ruling"
+          },
+          {
+            "logicalLabel": "ATEST1",
+            "aliases": [
+              "V(ATEST1)"
+            ],
+            "physicalDutPin": "VDM",
+            "pinClass": "analog_mux_pin",
+            "authority": "project user ruling"
+          }
+        ],
+        "useRule": "Use only after ordinary DFT, schematic, relay, and source-table evidence cannot uniquely resolve the logical label, or when they conflict. Record this document path, hash, logical label, and physical DUT pin in the strategy contract."
+      },
+      "status": "declared",
+      "gate": "authoritative only for listed DALI logical-pin mappings"
+    }
+  },
+  "dispatchableRoles": [],
+  "status": "ready",
+  "roleGates": {
+    "dft-expert": {
+      "role": "dft-expert",
+      "gate": "DFT_OUTPUT",
+      "status": "ready",
+      "canonicalInput": {
+        "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\Dali_testmode.xlsx",
+        "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+        "sheet": "OVERVIEW"
+      },
+      "requiredOutputs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM425\\dft-meta.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM425\\dft-conditions.yaml",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM425\\dft-semantic-review.json"
+      ],
+      "missingOrStaleOutputs": []
+    },
+    "schematic-expert": {
+      "role": "schematic-expert",
+      "gate": "SCHEMATIC_OUTPUT",
+      "status": "ready",
+      "canonicalInput": {
+        "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\Dali-SCH.csv",
+        "sha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a"
+      },
+      "requiredOutputs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\SCH-Connect-Map.txt",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\SCH-Connect-Map.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Component-Statistic.txt",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Components-Statistic.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Path-Proofs.txt",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Path-Proofs.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\schematic-receipt.json"
+      ],
+      "missingOrStaleOutputs": [],
+      "regenerationCommand": "python scripts/generate_schematic_txt.py --source project/DALI/Input_GlobalMaterial/Dali-SCH.csv --confirmed project/DALI/Input_GlobalMaterial/sch_confirmed.json --cbit project/DALI/Input_GlobalMaterial/CBIT表-DALI.xlsx --out-dir project/DALI/Output_Global_Material/schematic --expected-source-sha 04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a --expected-confirmed-sha 3283b7ca310357fe9ea6a01fdcd1c606a47136bf58be9accae3a3f8bd65b13d0 --expected-cbit-sha be5a7a18c161d7cb1df02972e322602c9b654104686bbbc256b2ed9eb6d1771a"
+    }
+  },
+  "globalGate": {
+    "name": "INPUT_SYNC_AGGREGATE",
+    "status": "ready",
+    "meaning": "Aggregates source-role gates only. Task COMPLETE is decided solely by the final PTC gate."
+  }
+}

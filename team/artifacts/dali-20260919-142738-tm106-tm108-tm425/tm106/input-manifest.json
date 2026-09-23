@@ -1,0 +1,212 @@
+{
+  "schemaVersion": 8,
+  "stage": "INPUT_SYNC",
+  "tm": "TM106",
+  "materialRoots": {
+    "input": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial",
+    "output": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material",
+    "errorLog": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\ErrorLog"
+  },
+  "canonicalInputs": {
+    "dft": {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\Dali_testmode.xlsx",
+      "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "sheet": "OVERVIEW",
+      "rowCount": 1,
+      "rawRows": [
+        {
+          "Item": "TM106",
+          "Level": "HSKP",
+          "Name": "VBUS_PRST",
+          "Description": "VBUS PRST COMP threshold",
+          "ExpectValue": "rising vth 3.9V, hys 0.2V",
+          "Unit": "V",
+          "Test": "",
+          "Special": "",
+          "Purpose": "SCM",
+          "Trim": "",
+          "Notes": "ramp up/down vbus from 3~5V,\nmux A2D_VBUS_PRST to dtest0\ncheck int pin toggle",
+          "Code1": "vset[vbat,3,100e-6,0]",
+          "Code2": "en_tm[]\nfield[(DMUX_EN,1),(DMUX_SEL,19)]\nvset[vbus,3,100e-6,1]\nvset[vbus,5,1e-3,0]\nvset[vbus,3,1e-3,0]",
+          "Code3": "delay[1e-3]\nfinish[]",
+          "Power": "VBAT",
+          "Dynamic": "VBUS",
+          "Check": "V(DTEST0)",
+          "isCodeGen": "Y",
+          "isRun": "",
+          "Assign": "",
+          "State \nAMS\nValidation": "Done",
+          "State\nBench Validation": "",
+          "is CP test?": "",
+          "CP comment": "",
+          "State\nATE Validation": "",
+          "HELPER": "ramp VBUS, INT toggle",
+          "": "",
+          "de test": "r 3.798\nf 3.613",
+          "aetest": "",
+          "is test": "checked"
+        }
+      ],
+      "declaredPins": [
+        "VBAT",
+        "VBUS"
+      ],
+      "checkLabel": "V(DTEST0)",
+      "requiredOutputs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-meta.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-conditions.yaml",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-semantic-review.json"
+      ],
+      "missingOrStaleOutputs": [],
+      "status": "ready"
+    },
+    "schematic": {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\Dali-SCH.csv",
+      "sha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a",
+      "requiredOutputs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\SCH-Connect-Map.txt",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\SCH-Connect-Map.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Component-Statistic.txt",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Components-Statistic.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Path-Proofs.txt",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Path-Proofs.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\schematic-receipt.json"
+      ],
+      "missingOrStaleOutputs": [],
+      "status": "ready"
+    },
+    "intentResolution": {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\meta\\intent-resolutions.json",
+      "sha256": "ab7d2a01708b7796a44c71b646a1afd613a76d06dd7650a176ae5cb8e41a2c61",
+      "entry": {
+        "status": "resolved",
+        "authority": "accepted project baseline",
+        "recordedBy": "captain, PTC INPUT_SYNC gate: transcribed from the governing DFT workbook; no new electrical value was decided here",
+        "decision": {
+          "item": "VBUS_PRST",
+          "staticSupplies": [
+            {
+              "pin": "VBAT",
+              "voltageV": 3.0
+            }
+          ],
+          "sweptPin": "VBUS",
+          "registerWrites": [
+            {
+              "address": "0x56",
+              "value": "0x13"
+            },
+            {
+              "address": "0x57",
+              "value": "0x08"
+            }
+          ],
+          "monitorIntent": "DTEST0/nQON logic toggle",
+          "monitorDutPin": "nQON"
+        },
+        "conflict": {
+          "source": "project/DALI/input/DFT.csv",
+          "record": "TM106",
+          "fact": "The DFT.csv row diverges from the governing workbook OVERVIEW row 10 on four fields: VBAT (4.2 V vs 3 V), register encoding (0x55=0x94 with legacy field names EN_DTEST0/DTEST0_MUX=20 vs field[(DMUX_EN,1),(DMUX_SEL,19)] = 0x56=0x13 + 0x57=0x08), the VBUS sweep (3.5/4.5/4.3/3.3 V vs 3 -> 5 -> 3 V) and ExpectValue (3.91 V vs 3.9 V, hys 0.2 V in both).",
+          "handling": "Do not use the copied DFT.csv Hardware_initial/Software_initial/Dynamic/ExpectValue fields as stimulus, route, register or limit authority. VBAT=3 V, DMUX_EN=1/DMUX_SEL=19 and the 3 -> 5 -> 3 V VBUS ramp govern; the threshold is the workbook's 3.9 V rising / 0.2 V hysteresis."
+        },
+        "evidence": [
+          "project/DALI/Dali_testmode.xlsx!/OVERVIEW row 10 (read directly: Code1 vset[vbat,3,100e-6,0]; Code2 field[(DMUX_EN,1),(DMUX_SEL,19)] + vset[vbus,3,100e-6,1] + vset[vbus,5,1e-3,0] + vset[vbus,3,1e-3,0]; Check V(DTEST0); ExpectValue 'rising vth 3.9V, hys 0.2V')",
+          "project/DALI/meta/dali_tm_meta.json (functions[item=TM106], source=Dali_testmode.xlsx)",
+          "project/DALI/reg_config/tm106.sv (vsrcVBAT ramp to 3 V; I2CWriteSameData 0x56=0x13; 0x57=0x08; vsrcVBUS 3 -> 5 -> 3 V)"
+        ],
+        "scope": "This resolution adjudicates only the DFT source contradiction. Relay and instrument selection remain the strategy architect's job and must use project schematic/CBIT evidence."
+      },
+      "status": "declared",
+      "gate": "informational only; this file never blocks a run"
+    },
+    "specialPinInformation": {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\DALI-special-information.json",
+      "sha256": "86d11d43f8602cba604605fc015ba75a2d04a079345a5084f7442053c796d188",
+      "document": {
+        "schemaVersion": 1,
+        "project": "DALI",
+        "purpose": "Authoritative DALI special logical-pin mapping when ordinary schematic and VS evidence cannot resolve a logical test label, or when those sources conflict.",
+        "mappings": [
+          {
+            "logicalLabel": "DTEST0",
+            "aliases": [
+              "DEST0",
+              "V(DTEST0)",
+              "V(DEST0)"
+            ],
+            "physicalDutPin": "nQON",
+            "pinClass": "digital_mux_pin",
+            "authority": "project user ruling"
+          },
+          {
+            "logicalLabel": "ATEST0",
+            "aliases": [
+              "V(ATEST0)"
+            ],
+            "physicalDutPin": "AMUX",
+            "pinClass": "analog_mux_pin",
+            "authority": "project user ruling"
+          },
+          {
+            "logicalLabel": "ATEST1",
+            "aliases": [
+              "V(ATEST1)"
+            ],
+            "physicalDutPin": "VDM",
+            "pinClass": "analog_mux_pin",
+            "authority": "project user ruling"
+          }
+        ],
+        "useRule": "Use only after ordinary DFT, schematic, relay, and source-table evidence cannot uniquely resolve the logical label, or when they conflict. Record this document path, hash, logical label, and physical DUT pin in the strategy contract."
+      },
+      "status": "declared",
+      "gate": "authoritative only for listed DALI logical-pin mappings"
+    }
+  },
+  "dispatchableRoles": [],
+  "status": "ready",
+  "roleGates": {
+    "dft-expert": {
+      "role": "dft-expert",
+      "gate": "DFT_OUTPUT",
+      "status": "ready",
+      "canonicalInput": {
+        "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\Dali_testmode.xlsx",
+        "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+        "sheet": "OVERVIEW"
+      },
+      "requiredOutputs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-meta.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-conditions.yaml",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-semantic-review.json"
+      ],
+      "missingOrStaleOutputs": []
+    },
+    "schematic-expert": {
+      "role": "schematic-expert",
+      "gate": "SCHEMATIC_OUTPUT",
+      "status": "ready",
+      "canonicalInput": {
+        "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\Dali-SCH.csv",
+        "sha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a"
+      },
+      "requiredOutputs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\SCH-Connect-Map.txt",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\SCH-Connect-Map.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Component-Statistic.txt",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Components-Statistic.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Path-Proofs.txt",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Path-Proofs.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\schematic-receipt.json"
+      ],
+      "missingOrStaleOutputs": [],
+      "regenerationCommand": "python scripts/generate_schematic_txt.py --source project/DALI/Input_GlobalMaterial/Dali-SCH.csv --confirmed project/DALI/Input_GlobalMaterial/sch_confirmed.json --cbit project/DALI/Input_GlobalMaterial/CBIT表-DALI.xlsx --out-dir project/DALI/Output_Global_Material/schematic --expected-source-sha 04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a --expected-confirmed-sha 3283b7ca310357fe9ea6a01fdcd1c606a47136bf58be9accae3a3f8bd65b13d0 --expected-cbit-sha be5a7a18c161d7cb1df02972e322602c9b654104686bbbc256b2ed9eb6d1771a"
+    }
+  },
+  "globalGate": {
+    "name": "INPUT_SYNC_AGGREGATE",
+    "status": "ready",
+    "meaning": "Aggregates source-role gates only. Task COMPLETE is decided solely by the final PTC gate."
+  }
+}

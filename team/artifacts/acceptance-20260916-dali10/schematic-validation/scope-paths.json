@@ -1,0 +1,7634 @@
+{
+  "generatedFrom": {
+    "path_proofs": {
+      "path": "team/artifacts/acceptance-20260916-dali10/schematic-validation/path_proofs.json.txt",
+      "sha256": "eda90a922b2d9e68ed3ac3736986a64ba57ec4fe243701b0d7b2123796ba4863"
+    },
+    "engine": "native_csv_graph_v2",
+    "status": "PASS",
+    "counts": {
+      "sources": 112,
+      "raw_best_paths": 1004,
+      "accepted_path_proofs": 669,
+      "rejected_paths": 335,
+      "kelvin_pairs": 219,
+      "kelvin_pair_failures": 0
+    },
+    "input_csv": {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Dali-SCH.csv",
+      "sha256": "04B540F83FA00268CB45D118E9229474CC393A87C8AF5CAF27A2A8AC8188120A"
+    },
+    "cbit": {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\CBIT表-DALI.xlsx",
+      "sha256": "BE5A7A18C161D7CB1DF02972E322602C9B654104686BBBC256B2ED9EB6D1771A"
+    }
+  },
+  "scope": {
+    "TM000": [
+      "VBAT",
+      "VCC",
+      "AGND",
+      "VAC1",
+      "VAC2"
+    ],
+    "TM001": [
+      "VBAT",
+      "VCC",
+      "AGND",
+      "VAC1"
+    ],
+    "TM102": [
+      "VAC1",
+      "AGND",
+      "AMUX",
+      "VCC"
+    ],
+    "TM103": [
+      "VAC1",
+      "VAC2",
+      "AGND",
+      "VCC"
+    ],
+    "TM108": [
+      "VAC1",
+      "KLV1",
+      "KLV2"
+    ],
+    "TM109": [
+      "VAC2",
+      "KLV1",
+      "KLV2"
+    ],
+    "TM135": [
+      "VDM",
+      "SDA",
+      "SCL",
+      "VCC"
+    ],
+    "TM600": [
+      "PMID",
+      "SW",
+      "BST",
+      "VBAT",
+      "VDRV",
+      "V1P5",
+      "AMUX",
+      "AGND",
+      "PGND"
+    ],
+    "TM601": [
+      "SW",
+      "PGND",
+      "PMID",
+      "VBUS",
+      "VBAT",
+      "VDRV",
+      "V1P5",
+      "AGND"
+    ],
+    "TM1205": [
+      "BST",
+      "SW",
+      "VBUS",
+      "PMID"
+    ]
+  },
+  "pinPathCounts": {
+    "AGND": 14,
+    "AMUX": 17,
+    "BST": 18,
+    "KLV1": 8,
+    "KLV2": 8,
+    "PGND": 9,
+    "PMID": 9,
+    "SCL": 10,
+    "SDA": 10,
+    "SW": 9,
+    "V1P5": 2,
+    "VAC1": 9,
+    "VAC2": 9,
+    "VBAT": 9,
+    "VBUS": 9,
+    "VCC": 18,
+    "VDM": 12,
+    "VDRV": 2
+  },
+  "paths": {
+    "AGND": [
+      {
+        "source_port": "S10_CH0_B",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "AGND_S_S1",
+        "dut_net": "NetK92_AGND_F2S_S1_2",
+        "required_on": [
+          130,
+          139,
+          140
+        ],
+        "relays": [
+          "K142_QTMU_BUSB_S1S2",
+          "K133_KELVIN1_S1S2",
+          "K130_KELVIN1_S_S1",
+          "K132_KELVIN1_S1",
+          "K139_QVML_BUS1_S1",
+          "K140_QVML_AGND_S1"
+        ],
+        "states": [
+          "142:NC",
+          "133:NC",
+          "130:ON",
+          "132:NC",
+          "139:ON",
+          "140:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SL0",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "AGND_S_S1",
+        "dut_net": "NetK92_AGND_F2S_S1_2",
+        "required_on": [
+          138,
+          140
+        ],
+        "relays": [
+          "K88_KELVIN0_S1",
+          "K138_QVML_BUS0_S1",
+          "K140_QVML_AGND_S1"
+        ],
+        "states": [
+          "88:NC",
+          "138:ON",
+          "140:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SL1",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "AGND_S_S1",
+        "dut_net": "NetK92_AGND_F2S_S1_2",
+        "required_on": [
+          139,
+          140
+        ],
+        "relays": [
+          "K132_KELVIN1_S1",
+          "K139_QVML_BUS1_S1",
+          "K140_QVML_AGND_S1"
+        ],
+        "states": [
+          "132:NC",
+          "139:ON",
+          "140:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S3_FXVIe_PLUS_FL(0-3)",
+        "source_type": "FXVIe_PLUS",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "AGND_F_S1",
+        "dut_net": "AGND_F_S1",
+        "required_on": [],
+        "relays": [],
+        "states": [],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S3_FXVIe_PLUS_FL(4-7)",
+        "source_type": "FXVIe_PLUS",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "AGND_F_S1",
+        "dut_net": "AGND_F_S1",
+        "required_on": [],
+        "relays": [],
+        "states": [],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S3_FXVIe_PLUS_SL(0-3)",
+        "source_type": "FXVIe_PLUS",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "AGND_S_S1",
+        "dut_net": "NetK92_AGND_F2S_S1_2",
+        "required_on": [],
+        "relays": [],
+        "states": [],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S3_FXVIe_PLUS_SL(4-7)",
+        "source_type": "FXVIe_PLUS",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "AGND_S_S1",
+        "dut_net": "NetK92_AGND_F2S_S1_2",
+        "required_on": [],
+        "relays": [],
+        "states": [],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_FL(0-11)",
+        "source_type": "ACM200",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "AGND_F_S1",
+        "dut_net": "AGND_F_S1",
+        "required_on": [],
+        "relays": [],
+        "states": [],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_FL(12-23)",
+        "source_type": "ACM200",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "AGND_F_S1",
+        "dut_net": "AGND_F_S1",
+        "required_on": [],
+        "relays": [],
+        "states": [],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_SL(0-5)",
+        "source_type": "ACM200",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "AGND_S_S1",
+        "dut_net": "NetK92_AGND_F2S_S1_2",
+        "required_on": [],
+        "relays": [],
+        "states": [],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_SL(12-17)",
+        "source_type": "ACM200",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "AGND_S_S1",
+        "dut_net": "NetK92_AGND_F2S_S1_2",
+        "required_on": [],
+        "relays": [],
+        "states": [],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_SL(18-23)",
+        "source_type": "ACM200",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "AGND_S_S1",
+        "dut_net": "NetK92_AGND_F2S_S1_2",
+        "required_on": [],
+        "relays": [],
+        "states": [],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_SL(6-11)",
+        "source_type": "ACM200",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "AGND_S_S1",
+        "dut_net": "NetK92_AGND_F2S_S1_2",
+        "required_on": [],
+        "relays": [],
+        "states": [],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S8_QVM_CH0-",
+        "source_type": "QVM",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "AGND_S_S1",
+        "dut_net": "NetK92_AGND_F2S_S1_2",
+        "required_on": [
+          140
+        ],
+        "relays": [
+          "K140_QVML_AGND_S1"
+        ],
+        "states": [
+          "140:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      }
+    ],
+    "AMUX": [
+      {
+        "source_port": "S10_CH0_A",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "AMUX_F_S1",
+        "dut_net": "NetK20_AMUX_S1_4",
+        "required_on": [
+          141,
+          154
+        ],
+        "relays": [
+          "K141_QTMU_BUSA_S1S2",
+          "K154_BUSH_AMUX_S1",
+          "K155_FOVI_PGND_S1"
+        ],
+        "states": [
+          "141:ON",
+          "154:ON",
+          "155:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S10_CH0_A",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "AMUX_S_S1",
+        "dut_net": "NetK20_AMUX_S1_5",
+        "required_on": [
+          86,
+          141,
+          154
+        ],
+        "relays": [
+          "K141_QTMU_BUSA_S1S2",
+          "K87_KELVIN0_S1S2",
+          "K86_KELVIN0_F_S1",
+          "K88_KELVIN0_S1",
+          "K154_BUSH_AMUX_S1",
+          "K155_FOVI_PGND_S1"
+        ],
+        "states": [
+          "141:ON",
+          "87:NC",
+          "86:ON",
+          "88:NC",
+          "154:ON",
+          "155:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S10_CH0_B",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "AMUX_F_S1",
+        "dut_net": "NetK20_AMUX_S1_4",
+        "required_on": [
+          17,
+          18,
+          20,
+          142
+        ],
+        "relays": [
+          "K142_QTMU_BUSB_S1S2",
+          "K17_BUSL_VAC_S1",
+          "K18_VAC3_S1",
+          "K20_AMUX_S1"
+        ],
+        "states": [
+          "142:ON",
+          "17:ON",
+          "18:ON",
+          "20:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "AMUX_F_S1",
+        "dut_net": "NetK20_AMUX_S1_4",
+        "required_on": [
+          154
+        ],
+        "relays": [
+          "K87_KELVIN0_S1S2",
+          "K154_BUSH_AMUX_S1",
+          "K155_FOVI_PGND_S1"
+        ],
+        "states": [
+          "87:NC",
+          "154:ON",
+          "155:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH1",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "AMUX_F_S1",
+        "dut_net": "NetK20_AMUX_S1_4",
+        "required_on": [
+          143,
+          144,
+          154
+        ],
+        "relays": [
+          "K131_KELVIN1_S1S2",
+          "K144_DCM_BUS1_H_S1",
+          "K143_DCM_BUS0_H_S1",
+          "K154_BUSH_AMUX_S1",
+          "K155_FOVI_PGND_S1"
+        ],
+        "states": [
+          "131:NC",
+          "144:ON",
+          "143:ON",
+          "154:ON",
+          "155:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FL0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "LOW",
+        "dut_pin": "AMUX_F_S1",
+        "dut_net": "NetK20_AMUX_S1_4",
+        "required_on": [
+          17,
+          18,
+          20
+        ],
+        "relays": [
+          "K89_KELVIN0_S1S2",
+          "K17_BUSL_VAC_S1",
+          "K18_VAC3_S1",
+          "K20_AMUX_S1"
+        ],
+        "states": [
+          "89:NC",
+          "17:ON",
+          "18:ON",
+          "20:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FL1",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "LOW",
+        "dut_pin": "AMUX_F_S1",
+        "dut_net": "NetK20_AMUX_S1_4",
+        "required_on": [
+          17,
+          18,
+          20,
+          145,
+          146
+        ],
+        "relays": [
+          "K133_KELVIN1_S1S2",
+          "K146_DCM_BUS1_L_S1",
+          "K145_DCM_BUS0_L_S1",
+          "K17_BUSL_VAC_S1",
+          "K18_VAC3_S1",
+          "K20_AMUX_S1"
+        ],
+        "states": [
+          "133:NC",
+          "146:ON",
+          "145:ON",
+          "17:ON",
+          "18:ON",
+          "20:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SH0",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "AMUX_S_S1",
+        "dut_net": "NetK20_AMUX_S1_5",
+        "required_on": [
+          154
+        ],
+        "relays": [
+          "K88_KELVIN0_S1",
+          "K154_BUSH_AMUX_S1",
+          "K155_FOVI_PGND_S1"
+        ],
+        "states": [
+          "88:NC",
+          "154:ON",
+          "155:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SH1",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "AMUX_S_S1",
+        "dut_net": "NetK20_AMUX_S1_5",
+        "required_on": [
+          136,
+          137,
+          154
+        ],
+        "relays": [
+          "K132_KELVIN1_S1",
+          "K136_QVMH_BUS0_S1",
+          "K137_QVMH_BUS1_S1",
+          "K154_BUSH_AMUX_S1",
+          "K155_FOVI_PGND_S1"
+        ],
+        "states": [
+          "132:NC",
+          "136:ON",
+          "137:ON",
+          "154:ON",
+          "155:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SL0",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "AMUX_S_S1",
+        "dut_net": "NetK20_AMUX_S1_5",
+        "required_on": [
+          17,
+          18,
+          20
+        ],
+        "relays": [
+          "K88_KELVIN0_S1",
+          "K17_BUSL_VAC_S1",
+          "K18_VAC3_S1",
+          "K20_AMUX_S1"
+        ],
+        "states": [
+          "88:NC",
+          "17:ON",
+          "18:ON",
+          "20:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SL1",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "AMUX_S_S1",
+        "dut_net": "NetK20_AMUX_S1_5",
+        "required_on": [
+          17,
+          18,
+          20,
+          138,
+          139
+        ],
+        "relays": [
+          "K132_KELVIN1_S1",
+          "K139_QVML_BUS1_S1",
+          "K138_QVML_BUS0_S1",
+          "K17_BUSL_VAC_S1",
+          "K18_VAC3_S1",
+          "K20_AMUX_S1"
+        ],
+        "states": [
+          "132:NC",
+          "139:ON",
+          "138:ON",
+          "17:ON",
+          "18:ON",
+          "20:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S3_FXVIe_PLUS_FH3",
+        "source_type": "FXVIe_PLUS",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "AMUX_F_S1",
+        "dut_net": "NetK20_AMUX_S1_4",
+        "required_on": [],
+        "relays": [
+          "K155_FOVI_PGND_S1"
+        ],
+        "states": [
+          "155:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S3_FXVIe_PLUS_SH3",
+        "source_type": "FXVIe_PLUS",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "AMUX_S_S1",
+        "dut_net": "NetK20_AMUX_S1_5",
+        "required_on": [],
+        "relays": [
+          "K155_FOVI_PGND_S1"
+        ],
+        "states": [
+          "155:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_FH0",
+        "source_type": "ACM200",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "AMUX_F_S1",
+        "dut_net": "NetK20_AMUX_S1_4",
+        "required_on": [
+          18,
+          20
+        ],
+        "relays": [
+          "K18_VAC3_S1",
+          "K20_AMUX_S1"
+        ],
+        "states": [
+          "18:ON",
+          "20:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_SH0",
+        "source_type": "ACM200",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "AMUX_S_S1",
+        "dut_net": "NetK20_AMUX_S1_5",
+        "required_on": [
+          18,
+          20
+        ],
+        "relays": [
+          "K18_VAC3_S1",
+          "K20_AMUX_S1"
+        ],
+        "states": [
+          "18:ON",
+          "20:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S8_QVM_CH0+",
+        "source_type": "QVM",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "AMUX_F_S1",
+        "dut_net": "NetK20_AMUX_S1_4",
+        "required_on": [
+          86,
+          137,
+          154
+        ],
+        "relays": [
+          "K137_QVMH_BUS1_S1",
+          "K88_KELVIN0_S1",
+          "K86_KELVIN0_F_S1",
+          "K87_KELVIN0_S1S2",
+          "K154_BUSH_AMUX_S1",
+          "K155_FOVI_PGND_S1"
+        ],
+        "states": [
+          "137:ON",
+          "88:NC",
+          "86:ON",
+          "87:NC",
+          "154:ON",
+          "155:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S8_QVM_CH0-",
+        "source_type": "QVM",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "AMUX_S_S1",
+        "dut_net": "NetK20_AMUX_S1_5",
+        "required_on": [
+          17,
+          18,
+          20,
+          138
+        ],
+        "relays": [
+          "K138_QVML_BUS0_S1",
+          "K17_BUSL_VAC_S1",
+          "K18_VAC3_S1",
+          "K20_AMUX_S1"
+        ],
+        "states": [
+          "138:ON",
+          "17:ON",
+          "18:ON",
+          "20:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      }
+    ],
+    "BST": [
+      {
+        "source_port": "S10_CH0_A",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "BST_F_S1",
+        "dut_net": "NetK57_CAP_BST_SW_S1S2_3",
+        "required_on": [
+          46,
+          48,
+          76,
+          141
+        ],
+        "relays": [
+          "K141_QTMU_BUSA_S1S2",
+          "K46_BUS_FH_SW1_S1",
+          "K48_AMP_REF_S1",
+          "K76_ACM_BST_S1"
+        ],
+        "states": [
+          "141:ON",
+          "46:ON",
+          "48:ON",
+          "76:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S10_CH0_A",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "BST_S_S1",
+        "dut_net": "NetK76_ACM_BST_S1_4",
+        "required_on": [
+          130,
+          132,
+          135
+        ],
+        "relays": [
+          "K141_QTMU_BUSA_S1S2",
+          "K131_KELVIN1_S1S2",
+          "K130_KELVIN1_F_S1",
+          "K132_KELVIN1_S1",
+          "K135_PC1_Sense_S1"
+        ],
+        "states": [
+          "141:NC",
+          "131:NC",
+          "130:ON",
+          "132:ON",
+          "135:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S10_CH0_B",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "BST_F_S1",
+        "dut_net": "NetK57_CAP_BST_SW_S1S2_3",
+        "required_on": [
+          109,
+          110
+        ],
+        "relays": [
+          "K142_QTMU_BUSB_S1S2",
+          "K109_BUSL_PB0_S1",
+          "K110_BST_S1"
+        ],
+        "states": [
+          "142:NC",
+          "109:ON",
+          "110:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S10_CH0_B",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "BST_S_S1",
+        "dut_net": "NetK76_ACM_BST_S1_4",
+        "required_on": [
+          109,
+          110,
+          130
+        ],
+        "relays": [
+          "K142_QTMU_BUSB_S1S2",
+          "K133_KELVIN1_S1S2",
+          "K130_KELVIN1_S_S1",
+          "K132_KELVIN1_S1",
+          "K109_BUSL_PB0_S1",
+          "K110_BST_S1"
+        ],
+        "states": [
+          "142:NC",
+          "133:NC",
+          "130:ON",
+          "132:NC",
+          "109:ON",
+          "110:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "BST_F_S1",
+        "dut_net": "NetK57_CAP_BST_SW_S1S2_3",
+        "required_on": [
+          46,
+          48,
+          76
+        ],
+        "relays": [
+          "K87_KELVIN0_S1S2",
+          "K46_BUS_FH_SW1_S1",
+          "K48_AMP_REF_S1",
+          "K76_ACM_BST_S1"
+        ],
+        "states": [
+          "87:NC",
+          "46:ON",
+          "48:ON",
+          "76:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH1",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "BST_F_S1",
+        "dut_net": "NetK57_CAP_BST_SW_S1S2_3",
+        "required_on": [
+          131,
+          134
+        ],
+        "relays": [
+          "K131_KELVIN1_S1S2",
+          "K134_PC1_Force_S1"
+        ],
+        "states": [
+          "131:ON",
+          "134:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FL0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "LOW",
+        "dut_pin": "BST_F_S1",
+        "dut_net": "NetK57_CAP_BST_SW_S1S2_3",
+        "required_on": [
+          109,
+          110,
+          145,
+          146
+        ],
+        "relays": [
+          "K89_KELVIN0_S1S2",
+          "K145_DCM_BUS0_L_S1",
+          "K146_DCM_BUS1_L_S1",
+          "K109_BUSL_PB0_S1",
+          "K110_BST_S1"
+        ],
+        "states": [
+          "89:NC",
+          "145:ON",
+          "146:ON",
+          "109:ON",
+          "110:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FL1",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "LOW",
+        "dut_pin": "BST_F_S1",
+        "dut_net": "NetK57_CAP_BST_SW_S1S2_3",
+        "required_on": [
+          109,
+          110
+        ],
+        "relays": [
+          "K133_KELVIN1_S1S2",
+          "K109_BUSL_PB0_S1",
+          "K110_BST_S1"
+        ],
+        "states": [
+          "133:NC",
+          "109:ON",
+          "110:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SH0",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "BST_S_S1",
+        "dut_net": "NetK76_ACM_BST_S1_4",
+        "required_on": [
+          46,
+          48,
+          76
+        ],
+        "relays": [
+          "K88_KELVIN0_S1",
+          "K46_BUS_SH_SW1_S1",
+          "K48_AMP_REF_S1",
+          "K76_ACM_BST_S1"
+        ],
+        "states": [
+          "88:NC",
+          "46:ON",
+          "48:ON",
+          "76:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SH1",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "BST_S_S1",
+        "dut_net": "NetK76_ACM_BST_S1_4",
+        "required_on": [
+          132,
+          135
+        ],
+        "relays": [
+          "K132_KELVIN1_S1",
+          "K135_PC1_Sense_S1"
+        ],
+        "states": [
+          "132:ON",
+          "135:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SL0",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "BST_S_S1",
+        "dut_net": "NetK76_ACM_BST_S1_4",
+        "required_on": [
+          109,
+          110,
+          138,
+          139
+        ],
+        "relays": [
+          "K88_KELVIN0_S1",
+          "K138_QVML_BUS0_S1",
+          "K139_QVML_BUS1_S1",
+          "K109_BUSL_PB0_S1",
+          "K110_BST_S1"
+        ],
+        "states": [
+          "88:NC",
+          "138:ON",
+          "139:ON",
+          "109:ON",
+          "110:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SL1",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "BST_S_S1",
+        "dut_net": "NetK76_ACM_BST_S1_4",
+        "required_on": [
+          109,
+          110
+        ],
+        "relays": [
+          "K132_KELVIN1_S1",
+          "K109_BUSL_PB0_S1",
+          "K110_BST_S1"
+        ],
+        "states": [
+          "132:NC",
+          "109:ON",
+          "110:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_FH18",
+        "source_type": "ACM200",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "BST_F_S1",
+        "dut_net": "NetK57_CAP_BST_SW_S1S2_3",
+        "required_on": [
+          110
+        ],
+        "relays": [
+          "K110_BST_S1"
+        ],
+        "states": [
+          "110:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_FH5",
+        "source_type": "ACM200",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "BST_F_S1",
+        "dut_net": "NetK57_CAP_BST_SW_S1S2_3",
+        "required_on": [
+          48,
+          76
+        ],
+        "relays": [
+          "K48_AMP_REF_S1",
+          "K76_ACM_BST_S1"
+        ],
+        "states": [
+          "48:ON",
+          "76:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_SH18",
+        "source_type": "ACM200",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "BST_S_S1",
+        "dut_net": "NetK76_ACM_BST_S1_4",
+        "required_on": [
+          110
+        ],
+        "relays": [
+          "K110_BST_S1"
+        ],
+        "states": [
+          "110:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_SH5",
+        "source_type": "ACM200",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "BST_S_S1",
+        "dut_net": "NetK76_ACM_BST_S1_4",
+        "required_on": [
+          48,
+          76
+        ],
+        "relays": [
+          "K48_AMP_REF_S1",
+          "K76_ACM_BST_S1"
+        ],
+        "states": [
+          "48:ON",
+          "76:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S8_QVM_CH0+",
+        "source_type": "QVM",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "BST_F_S1",
+        "dut_net": "NetK57_CAP_BST_SW_S1S2_3",
+        "required_on": [
+          130,
+          131,
+          134,
+          136
+        ],
+        "relays": [
+          "K136_QVMH_BUS0_S1",
+          "K132_KELVIN1_S1",
+          "K130_KELVIN1_F_S1",
+          "K131_KELVIN1_S1S2",
+          "K134_PC1_Force_S1"
+        ],
+        "states": [
+          "136:ON",
+          "132:NC",
+          "130:ON",
+          "131:ON",
+          "134:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S8_QVM_CH0-",
+        "source_type": "QVM",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "BST_S_S1",
+        "dut_net": "NetK76_ACM_BST_S1_4",
+        "required_on": [
+          109,
+          110,
+          139
+        ],
+        "relays": [
+          "K139_QVML_BUS1_S1",
+          "K109_BUSL_PB0_S1",
+          "K110_BST_S1"
+        ],
+        "states": [
+          "139:ON",
+          "109:ON",
+          "110:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      }
+    ],
+    "KLV1": [
+      {
+        "source_port": "S10_CH0_A",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "KLV1_F_S1",
+        "dut_net": "NetK37_KLV2_S1_2",
+        "required_on": [
+          35,
+          141
+        ],
+        "relays": [
+          "K141_QTMU_BUSA_S1S2",
+          "K35_BUSH_KLV_S1",
+          "K36_PGND_WL_S1",
+          "K37_KLV2_S1"
+        ],
+        "states": [
+          "141:ON",
+          "35:ON",
+          "36:NC",
+          "37:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "KLV1_F_S1",
+        "dut_net": "NetK37_KLV2_S1_2",
+        "required_on": [
+          35
+        ],
+        "relays": [
+          "K87_KELVIN0_S1S2",
+          "K35_BUSH_KLV_S1",
+          "K36_PGND_WL_S1",
+          "K37_KLV2_S1"
+        ],
+        "states": [
+          "87:NC",
+          "35:ON",
+          "36:NC",
+          "37:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH1",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "KLV1_F_S1",
+        "dut_net": "NetK37_KLV2_S1_2",
+        "required_on": [
+          35,
+          143,
+          144
+        ],
+        "relays": [
+          "K131_KELVIN1_S1S2",
+          "K144_DCM_BUS1_H_S1",
+          "K143_DCM_BUS0_H_S1",
+          "K35_BUSH_KLV_S1",
+          "K36_PGND_WL_S1",
+          "K37_KLV2_S1"
+        ],
+        "states": [
+          "131:NC",
+          "144:ON",
+          "143:ON",
+          "35:ON",
+          "36:NC",
+          "37:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FL0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "LOW",
+        "dut_pin": "KLV1_F_S1",
+        "dut_net": "NetK37_KLV2_S1_2",
+        "required_on": [
+          73,
+          89,
+          90
+        ],
+        "relays": [
+          "K89_KELVIN0_S1S2",
+          "K90_PC0_Force_S1",
+          "K73_VCN_F_S1",
+          "K36_PGND_WL_S1",
+          "K37_KLV2_S1"
+        ],
+        "states": [
+          "89:ON",
+          "90:ON",
+          "73:ON",
+          "36:NC",
+          "37:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SH0",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "KLV1_S_S1",
+        "dut_net": "NetK37_KLV2_S1_7",
+        "required_on": [
+          35
+        ],
+        "relays": [
+          "K88_KELVIN0_S1",
+          "K35_BUSH_KLV_S1",
+          "K36_PGND_WL_S1",
+          "K37_KLV2_S1"
+        ],
+        "states": [
+          "88:NC",
+          "35:ON",
+          "36:NC",
+          "37:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SH1",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "KLV1_S_S1",
+        "dut_net": "NetK37_KLV2_S1_7",
+        "required_on": [
+          35,
+          136,
+          137
+        ],
+        "relays": [
+          "K132_KELVIN1_S1",
+          "K136_QVMH_BUS0_S1",
+          "K137_QVMH_BUS1_S1",
+          "K35_BUSH_KLV_S1",
+          "K36_PGND_WL_S1",
+          "K37_KLV2_S1"
+        ],
+        "states": [
+          "132:NC",
+          "136:ON",
+          "137:ON",
+          "35:ON",
+          "36:NC",
+          "37:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_FH3",
+        "source_type": "ACM200",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "KLV1_F_S1",
+        "dut_net": "NetK37_KLV2_S1_2",
+        "required_on": [],
+        "relays": [
+          "K36_PGND_WL_S1",
+          "K37_KLV2_S1"
+        ],
+        "states": [
+          "36:NC",
+          "37:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_SH3",
+        "source_type": "ACM200",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "KLV1_S_S1",
+        "dut_net": "NetK37_KLV2_S1_7",
+        "required_on": [],
+        "relays": [
+          "K36_PGND_WL_S1",
+          "K37_KLV2_S1"
+        ],
+        "states": [
+          "36:NC",
+          "37:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      }
+    ],
+    "KLV2": [
+      {
+        "source_port": "S10_CH0_A",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "KLV2_F_S1",
+        "dut_net": "NetK37_KLV2_S1_4",
+        "required_on": [
+          35,
+          37,
+          141
+        ],
+        "relays": [
+          "K141_QTMU_BUSA_S1S2",
+          "K35_BUSH_KLV_S1",
+          "K36_PGND_WL_S1",
+          "K37_KLV2_S1"
+        ],
+        "states": [
+          "141:ON",
+          "35:ON",
+          "36:NC",
+          "37:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "KLV2_F_S1",
+        "dut_net": "NetK37_KLV2_S1_4",
+        "required_on": [
+          35,
+          37
+        ],
+        "relays": [
+          "K87_KELVIN0_S1S2",
+          "K35_BUSH_KLV_S1",
+          "K36_PGND_WL_S1",
+          "K37_KLV2_S1"
+        ],
+        "states": [
+          "87:NC",
+          "35:ON",
+          "36:NC",
+          "37:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH1",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "KLV2_F_S1",
+        "dut_net": "NetK37_KLV2_S1_4",
+        "required_on": [
+          35,
+          37,
+          143,
+          144
+        ],
+        "relays": [
+          "K131_KELVIN1_S1S2",
+          "K144_DCM_BUS1_H_S1",
+          "K143_DCM_BUS0_H_S1",
+          "K35_BUSH_KLV_S1",
+          "K36_PGND_WL_S1",
+          "K37_KLV2_S1"
+        ],
+        "states": [
+          "131:NC",
+          "144:ON",
+          "143:ON",
+          "35:ON",
+          "36:NC",
+          "37:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FL0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "LOW",
+        "dut_pin": "KLV2_F_S1",
+        "dut_net": "NetK37_KLV2_S1_4",
+        "required_on": [
+          37,
+          73,
+          89,
+          90
+        ],
+        "relays": [
+          "K89_KELVIN0_S1S2",
+          "K90_PC0_Force_S1",
+          "K73_VCN_F_S1",
+          "K36_PGND_WL_S1",
+          "K37_KLV2_S1"
+        ],
+        "states": [
+          "89:ON",
+          "90:ON",
+          "73:ON",
+          "36:NC",
+          "37:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SH0",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "KLV2_S_S1",
+        "dut_net": "NetK37_KLV2_S1_5",
+        "required_on": [
+          35,
+          37
+        ],
+        "relays": [
+          "K88_KELVIN0_S1",
+          "K35_BUSH_KLV_S1",
+          "K36_PGND_WL_S1",
+          "K37_KLV2_S1"
+        ],
+        "states": [
+          "88:NC",
+          "35:ON",
+          "36:NC",
+          "37:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SH1",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "KLV2_S_S1",
+        "dut_net": "NetK37_KLV2_S1_5",
+        "required_on": [
+          35,
+          37,
+          136,
+          137
+        ],
+        "relays": [
+          "K132_KELVIN1_S1",
+          "K136_QVMH_BUS0_S1",
+          "K137_QVMH_BUS1_S1",
+          "K35_BUSH_KLV_S1",
+          "K36_PGND_WL_S1",
+          "K37_KLV2_S1"
+        ],
+        "states": [
+          "132:NC",
+          "136:ON",
+          "137:ON",
+          "35:ON",
+          "36:NC",
+          "37:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_FH3",
+        "source_type": "ACM200",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "KLV2_F_S1",
+        "dut_net": "NetK37_KLV2_S1_4",
+        "required_on": [
+          37
+        ],
+        "relays": [
+          "K36_PGND_WL_S1",
+          "K37_KLV2_S1"
+        ],
+        "states": [
+          "36:NC",
+          "37:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_SH3",
+        "source_type": "ACM200",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "KLV2_S_S1",
+        "dut_net": "NetK37_KLV2_S1_5",
+        "required_on": [
+          37
+        ],
+        "relays": [
+          "K36_PGND_WL_S1",
+          "K37_KLV2_S1"
+        ],
+        "states": [
+          "36:NC",
+          "37:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      }
+    ],
+    "PGND": [
+      {
+        "source_port": "S10_CH0_A",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "PGND_F_S1",
+        "dut_net": "NetK93_AGND2PGND_S1_4",
+        "required_on": [
+          141,
+          154,
+          155
+        ],
+        "relays": [
+          "K141_QTMU_BUSA_S1S2",
+          "K154_BUSH_AMUX_S1",
+          "K155_FOVI_PGND_S1"
+        ],
+        "states": [
+          "141:ON",
+          "154:ON",
+          "155:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S10_CH0_A",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "PGND_S_S1",
+        "dut_net": "NetK93_AGND2PGND_S1_5",
+        "required_on": [
+          86,
+          141,
+          154,
+          155
+        ],
+        "relays": [
+          "K141_QTMU_BUSA_S1S2",
+          "K87_KELVIN0_S1S2",
+          "K86_KELVIN0_F_S1",
+          "K88_KELVIN0_S1",
+          "K154_BUSH_AMUX_S1",
+          "K155_FOVI_PGND_S1"
+        ],
+        "states": [
+          "141:ON",
+          "87:NC",
+          "86:ON",
+          "88:NC",
+          "154:ON",
+          "155:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "PGND_F_S1",
+        "dut_net": "NetK93_AGND2PGND_S1_4",
+        "required_on": [
+          154,
+          155
+        ],
+        "relays": [
+          "K87_KELVIN0_S1S2",
+          "K154_BUSH_AMUX_S1",
+          "K155_FOVI_PGND_S1"
+        ],
+        "states": [
+          "87:NC",
+          "154:ON",
+          "155:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH1",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "PGND_F_S1",
+        "dut_net": "NetK93_AGND2PGND_S1_4",
+        "required_on": [
+          143,
+          144,
+          154,
+          155
+        ],
+        "relays": [
+          "K131_KELVIN1_S1S2",
+          "K144_DCM_BUS1_H_S1",
+          "K143_DCM_BUS0_H_S1",
+          "K154_BUSH_AMUX_S1",
+          "K155_FOVI_PGND_S1"
+        ],
+        "states": [
+          "131:NC",
+          "144:ON",
+          "143:ON",
+          "154:ON",
+          "155:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SH0",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "PGND_S_S1",
+        "dut_net": "NetK93_AGND2PGND_S1_5",
+        "required_on": [
+          154,
+          155
+        ],
+        "relays": [
+          "K88_KELVIN0_S1",
+          "K154_BUSH_AMUX_S1",
+          "K155_FOVI_PGND_S1"
+        ],
+        "states": [
+          "88:NC",
+          "154:ON",
+          "155:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SH1",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "PGND_S_S1",
+        "dut_net": "NetK93_AGND2PGND_S1_5",
+        "required_on": [
+          136,
+          137,
+          154,
+          155
+        ],
+        "relays": [
+          "K132_KELVIN1_S1",
+          "K136_QVMH_BUS0_S1",
+          "K137_QVMH_BUS1_S1",
+          "K154_BUSH_AMUX_S1",
+          "K155_FOVI_PGND_S1"
+        ],
+        "states": [
+          "132:NC",
+          "136:ON",
+          "137:ON",
+          "154:ON",
+          "155:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S3_FXVIe_PLUS_FH3",
+        "source_type": "FXVIe_PLUS",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "PGND_F_S1",
+        "dut_net": "NetK93_AGND2PGND_S1_4",
+        "required_on": [
+          155
+        ],
+        "relays": [
+          "K155_FOVI_PGND_S1"
+        ],
+        "states": [
+          "155:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S3_FXVIe_PLUS_SH3",
+        "source_type": "FXVIe_PLUS",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "PGND_S_S1",
+        "dut_net": "NetK93_AGND2PGND_S1_5",
+        "required_on": [
+          155
+        ],
+        "relays": [
+          "K155_FOVI_PGND_S1"
+        ],
+        "states": [
+          "155:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S8_QVM_CH0+",
+        "source_type": "QVM",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "PGND_F_S1",
+        "dut_net": "NetK93_AGND2PGND_S1_4",
+        "required_on": [
+          86,
+          137,
+          154,
+          155
+        ],
+        "relays": [
+          "K137_QVMH_BUS1_S1",
+          "K88_KELVIN0_S1",
+          "K86_KELVIN0_F_S1",
+          "K87_KELVIN0_S1S2",
+          "K154_BUSH_AMUX_S1",
+          "K155_FOVI_PGND_S1"
+        ],
+        "states": [
+          "137:ON",
+          "88:NC",
+          "86:ON",
+          "87:NC",
+          "154:ON",
+          "155:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      }
+    ],
+    "PMID": [
+      {
+        "source_port": "S10_CH0_A",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "PMID_F_S1",
+        "dut_net": "NetCap1_PMID_S1_1",
+        "required_on": [
+          83,
+          141
+        ],
+        "relays": [
+          "K141_QTMU_BUSA_S1S2",
+          "K83_BUSH_PMID_S1",
+          "K84_HG2_S1"
+        ],
+        "states": [
+          "141:ON",
+          "83:ON",
+          "84:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S10_CH0_A",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "PMID_S_S1",
+        "dut_net": "NetK84_HG2_S1_7",
+        "required_on": [
+          83,
+          86,
+          141
+        ],
+        "relays": [
+          "K141_QTMU_BUSA_S1S2",
+          "K87_KELVIN0_S1S2",
+          "K86_KELVIN0_F_S1",
+          "K88_KELVIN0_S1",
+          "K83_BUSH_PMID_S1",
+          "K84_HG2_S1"
+        ],
+        "states": [
+          "141:ON",
+          "87:NC",
+          "86:ON",
+          "88:NC",
+          "83:ON",
+          "84:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "PMID_F_S1",
+        "dut_net": "NetCap1_PMID_S1_1",
+        "required_on": [
+          83
+        ],
+        "relays": [
+          "K87_KELVIN0_S1S2",
+          "K83_BUSH_PMID_S1",
+          "K84_HG2_S1"
+        ],
+        "states": [
+          "87:NC",
+          "83:ON",
+          "84:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH1",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "PMID_F_S1",
+        "dut_net": "NetCap1_PMID_S1_1",
+        "required_on": [
+          83,
+          143,
+          144
+        ],
+        "relays": [
+          "K131_KELVIN1_S1S2",
+          "K144_DCM_BUS1_H_S1",
+          "K143_DCM_BUS0_H_S1",
+          "K83_BUSH_PMID_S1",
+          "K84_HG2_S1"
+        ],
+        "states": [
+          "131:NC",
+          "144:ON",
+          "143:ON",
+          "83:ON",
+          "84:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SH0",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "PMID_S_S1",
+        "dut_net": "NetK84_HG2_S1_7",
+        "required_on": [
+          83
+        ],
+        "relays": [
+          "K88_KELVIN0_S1",
+          "K83_BUSH_PMID_S1",
+          "K84_HG2_S1"
+        ],
+        "states": [
+          "88:NC",
+          "83:ON",
+          "84:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SH1",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "PMID_S_S1",
+        "dut_net": "NetK84_HG2_S1_7",
+        "required_on": [
+          83,
+          136,
+          137
+        ],
+        "relays": [
+          "K132_KELVIN1_S1",
+          "K136_QVMH_BUS0_S1",
+          "K137_QVMH_BUS1_S1",
+          "K83_BUSH_PMID_S1",
+          "K84_HG2_S1"
+        ],
+        "states": [
+          "132:NC",
+          "136:ON",
+          "137:ON",
+          "83:ON",
+          "84:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S3_FXVIe_PLUS_FH1",
+        "source_type": "FXVIe_PLUS",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "PMID_F_S1",
+        "dut_net": "NetCap1_PMID_S1_1",
+        "required_on": [],
+        "relays": [
+          "K84_HG2_S1"
+        ],
+        "states": [
+          "84:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S3_FXVIe_PLUS_SH1",
+        "source_type": "FXVIe_PLUS",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "PMID_S_S1",
+        "dut_net": "NetK84_HG2_S1_7",
+        "required_on": [],
+        "relays": [
+          "K84_HG2_S1"
+        ],
+        "states": [
+          "84:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S8_QVM_CH0+",
+        "source_type": "QVM",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "PMID_F_S1",
+        "dut_net": "NetCap1_PMID_S1_1",
+        "required_on": [
+          83,
+          86,
+          137
+        ],
+        "relays": [
+          "K137_QVMH_BUS1_S1",
+          "K88_KELVIN0_S1",
+          "K86_KELVIN0_F_S1",
+          "K87_KELVIN0_S1S2",
+          "K83_BUSH_PMID_S1",
+          "K84_HG2_S1"
+        ],
+        "states": [
+          "137:ON",
+          "88:NC",
+          "86:ON",
+          "87:NC",
+          "83:ON",
+          "84:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      }
+    ],
+    "SCL": [
+      {
+        "source_port": "S10_CH0_B",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "SCL_F_S1",
+        "dut_net": "NetK33_VAC_WL_S1_7",
+        "required_on": [
+          32,
+          142
+        ],
+        "relays": [
+          "K142_QTMU_BUSB_S1S2",
+          "K32_BUSL_SCL_S1",
+          "K33_VAC_WL_S1"
+        ],
+        "states": [
+          "142:ON",
+          "32:ON",
+          "33:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S10_CH0_B",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "SCL_S_S1",
+        "dut_net": "NetK33_VAC_WL_S1_2",
+        "required_on": [
+          32,
+          86,
+          142
+        ],
+        "relays": [
+          "K142_QTMU_BUSB_S1S2",
+          "K89_KELVIN0_S1S2",
+          "K86_KELVIN0_S_S1",
+          "K88_KELVIN0_S1",
+          "K32_BUSL_SCL_S1",
+          "K33_VAC_WL_S1"
+        ],
+        "states": [
+          "142:ON",
+          "89:NC",
+          "86:ON",
+          "88:NC",
+          "32:ON",
+          "33:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FL0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "LOW",
+        "dut_pin": "SCL_F_S1",
+        "dut_net": "NetK33_VAC_WL_S1_7",
+        "required_on": [
+          32
+        ],
+        "relays": [
+          "K89_KELVIN0_S1S2",
+          "K32_BUSL_SCL_S1",
+          "K33_VAC_WL_S1"
+        ],
+        "states": [
+          "89:NC",
+          "32:ON",
+          "33:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FL1",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "LOW",
+        "dut_pin": "SCL_F_S1",
+        "dut_net": "NetK33_VAC_WL_S1_7",
+        "required_on": [
+          32,
+          145,
+          146
+        ],
+        "relays": [
+          "K133_KELVIN1_S1S2",
+          "K146_DCM_BUS1_L_S1",
+          "K145_DCM_BUS0_L_S1",
+          "K32_BUSL_SCL_S1",
+          "K33_VAC_WL_S1"
+        ],
+        "states": [
+          "133:NC",
+          "146:ON",
+          "145:ON",
+          "32:ON",
+          "33:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SL0",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "SCL_S_S1",
+        "dut_net": "NetK33_VAC_WL_S1_2",
+        "required_on": [
+          32
+        ],
+        "relays": [
+          "K88_KELVIN0_S1",
+          "K32_BUSL_SCL_S1",
+          "K33_VAC_WL_S1"
+        ],
+        "states": [
+          "88:NC",
+          "32:ON",
+          "33:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SL1",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "SCL_S_S1",
+        "dut_net": "NetK33_VAC_WL_S1_2",
+        "required_on": [
+          32,
+          138,
+          139
+        ],
+        "relays": [
+          "K132_KELVIN1_S1",
+          "K139_QVML_BUS1_S1",
+          "K138_QVML_BUS0_S1",
+          "K32_BUSL_SCL_S1",
+          "K33_VAC_WL_S1"
+        ],
+        "states": [
+          "132:NC",
+          "139:ON",
+          "138:ON",
+          "32:ON",
+          "33:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S24_P1",
+        "source_type": "DCM",
+        "source_role": "F",
+        "source_domain": "",
+        "dut_pin": "SCL_F_S1",
+        "dut_net": "NetK33_VAC_WL_S1_7",
+        "required_on": [],
+        "relays": [],
+        "states": [],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_FH2",
+        "source_type": "ACM200",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "SCL_F_S1",
+        "dut_net": "NetK33_VAC_WL_S1_7",
+        "required_on": [],
+        "relays": [
+          "K33_VAC_WL_S1"
+        ],
+        "states": [
+          "33:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_SH2",
+        "source_type": "ACM200",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "SCL_S_S1",
+        "dut_net": "NetK33_VAC_WL_S1_2",
+        "required_on": [],
+        "relays": [
+          "K33_VAC_WL_S1"
+        ],
+        "states": [
+          "33:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S8_QVM_CH0-",
+        "source_type": "QVM",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "SCL_S_S1",
+        "dut_net": "NetK33_VAC_WL_S1_2",
+        "required_on": [
+          32,
+          138
+        ],
+        "relays": [
+          "K138_QVML_BUS0_S1",
+          "K32_BUSL_SCL_S1",
+          "K33_VAC_WL_S1"
+        ],
+        "states": [
+          "138:ON",
+          "32:ON",
+          "33:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      }
+    ],
+    "SDA": [
+      {
+        "source_port": "S10_CH0_A",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "SDA_F_S1",
+        "dut_net": "NetK59_SDA_S1_5",
+        "required_on": [
+          58,
+          59,
+          141
+        ],
+        "relays": [
+          "K141_QTMU_BUSA_S1S2",
+          "K58_BUSH_VDM_S1",
+          "K59_SDA_S1"
+        ],
+        "states": [
+          "141:ON",
+          "58:ON",
+          "59:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S10_CH0_A",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "SDA_S_S1",
+        "dut_net": "NetK59_SDA_S1_4",
+        "required_on": [
+          58,
+          59,
+          86,
+          141
+        ],
+        "relays": [
+          "K141_QTMU_BUSA_S1S2",
+          "K87_KELVIN0_S1S2",
+          "K86_KELVIN0_F_S1",
+          "K88_KELVIN0_S1",
+          "K58_BUSH_VDM_S1",
+          "K59_SDA_S1"
+        ],
+        "states": [
+          "141:ON",
+          "87:NC",
+          "86:ON",
+          "88:NC",
+          "58:ON",
+          "59:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "SDA_F_S1",
+        "dut_net": "NetK59_SDA_S1_5",
+        "required_on": [
+          58,
+          59
+        ],
+        "relays": [
+          "K87_KELVIN0_S1S2",
+          "K58_BUSH_VDM_S1",
+          "K59_SDA_S1"
+        ],
+        "states": [
+          "87:NC",
+          "58:ON",
+          "59:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH1",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "SDA_F_S1",
+        "dut_net": "NetK59_SDA_S1_5",
+        "required_on": [
+          58,
+          59,
+          143,
+          144
+        ],
+        "relays": [
+          "K131_KELVIN1_S1S2",
+          "K144_DCM_BUS1_H_S1",
+          "K143_DCM_BUS0_H_S1",
+          "K58_BUSH_VDM_S1",
+          "K59_SDA_S1"
+        ],
+        "states": [
+          "131:NC",
+          "144:ON",
+          "143:ON",
+          "58:ON",
+          "59:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SH0",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "SDA_S_S1",
+        "dut_net": "NetK59_SDA_S1_4",
+        "required_on": [
+          58,
+          59
+        ],
+        "relays": [
+          "K88_KELVIN0_S1",
+          "K58_BUSH_VDM_S1",
+          "K59_SDA_S1"
+        ],
+        "states": [
+          "88:NC",
+          "58:ON",
+          "59:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SH1",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "SDA_S_S1",
+        "dut_net": "NetK59_SDA_S1_4",
+        "required_on": [
+          58,
+          59,
+          136,
+          137
+        ],
+        "relays": [
+          "K132_KELVIN1_S1",
+          "K136_QVMH_BUS0_S1",
+          "K137_QVMH_BUS1_S1",
+          "K58_BUSH_VDM_S1",
+          "K59_SDA_S1"
+        ],
+        "states": [
+          "132:NC",
+          "136:ON",
+          "137:ON",
+          "58:ON",
+          "59:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S24_P2",
+        "source_type": "DCM",
+        "source_role": "F",
+        "source_domain": "",
+        "dut_pin": "SDA_F_S1",
+        "dut_net": "NetK59_SDA_S1_5",
+        "required_on": [],
+        "relays": [],
+        "states": [],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_FH7",
+        "source_type": "ACM200",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "SDA_F_S1",
+        "dut_net": "NetK59_SDA_S1_5",
+        "required_on": [
+          59
+        ],
+        "relays": [
+          "K59_SDA_S1"
+        ],
+        "states": [
+          "59:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_SH7",
+        "source_type": "ACM200",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "SDA_S_S1",
+        "dut_net": "NetK59_SDA_S1_4",
+        "required_on": [
+          59
+        ],
+        "relays": [
+          "K59_SDA_S1"
+        ],
+        "states": [
+          "59:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S8_QVM_CH0+",
+        "source_type": "QVM",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "SDA_F_S1",
+        "dut_net": "NetK59_SDA_S1_5",
+        "required_on": [
+          58,
+          59,
+          86,
+          137
+        ],
+        "relays": [
+          "K137_QVMH_BUS1_S1",
+          "K88_KELVIN0_S1",
+          "K86_KELVIN0_F_S1",
+          "K87_KELVIN0_S1S2",
+          "K58_BUSH_VDM_S1",
+          "K59_SDA_S1"
+        ],
+        "states": [
+          "137:ON",
+          "88:NC",
+          "86:ON",
+          "87:NC",
+          "58:ON",
+          "59:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      }
+    ],
+    "SW": [
+      {
+        "source_port": "S10_CH0_B",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "SW_F_S1",
+        "dut_net": "NetCap_SW_BST_S1_2",
+        "required_on": [
+          60,
+          61,
+          142
+        ],
+        "relays": [
+          "K142_QTMU_BUSB_S1S2",
+          "K60_BUSL_VCP_S1",
+          "K61_SW_S1"
+        ],
+        "states": [
+          "142:ON",
+          "60:ON",
+          "61:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S10_CH0_B",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "SW_S_S1",
+        "dut_net": "NetK61_SW_S1_4",
+        "required_on": [
+          130,
+          132,
+          135
+        ],
+        "relays": [
+          "K142_QTMU_BUSB_S1S2",
+          "K133_KELVIN1_S1S2",
+          "K130_KELVIN1_S_S1",
+          "K132_KELVIN1_S1",
+          "K135_PC1_Sense_S1"
+        ],
+        "states": [
+          "142:NC",
+          "133:NC",
+          "130:ON",
+          "132:ON",
+          "135:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FL0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "LOW",
+        "dut_pin": "SW_F_S1",
+        "dut_net": "NetCap_SW_BST_S1_2",
+        "required_on": [
+          60,
+          61
+        ],
+        "relays": [
+          "K89_KELVIN0_S1S2",
+          "K60_BUSL_VCP_S1",
+          "K61_SW_S1"
+        ],
+        "states": [
+          "89:NC",
+          "60:ON",
+          "61:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FL1",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "LOW",
+        "dut_pin": "SW_F_S1",
+        "dut_net": "NetCap_SW_BST_S1_2",
+        "required_on": [
+          133,
+          134
+        ],
+        "relays": [
+          "K133_KELVIN1_S1S2",
+          "K134_PC1_Force_S1"
+        ],
+        "states": [
+          "133:ON",
+          "134:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SL0",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "SW_S_S1",
+        "dut_net": "NetK61_SW_S1_4",
+        "required_on": [
+          60,
+          61
+        ],
+        "relays": [
+          "K88_KELVIN0_S1",
+          "K60_BUSL_VCP_S1",
+          "K61_SW_S1"
+        ],
+        "states": [
+          "88:NC",
+          "60:ON",
+          "61:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SL1",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "SW_S_S1",
+        "dut_net": "NetK61_SW_S1_4",
+        "required_on": [
+          132,
+          135
+        ],
+        "relays": [
+          "K132_KELVIN1_S1",
+          "K135_PC1_Sense_S1"
+        ],
+        "states": [
+          "132:ON",
+          "135:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_FH8",
+        "source_type": "ACM200",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "SW_F_S1",
+        "dut_net": "NetCap_SW_BST_S1_2",
+        "required_on": [
+          61
+        ],
+        "relays": [
+          "K61_SW_S1"
+        ],
+        "states": [
+          "61:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_SH8",
+        "source_type": "ACM200",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "SW_S_S1",
+        "dut_net": "NetK61_SW_S1_4",
+        "required_on": [
+          61
+        ],
+        "relays": [
+          "K61_SW_S1"
+        ],
+        "states": [
+          "61:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S8_QVM_CH0-",
+        "source_type": "QVM",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "SW_S_S1",
+        "dut_net": "NetK61_SW_S1_4",
+        "required_on": [
+          60,
+          61,
+          138
+        ],
+        "relays": [
+          "K138_QVML_BUS0_S1",
+          "K60_BUSL_VCP_S1",
+          "K61_SW_S1"
+        ],
+        "states": [
+          "138:ON",
+          "60:ON",
+          "61:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      }
+    ],
+    "V1P5": [
+      {
+        "source_port": "S3_FXVIe_PLUS_FH6",
+        "source_type": "FXVIe_PLUS",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "V1P5_F_S1",
+        "dut_net": "NetCap1_V1P5_S1_1",
+        "required_on": [],
+        "relays": [
+          "K125_U34_PS_S1"
+        ],
+        "states": [
+          "125:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S3_FXVIe_PLUS_SH6",
+        "source_type": "FXVIe_PLUS",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "V1P5_S_S1",
+        "dut_net": "NetK125_U34_PS_S1_7",
+        "required_on": [],
+        "relays": [
+          "K125_U34_PS_S1"
+        ],
+        "states": [
+          "125:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      }
+    ],
+    "VAC1": [
+      {
+        "source_port": "S10_CH0_B",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "VAC1_F_S1",
+        "dut_net": "NetCap1_VAC1_S1_1",
+        "required_on": [
+          17,
+          142
+        ],
+        "relays": [
+          "K142_QTMU_BUSB_S1S2",
+          "K17_BUSL_VAC_S1",
+          "K18_VAC3_S1",
+          "K19_VAC2_S1"
+        ],
+        "states": [
+          "142:ON",
+          "17:ON",
+          "18:NC",
+          "19:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "VAC1_F_S1",
+        "dut_net": "NetCap1_VAC1_S1_1",
+        "required_on": [
+          70,
+          87,
+          90
+        ],
+        "relays": [
+          "K87_KELVIN0_S1S2",
+          "K90_PC0_Force_S1",
+          "K82_R_CS_S1S2",
+          "K70_VAC_F_S1",
+          "K18_VAC3_S1",
+          "K19_VAC2_S1"
+        ],
+        "states": [
+          "87:ON",
+          "90:ON",
+          "82:NC",
+          "70:ON",
+          "18:NC",
+          "19:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FL0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "LOW",
+        "dut_pin": "VAC1_F_S1",
+        "dut_net": "NetCap1_VAC1_S1_1",
+        "required_on": [
+          17
+        ],
+        "relays": [
+          "K89_KELVIN0_S1S2",
+          "K17_BUSL_VAC_S1",
+          "K18_VAC3_S1",
+          "K19_VAC2_S1"
+        ],
+        "states": [
+          "89:NC",
+          "17:ON",
+          "18:NC",
+          "19:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FL1",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "LOW",
+        "dut_pin": "VAC1_F_S1",
+        "dut_net": "NetCap1_VAC1_S1_1",
+        "required_on": [
+          17,
+          145,
+          146
+        ],
+        "relays": [
+          "K133_KELVIN1_S1S2",
+          "K146_DCM_BUS1_L_S1",
+          "K145_DCM_BUS0_L_S1",
+          "K17_BUSL_VAC_S1",
+          "K18_VAC3_S1",
+          "K19_VAC2_S1"
+        ],
+        "states": [
+          "133:NC",
+          "146:ON",
+          "145:ON",
+          "17:ON",
+          "18:NC",
+          "19:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SL0",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "VAC1_S_S1",
+        "dut_net": "NetK19_VAC2_S1_7",
+        "required_on": [
+          17
+        ],
+        "relays": [
+          "K88_KELVIN0_S1",
+          "K17_BUSL_VAC_S1",
+          "K18_VAC3_S1",
+          "K19_VAC2_S1"
+        ],
+        "states": [
+          "88:NC",
+          "17:ON",
+          "18:NC",
+          "19:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SL1",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "VAC1_S_S1",
+        "dut_net": "NetK19_VAC2_S1_7",
+        "required_on": [
+          17,
+          138,
+          139
+        ],
+        "relays": [
+          "K132_KELVIN1_S1",
+          "K139_QVML_BUS1_S1",
+          "K138_QVML_BUS0_S1",
+          "K17_BUSL_VAC_S1",
+          "K18_VAC3_S1",
+          "K19_VAC2_S1"
+        ],
+        "states": [
+          "132:NC",
+          "139:ON",
+          "138:ON",
+          "17:ON",
+          "18:NC",
+          "19:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_FH0",
+        "source_type": "ACM200",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "VAC1_F_S1",
+        "dut_net": "NetCap1_VAC1_S1_1",
+        "required_on": [],
+        "relays": [
+          "K18_VAC3_S1",
+          "K19_VAC2_S1"
+        ],
+        "states": [
+          "18:NC",
+          "19:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_SH0",
+        "source_type": "ACM200",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "VAC1_S_S1",
+        "dut_net": "NetK19_VAC2_S1_7",
+        "required_on": [],
+        "relays": [
+          "K18_VAC3_S1",
+          "K19_VAC2_S1"
+        ],
+        "states": [
+          "18:NC",
+          "19:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S8_QVM_CH0-",
+        "source_type": "QVM",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "VAC1_S_S1",
+        "dut_net": "NetK19_VAC2_S1_7",
+        "required_on": [
+          17,
+          138
+        ],
+        "relays": [
+          "K138_QVML_BUS0_S1",
+          "K17_BUSL_VAC_S1",
+          "K18_VAC3_S1",
+          "K19_VAC2_S1"
+        ],
+        "states": [
+          "138:ON",
+          "17:ON",
+          "18:NC",
+          "19:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      }
+    ],
+    "VAC2": [
+      {
+        "source_port": "S10_CH0_B",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "VAC2_F_S1",
+        "dut_net": "NetCap1_VAC2_S1_1",
+        "required_on": [
+          17,
+          19,
+          142
+        ],
+        "relays": [
+          "K142_QTMU_BUSB_S1S2",
+          "K17_BUSL_VAC_S1",
+          "K18_VAC3_S1",
+          "K19_VAC2_S1"
+        ],
+        "states": [
+          "142:ON",
+          "17:ON",
+          "18:NC",
+          "19:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "VAC2_F_S1",
+        "dut_net": "NetCap1_VAC2_S1_1",
+        "required_on": [
+          19,
+          70,
+          87,
+          90
+        ],
+        "relays": [
+          "K87_KELVIN0_S1S2",
+          "K90_PC0_Force_S1",
+          "K82_R_CS_S1S2",
+          "K70_VAC_F_S1",
+          "K18_VAC3_S1",
+          "K19_VAC2_S1"
+        ],
+        "states": [
+          "87:ON",
+          "90:ON",
+          "82:NC",
+          "70:ON",
+          "18:NC",
+          "19:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FL0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "LOW",
+        "dut_pin": "VAC2_F_S1",
+        "dut_net": "NetCap1_VAC2_S1_1",
+        "required_on": [
+          17,
+          19
+        ],
+        "relays": [
+          "K89_KELVIN0_S1S2",
+          "K17_BUSL_VAC_S1",
+          "K18_VAC3_S1",
+          "K19_VAC2_S1"
+        ],
+        "states": [
+          "89:NC",
+          "17:ON",
+          "18:NC",
+          "19:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FL1",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "LOW",
+        "dut_pin": "VAC2_F_S1",
+        "dut_net": "NetCap1_VAC2_S1_1",
+        "required_on": [
+          17,
+          19,
+          145,
+          146
+        ],
+        "relays": [
+          "K133_KELVIN1_S1S2",
+          "K146_DCM_BUS1_L_S1",
+          "K145_DCM_BUS0_L_S1",
+          "K17_BUSL_VAC_S1",
+          "K18_VAC3_S1",
+          "K19_VAC2_S1"
+        ],
+        "states": [
+          "133:NC",
+          "146:ON",
+          "145:ON",
+          "17:ON",
+          "18:NC",
+          "19:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SL0",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "VAC2_S_S1",
+        "dut_net": "NetK19_VAC2_S1_5",
+        "required_on": [
+          17,
+          19
+        ],
+        "relays": [
+          "K88_KELVIN0_S1",
+          "K17_BUSL_VAC_S1",
+          "K18_VAC3_S1",
+          "K19_VAC2_S1"
+        ],
+        "states": [
+          "88:NC",
+          "17:ON",
+          "18:NC",
+          "19:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SL1",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "VAC2_S_S1",
+        "dut_net": "NetK19_VAC2_S1_5",
+        "required_on": [
+          17,
+          19,
+          138,
+          139
+        ],
+        "relays": [
+          "K132_KELVIN1_S1",
+          "K139_QVML_BUS1_S1",
+          "K138_QVML_BUS0_S1",
+          "K17_BUSL_VAC_S1",
+          "K18_VAC3_S1",
+          "K19_VAC2_S1"
+        ],
+        "states": [
+          "132:NC",
+          "139:ON",
+          "138:ON",
+          "17:ON",
+          "18:NC",
+          "19:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_FH0",
+        "source_type": "ACM200",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "VAC2_F_S1",
+        "dut_net": "NetCap1_VAC2_S1_1",
+        "required_on": [
+          19
+        ],
+        "relays": [
+          "K18_VAC3_S1",
+          "K19_VAC2_S1"
+        ],
+        "states": [
+          "18:NC",
+          "19:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_SH0",
+        "source_type": "ACM200",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "VAC2_S_S1",
+        "dut_net": "NetK19_VAC2_S1_5",
+        "required_on": [
+          19
+        ],
+        "relays": [
+          "K18_VAC3_S1",
+          "K19_VAC2_S1"
+        ],
+        "states": [
+          "18:NC",
+          "19:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S8_QVM_CH0-",
+        "source_type": "QVM",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "VAC2_S_S1",
+        "dut_net": "NetK19_VAC2_S1_5",
+        "required_on": [
+          17,
+          19,
+          138
+        ],
+        "relays": [
+          "K138_QVML_BUS0_S1",
+          "K17_BUSL_VAC_S1",
+          "K18_VAC3_S1",
+          "K19_VAC2_S1"
+        ],
+        "states": [
+          "138:ON",
+          "17:ON",
+          "18:NC",
+          "19:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      }
+    ],
+    "VBAT": [
+      {
+        "source_port": "S10_CH0_A",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "VBAT_F_S1",
+        "dut_net": "NetCap1_VBAT_S1_1",
+        "required_on": [
+          7
+        ],
+        "relays": [
+          "K141_QTMU_BUSA_S1S2",
+          "K7_BUSH_VBAT_S1",
+          "K8_PD3_S1"
+        ],
+        "states": [
+          "141:NC",
+          "7:ON",
+          "8:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S10_CH0_A",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "VBAT_S_S1",
+        "dut_net": "NetK8_PD3_S1_2",
+        "required_on": [
+          7,
+          130
+        ],
+        "relays": [
+          "K141_QTMU_BUSA_S1S2",
+          "K131_KELVIN1_S1S2",
+          "K130_KELVIN1_F_S1",
+          "K132_KELVIN1_S1",
+          "K7_BUSH_VBAT_S1",
+          "K8_PD3_S1"
+        ],
+        "states": [
+          "141:NC",
+          "131:NC",
+          "130:ON",
+          "132:NC",
+          "7:ON",
+          "8:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "VBAT_F_S1",
+        "dut_net": "NetCap1_VBAT_S1_1",
+        "required_on": [
+          7,
+          143,
+          144
+        ],
+        "relays": [
+          "K87_KELVIN0_S1S2",
+          "K143_DCM_BUS0_H_S1",
+          "K144_DCM_BUS1_H_S1",
+          "K7_BUSH_VBAT_S1",
+          "K8_PD3_S1"
+        ],
+        "states": [
+          "87:NC",
+          "143:ON",
+          "144:ON",
+          "7:ON",
+          "8:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH1",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "VBAT_F_S1",
+        "dut_net": "NetCap1_VBAT_S1_1",
+        "required_on": [
+          7
+        ],
+        "relays": [
+          "K131_KELVIN1_S1S2",
+          "K7_BUSH_VBAT_S1",
+          "K8_PD3_S1"
+        ],
+        "states": [
+          "131:NC",
+          "7:ON",
+          "8:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SH0",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "VBAT_S_S1",
+        "dut_net": "NetK8_PD3_S1_2",
+        "required_on": [
+          7,
+          136,
+          137
+        ],
+        "relays": [
+          "K88_KELVIN0_S1",
+          "K137_QVMH_BUS1_S1",
+          "K136_QVMH_BUS0_S1",
+          "K7_BUSH_VBAT_S1",
+          "K8_PD3_S1"
+        ],
+        "states": [
+          "88:NC",
+          "137:ON",
+          "136:ON",
+          "7:ON",
+          "8:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SH1",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "VBAT_S_S1",
+        "dut_net": "NetK8_PD3_S1_2",
+        "required_on": [
+          7
+        ],
+        "relays": [
+          "K132_KELVIN1_S1",
+          "K7_BUSH_VBAT_S1",
+          "K8_PD3_S1"
+        ],
+        "states": [
+          "132:NC",
+          "7:ON",
+          "8:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S3_FXVIe_PLUS_FH5",
+        "source_type": "FXVIe_PLUS",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "VBAT_F_S1",
+        "dut_net": "NetCap1_VBAT_S1_1",
+        "required_on": [],
+        "relays": [
+          "K8_PD3_S1"
+        ],
+        "states": [
+          "8:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S3_FXVIe_PLUS_SH5",
+        "source_type": "FXVIe_PLUS",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "VBAT_S_S1",
+        "dut_net": "NetK8_PD3_S1_2",
+        "required_on": [],
+        "relays": [
+          "K8_PD3_S1"
+        ],
+        "states": [
+          "8:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S8_QVM_CH0+",
+        "source_type": "QVM",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "VBAT_F_S1",
+        "dut_net": "NetCap1_VBAT_S1_1",
+        "required_on": [
+          7,
+          130,
+          136
+        ],
+        "relays": [
+          "K136_QVMH_BUS0_S1",
+          "K132_KELVIN1_S1",
+          "K130_KELVIN1_F_S1",
+          "K131_KELVIN1_S1S2",
+          "K7_BUSH_VBAT_S1",
+          "K8_PD3_S1"
+        ],
+        "states": [
+          "136:ON",
+          "132:NC",
+          "130:ON",
+          "131:NC",
+          "7:ON",
+          "8:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      }
+    ],
+    "VBUS": [
+      {
+        "source_port": "S10_CH0_B",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "VBUS_F_S1",
+        "dut_net": "NetCap1_VBUS_S1_1",
+        "required_on": [
+          3,
+          142
+        ],
+        "relays": [
+          "K142_QTMU_BUSB_S1S2",
+          "K3_BUSL_VBUS_S1",
+          "K4_DRVH1_S1"
+        ],
+        "states": [
+          "142:ON",
+          "3:ON",
+          "4:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S10_CH0_B",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "VBUS_S_S1",
+        "dut_net": "NetK4_DRVH1_S1_2",
+        "required_on": [
+          3,
+          86,
+          142
+        ],
+        "relays": [
+          "K142_QTMU_BUSB_S1S2",
+          "K89_KELVIN0_S1S2",
+          "K86_KELVIN0_S_S1",
+          "K88_KELVIN0_S1",
+          "K3_BUSL_VBUS_S1",
+          "K4_DRVH1_S1"
+        ],
+        "states": [
+          "142:ON",
+          "89:NC",
+          "86:ON",
+          "88:NC",
+          "3:ON",
+          "4:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FL0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "LOW",
+        "dut_pin": "VBUS_F_S1",
+        "dut_net": "NetCap1_VBUS_S1_1",
+        "required_on": [
+          3
+        ],
+        "relays": [
+          "K89_KELVIN0_S1S2",
+          "K3_BUSL_VBUS_S1",
+          "K4_DRVH1_S1"
+        ],
+        "states": [
+          "89:NC",
+          "3:ON",
+          "4:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FL1",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "LOW",
+        "dut_pin": "VBUS_F_S1",
+        "dut_net": "NetCap1_VBUS_S1_1",
+        "required_on": [
+          3,
+          145,
+          146
+        ],
+        "relays": [
+          "K133_KELVIN1_S1S2",
+          "K146_DCM_BUS1_L_S1",
+          "K145_DCM_BUS0_L_S1",
+          "K3_BUSL_VBUS_S1",
+          "K4_DRVH1_S1"
+        ],
+        "states": [
+          "133:NC",
+          "146:ON",
+          "145:ON",
+          "3:ON",
+          "4:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SL0",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "VBUS_S_S1",
+        "dut_net": "NetK4_DRVH1_S1_2",
+        "required_on": [
+          3
+        ],
+        "relays": [
+          "K88_KELVIN0_S1",
+          "K3_BUSL_VBUS_S1",
+          "K4_DRVH1_S1"
+        ],
+        "states": [
+          "88:NC",
+          "3:ON",
+          "4:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SL1",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "VBUS_S_S1",
+        "dut_net": "NetK4_DRVH1_S1_2",
+        "required_on": [
+          3,
+          138,
+          139
+        ],
+        "relays": [
+          "K132_KELVIN1_S1",
+          "K139_QVML_BUS1_S1",
+          "K138_QVML_BUS0_S1",
+          "K3_BUSL_VBUS_S1",
+          "K4_DRVH1_S1"
+        ],
+        "states": [
+          "132:NC",
+          "139:ON",
+          "138:ON",
+          "3:ON",
+          "4:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_FH10",
+        "source_type": "ACM200",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "VBUS_F_S1",
+        "dut_net": "NetCap1_VBUS_S1_1",
+        "required_on": [],
+        "relays": [
+          "K4_DRVH1_S1"
+        ],
+        "states": [
+          "4:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_SH10",
+        "source_type": "ACM200",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "VBUS_S_S1",
+        "dut_net": "NetK4_DRVH1_S1_2",
+        "required_on": [],
+        "relays": [
+          "K4_DRVH1_S1"
+        ],
+        "states": [
+          "4:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S8_QVM_CH0-",
+        "source_type": "QVM",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "VBUS_S_S1",
+        "dut_net": "NetK4_DRVH1_S1_2",
+        "required_on": [
+          3,
+          138
+        ],
+        "relays": [
+          "K138_QVML_BUS0_S1",
+          "K3_BUSL_VBUS_S1",
+          "K4_DRVH1_S1"
+        ],
+        "states": [
+          "138:ON",
+          "3:ON",
+          "4:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      }
+    ],
+    "VCC": [
+      {
+        "source_port": "S10_CH0_A",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "VCC_F_S1",
+        "dut_net": "NetCap1_VCC_S1_1",
+        "required_on": [
+          25,
+          30,
+          141
+        ],
+        "relays": [
+          "K141_QTMU_BUSA_S1S2",
+          "K30_BUSH_ACDRV_S1",
+          "K25_VCC_F_S1"
+        ],
+        "states": [
+          "141:ON",
+          "30:ON",
+          "25:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S10_CH0_A",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "VCC_S_S1",
+        "dut_net": "NetK25_VCC_S_S1_2",
+        "required_on": [
+          25,
+          30,
+          86,
+          141
+        ],
+        "relays": [
+          "K141_QTMU_BUSA_S1S2",
+          "K87_KELVIN0_S1S2",
+          "K86_KELVIN0_F_S1",
+          "K88_KELVIN0_S1",
+          "K30_BUSH_ACDRV_S1",
+          "K25_VCC_S_S1"
+        ],
+        "states": [
+          "141:ON",
+          "87:NC",
+          "86:ON",
+          "88:NC",
+          "30:ON",
+          "25:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S10_CH0_B",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "VCC_F_S1",
+        "dut_net": "NetCap1_VCC_S1_1",
+        "required_on": [
+          29,
+          142
+        ],
+        "relays": [
+          "K142_QTMU_BUSB_S1S2",
+          "K29_BUSL_VCC_S1",
+          "K31_VMCU_S1"
+        ],
+        "states": [
+          "142:ON",
+          "29:ON",
+          "31:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S10_CH0_B",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "VCC_S_S1",
+        "dut_net": "NetK25_VCC_S_S1_2",
+        "required_on": [
+          29,
+          86,
+          142
+        ],
+        "relays": [
+          "K142_QTMU_BUSB_S1S2",
+          "K89_KELVIN0_S1S2",
+          "K86_KELVIN0_S_S1",
+          "K88_KELVIN0_S1",
+          "K29_BUSL_VCC_S1",
+          "K31_VMCU_S1"
+        ],
+        "states": [
+          "142:ON",
+          "89:NC",
+          "86:ON",
+          "88:NC",
+          "29:ON",
+          "31:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "VCC_F_S1",
+        "dut_net": "NetCap1_VCC_S1_1",
+        "required_on": [
+          25,
+          30
+        ],
+        "relays": [
+          "K87_KELVIN0_S1S2",
+          "K30_BUSH_ACDRV_S1",
+          "K25_VCC_F_S1"
+        ],
+        "states": [
+          "87:NC",
+          "30:ON",
+          "25:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH1",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "VCC_F_S1",
+        "dut_net": "NetCap1_VCC_S1_1",
+        "required_on": [
+          25,
+          30,
+          143,
+          144
+        ],
+        "relays": [
+          "K131_KELVIN1_S1S2",
+          "K144_DCM_BUS1_H_S1",
+          "K143_DCM_BUS0_H_S1",
+          "K30_BUSH_ACDRV_S1",
+          "K25_VCC_F_S1"
+        ],
+        "states": [
+          "131:NC",
+          "144:ON",
+          "143:ON",
+          "30:ON",
+          "25:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FL0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "LOW",
+        "dut_pin": "VCC_F_S1",
+        "dut_net": "NetCap1_VCC_S1_1",
+        "required_on": [
+          29
+        ],
+        "relays": [
+          "K89_KELVIN0_S1S2",
+          "K29_BUSL_VCC_S1",
+          "K31_VMCU_S1"
+        ],
+        "states": [
+          "89:NC",
+          "29:ON",
+          "31:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FL1",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "LOW",
+        "dut_pin": "VCC_F_S1",
+        "dut_net": "NetCap1_VCC_S1_1",
+        "required_on": [
+          29,
+          145,
+          146
+        ],
+        "relays": [
+          "K133_KELVIN1_S1S2",
+          "K146_DCM_BUS1_L_S1",
+          "K145_DCM_BUS0_L_S1",
+          "K29_BUSL_VCC_S1",
+          "K31_VMCU_S1"
+        ],
+        "states": [
+          "133:NC",
+          "146:ON",
+          "145:ON",
+          "29:ON",
+          "31:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SH0",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "VCC_S_S1",
+        "dut_net": "NetK25_VCC_S_S1_2",
+        "required_on": [
+          25,
+          30
+        ],
+        "relays": [
+          "K88_KELVIN0_S1",
+          "K30_BUSH_ACDRV_S1",
+          "K25_VCC_S_S1"
+        ],
+        "states": [
+          "88:NC",
+          "30:ON",
+          "25:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SH1",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "VCC_S_S1",
+        "dut_net": "NetK25_VCC_S_S1_2",
+        "required_on": [
+          25,
+          30,
+          136,
+          137
+        ],
+        "relays": [
+          "K132_KELVIN1_S1",
+          "K136_QVMH_BUS0_S1",
+          "K137_QVMH_BUS1_S1",
+          "K30_BUSH_ACDRV_S1",
+          "K25_VCC_S_S1"
+        ],
+        "states": [
+          "132:NC",
+          "136:ON",
+          "137:ON",
+          "30:ON",
+          "25:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SL0",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "VCC_S_S1",
+        "dut_net": "NetK25_VCC_S_S1_2",
+        "required_on": [
+          29
+        ],
+        "relays": [
+          "K88_KELVIN0_S1",
+          "K29_BUSL_VCC_S1",
+          "K31_VMCU_S1"
+        ],
+        "states": [
+          "88:NC",
+          "29:ON",
+          "31:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SL1",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "VCC_S_S1",
+        "dut_net": "NetK25_VCC_S_S1_2",
+        "required_on": [
+          29,
+          138,
+          139
+        ],
+        "relays": [
+          "K132_KELVIN1_S1",
+          "K139_QVML_BUS1_S1",
+          "K138_QVML_BUS0_S1",
+          "K29_BUSL_VCC_S1",
+          "K31_VMCU_S1"
+        ],
+        "states": [
+          "132:NC",
+          "139:ON",
+          "138:ON",
+          "29:ON",
+          "31:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S3_FXVIe_PLUS_FH2",
+        "source_type": "FXVIe_PLUS",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "VCC_F_S1",
+        "dut_net": "NetCap1_VCC_S1_1",
+        "required_on": [],
+        "relays": [
+          "K31_VMCU_S1"
+        ],
+        "states": [
+          "31:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S3_FXVIe_PLUS_SH2",
+        "source_type": "FXVIe_PLUS",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "VCC_S_S1",
+        "dut_net": "NetK25_VCC_S_S1_2",
+        "required_on": [],
+        "relays": [
+          "K31_VMCU_S1"
+        ],
+        "states": [
+          "31:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_FH1",
+        "source_type": "ACM200",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "VCC_F_S1",
+        "dut_net": "NetCap1_VCC_S1_1",
+        "required_on": [
+          25
+        ],
+        "relays": [
+          "K25_VCC_F_S1"
+        ],
+        "states": [
+          "25:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_SH1",
+        "source_type": "ACM200",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "VCC_S_S1",
+        "dut_net": "NetK25_VCC_S_S1_2",
+        "required_on": [
+          25
+        ],
+        "relays": [
+          "K25_VCC_S_S1"
+        ],
+        "states": [
+          "25:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S8_QVM_CH0+",
+        "source_type": "QVM",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "VCC_F_S1",
+        "dut_net": "NetCap1_VCC_S1_1",
+        "required_on": [
+          25,
+          30,
+          86,
+          137
+        ],
+        "relays": [
+          "K137_QVMH_BUS1_S1",
+          "K88_KELVIN0_S1",
+          "K86_KELVIN0_F_S1",
+          "K87_KELVIN0_S1S2",
+          "K30_BUSH_ACDRV_S1",
+          "K25_VCC_F_S1"
+        ],
+        "states": [
+          "137:ON",
+          "88:NC",
+          "86:ON",
+          "87:NC",
+          "30:ON",
+          "25:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S8_QVM_CH0-",
+        "source_type": "QVM",
+        "source_role": "S",
+        "source_domain": "LOW",
+        "dut_pin": "VCC_S_S1",
+        "dut_net": "NetK25_VCC_S_S1_2",
+        "required_on": [
+          29,
+          138
+        ],
+        "relays": [
+          "K138_QVML_BUS0_S1",
+          "K29_BUSL_VCC_S1",
+          "K31_VMCU_S1"
+        ],
+        "states": [
+          "138:ON",
+          "29:ON",
+          "31:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      }
+    ],
+    "VDM": [
+      {
+        "source_port": "S10_CH0_A",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "VDM_F_S1",
+        "dut_net": "NetK59_SDA_S1_7",
+        "required_on": [
+          58,
+          141
+        ],
+        "relays": [
+          "K141_QTMU_BUSA_S1S2",
+          "K58_BUSH_VDM_S1",
+          "K59_SDA_S1"
+        ],
+        "states": [
+          "141:ON",
+          "58:ON",
+          "59:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S10_CH0_A",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "VDM_S_S1",
+        "dut_net": "NetK59_SDA_S1_2",
+        "required_on": [
+          58,
+          86,
+          141
+        ],
+        "relays": [
+          "K141_QTMU_BUSA_S1S2",
+          "K87_KELVIN0_S1S2",
+          "K86_KELVIN0_F_S1",
+          "K88_KELVIN0_S1",
+          "K58_BUSH_VDM_S1",
+          "K59_SDA_S1"
+        ],
+        "states": [
+          "141:ON",
+          "87:NC",
+          "86:ON",
+          "88:NC",
+          "58:ON",
+          "59:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S10_CH0_B",
+        "source_type": "QTMU",
+        "source_role": "",
+        "source_domain": "",
+        "dut_pin": "VDM_F_S1",
+        "dut_net": "NetK59_SDA_S1_7",
+        "required_on": [
+          152
+        ],
+        "relays": [
+          "K152_VDM_TMU_S1"
+        ],
+        "states": [
+          "152:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "VDM_F_S1",
+        "dut_net": "NetK59_SDA_S1_7",
+        "required_on": [
+          58
+        ],
+        "relays": [
+          "K87_KELVIN0_S1S2",
+          "K58_BUSH_VDM_S1",
+          "K59_SDA_S1"
+        ],
+        "states": [
+          "87:NC",
+          "58:ON",
+          "59:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FH1",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "VDM_F_S1",
+        "dut_net": "NetK59_SDA_S1_7",
+        "required_on": [
+          58,
+          143,
+          144
+        ],
+        "relays": [
+          "K131_KELVIN1_S1S2",
+          "K144_DCM_BUS1_H_S1",
+          "K143_DCM_BUS0_H_S1",
+          "K58_BUSH_VDM_S1",
+          "K59_SDA_S1"
+        ],
+        "states": [
+          "131:NC",
+          "144:ON",
+          "143:ON",
+          "58:ON",
+          "59:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FL0",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "LOW",
+        "dut_pin": "VDM_F_S1",
+        "dut_net": "NetK59_SDA_S1_7",
+        "required_on": [
+          142,
+          152
+        ],
+        "relays": [
+          "K89_KELVIN0_S1S2",
+          "K142_QTMU_BUSB_S1S2",
+          "K152_VDM_TMU_S1"
+        ],
+        "states": [
+          "89:NC",
+          "142:ON",
+          "152:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_FL1",
+        "source_type": "FPVIe",
+        "source_role": "F",
+        "source_domain": "LOW",
+        "dut_pin": "VDM_F_S1",
+        "dut_net": "NetK59_SDA_S1_7",
+        "required_on": [
+          152
+        ],
+        "relays": [
+          "K133_KELVIN1_S1S2",
+          "K142_QTMU_BUSB_S1S2",
+          "K152_VDM_TMU_S1"
+        ],
+        "states": [
+          "133:NC",
+          "142:NC",
+          "152:ON"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SH0",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "VDM_S_S1",
+        "dut_net": "NetK59_SDA_S1_2",
+        "required_on": [
+          58
+        ],
+        "relays": [
+          "K88_KELVIN0_S1",
+          "K58_BUSH_VDM_S1",
+          "K59_SDA_S1"
+        ],
+        "states": [
+          "88:NC",
+          "58:ON",
+          "59:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S1_FPVIe_SH1",
+        "source_type": "FPVIe",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "VDM_S_S1",
+        "dut_net": "NetK59_SDA_S1_2",
+        "required_on": [
+          58,
+          136,
+          137
+        ],
+        "relays": [
+          "K132_KELVIN1_S1",
+          "K136_QVMH_BUS0_S1",
+          "K137_QVMH_BUS1_S1",
+          "K58_BUSH_VDM_S1",
+          "K59_SDA_S1"
+        ],
+        "states": [
+          "132:NC",
+          "136:ON",
+          "137:ON",
+          "58:ON",
+          "59:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_FH7",
+        "source_type": "ACM200",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "VDM_F_S1",
+        "dut_net": "NetK59_SDA_S1_7",
+        "required_on": [],
+        "relays": [
+          "K59_SDA_S1"
+        ],
+        "states": [
+          "59:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S5_ACM200_SH7",
+        "source_type": "ACM200",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "VDM_S_S1",
+        "dut_net": "NetK59_SDA_S1_2",
+        "required_on": [],
+        "relays": [
+          "K59_SDA_S1"
+        ],
+        "states": [
+          "59:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S8_QVM_CH0+",
+        "source_type": "QVM",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "VDM_F_S1",
+        "dut_net": "NetK59_SDA_S1_7",
+        "required_on": [
+          58,
+          86,
+          137
+        ],
+        "relays": [
+          "K137_QVMH_BUS1_S1",
+          "K88_KELVIN0_S1",
+          "K86_KELVIN0_F_S1",
+          "K87_KELVIN0_S1S2",
+          "K58_BUSH_VDM_S1",
+          "K59_SDA_S1"
+        ],
+        "states": [
+          "137:ON",
+          "88:NC",
+          "86:ON",
+          "87:NC",
+          "58:ON",
+          "59:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      }
+    ],
+    "VDRV": [
+      {
+        "source_port": "S3_FXVIe_PLUS_FH6",
+        "source_type": "FXVIe_PLUS",
+        "source_role": "F",
+        "source_domain": "HIGH",
+        "dut_pin": "VDRV_F_S1",
+        "dut_net": "NetCap1_V1P5_S1_1",
+        "required_on": [],
+        "relays": [
+          "K125_U34_PS_S1"
+        ],
+        "states": [
+          "125:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      },
+      {
+        "source_port": "S3_FXVIe_PLUS_SH6",
+        "source_type": "FXVIe_PLUS",
+        "source_role": "S",
+        "source_domain": "HIGH",
+        "dut_pin": "VDRV_S_S1",
+        "dut_net": "NetK125_U34_PS_S1_7",
+        "required_on": [],
+        "relays": [
+          "K125_U34_PS_S1"
+        ],
+        "states": [
+          "125:NC"
+        ],
+        "terminal_stop": true,
+        "validation": {
+          "terminal_stop": true,
+          "role_match": true,
+          "cbit_complete": true,
+          "missing_cbit": []
+        }
+      }
+    ]
+  },
+  "kelvinPairs": [
+    {
+      "source_pair": "S1_FPVIe:0:HIGH",
+      "dut_base": "AMUX",
+      "force_proof": {
+        "source": "S1_FPVIe_FH0",
+        "dut": "AMUX_F_S1",
+        "required_on": [
+          154
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SH0",
+        "dut": "AMUX_S_S1",
+        "required_on": [
+          154
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:0:HIGH",
+      "dut_base": "BST",
+      "force_proof": {
+        "source": "S1_FPVIe_FH0",
+        "dut": "BST_F_S1",
+        "required_on": [
+          46,
+          48,
+          76
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SH0",
+        "dut": "BST_S_S1",
+        "required_on": [
+          46,
+          48,
+          76
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:0:HIGH",
+      "dut_base": "KLV1",
+      "force_proof": {
+        "source": "S1_FPVIe_FH0",
+        "dut": "KLV1_F_S1",
+        "required_on": [
+          35
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SH0",
+        "dut": "KLV1_S_S1",
+        "required_on": [
+          35
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:0:HIGH",
+      "dut_base": "KLV2",
+      "force_proof": {
+        "source": "S1_FPVIe_FH0",
+        "dut": "KLV2_F_S1",
+        "required_on": [
+          35,
+          37
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SH0",
+        "dut": "KLV2_S_S1",
+        "required_on": [
+          35,
+          37
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:0:HIGH",
+      "dut_base": "PGND",
+      "force_proof": {
+        "source": "S1_FPVIe_FH0",
+        "dut": "PGND_F_S1",
+        "required_on": [
+          154,
+          155
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SH0",
+        "dut": "PGND_S_S1",
+        "required_on": [
+          154,
+          155
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:0:HIGH",
+      "dut_base": "PMID",
+      "force_proof": {
+        "source": "S1_FPVIe_FH0",
+        "dut": "PMID_F_S1",
+        "required_on": [
+          83
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SH0",
+        "dut": "PMID_S_S1",
+        "required_on": [
+          83
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:0:HIGH",
+      "dut_base": "SDA",
+      "force_proof": {
+        "source": "S1_FPVIe_FH0",
+        "dut": "SDA_F_S1",
+        "required_on": [
+          58,
+          59
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SH0",
+        "dut": "SDA_S_S1",
+        "required_on": [
+          58,
+          59
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:0:HIGH",
+      "dut_base": "VBAT",
+      "force_proof": {
+        "source": "S1_FPVIe_FH0",
+        "dut": "VBAT_F_S1",
+        "required_on": [
+          7,
+          143,
+          144
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SH0",
+        "dut": "VBAT_S_S1",
+        "required_on": [
+          7,
+          136,
+          137
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:0:HIGH",
+      "dut_base": "VCC",
+      "force_proof": {
+        "source": "S1_FPVIe_FH0",
+        "dut": "VCC_F_S1",
+        "required_on": [
+          25,
+          30
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SH0",
+        "dut": "VCC_S_S1",
+        "required_on": [
+          25,
+          30
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:0:HIGH",
+      "dut_base": "VDM",
+      "force_proof": {
+        "source": "S1_FPVIe_FH0",
+        "dut": "VDM_F_S1",
+        "required_on": [
+          58
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SH0",
+        "dut": "VDM_S_S1",
+        "required_on": [
+          58
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:0:LOW",
+      "dut_base": "AMUX",
+      "force_proof": {
+        "source": "S1_FPVIe_FL0",
+        "dut": "AMUX_F_S1",
+        "required_on": [
+          17,
+          18,
+          20
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SL0",
+        "dut": "AMUX_S_S1",
+        "required_on": [
+          17,
+          18,
+          20
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:0:LOW",
+      "dut_base": "BST",
+      "force_proof": {
+        "source": "S1_FPVIe_FL0",
+        "dut": "BST_F_S1",
+        "required_on": [
+          109,
+          110,
+          145,
+          146
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SL0",
+        "dut": "BST_S_S1",
+        "required_on": [
+          109,
+          110,
+          138,
+          139
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:0:LOW",
+      "dut_base": "SCL",
+      "force_proof": {
+        "source": "S1_FPVIe_FL0",
+        "dut": "SCL_F_S1",
+        "required_on": [
+          32
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SL0",
+        "dut": "SCL_S_S1",
+        "required_on": [
+          32
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:0:LOW",
+      "dut_base": "SW",
+      "force_proof": {
+        "source": "S1_FPVIe_FL0",
+        "dut": "SW_F_S1",
+        "required_on": [
+          60,
+          61
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SL0",
+        "dut": "SW_S_S1",
+        "required_on": [
+          60,
+          61
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:0:LOW",
+      "dut_base": "VAC1",
+      "force_proof": {
+        "source": "S1_FPVIe_FL0",
+        "dut": "VAC1_F_S1",
+        "required_on": [
+          17
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SL0",
+        "dut": "VAC1_S_S1",
+        "required_on": [
+          17
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:0:LOW",
+      "dut_base": "VAC2",
+      "force_proof": {
+        "source": "S1_FPVIe_FL0",
+        "dut": "VAC2_F_S1",
+        "required_on": [
+          17,
+          19
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SL0",
+        "dut": "VAC2_S_S1",
+        "required_on": [
+          17,
+          19
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:0:LOW",
+      "dut_base": "VBUS",
+      "force_proof": {
+        "source": "S1_FPVIe_FL0",
+        "dut": "VBUS_F_S1",
+        "required_on": [
+          3
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SL0",
+        "dut": "VBUS_S_S1",
+        "required_on": [
+          3
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:0:LOW",
+      "dut_base": "VCC",
+      "force_proof": {
+        "source": "S1_FPVIe_FL0",
+        "dut": "VCC_F_S1",
+        "required_on": [
+          29
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SL0",
+        "dut": "VCC_S_S1",
+        "required_on": [
+          29
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:1:HIGH",
+      "dut_base": "AMUX",
+      "force_proof": {
+        "source": "S1_FPVIe_FH1",
+        "dut": "AMUX_F_S1",
+        "required_on": [
+          143,
+          144,
+          154
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SH1",
+        "dut": "AMUX_S_S1",
+        "required_on": [
+          136,
+          137,
+          154
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:1:HIGH",
+      "dut_base": "BST",
+      "force_proof": {
+        "source": "S1_FPVIe_FH1",
+        "dut": "BST_F_S1",
+        "required_on": [
+          131,
+          134
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SH1",
+        "dut": "BST_S_S1",
+        "required_on": [
+          132,
+          135
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:1:HIGH",
+      "dut_base": "KLV1",
+      "force_proof": {
+        "source": "S1_FPVIe_FH1",
+        "dut": "KLV1_F_S1",
+        "required_on": [
+          35,
+          143,
+          144
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SH1",
+        "dut": "KLV1_S_S1",
+        "required_on": [
+          35,
+          136,
+          137
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:1:HIGH",
+      "dut_base": "KLV2",
+      "force_proof": {
+        "source": "S1_FPVIe_FH1",
+        "dut": "KLV2_F_S1",
+        "required_on": [
+          35,
+          37,
+          143,
+          144
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SH1",
+        "dut": "KLV2_S_S1",
+        "required_on": [
+          35,
+          37,
+          136,
+          137
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:1:HIGH",
+      "dut_base": "PGND",
+      "force_proof": {
+        "source": "S1_FPVIe_FH1",
+        "dut": "PGND_F_S1",
+        "required_on": [
+          143,
+          144,
+          154,
+          155
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SH1",
+        "dut": "PGND_S_S1",
+        "required_on": [
+          136,
+          137,
+          154,
+          155
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:1:HIGH",
+      "dut_base": "PMID",
+      "force_proof": {
+        "source": "S1_FPVIe_FH1",
+        "dut": "PMID_F_S1",
+        "required_on": [
+          83,
+          143,
+          144
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SH1",
+        "dut": "PMID_S_S1",
+        "required_on": [
+          83,
+          136,
+          137
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:1:HIGH",
+      "dut_base": "SDA",
+      "force_proof": {
+        "source": "S1_FPVIe_FH1",
+        "dut": "SDA_F_S1",
+        "required_on": [
+          58,
+          59,
+          143,
+          144
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SH1",
+        "dut": "SDA_S_S1",
+        "required_on": [
+          58,
+          59,
+          136,
+          137
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:1:HIGH",
+      "dut_base": "VBAT",
+      "force_proof": {
+        "source": "S1_FPVIe_FH1",
+        "dut": "VBAT_F_S1",
+        "required_on": [
+          7
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SH1",
+        "dut": "VBAT_S_S1",
+        "required_on": [
+          7
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:1:HIGH",
+      "dut_base": "VCC",
+      "force_proof": {
+        "source": "S1_FPVIe_FH1",
+        "dut": "VCC_F_S1",
+        "required_on": [
+          25,
+          30,
+          143,
+          144
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SH1",
+        "dut": "VCC_S_S1",
+        "required_on": [
+          25,
+          30,
+          136,
+          137
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:1:HIGH",
+      "dut_base": "VDM",
+      "force_proof": {
+        "source": "S1_FPVIe_FH1",
+        "dut": "VDM_F_S1",
+        "required_on": [
+          58,
+          143,
+          144
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SH1",
+        "dut": "VDM_S_S1",
+        "required_on": [
+          58,
+          136,
+          137
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:1:LOW",
+      "dut_base": "AMUX",
+      "force_proof": {
+        "source": "S1_FPVIe_FL1",
+        "dut": "AMUX_F_S1",
+        "required_on": [
+          17,
+          18,
+          20,
+          145,
+          146
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SL1",
+        "dut": "AMUX_S_S1",
+        "required_on": [
+          17,
+          18,
+          20,
+          138,
+          139
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:1:LOW",
+      "dut_base": "BST",
+      "force_proof": {
+        "source": "S1_FPVIe_FL1",
+        "dut": "BST_F_S1",
+        "required_on": [
+          109,
+          110
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SL1",
+        "dut": "BST_S_S1",
+        "required_on": [
+          109,
+          110
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:1:LOW",
+      "dut_base": "SCL",
+      "force_proof": {
+        "source": "S1_FPVIe_FL1",
+        "dut": "SCL_F_S1",
+        "required_on": [
+          32,
+          145,
+          146
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SL1",
+        "dut": "SCL_S_S1",
+        "required_on": [
+          32,
+          138,
+          139
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:1:LOW",
+      "dut_base": "SW",
+      "force_proof": {
+        "source": "S1_FPVIe_FL1",
+        "dut": "SW_F_S1",
+        "required_on": [
+          133,
+          134
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SL1",
+        "dut": "SW_S_S1",
+        "required_on": [
+          132,
+          135
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:1:LOW",
+      "dut_base": "VAC1",
+      "force_proof": {
+        "source": "S1_FPVIe_FL1",
+        "dut": "VAC1_F_S1",
+        "required_on": [
+          17,
+          145,
+          146
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SL1",
+        "dut": "VAC1_S_S1",
+        "required_on": [
+          17,
+          138,
+          139
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:1:LOW",
+      "dut_base": "VAC2",
+      "force_proof": {
+        "source": "S1_FPVIe_FL1",
+        "dut": "VAC2_F_S1",
+        "required_on": [
+          17,
+          19,
+          145,
+          146
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SL1",
+        "dut": "VAC2_S_S1",
+        "required_on": [
+          17,
+          19,
+          138,
+          139
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:1:LOW",
+      "dut_base": "VBUS",
+      "force_proof": {
+        "source": "S1_FPVIe_FL1",
+        "dut": "VBUS_F_S1",
+        "required_on": [
+          3,
+          145,
+          146
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SL1",
+        "dut": "VBUS_S_S1",
+        "required_on": [
+          3,
+          138,
+          139
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S1_FPVIe:1:LOW",
+      "dut_base": "VCC",
+      "force_proof": {
+        "source": "S1_FPVIe_FL1",
+        "dut": "VCC_F_S1",
+        "required_on": [
+          29,
+          145,
+          146
+        ]
+      },
+      "sense_proof": {
+        "source": "S1_FPVIe_SL1",
+        "dut": "VCC_S_S1",
+        "required_on": [
+          29,
+          138,
+          139
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S3_FXVIe_PLUS:1:HIGH",
+      "dut_base": "PMID",
+      "force_proof": {
+        "source": "S3_FXVIe_PLUS_FH1",
+        "dut": "PMID_F_S1",
+        "required_on": []
+      },
+      "sense_proof": {
+        "source": "S3_FXVIe_PLUS_SH1",
+        "dut": "PMID_S_S1",
+        "required_on": []
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S3_FXVIe_PLUS:2:HIGH",
+      "dut_base": "VCC",
+      "force_proof": {
+        "source": "S3_FXVIe_PLUS_FH2",
+        "dut": "VCC_F_S1",
+        "required_on": []
+      },
+      "sense_proof": {
+        "source": "S3_FXVIe_PLUS_SH2",
+        "dut": "VCC_S_S1",
+        "required_on": []
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S3_FXVIe_PLUS:3:HIGH",
+      "dut_base": "AMUX",
+      "force_proof": {
+        "source": "S3_FXVIe_PLUS_FH3",
+        "dut": "AMUX_F_S1",
+        "required_on": []
+      },
+      "sense_proof": {
+        "source": "S3_FXVIe_PLUS_SH3",
+        "dut": "AMUX_S_S1",
+        "required_on": []
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S3_FXVIe_PLUS:3:HIGH",
+      "dut_base": "PGND",
+      "force_proof": {
+        "source": "S3_FXVIe_PLUS_FH3",
+        "dut": "PGND_F_S1",
+        "required_on": [
+          155
+        ]
+      },
+      "sense_proof": {
+        "source": "S3_FXVIe_PLUS_SH3",
+        "dut": "PGND_S_S1",
+        "required_on": [
+          155
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S3_FXVIe_PLUS:5:HIGH",
+      "dut_base": "VBAT",
+      "force_proof": {
+        "source": "S3_FXVIe_PLUS_FH5",
+        "dut": "VBAT_F_S1",
+        "required_on": []
+      },
+      "sense_proof": {
+        "source": "S3_FXVIe_PLUS_SH5",
+        "dut": "VBAT_S_S1",
+        "required_on": []
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S3_FXVIe_PLUS:6:HIGH",
+      "dut_base": "V1P5",
+      "force_proof": {
+        "source": "S3_FXVIe_PLUS_FH6",
+        "dut": "V1P5_F_S1",
+        "required_on": []
+      },
+      "sense_proof": {
+        "source": "S3_FXVIe_PLUS_SH6",
+        "dut": "V1P5_S_S1",
+        "required_on": []
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S3_FXVIe_PLUS:6:HIGH",
+      "dut_base": "VDRV",
+      "force_proof": {
+        "source": "S3_FXVIe_PLUS_FH6",
+        "dut": "VDRV_F_S1",
+        "required_on": []
+      },
+      "sense_proof": {
+        "source": "S3_FXVIe_PLUS_SH6",
+        "dut": "VDRV_S_S1",
+        "required_on": []
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S5_ACM200:0:HIGH",
+      "dut_base": "AMUX",
+      "force_proof": {
+        "source": "S5_ACM200_FH0",
+        "dut": "AMUX_F_S1",
+        "required_on": [
+          18,
+          20
+        ]
+      },
+      "sense_proof": {
+        "source": "S5_ACM200_SH0",
+        "dut": "AMUX_S_S1",
+        "required_on": [
+          18,
+          20
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S5_ACM200:0:HIGH",
+      "dut_base": "VAC1",
+      "force_proof": {
+        "source": "S5_ACM200_FH0",
+        "dut": "VAC1_F_S1",
+        "required_on": []
+      },
+      "sense_proof": {
+        "source": "S5_ACM200_SH0",
+        "dut": "VAC1_S_S1",
+        "required_on": []
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S5_ACM200:0:HIGH",
+      "dut_base": "VAC2",
+      "force_proof": {
+        "source": "S5_ACM200_FH0",
+        "dut": "VAC2_F_S1",
+        "required_on": [
+          19
+        ]
+      },
+      "sense_proof": {
+        "source": "S5_ACM200_SH0",
+        "dut": "VAC2_S_S1",
+        "required_on": [
+          19
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S5_ACM200:10:HIGH",
+      "dut_base": "VBUS",
+      "force_proof": {
+        "source": "S5_ACM200_FH10",
+        "dut": "VBUS_F_S1",
+        "required_on": []
+      },
+      "sense_proof": {
+        "source": "S5_ACM200_SH10",
+        "dut": "VBUS_S_S1",
+        "required_on": []
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S5_ACM200:18:HIGH",
+      "dut_base": "BST",
+      "force_proof": {
+        "source": "S5_ACM200_FH18",
+        "dut": "BST_F_S1",
+        "required_on": [
+          110
+        ]
+      },
+      "sense_proof": {
+        "source": "S5_ACM200_SH18",
+        "dut": "BST_S_S1",
+        "required_on": [
+          110
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S5_ACM200:1:HIGH",
+      "dut_base": "VCC",
+      "force_proof": {
+        "source": "S5_ACM200_FH1",
+        "dut": "VCC_F_S1",
+        "required_on": [
+          25
+        ]
+      },
+      "sense_proof": {
+        "source": "S5_ACM200_SH1",
+        "dut": "VCC_S_S1",
+        "required_on": [
+          25
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S5_ACM200:2:HIGH",
+      "dut_base": "SCL",
+      "force_proof": {
+        "source": "S5_ACM200_FH2",
+        "dut": "SCL_F_S1",
+        "required_on": []
+      },
+      "sense_proof": {
+        "source": "S5_ACM200_SH2",
+        "dut": "SCL_S_S1",
+        "required_on": []
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S5_ACM200:3:HIGH",
+      "dut_base": "KLV1",
+      "force_proof": {
+        "source": "S5_ACM200_FH3",
+        "dut": "KLV1_F_S1",
+        "required_on": []
+      },
+      "sense_proof": {
+        "source": "S5_ACM200_SH3",
+        "dut": "KLV1_S_S1",
+        "required_on": []
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S5_ACM200:3:HIGH",
+      "dut_base": "KLV2",
+      "force_proof": {
+        "source": "S5_ACM200_FH3",
+        "dut": "KLV2_F_S1",
+        "required_on": [
+          37
+        ]
+      },
+      "sense_proof": {
+        "source": "S5_ACM200_SH3",
+        "dut": "KLV2_S_S1",
+        "required_on": [
+          37
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S5_ACM200:5:HIGH",
+      "dut_base": "BST",
+      "force_proof": {
+        "source": "S5_ACM200_FH5",
+        "dut": "BST_F_S1",
+        "required_on": [
+          48,
+          76
+        ]
+      },
+      "sense_proof": {
+        "source": "S5_ACM200_SH5",
+        "dut": "BST_S_S1",
+        "required_on": [
+          48,
+          76
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S5_ACM200:7:HIGH",
+      "dut_base": "SDA",
+      "force_proof": {
+        "source": "S5_ACM200_FH7",
+        "dut": "SDA_F_S1",
+        "required_on": [
+          59
+        ]
+      },
+      "sense_proof": {
+        "source": "S5_ACM200_SH7",
+        "dut": "SDA_S_S1",
+        "required_on": [
+          59
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S5_ACM200:7:HIGH",
+      "dut_base": "VDM",
+      "force_proof": {
+        "source": "S5_ACM200_FH7",
+        "dut": "VDM_F_S1",
+        "required_on": []
+      },
+      "sense_proof": {
+        "source": "S5_ACM200_SH7",
+        "dut": "VDM_S_S1",
+        "required_on": []
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S5_ACM200:8:HIGH",
+      "dut_base": "SW",
+      "force_proof": {
+        "source": "S5_ACM200_FH8",
+        "dut": "SW_F_S1",
+        "required_on": [
+          61
+        ]
+      },
+      "sense_proof": {
+        "source": "S5_ACM200_SH8",
+        "dut": "SW_S_S1",
+        "required_on": [
+          61
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S8_QVM:0:",
+      "dut_base": "AMUX",
+      "force_proof": {
+        "source": "S8_QVM_CH0+",
+        "dut": "AMUX_F_S1",
+        "required_on": [
+          86,
+          137,
+          154
+        ]
+      },
+      "sense_proof": {
+        "source": "S8_QVM_CH0-",
+        "dut": "AMUX_S_S1",
+        "required_on": [
+          17,
+          18,
+          20,
+          138
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S8_QVM:0:",
+      "dut_base": "BST",
+      "force_proof": {
+        "source": "S8_QVM_CH0+",
+        "dut": "BST_F_S1",
+        "required_on": [
+          130,
+          131,
+          134,
+          136
+        ]
+      },
+      "sense_proof": {
+        "source": "S8_QVM_CH0-",
+        "dut": "BST_S_S1",
+        "required_on": [
+          109,
+          110,
+          139
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    },
+    {
+      "source_pair": "S8_QVM:0:",
+      "dut_base": "VCC",
+      "force_proof": {
+        "source": "S8_QVM_CH0+",
+        "dut": "VCC_F_S1",
+        "required_on": [
+          25,
+          30,
+          86,
+          137
+        ]
+      },
+      "sense_proof": {
+        "source": "S8_QVM_CH0-",
+        "dut": "VCC_S_S1",
+        "required_on": [
+          29,
+          138
+        ]
+      },
+      "relay_state_conflicts": [],
+      "status": "PASS"
+    }
+  ],
+  "rejectedForScopePins": [
+    {
+      "source_port": "S1_FPVIe_FH0",
+      "dut_pin": "VCC_S_S1",
+      "required_on": [
+        25,
+        30,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FH0",
+      "dut_pin": "VDM_S_S1",
+      "required_on": [
+        58,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FH0",
+      "dut_pin": "SDA_S_S1",
+      "required_on": [
+        58,
+        59,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FH0",
+      "dut_pin": "PMID_S_S1",
+      "required_on": [
+        83,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FH0",
+      "dut_pin": "AMUX_S_S1",
+      "required_on": [
+        86,
+        154
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FH0",
+      "dut_pin": "PGND_S_S1",
+      "required_on": [
+        86,
+        154,
+        155
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FH0",
+      "dut_pin": "KLV1_S_S1",
+      "required_on": [
+        35,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FH0",
+      "dut_pin": "KLV2_S_S1",
+      "required_on": [
+        35,
+        37,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FH0",
+      "dut_pin": "BST_S_S1",
+      "required_on": [
+        46,
+        48,
+        76,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FH0",
+      "dut_pin": "VBAT_S_S1",
+      "required_on": [
+        7,
+        86,
+        136,
+        137
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FH1",
+      "dut_pin": "BST_S_S1",
+      "required_on": [
+        130,
+        132,
+        135
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FH1",
+      "dut_pin": "VBAT_S_S1",
+      "required_on": [
+        7,
+        130
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FH1",
+      "dut_pin": "VCC_S_S1",
+      "required_on": [
+        25,
+        30,
+        130,
+        136,
+        137
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FH1",
+      "dut_pin": "VDM_S_S1",
+      "required_on": [
+        58,
+        130,
+        136,
+        137
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FH1",
+      "dut_pin": "SDA_S_S1",
+      "required_on": [
+        58,
+        59,
+        130,
+        136,
+        137
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FH1",
+      "dut_pin": "PMID_S_S1",
+      "required_on": [
+        83,
+        130,
+        136,
+        137
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FH1",
+      "dut_pin": "AMUX_S_S1",
+      "required_on": [
+        130,
+        136,
+        137,
+        154
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FH1",
+      "dut_pin": "PGND_S_S1",
+      "required_on": [
+        130,
+        136,
+        137,
+        154,
+        155
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FL0",
+      "dut_pin": "VBUS_S_S1",
+      "required_on": [
+        3,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FL0",
+      "dut_pin": "VCC_S_S1",
+      "required_on": [
+        29,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FL0",
+      "dut_pin": "SCL_S_S1",
+      "required_on": [
+        32,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FL0",
+      "dut_pin": "SW_S_S1",
+      "required_on": [
+        60,
+        61,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FL0",
+      "dut_pin": "AGND_S_S1",
+      "required_on": [
+        86,
+        138,
+        140
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FL0",
+      "dut_pin": "VAC1_S_S1",
+      "required_on": [
+        17,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FL0",
+      "dut_pin": "VAC2_S_S1",
+      "required_on": [
+        17,
+        19,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FL0",
+      "dut_pin": "AMUX_S_S1",
+      "required_on": [
+        17,
+        18,
+        20,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FL0",
+      "dut_pin": "BST_S_S1",
+      "required_on": [
+        86,
+        109,
+        110,
+        138,
+        139
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FL1",
+      "dut_pin": "SW_S_S1",
+      "required_on": [
+        130,
+        132,
+        135
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FL1",
+      "dut_pin": "BST_S_S1",
+      "required_on": [
+        109,
+        110,
+        130
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FL1",
+      "dut_pin": "AGND_S_S1",
+      "required_on": [
+        130,
+        139,
+        140
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FL1",
+      "dut_pin": "VBUS_S_S1",
+      "required_on": [
+        3,
+        130,
+        138,
+        139
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FL1",
+      "dut_pin": "VCC_S_S1",
+      "required_on": [
+        29,
+        130,
+        138,
+        139
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_FL1",
+      "dut_pin": "SCL_S_S1",
+      "required_on": [
+        32,
+        130,
+        138,
+        139
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SH0",
+      "dut_pin": "VCC_F_S1",
+      "required_on": [
+        25,
+        30,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SH0",
+      "dut_pin": "VDM_F_S1",
+      "required_on": [
+        58,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SH0",
+      "dut_pin": "SDA_F_S1",
+      "required_on": [
+        58,
+        59,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SH0",
+      "dut_pin": "PMID_F_S1",
+      "required_on": [
+        83,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SH0",
+      "dut_pin": "AMUX_F_S1",
+      "required_on": [
+        86,
+        154
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SH0",
+      "dut_pin": "PGND_F_S1",
+      "required_on": [
+        86,
+        154,
+        155
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SH0",
+      "dut_pin": "KLV1_F_S1",
+      "required_on": [
+        35,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SH0",
+      "dut_pin": "KLV2_F_S1",
+      "required_on": [
+        35,
+        37,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SH0",
+      "dut_pin": "BST_F_S1",
+      "required_on": [
+        46,
+        48,
+        76,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SH0",
+      "dut_pin": "VBAT_F_S1",
+      "required_on": [
+        7,
+        86,
+        143,
+        144
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SH0",
+      "dut_pin": "VAC1_F_S1",
+      "required_on": [
+        70,
+        88,
+        91
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SH0",
+      "dut_pin": "VAC2_F_S1",
+      "required_on": [
+        19,
+        70,
+        88,
+        91
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SH1",
+      "dut_pin": "BST_F_S1",
+      "required_on": [
+        130,
+        131,
+        134
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SH1",
+      "dut_pin": "VBAT_F_S1",
+      "required_on": [
+        7,
+        130
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SH1",
+      "dut_pin": "VCC_F_S1",
+      "required_on": [
+        25,
+        30,
+        130,
+        143,
+        144
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SH1",
+      "dut_pin": "VDM_F_S1",
+      "required_on": [
+        58,
+        130,
+        143,
+        144
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SH1",
+      "dut_pin": "SDA_F_S1",
+      "required_on": [
+        58,
+        59,
+        130,
+        143,
+        144
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SH1",
+      "dut_pin": "PMID_F_S1",
+      "required_on": [
+        83,
+        130,
+        143,
+        144
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SH1",
+      "dut_pin": "AMUX_F_S1",
+      "required_on": [
+        130,
+        143,
+        144,
+        154
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SH1",
+      "dut_pin": "PGND_F_S1",
+      "required_on": [
+        130,
+        143,
+        144,
+        154,
+        155
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SL0",
+      "dut_pin": "VBUS_F_S1",
+      "required_on": [
+        3,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SL0",
+      "dut_pin": "VCC_F_S1",
+      "required_on": [
+        29,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SL0",
+      "dut_pin": "SCL_F_S1",
+      "required_on": [
+        32,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SL0",
+      "dut_pin": "SW_F_S1",
+      "required_on": [
+        60,
+        61,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SL0",
+      "dut_pin": "VDM_F_S1",
+      "required_on": [
+        86,
+        142,
+        152
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SL0",
+      "dut_pin": "VAC1_F_S1",
+      "required_on": [
+        17,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SL0",
+      "dut_pin": "VAC2_F_S1",
+      "required_on": [
+        17,
+        19,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SL0",
+      "dut_pin": "AMUX_F_S1",
+      "required_on": [
+        17,
+        18,
+        20,
+        86
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SL0",
+      "dut_pin": "KLV1_F_S1",
+      "required_on": [
+        73,
+        88,
+        91
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SL0",
+      "dut_pin": "KLV2_F_S1",
+      "required_on": [
+        37,
+        73,
+        88,
+        91
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SL0",
+      "dut_pin": "BST_F_S1",
+      "required_on": [
+        86,
+        109,
+        110,
+        145,
+        146
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SL1",
+      "dut_pin": "SW_F_S1",
+      "required_on": [
+        130,
+        133,
+        134
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SL1",
+      "dut_pin": "BST_F_S1",
+      "required_on": [
+        109,
+        110,
+        130
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SL1",
+      "dut_pin": "VDM_F_S1",
+      "required_on": [
+        130,
+        152
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SL1",
+      "dut_pin": "VBUS_F_S1",
+      "required_on": [
+        3,
+        130,
+        145,
+        146
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SL1",
+      "dut_pin": "VCC_F_S1",
+      "required_on": [
+        29,
+        130,
+        145,
+        146
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S1_FPVIe_SL1",
+      "dut_pin": "SCL_F_S1",
+      "required_on": [
+        32,
+        130,
+        145,
+        146
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S8_QVM_CH0+",
+      "dut_pin": "VBAT_S_S1",
+      "required_on": [
+        7,
+        136
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S8_QVM_CH0+",
+      "dut_pin": "VCC_S_S1",
+      "required_on": [
+        25,
+        30,
+        137
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S8_QVM_CH0+",
+      "dut_pin": "VDM_S_S1",
+      "required_on": [
+        58,
+        137
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S8_QVM_CH0+",
+      "dut_pin": "SDA_S_S1",
+      "required_on": [
+        58,
+        59,
+        137
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S8_QVM_CH0+",
+      "dut_pin": "PMID_S_S1",
+      "required_on": [
+        83,
+        137
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S8_QVM_CH0+",
+      "dut_pin": "AMUX_S_S1",
+      "required_on": [
+        137,
+        154
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S8_QVM_CH0+",
+      "dut_pin": "PGND_S_S1",
+      "required_on": [
+        137,
+        154,
+        155
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S8_QVM_CH0+",
+      "dut_pin": "KLV1_S_S1",
+      "required_on": [
+        35,
+        137
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S8_QVM_CH0+",
+      "dut_pin": "KLV2_S_S1",
+      "required_on": [
+        35,
+        37,
+        137
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S8_QVM_CH0+",
+      "dut_pin": "BST_S_S1",
+      "required_on": [
+        46,
+        48,
+        76,
+        137
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S8_QVM_CH0+",
+      "dut_pin": "SW_S_S1",
+      "required_on": [
+        130,
+        132,
+        133,
+        135,
+        136
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S8_QVM_CH0-",
+      "dut_pin": "SW_F_S1",
+      "required_on": [
+        130,
+        133,
+        134,
+        139
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S8_QVM_CH0-",
+      "dut_pin": "VBUS_F_S1",
+      "required_on": [
+        3,
+        86,
+        138
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S8_QVM_CH0-",
+      "dut_pin": "VCC_F_S1",
+      "required_on": [
+        29,
+        86,
+        138
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S8_QVM_CH0-",
+      "dut_pin": "SCL_F_S1",
+      "required_on": [
+        32,
+        86,
+        138
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S8_QVM_CH0-",
+      "dut_pin": "VDM_F_S1",
+      "required_on": [
+        130,
+        139,
+        152
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    },
+    {
+      "source_port": "S8_QVM_CH0-",
+      "dut_pin": "BST_F_S1",
+      "required_on": [
+        109,
+        110,
+        130,
+        139
+      ],
+      "reject_reason": "KELVIN_ROLE_CROSS"
+    }
+  ]
+}

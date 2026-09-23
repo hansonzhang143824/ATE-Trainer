@@ -1,0 +1,51 @@
+{
+  "constantUnderAllFamIntersectVariants": true,
+  "proposal": {
+    "field": "TM601_LS_RDSON.capAuthority.powered_pins",
+    "before": [
+      "ISW",
+      "SW",
+      "VBAT",
+      "VBUS",
+      "VDRV"
+    ],
+    "after": [
+      "ISW",
+      "SW",
+      "VBAT",
+      "VDRV"
+    ],
+    "file": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\sandbox-f3\\dali_tm_meta.t25proposal.json"
+  },
+  "ab": {
+    "live": {
+      "exit": 1,
+      "log": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\sandbox-f3\\live.relay-trace.log",
+      "summary": "[relay] 检查 test.cpp: 99 个函数有继电器 (结构规则 0 处, 功能规则 179 处, FR-001 反向 4 处), map Relay-ON=95 Relay-NC-only=45, meta 覆盖 101/101",
+      "lines": [
+        "TM600_HS_RDSON: 虚构继电器名 126 (无 #define)",
+        "TM601_LS_RDSON: 虚构继电器名 126 (无 #define)",
+        "TM601_LS_RDSON: 静态供电 SW 但未闭稳压电容 K57_CAP_BST_SW (FR-001 反向: 供电→闭; meta权威)",
+        "TM601_LS_RDSON: 静态供电 VBUS 但未闭稳压电容 K5_VBUS_Cap (FR-001 反向: 供电→闭; meta权威)",
+        "TM643_VBAT_LOOP_INDICTOR: 静态供电 BST_SW 但未闭稳压电容 K57_CAP_BST_SW (FR-001 反向: 供电→闭; meta权威)",
+        "TM643_VBAT_LOOP_INDICTOR: 静态供电 VBUS 但未闭稳压电容 K5_VBUS_Cap (FR-001 反向: 供电→闭; meta权威)"
+      ]
+    },
+    "proposal": {
+      "exit": 1,
+      "log": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\sandbox-f3\\proposal.relay-trace.log",
+      "summary": "[relay] 检查 test.cpp: 99 个函数有继电器 (结构规则 0 处, 功能规则 179 处, FR-001 反向 3 处), map Relay-ON=95 Relay-NC-only=45, meta 覆盖 101/101",
+      "lines": [
+        "TM600_HS_RDSON: 虚构继电器名 126 (无 #define)",
+        "TM601_LS_RDSON: 虚构继电器名 126 (无 #define)",
+        "TM601_LS_RDSON: 静态供电 SW 但未闭稳压电容 K57_CAP_BST_SW (FR-001 反向: 供电→闭; meta权威)",
+        "TM643_VBAT_LOOP_INDICTOR: 静态供电 BST_SW 但未闭稳压电容 K57_CAP_BST_SW (FR-001 反向: 供电→闭; meta权威)",
+        "TM643_VBAT_LOOP_INDICTOR: 静态供电 VBUS 但未闭稳压电容 K5_VBUS_Cap (FR-001 反向: 供电→闭; meta权威)"
+      ]
+    },
+    "removed": [
+      "TM601_LS_RDSON: 静态供电 VBUS 但未闭稳压电容 K5_VBUS_Cap (FR-001 反向: 供电→闭; meta权威)"
+    ],
+    "added": []
+  }
+}

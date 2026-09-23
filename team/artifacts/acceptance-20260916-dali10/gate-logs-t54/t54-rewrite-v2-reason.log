@@ -1,0 +1,11 @@
+前置：语法 OK（50104 B）
+  已改写 note → 50624 B
+后置：语法 OK
+
+=== 登记：收录"已修正的旧表述" ===
+  已并入 → 60570 B
+  run1: RECEIPT D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260
+  run2: RECEIPT D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260
+
+  note 现文 = 跨秒不变；跨版本不可混用 —— 排除项/序列化/编码任一变化都必须换版本号。**升 v2 的正当理由＝v1 只声明了排除项、未声明序列化与编码 ⇒ 第三方即便拿到同字节也无法复现 body 哈希** ⇒ 故补 serialization/encoding/bo
+  登记 = 60570 B ｜ 标题 47 ｜ 唯一 47 ｜ 重复 无

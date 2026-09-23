@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 2,
+  "artifactId": "tm102-implementation-review",
+  "taskId": "TM102-PTC-RULE_REVIEW_IMPLEMENTATION",
+  "trial": "tm102-ptc",
+  "tm": "TM102",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_IMPLEMENTATION",
+  "verdict": "pass",
+  "signedInputs": {
+    "implementationManifestPath": "implementation/implementation-manifest.json",
+    "implementationManifestSha256": "46147bb96c535b29cd28dd25eb892cd72a125937614aae4c9b1b35d1464ccf02",
+    "methodContractPath": "method/tm102-test-method-contract.json",
+    "methodContractSha256": "97b278aceef492b7aa0969618cae1763848c82fd03212090c08858146435a350",
+    "strategyContractPath": "strategy/tm102-resource-config-contract.json",
+    "strategyContractSha256": "45319feded8f1bf8824fe092f3f1aaa300ad481a5ba83372a9c390be650b259e"
+  },
+  "parameterType": {
+    "methodFamily": "direct_measurement",
+    "isTrim": false,
+    "hasRamp": false
+  },
+  "checks": [
+    {
+      "id": "IR-1",
+      "result": "PASS",
+      "detail": "当前 test.cpp 哈希与实现清单一致，且只有一个 DUT_API 实现。"
+    },
+    {
+      "id": "IR-2",
+      "result": "PASS",
+      "detail": "物理测量源 AMUX_PGND_FXVI、VDM 1.2 V 偏置和 K13 与签订合同一致。"
+    },
+    {
+      "id": "IR-3",
+      "result": "PASS",
+      "detail": "寄存器原文、通路/功能继电器、上电注释和结果发布均通过确定性检查。"
+    }
+  ],
+  "deterministicVerifier": {
+    "command": "python scripts/verify_implementation_batch.py team/artifacts/tm102-ptc team/artifacts/tm105-ptc team/artifacts/tm425-ptc",
+    "result": {
+      "trial": "tm102-ptc",
+      "tm": "TM102",
+      "symbol": "TM102_HSKP_LP_ATEST0",
+      "methodFamily": "direct_measurement",
+      "sourceSha256": "2ed19d63e8d761efcfbf7eaf187ee4e36e9a492bc965c94759e568dd7ff2c90c",
+      "status": "PASS"
+    }
+  },
+  "blockingDefects": [],
+  "summary": {
+    "checksPassed": 3,
+    "blockingDefects": 0,
+    "nextRole": "compile-diagnostician"
+  }
+}

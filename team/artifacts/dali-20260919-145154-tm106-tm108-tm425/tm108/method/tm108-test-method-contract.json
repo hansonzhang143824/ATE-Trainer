@@ -1,0 +1,284 @@
+{
+  "schemaVersion": "PTC-METHOD-V4",
+  "artifactId": "tm108-test-method-contract",
+  "tm": "TM108",
+  "stage": "METHOD",
+  "verdict": "deliverable_ready",
+  "methodFamily": "scan",
+  "signedInputs": {
+    "strategyContractPath": "team/artifacts/dali-20260919-145154-tm106-tm108-tm425/tm108/strategy/tm108-resource-config-contract.json",
+    "strategyContractSha256": "ecf16d1e1a3ce038121f69592242f1beed401f4404f99fe1d6100759def8f31e",
+    "dftMetaPath": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM108\\dft-meta.json",
+    "dftMetaSha256": "3714b1c629d5c515511c1428dbac75e2d1663e73eecf4e23e575ae20e74a32ce",
+    "registerEvidencePath": "team/artifacts/dali-20260919-145154-tm106-tm108-tm425/tm108/strategy/register-config-evidence.json",
+    "registerEvidenceSha256": "5b07db9a6b3b6691f04439d35be3a95800d12a1c64d3afb774b084a8af1bac74"
+  },
+  "resourceBoundary": {
+    "allocations": [
+      {
+        "dutPin": "VBAT",
+        "endpointId": "VBAT",
+        "selectionState": "SELECTED",
+        "sourceTable": "VBAT_PD3_FXVI",
+        "instrumentCategory": "FXVIe_PLUS",
+        "ports": [
+          "S3_FXVIe_PLUS_FH5",
+          "S3_FXVIe_PLUS_SH5"
+        ],
+        "selectedPath": "S3_FXVIe_PLUS_FH5 -> K8_PD3(NC) -> VBAT_F_S1; S3_FXVIe_PLUS_SH5 -> K8_PD3(NC) -> VBAT_S_S1",
+        "physicalProofs": [
+          {
+            "sourcePort": "S3_FXVIe_PLUS_FH5",
+            "dutPin": "VBAT_F_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json accepted_path_proofs[source_port=S3_FXVIe_PLUS_FH5;dut_pin=VBAT_F_S1]"
+          },
+          {
+            "sourcePort": "S3_FXVIe_PLUS_SH5",
+            "dutPin": "VBAT_S_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json accepted_path_proofs[source_port=S3_FXVIe_PLUS_SH5;dut_pin=VBAT_S_S1]"
+          }
+        ],
+        "requiredActuations": [],
+        "pathRelays": [
+          {
+            "id": "K8",
+            "name": "K8_PD3",
+            "state": "Relay-NC",
+            "role": "path relay"
+          }
+        ],
+        "evidenceChain": {
+          "dftEndpointLocator": "project/DALI/Output_Global_Material/dft/TM108/dft-meta.json rawIntent Code1/Code2; team/artifacts/dali-20260919-145154-tm106-tm108-tm425/tm108/input-manifest.json canonicalInputs.dft.declaredPins",
+          "sourceTableLocator": "Pin_Channel_define.h:12; StdAfx.h:61",
+          "schematicRouteLocator": "Path-Proofs.json accepted_path_proofs[source_port=S3_FXVIe_PLUS_FH5;dut_pin=VBAT_F_S1]; Path-Proofs.json accepted_path_proofs[source_port=S3_FXVIe_PLUS_SH5;dut_pin=VBAT_S_S1]",
+          "pathProofLocator": "Path-Proofs.json accepted_path_proofs[source_port=S3_FXVIe_PLUS_FH5;dut_pin=VBAT_F_S1]; Path-Proofs.json accepted_path_proofs[source_port=S3_FXVIe_PLUS_SH5;dut_pin=VBAT_S_S1]",
+          "relayDefinitionLocator": "Path-Proofs.json accepted proof cbit traceability; D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h",
+          "registerConfigurationLocator": "team/artifacts/dali-20260919-145154-tm106-tm108-tm425/tm108/strategy/register-config-evidence.json orderedWrites",
+          "functionalRelayLocator": "project/DALI/Output_Global_Material/schematic/SCH-Connect-Map.json:rawText line 914; knowledge/hardware/relays.md:120-138; knowledge/standards/relay-checklist.md:25-42; D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h:169,658"
+        },
+        "functionalRelays": [
+          {
+            "id": "K13",
+            "name": "K13_VBAT_Cap",
+            "state": "Relay-ON",
+            "role": "VBAT 4.7-uF supply stabilizing capacitor",
+            "evidenceLocator": "SCH-Connect-Map.json:rawText line 914; knowledge/hardware/relays.md:120-138; knowledge/standards/relay-checklist.md:25-42; StdAfx.h:169,658"
+          }
+        ],
+        "functionalActuations": [
+          13
+        ]
+      },
+      {
+        "dutPin": "VAC1",
+        "endpointId": "VAC1",
+        "selectionState": "SELECTED",
+        "sourceTable": "VAC123_AMUX_ACM",
+        "instrumentCategory": "ACM200",
+        "ports": [
+          "S5_ACM200_FH0",
+          "S5_ACM200_SH0"
+        ],
+        "selectedPath": "S5_ACM200_FH0 -> K18_VAC3(NC) -> K19_VAC2(NC) -> VAC1_F_S1; S5_ACM200_SH0 -> K18_VAC3(NC) -> K19_VAC2(NC) -> VAC1_S_S1",
+        "physicalProofs": [
+          {
+            "sourcePort": "S5_ACM200_FH0",
+            "dutPin": "VAC1_F_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH0;dut_pin=VAC1_F_S1]"
+          },
+          {
+            "sourcePort": "S5_ACM200_SH0",
+            "dutPin": "VAC1_S_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH0;dut_pin=VAC1_S_S1]"
+          }
+        ],
+        "requiredActuations": [],
+        "pathRelays": [
+          {
+            "id": "K18",
+            "name": "K18_VAC3",
+            "state": "Relay-NC",
+            "role": "path relay"
+          },
+          {
+            "id": "K19",
+            "name": "K19_VAC2",
+            "state": "Relay-NC",
+            "role": "path relay"
+          }
+        ],
+        "evidenceChain": {
+          "dftEndpointLocator": "project/DALI/Output_Global_Material/dft/TM108/dft-meta.json rawIntent Code1/Code2; team/artifacts/dali-20260919-145154-tm106-tm108-tm425/tm108/input-manifest.json canonicalInputs.dft.declaredPins",
+          "sourceTableLocator": "Pin_Channel_define.h:15; StdAfx.h:64",
+          "schematicRouteLocator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH0;dut_pin=VAC1_F_S1]; Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH0;dut_pin=VAC1_S_S1]",
+          "pathProofLocator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH0;dut_pin=VAC1_F_S1]; Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH0;dut_pin=VAC1_S_S1]",
+          "relayDefinitionLocator": "Path-Proofs.json accepted proof cbit traceability; D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h",
+          "registerConfigurationLocator": "team/artifacts/dali-20260919-145154-tm106-tm108-tm425/tm108/strategy/register-config-evidence.json orderedWrites"
+        }
+      },
+      {
+        "dutPin": "nQON",
+        "endpointId": "nQON",
+        "selectionState": "SELECTED",
+        "sourceTable": "NQON_HG1_ACM",
+        "instrumentCategory": "ACM200",
+        "ports": [
+          "S5_ACM200_FH9",
+          "S5_ACM200_SH9"
+        ],
+        "selectedPath": "S5_ACM200_FH9 -> K64_HG1(NC) -> nQON_F_S1; S5_ACM200_SH9 -> K64_HG1(NC) -> nQON_S_S1",
+        "physicalProofs": [
+          {
+            "sourcePort": "S5_ACM200_FH9",
+            "dutPin": "nQON_F_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH9;dut_pin=nQON_F_S1]"
+          },
+          {
+            "sourcePort": "S5_ACM200_SH9",
+            "dutPin": "nQON_S_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH9;dut_pin=nQON_S_S1]"
+          }
+        ],
+        "requiredActuations": [],
+        "pathRelays": [
+          {
+            "id": "K64",
+            "name": "K64_HG1",
+            "state": "Relay-NC",
+            "role": "path relay"
+          }
+        ],
+        "evidenceChain": {
+          "dftEndpointLocator": "project/DALI/Output_Global_Material/dft/TM108/dft-meta.json rawIntent Code1/Code2; team/artifacts/dali-20260919-145154-tm106-tm108-tm425/tm108/input-manifest.json canonicalInputs.dft.declaredPins",
+          "sourceTableLocator": "Pin_Channel_define.h:24; StdAfx.h:73",
+          "schematicRouteLocator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH9;dut_pin=nQON_F_S1]; Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH9;dut_pin=nQON_S_S1]",
+          "pathProofLocator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH9;dut_pin=nQON_F_S1]; Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH9;dut_pin=nQON_S_S1]",
+          "relayDefinitionLocator": "Path-Proofs.json accepted proof cbit traceability; D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h",
+          "registerConfigurationLocator": "team/artifacts/dali-20260919-145154-tm106-tm108-tm425/tm108/strategy/register-config-evidence.json orderedWrites",
+          "functionalRelayLocator": "project/DALI/Output_Global_Material/schematic/SCH-Connect-Map.json:rawText line 891; knowledge/hardware/relays.md:140-150; D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h:229"
+        },
+        "functionalRelays": [
+          {
+            "id": "K65",
+            "name": "K65_nQON_PU",
+            "state": "Relay-ON",
+            "role": "nQON open-drain toggle observation pull-up, fixed 5 V",
+            "evidenceLocator": "project/DALI/Output_Global_Material/schematic/SCH-Connect-Map.json:rawText line 891; D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h:229; knowledge/hardware/relays.md:140-150"
+          }
+        ],
+        "functionalActuations": [
+          65
+        ]
+      }
+    ],
+    "registerConfiguration": {
+      "evidencePath": "team/artifacts/dali-20260919-145154-tm106-tm108-tm425/tm108/strategy/register-config-evidence.json",
+      "evidenceSha256": "5b07db9a6b3b6691f04439d35be3a95800d12a1c64d3afb774b084a8af1bac74",
+      "sourcePath": "project/DALI/reg_config/tm108.sv",
+      "sourceSha256": "4d0ea5c30fe5369e98a6d81215bbfb5b5f41bf44ea1c5dbc8df94af75bb92dc1",
+      "orderedWrites": [
+        {
+          "sourceLine": 14,
+          "sourceText": "I2CWriteSameData(DEV_ADDR, 0x56, 0x16);  // Write reg 0x56 = 22",
+          "address": "0X56",
+          "value": "0X16"
+        },
+        {
+          "sourceLine": 15,
+          "sourceText": "I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // Write reg 0x57 = 8",
+          "address": "0X57",
+          "value": "0X08"
+        }
+      ]
+    }
+  },
+  "measurementPlan": {
+    "measurementPin": "V(DTEST0)",
+    "quantity": "VOLTAGE",
+    "resultPublisher": {
+      "kind": "set_test_result",
+      "minimumCount": 3,
+      "resultNames": [
+        "FALLING",
+        "RISING",
+        "HYS"
+      ]
+    },
+    "scanRangeResolution": {
+      "state": "RESOLVED",
+      "source": "VSET",
+      "lowV": 0.0,
+      "highV": 10.0,
+      "risingResult": "FALLING",
+      "fallingResult": "RISING",
+      "businessResultNames": [
+        "VAC1_PRST_Rise",
+        "VAC1_PRST_Fall",
+        "VAC1_PRST_Hys"
+      ]
+    },
+    "sweeps": [
+      {
+        "direction": "RISING",
+        "fromV": 0.0,
+        "toV": 10.0,
+        "trigger": "FALLING",
+        "result": "FALLING"
+      },
+      {
+        "direction": "FALLING",
+        "fromV": 10.0,
+        "toV": 0.0,
+        "trigger": "RISING",
+        "result": "RISING"
+      }
+    ]
+  },
+  "methodPhases": [
+    {
+      "name": "setup",
+      "actions": [
+        "Apply signed source tables and functional relays",
+        "Write signed register sourceText in order",
+        "After each functional relay closure, wait 3 ms before powering a source table"
+      ]
+    },
+    {
+      "name": "measure",
+      "actions": [
+        "Execute signed method plan"
+      ]
+    },
+    {
+      "name": "shutdown",
+      "actions": [
+        "Set all signed source tables to 0 V"
+      ]
+    }
+  ],
+  "powerDownPlan": {
+    "actions": [
+      "For every source table: Set(FV, 0, range, current, RELAY_ON)",
+      "Wait 1 ms after all sources are at 0 V",
+      "For every source table: Set(FV, 0, range, current, RELAY_OFF)"
+    ],
+    "safeEndState": "all test supplies are 0 V and disconnected"
+  },
+  "logPlan": {
+    "requiredResults": [
+      "FALLING",
+      "RISING",
+      "HYS"
+    ]
+  },
+  "maintenance": {
+    "mode": "FAST_DELIVERY",
+    "note": "generated from current signed DFT and strategy contracts"
+  }
+}

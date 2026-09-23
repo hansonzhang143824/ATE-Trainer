@@ -1,0 +1,113 @@
+=== A. every line containing "LogData" WITH a following paren ===
+  2294:     // ====== Step 6: LogData (method sec.6 logPlan) ======
+  4727:     // ====== Step 6: LogData (单参数组, 记录 4V 档结果) ======
+  5959:     // ====== Step 6: LogData (测试结果) ======
+  6041:     // ====== Step 6: LogData (测试结果) ======
+  6122:     // ====== Step 6: LogData (测试结果) ======
+  6205:     // ====== Step 6: LogData (测试结果) ======
+  6287:     // ====== Step 6: LogData (测试结果) ======
+  6368:     // ====== Step 6: LogData (测试结果) ======
+  6449:     // ====== Step 6: LogData (测试结果) ======
+  6531:     // ====== Step 6: LogData (测试结果) ======
+  6597:     // ====== Step 6: LogData (测试结果) ======
+  6661:     // ====== Step 6: LogData (测试结果) ======
+  6725:     // ====== Step 6: LogData (测试结果) ======
+  6791:     // ====== Step 6: LogData (测试结果) ======
+
+=== B. every line containing "LogData" (any form), first 20 ===
+  total LogData token lines: 91
+  1418:     // ====== Step 6: LogData ======
+  1472:     // ====== Step 6: LogData ======
+  1532:     // ====== Step 6: LogData ======
+  1585:     // ====== Step 6: LogData ======
+  1653:     // ====== Step 6: LogData ======
+  1716:     // ====== Step 6: LogData ======
+  1779:     // ====== Step 6: LogData ======
+  1847:     // ====== Step 6: LogData ======
+  1906:     // ====== Step 6: LogData ======
+  1981:     // ====== Step 6: LogData ======
+  2061:     // ====== Step 6: LogData ======
+  2140:     // ====== Step 6: LogData ======
+  2294:     // ====== Step 6: LogData (method sec.6 logPlan) ======
+  2379:     // ====== Step 6: LogData ======
+  2457:     // ====== Step 6: LogData ======
+  2536:     // ====== Step 6: LogData ======
+  2617:     // ====== Step 6: LogData ======
+  2691:     // ====== Step 6: LogData ======
+  2758:     // ====== Step 6: LogData ======
+  2816:     // ====== Step 6: LogData ======
+
+=== C. real call statements (code, not comment) anywhere in test.cpp ===
+  callables in CODE (real statements) matching log|trace|report|print|record|output|result:
+    GetMeasResult                      n=64    first lines [1399, 1410, 1464, 1522, 1575, 1643]
+    STSSetInitSelectDialog             n=2     first lines [354, 467]
+    SetTestResult                      n=187   first lines [1145, 1146, 1149, 1153, 1155, 1156]
+
+  ALL distinct callables used in CODE in the TM108 body (2193-2309):
+    FOR_EACH_VALID_SITE          [2263, 2271, 2302]
+    I2CWriteSameData             [2237, 2238]
+    Set                          [2227, 2281, 2282, 2283, 2290, 2291, 2292]
+    SetOn                        [2218]
+    SetTestResult                [2304, 2305, 2306]
+    StsGetParam                  [2196, 2197, 2198]
+    TM108_HSKP_VAC1_PRST         [2193]
+    delay_ms                     [2219, 2228, 2284]
+    entertestmode                [2235]
+    rampv_capv                   [2253, 2260]
+
+=== D. printf/TRACE/OutputDebugString lines ===
+  390: 				std::cout << "Hot key triggered!" << std::endl;
+  564: 		//cout << std::left << std::setw(20) << "I successed" << std::setw(20) << "I failed" << "paly"<< std::endl;
+  565: 		//cout << std::left << std::setw(20) << "I did" << std::setw(20) << "I fghjbchubru" << "frggvdbr" << std::endl;
+  569: 		////------------close printf window
+
+=== E. cbite.SetOn exact count ===
+  cbite.SetOn occurrences: 104
+
+=== F. lines 2246-2276 of the after-file (the P4-P6 region, step heading check) ===
+  2236:     // field[(DMUX_EN,1),(DMUX_SEL,22)] -> a2d_vac1_prst (reg_config/tm108.sv)
+  2237:     I2CWriteSameData(DEV_ADDR, 0x56, 0x16);
+  2238:     I2CWriteSameData(DEV_ADDR, 0x57, 0x08);
+  2239: 
+  2240:     // P4 rising sweep -> P5 turn-around -> P6 falling sweep (method sec.3 P4/P5/P6)
+  2241:     // sweepGeometry (method sec.6, recorded because F5/OI-T4-13 is open): start/stop per segment,
+  2242:     // step 200 (a SAMPLE COUNT, not a voltage increment), interval 20 us => 4 ms of sweep; both
+  2243:     // segments use the same source, range and capture level so a geometry mismatch cannot
+  2244:     // fabricate a hysteresis, and no relay acts at the turn-around. The observation endpoint is
+  2245:     // not asserted: the capture is read on the RA-5 candidate (PENDING-OI-T4-01).
+  2246: 
+  2247:     double vth_r[SITE_NUM] = { 0 };
+  2248:     double vth_f[SITE_NUM] = { 0 };
+  2249:     // rising sweep: the indication presents its FALLING edge inside the sweep window, so this
+  2250:     // segment yields the rising threshold. The polarity premise is PENDING (OI-T4-01); the
+  2251:     // triggerModeRise recorded by the station log is TRIG_FALLING - it names the slope of the
+  2252:     // observed node, not the direction of the input ramp.
+  2253:     test_method.rampv_capv(VAC123_AMUX_ACM, ACM200_20V, ACM200_100MA,
+  2254:                            NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+  2255:                            0.0, 10.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+  2256:     // falling sweep: mirrored segment, yields the falling threshold; triggerModeFall is recorded
+  2257:     // as TRIG_RISING under the same pending premise as the rise segment. The capture level is
+  2258:     // identical to the rise segment on purpose - a differing level would put a measurement
+  2259:     // artefact into Hys instead of a device hysteresis.
+  2260:     test_method.rampv_capv(VAC123_AMUX_ACM, ACM200_20V, ACM200_100MA,
+  2261:                            NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+  2262:                            10.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+  2263:     FOR_EACH_VALID_SITE(site)
+  2264:     {
+  2265:         rise_result[site] = vth_r[site];
+  2266:         fall_result[site] = vth_f[site];
+  2267:     }
+  2268:     // Hys = Rise - Fall (R-HYS: the x1e3 conversion happens at this assignment only and is never
+  2269:     // applied to the logged identity of Rise/Fall). Per site: Hys is computed from that site's own
+  2270:     // Rise and Fall - no cross-site averaging, interpolation or sharing of captured values.
+  2271:     FOR_EACH_VALID_SITE(site)
+  2272:     {
+  2273:         hys[site] = (rise_result[site] - fall_result[site]) * 1e3;
+  2274:     }
+  2275: 
+  2276:     // ====== Step 5: Power Off (P7 zero + hold -> P8 release, method sec.5, R-POFF) ======
+  2277:     // Step 1-3 of the power-down plan: zero every source while HOLDING its working range and
+  2278:     // leaving its relay ON, so that no contact is hot-switched between unequal potentials. All
+  2279:     // setpoints of this step are 0 V. K13_VBAT_Cap is still closed here, which is the intended
+
+=== G. any function DEFINITION in test.cpp that takes a string/format (possible logger) ===

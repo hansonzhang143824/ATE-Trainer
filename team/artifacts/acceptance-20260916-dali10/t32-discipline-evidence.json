@@ -1,0 +1,367 @@
+{
+ "D1": {
+  "artifact": "team/artifacts/acceptance-20260916-dali10/dft-ir.json",
+  "sha256": "d8f900a41e6a30f2c7022a881f5636a652c0fe0a6189e0d42aeb43fe1388a31b",
+  "symbols": {
+   "TM600": "TM600_HS_RDSON",
+   "TM601": "TM601_LS_RDSON"
+  },
+  "dftCsvRecords": {
+   "TM600": "index 18 (0-based) / csvRecord 19",
+   "TM601": "index 19 (0-based) / csvRecord 20"
+  },
+  "overviewRows": {
+   "TM600": "sheet=OVERVIEW!row 132",
+   "TM601": "sheet=OVERVIEW!row 133"
+  },
+  "limits": {
+   "TM600": [
+    {
+     "expression": "ExpectValue=11 (OVERVIEW, Test=direct, Special='Y / 2 FLOAT')",
+     "unit": "mΩ",
+     "sourceRank": 1,
+     "note": "OVERVIEW is the DFT intent source and the meta source of record."
+    },
+    {
+     "expression": "DFT.csv record 19 ExpectValue=10 (unit string 'mohm')",
+     "unit": "mΩ",
+     "sourceRank": 2,
+     "note": "10 vs 11 mΩ — conflict C-01. No averaging or silent choice is permitted."
+    }
+   ],
+   "TM601": [
+    {
+     "expression": "ExpectValue=7.5 (OVERVIEW, Test=direct, no Special flag)",
+     "unit": "mΩ",
+     "sourceRank": 1,
+     "note": "OVERVIEW/meta are the source of record."
+    },
+    {
+     "expression": "DFT.csv record 20 ExpectValue=8 (unit string 'mohm')",
+     "unit": "mΩ",
+     "sourceRank": 2,
+     "note": "7.5 vs 8 mΩ — conflict C-01. No averaging or silent choice."
+    }
+   ]
+  }
+ },
+ "D2": {
+  "contract": {
+   "path": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+   "size": 328805,
+   "sha256": "fd00a5082170293fcea29446c009fc432977d61a8f624ef17ac1c82f41515a18"
+  },
+  "plan": {
+   "path": "team/artifacts/acceptance-20260916-dali10/test-plan.json",
+   "size": 166099,
+   "sha256": "fabdd24f220d3b3e1eaf2bc782bf896adceb38074a72bffa7ba0d2d181ec8ed4"
+  },
+  "reviewCitation": {
+   "file": "team/artifacts/acceptance-20260916-dali10/review/t24-implementation-review.md",
+   "sha256": "7b0c4d9e4334fc9081d6c0815ef156f4153d57f988d1c10a8bef616e14484abb",
+   "citesContractRev": "rev 24 / 328805 B"
+  }
+ },
+ "D3": {
+  "reviewer": "rule-reviewer",
+  "t24": {
+   "path": "team/artifacts/acceptance-20260916-dali10/review/t24-implementation-review.md",
+   "sha256": "7b0c4d9e4334fc9081d6c0815ef156f4153d57f988d1c10a8bef616e14484abb",
+   "mentionsAuthorSeparation": false,
+   "verdictLines": [
+    "## 结论：**verdict = pass** ✅",
+    "| t22 假阳性项确未闭合 | **PASS** | 可执行代码内 `K5_VBUS_Cap` = **0**、`K44_Cap_SW2_BST2` = **0**、`K45_Cap_SW1_BST1` = **0** |",
+    "| t22 必需项确已闭合 | **PASS** | `K57_CAP_BST_SW` = **2**（TM601 SetOn `L377`、TM600 SetOn `L203`） |",
+    "| `delay_ms(1)`×6 / `delay_ms(2)`×0 | **PASS** | 去注释后 `delay_ms(1)` = **6**（`L246/263/311/424/456/461`）；`delay_ms(2)` = **0** |",
+    "| `SetClamp(50,50)`×2 | **PASS** | `L256`（TM600）、`L414`（TM601）；去注释后恰 2 处 |",
+    "| `MeasureVI(200,5,FPVIe_MV_X10)`×2 | **PASS** | `L268`、`L429` |"
+   ]
+  },
+  "t25": {
+   "path": "team/artifacts/acceptance-20260916-dali10/review/t25-independent-opinion.md",
+   "sha256": "dbc290caa19923056dc8b8339e9208d9d96d2e0aa6b61276a090ade07473dc36"
+  },
+  "implementerRole": "ate-implementer (payload author)",
+  "verifierRole": "dft-expert (this task, t32)",
+  "finding": "reviewability: rule-reviewer wrote the review; the payload author is ate-implementer; this task is executed by dft-expert — three distinct identities"
+ },
+ "D4": {
+  "backup": {
+   "path": "team/artifacts/acceptance-20260916-dali10/backups/test.cpp.before_TM600_TM601.bak",
+   "size": 434629,
+   "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317"
+  },
+  "deployed": {
+   "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+   "size": 469714,
+   "sha256": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a"
+  },
+  "applyRecord": {
+   "path": "team/artifacts/acceptance-20260916-dali10/t20-apply-verification.json",
+   "sha256": "37f181ebf5d9f857e71797446b3b01367a6af4e2566f85bbd9c7d9df2d8ff155",
+   "content": {
+    "before": {
+     "bytes": 434629,
+     "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+     "loneLF": 3,
+     "crlf": 8874,
+     "bom": true
+    },
+    "after": {
+     "bytes": 462848,
+     "sha256": "3dbceb496d79d7d08631713b98e46c0c2ba6163eaf5356a87dded677e35ba479",
+     "loneLF": 3,
+     "crlf": 9276,
+     "bom": true
+    },
+    "checks": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     true
+    ],
+    "defs": {
+     "TM600": 1,
+     "TM601": 1
+    },
+    "blockCounts": {
+     "delay_ms(1) in block": 6,
+     "delay_ms(2) in block": 0,
+     "SetClamp(50,50) in block": 2,
+     "MeasureVI(200,5 in block": 2,
+     "FPVIe_10A in block": 0,
+     "FPVIe_10UA in block": 2,
+     "rampi_capv in block": 0,
+     "rampv_capv in block": 0
+    },
+    "verdict": true
+   }
+  },
+  "manifest": {
+   "path": "team/artifacts/acceptance-20260916-dali10/implementation-manifest.json",
+   "sha256": "53ae63abe20fdfef7b3fbc22541e9f387e21f4e2d5dcab6dfd287b66e361dc71"
+  }
+ },
+ "D5": {
+  "targetRoot": "D:/PROJECT6-DALI/ForCodexDebug",
+  "productionRoot": "D:/PROJECT6-DALI/devel",
+  "hashes": {
+   "source/test.cpp": {
+    "target": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a",
+    "devel": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+    "identical": false
+   },
+   "source/StdAfx.h": {
+    "target": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+    "devel": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+    "identical": true
+   },
+   "source/sub.cpp": {
+    "target": "e86d49bef7ae725106311d8205df6dbc11184c7a0920eeaed416a515ac391470",
+    "devel": "e86d49bef7ae725106311d8205df6dbc11184c7a0920eeaed416a515ac391470",
+    "identical": true
+   },
+   "source/Pin_Channel_define.h": {
+    "target": "d5ce16a0ae79549424110755e99d9ae74cce79d18b8a1eaae3fd5588df285e35",
+    "devel": "d5ce16a0ae79549424110755e99d9ae74cce79d18b8a1eaae3fd5588df285e35",
+    "identical": true
+   }
+  }
+ },
+ "D6": {
+  "gateLogs": [
+   {
+    "name": "awg.log",
+    "size": 211,
+    "sha256": "c9bb8ff5a8feb147e6c9b1be3fe9b8eaea989504441d90bfe46c3597739fa9fa"
+   },
+   {
+    "name": "bst-sw.log",
+    "size": 174,
+    "sha256": "0fbf0cd3232508e70121188483ed5144dc48b88fb06a600a870a3322a2de6729"
+   },
+   {
+    "name": "cbit.log",
+    "size": 4782,
+    "sha256": "2fb094e5b188af1b79ce0d5d33715b2cd5f8a75746ba493415cdf4de32cd3f38"
+   },
+   {
+    "name": "input-sync.log",
+    "size": 1305,
+    "sha256": "9446e598676c003fd585655eb841e1abc86fcc3b48399f43d924265960f43aa1"
+   },
+   {
+    "name": "material-audit.log",
+    "size": 78,
+    "sha256": "f2a0901f017baf73000373d5362ebdfff51a00523dc962bd7db901238cd1a134"
+   },
+   {
+    "name": "material-status.log",
+    "size": 374,
+    "sha256": "64f2da5610848666f70b9cc14721a4ef6f02d9a347d8e599ced8fe6098fb4ae3"
+   },
+   {
+    "name": "material.log",
+    "size": 928,
+    "sha256": "aa1a164622646bbd2971a9dab2e73cf0abcd5297d8f702447620989f3892ee46"
+   },
+   {
+    "name": "merge.log",
+    "size": 177,
+    "sha256": "4ee031bab921b20d33b3d93468618c7d52a6c8ba0df80d72ed7b0d93a3be844e"
+   },
+   {
+    "name": "meta.log",
+    "size": 89,
+    "sha256": "0e061bfbcc2c1eb6c5312a9bb150df0f05cec37bc454762d00be4319126b7e9a"
+   },
+   {
+    "name": "path-def.log",
+    "size": 268,
+    "sha256": "c403234f5e2167d9020d6c5dfb730d4858fb3944e30c96ac5719d8c293ac575b"
+   },
+   {
+    "name": "relay-trace.log",
+    "size": 458,
+    "sha256": "bf2e3da7183026e04cb91bbc033ca82f18b245a9a5cd5017b6e99e6a054ca048"
+   },
+   {
+    "name": "run-gates-stdout.log",
+    "size": 1268,
+    "sha256": "beff99966a87723e709f7d71d88a666136ba5a79136eae34274291ca0d0789a3"
+   },
+   {
+    "name": "smoke.log",
+    "size": 126,
+    "sha256": "b4338ad79ce250d6a0efdf68cb4ae307b3b9f720e1cb58d18c730ed2ac3a983f"
+   },
+   {
+    "name": "t25-final-verification.md",
+    "size": 11204,
+    "sha256": "e8bd98dbbd8102056ba77768c1c915e91d58df894d502b3ceab74a0cdc48e23e"
+   }
+  ],
+  "t25Final": {
+   "sha256": "e8bd98dbbd8102056ba77768c1c915e91d58df894d502b3ceab74a0cdc48e23e",
+   "summaryLines": [
+    "- 触发：setup-architect 告知\"payload 已落盘 ⇒ relay-trace 已 GREEN、全套 exit 0\"",
+    "→ FULL_EXIT = 0",
+    "12 门 = 11 GREEN + cbit KNOWN-RED",
+    "relay-trace = GREEN exit 0",
+    "| `cbit` KNOWN-RED 正确分类 | **t25 F1** | `gate_baseline.json` 仍 28 B `021015da…`；门禁 12 门（此前 11 门） |",
+    "> `k57TokenAnalysis.maskingEffect`、`.verdict`、`.ledgerRequirement`、`.withdrawals`）——"
+   ]
+  },
+  "newRedAnalysis": {
+   "path": "team/artifacts/acceptance-20260916-dali10/t21-new-red-analysis.md",
+   "sha256": "f8bb40c6d7f269ef46affc3685e93771d57c5a7c75065732b4e0339d6da7e87e"
+  }
+ },
+ "D7": {
+  "buildEvidence": [
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/awg.log",
+    "size": 211
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/bst-sw.log",
+    "size": 174
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/cbit.log",
+    "size": 4782
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/input-sync.log",
+    "size": 1305
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/material-audit.log",
+    "size": 78
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/material-status.log",
+    "size": 374
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/material.log",
+    "size": 928
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/merge.log",
+    "size": 177
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/meta.log",
+    "size": 89
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/path-def.log",
+    "size": 268
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/relay-trace-after-f2.log",
+    "size": 797
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/relay-trace.log",
+    "size": 799
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/run-gates-stdout.log",
+    "size": 1996
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/smoke.log",
+    "size": 126
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/t25-capdefs-and-branch.json",
+    "size": 1458
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/t25-closure-report.md",
+    "size": 17155
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/t25-f3-sandbox.json",
+    "size": 2618
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/t25-hashes.json",
+    "size": 19444
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/t25-proofs.json",
+    "size": 18095
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/t25-reviewer-response-evidence.json",
+    "size": 4848
+   }
+  ],
+  "separationStatement": "build/compile evidence only; no instrument or hardware run by this task or by the implementation tasks",
+  "noHardwareRun": "no SMU/instrument access was used; the run has no electrical data"
+ },
+ "D8": {
+  "runDir": "team/artifacts/acceptance-20260916-dali10",
+  "fileCount": 101,
+  "sampleEvidenceFiles": [
+   "APPLY-TM600-TM601.md",
+   "HASH-AUDIT.md",
+   "RUN-LEDGER.md",
+   "review",
+   "t20-apply-result.json",
+   "t20-apply-verification.json",
+   "t21-new-red-analysis.md",
+   "t21-tm601-fr001-exception.md",
+   "t23-amendment-evidence.md",
+   "t23-apply-result.json",
+   "t23-apply-verification.json",
+   "t23_apply_replace.py"
+  ],
+  "writesOutsideRunDirByThisTask": "none"
+ }
+}

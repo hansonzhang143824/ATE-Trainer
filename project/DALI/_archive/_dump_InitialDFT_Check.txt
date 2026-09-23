@@ -1,0 +1,15 @@
+	Special test	Check	Comment
+	1. ABS >40V	PASS
+	2. require Current <1A, for CP.
+require Current <3A, for FT.	Concern
+	3. Test Freq > 100Khz	Concern	DEMO/PWM
+CLK
+	4. Test Force/Measure voltage accuracy < 0.2mV	PASS
+	5. Test Force/Measure current accuracy < 0.5%(include TGB)
+极限30uA@1A.	PASS
+	6. >2 float voltage test items	PASS	BUBO BST-SW
+	7. ADC	PASS	MCU侧
+	8. SCAN freqency	PENDING	取决于SCAN_OUT的结构；
+open drain: 1Mhz； push-pull: 10Mhz;
+	9. weak drive capability, ATEST0/1外挂高精度表，有BUFFER选项；	PASS	DE需要注意高阻抗节点，sample/hold节点；
+	10. Current sense difference in CP and FT.

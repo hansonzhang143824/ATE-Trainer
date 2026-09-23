@@ -1,0 +1,221 @@
+{
+  "schemaVersion": 8,
+  "stage": "INPUT_SYNC",
+  "tm": "TM109",
+  "materialRoots": {
+    "input": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial",
+    "output": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material",
+    "errorLog": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\ErrorLog"
+  },
+  "canonicalInputs": {
+    "dft": {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\Dali_testmode.xlsx",
+      "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "sheet": "OVERVIEW",
+      "rowCount": 1,
+      "rawRows": [
+        {
+          "Item": "TM109",
+          "Level": "HSKP",
+          "Name": "VAC2_PRST",
+          "Description": "VAC2 PRST CMOP threshold",
+          "ExpectValue": "rising vth 4.4V, hys 0.35V",
+          "Unit": "V",
+          "Test": "",
+          "Special": "",
+          "Purpose": "SCM",
+          "Trim": "",
+          "Notes": "ramp up/down vac1 from 3~5V, 1V/ms\nmux A2D_VAC2_PRST to dtest0\ncheck int pin toggle",
+          "Code1": "vset[vbat,3,100e-6,0]",
+          "Code2": "en_tm[]\nfield[(DMUX_EN,1),(DMUX_SEL,21)]\nvset[vac2,10,1e-3,0]\nvset[vac2,0,1e-3,0]",
+          "Code3": "delay[1e-3]\nfinish[]",
+          "Power": "VBAT",
+          "Dynamic": "VAC2",
+          "Check": "V(DTEST0)",
+          "isCodeGen": "Y",
+          "isRun": "",
+          "Assign": "",
+          "State \nAMS\nValidation": "Done",
+          "State\nBench Validation": "",
+          "is CP test?": "",
+          "CP comment": "",
+          "State\nATE Validation": "",
+          "HELPER": "ramp VAC , INT toggle",
+          "": "",
+          "de test": "r 4.079\nf 3.748",
+          "aetest": "",
+          "is test": "checked"
+        }
+      ],
+      "declaredPins": [
+        "VBAT",
+        "VAC2"
+      ],
+      "checkLabel": "V(DTEST0)",
+      "requiredOutputs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-meta.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-conditions.yaml",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-semantic-review.json"
+      ],
+      "missingOrStaleOutputs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-meta.json: sourceSha256 differs from canonical workbook plaintext hash",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109: DFT JSON/YAML lacks the required source coverage or condition fields",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-semantic-review.json: missing or invalid semantic review"
+      ],
+      "status": "stale"
+    },
+    "schematic": {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\Dali-SCH.csv",
+      "sha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a",
+      "requiredOutputs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\SCH-Connect-Map.txt",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\SCH-Connect-Map.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Component-Statistic.txt",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Components-Statistic.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Path-Proofs.txt",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Path-Proofs.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\schematic-receipt.json"
+      ],
+      "missingOrStaleOutputs": [],
+      "status": "ready"
+    },
+    "intentResolution": {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\meta\\intent-resolutions.json",
+      "sha256": "ab7d2a01708b7796a44c71b646a1afd613a76d06dd7650a176ae5cb8e41a2c61",
+      "entry": {
+        "status": "resolved",
+        "authority": "accepted project baseline",
+        "decision": {
+          "item": "VAC2_PRST",
+          "staticSupplies": [
+            {
+              "pin": "VBAT",
+              "voltageV": 3.0
+            }
+          ],
+          "sweptPin": "VAC2",
+          "registerWrites": [
+            {
+              "address": "0x56",
+              "value": "0x15"
+            },
+            {
+              "address": "0x57",
+              "value": "0x08"
+            }
+          ],
+          "monitorIntent": "DTEST0/nQON logic toggle",
+          "monitorDutPin": "nQON"
+        },
+        "conflict": {
+          "source": "project/DALI/input/DFT.csv",
+          "record": "TM109",
+          "fact": "The CSV row names VAC3 in Dynamic/monitor fields although the item, OVERVIEW and reg_config identify VAC2.",
+          "handling": "Do not use the copied VAC3 field as a stimulus or route authority."
+        },
+        "evidence": [
+          "team/artifacts/acceptance-20260916-dali10/dft-ir.json:1092-1228",
+          "team/artifacts/acceptance-20260916-dali10/review/t6-review-checklist.md:17,176",
+          "project/DALI/reg_config/tm109.sv"
+        ],
+        "scope": "This resolution adjudicates only the DFT source contradiction. Relay and instrument selection remain the strategy architect's job and must use project schematic/CBIT evidence."
+      },
+      "status": "declared",
+      "gate": "informational only; this file never blocks a run"
+    },
+    "specialPinInformation": {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\DALI-special-information.json",
+      "sha256": "86d11d43f8602cba604605fc015ba75a2d04a079345a5084f7442053c796d188",
+      "document": {
+        "schemaVersion": 1,
+        "project": "DALI",
+        "purpose": "Authoritative DALI special logical-pin mapping when ordinary schematic and VS evidence cannot resolve a logical test label, or when those sources conflict.",
+        "mappings": [
+          {
+            "logicalLabel": "DTEST0",
+            "aliases": [
+              "DEST0",
+              "V(DTEST0)",
+              "V(DEST0)"
+            ],
+            "physicalDutPin": "nQON",
+            "pinClass": "digital_mux_pin",
+            "authority": "project user ruling"
+          },
+          {
+            "logicalLabel": "ATEST0",
+            "aliases": [
+              "V(ATEST0)"
+            ],
+            "physicalDutPin": "AMUX",
+            "pinClass": "analog_mux_pin",
+            "authority": "project user ruling"
+          },
+          {
+            "logicalLabel": "ATEST1",
+            "aliases": [
+              "V(ATEST1)"
+            ],
+            "physicalDutPin": "VDM",
+            "pinClass": "analog_mux_pin",
+            "authority": "project user ruling"
+          }
+        ],
+        "useRule": "Use only after ordinary DFT, schematic, relay, and source-table evidence cannot uniquely resolve the logical label, or when they conflict. Record this document path, hash, logical label, and physical DUT pin in the strategy contract."
+      },
+      "status": "declared",
+      "gate": "authoritative only for listed DALI logical-pin mappings"
+    }
+  },
+  "dispatchableRoles": [
+    "dft-expert"
+  ],
+  "status": "needs-derived-artifacts",
+  "roleGates": {
+    "dft-expert": {
+      "role": "dft-expert",
+      "gate": "DFT_OUTPUT",
+      "status": "stale",
+      "canonicalInput": {
+        "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\Dali_testmode.xlsx",
+        "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+        "sheet": "OVERVIEW"
+      },
+      "requiredOutputs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-meta.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-conditions.yaml",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-semantic-review.json"
+      ],
+      "missingOrStaleOutputs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-meta.json: sourceSha256 differs from canonical workbook plaintext hash",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109: DFT JSON/YAML lacks the required source coverage or condition fields",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-semantic-review.json: missing or invalid semantic review"
+      ]
+    },
+    "schematic-expert": {
+      "role": "schematic-expert",
+      "gate": "SCHEMATIC_OUTPUT",
+      "status": "ready",
+      "canonicalInput": {
+        "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\Dali-SCH.csv",
+        "sha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a"
+      },
+      "requiredOutputs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\SCH-Connect-Map.txt",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\SCH-Connect-Map.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Component-Statistic.txt",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Components-Statistic.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Path-Proofs.txt",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Path-Proofs.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\schematic-receipt.json"
+      ],
+      "missingOrStaleOutputs": [],
+      "regenerationCommand": "python scripts/generate_schematic_txt.py --source project/DALI/Input_GlobalMaterial/Dali-SCH.csv --confirmed project/DALI/Input_GlobalMaterial/sch_confirmed.json --cbit project/DALI/Input_GlobalMaterial/CBIT表-DALI.xlsx --out-dir project/DALI/Output_Global_Material/schematic --expected-source-sha 04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a --expected-confirmed-sha 3283b7ca310357fe9ea6a01fdcd1c606a47136bf58be9accae3a3f8bd65b13d0 --expected-cbit-sha be5a7a18c161d7cb1df02972e322602c9b654104686bbbc256b2ed9eb6d1771a"
+    }
+  },
+  "globalGate": {
+    "name": "INPUT_SYNC_AGGREGATE",
+    "status": "pending",
+    "meaning": "Aggregates source-role gates only. Task COMPLETE is decided solely by the final PTC gate."
+  }
+}

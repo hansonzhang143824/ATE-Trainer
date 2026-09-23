@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "runId": "training-20260922t154456z-898b29e5",
+  "profileId": "ptc-dft-expert",
+  "childSessionId": "dfbf854e-46f4-4503-bef4-4855e2455f6a",
+  "childResult": {
+    "stopReason": "timeout",
+    "diagnostic": "training execution exceeded 300000 ms; cancellation requested; child result settlement unknown; process termination unconfirmed",
+    "structured": {
+      "status": "blocked",
+      "question": "training execution exceeded 300000 ms"
+    },
+    "lifecycle": {
+      "cancellationRequested": true,
+      "closed": true,
+      "reason": "training execution exceeded 300000 ms",
+      "stopReason": "timeout",
+      "childSettled": false,
+      "childSettlement": "unknown",
+      "deadlineActive": false,
+      "operations": [
+        {
+          "label": "agents.create",
+          "status": "fulfilled",
+          "startedAt": "2026-09-22T15:45:03.947Z",
+          "settledAt": "2026-09-22T15:45:03.982Z"
+        },
+        {
+          "label": "parent.whenIdle",
+          "status": "fulfilled",
+          "startedAt": "2026-09-22T15:45:03.987Z",
+          "settledAt": "2026-09-22T15:45:03.991Z"
+        },
+        {
+          "label": "subagents.start",
+          "status": "fulfilled",
+          "startedAt": "2026-09-22T15:45:03.993Z",
+          "settledAt": "2026-09-22T15:45:04.009Z"
+        },
+        {
+          "label": "child.result",
+          "status": "pending",
+          "startedAt": "2026-09-22T15:45:04.014Z"
+        }
+      ],
+      "disposals": [
+        {
+          "label": "agents.create",
+          "status": "pending",
+          "startedAt": "2026-09-22T15:50:03.980Z"
+        },
+        {
+          "label": "subagents.start",
+          "status": "pending",
+          "startedAt": "2026-09-22T15:50:03.983Z"
+        }
+      ]
+    }
+  },
+  "materialManifest": "Training_Materials/runs/training-20260922t154456z-898b29e5/material-manifest.json",
+  "cacheKey": "7e746c78dd4b428e0165b810d99a2412dbbdd19339d7cfcdbb0e90e77233eeb1",
+  "reports": [],
+  "verifiedAt": "2026-09-22T15:50:03.993Z"
+}

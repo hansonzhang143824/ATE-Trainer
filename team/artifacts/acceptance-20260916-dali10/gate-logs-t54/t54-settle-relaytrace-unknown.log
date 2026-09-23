@@ -1,0 +1,239 @@
+=== 无通道号别名（L316 判据真正使用的集合）===
+  无通道号宏总数 = 309
+  其中**属于多值宏**的 = 209 ['K_FPVIH_TO_ACDRV1_A', 'K_FPVIH_TO_ACDRV1_B', 'K_FPVIH_TO_ACDRV2_A', 'K_FPVIH_TO_ACDRV2_B', 'K_FPVIH_TO_ACDRV3_A', 'K_FPVIH_TO_ACDRV3_B', 'K_FPVIH_TO_AMUX_B', 'K_FPVIH_TO_BST_A', 'K_FPVIH_TO_BST_B', 'K_FPVIH_TO_CC1_A', 'K_FPVIH_TO_COMP_A', 'K_FPVIH_TO_COMP_B']
+  ⇒ 若为 0/极少 ⇒ relay-trace 的 L317 路径**不依赖多值宏**
+
+=== L316 的完整守卫（逐字）===
+  L310  if re.match(r'^K\d+_', r):
+  L311  canon_by_ch.setdefault(ch, r)
+  L312  if pt not in cap_defs or (re.match(r'^K\d+_', r) and not re.match(r'^K\d+_', cap_defs[pt])):
+  L313  cap_defs[pt] = r
+  L314  # 无通道号别名 (K_<Pin>_Cap) → 若同通道存在 K\d+ 权威名则指向它
+  L315  for pt, name in list(cap_defs.items()):
+  L316  if not re.match(r'^K\d+_', name) and defines[name] in canon_by_ch:
+  L317  cap_defs[pt] = canon_by_ch[defines[name]]
+  L318  
+  L319  errors, warns = [], []
+
+  L370  
+  L371  for r in relays:
+  L372  # ===== A. 名真实性 =====
+  L373  if r not in defines:
+  L374  errors.append(f'{name}: 虚构继电器名 {r} (无 #define)')
+  L375  continue
+  L376  n = defines[r]
+  L377  
+  L378  # ===== B. 功能规则 (Cap/PU/P2P 优先判定) =====
+  L379  pin = cap_pin(r)
+
+=== 结论判定 ===
+  ⚠️ 存在无通道号的多值宏 ⇒ 截断值**可能**进入判据 ⇒ 其 PASS 不足以作该证据。
+     K_FPVIH_TO_ACDRV1_A      true=[22, 30]             parsed=22
+     K_FPVIH_TO_ACDRV1_B      true=[136, 137, 143, 144, 22, 30] parsed=136
+     K_FPVIH_TO_ACDRV2_A      true=[23, 30]             parsed=23
+     K_FPVIH_TO_ACDRV2_B      true=[136, 137, 143, 144, 23, 30] parsed=136
+     K_FPVIH_TO_ACDRV3_A      true=[24, 30]             parsed=24
+     K_FPVIH_TO_ACDRV3_B      true=[136, 137, 143, 144, 24, 30] parsed=136
+     K_FPVIH_TO_AMUX_B        true=[136, 137, 143, 144, 154] parsed=136
+     K_FPVIH_TO_BST_A         true=[46, 48, 76]         parsed=46
+     K_FPVIH_TO_BST_B         true=[131, 132, 134, 135] parsed=131
+     K_FPVIH_TO_CC1_A         true=[136, 137, 143, 144, 96] parsed=136
+     K_FPVIH_TO_COMP_A        true=[156, 157]           parsed=156
+     K_FPVIH_TO_COMP_B        true=[136, 137, 143, 144, 156, 157] parsed=136
+     K_FPVIH_TO_DMA_PA7_A     true=[120, 136, 137, 143, 144] parsed=120
+     K_FPVIH_TO_HG1_A         true=[62, 64]             parsed=62
+     K_FPVIH_TO_HG1_B         true=[136, 137, 143, 144, 62, 64] parsed=136
+     K_FPVIH_TO_HG2_A         true=[83, 84]             parsed=83
+     K_FPVIH_TO_HG2_B         true=[136, 137, 143, 144, 83, 84] parsed=136
+     K_FPVIH_TO_INT_PA0_A     true=[101, 136, 137, 143, 144] parsed=101
+     K_FPVIH_TO_KLV1_B        true=[136, 137, 143, 144, 35] parsed=136
+     K_FPVIH_TO_KLV2_A        true=[35, 37]             parsed=35
+     K_FPVIH_TO_KLV2_B        true=[136, 137, 143, 144, 35, 37] parsed=136
+     K_FPVIH_TO_PA1_A         true=[106, 136, 137, 143, 144] parsed=106
+     K_FPVIH_TO_PA6_PWM2_A    true=[111, 136, 137, 143, 144] parsed=111
+     K_FPVIH_TO_PB1_A         true=[106, 107, 136, 137, 143, 144] parsed=106
+     K_FPVIH_TO_PB1_B         true=[106, 107]           parsed=106
+     K_FPVIH_TO_PB3_A         true=[136, 137, 143, 144, 96, 98] parsed=136
+     K_FPVIH_TO_PB3_B         true=[96, 98]             parsed=96
+     K_FPVIH_TO_PB5_A         true=[123, 136, 137, 143, 144] parsed=123
+     K_FPVIH_TO_PB6_A         true=[116, 117, 136, 137, 143, 144] parsed=116
+     K_FPVIH_TO_PB6_B         true=[116, 117]           parsed=116
+     K_FPVIH_TO_PB7_A         true=[116, 136, 137, 143, 144] parsed=116
+     K_FPVIH_TO_PC3_A         true=[101, 102, 136, 137, 143, 144] parsed=101
+     K_FPVIH_TO_PC3_B         true=[101, 102]           parsed=101
+     K_FPVIH_TO_PC5_A         true=[111, 112, 136, 137, 143, 144] parsed=111
+     K_FPVIH_TO_PC5_B         true=[111, 112]           parsed=111
+     K_FPVIH_TO_PD2_A         true=[120, 121, 136, 137, 143, 144] parsed=120
+     K_FPVIH_TO_PD2_B         true=[120, 121]           parsed=120
+     K_FPVIH_TO_PD3_A         true=[136, 137, 143, 144, 7, 8] parsed=136
+     K_FPVIH_TO_PD3_B         true=[7, 8]               parsed=7
+     K_FPVIH_TO_PGND_A        true=[154, 155]           parsed=154
+     K_FPVIH_TO_PGND_B        true=[136, 137, 143, 144, 154, 155] parsed=136
+     K_FPVIH_TO_PGND_WL_A     true=[35, 36]             parsed=35
+     K_FPVIH_TO_PGND_WL_B     true=[136, 137, 143, 144, 35, 36] parsed=136
+     K_FPVIH_TO_PMID_B        true=[136, 137, 143, 144, 83] parsed=136
+     K_FPVIH_TO_SDA_A         true=[58, 59]             parsed=58
+     K_FPVIH_TO_SDA_B         true=[136, 137, 143, 144, 58, 59] parsed=136
+     K_FPVIH_TO_SW1_B         true=[136, 137, 143, 144, 46] parsed=136
+     K_FPVIH_TO_SW2_A         true=[46, 49]             parsed=46
+     K_FPVIH_TO_SW2_B         true=[136, 137, 143, 144, 46, 49] parsed=136
+     K_FPVIH_TO_VAC1          true=[70, 87, 88, 90, 91] parsed=70
+     K_FPVIH_TO_VAC2          true=[19, 70, 87, 88, 90, 91] parsed=19
+     K_FPVIH_TO_VAC3          true=[18, 70, 87, 88, 90, 91] parsed=18
+     K_FPVIH_TO_VBAT_A        true=[136, 137, 143, 144, 7] parsed=136
+     K_FPVIH_TO_VCC_A         true=[25, 30]             parsed=25
+     K_FPVIH_TO_VCC_B         true=[136, 137, 143, 144, 25, 30] parsed=136
+     K_FPVIH_TO_VCN_B         true=[136, 137, 143, 144, 156] parsed=136
+     K_FPVIH_TO_VCP           true=[68, 87, 88, 90, 91] parsed=68
+     K_FPVIH_TO_VDM_B         true=[136, 137, 143, 144, 58] parsed=136
+     K_FPVIH_TO_nQON_B        true=[136, 137, 62, 66]   parsed=136
+     K_FPVIH_TO_nRST_A        true=[123, 124, 136, 137, 143, 144] parsed=123
+     K_FPVIH_TO_nRST_B        true=[123, 124]           parsed=123
+     K_FPVIL_TO_AMUX_A        true=[17, 18, 20]         parsed=17
+     K_FPVIL_TO_AMUX_B        true=[138, 139, 145, 146, 17, 18, 20] parsed=138
+     K_FPVIL_TO_BST1_B        true=[138, 139, 145, 146, 41] parsed=138
+     K_FPVIL_TO_BST2_A        true=[41, 43]             parsed=41
+     K_FPVIL_TO_BST2_B        true=[138, 139, 145, 146, 41, 43] parsed=138
+     K_FPVIL_TO_BST_A         true=[109, 110, 138, 139, 145, 146] parsed=109
+     K_FPVIL_TO_BST_B         true=[109, 110]           parsed=109
+     K_FPVIL_TO_CC2_A         true=[104, 105, 138, 139, 145, 146] parsed=104
+     K_FPVIL_TO_CC2_B         true=[104, 105]           parsed=104
+     K_FPVIL_TO_DMO_PC6_A     true=[138, 139, 145, 146, 94, 95] parsed=138
+     K_FPVIL_TO_DMO_PC6_B     true=[94, 95]             parsed=94
+     K_FPVIL_TO_DRVH1_A       true=[3, 4]               parsed=3
+     K_FPVIL_TO_DRVH1_B       true=[138, 139, 145, 146, 3, 4] parsed=138
+     K_FPVIL_TO_KLV1          true=[73, 88, 89, 90, 91] parsed=73
+     K_FPVIL_TO_KLV2          true=[37, 73, 88, 89, 90, 91] parsed=37
+     K_FPVIL_TO_LG1_B         true=[138, 139, 145, 146, 51] parsed=138
+     K_FPVIL_TO_LG2_A         true=[51, 52]             parsed=51
+     K_FPVIL_TO_LG2_B         true=[138, 139, 145, 146, 51, 52] parsed=138
+     K_FPVIL_TO_PA4_A         true=[118, 138, 139, 145, 146] parsed=118
+     K_FPVIL_TO_PA5_A         true=[114, 138, 139, 145, 146] parsed=114
+     K_FPVIL_TO_PB0_PWM1_A    true=[109, 138, 139, 145, 146] parsed=109
+     K_FPVIL_TO_PB2_A         true=[114, 115, 138, 139, 145, 146] parsed=114
+     K_FPVIL_TO_PB2_B         true=[114, 115]           parsed=114
+     K_FPVIL_TO_PB4_A         true=[118, 119, 138, 139, 145, 146] parsed=118
+     K_FPVIL_TO_PB4_B         true=[118, 119]           parsed=118
+     K_FPVIL_TO_PB5_A         true=[138, 139, 145, 146, 99] parsed=138
+     K_FPVIL_TO_PC4_A         true=[100, 138, 139, 145, 146, 99] parsed=100
+     K_FPVIL_TO_PC4_B         true=[100, 99]            parsed=100
+     K_FPVIL_TO_PC8_A         true=[138, 139, 145, 146, 94] parsed=138
+     K_FPVIL_TO_PD5_A         true=[104, 138, 139, 145, 146] parsed=104
+     K_FPVIL_TO_PGND_WL       true=[36, 73, 88, 89, 90, 91] parsed=36
+     K_FPVIL_TO_SCL_B         true=[138, 139, 145, 146, 32] parsed=138
+     K_FPVIL_TO_SW1_B         true=[138, 139, 145, 146, 47] parsed=138
+     K_FPVIL_TO_SW2_A         true=[47, 50]             parsed=47
+     K_FPVIL_TO_SW2_B         true=[138, 139, 145, 146, 47, 50] parsed=138
+     K_FPVIL_TO_SW_A          true=[60, 61]             parsed=60
+     K_FPVIL_TO_SW_B          true=[132, 133, 134, 135] parsed=132
+     K_FPVIL_TO_VAC1_B        true=[138, 139, 145, 146, 17] parsed=138
+     K_FPVIL_TO_VAC2_A        true=[17, 19]             parsed=17
+     K_FPVIL_TO_VAC2_B        true=[138, 139, 145, 146, 17, 19] parsed=138
+     K_FPVIL_TO_VAC3_A        true=[17, 18]             parsed=17
+     K_FPVIL_TO_VAC3_B        true=[138, 139, 145, 146, 17, 18] parsed=138
+     K_FPVIL_TO_VAC_WL_A      true=[32, 33]             parsed=32
+     K_FPVIL_TO_VAC_WL_B      true=[138, 139, 145, 146, 32, 33] parsed=138
+     K_FPVIL_TO_VBUS_B        true=[138, 139, 145, 146, 3] parsed=138
+     K_FPVIL_TO_VCC_B         true=[138, 139, 145, 146, 29] parsed=138
+     K_FPVIL_TO_VCN           true=[71, 88, 89, 90, 91] parsed=71
+     K_FPVIL_TO_VCP_B         true=[138, 139, 145, 146, 60] parsed=138
+     K_FPVIL_TO_VMCU_A        true=[29, 31]             parsed=29
+     K_FPVIL_TO_VMCU_B        true=[138, 139, 145, 146, 29, 31] parsed=138
+     K_ACDRV1_QTMU            true=[141, 22, 30]        parsed=141
+     K_ACDRV2_QTMU            true=[141, 23, 30]        parsed=141
+     K_ACDRV3_QTMU            true=[141, 24, 30]        parsed=141
+     K_AMUX_QTMU              true=[141, 154]           parsed=141
+     K_BST_QTMU               true=[141, 46, 48, 76]    parsed=141
+     K_COMP_QTMU              true=[141, 156, 157]      parsed=141
+     K_HG1_QTMU               true=[141, 62, 64]        parsed=141
+     K_HG2_QTMU               true=[141, 83, 84]        parsed=141
+     K_KLV1_QTMU              true=[141, 35]            parsed=141
+     K_KLV2_QTMU              true=[141, 35, 37]        parsed=141
+     K_PB1_QTMU               true=[106, 107]           parsed=106
+     K_PB3_QTMU               true=[96, 98]             parsed=96
+     K_PB6_QTMU               true=[116, 117]           parsed=116
+     K_PC3_QTMU               true=[101, 102]           parsed=101
+     K_PC5_QTMU               true=[111, 112]           parsed=111
+     K_PD2_QTMU               true=[120, 121]           parsed=120
+     K_PD3_QTMU               true=[7, 8]               parsed=7
+     K_PGND_QTMU              true=[141, 154, 155]      parsed=141
+     K_PGND_WL_QTMU           true=[141, 35, 36]        parsed=141
+     K_PMID_QTMU              true=[141, 83]            parsed=141
+     K_SDA_QTMU               true=[141, 58, 59]        parsed=141
+     K_SW1_QTMU               true=[141, 46]            parsed=141
+     K_SW2_QTMU               true=[141, 46, 49]        parsed=141
+     K_VCC_QTMU               true=[141, 25, 30]        parsed=141
+     K_VCN_QTMU               true=[141, 156]           parsed=141
+     K_VDM_QTMU_A             true=[141, 58]            parsed=141
+     K_nRST_QTMU              true=[123, 124]           parsed=123
+     K_ACDRV1_QVMH            true=[137, 22, 30]        parsed=137
+     K_ACDRV2_QVMH            true=[137, 23, 30]        parsed=137
+     K_ACDRV3_QVMH            true=[137, 24, 30]        parsed=137
+     K_AMUX_QVMH              true=[137, 154]           parsed=137
+     K_AMUX_QVML              true=[138, 17, 18, 20]    parsed=138
+     K_BST1_QVML              true=[138, 41]            parsed=138
+     K_BST2_QVML              true=[138, 41, 43]        parsed=138
+     K_BST_QVMH               true=[137, 46, 48, 76]    parsed=137
+     K_BST_QVML               true=[109, 110, 139]      parsed=109
+     K_CC1_QVMH               true=[136, 96]            parsed=136
+     K_CC2_QVML               true=[104, 105, 139]      parsed=104
+     K_COMP_QVMH              true=[137, 156, 157]      parsed=137
+     K_DMA_PA7_QVMH           true=[120, 136]           parsed=120
+     K_DMO_PC6_QVML           true=[139, 94, 95]        parsed=139
+     K_DRVH1_QVML             true=[138, 3, 4]          parsed=138
+     K_HG1_QVMH               true=[137, 62, 64]        parsed=137
+     K_HG2_QVMH               true=[137, 83, 84]        parsed=137
+     K_INT_PA0_QVMH           true=[101, 136]           parsed=101
+     K_KLV1_QVMH              true=[137, 35]            parsed=137
+     K_KLV2_QVMH              true=[137, 35, 37]        parsed=137
+     K_LG1_QVML               true=[138, 51]            parsed=138
+     K_LG2_QVML               true=[138, 51, 52]        parsed=138
+     K_PA1_QVMH               true=[106, 136]           parsed=106
+     K_PA4_QVML               true=[118, 139]           parsed=118
+     K_PA5_QVML               true=[114, 139]           parsed=114
+     K_PA6_PWM2_QVMH          true=[111, 136]           parsed=111
+     K_PB0_PWM1_QVML          true=[109, 139]           parsed=109
+     K_PB1_QVMH               true=[106, 107, 136]      parsed=106
+     K_PB2_QVML               true=[114, 115, 139]      parsed=114
+     K_PB3_QVMH               true=[136, 96, 98]        parsed=136
+     K_PB4_QVML               true=[118, 119, 139]      parsed=118
+     K_PB5_QVMH               true=[123, 136]           parsed=123
+     K_PB5_QVML               true=[139, 99]            parsed=139
+     K_PB6_QVMH               true=[116, 117, 136]      parsed=116
+     K_PB7_QVMH               true=[116, 136]           parsed=116
+     K_PC3_QVMH               true=[101, 102, 136]      parsed=101
+     K_PC4_QVML               true=[100, 139, 99]       parsed=100
+     K_PC5_QVMH               true=[111, 112, 136]      parsed=111
+     K_PC8_QVML               true=[139, 94]            parsed=139
+     K_PD2_QVMH               true=[120, 121, 136]      parsed=120
+     K_PD3_QVMH               true=[136, 7, 8]          parsed=136
+     K_PD5_QVML               true=[104, 139]           parsed=104
+     K_PGND_QVMH              true=[137, 154, 155]      parsed=137
+     K_PGND_WL_QVMH           true=[137, 35, 36]        parsed=137
+     K_PMID_QVMH              true=[137, 83]            parsed=137
+     K_SCL_QVML               true=[138, 32]            parsed=138
+     K_SDA_QVMH               true=[137, 58, 59]        parsed=137
+     K_SW1_QVMH               true=[137, 46]            parsed=137
+     K_SW1_QVML               true=[138, 47]            parsed=138
+     K_SW2_QVMH               true=[137, 46, 49]        parsed=137
+     K_SW2_QVML               true=[138, 47, 50]        parsed=138
+     K_SW_QVML                true=[138, 60, 61]        parsed=138
+     K_VAC1_QVML              true=[138, 17]            parsed=138
+     K_VAC2_QVML              true=[138, 17, 19]        parsed=138
+     K_VAC3_QVML              true=[138, 17, 18]        parsed=138
+     K_VAC_WL_QVML            true=[138, 32, 33]        parsed=138
+     K_VBAT_QVMH              true=[136, 7]             parsed=136
+     K_VBUS_QVML              true=[138, 3]             parsed=138
+     K_VCC_QVMH               true=[137, 25, 30]        parsed=137
+     K_VCC_QVML               true=[138, 29]            parsed=138
+     K_VCN_QVMH               true=[137, 156]           parsed=137
+     K_VCP_QVML               true=[138, 60]            parsed=138
+     K_VDM_QVMH               true=[137, 58]            parsed=137
+     K_VMCU_QVML              true=[138, 29, 31]        parsed=138
+     K_nQON_QVMH              true=[137, 62]            parsed=137
+     K_nRST_QVMH              true=[123, 124, 136]      parsed=123
+     K_BST_ACM                true=[48, 76]             parsed=48
+     K_PA0_PU                 true=[103, 128]           parsed=103
+     K_PA1_PU                 true=[108, 128]           parsed=108
+     K_PA6_PU                 true=[113, 128]           parsed=113
+     K_PA7_PU                 true=[122, 128]           parsed=122

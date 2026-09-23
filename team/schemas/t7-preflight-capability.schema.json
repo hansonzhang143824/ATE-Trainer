@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "T7 capability preflight",
+  "type": "object",
+  "required": ["runId", "methodContract", "targetSources", "requirements", "verdict"],
+  "properties": {
+    "runId": {"type": "string", "minLength": 1},
+    "methodContract": {"type": "object", "required": ["path", "sha256"]},
+    "targetSources": {"type": "array", "minItems": 1},
+    "requirements": {"type": "array", "minItems": 1},
+    "verdict": {"enum": ["pass", "blocked"]}
+  }
+}

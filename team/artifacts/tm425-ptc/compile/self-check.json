@@ -1,0 +1,8 @@
+{
+  "status": "BLOCKED",
+  "sourceSha256": "2ed19d63e8d761efcfbf7eaf187ee4e36e9a492bc965c94759e568dd7ff2c90c",
+  "reviewSha256": "2d8fd7a21af855d6691a389c64aaa7c2e068ea30be82d9899cdd9d93e2a7a0d4",
+  "errors": [
+    "TM425 references measure_mnt_v1p2_buf(TRIM_NODE*, TREG_MEASURE_FLAG, double*) but no implementation is linked (LNK2019; followed by LNK1120)."
+  ]
+}

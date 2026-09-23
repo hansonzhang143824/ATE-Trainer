@@ -1,0 +1,34 @@
+=== ① 多值宏是否 100% 被截断 ===
+  多值宏总数 = 209
+  其中被解析成"非全量"的 = 209
+     K_FPVIH_TO_ACDRV1_A    true=[22, 30]         parsed=22
+     K_FPVIH_TO_ACDRV1_B    true=[136, 137, 143, 144, 22, 30] parsed=136
+     K_FPVIH_TO_ACDRV2_A    true=[23, 30]         parsed=23
+     K_FPVIH_TO_ACDRV2_B    true=[136, 137, 143, 144, 23, 30] parsed=136
+     K_FPVIH_TO_ACDRV3_A    true=[24, 30]         parsed=24
+     K_FPVIH_TO_ACDRV3_B    true=[136, 137, 143, 144, 24, 30] parsed=136
+
+=== ② parse_defines 的调用点（全 scripts/ 扫描）===
+  verify_relay_trace.py            L39   def parse_defines(src):
+  verify_relay_trace.py            L294  defines = parse_defines(read_enc(defs_path))
+  含该符号的文件 = [('verify_relay_trace.py', 2)]
+  verify_bst_sw_sequence.py 是否使用 = False
+
+=== ③ 关键：relay-trace 是否把 defines 值当判据 ===
+  --- 含 cap_defs     的行 ---
+     L304  cap_defs = {}
+     L312  if pt not in cap_defs or (re.match(r'^K\d+_', r) and not re.match(r'^K\d+_', cap_defs[pt])):
+     L313  cap_defs[pt] = r
+     L315  for pt, name in list(cap_defs.items()):
+     L317  cap_defs[pt] = canon_by_ch[defines[name]]
+     L348  for ptok, cap_relay in sorted(cap_defs.items()):
+  --- 含 defines[     的行 ---
+     L316  if not re.match(r'^K\d+_', name) and defines[name] in canon_by_ch:
+     L317  cap_defs[pt] = canon_by_ch[defines[name]]
+     L376  n = defines[r]
+  --- 含 defines.get  的行 ---
+  --- 含 K_           的行 ---
+     L124  #   符合 Kx_Pin_Cap_x / Kx_Cap_Pin_Cap_x / K_Pin_Cap / K_Cap_Pin 任一格式即认定为稳压电容
+     L300  #   K_VAC1_Cap=21 ≡ K21_VAC_Cap=21, K_SW_BST_Cap=57 ≡ K57_CAP_BST_SW=57,
+     L301  #   K_V1P5_VDRV_Cap=126 ≡ K126_V1P5_CAP=126) 会解析成不同 PIN token → 双家族
+     L314  # 无通道号别名 (K_<Pin>_Cap) → 若同通道存在 K\d+ 权威名则指向它

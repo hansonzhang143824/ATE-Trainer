@@ -1,0 +1,39 @@
+{
+  "before": {
+    "bytes": 434629,
+    "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+    "loneLF": 3,
+    "crlf": 8874,
+    "bom": true
+  },
+  "after": {
+    "bytes": 462848,
+    "sha256": "3dbceb496d79d7d08631713b98e46c0c2ba6163eaf5356a87dded677e35ba479",
+    "loneLF": 3,
+    "crlf": 9276,
+    "bom": true
+  },
+  "checks": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "defs": {
+    "TM600": 1,
+    "TM601": 1
+  },
+  "blockCounts": {
+    "delay_ms(1) in block": 6,
+    "delay_ms(2) in block": 0,
+    "SetClamp(50,50) in block": 2,
+    "MeasureVI(200,5 in block": 2,
+    "FPVIe_10A in block": 0,
+    "FPVIe_10UA in block": 2,
+    "rampi_capv in block": 0,
+    "rampv_capv in block": 0
+  },
+  "verdict": true
+}

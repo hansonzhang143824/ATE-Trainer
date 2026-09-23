@@ -1,0 +1,45 @@
+{
+  "note": "in-memory tampered copy for the anchor negative test; NOT the real dft-ir.json",
+  "tamperedLiveClaims": {
+    "TM600.forcePins": [
+      "PMID (High)",
+      "SW (Low)"
+    ],
+    "TM600.iset": [
+      {
+        "pin": "sw",
+        "value": 1.0,
+        "unit": "A"
+      }
+    ],
+    "TM601.forcePins": [
+      "PMID (High)",
+      "SW (Low)"
+    ],
+    "TM601.iset": [
+      {
+        "pin": "pmid_sw",
+        "value": 1.0,
+        "unit": "A"
+      }
+    ],
+    "conflictIds": [
+      "C-01",
+      "C-02",
+      "C-03",
+      "C-04",
+      "C-05",
+      "C-06"
+    ],
+    "ruledPairMarker": true
+  },
+  "tamperedDigest": "ec17c7d53c4647a9aac5003d9f8a81a412a1ec57791aa0207cde4c6e9b1eb7c0",
+  "expectationFailures": [
+    [
+      "expectation-violated",
+      "TM601.forcePins",
+      "['PGND (High)', 'SW (Low)']",
+      "['PMID (High)', 'SW (Low)']"
+    ]
+  ]
+}

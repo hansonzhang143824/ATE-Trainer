@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm108-implementation-review-self-check",
+  "taskId": "TM108-PTC-RULE_REVIEW_IMPLEMENTATION",
+  "trial": "tm108-ptc",
+  "tm": "TM108",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_IMPLEMENTATION",
+  "signedInputs": {
+    "implementationManifestSha256": "f7e6967a0cad59688811a98e64efe2952d9b2bd030fc1307c05128bcf5e51003"
+  },
+  "checks": [
+    {
+      "id": "SC-1",
+      "result": "PASS",
+      "detail": "Used the DLP plaintext implementation verifier."
+    },
+    {
+      "id": "SC-2",
+      "result": "PASS",
+      "detail": "No implementation source or manifest was changed by this review."
+    }
+  ]
+}

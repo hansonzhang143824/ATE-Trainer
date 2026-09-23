@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NU1201 STS8300 测试代码生成 · 项目进展汇报</title>
+<meta name="description" content="项目目标 / 技术框架 / 实现计划 / 当前进展 —— 图形化汇报版，2026-09-20。">
+<style>
+:root{
+  --sans:system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Consolas,"Courier New",monospace;
+
+  --bg:#0b0f12;
+  --surface:#131a1f;
+  --surface-2:#1a222a;
+  --surface-3:#222c35;
+  --ink:#e9edeb;
+  --muted:#98a39d;
+  --faint:#7c8781;
+  --border:#232d35;
+  --border-2:#313d47;
+  --rail:#3d4954;
+
+  --accent:#3fc9b6;   --accent-soft:rgba(63,201,182,.14);
+  --agent:#b79cf0;    --agent-soft:rgba(183,156,240,.16);
+  --script:#4fc3d9;   --script-soft:rgba(79,195,217,.14);
+  --tpl:#7fa6f0;      --tpl-soft:rgba(127,166,240,.14);
+  --ok:#5ecb92;       --ok-soft:rgba(94,203,146,.16);
+  --warn:#eab55c;     --warn-soft:rgba(234,181,92,.16);
+  --bad:#f08a78;      --bad-soft:rgba(240,138,120,.16);
+  --shadow:0 1px 2px rgba(0,0,0,.45),0 18px 40px -22px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:5.2rem}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--sans);font-size:15px;line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1000px 480px at 10% -10%, rgba(63,201,182,.06), transparent 60%);
+  background-repeat:no-repeat;
+}
+::selection{background:rgba(63,201,182,.28);color:#fff}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+::placeholder{color:var(--faint)}
+*{scrollbar-color:var(--border-2) transparent;scrollbar-width:thin}
+::-webkit-scrollbar{height:10px;width:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:6px}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes grow{from{width:0}}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+
+.wrap{max-width:1200px;margin:0 auto;padding:0 1.5rem}
+
+/* ---------- masthead ---------- */
+.masthead{padding:3.2rem 0 2rem}
+h1{margin:0 0 .7rem;font-size:clamp(1.8rem,3.6vw,2.5rem);font-weight:700;letter-spacing:-.024em;line-height:1.14}
+h1 .tag{display:block;margin-bottom:.6rem;font-family:var(--mono);font-size:.75rem;font-weight:500;
+  letter-spacing:.1em;color:var(--accent);text-transform:uppercase}
+.thesis{margin:0 0 1.4rem;max-width:62ch;font-size:1.04rem;color:var(--muted)}
+.thesis b{color:var(--ink);font-weight:600}
+.factline{display:flex;flex-wrap:wrap;gap:.5rem 2rem;padding-top:1rem;border-top:1px solid var(--border);
+  font-size:.85rem;color:var(--muted)}
+.factline b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+
+/* ---------- nav ---------- */
+.nav{position:sticky;top:0;z-index:20;background:rgba(11,15,18,.84);
+  backdrop-filter:blur(12px) saturate(1.2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.nav ol{display:flex;flex-wrap:wrap;gap:.4rem 2rem;margin:0;padding:.72rem 0;list-style:none}
+.nav a{display:inline-flex;align-items:baseline;gap:.5rem;color:var(--muted);text-decoration:none;
+  text-decoration-thickness:1px;text-underline-offset:5px;font-size:.9rem;transition:color .18s ease}
+.nav a:hover{color:var(--accent);text-decoration:underline}
+.nav a i{font-family:var(--mono);font-style:normal;font-size:.72rem;color:var(--faint);letter-spacing:.06em}
+
+/* ---------- sections ---------- */
+section{padding:3.2rem 0 1rem;border-top:1px solid var(--border)}
+.sec-head{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;margin-bottom:.7rem}
+.sec-num{font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:.14em;color:var(--accent)}
+h2{margin:0;font-size:clamp(1.35rem,2.4vw,1.7rem);font-weight:700;letter-spacing:-.018em}
+.sub{margin:0 0 1.8rem;max-width:74ch;color:var(--muted);font-size:.96rem}
+.sub b{color:var(--ink);font-weight:600}
+
+h3{margin:2.2rem 0 .8rem;font-size:.98rem;font-weight:650;color:var(--ink)}
+h3:first-of-type{margin-top:0}
+h3 .n{font-family:var(--mono);font-size:.78rem;color:var(--faint);font-weight:500;margin-right:.55rem}
+p{margin:0 0 .9rem;max-width:74ch}
+code{font-family:var(--mono);font-size:.85em;background:#070a0c;color:#cfe9e2;
+  border:1px solid var(--border);border-radius:4px;padding:.08em .38em}
+
+/* ---------- legend ---------- */
+.legend{display:flex;flex-wrap:wrap;gap:.5rem 1.3rem;margin:0 0 1.3rem;font-size:.82rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:.4rem}
+.dot{width:.55rem;height:.55rem;border-radius:2px;flex:none}
+.d-agent{background:var(--agent)} .d-script{background:var(--script)}
+.d-tpl{background:var(--tpl)} .d-gate{background:var(--warn)} .d-out{background:var(--accent)}
+
+/* ---------- diagram card ---------- */
+.fig{margin:0 0 1.6rem;padding:1.2rem 1rem .8rem;border:1px solid var(--border);border-radius:14px;
+  background:linear-gradient(180deg,var(--surface),#101619);box-shadow:var(--shadow);overflow-x:auto}
+.fig svg{display:block;width:100%;min-width:660px;height:auto}
+.fig figcaption{margin:.7rem .4rem 0;font-size:.8rem;color:var(--faint)}
+.fig figcaption b{color:var(--muted);font-weight:600}
+.sv-label{font-family:var(--mono);font-size:12px;fill:var(--faint);letter-spacing:.06em}
+.sv-node{font-family:var(--sans);font-size:13.5px;font-weight:600;fill:var(--ink)}
+.sv-sub{font-family:var(--mono);font-size:11px;fill:var(--faint)}
+.sv-tiny{font-family:var(--sans);font-size:12px;fill:var(--muted)}
+
+/* ---------- bars ---------- */
+.metrics{display:grid;gap:.85rem 2rem;grid-template-columns:repeat(auto-fit,minmax(21rem,1fr));margin:0 0 1.6rem}
+.metric{display:grid;grid-template-columns:9.6rem 1fr 5.6rem;align-items:center;gap:.85rem;font-size:.9rem}
+.metric .mk{color:var(--muted)}
+.metric .mv{font-family:var(--mono);font-size:.82rem;color:var(--ink);text-align:right;font-variant-numeric:tabular-nums}
+.bar{position:relative;height:.62rem;border-radius:999px;background:var(--surface-3);overflow:hidden}
+.bar i{position:absolute;inset:0 auto 0 0;width:var(--v);border-radius:999px;
+  background:linear-gradient(90deg,var(--accent),#5fd9c8);animation:grow .8s cubic-bezier(.16,.84,.44,1) backwards}
+.bar i.w{background:linear-gradient(90deg,var(--warn),#f0c877)}
+.bar i.m{background:linear-gradient(90deg,var(--rail),var(--border-2))}
+@media (max-width:560px){ .metric{grid-template-columns:8.4rem 1fr;row-gap:.2rem} .metric .mv{grid-column:2;text-align:left} }
+
+/* ---------- gate grid ---------- */
+.gates{display:grid;grid-template-columns:repeat(auto-fit,minmax(8.2rem,1fr));gap:.6rem;margin:0 0 1.2rem}
+.gate{display:flex;align-items:center;gap:.5rem;padding:.55rem .7rem;border-radius:9px;
+  border:1px solid var(--border);background:var(--surface);font-size:.8rem}
+.gate b{font-family:var(--mono);font-weight:500;font-size:.76rem;color:var(--ink);white-space:nowrap}
+.gate i{width:.5rem;height:.5rem;border-radius:50%;flex:none}
+.gate.ok i{background:var(--ok);box-shadow:0 0 0 3px var(--ok-soft)}
+.gate.known i{background:var(--warn);box-shadow:0 0 0 3px var(--warn-soft)}
+
+/* ---------- before/after ---------- */
+.fixes{display:grid;gap:1rem;margin:0 0 1.2rem}
+.fix{display:grid;grid-template-columns:11.5rem 1fr;gap:1rem;align-items:center}
+.fix .nm{font-family:var(--mono);font-size:.79rem;color:var(--muted);word-break:break-all}
+.pair{display:grid;grid-template-columns:1fr 2.2rem 1fr;align-items:center;gap:.55rem}
+.pair .b{height:.6rem;border-radius:999px;background:var(--surface-3);position:relative;overflow:hidden}
+.pair .b i{position:absolute;inset:0 auto 0 0;border-radius:999px}
+.pair .b.before i{width:var(--v);background:linear-gradient(90deg,var(--bad),#f4a394)}
+.pair .b.after i{width:var(--v);background:linear-gradient(90deg,var(--ok),#7ddcab)}
+.pair .arw{font-family:var(--mono);font-size:.8rem;color:var(--faint);text-align:center}
+@media (max-width:640px){ .fix{grid-template-columns:1fr} }
+
+/* ---------- chips ---------- */
+.chip{display:inline-flex;align-items:center;gap:.35rem;padding:.1rem .46rem;border-radius:999px;
+  font-size:.75rem;font-weight:600;white-space:nowrap;line-height:1.55}
+.c-ok{color:var(--ok);background:var(--ok-soft)}
+.c-warn{color:var(--warn);background:var(--warn-soft)}
+.c-agent{color:var(--agent);background:var(--agent-soft)}
+.c-script{color:var(--script);background:var(--script-soft)}
+.c-mute{color:var(--faint);background:var(--surface-2)}
+
+.note{margin:1.5rem 0;padding:.95rem 1.15rem;border:1px solid var(--border);border-radius:11px;
+  background:var(--surface-2);font-size:.89rem;color:var(--muted)}
+.note p:last-child{margin-bottom:0}
+.note b{color:var(--ink);font-weight:650}
+.note--accent{background:var(--accent-soft);border-color:rgba(63,201,182,.28)}
+
+footer{margin-top:3rem;padding:1.6rem 0 3rem;border-top:1px solid var(--border);color:var(--faint);font-size:.82rem}
+footer p{margin:.2rem 0;max-width:none}
+
+@media print{
+  body{background:#0b0f12;-webkit-print-color-adjust:exact;print-color-adjust:exact;font-size:10.5pt}
+  .nav{position:static;backdrop-filter:none}
+  section{page-break-inside:avoid}
+  .fig,.metrics,.gates,.fixes{page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead wrap">
+  <h1>
+    <span class="tag">Nuvolta · NU1201 · STS8300 · Offline Coding</span>
+    测试代码自动生成 · 项目进展汇报
+  </h1>
+  <p class="thesis">
+    输入是 <b>DFT 与原理图</b>，输出是<b>能编译的测试代码</b>。
+    中间由一条可复算的流水线完成：每段代码说得清依据，每道门禁跑得出结论。
+  </p>
+  <div class="factline">
+    <span>汇报 <b>2026-09-20</b></span>
+    <span>开工 <b>2026-08-09</b></span>
+    <span>目标完成 <b>2026-12 底</b></span>
+    <span>数据截至 <b>2026-09-13</b></span>
+  </div>
+</header>
+
+<nav class="nav" aria-label="章节导航">
+  <div class="wrap"><ol>
+    <li><a href="#goal"><i>01</i>项目目标</a></li>
+    <li><a href="#arch"><i>02</i>技术框架</a></li>
+    <li><a href="#plan"><i>03</i>实现计划</a></li>
+    <li><a href="#now"><i>04</i>当前进展</a></li>
+  </ol></div>
+</nav>
+
+<main class="wrap">
+
+<!-- ========== 01 ========== -->
+<section id="goal">
+  <div class="sec-head"><span class="sec-num">01</span><h2>项目目标</h2></div>
+  <p class="sub">把「逐项手写测试代码」换成「<b>由输入驱动的流水线</b>」—— 四个转变：</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 1180 300" role="img" aria-label="项目目标：三个转变">
+      <defs>
+        <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--rail)"/>
+        </marker>
+      </defs>
+      <g>
+        <text class="sv-label" x="24" y="30">速度</text>
+        <rect x="24" y="40" width="430" height="46" rx="10" fill="var(--surface-2)" stroke="var(--border-2)"/>
+        <text class="sv-tiny" x="44" y="69">逐项手写 · 人力随测试项线性增长</text>
+        <path d="M470 63 H536" stroke="var(--rail)" stroke-width="1.6" marker-end="url(#a1)"/>
+        <rect x="552" y="40" width="604" height="46" rx="10" fill="var(--accent-soft)" stroke="rgba(63,201,182,.45)"/>
+        <text class="sv-node" x="572" y="69">可编排的流水线 · 按批次推进</text>
+      </g>
+      <g>
+        <text class="sv-label" x="24" y="112">一致性</text>
+        <rect x="24" y="122" width="430" height="46" rx="10" fill="var(--surface-2)" stroke="var(--border-2)"/>
+        <text class="sv-tiny" x="44" y="151">规则散在个人经验里 · 口径不一</text>
+        <path d="M470 145 H536" stroke="var(--rail)" stroke-width="1.6" marker-end="url(#a1)"/>
+        <rect x="552" y="122" width="604" height="46" rx="10" fill="var(--accent-soft)" stroke="rgba(63,201,182,.45)"/>
+        <text class="sv-node" x="572" y="151">注册表规则 + 可复算门禁 · 机器保证口径</text>
+      </g>
+      <g>
+        <text class="sv-label" x="24" y="194">纠错时机</text>
+        <rect x="24" y="204" width="430" height="46" rx="10" fill="var(--surface-2)" stroke="var(--border-2)"/>
+        <text class="sv-tiny" x="44" y="233">到集成阶段才暴露 · 返工面大</text>
+        <path d="M470 227 H536" stroke="var(--rail)" stroke-width="1.6" marker-end="url(#a1)"/>
+        <rect x="552" y="204" width="604" height="46" rx="10" fill="var(--accent-soft)" stroke="rgba(63,201,182,.45)"/>
+        <text class="sv-node" x="572" y="233">三层检验前移 · 问题停在最小范围</text>
+      </g>
+      <g>
+        <text class="sv-label" x="24" y="276">知识留存</text>
+        <rect x="24" y="286" width="430" height="2" rx="1" fill="var(--border)"/>
+        <text class="sv-sub" x="24" y="282">↓ 见 02 知识层</text>
+        <text class="sv-sub" x="552" y="282">随批次沉淀：规则 · 经验 · 案例库</text>
+      </g>
+    </svg>
+    <figcaption>交付形态：<b>能编译的测试代码 + 可复算的证据链 + 随批次沉淀的知识资产</b></figcaption>
+  </figure>
+</section>
+
+<!-- ========== 02 ========== -->
+<section id="arch">
+  <div class="sec-head"><span class="sec-num">02</span><h2>技术框架</h2></div>
+  <p class="sub">
+    一张图看清全流程，一张图看清分工。<b>贯穿全局的分界线：需要判断的交给 Agent，固定的交给脚本。</b>
+  </p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 1180 700" role="img" aria-label="主流水线全景图">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--rail)"/>
+        </marker>
+        <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/>
+        </marker>
+      </defs>
+
+      <text class="sv-label" x="20" y="22">① 输入源</text>
+      <g fill="var(--surface-2)" stroke="var(--border-2)">
+        <rect x="20"   y="34" width="210" height="52" rx="10"/>
+        <rect x="252"  y="34" width="210" height="52" rx="10"/>
+        <rect x="484"  y="34" width="210" height="52" rx="10"/>
+        <rect x="716"  y="34" width="210" height="52" rx="10"/>
+        <rect x="948"  y="34" width="212" height="52" rx="10"/>
+      </g>
+      <g class="sv-node" text-anchor="middle">
+        <text x="125" y="58">DFT</text><text x="357" y="58">原理图</text><text x="589" y="58">ChannelMap</text>
+        <text x="821" y="58">机台手册</text><text x="1054" y="58">工程师经验</text>
+      </g>
+      <g class="sv-sub" text-anchor="middle">
+        <text x="125" y="75">测试意图</text><text x="357" y="75">通路与继电器</text><text x="589" y="75">通道↔工位</text>
+        <text x="821" y="75">API / 约束</text><text x="1054" y="75">规则 · 经验 · 库函数</text>
+      </g>
+      <path d="M590 86 V124" stroke="var(--rail)" stroke-width="1.6" marker-end="url(#arr)"/>
+
+      <text class="sv-label" x="20" y="142">② 批次前置门（每批一次）</text>
+      <g fill="var(--surface)" stroke="var(--border-2)">
+        <rect x="20"  y="152" width="270" height="52" rx="10"/>
+        <rect x="310" y="152" width="270" height="52" rx="10"/>
+        <rect x="600" y="152" width="270" height="52" rx="10"/>
+        <rect x="890" y="152" width="270" height="52" rx="10"/>
+      </g>
+      <g class="sv-node" text-anchor="middle">
+        <text x="155" y="176">工程完整性</text><text x="445" y="176">输入同步</text>
+        <text x="735" y="176">原理图解析</text><text x="1025" y="176">继电器定义</text>
+      </g>
+      <g class="sv-sub" text-anchor="middle">
+        <text x="155" y="193">缺文件即停</text><text x="445" y="193">按哈希判版本</text>
+        <text x="735" y="193">有货先验</text><text x="1025" y="193">有则只校验</text>
+      </g>
+      <path d="M590 204 V240" stroke="var(--rail)" stroke-width="1.6" marker-end="url(#arr)"/>
+
+      <rect x="20" y="250" width="1140" height="46" rx="10" fill="var(--warn-soft)" stroke="rgba(234,181,92,.4)"/>
+      <text class="sv-node" x="42" y="270">③ 材料门 · 批次级判定</text>
+      <text class="sv-tiny" x="42" y="287">一次看全整批可用性（参数类型 × 材料三档 × 测试框架）—— 零内容载入；缺口记录放行，收据不实则拦截</text>
+      <path d="M590 296 V332" stroke="var(--rail)" stroke-width="1.6" marker-end="url(#arr)"/>
+
+      <text class="sv-label" x="20" y="350">④ 生成循环 · 按组执行（分组键 = 参数类型 + 测试条件指纹）</text>
+      <g stroke-width="1.2">
+        <rect x="14"  y="360" width="128" height="62" rx="9" fill="var(--tpl-soft)"    stroke="rgba(127,166,240,.45)"/>
+        <rect x="158" y="360" width="128" height="62" rx="9" fill="var(--agent-soft)"  stroke="rgba(183,156,240,.5)"/>
+        <rect x="302" y="360" width="128" height="62" rx="9" fill="var(--script-soft)" stroke="rgba(79,195,217,.45)"/>
+        <rect x="446" y="360" width="128" height="62" rx="9" fill="var(--tpl-soft)"    stroke="rgba(127,166,240,.45)"/>
+        <rect x="590" y="360" width="128" height="62" rx="9" fill="var(--agent-soft)"  stroke="rgba(183,156,240,.5)"/>
+        <rect x="734" y="360" width="128" height="62" rx="9" fill="var(--tpl-soft)"    stroke="rgba(127,166,240,.45)"/>
+        <rect x="878" y="360" width="128" height="62" rx="9" fill="var(--script-soft)" stroke="rgba(79,195,217,.45)"/>
+        <rect x="1022" y="360" width="144" height="62" rx="9" fill="var(--accent-soft)" stroke="rgba(63,201,182,.5)"/>
+      </g>
+      <g class="sv-node" text-anchor="middle" font-size="13">
+        <text x="78" y="386">取料</text><text x="222" y="386">继电器</text><text x="366" y="386">上电</text>
+        <text x="510" y="386">寄存器</text><text x="654" y="386">测量</text><text x="798" y="386">LogData</text>
+        <text x="942" y="386">下电</text><text x="1094" y="386">单项冒烟</text>
+      </g>
+      <g class="sv-sub" text-anchor="middle">
+        <text x="78" y="404">三档取料 + 选模板</text><text x="222" y="404">先通路→后角色</text>
+        <text x="366" y="404">脚本 R-PON</text><text x="510" y="404">解锁 + 写值</text>
+        <text x="654" y="404">MI/MV/Toggle</text><text x="798" y="404">单位规则</text>
+        <text x="942" y="404">R-POFF</text><text x="1094" y="404">7 项结构自检</text>
+      </g>
+      <path d="M1094 422 V456 H78 V428" fill="none" stroke="var(--accent)" stroke-width="1.4"
+            stroke-dasharray="5 4" marker-end="url(#arrA)"/>
+      <text class="sv-tiny" x="600" y="472" text-anchor="middle" fill="var(--accent)">下一个测试项（失败则停留当前项）</text>
+
+      <text class="sv-label" x="20" y="508">⑤ 收尾（全批）</text>
+      <g fill="var(--surface)" stroke="var(--border-2)">
+        <rect x="20"  y="518" width="560" height="52" rx="10"/>
+        <rect x="600" y="518" width="560" height="52" rx="10"/>
+      </g>
+      <text class="sv-node" x="42" y="542">12 项统一门禁</text>
+      <text class="sv-sub"  x="42" y="559">一次调用跑完 · 自动区分新增失败与存量失败</text>
+      <text class="sv-node" x="622" y="542">增量编译</text>
+      <text class="sv-sub"  x="622" y="559">归位后再编一次，专门查"组装"有没有出错</text>
+      <path d="M590 570 V604" stroke="var(--rail)" stroke-width="1.6" marker-end="url(#arr)"/>
+
+      <rect x="290" y="614" width="600" height="58" rx="12" fill="var(--accent-soft)" stroke="rgba(63,201,182,.5)"/>
+      <text class="sv-node" x="590" y="638" text-anchor="middle" font-size="15">可编译的测试工程</text>
+      <text class="sv-sub"  x="590" y="657" text-anchor="middle">test.cpp · 0 error / 0 warning · 可直接上机</text>
+    </svg>
+    <figcaption>六个阶段：<b>输入 → 前置门 → 材料门 → 生成循环 → 收尾 → 产物</b>。生成循环按组跑，同组共享一次材料加载。</figcaption>
+  </figure>
+
+  <h3><span class="n">FIG 2</span>分工视图：谁在什么时候做什么</h3>
+  <div class="legend">
+    <span><i class="dot d-agent"></i>Agent · 判断</span>
+    <span><i class="dot d-script"></i>脚本 · 固定</span>
+    <span><i class="dot d-tpl"></i>模板 · 填空</span>
+    <span><i class="dot d-gate"></i>门禁 · 判定</span>
+  </div>
+
+  <figure class="fig">
+    <svg viewBox="0 0 1180 470" role="img" aria-label="Agent 与脚本的分工分层图">
+      <defs>
+        <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--rail)"/>
+        </marker>
+      </defs>
+
+      <rect x="20" y="18" width="1140" height="52" rx="11" fill="var(--accent-soft)" stroke="rgba(63,201,182,.45)"/>
+      <text class="sv-node" x="42" y="42">编排层</text>
+      <text class="sv-tiny" x="42" y="59">主 Skill —— 解析指令圈定批次 · 串起全链 · 模板填充 · 按顺序推进</text>
+      <path d="M590 70 V96" stroke="var(--rail)" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+      <text class="sv-label" x="20" y="116">判断类 · 交给 Agent</text>
+      <g fill="var(--agent-soft)" stroke="rgba(183,156,240,.45)">
+        <rect x="20"  y="126" width="272" height="60" rx="10"/>
+        <rect x="310" y="126" width="272" height="60" rx="10"/>
+        <rect x="600" y="126" width="272" height="60" rx="10"/>
+        <rect x="890" y="126" width="270" height="60" rx="10"/>
+      </g>
+      <g class="sv-node" text-anchor="middle" font-size="13">
+        <text x="156" y="150">DFT 意图解读</text><text x="446" y="150">继电器命名歧义</text>
+        <text x="736" y="150">继电器闭环 / 通路</text><text x="1025" y="150">测量方法选择</text>
+      </g>
+      <g class="sv-sub" text-anchor="middle">
+        <text x="156" y="169">dft-parse-agent</text><text x="446" y="169">cbit-path-namer</text>
+        <text x="736" y="169">relay-agent</text><text x="1025" y="169">measure-agent</text>
+      </g>
+      <path d="M590 186 V212" stroke="var(--rail)" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+      <text class="sv-label" x="20" y="232">固定类 · 交给脚本</text>
+      <g fill="var(--script-soft)" stroke="rgba(79,195,217,.45)">
+        <rect x="20"  y="242" width="272" height="60" rx="10"/>
+        <rect x="310" y="242" width="272" height="60" rx="10"/>
+        <rect x="600" y="242" width="272" height="60" rx="10"/>
+        <rect x="890" y="242" width="270" height="60" rx="10"/>
+      </g>
+      <g class="sv-node" text-anchor="middle" font-size="13">
+        <text x="156" y="266">上下电序列</text><text x="446" y="266">CBIT 定义四阶段</text>
+        <text x="736" y="266">通路定义生成</text><text x="1025" y="266">单项冒烟</text>
+      </g>
+      <g class="sv-sub" text-anchor="middle">
+        <text x="156" y="285">19 条规则自检</text><text x="446" y="285">13 条规则</text>
+        <text x="736" y="285">11 条规则</text><text x="1025" y="285">7 项检查</text>
+      </g>
+
+      <path d="M20 326 H1160" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="6 5"/>
+      <rect x="440" y="314" width="300" height="24" rx="12" fill="var(--bg)"/>
+      <text class="sv-tiny" x="590" y="331" text-anchor="middle" fill="var(--accent)">边界：执行方不自审</text>
+
+      <rect x="20" y="344" width="1140" height="52" rx="11" fill="var(--warn-soft)" stroke="rgba(234,181,92,.45)"/>
+      <text class="sv-node" x="42" y="368">门禁层 · 只判定，不参与生成</text>
+      <text class="sv-tiny" x="42" y="385">12 项检查一次跑完 —— 每项都能溯源到规则编号，规则改了门禁必须同步改</text>
+
+      <rect x="20" y="410" width="1140" height="48" rx="11" fill="var(--surface-2)" stroke="var(--border-2)"/>
+      <text class="sv-node" x="42" y="432">知识层 · 地基</text>
+      <text class="sv-tiny" x="42" y="449">L0 规范（手册事实 · 只读） · L1 规则（铁律 · 强制） · L2 经验（绕法 · 不强制） · 参考层（案例 / 方法 / 芯片）</text>
+    </svg>
+    <figcaption>同样的输入给同样的输出：<b>凡是能用代码判定的，就不交给模型即兴发挥</b>。</figcaption>
+  </figure>
+
+  <div class="note note--accent">
+    <p><b>检查为什么分三层：</b>
+      <span class="chip c-ok">单项冒烟 · 秒级不编译</span>
+      <span class="chip c-warn">批次门禁 · 12 项一次跑完</span>
+      <span class="chip c-script">编译 · 增量约 4 秒</span>
+      —— 出问题的范围越小，修起来越便宜。</p>
+  </div>
+</section>
+
+<!-- ========== 03 ========== -->
+<section id="plan">
+  <div class="sec-head"><span class="sec-num">03</span><h2>实现计划</h2></div>
+  <p class="sub">目标 <b>2026 年 12 月底全部完成</b>。阶段划分的依据：<b>完成判据能不能被机器验证</b> —— 验证不了的不算完成。</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 1180 330" role="img" aria-label="实现计划时间轴">
+      <defs>
+        <marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--rail)"/>
+        </marker>
+      </defs>
+      <path d="M60 150 H1140" stroke="var(--rail)" stroke-width="2" marker-end="url(#arr3)"/>
+      <g class="sv-label" text-anchor="middle">
+        <text x="130" y="182">8 月</text><text x="330" y="182">9 月</text>
+        <text x="530" y="182">10 月</text><text x="730" y="182">11 月</text><text x="930" y="182">12 月</text>
+      </g>
+      <g stroke="var(--border-2)" stroke-width="1">
+        <path d="M130 144 V156"/><path d="M330 144 V156"/><path d="M530 144 V156"/>
+        <path d="M730 144 V156"/><path d="M930 144 V156"/>
+      </g>
+
+      <circle cx="130" cy="150" r="9" fill="var(--ok)"/>
+      <path d="M130 141 V96" stroke="var(--border-2)"/>
+      <rect x="30" y="52" width="230" height="44" rx="9" fill="var(--ok-soft)" stroke="rgba(94,203,146,.5)"/>
+      <text class="sv-node" x="46" y="72" font-size="13">M1 骨架贯通</text>
+      <text class="sv-sub"  x="46" y="88">已达成 ✓</text>
+
+      <circle cx="430" cy="150" r="11" fill="var(--accent)"/>
+      <circle cx="430" cy="150" r="18" fill="none" stroke="var(--accent)" stroke-opacity=".35" stroke-width="2"/>
+      <path d="M430 168 V214" stroke="var(--border-2)"/>
+      <rect x="290" y="214" width="280" height="52" rx="9" fill="var(--accent-soft)" stroke="rgba(63,201,182,.5)"/>
+      <text class="sv-node" x="306" y="236" font-size="13">M2 知识底座补齐</text>
+      <text class="sv-sub"  x="306" y="253">缺口清单清零</text>
+
+      <circle cx="730" cy="150" r="9" fill="var(--surface)" stroke="var(--rail)" stroke-width="2"/>
+      <path d="M730 141 V96" stroke="var(--border-2)"/>
+      <rect x="620" y="52" width="240" height="44" rx="9" fill="var(--surface-2)" stroke="var(--border-2)"/>
+      <text class="sv-node" x="636" y="72" font-size="13">M3 全量测试项覆盖</text>
+      <text class="sv-sub"  x="636" y="88">meta 覆盖 100% + 全编译通过</text>
+
+      <circle cx="930" cy="150" r="9" fill="var(--surface)" stroke="var(--rail)" stroke-width="2"/>
+      <path d="M930 168 V214" stroke="var(--border-2)"/>
+      <rect x="800" y="214" width="300" height="52" rx="9" fill="var(--surface-2)" stroke="var(--border-2)"/>
+      <text class="sv-node" x="816" y="236" font-size="13">M4 质量闭环 + 知识回收</text>
+      <text class="sv-sub"  x="816" y="253">无案例项归零 · 总结全经人工复核</text>
+
+      <circle cx="1120" cy="150" r="9" fill="var(--surface)" stroke="var(--rail)" stroke-width="2"/>
+      <path d="M1120 141 V96" stroke="var(--border-2)"/>
+      <rect x="1010" y="42" width="160" height="54" rx="9" fill="var(--surface-2)" stroke="var(--border-2)"/>
+      <text class="sv-node" x="1026" y="64" font-size="13">M5 交付就绪</text>
+      <text class="sv-sub"  x="1026" y="81">新人照文档可跑通</text>
+
+      <g>
+        <circle cx="300" cy="296" r="6" fill="var(--ok)"/>
+        <text class="sv-tiny" x="314" y="300">已完成</text>
+        <circle cx="392" cy="296" r="6" fill="var(--accent)"/>
+        <text class="sv-tiny" x="406" y="300">进行中</text>
+        <circle cx="484" cy="296" r="6" fill="var(--surface)" stroke="var(--rail)" stroke-width="2"/>
+        <text class="sv-tiny" x="498" y="300">计划中</text>
+      </g>
+    </svg>
+    <figcaption>横轴按<b>工作依赖关系</b>排，不是按人力排 —— 阶段边界与投入强度需你确认后固化。</figcaption>
+  </figure>
+</section>
+
+<!-- ========== 04 ========== -->
+<section id="now">
+  <div class="sec-head"><span class="sec-num">04</span><h2>当前进展</h2></div>
+  <p class="sub">截至 <b>2026-09-13</b>：流水线全段打通并在真实工程上连续产出。</p>
+
+  <h3><span class="n">FIG 4</span>完成度</h3>
+  <div class="metrics">
+    <div class="metric"><span class="mk">meta 双向覆盖</span>
+      <span class="bar"><i style="--v:100%"></i></span><span class="mv">99 / 99</span></div>
+    <div class="metric"><span class="mk">工程内测试项</span>
+      <span class="bar"><i style="--v:100%"></i></span><span class="mv">99 个</span></div>
+    <div class="metric"><span class="mk">编译</span>
+      <span class="bar"><i style="--v:100%"></i></span><span class="mv">0 err / 0 warn</span></div>
+    <div class="metric"><span class="mk">收尾门禁通过</span>
+      <span class="bar"><i style="--v:91.7%"></i></span><span class="mv">11 / 12</span></div>
+    <div class="metric"><span class="mk">参数类型完整</span>
+      <span class="bar"><i class="w" style="--v:61.5%"></i></span><span class="mv">8 / 13</span></div>
+    <div class="metric"><span class="mk">测试框架覆盖</span>
+      <span class="bar"><i class="w" style="--v:57.1%"></i></span><span class="mv">4 / 7</span></div>
+    <div class="metric"><span class="mk">案例 ↔ 总结配对</span>
+      <span class="bar"><i style="--v:100%"></i></span><span class="mv">18 / 18</span></div>
+    <div class="metric"><span class="mk">必读体量压缩</span>
+      <span class="bar"><i style="--v:96%"></i></span><span class="mv">−96%</span></div>
+  </div>
+
+  <h3><span class="n">FIG 5</span>12 项门禁状态</h3>
+  <div class="gates">
+    <div class="gate ok"><i></i><b>材料门 自检</b></div>
+    <div class="gate ok"><i></i><b>材料门 主门</b></div>
+    <div class="gate ok"><i></i><b>材料状态索引</b></div>
+    <div class="gate ok"><i></i><b>AWG 三参数</b></div>
+    <div class="gate ok"><i></i><b>meta 覆盖</b></div>
+    <div class="gate ok"><i></i><b>单项冒烟</b></div>
+    <div class="gate ok"><i></i><b>输入同步</b></div>
+    <div class="gate ok"><i></i><b>继电器反查</b></div>
+    <div class="gate ok"><i></i><b>合并纪律</b></div>
+    <div class="gate ok"><i></i><b>BST-SW 约束</b></div>
+    <div class="gate known"><i></i><b>CBIT 定义</b></div>
+    <div class="gate ok"><i></i><b>通路定义</b></div>
+  </div>
+  <p style="font-size:.87rem;color:var(--faint)">
+    唯一的 <span class="chip c-warn">已知存量</span> = 定义头里 3 条零引用、原理图无通路的历史遗留定义，本次暂缓，删除后即清零。
+  </p>
+
+  <h3><span class="n">FIG 6</span>本阶段修掉的门禁失真</h3>
+  <p style="font-size:.92rem;color:var(--muted)">门禁只有判得准才有人信 —— 三处「门禁自己错」已修完。</p>
+  <div class="fixes">
+    <div class="fix">
+      <span class="nm">verify_awg_params</span>
+      <span class="pair">
+        <span class="b before"><i style="--v:100%"></i></span><span class="arw">→</span>
+        <span class="b after"><i style="--v:0%"></i></span></span>
+    </div>
+    <div class="fix">
+      <span class="nm">verify_bst_sw_sequence</span>
+      <span class="pair">
+        <span class="b before"><i style="--v:100%"></i></span><span class="arw">→</span>
+        <span class="b after"><i style="--v:0%"></i></span></span>
+    </div>
+    <div class="fix">
+      <span class="nm">verify_single_fn</span>
+      <span class="pair">
+        <span class="b before"><i style="--v:100%"></i></span><span class="arw">→</span>
+        <span class="b after"><i style="--v:0%"></i></span></span>
+    </div>
+  </div>
+  <div class="legend" style="margin-top:-.4rem">
+    <span><i class="dot d-gate"></i>修复前：5 / 26 / 3 条失败</span>
+    <span><i class="dot d-out"></i>修复后：全 0</span>
+  </div>
+
+  <h3><span class="n">NEXT</span>下一步</h3>
+  <div class="metrics">
+    <div class="metric"><span class="mk">补料</span><span class="bar"><i class="m" style="--v:0%"></i></span><span class="mv">4 类</span></div>
+    <div class="metric"><span class="mk">补框架</span><span class="bar"><i class="m" style="--v:0%"></i></span><span class="mv">3 类</span></div>
+    <div class="metric"><span class="mk">放量</span><span class="bar"><i class="m" style="--v:0%"></i></span><span class="mv">按组推进</span></div>
+    <div class="metric"><span class="mk">人工复核案例总结</span><span class="bar"><i class="m" style="--v:0%"></i></span><span class="mv">18 份</span></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <p><b>数据口径</b>：全部取自工作区实测产物（材料状态索引 / test.cpp / StdAfx.h / 规则注册表 / 门禁基线），非人工估算。</p>
+  <p><b>汇报</b> 2026-09-20 ｜ <b>数据截至</b> 2026-09-13 ｜ 自包含静态页面（无外部依赖）。</p>
+</footer>
+
+</body>
+</html>

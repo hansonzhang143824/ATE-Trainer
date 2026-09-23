@@ -1,0 +1,12 @@
+=== 1) 先跑生成器（确认活档可重生成）===
+   保留他方命名空间: setupArchitectFreezeAnchors
+=== 2) 追加两份快照（验证 append-only 累积）===
+  已追加快照：2026-09-16T22:24:15+08:00 | 11931 B | 32 条
+  已追加快照：2026-09-16T22:24:15+08:00 | 11931 B | 32 条
+
+=== 3) 账本累积检查 ===
+  t28-anchors.snapshots.jsonl = 2 行 / 662 B
+    2026-09-16T22:24:15+08:00  size=11931   entries=32  peerKeys=['setupArchitectFreezeAnchors']
+    2026-09-16T22:24:15+08:00  size=11931   entries=32  peerKeys=['setupArchitectFreezeAnchors']
+
+  ⇒ 历史行**不被覆盖**；即使活档后续被重生成/变小，"某轮当时的值"仍可从这里复核。

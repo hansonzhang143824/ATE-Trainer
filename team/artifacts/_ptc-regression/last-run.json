@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "suite": "dali-ptc-supported-regression",
+  "startedAtUtc": "2026-09-19T05:29:30.237097+00:00",
+  "testRoot": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\_ptc-regression",
+  "readOnlyScope": [
+    "PTC registry",
+    "method contracts for TM102/TM105/TM425"
+  ],
+  "unitTests": [
+    {
+      "name": "test_ptc_contract_schema.py",
+      "status": "PASS",
+      "elapsedSeconds": 0.907,
+      "exitCode": 0,
+      "output": ".......\n----------------------------------------------------------------------\nRan 7 tests in 0.001s\n\nOK"
+    },
+    {
+      "name": "test_ptc_trim_validation.py",
+      "status": "PASS",
+      "elapsedSeconds": 0.408,
+      "exitCode": 0,
+      "output": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.103s\n\nOK"
+    },
+    {
+      "name": "test_ptc_stage_registry.py",
+      "status": "PASS",
+      "elapsedSeconds": 0.361,
+      "exitCode": 0,
+      "output": ".....\n----------------------------------------------------------------------\nRan 5 tests in 0.008s\n\nOK"
+    },
+    {
+      "name": "test_check_functional_relays.py",
+      "status": "PASS",
+      "elapsedSeconds": 0.323,
+      "exitCode": 0,
+      "output": ".......\n----------------------------------------------------------------------\nRan 7 tests in 0.092s\n\nOK"
+    },
+    {
+      "name": "test_check_path_conflicts.py",
+      "status": "PASS",
+      "elapsedSeconds": 0.327,
+      "exitCode": 0,
+      "output": ".....\n----------------------------------------------------------------------\nRan 5 tests in 0.000s\n\nOK"
+    },
+    {
+      "name": "test_search_strategy_routes.py",
+      "status": "PASS",
+      "elapsedSeconds": 0.249,
+      "exitCode": 0,
+      "output": ".....\n----------------------------------------------------------------------\nRan 5 tests in 0.000s\n\nOK"
+    },
+    {
+      "name": "test_verify_source_table_mapping.py",
+      "status": "PASS",
+      "elapsedSeconds": 0.222,
+      "exitCode": 0,
+      "output": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK"
+    }
+  ],
+  "skippedLegacyTests": [
+    {
+      "name": "test_ate_ptc_batch_runner.py",
+      "reason": "uses tempfile.TemporaryDirectory()",
+      "migration": "replace implicit tempfile use with PTC_REGRESSION_ROOT fixture"
+    },
+    {
+      "name": "test_ate_ptc_correction.py",
+      "reason": "uses tempfile.TemporaryDirectory()",
+      "migration": "replace implicit tempfile use with PTC_REGRESSION_ROOT fixture"
+    },
+    {
+      "name": "test_ate_ptc_runner.py",
+      "reason": "uses tempfile.TemporaryDirectory()",
+      "migration": "replace implicit tempfile use with PTC_REGRESSION_ROOT fixture"
+    },
+    {
+      "name": "test_ptc_output_contracts.py",
+      "reason": "uses tempfile.TemporaryDirectory()",
+      "migration": "replace implicit tempfile use with PTC_REGRESSION_ROOT fixture"
+    },
+    {
+      "name": "test_trial_directory.py",
+      "reason": "uses tempfile.TemporaryDirectory()",
+      "migration": "replace implicit tempfile use with PTC_REGRESSION_ROOT fixture"
+    }
+  ],
+  "integration": [
+    {
+      "tm": "TM102",
+      "status": "PASS",
+      "registryStage": "scripts/validate_method_contract.py",
+      "strategySha256": "45319feded8f1bf8824fe092f3f1aaa300ad481a5ba83372a9c390be650b259e",
+      "method": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm102-ptc\\method\\tm102-test-method-contract.json",
+      "reason": "registry loaded and method contract validates against its signed strategy"
+    },
+    {
+      "tm": "TM105",
+      "status": "PASS",
+      "registryStage": "scripts/validate_method_contract.py",
+      "strategySha256": "79e039bd36956bac36f66ea5dd0bce406f34743ab0334764b791632433c77e6a",
+      "method": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm105-ptc\\method\\tm105-test-method-contract.json",
+      "reason": "registry loaded and method contract validates against its signed strategy"
+    },
+    {
+      "tm": "TM425",
+      "status": "PASS",
+      "registryStage": "scripts/validate_method_contract.py",
+      "strategySha256": "b5de503e74efa5dd051f2c57a23ec0a23e409e6452498ab1d78c83c8d1b19009",
+      "method": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm425-ptc\\method\\tm425-test-method-contract.json",
+      "reason": "registry loaded and method contract validates against its signed strategy"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "failed": 0,
+    "skipped": 5,
+    "elapsedSeconds": 3.507
+  }
+}

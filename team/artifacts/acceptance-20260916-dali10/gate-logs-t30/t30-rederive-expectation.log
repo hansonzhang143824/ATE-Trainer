@@ -1,0 +1,26 @@
+=== 现盘契约 aliasResolution（逐条）===
+  [ 0] alias=pmid2sw      closed=[83, 60, 61]             usedByTm=["TM600"]
+  [ 1] alias=sw2pgnd      closed=[154, 155, 60, 61]       usedByTm=["TM601"]
+  [ 2] alias=pgnd2sw      closed=[154, 155, 60, 61]       usedByTm=["TM108/TM109 toggle ramps (DFT.csv lines 121-122, 208-210)", "other DFT rows us
+  [ 3] alias=bst2sw       closed=[110, 61]                usedByTm=["TM600 (BST must lead PMID)", "TM1205 (BST1-SW1 / BST2-SW2 ramps)"]
+  [ 4] alias=vbat         closed=None                     usedByTm=["TM000", "TM001", "TM102", "TM103", "TM108", "TM109", "TM600", "TM601"]
+  [ 5] alias=pmid         closed=None                     usedByTm=["TM1205", "TM600", "TM601"]
+  [ 6] alias=vdrv         closed=None                     usedByTm=["TM000", "TM001", "TM600", "TM601"]
+  [ 7] alias=vbus         closed=None                     usedByTm=["TM1205", "TM601"]
+  [ 8] alias=vac1         closed=None                     usedByTm=["TM108"]
+  [ 9] alias=vac2         closed=None                     usedByTm=["TM109"]
+  [10] alias=vac3         closed=None                     usedByTm=[]
+  [11] alias=vdm          closed=None                     usedByTm=["TM135"]
+
+=== tmDeltas 的 aliasesUsed ===
+  TM600   aliasesUsed=["pmid2sw"]
+  TM601   aliasesUsed=["sw2pgnd"]
+  TM1205  aliasesUsed=[]
+
+=== 部署态两函数实际闭合 vs 各别名期望 ===
+  TM600_HS_RDSON     实际=[13, 57, 60, 61, 83, 85, 126]
+                    期望并集=[60, 61, 83, 110]      来源={'pmid2sw': 'aliasesUsed', 'bst2sw': 'usedByTm', 'vbat': 'usedByTm', 'pmid': 'usedByTm', 'vdrv': 'usedByTm'} 缺失=[110]
+  TM601_LS_RDSON     实际=[13, 57, 60, 61, 85, 126, 154, 155]
+                    期望并集=[60, 61, 154, 155]     来源={'sw2pgnd': 'aliasesUsed', 'vbat': 'usedByTm', 'pmid': 'usedByTm', 'vdrv': 'usedByTm', 'vbus': 'usedByTm'} 缺失=[]
+  TM1205_TRX_BST_UV_GD 实际=[13, 65]
+                    期望并集=[61, 110]              来源={'bst2sw': 'usedByTm', 'pmid': 'usedByTm', 'vbus': 'usedByTm'} 缺失=[61, 110]

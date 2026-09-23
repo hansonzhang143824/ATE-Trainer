@@ -1,0 +1,31 @@
+{
+  "batchId": "dali-20260922-193103-tm109",
+  "state": "INPUT_SYNC",
+  "status": "done",
+  "mode": "UNCHANGED",
+  "executionScope": {
+    "sourceRoles": [
+      "dft-expert"
+    ],
+    "stopAfter": "INPUT_SYNC"
+  },
+  "advanced": false,
+  "outcomes": [
+    {
+      "stopReason": "completed",
+      "structured": {
+        "status": "done",
+        "mode": "UNCHANGED",
+        "outputs": [
+          "D:\\Newtest\\DSH\\ATE-Coding-Flow\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-meta.json",
+          "D:\\Newtest\\DSH\\ATE-Coding-Flow\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-conditions.yaml",
+          "D:\\Newtest\\DSH\\ATE-Coding-Flow\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-semantic-review.json"
+        ],
+        "gates": [
+          "python scripts/validate_dft_outputs.py --tm TM109; gateExit=0; sourceSha256=896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b"
+        ]
+      }
+    }
+  ],
+  "completedAt": "2026-09-22T11:31:04.350Z"
+}

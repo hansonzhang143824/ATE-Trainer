@@ -1,0 +1,49 @@
+=== ① n 的全部使用（逐行，含上下文）===
+  L376  n = defines[r]
+  L401  if n in on_set:
+  L403  if n in nc_set:
+  L406  errors.append(f'{name}: {r}(K{n}) 在 SCH-Connect-Map 中不存在 (虚构通路)')
+  L436  meta_cov = sum(1 for n, _ in fn_blocks(src) if n in meta_by_name)
+
+=== ② L395-412 上下文 ===
+  L395  # PIN 到地短路: 需确认场景 (当前 DALI 无 P2P, 占位规则)
+  L396  funcional_checked += 1
+  L397  warns.append(f'{name}: P2P 继电器 {r} 闭合 — 需人工确认是否需 PIN 到地短路')
+  L398  continue
+  L399  
+  L400  # ===== C. 闭环规则 (通路继电器) =====
+  L401  if n in on_set:
+  L402  continue
+  L403  if n in nc_set:
+  L404  warns.append(f'{name}: {r} 仅出现 Relay-NC (默认导通), 闭合冗余?')
+  L405  continue
+  L406  errors.append(f'{name}: {r}(K{n}) 在 SCH-Connect-Map 中不存在 (虚构通路)')
+  L407  
+  L408  # ===== D. 功能规则反向检查 =====
+  L409  if od_observed and not has_pu:
+  L410  warns.append(f'{name}: 观测开漏输出(nQON/DTEST0/Toggle)但未闭合任何上拉继电器 — 开漏无上拉读不到电平')
+  L411  
+  L412  # ===== E2. 反向检查降级分支 (无 meta 函数 → 对象名反推, 仅健壮性) =====
+
+=== ③ parse_setons 是否做宏展开（L90-100）===
+  L90   
+  L91   
+  L92   def parse_setons(fn_block):
+  L93   """函数内所有 cbite.SetOn(...) 的继电器名列表 (排除 -1)"""
+  L94   relays = []
+  L95   for m in re.finditer(r'cbite\.SetOn\(([^)]*)\)', fn_block):
+  L96   args = [a.strip() for a in m.group(1).split(',')]
+  L97   relays.extend(a for a in args if a and a != '-1')
+  L98   return relays
+  L99   
+  L100  
+
+=== ④ on_set / nc_set 的来源（parse_map_rels）===
+  L102  """解析 SCH-Connect-Map: (on_set, nc_set)"""
+  L103  on_set, nc_set = set(), set()
+  L106  (on_set if m.group(2) == 'ON' else nc_set).add(n)
+  L107  return on_set, nc_set
+  L295  on_set, nc_set = parse_map_rels(map_txt)
+  L401  if n in on_set:
+  L403  if n in nc_set:
+  L441  f'map Relay-ON={len(on_set)} Relay-NC-only={len(nc_set)}, '

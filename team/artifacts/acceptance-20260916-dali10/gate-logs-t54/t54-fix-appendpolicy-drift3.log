@@ -1,0 +1,15 @@
+前置：语法 OK（51873 B）
+  已把报告段改为纯语义（去动态表达式）→ 51678 B
+后置：语法 OK
+  收据边界字段已含（幂等）
+后置2：语法 OK
+  run1: exit=1 RECEIPT D:\Newtest\DSH\ATE-Coding-Plat\team\artifa
+  run2: exit=1 RECEIPT D:\Newtest\DSH\ATE-Coding-Plat\team\artifa
+  run3: exit=1 RECEIPT D:\Newtest\DSH\ATE-Coding-Plat\team\artifa
+
+=== 自证 ===
+  收据含 appendPolicyBoundary = False
+  边界文本 = 
+  effectiveFromRunSeq = None
+  prePolicyCounts = null
+  再跑两次后两者均不变 = True ⇒ **冻结、无漂移源** ✓

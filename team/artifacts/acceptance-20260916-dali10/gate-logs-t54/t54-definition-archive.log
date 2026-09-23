@@ -1,0 +1,16 @@
+=== (a)(b) 记录规则 ===
+  已并入 → 52582 B
+
+=== (b) 给 receipts.meta.json 加版本与自身身份 ===
+  已写 → 1378 B
+  metaVersion = 1
+  含 metaIdentity = True
+
+=== 并让生成器持续维护（写入器升级）===
+  已追加定义档维护逻辑 → 49715 B
+  语法 OK
+  run1: RECEIPT D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10\gate-logs
+  run2: RECEIPT D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10\gate-logs
+
+  最终：metaVersion = 1 ｜ 键 = ['ledger', 'fieldDefinitions', 'warning', 'appendOnly', 'updatedAt', 'metaVersion', 'metaIdentity']
+  登记 52582 B ｜ 标题 42 ｜ 唯一 42 ｜ 重复 无

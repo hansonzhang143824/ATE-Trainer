@@ -1,0 +1,56 @@
+=== ① 逐字 locator 复核（他给的 L490/497-499/502/515）===
+  L259  DEFAULT_TM_SCOPE = ["TM600_HS_RDSON", "TM601_LS_RDSON"]   # 本 run 实现的函数（--tm-scope 可覆盖）
+  L490  targets = derive_targets(iter_functions(text))
+  L497  if not targets:
+  L498  print("[scan] test.cpp 无 rampi_capv 电流斜坡测试项 (非 ZCD/OCP 家族), 空 PASS")
+  L499  return 0
+  L502  # ---- t30: 契约闭合集合断言（致命通道: 与既有 FAIL 同一出口）----
+  L506  errors.append("t30 契约断言无法执行: 读不到 setup-contract.json (path=%r) —— "
+  L507  "契约是高电流路线闭合集合的权威, 缺失必须红而不是静默跳过" % (contract_path,))
+  L515  _cc_errors, _cc_checked = check_contract_closures(
+
+=== ② derive_targets 的筛选条件（L96-114）===
+  L96   targets = []
+  L97   for fn in functions:
+  L98   name = fn.get('name') or ''
+  L99   block = fn.get('block') or ''
+  L100  if not name or not re.search(r'\brampi_capv\s*\(', block):
+  L101  continue
+  L102  rm = re.search(r'\brampi_capv\s*\([^;]*?FPVIe_(2A|10A)', block)
+  L103  irange = 'FPVIe_%s' % rm.group(1) if rm else 'FPVIe_2A'
+  L104  seton = re.search(r'cbite\.SetOn\((.*?)\);', block, re.DOTALL)
+  L105  so = seton.group(1) if seton else ''
+  L106  if 'K_FPVIH_TO_PGND' in so:
+  L107  topo = 'LS'
+  L108  elif 'K_FPVIH_TO_PMID' in so:
+  L109  topo = 'HS'
+  L110  else:
+  L111  print('[warn] %s: 含 rampi_capv 但 SetOn 判不出 LS/HS 拓扑 → 跳过（不猜）' % name)
+  L112  continue
+  L113  targets.append((name, topo, irange))
+  L114  return targets
+
+=== ③ 行为验证：--tm-scope 能否救回空 targets？===
+  args=(默认)                                           exit=0   首行=[scan] test.cpp 无 rampi_capv 电流斜坡测试项 (非 ZCD/OCP 家族), 空 PASS
+  args=--tm-scope TM600_HS_RDSON,TM601_LS_RDSON       exit=0   首行=[scan] test.cpp 无 rampi_capv 电流斜坡测试项 (非 ZCD/OCP 家族), 空 PASS
+  ⇒ 若两次都"空 PASS / exit 0" ⇒ **--tm-scope 救不了**（早退在断言之前），与其分析一致
+
+=== ④ 与文件自身原则的冲突（L506-507 逐字）===
+  errors.append("t30 契约断言无法执行: 读不到 setup-contract.json (path=%r) —— "
+  "契约是高电流路线闭合集合的权威, 缺失必须红而不是静默跳过" % (contract_path,))
+  ⇒ 原则"缺失必须红而不是静默跳过"只落实在"契约读不到"这条路径上；
+     "目标集为空"这条路径**仍静默跳过并 PASS** ⇒ **同一条原则只落实一半**。
+
+=== ⑤ 本 run 三类门禁 fail-open 形态（schematic-expert 归纳，我复核）===
+  1) 展开器静默截断          verify_relay_trace.parse_defines()：209/209 多值宏被截为首值
+      复核：我复核 ✓（Cap 映射路径不受影响；**但 L401/L403 对多值宏只校验首值 ⇒ 欠严**，已更正原"不受影响"表述）
+  2) 子集判定             missing = exp − actual：多余闭合不可见（未启用 --check-extra）
+      复核：我复核 ✓（Captain 已令写入 attributionLimitations："GREEN ≠ 闭合集被约束"）
+  3) 空目标集 fail-open   targets=[] ⇒ "空 PASS" + exit 0，契约闭合断言整段被跳过
+      复核：我复核 ✓（B-7；本轮实测 --src 候选 payload 得空 PASS，且 --tm-scope 无效）
+
+  主题一致：**要 fail-closed**。三者的护栏方向：① 先测展开器再信展开；
+  ② 若需约束闭合集须显式启用 --check-extra 并定义 budget；③ 空 targets 应 FAIL 或强制记录 targets=N(N>0)。
+
+⚠️ **更正横幅（2026-09-16，之后复核发现）**：本日志上文"n 之后未再参与数值比较 / PASS 不受影响"**已作废** —— `n` 在 **L401 `if n in on_set` / L403 `if n in nc_set`** 被当数字使用，而 `r` 来自 `parse_setons()`（不做宏展开）⇒ **多值宏只校验首值 ⇒ 属欠严（under-strict）**。
+现口径见 `t54-gate-failopen-forms.md` 形态 1 与 `build-report.json` 的 `gateFailOpenForms` / `withdrawnClaims`。

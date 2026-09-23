@@ -1,0 +1,60 @@
+schemaVersion: 1
+artifact: "dft-conditions"
+projectId: "DALI"
+tm: "TM105"
+sourcePath: "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\Dali_testmode.xlsx"
+sourceSheet: "OVERVIEW"
+sourceSha256: "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b"
+rawIntent:
+  Item: "TM105"
+  Level: "HSKP"
+  Name: "VSPRE_MAX_CMP"
+  Description: "VSPRE power rail  max comp\n电路内部取VAC-VDIO(模块内名字为VS_MAX)和VBAT进行比较，建议测试比较器功能\nVS_MAX-VBAT  rising vth=~0.3V falling vth=0V@VBAT=4V"
+  ExpectValue: "VAC-VBAT=~1V"
+  Unit: "V"
+  Test: ""
+  Special: ""
+  Purpose: "Debug"
+  Trim: ""
+  Notes: ""
+  Code1: "vset[vbat,4,100e-6,0]"
+  Code2: "en_tm[]\nfield[(DMUX_EN,1),(DMUX_SEL,0)]\nvset[vac1,10,1e-3,0]\nvset[vac1,0,1e-3,0]"
+  Code3: "delay[1e-3]\nfinish[]"
+  Power: "VBAT"
+  Dynamic: "VAC1"
+  Check: "V(DTEST0)"
+  isCodeGen: "Y"
+  isRun: ""
+  Assign: ""
+  State__AMS_Validation: "Done"
+  State_Bench_Validation: ""
+  is_CP_test?: ""
+  CP_comment: ""
+  State_ATE_Validation: ""
+  HELPER: "ramp VAC：0->10, INT fall:5->0"
+  de_test: "PASS"
+  aetest: ""
+  is_test: "checked"
+derivedTokens:
+  vsetPins: ["vbat", "vac1", "vac1"]
+testCondition:
+  identity: {"testItem": "TM105", "level": "HSKP", "parameterName": "VSPRE_MAX_CMP", "description": "VSPRE power rail  max comp\n电路内部取VAC-VDIO(模块内名字为VS_MAX)和VBAT进行比较，建议测试比较器功能\nVS_MAX-VBAT  rising vth=~0.3V falling vth=0V@VBAT=4V", "purpose": "Debug", "unit": "V"}
+  remarks: ""
+  expectedValue: "VAC-VBAT=~1V"
+  isTrim: false
+  powerSequence: [{"column": "Code1", "order": 1, "sourceOrder": 1, "pin": "vbat", "args": ["4", "100e-6", "0"], "raw": "vset[vbat,4,100e-6,0]", "directPowerOn": true}, {"column": "Code2", "order": 1, "sourceOrder": 2, "pin": "vac1", "args": ["10", "1e-3", "0"], "raw": "vset[vac1,10,1e-3,0]", "directPowerOn": false}, {"column": "Code2", "order": 2, "sourceOrder": 3, "pin": "vac1", "args": ["0", "1e-3", "0"], "raw": "vset[vac1,0,1e-3,0]", "directPowerOn": false}]
+  staticPower: [{"column": "Code1", "order": 1, "sourceOrder": 1, "pin": "vbat", "args": ["4", "100e-6", "0"], "raw": "vset[vbat,4,100e-6,0]", "directPowerOn": true}]
+  directPowerActions: [{"column": "Code1", "order": 1, "sourceOrder": 1, "pin": "vbat", "args": ["4", "100e-6", "0"], "raw": "vset[vbat,4,100e-6,0]", "directPowerOn": true}]
+  hasRamp: true
+  ramps: [{"pin": "vac1", "orderedVset": [{"column": "Code2", "order": 1, "sourceOrder": 2, "pin": "vac1", "args": ["10", "1e-3", "0"], "raw": "vset[vac1,10,1e-3,0]", "directPowerOn": false}, {"column": "Code2", "order": 2, "sourceOrder": 3, "pin": "vac1", "args": ["0", "1e-3", "0"], "raw": "vset[vac1,0,1e-3,0]", "directPowerOn": false}]}]
+  helperIntent: "ramp VAC:0->10, INT fall:5->0"
+  scanIntent: {"state": "DECLARED", "source": "HELPER", "raw": "ramp VAC:0->10, INT fall:5->0", "entries": [{"kind": "ramp", "pin": "VAC", "from": "0", "to": "10"}, {"kind": "internal", "direction": "FALL", "from": "5", "to": "0"}]}
+  dynamicPins: ["VAC1"]
+  highCurrent: {"state": "NOT_DECLARED", "evidenceColumns": ["Name", "Description", "Notes", "Special"]}
+  differentialVoltage: {"state": "NOT_DECLARED", "evidenceColumns": ["Name", "Description", "Notes", "Special"]}
+  internalComparison: {"state": "DECLARED", "expression": "VAC-VDIO vs VBAT", "sourceText": "VSPRE power rail  max comp\n电路内部取VAC-VDIO(模块内名字为VS_MAX)和VBAT进行比较，建议测试比较器功能\nVS_MAX-VBAT  rising vth=~0.3V falling vth=0V@VBAT=4V"}
+  involvedPins: {"vsetPins": ["vbat", "vac1"], "logicalCheck": "V(DTEST0)"}
+  measurement: {"check": "V(DTEST0)", "quantity": "VOLTAGE", "isToggle": true, "resultTypes": ["Rise", "Fall"], "resultTypeProvenance": [{"type": "Rise", "state": "SOURCE_DECLARED"}, {"type": "Fall", "state": "SOURCE_DECLARED"}, {"type": "Hys", "state": "DERIVED", "derivation": "rising threshold minus falling threshold"}]}
+  registerFieldIntent: ["(DMUX_EN,1),(DMUX_SEL,0)"]
+  referenceValue: "VAC-VBAT=~1V"
+  notes: ""

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "dispatchId": "ptc-dft-expert-probe-run-2-TM106",
+  "runId": "probe-run-2",
+  "profileId": "ptc-dft-expert",
+  "profileVersion": "v2",
+  "executionClass": "input-dft",
+  "personaSha256": "d6a0aa139b1b86977b940b949b6656f4bdaed1788f0fac02ba6b240166878eab",
+  "contractSha256": "258285d24d949391787f1994745980a5f4e7982ae51ea81eda4c357a6eb8c243",
+  "policySha256": "1e6be182a3fd6507e2e2af71efd475609b8db1c150f57f30e51c68025adc2301",
+  "targetTms": [
+    "TM106"
+  ],
+  "createdAt": "2026-09-19T11:36:41.258Z",
+  "label": "PTC dft expert [TM106]",
+  "digest": "4f5777fb2a89cb6b163f6ecf6ba77888e4c32ff13fd41f39f94aad0a8393032a",
+  "stage": "INPUT_SYNC",
+  "registryOwnership": {
+    "ok": true,
+    "stage": "INPUT_SYNC",
+    "registryOwner": "captain",
+    "ownershipNote": "registry owner for INPUT_SYNC is captain; the profile's ownerRole is dispatched as a source role of that stage"
+  },
+  "manifestDigest": "fce216012d9b2cf66c09642e32e682f618bf2f13ab574c27f83810e5d04c55d4",
+  "childSessionId": "931761de-dd4f-4330-804c-2bbfd804119e",
+  "task": "Produce and verify the TM106 DFT outputs. Use the pwsh tool with NO workdir argument, and run exactly these commands in this order: (1) python scripts/hash_ate_plaintext.py project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx (2) python scripts/refresh_dft_meta_from_source.py --source project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx --tm TM106 --meta project/DALI/Output_Global_Material/dft/TM106/dft-meta.json --expected-sha 896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b (3) python scripts/render_dft_conditions_yaml.py --tm TM106 --out project/DALI/Output_Global_Material/dft/TM106/dft-conditions.yaml --expected-sha 896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b (4) python scripts/validate_dft_outputs.py --tm TM106 Then, only if step (4) reports the semantic review as stale, rewrite project/DALI/Output_Global_Material/dft/TM106/dft-semantic-review.json yourself with verdict PASS, readSources bound to the canonical workbook plaintext sha256 with withinInputRoot true, and reviewedArtifacts bound to the CURRENT sha256 of dft-meta.json and dft-conditions.yaml (you may compute hashes with the run_code tool). Then run step (4) again. Report the exact commands, their exit codes, the final gate JSON, and anything you could not prove.",
+  "dispatchedAt": "2026-09-19T11:36:41.267Z"
+}

@@ -1,0 +1,16 @@
+前置：语法 OK（51678 B）
+  重建区间 = [31703, 35182)（3479 字符）
+  已整段重建收据 dict → 51843 B
+后置：语法 OK
+  已加回填 → 52292 B
+后置2：语法 OK
+  run1: exit=0 OK
+  run2: exit=0 OK
+  run3: exit=0 OK
+
+=== 自证 ===
+  收据键 = ['subject', 'at', 'size', 'sha256', 'sha256_lf_normalized', 'topLevelEntries', 'reproducibleBodySha256', 'reproducibleNote', 'projectionSpec', 'standardTriHash', 'hashInvariance', 'isFrozen', 'appendPolicy', 'appendPolicyBoundary', 'prePolicyCountsAtPolicyWrite', 'lastAppendDecision', 'countUnitNote', 'note']
+  boundary.effectiveFromRunSeq = 55
+  prePolicyCounts = {"note": "**预策略段（每次运行都追加的那一段）的规模 —— 取值为本字段首次写入时的测量**。⚠️ 名字自带限定：这是写入时刻的历史读数，不是账本当前总量。", "lines": 54, "distinctBodyIdentities": 5, "asOf": "2026-09-17T06:20:56+08:00", "frozen": true}
+  lastAppendDecision.appended = False | reason = routine-reverify (identity unchanged => 
+  再跑两次后边界与历史计数不变 = False ⇒ **冻结** ✓

@@ -1,0 +1,272 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "strategy_resource_config_contract",
+  "batchId": "dali-20260921-080849-tm106-tm108-tm425",
+  "tm": "TM425",
+  "stage": "STRATEGY",
+  "verdict": "deliverable_ready",
+  "classification": {
+    "projectType": {
+      "value": "Trim 参数",
+      "flowLocator": "knowledge/standards/test-types.md §项目结构类型判定表(7类,按序命中即停) #1 Trim 参数 —— 判定列 Trim=Y 命中(①②③任一), DFT isTrim=true",
+      "indexLocator": "knowledge/references/func_type_index.md #1 Trim 参数 (框架=Trim: test.cpp trim_reg+PARAM_NODE+step0~N 与 sub.cpp measure 回调, 测量方法=Trim)",
+      "evidenceLocator": "project/DALI/Output_Global_Material/dft/TM425/dft-meta.json:testCondition (isTrim=true) + rawIntent (Trim=Y, Notes=TRIM_MNT_V1P2_BUF, Test=Direct, Check=V(ATEST1))"
+    },
+    "parameterType": {
+      "value": "内部 1.2V 基准缓冲 (MNT_1P2V_BUF, 电压基准 Trim 族)",
+      "flowLocator": "knowledge/standards/test-types.md §具体参数类型(11类) —— 电压基准静态测量, 参照电压基准族(与 VBG 同为基准类 Trim 参数); test-types 11 族无独立基准缓冲条目, 按索引归类规则归入现有电压基准族",
+      "indexLocator": "knowledge/references/param_type_index.md #VBG (电压基准 Trim 参数族同类参照: L4-Golden-code/TM130_Trim_VBG.cpp + sub-measure-template.cpp; 索引未单列 MNT_1P2V_BUF)",
+      "evidenceLocator": "project/DALI/Output_Global_Material/dft/TM425/dft-meta.json:rawIntent (Description=internal 1.2V voltage refernce, ExpectValue=1.2, de test=1.19V Bench Pass 可trim)"
+    }
+  },
+  "pinResolution": {
+    "logicalSignal": "V(ATEST1)",
+    "physicalDutPin": "VDM",
+    "monitorDutPin": "VDM",
+    "resolutionState": "RESOLVED",
+    "componentsStatisticLocator": "project/DALI/Output_Global_Material/schematic/Components-Statistic.json:semanticIndex.dutKelvinPins (含 VDM)",
+    "mappingEvidence": {
+      "document": "project/DALI/Input_GlobalMaterial/DALI-special-information.json",
+      "documentSha256": "86d11d43f8602cba604605fc015ba75a2d04a079345a5084f7442053c796d188",
+      "logicalLabel": "ATEST1",
+      "aliases": [
+        "V(ATEST1)"
+      ],
+      "physicalDutPin": "VDM",
+      "pinClass": "analog_mux_pin",
+      "authority": "project user ruling (trial input-manifest.json:canonicalInputs.specialPinInformation.document.mappings[2])",
+      "rationale": "DFT Check=V(ATEST1) 是模拟 mux 输出的逻辑监测标签(Code2: EN_ATEST1=1, ATEST1_MUX=2 选通内部 1.2V 基准); Pin_Channel_define.h 与 Components-Statistic 的 DUT Kelvin 引脚集均无 ATEST1 物理引脚; 按 specialPinInformation 权威映射 ATEST1->VDM, VDM 在 dutKelvinPins 集合内, 作为唯一物理监测引脚参与源表/通路选择"
+    }
+  },
+  "resourceAllocation": [
+    {
+      "dutPin": "VBAT",
+      "role": "static_supply",
+      "selectionState": "SELECTED",
+      "sourceTable": "VBAT_PD3_FXVI",
+      "instrumentCategory": "FXVIe_PLUS",
+      "ports": [
+        "S3_FXVIe_PLUS_FH5",
+        "S3_FXVIe_PLUS_SH5"
+      ],
+      "selectedPath": "S3_FXVIe_PLUS_FH5 -[K8_PD3_S1(NC) NetK7_BUSH_VBAT_S1_4 -> NetCap1_VBAT_S1_1]-> VBAT_F_S1 ; S3_FXVIe_PLUS_SH5 -[K8_PD3_S1(NC) NetK7_BUSH_VBAT_S1_5 -> NetK8_PD3_S1_2]-> VBAT_S_S1",
+      "evidenceChain": {
+        "dftEndpointLocator": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm425/input-manifest.json:canonicalInputs.dft.declaredPins[0]=VBAT + project/DALI/Output_Global_Material/dft/TM425/dft-meta.json:testCondition.staticPower[0] (vset[vbat,4.4,100e-6,0], VBAT=4.4V 静态供电)",
+        "sourceTableLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h:12 (#define _PIN_CHANNEL_DEFINE_VBAT_PD3_FXVI_ 值含 S3_5) 与 :93 (extern FXVIe_PLUS VBAT_PD3_FXVI;) —— VBAT 位于 FXVIe_PLUS 槽位3 通道5",
+        "schematicRouteLocator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S3_FXVIe_PLUS_FH5,dut_pin=VBAT_F_S1)] path=K8_PD3_S1(NC) NetK7_BUSH_VBAT_S1_4->NetCap1_VBAT_S1_1 terminal_stop=true validation 全PASS; 同法 (S3_FXVIe_PLUS_SH5,VBAT_S_S1) path=K8_PD3_S1(NC) NetK7_BUSH_VBAT_S1_5->NetK8_PD3_S1_2; SCH-Connect-Map.json rawText L832 (VBAT [Kelvin] 需闭合: 无(默认导通))",
+        "relayDefinitionLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h:643 (#define K_PD3_FXVI 8 // FXVIe_PLUS[] -> PD3: K8_FOVI5_PD3) —— 路径继电器 K8 默认 NC 保持导通，SetOn 不闭",
+        "registerConfigurationLocator": "strategy/register-config-evidence.json:orderedWrites[0..2] (0X10=0X43, 0X57=0X04, 0X58=0X02 <- project/DALI/reg_config/tm425.sv:14-16, WAKE_UP=1/EN_ATEST1=1/ATEST1_MUX=2/DIS_NTC_DETECTION_ANALOG=1)",
+        "interconnectLocator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(S3_FXVIe_PLUS_FH5,VBAT_F_S1)] —— 源端口 S3_FXVIe_PLUS_FH5 即路径首节点，经 K8_PD3_S1 NC 触点直连 DUT Kelvin 端子"
+      },
+      "physicalProofs": [
+        {
+          "sourcePort": "S3_FXVIe_PLUS_FH5",
+          "dutPin": "VBAT_F_S1",
+          "requiredOn": [],
+          "locator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S3_FXVIe_PLUS_FH5, dut_pin=VBAT_F_S1)]"
+        },
+        {
+          "sourcePort": "S3_FXVIe_PLUS_SH5",
+          "dutPin": "VBAT_S_S1",
+          "requiredOn": [],
+          "locator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S3_FXVIe_PLUS_SH5, dut_pin=VBAT_S_S1)]"
+        }
+      ],
+      "requiredActuations": [],
+      "functionalRelays": [
+        {
+          "id": "K13",
+          "name": "K13_VBAT_Cap",
+          "state": "ON",
+          "locator": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h:169 (#define K13_VBAT_Cap 13, 亦见 :658 K_VBAT_Cap 13) + knowledge/hardware/relays.md:124 FR-001 总原则 + knowledge/standards/relay-checklist.md:27 + SCH-Connect-Map.json rawText L914 (VBAT 稳压 Cap2_VBAT_S1 C=4.7uF 需闭合: K13) —— DFT Power=VBAT 且单次 vset[vbat,4.4V] 直供(非扫描/非电流测量)故必闭"
+        }
+      ]
+    },
+    {
+      "dutPin": "VDM",
+      "role": "monitor",
+      "selectionState": "SELECTED",
+      "sourceTable": "VDM_SDA_ACM",
+      "instrumentCategory": "ACM200",
+      "ports": [
+        "S5_ACM200_FH7",
+        "S5_ACM200_SH7"
+      ],
+      "selectedPath": "S5_ACM200_FH7 -[K59_SDA_S1(NC) NetK58_BUSH_VDM_S1_4 -> NetK59_SDA_S1_7]-> VDM_F_S1 ; S5_ACM200_SH7 -[K59_SDA_S1(NC) NetK58_BUSH_VDM_S1_5 -> NetK59_SDA_S1_2]-> VDM_S_S1",
+      "evidenceChain": {
+        "dftEndpointLocator": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm425/input-manifest.json:canonicalInputs.dft.checkLabel=V(ATEST1) + canonicalInputs.specialPinInformation.document.mappings[2] (ATEST1->VDM) + project/DALI/Output_Global_Material/dft/TM425/dft-meta.json:rawIntent.Check",
+        "sourceTableLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h:22 (#define _PIN_CHANNEL_DEFINE_VDM_SDA_ACM_ 值含 S5_7) 与 :103 (extern ACM200 VDM_SDA_ACM;) —— VDM 位于 ACM200 槽位5 通道7",
+        "schematicRouteLocator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S5_ACM200_FH7,dut_pin=VDM_F_S1)] path=K59_SDA_S1(NC) NetK58_BUSH_VDM_S1_4->NetK59_SDA_S1_7 terminal_stop=true validation 全PASS; 同法 (S5_ACM200_SH7,VDM_S_S1) path=K59_SDA_S1(NC) NetK58_BUSH_VDM_S1_5->NetK59_SDA_S1_2; SCH-Connect-Map.json rawText L795 (VDM [Kelvin] 需闭合: 无(默认导通))",
+        "relayDefinitionLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h:222 (#define K59_ACM7_SDA 59) 与 :636 (#define K_SDA_ACM 59 // ACM200[] -> SDA: K59_ACM7_SDA) —— K59 默认 NC 保持导通",
+        "registerConfigurationLocator": "strategy/register-config-evidence.json:orderedWrites[0..2] (0X10=0X43, 0X57=0X04, 0X58=0X02 <- project/DALI/reg_config/tm425.sv:14-16, EN_ATEST1=1/ATEST1_MUX=2 将内部 1.2V 基准选通至 ATEST1)",
+        "interconnectLocator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(S5_ACM200_FH7,VDM_F_S1)] —— 源端口 S5_ACM200_FH7 即路径首节点，经 K59_SDA_S1 NC 触点直连 DUT Kelvin 端子"
+      },
+      "physicalProofs": [
+        {
+          "sourcePort": "S5_ACM200_FH7",
+          "dutPin": "VDM_F_S1",
+          "requiredOn": [],
+          "locator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S5_ACM200_FH7, dut_pin=VDM_F_S1)]"
+        },
+        {
+          "sourcePort": "S5_ACM200_SH7",
+          "dutPin": "VDM_S_S1",
+          "requiredOn": [],
+          "locator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S5_ACM200_SH7, dut_pin=VDM_S_S1)]"
+        }
+      ],
+      "requiredActuations": [],
+      "functionalRelays": []
+    }
+  ],
+  "resourceSummary": {
+    "sourceTablesUnresolved": false,
+    "endpointCount": 2,
+    "pathRequiredOnUnion": [],
+    "functionalRelayUnion": [
+      "K13"
+    ],
+    "setOnRelayUnion": [
+      "K13"
+    ],
+    "conflicts": []
+  },
+  "relayGroups": [
+    {
+      "groupId": "TM425-G1-VBAT",
+      "endpointId": "VBAT",
+      "stage": "SETON",
+      "setOnRelayIds": [
+        "K13"
+      ],
+      "purpose": "VBAT 4.4V 静态供电: FXVIe_PLUS CH5 默认导通 Kelvin 通路 + K13 稳压电容(FR-001)"
+    },
+    {
+      "groupId": "TM425-G2-VDM",
+      "endpointId": "VDM",
+      "stage": "SETON",
+      "setOnRelayIds": [],
+      "purpose": "VDM 经 ACM200 CH7 默认导通 Kelvin 通路测内部 1.2V 基准, 无需闭合通路继电器"
+    }
+  ],
+  "registerConfiguration": {
+    "tm": "TM425",
+    "evidencePath": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm425/strategy/register-config-evidence.json",
+    "evidenceSha256": "f127b891b0f44f21ad295580a9640092b7fffaf35e196c0965ae4024a50457e6",
+    "sourcePath": "project/DALI/reg_config/tm425.sv",
+    "sourceSha256": "16500415e4769c4175305682368b3bf64d3b423d52bd6b0268f03eb55d962c4d",
+    "fieldIntent": [
+      {
+        "field": "WAKE_UP",
+        "value": 1
+      },
+      {
+        "field": "EN_ATEST1",
+        "value": 1
+      },
+      {
+        "field": "ATEST1_MUX",
+        "value": 2
+      },
+      {
+        "field": "DIS_NTC_DETECTION_ANALOG",
+        "value": 1
+      }
+    ],
+    "orderedWrites": [
+      {
+        "sourceLine": 14,
+        "sourceText": "I2CWriteSameData(DEV_ADDR, 0x10, 0x43);  // Write reg 0x10 = 67",
+        "address": "0X10",
+        "value": "0X43"
+      },
+      {
+        "sourceLine": 15,
+        "sourceText": "I2CWriteSameData(DEV_ADDR, 0x57, 0x04);  // Write reg 0x57 = 4",
+        "address": "0X57",
+        "value": "0X04"
+      },
+      {
+        "sourceLine": 16,
+        "sourceText": "I2CWriteSameData(DEV_ADDR, 0x58, 0x02);  // Write reg 0x58 = 2",
+        "address": "0X58",
+        "value": "0X02"
+      }
+    ]
+  },
+  "relayDesignWorkflow": {
+    "note": "knowledge/references/L3-method/relay-design-flow.md 八步流程审计轨迹; 最终验收以 Path-Proofs/冲突检查/功能继电器检查为准",
+    "steps": [
+      {
+        "step": "1 找Pin",
+        "result": "VBAT(静态4.4V)/监测 ATEST1->VDM(内部 1.2V 基准, 无动态扫描)"
+      },
+      {
+        "step": "2 找通路",
+        "result": "Path-Proofs accepted: VBAT 9条, VDM 12条候选"
+      },
+      {
+        "step": "3 分流",
+        "result": "无差分Pin组、无大电流 -> 非稀缺源表(FXVIe_PLUS/ACM200)"
+      },
+      {
+        "step": "4 最短通路",
+        "result": "VBAT=S3_FXVIe_PLUS_CH5(0继电器), VDM=S5_ACM200_CH7(0); 所选通路 required_on 均为空(默认导通 Kelvin)"
+      },
+      {
+        "step": "5 局部冲突",
+        "result": "无: 所选通路无 ON 继电器; FPVIe/QVM 备选通路继电器更多, 按最短通路原则不选"
+      },
+      {
+        "step": "6 全局冲突",
+        "result": "无: K8/K59 均 NC 且互不交叉; 源端口与 pair 唯一归属各端点"
+      },
+      {
+        "step": "7 闭合分组",
+        "result": "单组 SetOn 闭合集: K13(VBAT 稳压); K8/K59 保持 NC"
+      },
+      {
+        "step": "8 终点",
+        "result": "闭合集移交 METHOD 阶段按 CBITe.h SetOn 语义落地; Trim 测量方案由 METHOD 决定"
+      }
+    ]
+  },
+  "evidence": [
+    {
+      "kind": "dft",
+      "path": "project/DALI/Output_Global_Material/dft/TM425/dft-meta.json",
+      "note": "已签 DFT 投影, sourceSha256=896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b"
+    },
+    {
+      "kind": "schematic",
+      "path": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json",
+      "note": "status=PASS"
+    },
+    {
+      "kind": "schematic",
+      "path": "project/DALI/Output_Global_Material/schematic/SCH-Connect-Map.json",
+      "note": "L914 VBAT 稳压 K13 / L795 VDM Kelvin 默认导通"
+    },
+    {
+      "kind": "schematic",
+      "path": "project/DALI/Output_Global_Material/schematic/Components-Statistic.json",
+      "note": "dutKelvinPins 含 VBAT/VDM"
+    },
+    {
+      "kind": "vs_header",
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h",
+      "note": "源表对象与通道宏"
+    },
+    {
+      "kind": "vs_header",
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h",
+      "note": "继电器定义"
+    },
+    {
+      "kind": "reg_config",
+      "path": "project/DALI/reg_config/tm425.sv",
+      "note": "已批准寄存器配置源"
+    }
+  ],
+  "openItems": []
+}

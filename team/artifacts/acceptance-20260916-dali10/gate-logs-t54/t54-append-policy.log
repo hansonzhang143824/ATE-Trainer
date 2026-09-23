@@ -1,0 +1,24 @@
+前置：语法 OK（50624 B）
+  已加 appendPolicy → 51202 B
+后置：语法 OK
+  run1: RECEIPT D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260
+  run2: RECEIPT D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260
+
+=== 自证 ===
+  收据键 = ['subject', 'at', 'size', 'sha256', 'sha256_lf_normalized', 'topLevelEntries', 'reproducibleBodySha256', 'reproducibleNote', 'projectionSpec', 'standardTriHash', 'hashInvariance', 'isFrozen', 'appendPolicy', 'countUnitNote', 'note']
+  appendPolicy 在 = True
+  文 = **本账本仅在身份（body 哈希，`projectionSpec` 口径）变化时追加**；**因此"一段时间无增长"不等于"无运行"** —— 新策略下**运行可以发生而有意不记**。**运行计数一律查 `runSeq`**（单调序号）。⚠️ 本策略于本轮启用；此前（1–54 行）为**旧制度：每
+
+=== 按候选措辞搜检（其用于证明"0 命中"的那组）===
+  identity change    命中 = 0
+  only when          命中 = 0
+  append only        命中 = 0
+  仅身份                命中 = 0
+  身份变化               命中 = 0
+  变化才追加              命中 = 0
+  appendPolicy       命中 = 1
+  无增长                命中 = 1
+
+=== 规则入册 ===
+  已并入 → 61688 B
+  登记 = 61688 B ｜ 标题 48 ｜ 唯一 48 ｜ 重复 无

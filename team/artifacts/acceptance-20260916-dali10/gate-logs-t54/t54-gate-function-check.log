@@ -1,0 +1,8 @@
+契约现盘 revision = 39
+DEFAULT_TM_SCOPE = ['TM600_HS_RDSON', 'TM601_LS_RDSON']
+payload(候选)        errors=0
+    TM600_HS_RDSON   expected=[48, 60, 61, 76, 83]     missing=[]
+    TM601_LS_RDSON   expected=[60, 61, 154, 155]       missing=[]
+deployed(部署态)      errors=2
+    TM600_HS_RDSON   expected=[48, 60, 61, 76, 83]     missing=[48, 76]
+    TM601_LS_RDSON   expected=[60, 61, 154, 155]       missing=[]

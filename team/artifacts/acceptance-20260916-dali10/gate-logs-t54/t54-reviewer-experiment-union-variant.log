@@ -1,0 +1,33 @@
+=== 规范补全：生成器版本 + 可选"更强变体"（只放 1 条）===
+at = 2026-09-17T00:38:00+08:00
+
+--- 生成器版本（reviewer 要求回报）---
+  path  = gate-logs-t28/t28_make_anchors.py
+  size  = 11739 B
+  sha256= c8ca47eab8531084b9e00c9f347c434a80509a2f409efc27a8a7d7118d3587b6
+  mtime = 2026-09-17T00:33:14
+--- 离线副本（共享活档）---
+  size  = 12183 B
+  sha256= 6edfc659e930d5bdc5ddfcd229c814af（副本起点，注入前）…
+
+--- 注入（1 条，第三方前缀 qaProbeAnchors）---
+  注入前：qaProbeAnchors.anchors = 1 条（本行注入）｜ setupArchitectFreezeAnchors.anchors = 1 条
+  副本注入后 size = 12318 B
+
+--- 跑生成器 ---
+  exit=0
+  保留他方命名空间: qaProbeAnchors, setupArchitectFreezeAnchors
+  WROTE D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10\gate-logs-t28\t28-anchors.json (12318 B / 62d828cbb45a7fac99e2b1194a9ad50086d71a4c0be3620448ad17dd732e1895)
+
+--- 跑后现算 ---
+  qaProbeAnchors.anchors = 1 条 ⇒ **1 条存活 = True**
+  setupArchitectFreezeAnchors.anchors = 1 条 ⇒ 仍在 = True
+  副本跑后 size = 12318 B
+
+--- 判据（照 reviewer 与你的措辞）---
+  本变体证明的是 **(ii) 不丢当前内容**（第三方前缀同样走并集累积路径）。
+  ⚠️ **不得**引作 **(iii) 恢复历史** 的证据 —— 那 8 条已无字节、**原理上不可测**。
+  ⚠️ 本变体**不构成**与"旧版压成单键"的直接对照（无旧版生成器可运行）⇒ 该对照**未执行**。
+
+--- 已还原活档 ---
+  size = 12183 B ｜ entries = 32 ｜ 含 VARIANT/probe = False ｜ 他方条数 = 1

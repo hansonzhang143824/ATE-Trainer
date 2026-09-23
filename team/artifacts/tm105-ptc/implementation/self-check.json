@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "PTC-IMPLEMENTATION-SELF-CHECK-V2",
+  "tm": "TM105",
+  "stage": "IMPLEMENTATION",
+  "status": "PASS",
+  "methodFamily": "scan",
+  "command": "python scripts/verify_implementation_batch.py team/artifacts/tm102-ptc team/artifacts/tm105-ptc team/artifacts/tm425-ptc",
+  "exitCode": 0,
+  "sourcePath": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+  "sourceSha256": "2ed19d63e8d761efcfbf7eaf187ee4e36e9a492bc965c94759e568dd7ff2c90c",
+  "symbol": "TM105_HSKP_VSPRE_MAX_CMP",
+  "check": {
+    "trial": "tm105-ptc",
+    "tm": "TM105",
+    "symbol": "TM105_HSKP_VSPRE_MAX_CMP",
+    "methodFamily": "scan",
+    "sourceSha256": "2ed19d63e8d761efcfbf7eaf187ee4e36e9a492bc965c94759e568dd7ff2c90c",
+    "status": "PASS"
+  }
+}

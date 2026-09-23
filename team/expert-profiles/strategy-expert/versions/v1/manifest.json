@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "profileId": "strategy-expert",
+  "version": "v1",
+  "publishedAt": "2026-09-20T14:25:18.680634Z",
+  "executionClass": "strategy-standard",
+  "evaluation": {
+    "verdict": "pass",
+    "failed": [],
+    "caseCount": 1,
+    "checks": [
+      {
+        "id": "assets",
+        "ok": true,
+        "detail": "all required assets present"
+      },
+      {
+        "id": "profile_metadata",
+        "ok": true,
+        "detail": "profile.yaml parsed and identified"
+      },
+      {
+        "id": "execution_class_registered",
+        "ok": true,
+        "detail": "executionClass 'strategy-standard' is registered in the plugin policy registry"
+      },
+      {
+        "id": "execution_class_matches_profile_map",
+        "ok": true,
+        "detail": "plugin maps strategy-expert to 'strategy-standard'"
+      },
+      {
+        "id": "declared_readable",
+        "ok": true,
+        "detail": "readable: ['project/DALI/Output_Global_Material/dft/<TM>', 'project/DALI/Output_Global_Material/schematic']"
+      },
+      {
+        "id": "declared_writable",
+        "ok": true,
+        "detail": "writable: ['<run>/strategy', 'project/DALI/ErrorLog/strategy-expert.log']"
+      },
+      {
+        "id": "declared_requiredGates",
+        "ok": true,
+        "detail": "requiredGates: ['scripts/validate_strategy_contract.py']"
+      },
+      {
+        "id": "readable_has_no_retired_artifact",
+        "ok": true,
+        "detail": "readable declares no retired artifact"
+      },
+      {
+        "id": "output_contract",
+        "ok": true,
+        "detail": "object schema with required=['tm', 'classification', 'registerConfiguration', 'resourceAllocation']"
+      },
+      {
+        "id": "case_index_matches_disk",
+        "ok": true,
+        "detail": "index ['TM106'] vs cases/ ['TM106']"
+      },
+      {
+        "id": "case_TM106",
+        "ok": true,
+        "detail": "case is complete and inside the allowed read scope"
+      },
+      {
+        "id": "preset_agreement",
+        "ok": true,
+        "detail": "preset.yml name matches displayName 'PTC Strategy Expert'"
+      },
+      {
+        "id": "boundary_regression",
+        "ok": true,
+        "detail": "plugin boundary suite passed"
+      }
+    ]
+  },
+  "files": {
+    "CHANGELOG.md": "5443217686497b3987a8cad7ab27b8ea37fe28a0592a1f5d6b5d97269c6e9b90",
+    "cases/TM106/expected.json": "8e677b9afc1821e65764f03f4853a1617a4052e080549b939feb927b7f564476",
+    "evaluation/expected-results.json": "6d27aa4cf0bae0cc47784ff788782b96323edafb8aab8f6f8bd3027d44914fb2",
+    "instructions.md": "6912a5c0e6d4fa5b16fd74d4f5da99e7298185af121373326efc9040910af71e",
+    "output-contract.schema.json": "d93e132794982962c7b1db89848b3903078df3573de467f2007e08d782767e90",
+    "profile.yaml": "bf8570fa78646e3e76ed74d6aa87c6abad4f1f4c574fffb8e56fbcdf55037dad",
+    "status.json": "3e5774a89f2d7019b609be7380f25a9a5b516459fcdb028150f9285211432441"
+  },
+  "digest": "8d846f6eeab356c144ef02cbd36a092f5abb6b6be32c4d3ec59ce9e296e6196a"
+}

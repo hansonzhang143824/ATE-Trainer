@@ -1,0 +1,2961 @@
+{
+ "counts": {
+  "sources": 112,
+  "raw_best_paths": 1004,
+  "accepted_path_proofs": 669,
+  "rejected_paths": 335,
+  "kelvin_pairs": 219,
+  "kelvin_pair_failures": 0
+ },
+ "status": "PASS",
+ "proofs": {
+  "VAC1_F_S1": [
+   {
+    "source_port": "S10_CH0_B",
+    "source_meta": {
+     "type": "QTMU",
+     "role": "",
+     "side": "",
+     "channel": "",
+     "domain": "",
+     "pair_key": "QTMU::"
+    },
+    "dut_pin": "VAC1_F_S1",
+    "dut_net": "NetCap1_VAC1_S1_1",
+    "path": [
+     {
+      "relay": "K142_QTMU_BUSB",
+      "relay_instance": "K142_QTMU_BUSB_S1S2",
+      "relay_number": 142,
+      "state": "ON",
+      "from_net": "NetK142_QTMU_BUSB_S1S2_3",
+      "from_pin": 3,
+      "to_pin": 4,
+      "to_net": "FPVIe0_FL_BUS_S1"
+     },
+     {
+      "relay": "K17_BUSL_VAC",
+      "relay_instance": "K17_BUSL_VAC_S1",
+      "relay_number": 17,
+      "state": "ON",
+      "from_net": "FPVIe0_FL_BUS_S1",
+      "from_pin": 3,
+      "to_pin": 4,
+      "to_net": "VAC_FORCE_S1"
+     },
+     {
+      "relay": "K18_VAC3",
+      "relay_instance": "K18_VAC3_S1",
+      "relay_number": 18,
+      "state": "NC",
+      "from_net": "VAC_FORCE_S1",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "NetK18_VAC3_S1_2"
+     },
+     {
+      "relay": "K19_VAC2",
+      "relay_instance": "K19_VAC2_S1",
+      "relay_number": 19,
+      "state": "NC",
+      "from_net": "NetK18_VAC3_S1_2",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "NetCap1_VAC1_S1_1"
+     }
+    ],
+    "required_on": [
+     17,
+     142
+    ],
+    "terminal_stop": true,
+    "dut_base": "VAC1",
+    "dut_role": "F",
+    "cbit": {
+     "17": [
+      {
+       "name": "K17_BUSL_VAC",
+       "group": "G6K_DEDICATED",
+       "raw": "S34_CBIT17",
+       "value": 17
+      }
+     ],
+     "142": [
+      {
+       "name": "K142_QTMU_BUSB",
+       "group": "G6K_SHARED",
+       "raw": "S36_CBIT14",
+       "value": 142
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S1_FPVIe_FH0",
+    "source_meta": {
+     "type": "FPVIe",
+     "role": "F",
+     "side": "FH",
+     "channel": "0",
+     "domain": "HIGH",
+     "pair_key": "S1_FPVIe:0:HIGH"
+    },
+    "dut_pin": "VAC1_F_S1",
+    "dut_net": "NetCap1_VAC1_S1_1",
+    "path": [
+     {
+      "relay": "K87_KELVIN0",
+      "relay_instance": "K87_KELVIN0_S1S2",
+      "relay_number": 87,
+      "state": "ON",
+      "from_net": "NetK86_KELVIN0_F_S1_2",
+      "from_pin": 3,
+      "to_pin": 4,
+      "to_net": "NetK87_KELVIN0_S1S2_4"
+     },
+     {
+      "relay": "K90_PC0_Force",
+      "relay_instance": "K90_PC0_Force_S1",
+      "relay_number": 90,
+      "state": "ON",
+      "from_net": "NetK87_KELVIN0_S1S2_4",
+      "from_pin": 3,
+      "to_pin": 4,
+      "to_net": "FPVIe0_FH_PC_S1"
+     },
+     {
+      "relay": "K82_R_CS",
+      "relay_instance": "K82_R_CS_S1S2",
+      "relay_number": 82,
+      "state": "NC",
+      "from_net": "FPVIe0_FH_PC_S1",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "NetC2_CS_S1_2"
+     },
+     {
+      "relay": "K70_VAC_F",
+      "relay_instance": "K70_VAC_F_S1",
+      "relay_number": 70,
+      "state": "ON",
+      "from_net": "NetC2_CS_S1_2",
+      "from_pin": 1,
+      "to_pin": 2,
+      "to_net": "VAC_FORCE_S1"
+     },
+     {
+      "relay": "K18_VAC3",
+      "relay_instance": "K18_VAC3_S1",
+      "relay_number": 18,
+      "state": "NC",
+      "from_net": "VAC_FORCE_S1",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "NetK18_VAC3_S1_2"
+     },
+     {
+      "relay": "K19_VAC2",
+      "relay_instance": "K19_VAC2_S1",
+      "relay_number": 19,
+      "state": "NC",
+      "from_net": "NetK18_VAC3_S1_2",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "NetCap1_VAC1_S1_1"
+     }
+    ],
+    "required_on": [
+     70,
+     87,
+     90
+    ],
+    "terminal_stop": true,
+    "dut_base": "VAC1",
+    "dut_role": "F",
+    "cbit": {
+     "70": [
+      {
+       "name": "K70_VAC_F",
+       "group": "MOS",
+       "raw": "S34_CBIT70",
+       "value": 70
+      }
+     ],
+     "87": [
+      {
+       "name": "K87_KELVIN0",
+       "group": "G6K_SHARED",
+       "raw": "S34_CBIT87",
+       "value": 87
+      }
+     ],
+     "90": [
+      {
+       "name": "K90_PC0_Force",
+       "group": "G6K_DEDICATED",
+       "raw": "S34_CBIT90",
+       "value": 90
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S1_FPVIe_FL0",
+    "source_meta": {
+     "type": "FPVIe",
+     "role": "F",
+     "side": "FL",
+     "channel": "0",
+     "domain": "LOW",
+     "pair_key": "S1_FPVIe:0:LOW"
+    },
+    "dut_pin": "VAC1_F_S1",
+    "dut_net": "NetCap1_VAC1_S1_1",
+    "path": [
+     {
+      "relay": "K89_KELVIN0",
+      "relay_instance": "K89_KELVIN0_S1S2",
+      "relay_number": 89,
+      "state": "NC",
+      "from_net": "NetK86_KELVIN0_S_S1_2",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "FPVIe0_FL_BUS_S1"
+     },
+     {
+      "relay": "K17_BUSL_VAC",
+      "relay_instance": "K17_BUSL_VAC_S1",
+      "relay_number": 17,
+      "state": "ON",
+      "from_net": "FPVIe0_FL_BUS_S1",
+      "from_pin": 3,
+      "to_pin": 4,
+      "to_net": "VAC_FORCE_S1"
+     },
+     {
+      "relay": "K18_VAC3",
+      "relay_instance": "K18_VAC3_S1",
+      "relay_number": 18,
+      "state": "NC",
+      "from_net": "VAC_FORCE_S1",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "NetK18_VAC3_S1_2"
+     },
+     {
+      "relay": "K19_VAC2",
+      "relay_instance": "K19_VAC2_S1",
+      "relay_number": 19,
+      "state": "NC",
+      "from_net": "NetK18_VAC3_S1_2",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "NetCap1_VAC1_S1_1"
+     }
+    ],
+    "required_on": [
+     17
+    ],
+    "terminal_stop": true,
+    "dut_base": "VAC1",
+    "dut_role": "F",
+    "cbit": {
+     "17": [
+      {
+       "name": "K17_BUSL_VAC",
+       "group": "G6K_DEDICATED",
+       "raw": "S34_CBIT17",
+       "value": 17
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S1_FPVIe_FL1",
+    "source_meta": {
+     "type": "FPVIe",
+     "role": "F",
+     "side": "FL",
+     "channel": "1",
+     "domain": "LOW",
+     "pair_key": "S1_FPVIe:1:LOW"
+    },
+    "dut_pin": "VAC1_F_S1",
+    "dut_net": "NetCap1_VAC1_S1_1",
+    "path": [
+     {
+      "relay": "K133_KELVIN1",
+      "relay_instance": "K133_KELVIN1_S1S2",
+      "relay_number": 133,
+      "state": "NC",
+      "from_net": "NetK130_KELVIN1_S_S1_2",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "FPVIe1_FL_BUS_S1"
+     },
+     {
+      "relay": "K146_DCM_BUS1_L",
+      "relay_instance": "K146_DCM_BUS1_L_S1",
+      "relay_number": 146,
+      "state": "ON",
+      "from_net": "FPVIe1_FL_BUS_S1",
+      "from_pin": 2,
+      "to_pin": 1,
+      "to_net": "NetK145_DCM_BUS0_L_S1_1"
+     },
+     {
+      "relay": "K145_DCM_BUS0_L",
+      "relay_instance": "K145_DCM_BUS0_L_S1",
+      "relay_number": 145,
+      "state": "ON",
+      "from_net": "NetK145_DCM_BUS0_L_S1_1",
+      "from_pin": 1,
+      "to_pin": 2,
+      "to_net": "FPVIe0_FL_BUS_S1"
+     },
+     {
+      "relay": "K17_BUSL_VAC",
+      "relay_instance": "K17_BUSL_VAC_S1",
+      "relay_number": 17,
+      "state": "ON",
+      "from_net": "FPVIe0_FL_BUS_S1",
+      "from_pin": 3,
+      "to_pin": 4,
+      "to_net": "VAC_FORCE_S1"
+     },
+     {
+      "relay": "K18_VAC3",
+      "relay_instance": "K18_VAC3_S1",
+      "relay_number": 18,
+      "state": "NC",
+      "from_net": "VAC_FORCE_S1",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "NetK18_VAC3_S1_2"
+     },
+     {
+      "relay": "K19_VAC2",
+      "relay_instance": "K19_VAC2_S1",
+      "relay_number": 19,
+      "state": "NC",
+      "from_net": "NetK18_VAC3_S1_2",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "NetCap1_VAC1_S1_1"
+     }
+    ],
+    "required_on": [
+     17,
+     145,
+     146
+    ],
+    "terminal_stop": true,
+    "dut_base": "VAC1",
+    "dut_role": "F",
+    "cbit": {
+     "17": [
+      {
+       "name": "K17_BUSL_VAC",
+       "group": "G6K_DEDICATED",
+       "raw": "S34_CBIT17",
+       "value": 17
+      }
+     ],
+     "145": [
+      {
+       "name": "K145_DCM_BUS0_L",
+       "group": "MOS",
+       "raw": "S36_CBIT17",
+       "value": 145
+      }
+     ],
+     "146": [
+      {
+       "name": "K146_DCM_BUS1_L",
+       "group": "MOS",
+       "raw": "S36_CBIT18",
+       "value": 146
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S5_ACM200_FH0",
+    "source_meta": {
+     "type": "ACM200",
+     "role": "F",
+     "side": "FH",
+     "channel": "0",
+     "domain": "HIGH",
+     "pair_key": "S5_ACM200:0:HIGH"
+    },
+    "dut_pin": "VAC1_F_S1",
+    "dut_net": "NetCap1_VAC1_S1_1",
+    "path": [
+     {
+      "relay": "K18_VAC3",
+      "relay_instance": "K18_VAC3_S1",
+      "relay_number": 18,
+      "state": "NC",
+      "from_net": "VAC_FORCE_S1",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "NetK18_VAC3_S1_2"
+     },
+     {
+      "relay": "K19_VAC2",
+      "relay_instance": "K19_VAC2_S1",
+      "relay_number": 19,
+      "state": "NC",
+      "from_net": "NetK18_VAC3_S1_2",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "NetCap1_VAC1_S1_1"
+     }
+    ],
+    "required_on": [],
+    "terminal_stop": true,
+    "dut_base": "VAC1",
+    "dut_role": "F",
+    "cbit": {},
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   }
+  ],
+  "VAC1_S_S1": [
+   {
+    "source_port": "S1_FPVIe_SL0",
+    "source_meta": {
+     "type": "FPVIe",
+     "role": "S",
+     "side": "SL",
+     "channel": "0",
+     "domain": "LOW",
+     "pair_key": "S1_FPVIe:0:LOW"
+    },
+    "dut_pin": "VAC1_S_S1",
+    "dut_net": "NetK19_VAC2_S1_7",
+    "path": [
+     {
+      "relay": "K88_KELVIN0",
+      "relay_instance": "K88_KELVIN0_S1",
+      "relay_number": 88,
+      "state": "NC",
+      "from_net": "NetK86_KELVIN0_S_S1_1",
+      "from_pin": 6,
+      "to_pin": 7,
+      "to_net": "FPVIe0_SL_BUS_S1"
+     },
+     {
+      "relay": "K17_BUSL_VAC",
+      "relay_instance": "K17_BUSL_VAC_S1",
+      "relay_number": 17,
+      "state": "ON",
+      "from_net": "FPVIe0_SL_BUS_S1",
+      "from_pin": 6,
+      "to_pin": 5,
+      "to_net": "VAC_SENSE_S1"
+     },
+     {
+      "relay": "K18_VAC3",
+      "relay_instance": "K18_VAC3_S1",
+      "relay_number": 18,
+      "state": "NC",
+      "from_net": "VAC_SENSE_S1",
+      "from_pin": 6,
+      "to_pin": 7,
+      "to_net": "NetK18_VAC3_S1_7"
+     },
+     {
+      "relay": "K19_VAC2",
+      "relay_instance": "K19_VAC2_S1",
+      "relay_number": 19,
+      "state": "NC",
+      "from_net": "NetK18_VAC3_S1_7",
+      "from_pin": 6,
+      "to_pin": 7,
+      "to_net": "NetK19_VAC2_S1_7"
+     }
+    ],
+    "required_on": [
+     17
+    ],
+    "terminal_stop": true,
+    "dut_base": "VAC1",
+    "dut_role": "S",
+    "cbit": {
+     "17": [
+      {
+       "name": "K17_BUSL_VAC",
+       "group": "G6K_DEDICATED",
+       "raw": "S34_CBIT17",
+       "value": 17
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S1_FPVIe_SL1",
+    "source_meta": {
+     "type": "FPVIe",
+     "role": "S",
+     "side": "SL",
+     "channel": "1",
+     "domain": "LOW",
+     "pair_key": "S1_FPVIe:1:LOW"
+    },
+    "dut_pin": "VAC1_S_S1",
+    "dut_net": "NetK19_VAC2_S1_7",
+    "path": [
+     {
+      "relay": "K132_KELVIN1",
+      "relay_instance": "K132_KELVIN1_S1",
+      "relay_number": 132,
+      "state": "NC",
+      "from_net": "NetK130_KELVIN1_S_S1_1",
+      "from_pin": 6,
+      "to_pin": 7,
+      "to_net": "FPVIe1_SL_BUS_S1"
+     },
+     {
+      "relay": "K139_QVML_BUS1",
+      "relay_instance": "K139_QVML_BUS1_S1",
+      "relay_number": 139,
+      "state": "ON",
+      "from_net": "FPVIe1_SL_BUS_S1",
+      "from_pin": 2,
+      "to_pin": 1,
+      "to_net": "NetK138_QVML_BUS0_S1_1"
+     },
+     {
+      "relay": "K138_QVML_BUS0",
+      "relay_instance": "K138_QVML_BUS0_S1",
+      "relay_number": 138,
+      "state": "ON",
+      "from_net": "NetK138_QVML_BUS0_S1_1",
+      "from_pin": 1,
+      "to_pin": 2,
+      "to_net": "FPVIe0_SL_BUS_S1"
+     },
+     {
+      "relay": "K17_BUSL_VAC",
+      "relay_instance": "K17_BUSL_VAC_S1",
+      "relay_number": 17,
+      "state": "ON",
+      "from_net": "FPVIe0_SL_BUS_S1",
+      "from_pin": 6,
+      "to_pin": 5,
+      "to_net": "VAC_SENSE_S1"
+     },
+     {
+      "relay": "K18_VAC3",
+      "relay_instance": "K18_VAC3_S1",
+      "relay_number": 18,
+      "state": "NC",
+      "from_net": "VAC_SENSE_S1",
+      "from_pin": 6,
+      "to_pin": 7,
+      "to_net": "NetK18_VAC3_S1_7"
+     },
+     {
+      "relay": "K19_VAC2",
+      "relay_instance": "K19_VAC2_S1",
+      "relay_number": 19,
+      "state": "NC",
+      "from_net": "NetK18_VAC3_S1_7",
+      "from_pin": 6,
+      "to_pin": 7,
+      "to_net": "NetK19_VAC2_S1_7"
+     }
+    ],
+    "required_on": [
+     17,
+     138,
+     139
+    ],
+    "terminal_stop": true,
+    "dut_base": "VAC1",
+    "dut_role": "S",
+    "cbit": {
+     "17": [
+      {
+       "name": "K17_BUSL_VAC",
+       "group": "G6K_DEDICATED",
+       "raw": "S34_CBIT17",
+       "value": 17
+      }
+     ],
+     "138": [
+      {
+       "name": "K138_QVML_BUS0",
+       "group": "MOS",
+       "raw": "S36_CBIT10",
+       "value": 138
+      }
+     ],
+     "139": [
+      {
+       "name": "K139_QVML_BUS1",
+       "group": "MOS",
+       "raw": "S36_CBIT11",
+       "value": 139
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S5_ACM200_SH0",
+    "source_meta": {
+     "type": "ACM200",
+     "role": "S",
+     "side": "SH",
+     "channel": "0",
+     "domain": "HIGH",
+     "pair_key": "S5_ACM200:0:HIGH"
+    },
+    "dut_pin": "VAC1_S_S1",
+    "dut_net": "NetK19_VAC2_S1_7",
+    "path": [
+     {
+      "relay": "K18_VAC3",
+      "relay_instance": "K18_VAC3_S1",
+      "relay_number": 18,
+      "state": "NC",
+      "from_net": "VAC_SENSE_S1",
+      "from_pin": 6,
+      "to_pin": 7,
+      "to_net": "NetK18_VAC3_S1_7"
+     },
+     {
+      "relay": "K19_VAC2",
+      "relay_instance": "K19_VAC2_S1",
+      "relay_number": 19,
+      "state": "NC",
+      "from_net": "NetK18_VAC3_S1_7",
+      "from_pin": 6,
+      "to_pin": 7,
+      "to_net": "NetK19_VAC2_S1_7"
+     }
+    ],
+    "required_on": [],
+    "terminal_stop": true,
+    "dut_base": "VAC1",
+    "dut_role": "S",
+    "cbit": {},
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S8_QVM_CH0-",
+    "source_meta": {
+     "type": "QVM",
+     "role": "S",
+     "side": "-",
+     "channel": "0",
+     "domain": "LOW",
+     "pair_key": "S8_QVM:0:"
+    },
+    "dut_pin": "VAC1_S_S1",
+    "dut_net": "NetK19_VAC2_S1_7",
+    "path": [
+     {
+      "relay": "K138_QVML_BUS0",
+      "relay_instance": "K138_QVML_BUS0_S1",
+      "relay_number": 138,
+      "state": "ON",
+      "from_net": "NetK138_QVML_BUS0_S1_1",
+      "from_pin": 1,
+      "to_pin": 2,
+      "to_net": "FPVIe0_SL_BUS_S1"
+     },
+     {
+      "relay": "K17_BUSL_VAC",
+      "relay_instance": "K17_BUSL_VAC_S1",
+      "relay_number": 17,
+      "state": "ON",
+      "from_net": "FPVIe0_SL_BUS_S1",
+      "from_pin": 6,
+      "to_pin": 5,
+      "to_net": "VAC_SENSE_S1"
+     },
+     {
+      "relay": "K18_VAC3",
+      "relay_instance": "K18_VAC3_S1",
+      "relay_number": 18,
+      "state": "NC",
+      "from_net": "VAC_SENSE_S1",
+      "from_pin": 6,
+      "to_pin": 7,
+      "to_net": "NetK18_VAC3_S1_7"
+     },
+     {
+      "relay": "K19_VAC2",
+      "relay_instance": "K19_VAC2_S1",
+      "relay_number": 19,
+      "state": "NC",
+      "from_net": "NetK18_VAC3_S1_7",
+      "from_pin": 6,
+      "to_pin": 7,
+      "to_net": "NetK19_VAC2_S1_7"
+     }
+    ],
+    "required_on": [
+     17,
+     138
+    ],
+    "terminal_stop": true,
+    "dut_base": "VAC1",
+    "dut_role": "S",
+    "cbit": {
+     "17": [
+      {
+       "name": "K17_BUSL_VAC",
+       "group": "G6K_DEDICATED",
+       "raw": "S34_CBIT17",
+       "value": 17
+      }
+     ],
+     "138": [
+      {
+       "name": "K138_QVML_BUS0",
+       "group": "MOS",
+       "raw": "S36_CBIT10",
+       "value": 138
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   }
+  ],
+  "VBAT_F_S1": [
+   {
+    "source_port": "S10_CH0_A",
+    "source_meta": {
+     "type": "QTMU",
+     "role": "",
+     "side": "",
+     "channel": "",
+     "domain": "",
+     "pair_key": "QTMU::"
+    },
+    "dut_pin": "VBAT_F_S1",
+    "dut_net": "NetCap1_VBAT_S1_1",
+    "path": [
+     {
+      "relay": "K141_QTMU_BUSA",
+      "relay_instance": "K141_QTMU_BUSA_S1S2",
+      "relay_number": 141,
+      "state": "NC",
+      "from_net": "NetK66_TMU_nQON_S1_2",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "FPVIe1_FH_BUS_S1"
+     },
+     {
+      "relay": "K7_BUSH_VBAT",
+      "relay_instance": "K7_BUSH_VBAT_S1",
+      "relay_number": 7,
+      "state": "ON",
+      "from_net": "FPVIe1_FH_BUS_S1",
+      "from_pin": 3,
+      "to_pin": 4,
+      "to_net": "NetK7_BUSH_VBAT_S1_4"
+     },
+     {
+      "relay": "K8_PD3",
+      "relay_instance": "K8_PD3_S1",
+      "relay_number": 8,
+      "state": "NC",
+      "from_net": "NetK7_BUSH_VBAT_S1_4",
+      "from_pin": 6,
+      "to_pin": 7,
+      "to_net": "NetCap1_VBAT_S1_1"
+     }
+    ],
+    "required_on": [
+     7
+    ],
+    "terminal_stop": true,
+    "dut_base": "VBAT",
+    "dut_role": "F",
+    "cbit": {
+     "7": [
+      {
+       "name": "K7_BUSH_VBAT",
+       "group": "G6K_DEDICATED",
+       "raw": "S34_CBIT7",
+       "value": 7
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S1_FPVIe_FH0",
+    "source_meta": {
+     "type": "FPVIe",
+     "role": "F",
+     "side": "FH",
+     "channel": "0",
+     "domain": "HIGH",
+     "pair_key": "S1_FPVIe:0:HIGH"
+    },
+    "dut_pin": "VBAT_F_S1",
+    "dut_net": "NetCap1_VBAT_S1_1",
+    "path": [
+     {
+      "relay": "K87_KELVIN0",
+      "relay_instance": "K87_KELVIN0_S1S2",
+      "relay_number": 87,
+      "state": "NC",
+      "from_net": "NetK86_KELVIN0_F_S1_2",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "FPVIe0_FH_BUS_S1"
+     },
+     {
+      "relay": "K143_DCM_BUS0_H",
+      "relay_instance": "K143_DCM_BUS0_H_S1",
+      "relay_number": 143,
+      "state": "ON",
+      "from_net": "FPVIe0_FH_BUS_S1",
+      "from_pin": 2,
+      "to_pin": 1,
+      "to_net": "NetK143_DCM_BUS0_H_S1_1"
+     },
+     {
+      "relay": "K144_DCM_BUS1_H",
+      "relay_instance": "K144_DCM_BUS1_H_S1",
+      "relay_number": 144,
+      "state": "ON",
+      "from_net": "NetK143_DCM_BUS0_H_S1_1",
+      "from_pin": 1,
+      "to_pin": 2,
+      "to_net": "FPVIe1_FH_BUS_S1"
+     },
+     {
+      "relay": "K7_BUSH_VBAT",
+      "relay_instance": "K7_BUSH_VBAT_S1",
+      "relay_number": 7,
+      "state": "ON",
+      "from_net": "FPVIe1_FH_BUS_S1",
+      "from_pin": 3,
+      "to_pin": 4,
+      "to_net": "NetK7_BUSH_VBAT_S1_4"
+     },
+     {
+      "relay": "K8_PD3",
+      "relay_instance": "K8_PD3_S1",
+      "relay_number": 8,
+      "state": "NC",
+      "from_net": "NetK7_BUSH_VBAT_S1_4",
+      "from_pin": 6,
+      "to_pin": 7,
+      "to_net": "NetCap1_VBAT_S1_1"
+     }
+    ],
+    "required_on": [
+     7,
+     143,
+     144
+    ],
+    "terminal_stop": true,
+    "dut_base": "VBAT",
+    "dut_role": "F",
+    "cbit": {
+     "7": [
+      {
+       "name": "K7_BUSH_VBAT",
+       "group": "G6K_DEDICATED",
+       "raw": "S34_CBIT7",
+       "value": 7
+      }
+     ],
+     "143": [
+      {
+       "name": "K143_DCM_BUS0_H",
+       "group": "MOS",
+       "raw": "S36_CBIT15",
+       "value": 143
+      }
+     ],
+     "144": [
+      {
+       "name": "K144_DCM_BUS1_H",
+       "group": "MOS",
+       "raw": "S36_CBIT16",
+       "value": 144
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S1_FPVIe_FH1",
+    "source_meta": {
+     "type": "FPVIe",
+     "role": "F",
+     "side": "FH",
+     "channel": "1",
+     "domain": "HIGH",
+     "pair_key": "S1_FPVIe:1:HIGH"
+    },
+    "dut_pin": "VBAT_F_S1",
+    "dut_net": "NetCap1_VBAT_S1_1",
+    "path": [
+     {
+      "relay": "K131_KELVIN1",
+      "relay_instance": "K131_KELVIN1_S1S2",
+      "relay_number": 131,
+      "state": "NC",
+      "from_net": "NetK130_KELVIN1_F_S1_2",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "FPVIe1_FH_BUS_S1"
+     },
+     {
+      "relay": "K7_BUSH_VBAT",
+      "relay_instance": "K7_BUSH_VBAT_S1",
+      "relay_number": 7,
+      "state": "ON",
+      "from_net": "FPVIe1_FH_BUS_S1",
+      "from_pin": 3,
+      "to_pin": 4,
+      "to_net": "NetK7_BUSH_VBAT_S1_4"
+     },
+     {
+      "relay": "K8_PD3",
+      "relay_instance": "K8_PD3_S1",
+      "relay_number": 8,
+      "state": "NC",
+      "from_net": "NetK7_BUSH_VBAT_S1_4",
+      "from_pin": 6,
+      "to_pin": 7,
+      "to_net": "NetCap1_VBAT_S1_1"
+     }
+    ],
+    "required_on": [
+     7
+    ],
+    "terminal_stop": true,
+    "dut_base": "VBAT",
+    "dut_role": "F",
+    "cbit": {
+     "7": [
+      {
+       "name": "K7_BUSH_VBAT",
+       "group": "G6K_DEDICATED",
+       "raw": "S34_CBIT7",
+       "value": 7
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S3_FXVIe_PLUS_FH5",
+    "source_meta": {
+     "type": "FXVIe_PLUS",
+     "role": "F",
+     "side": "FH",
+     "channel": "5",
+     "domain": "HIGH",
+     "pair_key": "S3_FXVIe_PLUS:5:HIGH"
+    },
+    "dut_pin": "VBAT_F_S1",
+    "dut_net": "NetCap1_VBAT_S1_1",
+    "path": [
+     {
+      "relay": "K8_PD3",
+      "relay_instance": "K8_PD3_S1",
+      "relay_number": 8,
+      "state": "NC",
+      "from_net": "NetK7_BUSH_VBAT_S1_4",
+      "from_pin": 6,
+      "to_pin": 7,
+      "to_net": "NetCap1_VBAT_S1_1"
+     }
+    ],
+    "required_on": [],
+    "terminal_stop": true,
+    "dut_base": "VBAT",
+    "dut_role": "F",
+    "cbit": {},
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S8_QVM_CH0+",
+    "source_meta": {
+     "type": "QVM",
+     "role": "F",
+     "side": "+",
+     "channel": "0",
+     "domain": "HIGH",
+     "pair_key": "S8_QVM:0:"
+    },
+    "dut_pin": "VBAT_F_S1",
+    "dut_net": "NetCap1_VBAT_S1_1",
+    "path": [
+     {
+      "relay": "K136_QVMH_BUS0",
+      "relay_instance": "K136_QVMH_BUS0_S1",
+      "relay_number": 136,
+      "state": "ON",
+      "from_net": "NetK2_BUF_S1S2_4",
+      "from_pin": 1,
+      "to_pin": 2,
+      "to_net": "FPVIe1_SH_BUS_S1"
+     },
+     {
+      "relay": "K132_KELVIN1",
+      "relay_instance": "K132_KELVIN1_S1",
+      "relay_number": 132,
+      "state": "NC",
+      "from_net": "FPVIe1_SH_BUS_S1",
+      "from_pin": 2,
+      "to_pin": 3,
+      "to_net": "NetK130_KELVIN1_F_S1_1"
+     },
+     {
+      "relay": "K130_KELVIN1_F",
+      "relay_instance": "K130_KELVIN1_F_S1",
+      "relay_number": 130,
+      "state": "ON",
+      "from_net": "NetK130_KELVIN1_F_S1_1",
+      "from_pin": 1,
+      "to_pin": 2,
+      "to_net": "NetK130_KELVIN1_F_S1_2"
+     },
+     {
+      "relay": "K131_KELVIN1",
+      "relay_instance": "K131_KELVIN1_S1S2",
+      "relay_number": 131,
+      "state": "NC",
+      "from_net": "NetK130_KELVIN1_F_S1_2",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "FPVIe1_FH_BUS_S1"
+     },
+     {
+      "relay": "K7_BUSH_VBAT",
+      "relay_instance": "K7_BUSH_VBAT_S1",
+      "relay_number": 7,
+      "state": "ON",
+      "from_net": "FPVIe1_FH_BUS_S1",
+      "from_pin": 3,
+      "to_pin": 4,
+      "to_net": "NetK7_BUSH_VBAT_S1_4"
+     },
+     {
+      "relay": "K8_PD3",
+      "relay_instance": "K8_PD3_S1",
+      "relay_number": 8,
+      "state": "NC",
+      "from_net": "NetK7_BUSH_VBAT_S1_4",
+      "from_pin": 6,
+      "to_pin": 7,
+      "to_net": "NetCap1_VBAT_S1_1"
+     }
+    ],
+    "required_on": [
+     7,
+     130,
+     136
+    ],
+    "terminal_stop": true,
+    "dut_base": "VBAT",
+    "dut_role": "F",
+    "cbit": {
+     "7": [
+      {
+       "name": "K7_BUSH_VBAT",
+       "group": "G6K_DEDICATED",
+       "raw": "S34_CBIT7",
+       "value": 7
+      }
+     ],
+     "130": [
+      {
+       "name": "K130_KELVIN1_F",
+       "group": "MOS",
+       "raw": "S36_CBIT2",
+       "value": 130
+      },
+      {
+       "name": "K130_KELVIN1_S",
+       "group": "MOS",
+       "raw": "S36_CBIT2",
+       "value": 130
+      }
+     ],
+     "136": [
+      {
+       "name": "K136_QVMH_BUS0",
+       "group": "MOS",
+       "raw": "S36_CBIT8",
+       "value": 136
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   }
+  ],
+  "VBAT_S_S1": [
+   {
+    "source_port": "S10_CH0_A",
+    "source_meta": {
+     "type": "QTMU",
+     "role": "",
+     "side": "",
+     "channel": "",
+     "domain": "",
+     "pair_key": "QTMU::"
+    },
+    "dut_pin": "VBAT_S_S1",
+    "dut_net": "NetK8_PD3_S1_2",
+    "path": [
+     {
+      "relay": "K141_QTMU_BUSA",
+      "relay_instance": "K141_QTMU_BUSA_S1S2",
+      "relay_number": 141,
+      "state": "NC",
+      "from_net": "NetK66_TMU_nQON_S1_2",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "FPVIe1_FH_BUS_S1"
+     },
+     {
+      "relay": "K131_KELVIN1",
+      "relay_instance": "K131_KELVIN1_S1S2",
+      "relay_number": 131,
+      "state": "NC",
+      "from_net": "FPVIe1_FH_BUS_S1",
+      "from_pin": 2,
+      "to_pin": 3,
+      "to_net": "NetK130_KELVIN1_F_S1_2"
+     },
+     {
+      "relay": "K130_KELVIN1_F",
+      "relay_instance": "K130_KELVIN1_F_S1",
+      "relay_number": 130,
+      "state": "ON",
+      "from_net": "NetK130_KELVIN1_F_S1_2",
+      "from_pin": 2,
+      "to_pin": 1,
+      "to_net": "NetK130_KELVIN1_F_S1_1"
+     },
+     {
+      "relay": "K132_KELVIN1",
+      "relay_instance": "K132_KELVIN1_S1",
+      "relay_number": 132,
+      "state": "NC",
+      "from_net": "NetK130_KELVIN1_F_S1_1",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "FPVIe1_SH_BUS_S1"
+     },
+     {
+      "relay": "K7_BUSH_VBAT",
+      "relay_instance": "K7_BUSH_VBAT_S1",
+      "relay_number": 7,
+      "state": "ON",
+      "from_net": "FPVIe1_SH_BUS_S1",
+      "from_pin": 6,
+      "to_pin": 5,
+      "to_net": "NetK7_BUSH_VBAT_S1_5"
+     },
+     {
+      "relay": "K8_PD3",
+      "relay_instance": "K8_PD3_S1",
+      "relay_number": 8,
+      "state": "NC",
+      "from_net": "NetK7_BUSH_VBAT_S1_5",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "NetK8_PD3_S1_2"
+     }
+    ],
+    "required_on": [
+     7,
+     130
+    ],
+    "terminal_stop": true,
+    "dut_base": "VBAT",
+    "dut_role": "S",
+    "cbit": {
+     "7": [
+      {
+       "name": "K7_BUSH_VBAT",
+       "group": "G6K_DEDICATED",
+       "raw": "S34_CBIT7",
+       "value": 7
+      }
+     ],
+     "130": [
+      {
+       "name": "K130_KELVIN1_F",
+       "group": "MOS",
+       "raw": "S36_CBIT2",
+       "value": 130
+      },
+      {
+       "name": "K130_KELVIN1_S",
+       "group": "MOS",
+       "raw": "S36_CBIT2",
+       "value": 130
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S1_FPVIe_SH0",
+    "source_meta": {
+     "type": "FPVIe",
+     "role": "S",
+     "side": "SH",
+     "channel": "0",
+     "domain": "HIGH",
+     "pair_key": "S1_FPVIe:0:HIGH"
+    },
+    "dut_pin": "VBAT_S_S1",
+    "dut_net": "NetK8_PD3_S1_2",
+    "path": [
+     {
+      "relay": "K88_KELVIN0",
+      "relay_instance": "K88_KELVIN0_S1",
+      "relay_number": 88,
+      "state": "NC",
+      "from_net": "NetK86_KELVIN0_F_S1_1",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "FPVIe0_SH_BUS_S1"
+     },
+     {
+      "relay": "K137_QVMH_BUS1",
+      "relay_instance": "K137_QVMH_BUS1_S1",
+      "relay_number": 137,
+      "state": "ON",
+      "from_net": "FPVIe0_SH_BUS_S1",
+      "from_pin": 2,
+      "to_pin": 1,
+      "to_net": "NetK2_BUF_S1S2_4"
+     },
+     {
+      "relay": "K136_QVMH_BUS0",
+      "relay_instance": "K136_QVMH_BUS0_S1",
+      "relay_number": 136,
+      "state": "ON",
+      "from_net": "NetK2_BUF_S1S2_4",
+      "from_pin": 1,
+      "to_pin": 2,
+      "to_net": "FPVIe1_SH_BUS_S1"
+     },
+     {
+      "relay": "K7_BUSH_VBAT",
+      "relay_instance": "K7_BUSH_VBAT_S1",
+      "relay_number": 7,
+      "state": "ON",
+      "from_net": "FPVIe1_SH_BUS_S1",
+      "from_pin": 6,
+      "to_pin": 5,
+      "to_net": "NetK7_BUSH_VBAT_S1_5"
+     },
+     {
+      "relay": "K8_PD3",
+      "relay_instance": "K8_PD3_S1",
+      "relay_number": 8,
+      "state": "NC",
+      "from_net": "NetK7_BUSH_VBAT_S1_5",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "NetK8_PD3_S1_2"
+     }
+    ],
+    "required_on": [
+     7,
+     136,
+     137
+    ],
+    "terminal_stop": true,
+    "dut_base": "VBAT",
+    "dut_role": "S",
+    "cbit": {
+     "7": [
+      {
+       "name": "K7_BUSH_VBAT",
+       "group": "G6K_DEDICATED",
+       "raw": "S34_CBIT7",
+       "value": 7
+      }
+     ],
+     "136": [
+      {
+       "name": "K136_QVMH_BUS0",
+       "group": "MOS",
+       "raw": "S36_CBIT8",
+       "value": 136
+      }
+     ],
+     "137": [
+      {
+       "name": "K137_QVMH_BUS1",
+       "group": "MOS",
+       "raw": "S36_CBIT9",
+       "value": 137
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S1_FPVIe_SH1",
+    "source_meta": {
+     "type": "FPVIe",
+     "role": "S",
+     "side": "SH",
+     "channel": "1",
+     "domain": "HIGH",
+     "pair_key": "S1_FPVIe:1:HIGH"
+    },
+    "dut_pin": "VBAT_S_S1",
+    "dut_net": "NetK8_PD3_S1_2",
+    "path": [
+     {
+      "relay": "K132_KELVIN1",
+      "relay_instance": "K132_KELVIN1_S1",
+      "relay_number": 132,
+      "state": "NC",
+      "from_net": "NetK130_KELVIN1_F_S1_1",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "FPVIe1_SH_BUS_S1"
+     },
+     {
+      "relay": "K7_BUSH_VBAT",
+      "relay_instance": "K7_BUSH_VBAT_S1",
+      "relay_number": 7,
+      "state": "ON",
+      "from_net": "FPVIe1_SH_BUS_S1",
+      "from_pin": 6,
+      "to_pin": 5,
+      "to_net": "NetK7_BUSH_VBAT_S1_5"
+     },
+     {
+      "relay": "K8_PD3",
+      "relay_instance": "K8_PD3_S1",
+      "relay_number": 8,
+      "state": "NC",
+      "from_net": "NetK7_BUSH_VBAT_S1_5",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "NetK8_PD3_S1_2"
+     }
+    ],
+    "required_on": [
+     7
+    ],
+    "terminal_stop": true,
+    "dut_base": "VBAT",
+    "dut_role": "S",
+    "cbit": {
+     "7": [
+      {
+       "name": "K7_BUSH_VBAT",
+       "group": "G6K_DEDICATED",
+       "raw": "S34_CBIT7",
+       "value": 7
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S3_FXVIe_PLUS_SH5",
+    "source_meta": {
+     "type": "FXVIe_PLUS",
+     "role": "S",
+     "side": "SH",
+     "channel": "5",
+     "domain": "HIGH",
+     "pair_key": "S3_FXVIe_PLUS:5:HIGH"
+    },
+    "dut_pin": "VBAT_S_S1",
+    "dut_net": "NetK8_PD3_S1_2",
+    "path": [
+     {
+      "relay": "K8_PD3",
+      "relay_instance": "K8_PD3_S1",
+      "relay_number": 8,
+      "state": "NC",
+      "from_net": "NetK7_BUSH_VBAT_S1_5",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "NetK8_PD3_S1_2"
+     }
+    ],
+    "required_on": [],
+    "terminal_stop": true,
+    "dut_base": "VBAT",
+    "dut_role": "S",
+    "cbit": {},
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   }
+  ],
+  "nQON_F_S1": [
+   {
+    "source_port": "S10_CH0_A",
+    "source_meta": {
+     "type": "QTMU",
+     "role": "",
+     "side": "",
+     "channel": "",
+     "domain": "",
+     "pair_key": "QTMU::"
+    },
+    "dut_pin": "nQON_F_S1",
+    "dut_net": "NetK64_HG1_S1_7",
+    "path": [
+     {
+      "relay": "K66_TMU_nQON",
+      "relay_instance": "K66_TMU_nQON_S1",
+      "relay_number": 66,
+      "state": "ON",
+      "from_net": "NetK66_TMU_nQON_S1_2",
+      "from_pin": 2,
+      "to_pin": 1,
+      "to_net": "NetK64_HG1_S1_7"
+     }
+    ],
+    "required_on": [
+     66
+    ],
+    "terminal_stop": true,
+    "dut_base": "nQON",
+    "dut_role": "F",
+    "cbit": {
+     "66": [
+      {
+       "name": "K66_TMU_nQON",
+       "group": "MOS",
+       "raw": "S34_CBIT66",
+       "value": 66
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S1_FPVIe_FH0",
+    "source_meta": {
+     "type": "FPVIe",
+     "role": "F",
+     "side": "FH",
+     "channel": "0",
+     "domain": "HIGH",
+     "pair_key": "S1_FPVIe:0:HIGH"
+    },
+    "dut_pin": "nQON_F_S1",
+    "dut_net": "NetK64_HG1_S1_7",
+    "path": [
+     {
+      "relay": "K87_KELVIN0",
+      "relay_instance": "K87_KELVIN0_S1S2",
+      "relay_number": 87,
+      "state": "NC",
+      "from_net": "NetK86_KELVIN0_F_S1_2",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "FPVIe0_FH_BUS_S1"
+     },
+     {
+      "relay": "K62_BUS_FH_QON",
+      "relay_instance": "K62_BUS_FH_QON_S1",
+      "relay_number": 62,
+      "state": "ON",
+      "from_net": "FPVIe0_FH_BUS_S1",
+      "from_pin": 1,
+      "to_pin": 2,
+      "to_net": "NetK62_BUS_FH_QON_S1_2"
+     },
+     {
+      "relay": "K64_HG1",
+      "relay_instance": "K64_HG1_S1",
+      "relay_number": 64,
+      "state": "NC",
+      "from_net": "NetK62_BUS_FH_QON_S1_2",
+      "from_pin": 6,
+      "to_pin": 7,
+      "to_net": "NetK64_HG1_S1_7"
+     }
+    ],
+    "required_on": [
+     62
+    ],
+    "terminal_stop": true,
+    "dut_base": "nQON",
+    "dut_role": "F",
+    "cbit": {
+     "62": [
+      {
+       "name": "K62_BUS_FH_QON",
+       "group": "MOS",
+       "raw": "S34_CBIT62",
+       "value": 62
+      },
+      {
+       "name": "K62_BUS_SH_QON",
+       "group": "MOS",
+       "raw": "S34_CBIT62",
+       "value": 62
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S1_FPVIe_FH1",
+    "source_meta": {
+     "type": "FPVIe",
+     "role": "F",
+     "side": "FH",
+     "channel": "1",
+     "domain": "HIGH",
+     "pair_key": "S1_FPVIe:1:HIGH"
+    },
+    "dut_pin": "nQON_F_S1",
+    "dut_net": "NetK64_HG1_S1_7",
+    "path": [
+     {
+      "relay": "K131_KELVIN1",
+      "relay_instance": "K131_KELVIN1_S1S2",
+      "relay_number": 131,
+      "state": "NC",
+      "from_net": "NetK130_KELVIN1_F_S1_2",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "FPVIe1_FH_BUS_S1"
+     },
+     {
+      "relay": "K141_QTMU_BUSA",
+      "relay_instance": "K141_QTMU_BUSA_S1S2",
+      "relay_number": 141,
+      "state": "NC",
+      "from_net": "FPVIe1_FH_BUS_S1",
+      "from_pin": 2,
+      "to_pin": 3,
+      "to_net": "NetK66_TMU_nQON_S1_2"
+     },
+     {
+      "relay": "K66_TMU_nQON",
+      "relay_instance": "K66_TMU_nQON_S1",
+      "relay_number": 66,
+      "state": "ON",
+      "from_net": "NetK66_TMU_nQON_S1_2",
+      "from_pin": 2,
+      "to_pin": 1,
+      "to_net": "NetK64_HG1_S1_7"
+     }
+    ],
+    "required_on": [
+     66
+    ],
+    "terminal_stop": true,
+    "dut_base": "nQON",
+    "dut_role": "F",
+    "cbit": {
+     "66": [
+      {
+       "name": "K66_TMU_nQON",
+       "group": "MOS",
+       "raw": "S34_CBIT66",
+       "value": 66
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S24_P0",
+    "source_meta": {
+     "type": "DCM",
+     "role": "F",
+     "side": "",
+     "channel": "0",
+     "domain": "",
+     "pair_key": "DCM:0:"
+    },
+    "dut_pin": "nQON_F_S1",
+    "dut_net": "NetK64_HG1_S1_7",
+    "path": [],
+    "required_on": [],
+    "terminal_stop": true,
+    "dut_base": "nQON",
+    "dut_role": "F",
+    "cbit": {},
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S5_ACM200_FH9",
+    "source_meta": {
+     "type": "ACM200",
+     "role": "F",
+     "side": "FH",
+     "channel": "9",
+     "domain": "HIGH",
+     "pair_key": "S5_ACM200:9:HIGH"
+    },
+    "dut_pin": "nQON_F_S1",
+    "dut_net": "NetK64_HG1_S1_7",
+    "path": [
+     {
+      "relay": "K64_HG1",
+      "relay_instance": "K64_HG1_S1",
+      "relay_number": 64,
+      "state": "NC",
+      "from_net": "NetK62_BUS_FH_QON_S1_2",
+      "from_pin": 6,
+      "to_pin": 7,
+      "to_net": "NetK64_HG1_S1_7"
+     }
+    ],
+    "required_on": [],
+    "terminal_stop": true,
+    "dut_base": "nQON",
+    "dut_role": "F",
+    "cbit": {},
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S8_QVM_CH0+",
+    "source_meta": {
+     "type": "QVM",
+     "role": "F",
+     "side": "+",
+     "channel": "0",
+     "domain": "HIGH",
+     "pair_key": "S8_QVM:0:"
+    },
+    "dut_pin": "nQON_F_S1",
+    "dut_net": "NetK64_HG1_S1_7",
+    "path": [
+     {
+      "relay": "K136_QVMH_BUS0",
+      "relay_instance": "K136_QVMH_BUS0_S1",
+      "relay_number": 136,
+      "state": "ON",
+      "from_net": "NetK2_BUF_S1S2_4",
+      "from_pin": 1,
+      "to_pin": 2,
+      "to_net": "FPVIe1_SH_BUS_S1"
+     },
+     {
+      "relay": "K132_KELVIN1",
+      "relay_instance": "K132_KELVIN1_S1",
+      "relay_number": 132,
+      "state": "NC",
+      "from_net": "FPVIe1_SH_BUS_S1",
+      "from_pin": 2,
+      "to_pin": 3,
+      "to_net": "NetK130_KELVIN1_F_S1_1"
+     },
+     {
+      "relay": "K130_KELVIN1_F",
+      "relay_instance": "K130_KELVIN1_F_S1",
+      "relay_number": 130,
+      "state": "ON",
+      "from_net": "NetK130_KELVIN1_F_S1_1",
+      "from_pin": 1,
+      "to_pin": 2,
+      "to_net": "NetK130_KELVIN1_F_S1_2"
+     },
+     {
+      "relay": "K131_KELVIN1",
+      "relay_instance": "K131_KELVIN1_S1S2",
+      "relay_number": 131,
+      "state": "NC",
+      "from_net": "NetK130_KELVIN1_F_S1_2",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "FPVIe1_FH_BUS_S1"
+     },
+     {
+      "relay": "K141_QTMU_BUSA",
+      "relay_instance": "K141_QTMU_BUSA_S1S2",
+      "relay_number": 141,
+      "state": "NC",
+      "from_net": "FPVIe1_FH_BUS_S1",
+      "from_pin": 2,
+      "to_pin": 3,
+      "to_net": "NetK66_TMU_nQON_S1_2"
+     },
+     {
+      "relay": "K66_TMU_nQON",
+      "relay_instance": "K66_TMU_nQON_S1",
+      "relay_number": 66,
+      "state": "ON",
+      "from_net": "NetK66_TMU_nQON_S1_2",
+      "from_pin": 2,
+      "to_pin": 1,
+      "to_net": "NetK64_HG1_S1_7"
+     }
+    ],
+    "required_on": [
+     66,
+     130,
+     136
+    ],
+    "terminal_stop": true,
+    "dut_base": "nQON",
+    "dut_role": "F",
+    "cbit": {
+     "66": [
+      {
+       "name": "K66_TMU_nQON",
+       "group": "MOS",
+       "raw": "S34_CBIT66",
+       "value": 66
+      }
+     ],
+     "130": [
+      {
+       "name": "K130_KELVIN1_F",
+       "group": "MOS",
+       "raw": "S36_CBIT2",
+       "value": 130
+      },
+      {
+       "name": "K130_KELVIN1_S",
+       "group": "MOS",
+       "raw": "S36_CBIT2",
+       "value": 130
+      }
+     ],
+     "136": [
+      {
+       "name": "K136_QVMH_BUS0",
+       "group": "MOS",
+       "raw": "S36_CBIT8",
+       "value": 136
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   }
+  ],
+  "nQON_S_S1": [
+   {
+    "source_port": "S10_CH0_A",
+    "source_meta": {
+     "type": "QTMU",
+     "role": "",
+     "side": "",
+     "channel": "",
+     "domain": "",
+     "pair_key": "QTMU::"
+    },
+    "dut_pin": "nQON_S_S1",
+    "dut_net": "NetK64_HG1_S1_2",
+    "path": [
+     {
+      "relay": "K141_QTMU_BUSA",
+      "relay_instance": "K141_QTMU_BUSA_S1S2",
+      "relay_number": 141,
+      "state": "ON",
+      "from_net": "NetK66_TMU_nQON_S1_2",
+      "from_pin": 3,
+      "to_pin": 4,
+      "to_net": "FPVIe0_FH_BUS_S1"
+     },
+     {
+      "relay": "K87_KELVIN0",
+      "relay_instance": "K87_KELVIN0_S1S2",
+      "relay_number": 87,
+      "state": "NC",
+      "from_net": "FPVIe0_FH_BUS_S1",
+      "from_pin": 2,
+      "to_pin": 3,
+      "to_net": "NetK86_KELVIN0_F_S1_2"
+     },
+     {
+      "relay": "K86_KELVIN0_F",
+      "relay_instance": "K86_KELVIN0_F_S1",
+      "relay_number": 86,
+      "state": "ON",
+      "from_net": "NetK86_KELVIN0_F_S1_2",
+      "from_pin": 2,
+      "to_pin": 1,
+      "to_net": "NetK86_KELVIN0_F_S1_1"
+     },
+     {
+      "relay": "K88_KELVIN0",
+      "relay_instance": "K88_KELVIN0_S1",
+      "relay_number": 88,
+      "state": "NC",
+      "from_net": "NetK86_KELVIN0_F_S1_1",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "FPVIe0_SH_BUS_S1"
+     },
+     {
+      "relay": "K62_BUS_SH_QON",
+      "relay_instance": "K62_BUS_SH_QON_S1",
+      "relay_number": 62,
+      "state": "ON",
+      "from_net": "FPVIe0_SH_BUS_S1",
+      "from_pin": 1,
+      "to_pin": 2,
+      "to_net": "NetK62_BUS_SH_QON_S1_2"
+     },
+     {
+      "relay": "K64_HG1",
+      "relay_instance": "K64_HG1_S1",
+      "relay_number": 64,
+      "state": "NC",
+      "from_net": "NetK62_BUS_SH_QON_S1_2",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "NetK64_HG1_S1_2"
+     }
+    ],
+    "required_on": [
+     62,
+     86,
+     141
+    ],
+    "terminal_stop": true,
+    "dut_base": "nQON",
+    "dut_role": "S",
+    "cbit": {
+     "62": [
+      {
+       "name": "K62_BUS_FH_QON",
+       "group": "MOS",
+       "raw": "S34_CBIT62",
+       "value": 62
+      },
+      {
+       "name": "K62_BUS_SH_QON",
+       "group": "MOS",
+       "raw": "S34_CBIT62",
+       "value": 62
+      }
+     ],
+     "86": [
+      {
+       "name": "K86_KELVIN0_F",
+       "group": "MOS",
+       "raw": "S34_CBIT86",
+       "value": 86
+      },
+      {
+       "name": "K86_KELVIN0_S",
+       "group": "MOS",
+       "raw": "S34_CBIT86",
+       "value": 86
+      }
+     ],
+     "141": [
+      {
+       "name": "K141_QTMU_BUSA",
+       "group": "G6K_SHARED",
+       "raw": "S36_CBIT13",
+       "value": 141
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S1_FPVIe_SH0",
+    "source_meta": {
+     "type": "FPVIe",
+     "role": "S",
+     "side": "SH",
+     "channel": "0",
+     "domain": "HIGH",
+     "pair_key": "S1_FPVIe:0:HIGH"
+    },
+    "dut_pin": "nQON_S_S1",
+    "dut_net": "NetK64_HG1_S1_2",
+    "path": [
+     {
+      "relay": "K88_KELVIN0",
+      "relay_instance": "K88_KELVIN0_S1",
+      "relay_number": 88,
+      "state": "NC",
+      "from_net": "NetK86_KELVIN0_F_S1_1",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "FPVIe0_SH_BUS_S1"
+     },
+     {
+      "relay": "K62_BUS_SH_QON",
+      "relay_instance": "K62_BUS_SH_QON_S1",
+      "relay_number": 62,
+      "state": "ON",
+      "from_net": "FPVIe0_SH_BUS_S1",
+      "from_pin": 1,
+      "to_pin": 2,
+      "to_net": "NetK62_BUS_SH_QON_S1_2"
+     },
+     {
+      "relay": "K64_HG1",
+      "relay_instance": "K64_HG1_S1",
+      "relay_number": 64,
+      "state": "NC",
+      "from_net": "NetK62_BUS_SH_QON_S1_2",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "NetK64_HG1_S1_2"
+     }
+    ],
+    "required_on": [
+     62
+    ],
+    "terminal_stop": true,
+    "dut_base": "nQON",
+    "dut_role": "S",
+    "cbit": {
+     "62": [
+      {
+       "name": "K62_BUS_FH_QON",
+       "group": "MOS",
+       "raw": "S34_CBIT62",
+       "value": 62
+      },
+      {
+       "name": "K62_BUS_SH_QON",
+       "group": "MOS",
+       "raw": "S34_CBIT62",
+       "value": 62
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S1_FPVIe_SH1",
+    "source_meta": {
+     "type": "FPVIe",
+     "role": "S",
+     "side": "SH",
+     "channel": "1",
+     "domain": "HIGH",
+     "pair_key": "S1_FPVIe:1:HIGH"
+    },
+    "dut_pin": "nQON_S_S1",
+    "dut_net": "NetK64_HG1_S1_2",
+    "path": [
+     {
+      "relay": "K132_KELVIN1",
+      "relay_instance": "K132_KELVIN1_S1",
+      "relay_number": 132,
+      "state": "NC",
+      "from_net": "NetK130_KELVIN1_F_S1_1",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "FPVIe1_SH_BUS_S1"
+     },
+     {
+      "relay": "K136_QVMH_BUS0",
+      "relay_instance": "K136_QVMH_BUS0_S1",
+      "relay_number": 136,
+      "state": "ON",
+      "from_net": "FPVIe1_SH_BUS_S1",
+      "from_pin": 2,
+      "to_pin": 1,
+      "to_net": "NetK2_BUF_S1S2_4"
+     },
+     {
+      "relay": "K137_QVMH_BUS1",
+      "relay_instance": "K137_QVMH_BUS1_S1",
+      "relay_number": 137,
+      "state": "ON",
+      "from_net": "NetK2_BUF_S1S2_4",
+      "from_pin": 1,
+      "to_pin": 2,
+      "to_net": "FPVIe0_SH_BUS_S1"
+     },
+     {
+      "relay": "K62_BUS_SH_QON",
+      "relay_instance": "K62_BUS_SH_QON_S1",
+      "relay_number": 62,
+      "state": "ON",
+      "from_net": "FPVIe0_SH_BUS_S1",
+      "from_pin": 1,
+      "to_pin": 2,
+      "to_net": "NetK62_BUS_SH_QON_S1_2"
+     },
+     {
+      "relay": "K64_HG1",
+      "relay_instance": "K64_HG1_S1",
+      "relay_number": 64,
+      "state": "NC",
+      "from_net": "NetK62_BUS_SH_QON_S1_2",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "NetK64_HG1_S1_2"
+     }
+    ],
+    "required_on": [
+     62,
+     136,
+     137
+    ],
+    "terminal_stop": true,
+    "dut_base": "nQON",
+    "dut_role": "S",
+    "cbit": {
+     "62": [
+      {
+       "name": "K62_BUS_FH_QON",
+       "group": "MOS",
+       "raw": "S34_CBIT62",
+       "value": 62
+      },
+      {
+       "name": "K62_BUS_SH_QON",
+       "group": "MOS",
+       "raw": "S34_CBIT62",
+       "value": 62
+      }
+     ],
+     "136": [
+      {
+       "name": "K136_QVMH_BUS0",
+       "group": "MOS",
+       "raw": "S36_CBIT8",
+       "value": 136
+      }
+     ],
+     "137": [
+      {
+       "name": "K137_QVMH_BUS1",
+       "group": "MOS",
+       "raw": "S36_CBIT9",
+       "value": 137
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S5_ACM200_SH9",
+    "source_meta": {
+     "type": "ACM200",
+     "role": "S",
+     "side": "SH",
+     "channel": "9",
+     "domain": "HIGH",
+     "pair_key": "S5_ACM200:9:HIGH"
+    },
+    "dut_pin": "nQON_S_S1",
+    "dut_net": "NetK64_HG1_S1_2",
+    "path": [
+     {
+      "relay": "K64_HG1",
+      "relay_instance": "K64_HG1_S1",
+      "relay_number": 64,
+      "state": "NC",
+      "from_net": "NetK62_BUS_SH_QON_S1_2",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "NetK64_HG1_S1_2"
+     }
+    ],
+    "required_on": [],
+    "terminal_stop": true,
+    "dut_base": "nQON",
+    "dut_role": "S",
+    "cbit": {},
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   }
+  ],
+  "AGND_F_S1": [
+   {
+    "source_port": "S3_FXVIe_PLUS_FL(0-3)",
+    "source_meta": {
+     "type": "FXVIe_PLUS",
+     "role": "",
+     "side": "",
+     "channel": "",
+     "domain": "",
+     "pair_key": "FXVIe_PLUS::"
+    },
+    "dut_pin": "AGND_F_S1",
+    "dut_net": "AGND_F_S1",
+    "path": [],
+    "required_on": [],
+    "terminal_stop": true,
+    "dut_base": "AGND",
+    "dut_role": "F",
+    "cbit": {},
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S3_FXVIe_PLUS_FL(4-7)",
+    "source_meta": {
+     "type": "FXVIe_PLUS",
+     "role": "",
+     "side": "",
+     "channel": "",
+     "domain": "",
+     "pair_key": "FXVIe_PLUS::"
+    },
+    "dut_pin": "AGND_F_S1",
+    "dut_net": "AGND_F_S1",
+    "path": [],
+    "required_on": [],
+    "terminal_stop": true,
+    "dut_base": "AGND",
+    "dut_role": "F",
+    "cbit": {},
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S5_ACM200_FL(0-11)",
+    "source_meta": {
+     "type": "ACM200",
+     "role": "",
+     "side": "",
+     "channel": "",
+     "domain": "",
+     "pair_key": "ACM200::"
+    },
+    "dut_pin": "AGND_F_S1",
+    "dut_net": "AGND_F_S1",
+    "path": [],
+    "required_on": [],
+    "terminal_stop": true,
+    "dut_base": "AGND",
+    "dut_role": "F",
+    "cbit": {},
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S5_ACM200_FL(12-23)",
+    "source_meta": {
+     "type": "ACM200",
+     "role": "",
+     "side": "",
+     "channel": "",
+     "domain": "",
+     "pair_key": "ACM200::"
+    },
+    "dut_pin": "AGND_F_S1",
+    "dut_net": "AGND_F_S1",
+    "path": [],
+    "required_on": [],
+    "terminal_stop": true,
+    "dut_base": "AGND",
+    "dut_role": "F",
+    "cbit": {},
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   }
+  ],
+  "AGND_S_S1": [
+   {
+    "source_port": "S10_CH0_B",
+    "source_meta": {
+     "type": "QTMU",
+     "role": "",
+     "side": "",
+     "channel": "",
+     "domain": "",
+     "pair_key": "QTMU::"
+    },
+    "dut_pin": "AGND_S_S1",
+    "dut_net": "NetK92_AGND_F2S_S1_2",
+    "path": [
+     {
+      "relay": "K142_QTMU_BUSB",
+      "relay_instance": "K142_QTMU_BUSB_S1S2",
+      "relay_number": 142,
+      "state": "NC",
+      "from_net": "NetK142_QTMU_BUSB_S1S2_3",
+      "from_pin": 3,
+      "to_pin": 2,
+      "to_net": "FPVIe1_FL_BUS_S1"
+     },
+     {
+      "relay": "K133_KELVIN1",
+      "relay_instance": "K133_KELVIN1_S1S2",
+      "relay_number": 133,
+      "state": "NC",
+      "from_net": "FPVIe1_FL_BUS_S1",
+      "from_pin": 2,
+      "to_pin": 3,
+      "to_net": "NetK130_KELVIN1_S_S1_2"
+     },
+     {
+      "relay": "K130_KELVIN1_S",
+      "relay_instance": "K130_KELVIN1_S_S1",
+      "relay_number": 130,
+      "state": "ON",
+      "from_net": "NetK130_KELVIN1_S_S1_2",
+      "from_pin": 2,
+      "to_pin": 1,
+      "to_net": "NetK130_KELVIN1_S_S1_1"
+     },
+     {
+      "relay": "K132_KELVIN1",
+      "relay_instance": "K132_KELVIN1_S1",
+      "relay_number": 132,
+      "state": "NC",
+      "from_net": "NetK130_KELVIN1_S_S1_1",
+      "from_pin": 6,
+      "to_pin": 7,
+      "to_net": "FPVIe1_SL_BUS_S1"
+     },
+     {
+      "relay": "K139_QVML_BUS1",
+      "relay_instance": "K139_QVML_BUS1_S1",
+      "relay_number": 139,
+      "state": "ON",
+      "from_net": "FPVIe1_SL_BUS_S1",
+      "from_pin": 2,
+      "to_pin": 1,
+      "to_net": "NetK138_QVML_BUS0_S1_1"
+     },
+     {
+      "relay": "K140_QVML_AGND",
+      "relay_instance": "K140_QVML_AGND_S1",
+      "relay_number": 140,
+      "state": "ON",
+      "from_net": "NetK138_QVML_BUS0_S1_1",
+      "from_pin": 1,
+      "to_pin": 2,
+      "to_net": "NetK92_AGND_F2S_S1_2"
+     }
+    ],
+    "required_on": [
+     130,
+     139,
+     140
+    ],
+    "terminal_stop": true,
+    "dut_base": "AGND",
+    "dut_role": "S",
+    "cbit": {
+     "130": [
+      {
+       "name": "K130_KELVIN1_F",
+       "group": "MOS",
+       "raw": "S36_CBIT2",
+       "value": 130
+      },
+      {
+       "name": "K130_KELVIN1_S",
+       "group": "MOS",
+       "raw": "S36_CBIT2",
+       "value": 130
+      }
+     ],
+     "139": [
+      {
+       "name": "K139_QVML_BUS1",
+       "group": "MOS",
+       "raw": "S36_CBIT11",
+       "value": 139
+      }
+     ],
+     "140": [
+      {
+       "name": "K140_QVML_AGND",
+       "group": "MOS",
+       "raw": "S36_CBIT12",
+       "value": 140
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S1_FPVIe_SL0",
+    "source_meta": {
+     "type": "FPVIe",
+     "role": "S",
+     "side": "SL",
+     "channel": "0",
+     "domain": "LOW",
+     "pair_key": "S1_FPVIe:0:LOW"
+    },
+    "dut_pin": "AGND_S_S1",
+    "dut_net": "NetK92_AGND_F2S_S1_2",
+    "path": [
+     {
+      "relay": "K88_KELVIN0",
+      "relay_instance": "K88_KELVIN0_S1",
+      "relay_number": 88,
+      "state": "NC",
+      "from_net": "NetK86_KELVIN0_S_S1_1",
+      "from_pin": 6,
+      "to_pin": 7,
+      "to_net": "FPVIe0_SL_BUS_S1"
+     },
+     {
+      "relay": "K138_QVML_BUS0",
+      "relay_instance": "K138_QVML_BUS0_S1",
+      "relay_number": 138,
+      "state": "ON",
+      "from_net": "FPVIe0_SL_BUS_S1",
+      "from_pin": 2,
+      "to_pin": 1,
+      "to_net": "NetK138_QVML_BUS0_S1_1"
+     },
+     {
+      "relay": "K140_QVML_AGND",
+      "relay_instance": "K140_QVML_AGND_S1",
+      "relay_number": 140,
+      "state": "ON",
+      "from_net": "NetK138_QVML_BUS0_S1_1",
+      "from_pin": 1,
+      "to_pin": 2,
+      "to_net": "NetK92_AGND_F2S_S1_2"
+     }
+    ],
+    "required_on": [
+     138,
+     140
+    ],
+    "terminal_stop": true,
+    "dut_base": "AGND",
+    "dut_role": "S",
+    "cbit": {
+     "138": [
+      {
+       "name": "K138_QVML_BUS0",
+       "group": "MOS",
+       "raw": "S36_CBIT10",
+       "value": 138
+      }
+     ],
+     "140": [
+      {
+       "name": "K140_QVML_AGND",
+       "group": "MOS",
+       "raw": "S36_CBIT12",
+       "value": 140
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S1_FPVIe_SL1",
+    "source_meta": {
+     "type": "FPVIe",
+     "role": "S",
+     "side": "SL",
+     "channel": "1",
+     "domain": "LOW",
+     "pair_key": "S1_FPVIe:1:LOW"
+    },
+    "dut_pin": "AGND_S_S1",
+    "dut_net": "NetK92_AGND_F2S_S1_2",
+    "path": [
+     {
+      "relay": "K132_KELVIN1",
+      "relay_instance": "K132_KELVIN1_S1",
+      "relay_number": 132,
+      "state": "NC",
+      "from_net": "NetK130_KELVIN1_S_S1_1",
+      "from_pin": 6,
+      "to_pin": 7,
+      "to_net": "FPVIe1_SL_BUS_S1"
+     },
+     {
+      "relay": "K139_QVML_BUS1",
+      "relay_instance": "K139_QVML_BUS1_S1",
+      "relay_number": 139,
+      "state": "ON",
+      "from_net": "FPVIe1_SL_BUS_S1",
+      "from_pin": 2,
+      "to_pin": 1,
+      "to_net": "NetK138_QVML_BUS0_S1_1"
+     },
+     {
+      "relay": "K140_QVML_AGND",
+      "relay_instance": "K140_QVML_AGND_S1",
+      "relay_number": 140,
+      "state": "ON",
+      "from_net": "NetK138_QVML_BUS0_S1_1",
+      "from_pin": 1,
+      "to_pin": 2,
+      "to_net": "NetK92_AGND_F2S_S1_2"
+     }
+    ],
+    "required_on": [
+     139,
+     140
+    ],
+    "terminal_stop": true,
+    "dut_base": "AGND",
+    "dut_role": "S",
+    "cbit": {
+     "139": [
+      {
+       "name": "K139_QVML_BUS1",
+       "group": "MOS",
+       "raw": "S36_CBIT11",
+       "value": 139
+      }
+     ],
+     "140": [
+      {
+       "name": "K140_QVML_AGND",
+       "group": "MOS",
+       "raw": "S36_CBIT12",
+       "value": 140
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S3_FXVIe_PLUS_SL(0-3)",
+    "source_meta": {
+     "type": "FXVIe_PLUS",
+     "role": "",
+     "side": "",
+     "channel": "",
+     "domain": "",
+     "pair_key": "FXVIe_PLUS::"
+    },
+    "dut_pin": "AGND_S_S1",
+    "dut_net": "NetK92_AGND_F2S_S1_2",
+    "path": [],
+    "required_on": [],
+    "terminal_stop": true,
+    "dut_base": "AGND",
+    "dut_role": "S",
+    "cbit": {},
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S3_FXVIe_PLUS_SL(4-7)",
+    "source_meta": {
+     "type": "FXVIe_PLUS",
+     "role": "",
+     "side": "",
+     "channel": "",
+     "domain": "",
+     "pair_key": "FXVIe_PLUS::"
+    },
+    "dut_pin": "AGND_S_S1",
+    "dut_net": "NetK92_AGND_F2S_S1_2",
+    "path": [],
+    "required_on": [],
+    "terminal_stop": true,
+    "dut_base": "AGND",
+    "dut_role": "S",
+    "cbit": {},
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S5_ACM200_SL(0-5)",
+    "source_meta": {
+     "type": "ACM200",
+     "role": "",
+     "side": "",
+     "channel": "",
+     "domain": "",
+     "pair_key": "ACM200::"
+    },
+    "dut_pin": "AGND_S_S1",
+    "dut_net": "NetK92_AGND_F2S_S1_2",
+    "path": [],
+    "required_on": [],
+    "terminal_stop": true,
+    "dut_base": "AGND",
+    "dut_role": "S",
+    "cbit": {},
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S5_ACM200_SL(12-17)",
+    "source_meta": {
+     "type": "ACM200",
+     "role": "",
+     "side": "",
+     "channel": "",
+     "domain": "",
+     "pair_key": "ACM200::"
+    },
+    "dut_pin": "AGND_S_S1",
+    "dut_net": "NetK92_AGND_F2S_S1_2",
+    "path": [],
+    "required_on": [],
+    "terminal_stop": true,
+    "dut_base": "AGND",
+    "dut_role": "S",
+    "cbit": {},
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S5_ACM200_SL(18-23)",
+    "source_meta": {
+     "type": "ACM200",
+     "role": "",
+     "side": "",
+     "channel": "",
+     "domain": "",
+     "pair_key": "ACM200::"
+    },
+    "dut_pin": "AGND_S_S1",
+    "dut_net": "NetK92_AGND_F2S_S1_2",
+    "path": [],
+    "required_on": [],
+    "terminal_stop": true,
+    "dut_base": "AGND",
+    "dut_role": "S",
+    "cbit": {},
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S5_ACM200_SL(6-11)",
+    "source_meta": {
+     "type": "ACM200",
+     "role": "",
+     "side": "",
+     "channel": "",
+     "domain": "",
+     "pair_key": "ACM200::"
+    },
+    "dut_pin": "AGND_S_S1",
+    "dut_net": "NetK92_AGND_F2S_S1_2",
+    "path": [],
+    "required_on": [],
+    "terminal_stop": true,
+    "dut_base": "AGND",
+    "dut_role": "S",
+    "cbit": {},
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S8_QVM_CH0-",
+    "source_meta": {
+     "type": "QVM",
+     "role": "S",
+     "side": "-",
+     "channel": "0",
+     "domain": "LOW",
+     "pair_key": "S8_QVM:0:"
+    },
+    "dut_pin": "AGND_S_S1",
+    "dut_net": "NetK92_AGND_F2S_S1_2",
+    "path": [
+     {
+      "relay": "K140_QVML_AGND",
+      "relay_instance": "K140_QVML_AGND_S1",
+      "relay_number": 140,
+      "state": "ON",
+      "from_net": "NetK138_QVML_BUS0_S1_1",
+      "from_pin": 1,
+      "to_pin": 2,
+      "to_net": "NetK92_AGND_F2S_S1_2"
+     }
+    ],
+    "required_on": [
+     140
+    ],
+    "terminal_stop": true,
+    "dut_base": "AGND",
+    "dut_role": "S",
+    "cbit": {
+     "140": [
+      {
+       "name": "K140_QVML_AGND",
+       "group": "MOS",
+       "raw": "S36_CBIT12",
+       "value": 140
+      }
+     ]
+    },
+    "validation": {
+     "terminal_stop": true,
+     "role_match": true,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   }
+  ]
+ },
+ "rejected": {
+  "VAC1_F_S1": [
+   {
+    "source_port": "S1_FPVIe_SH0",
+    "dut_net": "NetCap1_VAC1_S1_1",
+    "reason": {
+     "terminal_stop": true,
+     "role_match": false,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S1_FPVIe_SL0",
+    "dut_net": "NetCap1_VAC1_S1_1",
+    "reason": {
+     "terminal_stop": true,
+     "role_match": false,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   }
+  ],
+  "VAC1_S_S1": [
+   {
+    "source_port": "S1_FPVIe_FL0",
+    "dut_net": "NetK19_VAC2_S1_7",
+    "reason": {
+     "terminal_stop": true,
+     "role_match": false,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   }
+  ],
+  "VBAT_F_S1": [
+   {
+    "source_port": "S1_FPVIe_SH0",
+    "dut_net": "NetCap1_VBAT_S1_1",
+    "reason": {
+     "terminal_stop": true,
+     "role_match": false,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S1_FPVIe_SH1",
+    "dut_net": "NetCap1_VBAT_S1_1",
+    "reason": {
+     "terminal_stop": true,
+     "role_match": false,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   }
+  ],
+  "VBAT_S_S1": [
+   {
+    "source_port": "S1_FPVIe_FH0",
+    "dut_net": "NetK8_PD3_S1_2",
+    "reason": {
+     "terminal_stop": true,
+     "role_match": false,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S1_FPVIe_FH1",
+    "dut_net": "NetK8_PD3_S1_2",
+    "reason": {
+     "terminal_stop": true,
+     "role_match": false,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S8_QVM_CH0+",
+    "dut_net": "NetK8_PD3_S1_2",
+    "reason": {
+     "terminal_stop": true,
+     "role_match": false,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   }
+  ],
+  "nQON_F_S1": [
+   {
+    "source_port": "S1_FPVIe_SH0",
+    "dut_net": "NetK64_HG1_S1_7",
+    "reason": {
+     "terminal_stop": true,
+     "role_match": false,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S1_FPVIe_SH1",
+    "dut_net": "NetK64_HG1_S1_7",
+    "reason": {
+     "terminal_stop": true,
+     "role_match": false,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   }
+  ],
+  "nQON_S_S1": [
+   {
+    "source_port": "S1_FPVIe_FH0",
+    "dut_net": "NetK64_HG1_S1_2",
+    "reason": {
+     "terminal_stop": true,
+     "role_match": false,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S1_FPVIe_FH1",
+    "dut_net": "NetK64_HG1_S1_2",
+    "reason": {
+     "terminal_stop": true,
+     "role_match": false,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S8_QVM_CH0+",
+    "dut_net": "NetK64_HG1_S1_2",
+    "reason": {
+     "terminal_stop": true,
+     "role_match": false,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   }
+  ],
+  "AGND_F_S1": [],
+  "AGND_S_S1": [
+   {
+    "source_port": "S1_FPVIe_FL0",
+    "dut_net": "NetK92_AGND_F2S_S1_2",
+    "reason": {
+     "terminal_stop": true,
+     "role_match": false,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   },
+   {
+    "source_port": "S1_FPVIe_FL1",
+    "dut_net": "NetK92_AGND_F2S_S1_2",
+    "reason": {
+     "terminal_stop": true,
+     "role_match": false,
+     "cbit_complete": true,
+     "missing_cbit": []
+    }
+   }
+  ]
+ }
+}

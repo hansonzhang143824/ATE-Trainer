@@ -1,0 +1,13 @@
+前置：语法 OK（46558 B）
+  已加 runSeq → 46683 B
+  已补 countUnitNote → 47132 B
+后置：语法 OK
+  已并入登记 → 44427 B
+  run1 末行: RECEIPT-HISTORY D:\Newtest\DSH\ATE-Coding-Plat\team\art
+  run2 末行: RECEIPT-HISTORY D:\Newtest\DSH\ATE-Coding-Plat\team\art
+
+=== 自证（按行计）===
+  总行数 = 45
+  含 countUnitNote 的行数 = 30 / 45
+  含 runSeq 的行数 = 2 / 45
+  runSeq 单调递增 = True（示例 [44, 45]…）

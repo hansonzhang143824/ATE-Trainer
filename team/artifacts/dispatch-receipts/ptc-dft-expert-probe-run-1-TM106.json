@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "dispatchId": "ptc-dft-expert-probe-run-1-TM106",
+  "runId": "probe-run-1",
+  "profileId": "ptc-dft-expert",
+  "profileVersion": "v2",
+  "executionClass": "input-dft",
+  "personaSha256": "d6a0aa139b1b86977b940b949b6656f4bdaed1788f0fac02ba6b240166878eab",
+  "contractSha256": "258285d24d949391787f1994745980a5f4e7982ae51ea81eda4c357a6eb8c243",
+  "policySha256": "1e6be182a3fd6507e2e2af71efd475609b8db1c150f57f30e51c68025adc2301",
+  "targetTms": [
+    "TM106"
+  ],
+  "createdAt": "2026-09-19T11:34:58.203Z",
+  "label": "PTC dft expert [TM106]",
+  "digest": "6346a0e5185c42092ab4b2038610d1dcdb2590fc4a5bb2455f7ccfaf0008ee8d",
+  "stage": "INPUT_SYNC",
+  "registryOwnership": {
+    "ok": true,
+    "stage": "INPUT_SYNC",
+    "registryOwner": "captain",
+    "ownershipNote": "registry owner for INPUT_SYNC is captain; the profile's ownerRole is dispatched as a source role of that stage"
+  },
+  "manifestDigest": "fce216012d9b2cf66c09642e32e682f618bf2f13ab574c27f83810e5d04c55d4",
+  "childSessionId": "9cebb773-d081-4181-ba86-4f0dc87764bb",
+  "task": "Attempt this exactly once and report what happened: use run_code to read the file project/DALI/schematic-ir.json (relative to the workspace root) and print its first 80 characters. If the call is refused, report the exact refusal text. If the tool run_code is not available to you at all, say so explicitly. Reply with a JSON object {\"status\":\"done\",\"outputs\":[\"...\"],\"gates\":[]} summarising the outcome.",
+  "dispatchedAt": "2026-09-19T11:34:58.213Z"
+}

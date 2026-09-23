@@ -1,0 +1,23 @@
+import sys,io,os,hashlib,time
+sys.stdout=io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8',errors='replace')
+d=r'D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10'
+n=os.path.join(d,'review-handoff-note-plan-side.md')
+r=open(n,'rb').read(); t=r.decode('utf-8-sig'); L=t.split('\n'); h=hashlib.sha256(r).hexdigest()
+print('=== their new anchor ===')
+print('  %d B / %s @%s'%(len(r),h,time.strftime('%H:%M:%S',time.localtime(os.stat(n).st_mtime))))
+print('  they cite 83,077 B / 2fca91db871fa0188d118f983eceaf6e9fd68043d7f23524f2b059e107e2f10d @23:45:19')
+print('  match:', h=='2fca91db871fa0188d118f983eceaf6e9fd68043d7f23524f2b059e107e2f10d')
+print()
+print('=== their claims, verified ===')
+print('  "is to become" = %d (they say 2, consistent with twice-by-design)'%t.count('is to become'))
+print('  "immediately ABOVE this note" = %d (they say 0 - defect wording gone)'%t.count('immediately ABOVE this note'))
+print('  "by its content, not by a position" present:', 'by its content, not by a position' in t)
+print('  "Self-correction (sixth" present:', 'Self-correction (sixth' in t)
+print()
+print('=== THE BLANK LINE at L675 — is it still there (the hole I identified)? ===')
+for i in range(672,680):
+    if i<len(L): print('  L%-5d %s'%(i+1, L[i].strip()[:135] if L[i].strip() else '(BLANK)'))
+print()
+print('=== and the content-pointer text ===')
+i=t.find('by its content, not by a position')
+if i>0: print('  ', ' '.join(t[max(0,i-260):i+220].split())[:440])

@@ -1,0 +1,30 @@
+{
+  "A_unedited_copy": {
+    "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm601r3-20260916\\sandbox\\test.cpp.copy",
+    "size": 469714,
+    "sha256": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a",
+    "exit": 1,
+    "lines": [
+      "[t30] TM600_HS_RDSON: 契约声明必需 [48, 60, 61, 76, 83] vs payload SetOn 比对完成, 缺失=[48, 76] (缺失数 2)",
+      "[t30] TM601_LS_RDSON: 契约声明必需 [60, 61, 154, 155] vs payload SetOn 比对完成, 缺失=[] (缺失数 0)",
+      "[t30] 契约来源: setup_contract.json rev=36 | 判据: setup-contract.json aliasResolution[*].resolution.closedRelayNumbers (indexed by usedByTm / tmDeltas.<TM>.aliasesUsed); route enumerations (pinRouteTable) and the relaySet budget pool are locators only",
+      "[scan] D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm601r3-20260916\\sandbox\\test.cpp.copy",
+      "[scan] targets=4 FAIL=2",
+      "*** FAIL (BST-SW GOLDEN SEQUENCE) ***"
+    ]
+  },
+  "B_k48_k76_added": {
+    "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm601r3-20260916\\sandbox\\test.cpp.k48k76",
+    "size": 469745,
+    "sha256": "fab6262b32013154ad84dbf381b62936706c7c6804dd11fd5bedf8c9b5d703dd",
+    "exit": 0,
+    "lines": [
+      "[t30] TM600_HS_RDSON: 契约声明必需 [48, 60, 61, 76, 83] vs payload SetOn 比对完成, 缺失=[] (缺失数 0)",
+      "[t30] TM601_LS_RDSON: 契约声明必需 [60, 61, 154, 155] vs payload SetOn 比对完成, 缺失=[] (缺失数 0)",
+      "[t30] 契约来源: setup_contract.json rev=36 | 判据: setup-contract.json aliasResolution[*].resolution.closedRelayNumbers (indexed by usedByTm / tmDeltas.<TM>.aliasesUsed); route enumerations (pinRouteTable) and the relaySet budget pool are locators only",
+      "[scan] D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm601r3-20260916\\sandbox\\test.cpp.k48k76",
+      "[scan] targets=4 FAIL=0",
+      "BST-SW SEQUENCE PASSED"
+    ]
+  }
+}

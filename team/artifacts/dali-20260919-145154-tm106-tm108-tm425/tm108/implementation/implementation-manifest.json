@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "PTC-IMPLEMENTATION-V2",
+  "runId": "TM108-FAST-DELIVERY-20260919",
+  "stage": "IMPLEMENTATION",
+  "verdict": "FAST_DELIVERY_PENDING_AUDIT",
+  "targetRoot": "D:/PROJECT6-DALI/ForCodexDebug",
+  "scope": [
+    "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp"
+  ],
+  "changes": [
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "symbols": [
+        "TM108_HSKP_VAC1_PRST"
+      ],
+      "afterSha256": "aea7940182ed1ec6104262519480e039fd41be2ca71c081cb70db2b1e6f7bbf1",
+      "planRefs": [
+        "strategy/register-config-evidence.json"
+      ]
+    }
+  ],
+  "signedInputs": {
+    "methodContractPath": "team/artifacts/dali-20260919-145154-tm106-tm108-tm425/tm108/method/tm108-test-method-contract.json",
+    "methodContractSha256": "e12208c7d8047f2c0286d4a25f56b25bf756187165f0c7485b91a78f29cf9879"
+  },
+  "fastDelivery": {
+    "mode": "FAST_DELIVERY",
+    "skippedStages": [
+      "RULE_REVIEW_IMPLEMENTATION"
+    ],
+    "auditStatus": "PENDING"
+  },
+  "safetyRules": {
+    "functionalRelaySettleMs": 3,
+    "shutdown": [
+      "set FV=0 while connected",
+      "wait 1ms",
+      "disconnect relay"
+    ]
+  }
+}

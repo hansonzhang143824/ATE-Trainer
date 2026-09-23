@@ -1,0 +1,17 @@
+sha b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4 rows 35
+idx 8
+{
+ "Item": "TM109",
+ "Function Name": "",
+ "ShortName": "VAC2_PRST",
+ "ExpectValue": "rising vth 4.15V, hys 0.35V",
+ "Unit": "V",
+ "Trim": "",
+ "Record": "",
+ "Hardware_initial": "vset[vbat,4.2,100e-6,0]",
+ "Software_initial": "\tentertestmode();\n\tI2CWriteSameData(DEV_ADDR, 0x55, 0x96);\t//\t\tfield[(EN_DTEST0,1),(DTEST0_MUX,22)]",
+ "Dynamic": "vset[vac3,3.8,100e-6,1]\nvset[vac3,4.4,1e-3,1]\nvset[vac3,4.1,100e-6,1]\nvset[vac3,3.5,1e-3,1]",
+ "Check": "INT",
+ "Type": "Toggle, MV",
+ "_record": 10
+}

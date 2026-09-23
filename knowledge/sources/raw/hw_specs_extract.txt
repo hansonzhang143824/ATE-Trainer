@@ -1,0 +1,4341 @@
+
+
+########## 2.1  八通道浮动电压电流源模块FOVIe  [p32-40] ##########
+----- 概述 -----
+ 
+ 
+www.accotest.com 
+ 
+27 
+2  STS8300 测试头内模块 
+2.1  八通道浮动电压电流源模块FOVIe 
+SM8223 八通道浮动电压电流源模块是STS8300 系统中的标准模块，模块提供八路
+精密四象限VI 源通道，其主要性能如下： 
+⚫ 单板八通道分组浮动，每组四通道(每组共用一路FL 和SL) 
+⚫ 四象限输出电压电流 
+⚫ 带远端补偿的四线Kelvin 连接 
+⚫ 通断检测功能 
+⚫ 6 个电压量程档： 
+- ±40V，±20V，±10V，±5V，±2V，±1V 
+⚫ 6 个电流量程档： 
+- ±1A(脉冲)，±100mA，±10mA，±1mA，±100μA，±10μA(仅测量) 
+⚫ 电流测量放大能力： 
+- X1，X10 
+⚫ 每通道电压电流可同时测量 
+⚫ 每通道具备独立电压测量模式(Relay Sense on Mode) 
+⚫ 每通道具备硬件数据处理功能，包括最大值、最小值、平均值及跳变位置 
+⚫ 每通道具备可编程窗口式电压及电流箝位 
+⚫ 每通道具备独立的限流保护功能 
+⚫ 隔离电压200V 
+⚫ 支持与STS8300 系统内模块同步功能 
+⚫ 支持多工位并行测试工作模式 
+⚫ 本板保存校准数据 
+⚫ 本板自带温度监测功能 
+
+----- 技术指标 p33 -----
+ 
+ 
+www.accotest.com 
+ 
+28 
+2.1.1  技术指标 
+表2- 1 FOVIe Specifications 
+Voltage Force/Measure 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±40V 
+1.526mV 
+±(7.5mV + 0.025% Rdg) 
+±20V 
+0.610mV 
+±(3mV + 0.025% Rdg) 
+±10V 
+0.305mV 
+±(1.5mV + 0.025% Rdg) 
+±5V 
+0.153mV 
+±(0.75mV + 0.025% Rdg) 
+±2V 
+0.061mV 
+±(0.4mV + 0.025% Rdg) 
+±1V 
+0.031mV 
+±(0.25mV + 0.025% Rdg) 
+Current Force 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±1A 
+30.517μA 
+±(0.2mA + 0.25% Rdg + 10μA/V) 
+±100mA 
+3.052μA 
+±(15μA + 0.05% Rdg + 1μA/V) 
+±10mA 
+305.176nA 
+±(1.5μA + 0.05% Rdg + 0.1μA/V) 
+±1mA 
+30.518nA 
+±(150nA + 0.05% Rdg + 0.01μA/V) 
+±100μA 
+3.052nA 
+±(25nA + 0.05% Rdg + 1nA/V) 
+Current Measure(X1 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±1A 
+30.517μA 
+±(0.2mA + 0.25% Rdg + 10μA/V) 
+±100mA 
+3.052μA 
+±(15μA + 0.05% Rdg + 1μA/V) 
+±10mA 
+305.176nA 
+±(1.5μA + 0.05% Rdg + 0.1μA/V) 
+±1mA 
+30.518nA 
+±(150nA + 0.05% Rdg + 0.01μA/V) 
+±100μA 
+3.052nA 
+±(25nA + 0.05% Rdg + 1nA/V) 
+±10μA 
+0.305nA 
+±(10nA + 0.25% Rdg + 0.2nA/V) 
+Current Measure(X10 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±1A 
+3.052μA 
+±(70μA + 0.25% Rdg + 6μA/V) 
+±100mA 
+305.176nA 
+±(7μA + 0.05% Rdg + 0.6μA/V) 
+±10mA 
+30.518nA 
+±(0.7μA + 0.05% Rdg + 60nA/V) 
+±1mA 
+3.052nA 
+±(70nA + 0.05% Rdg + 6nA/V) 
+±100μA 
+0.305nA 
+±(15nA + 0.05% Rdg + 0.8nA/V) 
+±10μA 
+0.031nA 
+±(5nA + 0.25% Rdg + 0.1nA/V) 
+ 
+Clamp Voltage Ranges 
+Resolution 
+Accuracy 
+±40V，±20V，±10V，±5V，±2V 
+16-bit 
+±0.5%FS 
+
+----- 技术指标(续) p34 -----
+ 
+ 
+www.accotest.com 
+ 
+29 
+±1V 
+16-bit 
+±1% FS 
+ 
+Clamp Current Ranges 
+Resolution 
+Accuracy  
+±100mA，±10mA，±1mA，±100μA，±10μA 
+16-bit 
+±0.5% FS 
+±1A(Pulse) 
+16-bit 
+±2% FS 
+ 
+AWG 
+Resolution 
+Pattern Depth 
+/ Per Channel 
+DA 
+Update Rate 
+AWG step 
+16-bit 
+4K 
+100kHz 
+100μs(1) 
+ 
+Digitizer 
+Resolution 
+Capture Memory 
+/ Per Channel 
+Maximum Sample Rate 
+16-bit 
+4K 
+200kSPS 
+（1）100μs 仅为参考值。
+
+
+
+########## 2.2  十二通道浮动电压电流源模块FXVIe  [p41-51] ##########
+----- 概述 -----
+ 
+ 
+www.accotest.com 
+ 
+36 
+2.2  十二通道浮动电压电流源模块FXVIe 
+SM8233 十二通道浮动电压电流源模块是STS8300 系统中的标准模块，模块提供十
+二路精密四象限VI 源通道。其主要性能如下： 
+⚫ 单板十二通道分组浮动，每组六通道(每组共用一路FL 和SL) 
+⚫ 每一组有两路时间测量通道，每一组内支持任意两通道差分测量功能 
+⚫ 四象限输出电压电流 
+⚫ 带远端补偿的四线Kelvin 连接 
+⚫ 接触电阻检测功能 
+⚫ 3 个电压量程档： 
+- ±30V，±10V，±3.6V 
+⚫ 6 个电流量程档： 
+- ±1A(脉冲)，±100mA，±10mA，±1mA，±100μA，±10μA 
+⚫ 电流测量放大能力： 
+- X1，X10 
+⚫ 每通道电压电流可同时测量 
+⚫ 每通道具备独立电压测量模式(Relay Sense on Mode) 
+⚫ 每通道具备硬件数据处理功能，包括最大值、最小值、平均值及跳变位置 
+⚫ 每通道具备可编程窗口式电压及电流箝位 
+⚫ 每通道具备独立的限流保护功能 
+⚫ 每组两路时间测量单元(TMU) 
+⚫ 时间测量单元测量的时间参数，包括频率/周期、占空比、脉宽、上升/下降时间、
+传输延时、事件计数等 
+⚫ 时间测量单元有3 个时间量程： 
+- 30ns~950ns，800ns~4ms，30ns~5.368s 
+⚫ 时间测量单元有3 个电压量程： 
+- ±30V，±10V，±3.6V 
+⚫ 时间测量单元的滤波器为：PASS/1M/100K 
+
+----- 技术指标 p43 -----
+ 
+ 
+www.accotest.com 
+ 
+38 
+2.2.1  技术指标 
+表2- 2 FXVIe Specifications 
+Voltage Force 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±30V 
+1.017mV 
+±(6mV + 0.025% Rdg) 
+±10V 
+0.339mV 
+±(2mV + 0.025% Rdg) 
+±3.6V 
+0.113mV 
+±(0.75mV + 0.025% Rdg) 
+Voltage Measure 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±30V 
+1.144mV 
+±(6mV + 0.025% Rdg) 
+±10V 
+0.381mV 
+±(2mV + 0.025% Rdg) 
+±3.6V 
+0.127mV 
+±(0.75mV + 0.025% Rdg) 
+Current Force 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±1A 
+33.908μA 
+±(0.2mA + 0.05% Rdg + 20μA/V) 
+±100mA 
+3.39μA 
+±(15μA + 0.05% Rdg + 2μA/V) 
+±10mA 
+339.08nA 
+±(1.5μA + 0.05% Rdg + 0.2μA/V) 
+±1mA 
+33.908nA 
+±(150nA + 0.05% Rdg + 25nA/V) 
+±100μA 
+3.39nA 
+±(25nA + 0.05% Rdg + 3nA/V) 
+±10μA 
+0.3815nA 
+±(25nA + 0.05% Rdg + 3nA/V) 
+Current Measure(X1 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±1A 
+38.147μA 
+±(0.2mA + 0.05% Rdg + 20μA/V) 
+±100mA 
+3.815μA 
+±(15μA + 0.05% Rdg + 2μA/V) 
+±10mA 
+381.47nA 
+±(1.5μA + 0.05% Rdg + 0.2μA/V) 
+±1mA 
+38.147nA 
+±(150nA + 0.05% Rdg + 25nA/V) 
+±100μA 
+3.8147nA 
+±(25nA + 0.05% Rdg + 3nA/V) 
+±10μA 
+0.3815nA 
+±(25nA + 0.05% Rdg + 3nA/V) 
+Current Measure(X10 amplifier) 
+ 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±1A 
+3.815μA 
+±(70μA + 0.05% Rdg + 6μA/V) 
+±100mA 
+381.47nA 
+±(7μA + 0.05% Rdg + 0.6μA/V) 
+±10mA 
+38.147nA 
+±(0.7μA + 0.05% Rdg + 60nA/V) 
+±1mA 
+3.8147nA 
+±(70nA + 0.05% Rdg + 6nA/V) 
+±100μA 
+0.3815nA 
+±(15nA + 0.05% Rdg + 0.8nA/V) 
+±10μA 
+0.0381nA 
+±(5nA + 0.05% Rdg + 0.1nA/V) 
+
+----- 技术指标(续) p44 -----
+ 
+ 
+www.accotest.com 
+ 
+39 
+Clamp Voltage Ranges 
+Resolution 
+Accuracy (%FS) 
+±30V，±10V，±3.6V 
+16-bit 
+±0.5% 
+ 
+Clamp Current Ranges 
+Resolution 
+Accuracy (%FS) 
+±100mA，±10mA，±1mA，±100μA，±10μA 
+16-bit 
+±0.5% 
+±1A(Pulse) 
+16-bit 
+±1.6% 
+ 
+AWG 
+Resolution 
+Pattern Depth 
+/ Per Channel 
+DA Update 
+Rate 
+AWG step 
+16-bit 
+4K 
+100kHz 
+20μs(1) 
+ 
+Digitizer 
+Resolution 
+Capture Memory 
+/ Per Channel 
+Maximum Sample Rate 
+16-bit 
+4K 
+200kSPS 
+ 
+TMU 
+Channel/Board 
+2/bank, 4/board 
+Input voltage range 
+30V/±10V/±3.6V 
+Input impedance  
+1MΩ 
+Trigger level accuracy 
+1%FSR 
+Input analog filter 
+100kHz/1MHz/PASS 
+Measuring Time Range 
+Manual Range 
+30ns~950ns 
+800ns~4ms 
+30ns~5.368s 
+Time measuring accuracy 
+±(30ns+0.1%Rd) 
+±(30ns+0.1%Rd) 
+±(30ns+0.1%Rd) 
+Sample Memory 
+2K/ channel 
+ 
+DVM 
+Range 
+Accuracy 
+Resolution(mV) 
+3.6V 
+±(0.3mV+0.01%Rd) 
+0.0382 
+
+
+
+########## 2.3  十二通道浮动电压电流源模块FXVIe_PLUS  [p52-63] ##########
+----- 概述 -----
+ 
+ 
+www.accotest.com 
+ 
+47 
+2.3  十二通道浮动电压电流源模块FXVIe_PLUS 
+SM8245 十二通道浮动电压电流源模块是STS8300 系统中的标准模块，模块提供十
+二路精密四象限VI 源通道。其主要性能如下： 
+⚫ 单板十二通道分组浮动，每组六通道(每组共用一路FL 和SL) 
+⚫ 每组有两个时间测量通道，每组内支持任意两通道差分测量功能 
+⚫ 四象限输出电压电流 
+⚫ 带远端补偿的四线Kelvin 连接 
+⚫ 接触电阻检测功能 
+⚫ 5 个电压量程： 
+- ±40V，±30V，±20V，±10V，±3.6V 
+⚫ 7 个电流量程： 
+- ±1A(脉冲)，±100mA，±10mA，±1mA，±100μA，±10μA，±1μA 
+⚫ 电流测量放大能力： 
+- X1，X10(1μA 除外) 
+⚫ 每通道电压电流可同时测量 
+⚫ 每通道具备独立电压测量模式(Relay Sense on Mode) 
+⚫ 每通道具备硬件数据处理功能，包括最大值、最小值、平均值及跳变位置 
+⚫ 每通道具备可编程窗口式电压及电流箝位 
+⚫ 每通道具备独立的限流保护功能 
+⚫ 每组内有2 个通道支持扇出功能 
+⚫ 隔离电压200V 
+⚫ 支持与STS8300 系统内模块同步功能 
+⚫ 支持多工位并行测试工作模式 
+⚫ 本板保存校准数据 
+⚫ 本板自带温湿度监测功能 
+ 
+时间测量功能(TMU)： 
+
+----- 技术指标 p54 -----
+ 
+ 
+www.accotest.com 
+ 
+49 
+2.3.1  技术指标 
+表2- 3 FXVIe_PLUS Specifications 
+Voltage Force 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±40V 
+1.356 mV 
+±(8mV + 0.025% Rdg) 
+±30V 
+1.017mV 
+±(6mV + 0.025% Rdg) 
+±20V 
+0.678mV 
+±(4mV + 0.025% Rdg) 
+±10V 
+0.339mV 
+±(2mV + 0.025% Rdg) 
+±3.6V 
+0.113mV 
+±(0.75mV + 0.025% Rdg) 
+Voltage Measure 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±40V 
+1.524mV 
+±(8mV + 0.025% Rdg) 
+±30V 
+1.144mV 
+±(6mV + 0.025% Rdg) 
+±20V 
+0.762mV 
+±(4mV + 0.025% Rdg) 
+±10V 
+0.381mV 
+±(2mV + 0.025% Rdg) 
+±3.6V 
+0.127mV 
+±(0.75mV + 0.025% Rdg) 
+Current Force 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±1A 
+33.908μA 
+±(0.2mA + 0.05% Rdg + 20μA/V) 
+±100mA 
+3.3908μA 
+±(15μA + 0.05% Rdg + 2μA/V) 
+±10mA 
+339.08nA 
+±(1.5μA + 0.05% Rdg + 0.2μA/V) 
+±1mA 
+33.908nA 
+±(150nA + 0.05% Rdg + 25nA/V) 
+±100μA 
+3.3908nA 
+±(25nA + 0.05% Rdg + 3nA/V) 
+±10μA 
+0.3391nA 
+±(10nA + 0.05% Rdg + 3nA/V) 
+±1μA 
+0.0339nA 
+±(8nA + 0.05% Rdg + 0.5nA/V) 
+Current Measure(X1 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±1A 
+38.147μA 
+±(0.2mA + 0.05% Rdg + 20μA/V) 
+±100mA 
+3.8147μA 
+±(15μA + 0.05% Rdg + 2μA/V) 
+±10mA 
+381.47nA 
+±(1.5μA + 0.05% Rdg + 0.2μA/V) 
+±1mA 
+38.147nA 
+±(150nA + 0.05% Rdg + 25nA/V) 
+±100μA 
+3.8147nA 
+±(25nA + 0.05% Rdg + 3nA/V) 
+±10μA 
+0.3815nA 
+±(10nA + 0.05% Rdg + 3nA/V) 
+±1μA 
+0.0382nA 
+±(8nA + 0.05% Rdg + 0.5nA/V) 
+ 
+ 
+
+----- 技术指标(续) p55 -----
+ 
+ 
+www.accotest.com 
+ 
+50 
+Current Measure(X10 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±1A 
+3.815μA 
+±(70μA + 0.05% Rdg + 6μA/V) 
+±100mA 
+381.47nA 
+±(7μA + 0.05% Rdg + 0.6μA/V) 
+±10mA 
+38.147nA 
+±(0.7μA + 0.05% Rdg + 60nA/V) 
+±1mA 
+3.8147nA 
+±(70nA + 0.05% Rdg + 6nA/V) 
+±100μA 
+0.3815nA 
+±(15nA + 0.05% Rdg + 0.8nA/V) 
+±10μA 
+0.0382nA 
+±(5nA + 0.05% Rdg + 0.1nA/V) 
+ 
+ 
+AWG 
+Resolution 
+Pattern Depth 
+/ Per Channel 
+DA Update Rate 
+AWG step 
+16-bit 
+4K 
+100kHz 
+100μs(1) 
+ 
+Digitizer 
+Resolution 
+Capture Memory 
+/Per Channel 
+Maximum Sample Rate 
+16-bit 
+4K 
+1MSPS 
+ 
+TMU 
+Channel/Board 
+2/bank, 4/board 
+Input voltage range 
+±40V, 30V, ±20V, ±10V, ±3.6V 
+Input impedance  
+1MΩ 
+Trigger level accuracy 
+1%FSR 
+Input analog filter 
+100kHz/1MHz/PASS 
+Measuring Time Range 
+Manual Range 
+Clamp Voltage Ranges 
+Resolution 
+Accuracy 
+±40V, ±30V, ±20V, ±10V, ±3.6V 
+16-bit 
+±0.5% FS 
+ 
+Clamp Current Ranges 
+Resolution 
+Accuracy 
+±100mA, ±10mA, ±1mA, ±100μA, ±10μA, ±1μA 
+16-bit 
+±0.5% FS 
+±1A(pulse) 
+16-bit 
+±1.6% FS 
+
+----- 技术指标(续) p56 -----
+ 
+ 
+www.accotest.com 
+ 
+51 
+30ns ~ 950ns 
+800ns ~ 4ms 
+30ns ~ 5.368s 
+Time measuring accuracy 
+±(30ns+0.1%Rd) 
+±(30ns+0.1%Rd) 
+±(30ns+0.1%Rd) 
+Sample Memory 
+8K/ channel 
+ 
+DVM 
+Range 
+Accuracy 
+Resolution(mV) 
+10V 
+±(0.9mV+0.01%Rd) 
+0.0954 
+3.6V 
+±(0.3mV+0.01%Rd) 
+0.0382 
+Capture Memory 
+4K 
+Maximum Sample Rate 
+1MSPS 
+（1）100μs 仅为参考值。 
+
+
+
+########## 2.4 十二通道浮动电压电流源模块FXVIe_PLUS 2.0  [p64-77] ##########
+----- 概述 -----
+ 
+ 
+www.accotest.com 
+ 
+59 
+2.4 十二通道浮动电压电流源模块FXVIe_PLUS 2.0 
+SM8267 十二通道浮动电压电流源模块是STS8300 系统中的标准模块，模块提供十
+二路精密四象限VI 源通道。其主要性能如下： 
+⚫ 单板十二通道分组浮动，每组六通道(每组共用一路FL 和SL) 
+⚫ 每组有两个时间测量通道，每组内支持任意两通道间差分测量功能 
+⚫ 四象限输出电压电流 
+⚫ 带远端补偿的四线Kelvin 连接 
+⚫ 接触电阻检测功能 
+⚫ 5 个电压量程： 
+- ±40V，±30V，±20V，±10V，±3.6V 
+⚫ 7 个电流量程： 
+- ±1A(脉冲)，±100mA，±10mA，±1mA，±100μA，±10μA，±1μA 
+⚫ 电流测量放大能力： 
+- X1，X10(1μA 除外) 
+⚫ 每通道电压电流可同时测量 
+⚫ 每通道具备独立电压测量模式(Relay Sense on Mode) 
+⚫ 每通道具备硬件数据处理功能，包括最大值、最小值、平均值及跳变位置 
+⚫ 每通道具备可编程窗口式电压及电流箝位 
+⚫ 每通道具备独立的限流保护功能 
+⚫ 每组内有2 个通道支持扇出功能 
+⚫ 隔离电压200V 
+⚫ 支持与STS8300 系统内模块同步功能 
+⚫ 支持多工位并行测试工作模式 
+⚫ 本板保存校准数据 
+⚫ 本板自带温湿度监测功能 
+ 
+ 
+
+----- 技术指标 p66 -----
+ 
+ 
+www.accotest.com 
+ 
+61 
+2.4.1  技术指标 
+表2- 4 FXVIe_PLUS 2.0 Specifications 
+Voltage Force 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±40V 
+1.356 mV 
+±(8mV + 0.025% Rdg) 
+±30V 
+1.017mV 
+±(6mV + 0.025% Rdg) 
+±20V 
+0.678mV 
+±(4mV + 0.025% Rdg) 
+±10V 
+0.339mV 
+±(2mV + 0.025% Rdg) 
+±3.6V 
+0.113mV 
+±(0.75mV + 0.025% Rdg) 
+Voltage Measure 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±40V 
+1.524mV 
+±(8mV + 0.025% Rdg) 
+±30V 
+1.144mV 
+±(6mV + 0.025% Rdg) 
+±20V 
+0.762mV 
+±(4mV + 0.025% Rdg) 
+±10V 
+0.381mV 
+±(2mV + 0.025% Rdg) 
+±3.6V 
+0.127mV 
+±(0.75mV + 0.025% Rdg) 
+Current Force 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±1A 
+33.908μA 
+±(0.2mA + 0.05% Rdg + 20μA/V) 
+±100mA 
+3.3908μA 
+±(15μA + 0.05% Rdg + 2μA/V) 
+±10mA 
+339.08nA 
+±(1.5μA + 0.05% Rdg + 0.2μA/V) 
+±1mA 
+33.908nA 
+±(150nA + 0.05% Rdg + 25nA/V) 
+±100μA 
+3.3908nA 
+±(25nA + 0.05% Rdg + 3nA/V) 
+±10μA 
+0.3391nA 
+±(10nA + 0.05% Rdg + 3nA/V) 
+±1μA 
+0.0339nA 
+±(8nA + 0.05% Rdg + 0.5nA/V) 
+Current Measure(X1 amplifier) 
+
+----- 技术指标(续) p67 -----
+ 
+ 
+www.accotest.com 
+ 
+62 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±1A 
+38.147μA 
+±(0.2mA + 0.05% Rdg + 20μA/V) 
+±100mA 
+3.8147μA 
+±(15μA + 0.05% Rdg + 2μA/V) 
+±10mA 
+381.47nA 
+±(1.5μA + 0.05% Rdg + 0.2μA/V) 
+±1mA 
+38.147nA 
+±(150nA + 0.05% Rdg + 25nA/V) 
+±100μA 
+3.8147nA 
+±(25nA + 0.05% Rdg + 3nA/V) 
+±10μA 
+0.3815nA 
+±(10nA + 0.05% Rdg + 3nA/V) 
+±1μA 
+0.0382nA 
+±(8nA + 0.05% Rdg + 0.5nA/V) 
+ 
+Current Measure(X10 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±1A 
+3.815μA 
+±(70μA + 0.05% Rdg + 6μA/V) 
+±100mA 
+381.47nA 
+±(7μA + 0.05% Rdg + 0.6μA/V) 
+±10mA 
+38.147nA 
+±(0.7μA + 0.05% Rdg + 60nA/V) 
+±1mA 
+3.8147nA 
+±(70nA + 0.05% Rdg + 6nA/V) 
+±100μA 
+0.3815nA 
+±(15nA + 0.05% Rdg + 0.8nA/V) 
+±10μA 
+0.0382nA 
+±(5nA + 0.05% Rdg + 0.1nA/V) 
+ 
+ 
+AWG 
+Resolution 
+Pattern Depth 
+/ Per Channel 
+DA Update Rate 
+AWG step 
+Clamp Voltage Ranges 
+Resolution 
+Accuracy 
+±40V, ±30V, ±20V, ±10V, ±3.6V 
+16-bit 
+±0.5% FS 
+ 
+Clamp Current Ranges 
+Resolution 
+Accuracy 
+±100mA, ±10mA, ±1mA, ±100μA, ±10μA, ±1μA 
+16-bit 
+±0.5% FS 
+±1A(pulse) 
+16-bit 
+±1.6% FS 
+
+----- 技术指标(续) p68 -----
+ 
+ 
+www.accotest.com 
+ 
+63 
+16-bit 
+4K 
+100kHz 
+100μs(1) 
+ 
+Digitizer 
+Resolution 
+Capture Memory 
+/Per Channel 
+Maximum Sample Rate 
+16-bit 
+4K 
+1MSPS 
+ 
+TMU 
+Channel/Board 
+2/bank, 4/board 
+Input voltage range 
+±40V, 30V, ±20V, ±10V, ±3.6V 
+Input impedance  
+1MΩ 
+Trigger level accuracy 
+1%FSR 
+Input analog filter 
+100kHz/1MHz/PASS 
+Measuring Time Range 
+Manual Range 
+30ns ~ 950ns 
+800ns ~ 4ms 
+30ns ~ 5.368s 
+Time measuring accuracy 
+±(30ns+0.1%Rd) 
+±(30ns+0.1%Rd) 
+±(30ns+0.1%Rd) 
+Sample Memory 
+8K/ channel 
+ 
+DVM 
+Range 
+Accuracy 
+Resolution(mV) 
+10V 
+±(0.9mV+0.01%Rd) 
+0.0954 
+3.6V 
+±(0.3mV+0.01%Rd) 
+0.0382 
+Capture Memory 
+4K 
+Maximum Sample Rate 
+1MSPS 
+（1）100μs 仅为参考值。 
+
+
+
+########## 2.5  模拟通道板ACM  [p78-83] ##########
+----- 概述 -----
+ 
+www.accotest.com 
+ 
+73 
+2.5  模拟通道板ACM 
+SM8226 模拟通道板是STS8300 系统中的标准模块，模块提供二十四路精密四象限
+VI 源通道，其主要性能如下： 
+⚫ 单板24 通道，每6 通道为一组(每组共用一个地线补偿信号DGS) 
+⚫ 四象限输出电压电流 
+⚫ 带远端补偿的四线Kelvin 连接 
+⚫ 1 个电压量程档： 
+- N2P18V 
+⚫ 7 个电流量程档(1)： 
+- ±500mA(脉冲)，±200mA，±20mA，±2mA，±200μA，±20μA，±5μA 
+⚫ 每通道具备硬件数据处理功能，包括最大值、最小值、平均值及跳变位置(无法同
+时测压测流) 
+⚫ 每通道具备可编程窗口式电压及电流箝位 
+⚫ 支持与STS8300 系统内模块同步功能 
+⚫ 支持多工位并行测试工作模式 
+⚫ 本板保存校准数据 
+⚫ 本板自带温度监测功能 
+说明： 
+（1）ACM 的大电流量程(±500mA，±200mA，±20mA)和小电流量程(±2mA，±200μA，±20μA，±5μA)
+之间互相切换时，会先断开输出继电器，再进行电流量程切换，最后再接通输出继电器。 
+ 
+ 
+
+----- 技术指标 p79 -----
+ 
+www.accotest.com 
+ 
+74 
+2.5.1  技术指标 
+表2- 5 ACM Specifications 
+Voltage Force 
+Range 
+Resolution(16-bit) 
+Accuracy 
+-2V to +18V 
+0.305mV 
+±(3mV + 0.025% Rdg) 
+Voltage Measure 
+Range 
+Resolution(16-bit) 
+Accuracy 
+-2V to +18V 
+0.610mV 
+±(3mV + 0.025% Rdg) 
+Current Force 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±500mA 
+15.259μA 
+±(0.2mA + 0.2% Rdg) 
+±200mA 
+6.104μA 
+±(40μA + 0.05% Rdg) 
+±20mA 
+0.610μA 
+±(4μA + 0.05% Rdg) 
+±2mA 
+61.035nA 
+±(400nA + 0.05% Rdg) 
+±200μA 
+6.104nA 
+±(40nA + 0.05% Rdg) 
+±20μA 
+0.610nA 
+±(10nA + 0.05% Rdg) 
+±5μA 
+0.153nA 
+±(5nA + 0.05% Rdg) 
+Current Measure 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±500mA 
+30.517μA 
+±(0.2mA + 0.2% Rdg) 
+±200mA 
+12.207μA 
+±(60μA + 0.05% Rdg) 
+±20mA 
+1.221μA 
+±(6μA + 0.05% Rdg) 
+±2mA 
+122.07nA 
+±(600nA + 0.05% Rdg) 
+±200μA 
+12.207nA 
+±(60nA + 0.05% Rdg) 
+±20μA 
+1.221nA 
+±(10nA + 0.05% Rdg) 
+±5μA 
+0.305nA 
+±(6nA + 0.05% Rdg) 
+ 
+Clamp Voltage Ranges 
+Resolution 
+Accuracy 
+N2P18V 
+16-bit 
+±3% FS 
+ 
+Clamp Current Ranges 
+Resolution 
+Accuracy 
+±500mA，±200mA，±20mA，±2mA， 
+±200μA，±20μA，±5μA 
+16-bit 
+±10% FS 
+
+
+
+########## 2.6  二十四通道浮动电压电流源模块ACM200  [p84-89] ##########
+----- 概述 -----
+ 
+ 
+www.accotest.com 
+ 
+79 
+2.6  二十四通道浮动电压电流源模块ACM200 
+ACM200 二十四通道浮动电压电流源模块是STS8300 系统中的标准模块，模块提供
+二十四路精密四象限VI 源通道。其主要性能如下： 
+⚫ 单板二十四通道，分为两个浮动单元，每个浮动单元包含两个组(每单元共用一路
+FL，每组共用一路SL) 
+⚫ 四象限输出电压电流 
+⚫ 带远端补偿的四线Kelvin 连接 
+⚫ 接触电阻检测功能 
+⚫ 4 个电压量程档： 
+- ±40V，±20V，±10V，±3.6V 
+⚫ 7 个电流量程档： 
+- ±200mA，±100mA，±10mA，±1mA，±100μA，±10μA，±1μA 
+⚫ 每通道电压电流可同时测量 
+⚫ 每通道具备独立电压测量模式(Relay Sense on Mode) 
+⚫ 每通道具备硬件数据处理功能，包括最大值、最小值、平均值及跳变位置 
+⚫ 每通道具备可编程窗口式电压及电流箝位 
+⚫ 每通道具备独立的限流保护功能 
+⚫ 隔离电压200V 
+⚫ 支持与STS8300 系统内模块同步功能 
+⚫ 支持多工位并行测试工作模式 
+⚫ 本板保存校准数据 
+⚫ 本板自带温湿度监测功能 
+
+----- 技术指标 p85 -----
+ 
+ 
+www.accotest.com 
+ 
+80 
+2.6.1  技术指标 
+表2- 6 ACM200 Specifications 
+Voltage Force 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±40V 
+1.524mV 
+±(6mV + 0.025% Rdg) 
+±20V 
+0.762mV 
+±(3mV + 0.025% Rdg) 
+±10V 
+0.381mV 
+±(1.5mV + 0.025% Rdg) 
+±3.6V 
+0.127mV 
+±(0.6mV + 0.025% Rdg) 
+Voltage Measur 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±40V 
+1.524mV 
+±(6mV + 0.025% Rdg) 
+±20V 
+0.762mV 
+±(3mV + 0.025% Rdg) 
+±10V 
+0.381mV 
+±(1.5mV + 0.025% Rdg) 
+±3.6V 
+0.127mV 
+±(0.6mV + 0.025% Rdg) 
+Current Force 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±200mA 
+7.62μA 
+±(30μA + 0.05% Rdg + 4μA/V) 
+±100mA 
+3.81μA 
+±(15μA + 0.05% Rdg + 2μA/V) 
+±10mA 
+381.47nA 
+±(1.5μA + 0.05% Rdg + 0.2μA/V) 
+±1mA 
+38.147nA 
+±(150nA + 0.05% Rdg + 25nA/V) 
+±100μA 
+3.81nA 
+±(25nA + 0.05% Rdg + 3nA/V) 
+±10μA 
+0.3815nA 
+±(10nA + 0.05% Rdg + 3nA/V) 
+±1μA 
+0.03815nA 
+±(8nA + 0.05% Rdg + 0.5nA/V) 
+Current Measure 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±200mA 
+7.62μA 
+±(30μA + 0.05% Rdg + 4μA/V) 
+±100mA 
+3.81μA 
+±(15μA + 0.05% Rdg + 2μA/V) 
+±10mA 
+381.47nA 
+±(1.5μA + 0.05% Rdg + 0.2μA/V) 
+±1mA 
+38.147nA 
+±(150nA + 0.05% Rdg + 25nA/V) 
+±100μA 
+3.81nA 
+±(25nA + 0.05% Rdg + 3nA/V) 
+±10μA 
+0.3815nA 
+±(10nA + 0.05% Rdg + 3nA/V) 
+±1μA 
+0.03815nA 
+±(8nA + 0.05% Rdg + 0.5nA/V) 
+ 
+ 
+ 
+
+----- 技术指标(续) p86 -----
+ 
+ 
+www.accotest.com 
+ 
+81 
+Clamp Voltage Ranges 
+Resolution 
+Accuracy 
+±40V，±20V，±10V，±3.6V 
+12-bit 
+±0.5% FS 
+ 
+Clamp Current Ranges 
+Resolution 
+Accuracy 
+±200mA，±100mA，±10mA，±1mA，±100μA，±10μA 
+12-bit 
+±0.5% FS 
+±1μA 
+12-bit 
+±1% FS 
+ 
+AWG 
+Resolution 
+Pattern Depth 
+/ Per Channel 
+DA 
+Update Rate 
+AWG step 
+16-bit 
+4K 
+100kHz 
+100μs(1) 
+ 
+Digitizer 
+Resolution 
+Capture Memory 
+/ Per Channel 
+Maximum Sample Rate 
+16-bit 
+4K 
+1MSPS 
+（1）100μs 仅为参考值。
+
+
+
+########## 2.7  双通道浮动电压电流源模块FPVIe  [p90-101] ##########
+----- 概述 -----
+ 
+ 
+www.accotest.com 
+ 
+85 
+2.7  双通道浮动电压电流源模块FPVIe 
+SM8228 双通道浮动功率电压电流源模块是 STS8300 系统中的标准模块，模块提供
+双路全浮动的精密四象限VI 源通道，其主要性能如下： 
+⚫ 单板双通道，每通道独立浮动 
+⚫ 四象限输出电压电流 
+⚫ 带远端补偿的四线Kelvin 连接 
+⚫ 通断检测功能 
+⚫ 8 个电压量程档： 
+- ±100V，±40V，±20V，±10V，±5V，±2V，±1V，±100mV(仅测量) 
+⚫ 8 个电流量程档： 
+- ±10A(脉冲)，±2A(脉冲)，±1A，±100mA，±10mA，±1mA，±100μA，±10μA(仅
+测量) 
+⚫ 每通道电压电流可同时测量 
+⚫ 每通道电压电流可同时采用PGA 放大，放大倍数：X1，X2，X5，X10 
+⚫ 每通道具备独立电压测量模式(Relay Sense on Mode) 
+⚫ 每通道具备硬件数据处理功能，包括最大值、最小值、平均值及跳变位置 
+⚫ 每通道具备可编程窗口式电压及电流箝位 
+⚫ 每通道具备独立的限流保护功能 
+⚫ 隔离电压为1000V 
+⚫ 支持与STS8300 系统内模块同步 
+⚫ 支持多工位并行测试工作模式 
+⚫ 本板保存校准数据 
+⚫ 本板自带温度监测功能 
+
+----- 技术指标 p91 -----
+ 
+ 
+www.accotest.com 
+ 
+86 
+2.7.1  技术指标 
+表2- 7 FPVIe Specifications 
+Voltage Force 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±100V 
+3.052mV 
+±(15mV + 0.025% Rdg) 
+±40V 
+1.221mV 
+±(7.5mV + 0.025% Rdg) 
+±20V 
+0.610mV 
+±(3mV + 0.025% Rdg) 
+±10V 
+0.305mV 
+±(1.5mV + 0.025% Rdg) 
+±5V 
+0.153mV 
+±(0.75mV + 0.025% Rdg) 
+±2V 
+0.061mV 
+±(0.5mV + 0.025% Rdg) 
+±1V 
+0.031mV 
+±(0.25mV + 0.025% Rdg) 
+Voltage Measure(X1 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±100V 
+3.052mV 
+±(15mV + 0.025% Rdg) 
+±40V 
+1.221mV 
+±(7.5mV + 0.025% Rdg) 
+±20V 
+0.610mV 
+±(3mV + 0.025% Rdg) 
+±10V 
+0.305mV 
+±(1.5mV + 0.025% Rdg) 
+±5V 
+0.153mV 
+±(0.75mV + 0.025% Rdg) 
+±2V 
+0.061mV 
+±(0.5mV + 0.025% Rdg) 
+±1V 
+0.031mV 
+±(0.25mV + 0.025% Rdg) 
+±100mV 
+0.003mV 
+±(0.2mV + 0.025% Rdg) 
+Voltage Measure(X2 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±100V 
+1.526mV 
+±(12mV + 0.030% Rdg) 
+±40V 
+0.610mV 
+±(6mV + 0.030% Rdg) 
+±20V 
+0.305mV 
+±(2.25mV + 0.030% Rdg) 
+±10V 
+0.153mV 
+±(1mV + 0.030% Rdg) 
+±5V 
+0.076mV 
+±(0.6mV + 0.030% Rdg) 
+±2V 
+0.031mV 
+±(0.4mV + 0.030% Rdg) 
+±1V 
+0.015mV 
+±(0.225mV + 0.030% Rdg) 
+±100mV 
+0.002mV 
+±(0.175mV + 0.250% Rdg) 
+Voltage Measure(X5 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±100V 
+0.610mV 
+±(9mV + 0.040% Rdg) 
+±40V 
+0.244mV 
+±(5mV + 0.040% Rdg) 
+±20V 
+0.122mV 
+±(1.75mV + 0.040% Rdg) 
+±10V 
+0.061mV 
+±(0.75mV + 0.040% Rdg) 
+
+----- 技术指标(续) p92 -----
+ 
+ 
+www.accotest.com 
+ 
+87 
+±5V 
+0.031mV 
+±(0.45mV + 0.040% Rdg) 
+±2V 
+0.012mV 
+±(0.3mV + 0.040% Rdg) 
+±1V 
+0.006mV 
+±(0.2mV + 0.040% Rdg) 
+±100mV 
+0.001mV 
+±(0.15mV + 0.300% Rdg) 
+Voltage Measure(X10 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±100V 
+0.305mV 
+±(6mV + 0.050% Rdg) 
+±40V 
+0.122mV 
+±(4.5mV + 0.050% Rdg) 
+±20V 
+0.061mV 
+±(1.5mV + 0.050% Rdg) 
+±10V 
+0.031mV 
+±(0.6mV + 0.050% Rdg) 
+±5V 
+0.015mV 
+±(0.35mV + 0.050% Rdg) 
+±2V 
+0.006mV 
+±(0.2mV + 0.050% Rdg) 
+±1V 
+0.003mV 
+±(0.175mV + 0.050% Rdg) 
+±100mV 
+0.305μV 
+±(0.125mV + 0.400% Rdg) 
+Current Force 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±10A 
+305.176μA 
+±(4mA + 0.25% Rdg + 100μA/V) 
+±2A 
+61.035μA 
+±(1.5mA + 0.10% Rdg + 20μA/V) 
+±1A 
+30.517μA 
+±(0.3mA + 0.05% Rdg + 10μA/V) 
+±100mA 
+3.052μA 
+±(30μA + 0.05% Rdg + 1μA/V) 
+±10mA 
+305.176nA 
+±(3μA + 0.05% Rdg + 0.1μA/V) 
+±1mA 
+30.518nA 
+±(300nA + 0.05% Rdg + 0.01μA/V) 
+±100μA 
+3.052nA 
+±(30nA + 0.05% Rdg + 1nA/V) 
+Current Measure(X1 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±10A 
+305.176μA 
+±(4mA + 0.25% Rdg + 100μA/V) 
+±2A 
+61.035μA 
+±(1.5mA + 0.10% Rdg + 20μA/V) 
+±1A 
+30.517μA 
+±(0.3mA + 0.05% Rdg + 10μA/V) 
+±100mA 
+3.052μA 
+±(30μA + 0.05% Rdg + 1μA/V) 
+±10mA 
+305.176nA 
+±(3μA + 0.05% Rdg + 0.1μA/V) 
+±1mA 
+30.518nA 
+±(300nA + 0.05% Rdg + 0.01μA/V) 
+±100μA 
+3.052nA 
+±(30nA + 0.05% Rdg + 1nA/V) 
+±10μA 
+0.305nA 
+±(20nA + 0.25% Rdg + 0.2nA/V) 
+Current Measure(X2 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±10A 
+152.588μA 
+±(3.5mA + 0.25% Rdg + 80μA/V) 
+±2A 
+30.518μA 
+±(1.3mA + 0.10% Rdg + 16μA/V) 
+±1A 
+15.259μA 
+±(0.25mA + 0.05% Rdg + 8μA/V) 
+±100mA 
+1.526μA 
+±(25μA + 0.05% Rdg + 0.8μA/V) 
+
+----- 技术指标(续) p93 -----
+ 
+ 
+www.accotest.com 
+ 
+88 
+±10mA 
+152.588nA 
+±(2.5μA + 0.05% Rdg + 0.08μA/V) 
+±1mA 
+15.259nA 
+±(250nA + 0.05% Rdg + 8nA/V) 
+±100μA 
+1.526nA 
+±(25nA + 0.05% Rdg + 0.8nA/V) 
+±10μA 
+0.153nA 
+±(20nA + 0.25% Rdg + 0.16nA/V) 
+Current Measure(X5 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±10A 
+61.035μA 
+±(3mA + 0.26% Rdg + 60μA/V) 
+±2A 
+12.207μA 
+±(1.1mA + 0.13% Rdg + 12μA/V) 
+±1A 
+6.104μA 
+±(0.2mA + 0.07% Rdg + 6μA/V) 
+±100mA 
+0.610μA 
+±(20μA + 0.07% Rdg + 0.6μA/V) 
+±10mA 
+61.035nA 
+±(2μA + 0.07% Rdg + 0.06μA/V) 
+±1mA 
+6.104nA 
+±(200nA + 0.07% Rdg + 6nA/V) 
+±100μA 
+0.610nA 
+±(20nA + 0.07% Rdg + 0.6nA/V) 
+±10μA 
+0.061nA 
+±(15nA + 0.40% Rdg + 0.12nA/V) 
+Current Measure(X10 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±10A 
+30.518μA 
+±(2mA + 0.30% Rdg + 50μA/V) 
+±2A 
+6.104μA 
+±(1mA + 0.15% Rdg + 10μA/V) 
+±1A 
+3.052μA 
+±(0.15mA + 0.10% Rdg + 5μA/V) 
+±100mA 
+0.305μA 
+±(15μA + 0.10% Rdg + 0.5μA/V) 
+±10mA 
+30.518nA 
+±(1.5μA + 0.10% Rdg + 0.05μA/V) 
+±1mA 
+3.052nA 
+±(150nA + 0.10% Rdg + 5nA/V) 
+±100μA 
+0.305nA 
+±(15nA + 0.10% Rdg + 0.5nA/V) 
+±10μA 
+0.031nA 
+±(13nA + 0.50% Rdg + 0.10nA/V) 
+ 
+Clamp Voltage Ranges 
+Resolution 
+Accuracy 
+±100V，±40V，±20V，±10V，±5V，±2V，±1V 
+16-bit 
+±0.5% FS 
+±100mV 
+16-bit 
+±1% FS 
+ 
+Clamp Current Ranges 
+Resolution 
+Accuracy 
+±1A，±100mA，±10mA，±1mA，±100μA，±10μA 
+16-bit 
+±0.5% FS 
+±10A，±2A 
+16-bit 
+±2% FS 
+ 
+ 
+ 
+
+
+
+########## 2.8 双通道浮动电压电流源模块FPVIe_PLUS  [p102-114] ##########
+----- 概述 -----
+ 
+ 
+www.accotest.com 
+ 
+97 
+2.8 双通道浮动电压电流源模块FPVIe_PLUS 
+SM8263 双通道浮动功率电压电流源模块是 STS8300 系统中的标准模块，模块提供
+双路全浮动的精密四象限VI 源通道，其主要性能如下： 
+⚫ 单板双通道，每通道独立浮动 
+⚫ 各通道FANOUT 输出两个通道 
+⚫ 四象限输出电压电流 
+⚫ 带远端补偿的四线Kelvin 连接 
+⚫ 通断检测功能 
+⚫ Kelvin 接触电阻检测功能 
+⚫ 支持两线连接 
+⚫ 8 个电压量程档： 
+- ±100V，±40V，±20V，±10V，±5V，±2V，±1V，±100mV(仅测量) 
+⚫ 8 个电流量程档： 
+- ±10A(脉冲)，±2A(脉冲)，±1A，±100mA，±10mA，±1mA，±100uA，±10uA(仅测
+量) 
+⚫ 每通道电压电流可同时测量 
+⚫ 每通道电压电流可同时采用PGA 放大，放大倍数：X1，X2，X5，X10 
+⚫ 每通道具备独立电压测量模式(Relay Sense on Mode) 
+⚫ 每通道具备硬件数据处理功能，包括最大值、最小值、平均值及跳变位置 
+⚫ 每通道具备可编程窗口式电压及电流箝位 
+⚫ 每通道具备独立的限流保护功能 
+⚫ 隔离电压为1000V 
+⚫ 支持与STS8300 系统内模块同步 
+⚫ 支持多工位并行测试工作模式 
+⚫ 本板保存校准数据 
+⚫ 本板自带温度监测功能 
+
+----- 技术指标 p103 -----
+ 
+ 
+www.accotest.com 
+ 
+98 
+2.8.1  技术指标 
+表2- 8 FPVIe_PLUS Specifications 
+Voltage Force 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±100V 
+3.052mV 
+±(15mV + 0.025% Rdg) 
+±40V 
+1.221mV 
+±(7.5mV + 0.025% Rdg) 
+±20V 
+0.610mV 
+±(3mV + 0.025% Rdg) 
+±10V 
+0.305mV 
+±(1.5mV + 0.025% Rdg) 
+±5V 
+0.153mV 
+±(0.75mV + 0.025% Rdg) 
+±2V 
+0.061mV 
+±(0.5mV + 0.025% Rdg) 
+±1V 
+0.031mV 
+±(0.25mV + 0.025% Rdg) 
+Voltage Measure(X1 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±100V 
+3.052mV 
+±(15mV + 0.025% Rdg) 
+±40V 
+1.221mV 
+±(7.5mV + 0.025% Rdg) 
+±20V 
+0.610mV 
+±(3mV + 0.025% Rdg) 
+±10V 
+0.305mV 
+±(1.5mV + 0.025% Rdg) 
+±5V 
+0.153mV 
+±(0.75mV + 0.025% Rdg) 
+±2V 
+0.061mV 
+±(0.5mV + 0.025% Rdg) 
+±1V 
+0.031mV 
+±(0.25mV + 0.025% Rdg) 
+±100mV 
+0.003mV 
+±(0.2mV + 0.025% Rdg) 
+Voltage Measure(X2 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±100V 
+1.526mV 
+±(12mV + 0.030% Rdg) 
+±40V 
+0.610mV 
+±(6mV + 0.030% Rdg) 
+±20V 
+0.305mV 
+±(2.25mV + 0.030% Rdg) 
+±10V 
+0.153mV 
+±(1mV + 0.030% Rdg) 
+±5V 
+0.076mV 
+±(0.6mV + 0.030% Rdg) 
+±2V 
+0.031mV 
+±(0.4mV + 0.030% Rdg) 
+±1V 
+0.015mV 
+±(0.225mV + 0.030% Rdg) 
+±100mV 
+0.002mV 
+±(0.175mV + 0.250% Rdg) 
+Voltage Measure(X5 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±100V 
+0.610mV 
+±(9mV + 0.040% Rdg) 
+±40V 
+0.244mV 
+±(5mV + 0.040% Rdg) 
+±20V 
+0.122mV 
+±(1.75mV + 0.040% Rdg) 
+±10V 
+0.061mV 
+±(0.75mV + 0.040% Rdg) 
+
+----- 技术指标(续) p104 -----
+ 
+ 
+www.accotest.com 
+ 
+99 
+±5V 
+0.031mV 
+±(0.45mV + 0.040% Rdg) 
+±2V 
+0.012mV 
+±(0.3mV + 0.040% Rdg) 
+±1V 
+0.006mV 
+±(0.2mV + 0.040% Rdg) 
+±100mV 
+0.001mV 
+±(0.15mV + 0.300% Rdg) 
+Voltage Measure(X10 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±100V 
+0.305mV 
+±(6mV + 0.050% Rdg) 
+±40V 
+0.122mV 
+±(4.5mV + 0.050% Rdg) 
+±20V 
+0.061mV 
+±(1.5mV + 0.050% Rdg) 
+±10V 
+0.031mV 
+±(0.6mV + 0.050% Rdg) 
+±5V 
+0.015mV 
+±(0.35mV + 0.050% Rdg) 
+±2V 
+0.006mV 
+±(0.2mV + 0.050% Rdg) 
+±1V 
+0.003mV 
+±(0.175mV + 0.050% Rdg) 
+±100mV 
+0.305uV 
+±(0.125mV + 0.400% Rdg) 
+Current Force 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±10A 
+305.176uA 
+±(4mA + 0.25% Rdg + 100uA/V) 
+±2A 
+61.035uA 
+±(1.5mA + 0.10% Rdg + 20uA/V) 
+±1A 
+30.517uA 
+±(0.3mA + 0.05% Rdg + 10uA/V) 
+±100mA 
+3.052uA 
+±(30uA + 0.05% Rdg + 1uA/V) 
+±10mA 
+305.176nA 
+±(3uA + 0.05% Rdg + 0.1uA/V) 
+±1mA 
+30.518nA 
+±(300nA + 0.05% Rdg + 0.01uA/V) 
+±100uA 
+3.052nA 
+±(30nA + 0.05% Rdg + 1nA/V) 
+Current Measure(X1 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±10A 
+305.176uA 
+±(4mA + 0.25% Rdg + 100uA/V) 
+±2A 
+61.035uA 
+±(1.5mA + 0.10% Rdg + 20uA/V) 
+±1A 
+30.517uA 
+±(0.3mA + 0.05% Rdg + 10uA/V) 
+±100mA 
+3.052uA 
+±(30uA + 0.05% Rdg + 1uA/V) 
+±10mA 
+305.176nA 
+±(3uA + 0.05% Rdg + 0.1uA/V) 
+±1mA 
+30.518nA 
+±(300nA + 0.05% Rdg + 0.01uA/V) 
+±100uA 
+3.052nA 
+±(30nA + 0.05% Rdg + 1nA/V) 
+±10uA 
+0.305nA 
+±(20nA + 0.25% Rdg + 0.2nA/V) 
+Current Measure(X2 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±10A 
+152.588uA 
+±(3.5mA + 0.25% Rdg + 80uA/V) 
+±2A 
+30.518uA 
+±(1.3mA + 0.10% Rdg + 16uA/V) 
+±1A 
+15.259uA 
+±(0.25mA + 0.05% Rdg + 8uA/V) 
+±100mA 
+1.526uA 
+±(25uA + 0.05% Rdg + 0.8uA/V) 
+
+----- 技术指标(续) p105 -----
+ 
+ 
+www.accotest.com 
+ 
+100 
+±10mA 
+152.588nA 
+±(2.5uA + 0.05% Rdg + 0.08uA/V) 
+±1mA 
+15.259nA 
+±(250nA + 0.05% Rdg + 8nA/V) 
+±100uA 
+1.526nA 
+±(25nA + 0.05% Rdg + 0.8nA/V) 
+±10uA 
+0.153nA 
+±(20nA + 0.25% Rdg + 0.16nA/V) 
+Current Measure(X5 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±10A 
+61.035uA 
+±(3mA + 0.26% Rdg + 60uA/V) 
+±2A 
+12.207uA 
+±(1.1mA + 0.13% Rdg + 12uA/V) 
+±1A 
+6.104uA 
+±(0.2mA + 0.07% Rdg + 6uA/V) 
+±100mA 
+0.610uA 
+±(20uA + 0.07% Rdg + 0.6uA/V) 
+±10mA 
+61.035nA 
+±(2uA + 0.07% Rdg + 0.06uA/V) 
+±1mA 
+6.104nA 
+±(200nA + 0.07% Rdg + 6nA/V) 
+±100uA 
+0.610nA 
+±(20nA + 0.07% Rdg + 0.6nA/V) 
+±10uA 
+0.061nA 
+±(15nA + 0.40% Rdg + 0.12nA/V) 
+Current Measure(X10 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±10A 
+30.518uA 
+±(2mA + 0.30% Rdg + 50uA/V) 
+±2A 
+6.104uA 
+±(1mA + 0.15% Rdg + 10uA/V) 
+±1A 
+3.052uA 
+±(0.15mA + 0.10% Rdg + 5uA/V) 
+±100mA 
+0.305uA 
+±(15uA + 0.10% Rdg + 0.5uA/V) 
+±10mA 
+30.518nA 
+±(1.5uA + 0.10% Rdg + 0.05uA/V) 
+±1mA 
+3.052nA 
+±(150nA + 0.10% Rdg + 5nA/V) 
+±100uA 
+0.305nA 
+±(15nA + 0.10% Rdg + 0.5nA/V) 
+±10uA 
+0.031nA 
+±(13nA + 0.50% Rdg + 0.10nA/V) 
+ 
+Clamp Voltage Ranges 
+Resolution 
+Accuracy 
+±100V，±40V，±20V，±10V，±5V，±2V，±1V 
+16-bit 
+±0.5% FS 
+±100mV 
+16-bit 
+±1% FS 
+ 
+Clamp Current Ranges 
+Resolution 
+Accuracy 
+±1A，±100mA，±10mA，±1mA，±100uA，±10uA 
+16-bit 
+±0.5% FS 
+±10A，±2A 
+16-bit 
+±2% FS 
+ 
+ 
+ 
+
+
+
+########## 2.9  单通道高功率浮动电压电流源模块HPVIe  [p115-129] ##########
+----- 概述 -----
+ 
+ 
+www.accotest.com 
+ 
+110 
+2.9  单通道高功率浮动电压电流源模块HPVIe 
+SM8240 单通道高功率浮动电压电流源模块是STS8300 系统中的选配模块，模块提
+供单路精密四象限VI 源通道，其主要性能如下： 
+⚫ 单板单通道浮动VI 源 
+⚫ FANOUT 输出两通道，每个FANOUT 通道最大输出50A，两个FANOUT 通道
+在输出端高端和低端分别并联且输出模式选择HPVIe_RELAY_ALL_ON 可输出50A 到
+100A 
+⚫ 四象限输出电压电流 
+⚫ 带远端补偿的四线Kelvin 连接 
+⚫ 六线Kelvin 连接检测功能，可针对FORCE 线器件端接触压降做检测 
+⚫ 6 个电压量程档： 
+- ±100V，±40V，±20V，±10V，±5V，±2V 
+⚫ 11 个电流量程档： 
+- 脉冲档：±100A(HPVIe_RELAY_ALL_ON)，±50A，±20A，±10A，±2A 
+- 直流档：±1A，±100mA，±10mA，±1mA，±100μA，±10μA 
+⚫ 具备最大电压100V @10mA，最大电流100A@10V 及1 A@20V 输出 
+⚫ 电压电流可同时测量 
+⚫ 电压电流可同时采用PGA 放大测量，放大倍数：X1，X2，X5，X10 
+⚫ 具备独立电压测量模式(Relay Sense on Mode) 
+⚫ 具备硬件数据处理功能，包括最大值、最小值、平均值及跳变值 
+⚫ 具备可编程窗口式电压及电流箝位 
+⚫ 具备独立的限流保护功能 
+⚫ 隔离电压1000V 
+⚫ 支持与STS8300 系统内模块同步 
+⚫ 支持多工位并行测试工作模式 
+⚫ 本板保存校准数据 
+⚫ 本板自带温度监测和过温保护功能 
+
+----- 技术指标 p116 -----
+ 
+ 
+www.accotest.com 
+ 
+111 
+2.9.1  技术指标 
+表2- 9 HPVIe Specifications 
+Voltage Force 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±100V 
+3.179mV 
+±(17mV + 0.025% Rdg) 
+±40V 
+1.590mV 
+±(8.5mV + 0.025% Rdg) 
+±20V 
+0.636mV 
+±(3.32mV + 0.025% Rdg) 
+±10V 
+0.318mV 
+±(1.66mV + 0.025% Rdg) 
+±5V 
+0.159mV 
+±(0.91mV + 0.025% Rdg) 
+±2V 
+0.064mV 
+±(0.66mV + 0.025% Rdg) 
+Voltage Measure(X1 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±100V 
+3.357mV 
+±(17mV + 0.025% Rdg) 
+±40V 
+1.678mV 
+±(8.5mV + 0.025% Rdg) 
+±20V 
+0.671mV 
+±(3.32mV + 0.025% Rdg) 
+±10V 
+0.336mV 
+±(1.66mV + 0.025% Rdg) 
+±5V 
+0.168mV 
+±(0.91mV + 0.025% Rdg) 
+±2V 
+0.067mV 
+±(0.66mV + 0.025% Rdg) 
+Voltage Measure(X2 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±100V 
+1.678mV 
+±(14mV + 0.030% Rdg) 
+±40V 
+0.839mV 
+±(7mV + 0.030% Rdg) 
+±20V 
+0.336mV 
+±(2.57mV + 0.030% Rdg) 
+±10V 
+0.168mV 
+±(1.16mV + 0.030% Rdg) 
+±5V 
+0.084mV 
+±(0.76mV + 0.030% Rdg) 
+±2V 
+0.034mV 
+±(0.56mV + 0.030% Rdg) 
+Voltage Measure(X5 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±100V 
+0.671mV 
+±(11mV + 0.040% Rdg) 
+±40V 
+0.336mV 
+±(6mV + 0.040% Rdg) 
+±20V 
+0.134mV 
+±(2.08mV + 0.040% Rdg) 
+±10V 
+0.067mV 
+±(0.91mV + 0.040% Rdg) 
+±5V 
+0.034mV 
+±(0.61mV + 0.040% Rdg) 
+±2V 
+0.013mV 
+±(0.46mV + 0.040% Rdg) 
+Voltage Measure(X10 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±100V 
+0.336mV 
+±(8mV + 0.050% Rdg) 
+
+----- 技术指标(续) p117 -----
+ 
+ 
+www.accotest.com 
+ 
+112 
+±40V 
+0.168mV 
+±(5.5mV + 0.050% Rdg) 
+±20V 
+0.071mV 
+±(1.82mV + 0.050% Rdg) 
+±10V 
+0.034mV 
+±(0.76mV + 0.050% Rdg) 
+±5V 
+0.017mV 
+±(0.51mV + 0.050% Rdg) 
+±2V 
+0.007mV 
+±(0.36mV + 0.050% Rdg) 
+Current Force 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±100A 
+3.179mA 
+±(40mA + 0.50% Rdg) 
+±50A 
+1.590mA 
+±(24mA + 0.50% Rdg) 
+±20A 
+635.78μA 
+±(12mA + 0.50% Rdg) 
+±10A 
+317.89μA 
+±(4mA + 0.25% Rdg) 
+±2A 
+63.578μA 
+±(1.5mA + 0.10% Rdg) 
+±1A 
+31.789μA 
+±(0.3mA + 0.05% Rdg) 
+±100mA 
+3.179μA 
+±(30μA + 0.05% Rdg) 
+±10mA 
+317.9nA 
+±(3μA + 0.05% Rdg) 
+±1mA 
+31.79nA 
+±(300nA + 0.05% Rdg) 
+±100μA 
+3.179nA 
+±(30nA + 0.05% Rdg) 
+±10μA 
+0.3179nA 
+±(20nA + 0.25% Rdg) 
+Current Measure(X1 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±100A 
+3.3570mA 
+±(40mA + 0.50% Rdg) 
+±50A 
+1.6785mA 
+±(24mA + 0.50% Rdg) 
+±20A 
+671.40μA 
+±(12mA + 0.50% Rdg) 
+±10A 
+335.70μA 
+±(4mA + 0.25% Rdg) 
+±2A 
+67.197μA 
+±(1.5mA + 0.10% Rdg) 
+±1A 
+33.570μA 
+±(0.3mA + 0.05% Rdg) 
+±100mA 
+3.357μA 
+±(30μA + 0.05% Rdg) 
+±10mA 
+335.70nA 
+±(3μA + 0.05% Rdg) 
+±1mA 
+33.57nA 
+±(300nA + 0.05% Rdg) 
+±100μA 
+3.357nA 
+±(30nA + 0.05% Rdg) 
+±10μA 
+0.3357nA 
+±(20nA + 0.25% Rdg) 
+Current Measure(X2 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±100A 
+1.6785mA 
+±(35mA + 0.5% Rdg) 
+±50A 
+839.245μA 
+±(21mA + 0.5% Rdg) 
+±20A 
+335.698μA 
+±(11mA + 0.5% Rdg) 
+±10A 
+167.850μA 
+±(3.5mA + 0.25% Rdg) 
+±2A 
+33.5698μA 
+±(1.3mA + 0.10% Rdg) 
+±1A 
+16.785μA 
+±(0.25mA + 0.05% Rdg) 
+
+----- 技术指标(续) p118 -----
+ 
+ 
+www.accotest.com 
+ 
+113 
+±100mA 
+1.6785μA 
+±(25μA + 0.05% Rdg) 
+±10mA 
+167.85nA 
+±(2.5μA + 0.05% Rdg) 
+±1mA 
+16.785nA 
+±(250nA + 0.05% Rdg) 
+±100μA 
+1.6785nA 
+±(25nA + 0.05% Rdg) 
+±10μA 
+0.16785nA 
+±(20nA + 0.25% Rdg) 
+Current Measure(X5 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±100A 
+671.396μA 
+±(30mA + 0.7% Rdg) 
+±50A 
+335.698μA 
+±(18mA + 0.7% Rdg) 
+±20A 
+134.279μA 
+±(9mA + 0.7% Rdg) 
+±10A 
+67.1396μA 
+±(3mA + 0.26% Rdg) 
+±2A 
+13.428μA 
+±(1.1mA + 0.13% Rdg) 
+±1A 
+6.7140μA 
+±(0.2mA + 0.07% Rdg) 
+±100mA 
+671.396nA 
+±(20μA + 0.07% Rdg) 
+±10mA 
+67.1396nA 
+±(2μA + 0.07% Rdg) 
+±1mA 
+6.7140nA 
+±(200nA + 0.07% Rdg) 
+±100μA 
+0.6714nA 
+±(20nA + 0.07% Rdg) 
+±10μA 
+0.0671nA 
+±(15nA + 0.40% Rdg) 
+Current Measure(X10 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±100A 
+335.698μA 
+±(20mA + 1% Rdg) 
+±50A 
+167.849μA 
+±(12mA + 1% Rdg) 
+±20A 
+67.1396μA 
+±(6mA + 1% Rdg) 
+±10A 
+33.5698μA 
+±(2mA + 0.30% Rdg) 
+±2A 
+6.7140μA 
+±(1mA + 0.15% Rdg) 
+±1A 
+3.3570μA 
+±(0.15mA + 0.10% Rdg) 
+±100mA 
+335.698nA 
+±(15μA + 0.10% Rdg) 
+±10mA 
+33.5698nA 
+±(1.5μA + 0.10% Rdg) 
+±1mA 
+3.3570nA 
+±(150nA + 0.10% Rdg) 
+±100μA 
+0.3357nA 
+±(15nA + 0.10% Rdg) 
+±10μA 
+0.0336nA 
+±(13nA + 0.50% Rdg) 
+ 
+Clamp Voltage Ranges 
+Resolution 
+Accuracy 
+±100V，±40V，±20V，±10V，±5V，±2V 
+16-bit 
+±0.5% FS 
+ 
+Clamp Current Ranges 
+Resolution 
+Accuracy 
+±1A，±100mA，±10mA，±1mA，±100μA，±10μA 
+16-bit 
+±0.5% FS 
+
+----- 技术指标(续) p119 -----
+ 
+ 
+www.accotest.com 
+ 
+114 
+±100A，±50A，±20A，±10A，±2A 
+16-bit 
+±2% FS 
+ 
+AWG 
+Resolution 
+Pattern Depth 
+/ Per Channel 
+DA 
+Update Rate 
+AWG Step 
+16-bit 
+4K 
+100kHz 
+200μs (1) 
+ 
+Digitizer 
+Resolution 
+Capture Memory 
+/ Per Channel 
+Maximum Sample Rate 
+16-bit 
+4K 
+1MSPS 
+ 
+KELVIN 
+Full Range 
+Resolution(16-bit) 
+Accuracy 
+8ohm 
+0.3mohm 
+± (4mohm + 1% Rdg) 
+（1）200μs 仅为参考值。 
+ 
+ 
+
+
+
+########## 2.10  1000V浮动电压电流源HVIe  [p130-137] ##########
+----- 概述 -----
+ 
+www.accotest.com 
+ 
+125 
+2.10  1000V 浮动电压电流源HVIe 
+SM8224 1000V 浮动电压电流源模块是STS8300 系统中的标准模块，模块提供单路
+精密单极性四象限VI 源通道。其主要性能如下： 
+⚫ 单板单通道，全浮动，Fanout 输出双通道 
+⚫ 单极性四象限输出电压电流 
+⚫ 10 个电压量程档： 
+- P10N1000V，N10P1000V，N10P500V，P10N500V，N10P200V，P10N200V，
+N10P100V，P10N100V，N10P10V，P10N10V 
+⚫ 6 个电流量程档： 
+- ±20mA，±10mA，±1mA，±100uA，±10μA(仅测量)，±1μA(仅测量) 
+⚫ 电流测量放大能力： 
+- X1，X10 
+⚫ 电压电流可同时测量 
+⚫ 具备硬件数据处理功能，包括最大值、最小值、平均值及跳变位置 
+⚫ 具备可编程窗口式电压及电流箝位 
+⚫ 具备限流保护功能 
+⚫ 隔离电压1000V 
+⚫ 支持与STS8300 系统内模块同步功能 
+⚫ 支持多工位并行测试工作模式 
+⚫ 本板保存校准数据 
+⚫ 本板自带温度监测功能 
+ 
+ 
+
+----- 技术指标 p131 -----
+ 
+www.accotest.com 
+ 
+126 
+2.10.1  技术指标 
+表2- 10 HVIe Specifications 
+Voltage Force/Measure 
+Range 
+Resolution(16-bit) 
+Accuracy 
+N10P1000V 
+-10V to +1000V 
+30.518mV 
+±(250mV + 0.025% Rdg) 
+N10P500V 
+-10V to +500V 
+15.259mV 
+±(125mV + 0.025% Rdg) 
+N10P200V 
+-10V to +200V 
+6.104mV 
+±(50mV + 0.025% Rdg) 
+N10P100V 
+-10V to +100V 
+3.052mV 
+±(25mV + 0.025% Rdg) 
+N10P10V 
+-10V to +10V 
+0.305mV 
+±(10mV + 0.1% Rdg) 
+P10N10V 
+-10V to +10V 
+0.305mV 
+±(10mV + 0.1% Rdg) 
+P10N100V 
+-100V to +10V 
+3.052mV 
+±(25mV + 0.025% Rdg) 
+P10N200V 
+-200V to +10V 
+6.104mV 
+±(50mV + 0.025% Rdg) 
+P10N500V 
+-500V to +10V 
+15.259mV 
+±(125mV + 0.025% Rdg) 
+P10N1000V 
+-1000V to +10V 
+30.518mV 
+±(250mV + 0.025% Rdg) 
+Current Force 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±20mA 
+610.352nA 
+±(10μA + 0.05% Rdg) 
+±10mA 
+305.176nA 
+±(5μA + 0.05% Rdg) 
+±1mA 
+30.518nA 
+±(0.5μA + 0.05% Rdg) 
+±100μA 
+3.052nA 
+±(50nA + 0.05% Rdg) 
+Current Measure(X1 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±20mA 
+610.352nA 
+±(10μA + 0.05% Rdg) 
+±10mA 
+305.176nA 
+±(5μA + 0.05% Rdg) 
+±1mA 
+30.518nA 
+±(0.5μA + 0.05% Rdg) 
+±100μA 
+3.052nA 
+±(50nA + 0.05% Rdg) 
+±10μA 
+0.305nA 
+±(25nA + 0.25% Rdg) 
+±1μA 
+0.031nA 
+±(15nA + 0.5% Rdg) 
+Current Measure(X10 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±20mA 
+61.036nA 
+±(1μA + 0.05% Rdg) 
+±10mA 
+30.518nA 
+±(0.5μA + 0.05% Rdg) 
+±1mA 
+3.052nA 
+±(50nA + 0.05% Rdg) 
+±100μA 
+0.305nA 
+±(25nA + 0.25% Rdg) 
+±10μA 
+0.031nA 
+±(15nA + 0.5% Rdg) 
+ 
+ 
+
+----- 技术指标(续) p132 -----
+ 
+www.accotest.com 
+ 
+127 
+Clamp Voltage Ranges 
+Resolution 
+Accuracy 
+P10N1000V，N10P1000V，N10P500V，
+P10N500V，N10P200V，P10N200V，N10P100V，
+P10N100V，N10P10V，P10N10V 
+16-bit 
+±2% FS 
+ 
+Clamp Current Ranges 
+Resolution 
+Accuracy 
+±20mA，±10mA，±1mA， 
+16-bit 
+±2.5% FS 
+±100μA，±10μA 
+16-bit 
+±3% FS 
+ 
+AWG 
+Resolution 
+Pattern Depth 
+/ Per Channel 
+DA 
+Update Rate 
+AWG Step 
+16-bit 
+8K 
+100kHz 
+100μs(1) 
+ 
+Digitizer 
+Resolution 
+Capture Memory 
+/ Per Channel 
+Maximum Sample Rate 
+16-bit 
+8K 
+200kSPS 
+（1）100μs 仅为参考值。
+
+
+
+########## 2.11 1000V浮动电压电流源HVIe_PLUS  [p138-146] ##########
+----- 概述 -----
+ 
+www.accotest.com 
+ 
+133 
+2.11 1000V 浮动电压电流源HVIe_PLUS 
+SM8266 1000V 浮动电压电流源模块是STS8300 系统中的标准模块，模块提供单路
+精密单极性四象限VI 源通道。其主要性能如下： 
+⚫ 单板单通道，全浮动，Fanout 输出4 通道（共用2 个Low 端） 
+⚫ 单极性四象限输出电压电流 
+⚫ 10 个电压量程档： 
+- P10N1000V，N10P1000V，N10P500V，P10N500V，N10P200V，P10N200V，
+N10P100V，P10N100V，N10P10V，P10N10V 
+⚫ 6 个电流量程档： 
+- ±20mA，±10mA，±1mA，±100uA，±10μA(仅测量)，±1μA(仅测量) 
+⚫ 电流测量放大能力： 
+- X1，X10 
+⚫ 4 个高边电流测量量程档： 
+±1mA，±100uA，±10μA，±1μA 
+⚫ 电压电流可同时测量 
+⚫ 具备硬件数据处理功能，包括最大值、最小值、平均值及跳变位置 
+⚫ 具备可编程窗口式电压及电流箝位 
+⚫ 具备限流保护功能 
+⚫ 隔离电压1000V 
+⚫ 支持与STS8300 系统内模块同步功能 
+⚫ 支持多工位并行测试工作模式 
+⚫ 本板保存校准数据 
+⚫ 本板自带温度监测功能 
+ 
+ 
+
+----- 技术指标 p139 -----
+ 
+www.accotest.com 
+ 
+134 
+2.11.1  技术指标 
+表2- 11 HVIe_PLUS Specifications 
+Voltage Force/Measure 
+Range 
+Resolution(16-bit) 
+Accuracy 
+N10P1000V 
+-10V to +1000V 
+30.518mV 
+±(250mV + 0.025% Rdg) 
+N10P500V 
+-10V to +500V 
+15.259mV 
+±(125mV + 0.025% Rdg) 
+N10P200V 
+-10V to +200V 
+6.104mV 
+±(50mV + 0.025% Rdg) 
+N10P100V 
+-10V to +100V 
+3.052mV 
+±(25mV + 0.025% Rdg) 
+N10P10V 
+-10V to +10V 
+0.305mV 
+±(10mV + 0.1% Rdg) 
+P10N10V 
+-10V to +10V 
+0.305mV 
+±(10mV + 0.1% Rdg) 
+P10N100V 
+-100V to +10V 
+3.052mV 
+±(25mV + 0.025% Rdg) 
+P10N200V 
+-200V to +10V 
+6.104mV 
+±(50mV + 0.025% Rdg) 
+P10N500V 
+-500V to +10V 
+15.259mV 
+±(125mV + 0.025% Rdg) 
+P10N1000V 
+-1000V to +10V 
+30.518mV 
+±(250mV + 0.025% Rdg) 
+Current Force 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±20mA 
+610.352nA 
+±(10μA + 0.05% Rdg) 
+±10mA 
+305.176nA 
+±(5μA + 0.05% Rdg) 
+±1mA 
+30.518nA 
+±(0.5μA + 0.05% Rdg) 
+±100μA 
+3.052nA 
+±(50nA + 0.05% Rdg) 
+Current Measure(X1 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±20mA 
+610.352nA 
+±(10μA + 0.05% Rdg) 
+±10mA 
+305.176nA 
+±(5μA + 0.05% Rdg) 
+±1mA 
+30.518nA 
+±(0.5μA + 0.05% Rdg) 
+±100μA 
+3.052nA 
+±(50nA + 0.05% Rdg) 
+±10μA 
+0.305nA 
+±(25nA + 0.25% Rdg) 
+±1μA 
+0.031nA 
+±(15nA + 0.5% Rdg) 
+Current Measure(X10 amplifier) 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±20mA 
+61.036nA 
+±(1μA + 0.05% Rdg) 
+±10mA 
+30.518nA 
+±(0.5μA + 0.05% Rdg) 
+±1mA 
+3.052nA 
+±(50nA + 0.05% Rdg) 
+±100μA 
+0.305nA 
+±(25nA + 0.25% Rdg) 
+±10μA 
+0.031nA 
+±(15nA + 0.5% Rdg) 
+ 
+ 
+ 
+
+----- 技术指标(续) p140 -----
+ 
+www.accotest.com 
+ 
+135 
+High Side Current Measure 
+Range 
+Resolution(16-bit) 
+Accuracy 
+±1mA 
+30.518nA 
+±(0.5μA + 0.05% Rdg) 
+±100μA 
+3.052nA 
+±(50nA + 0.05% Rdg) 
+±10μA 
+0.305nA 
+±(25nA + 0.25% Rdg) 
+±1μA 
+0.031nA 
+±(15nA + 0.5% Rdg) 
+ 
+Clamp Voltage Ranges 
+Resolution 
+Accuracy 
+P10N1000V，N10P1000V，N10P500V，
+P10N500V，N10P200V，P10N200V，N10P100V，
+P10N100V，N10P10V，P10N10V 
+16-bit 
+±2% FS 
+ 
+Clamp Current Ranges 
+Resolution 
+Accuracy 
+±20mA，±10mA，±1mA， 
+16-bit 
+±2.5% FS 
+±100μA，±10μA 
+16-bit 
+±3% FS 
+ 
+AWG 
+Resolution 
+Pattern Depth 
+/ Per Channel 
+DA 
+Update Rate 
+AWG Step 
+16-bit 
+8K 
+100kHz 
+100μs(1) 
+ 
+Digitizer 
+Resolution 
+Capture Memory 
+/ Per Channel 
+Maximum Sample Rate 
+16-bit 
+8K 
+200kSPS 
+（1）100μs 仅为参考值。 
+
+
+
+########## 2.12  交流信号源模块ACSe  [p147-156] ##########
+----- 概述 -----
+ 
+ 
+www.accotest.com 
+ 
+142 
+2.12  交流信号源模块ACSe 
+SM8251 交流信号源模块是STS8300 系统中的标准模块，模块提供高精度高稳定性
+的交流信号，及具备高精度测量表功能，其主要性能如下： 
+信号源： 
+⚫ 单板提供2 个单端通道或1 组差分通道 
+⚫ 单板可扇出16 个单端通道(8 个通道/组)或8 组差分通道 
+⚫ 支持交流信号输出：正弦波、方波、斜波 
+⚫ 支持AWG 波形输出，最大波形数据可达256K，最小AWG 数据间隔为20ns 
+⚫ 正弦波快速模式输出THD 可达-80dB@Vpp=10V，Freq=1.0kHz 
+⚫ 正弦波精密模式输出THD 可达-80dB@Vpp=1V，Freq=1.0kHz 
+⚫ 输出频率最高：1MHz 
+⚫ 内置低通滤波器：10MHz /1MHz /100kHz /20kHz 
+⚫ 支持与STS8300 系统内模块同步功能 
+⚫ 支持多工位并行测试工作模式 
+⚫ 本板保存校准数据 
+⚫ 本板自带温湿度监测功能 
+⚫ 支持双音输出 
+ 
+测量表： 
+⚫ 每模块1 通道，非浮动单端输入 
+⚫ 具备最大1MSPS 18-bit 高精度测量模式 
+⚫ 具备最大10MSPS 12-bit 高速测量模式 
+⚫ 高精度模式8 个量程： 
+- ±20V，±10V，±5V，±2V，±1V，±500mV，±200mV，±100mV 
+⚫ 高速模式3 个量程： 
+- ±4V，±2V，±1V 
+⚫ 采样速率可调 
+
+----- 技术指标 p149 -----
+ 
+ 
+www.accotest.com 
+ 
+144 
+2.12.1  技术指标 
+测试条件为空载（除非另有说明）。 
+信号源： 
+表2- 12 ACSe DC Specifications 1 
+DC offset/DC 
+DC Offset Range 
+± (10 VDC - peak AC)@open circuit 
+DC Range 
+±10 V 
+Resolution 
+16-bit 
+Accuracy 
+±0.1%FS 
+ 
+表2- 13 ACSe AC Specifications  
+Frequency 
+Accuracy 
+±0.01% of setting 
+Resolution 
+0.01Hz 
+Voltage 
+Resolution 
+16-bit 
+Sine (FAST MODE) 
+Amplitude Range(1) 
+20Vpp (Freq ≤ 600kHz);16Vpp (600kHz < Freq ≤ 1MHz) 
+Frequency Range 
+0.05kHz~1MHz 
+AC Accuracy(2) 
+0.05kHz ≤ Freq ≤ 10kHz 
+4V≤Vpp≤20V 
+1V≤Vpp<4V 
+0.1V≤Vpp<1V(3) 
+±0.1% of setting 
+±0.5% of setting 
+±1.77mVrms 
+10kHz < Freq < 100kHz 
+4V≤Vpp≤20V 
+1V≤Vpp<4V 
+0.1V≤Vpp<1V(3) 
+±1% of setting 
+±2% of setting 
+±1.77mVrms 
+100kHz ≤ Freq ≤ 1MHz(4) 
+4V≤Vpp≤20V (5) 
+1V≤Vpp<4V 
+0.1V≤Vpp<1V(3) 
+
+----- 技术指标 p151 -----
+ 
+ 
+www.accotest.com 
+ 
+146 
+Filter 
+LPF 
+20kHz、100kHz、1MHz、10MHz 
+（1）直流偏移设置为0V。 
+（2）指交流有效值精度。 
+（3）0.1Vpp 以下精度指标为±10.6mVrms。 
+（4）600kHz < Freq ≤ 1MHz 的精度由出厂调试保证。 
+（5）600kHz < Freq ≤ 1MHz 时，满足精度的电压范围为4V≤Vpp≤10V， 10Vpp 以上精度指标为±20% 
+of setting。 
+ 
+表2- 14 Other Specifications 
+Function 
+Specifications 
+Fanout 
+2 single-ended(or 1 differential) fanout 16 single-ended(or 8 differential) 
+Output Resistance 
+50Ω±10% 
+Output Current 
+10mA 
+Output Relay On/Off 
+Time 
+<1ms 
+ 
+测量表： 
+表2- 15 ACSe Specifications 
+Base characteristic 
+Sample Depth 
+64K 
+Measurement Type 
+MAX, MIN, AVG, Trigger point, RMS, FFT, THD, SNR, 
+SINAD 
+High Precision Mode 
+Measurement Range 
+±20V，±10V，±5V，±2V，±1V，±500mV，±200mV，
+±100mV 
+Impedance 
+1MΩ (≤ ±10V Range) 
+500kΩ (±20V Range) 
+Maximum Sample Rate 
+1MSPS 
+Range of Sampling Interval 
+1μs ~ 1300μs 
+
+----- 技术指标 p152 -----
+ 
+ 
+www.accotest.com 
+ 
+147 
+Resolution of Sampling Interval 
+0.1μs 
+Resolution 
+18-bit 
+LPF 
+10kHz,40kHz,100kHz,400kHz 
+THD 
+-90dBTyp.(1)(Vpp=10.0V, Freq=1kHz,LPF=40kHz) 
+SNR 
+78dBTyp.(2)(Vpp=10.0V, Freq=1kHz,LPF=40kHz) 
+SINAD 
+76dBTyp.(2)(Vpp=10.0V, Freq=1kHz,LPF=40kHz) 
+High Speed Mode 
+Measurement Range 
+±4V，±2V，±1V 
+Impedance 
+500kΩ 
+Maximum Sample Rate 
+10MSPS 
+Range of Sampling Interval 
+0.1μs ~ 1.0μs 
+Resolution of Sampling Interval 
+0.1μs 
+Resolution 
+12-bit 
+Bandwidth 
+>10MHz 
+THD 
+-78dBTyp.(1)(Vpp=4.0V, Freq=100kHz) 
+（1）2nd to 19th harmonic. 
+（2）DC to 19kHz frequency band. 
+表2- 16 ACSe DC Specifications 2 
+High Precision Mode 
+Range 
+Input Z 
+Resolution 
+Accuracy{± (Offset+%Rdg)} 
+±20V 
+500kΩ 
+156.3uV 
+±(2mV+0.01%) 
+±10V 
+1MΩ 
+78.1uV 
+±(1mV+0.01%) 
+±5V 
+39.1uV 
+±(500uV+0.01%) 
+±2V 
+15.6uV 
+±(200uV+0.01%) 
+±1V 
+7.8uV 
+±(150uV+0.01%) 
+±500mV 
+3.9uV 
+±(100uV+0.01%) 
+±200mV 
+1.56uV 
+±(100uV+0.01%) 
+±100mV 
+0.78uV 
+±(100uV+0.01%) 
+High Speed Mode 
+Range 
+Input Z 
+Resolution 
+Accuracy{± (Offset+%Rdg)} 
+±4V 
+500kΩ 
+2.44mV 
+±(4mV+0.1%) 
+±2V 
+1.22mV 
+±(2mV+0.1%) 
+±1V 
+0.61mV 
+±(1mV+0.1%) 
+
+----- 技术指标(续) p150 -----
+ 
+ 
+www.accotest.com 
+ 
+145 
+±5% of setting 
+±5% of setting 
+±7.07mVrms 
+THD 
+-80dB (Vpp = 10V, Freq = 1.0kHz) 
+Sine (PRECISION MODE) 
+Amplitude Range(1) 
+10Vpp 
+Frequency Range 
+0.05kHz~10kHz 
+AC Accuracy(2) 
+4V≤Vpp≤10V 
+1V≤Vpp<4V 
+0V≤Vpp<1V 
+±0.1% of setting 
+±0.5% of setting 
+±1.77mVrms 
+THD 
+-80dB (Vpp = 1V, Freq = 1.0kHz) 
+Square 
+Amplitude Range(1) 
+20Vpp(Freq ≤ 600kHz);10Vpp(600kHz < Freq ≤ 1MHz) 
+Frequency Range 
+0.05kHz~1MHz 
+Duty Ratio Accuracy 
+0.02% ( 0.05kHz ≤ Freq ≤ 0.9kHz ) 
+0.005% ( 0.9kHz < Freq ≤ 1.1kHz ) 
+0.05% ( 1.1kHz < Freq ≤ 10kHz ) 
+0.1% ( 10kHz < Freq ≤ 20kHz ) 
+0.25% ( 20kHz < Freq ≤ 50kHz ) 
+0.5% ( 50kHz < Freq ≤ 200kHz ) 
+5% ( 200kHz < Freq ≤ 1MHz ) 
+Slew Rate 
+40V/μs Typ.@RL=2kΩ 
+Ramp 
+Amplitude Range(1) 
+20Vpp (Freq ≤ 600kHz);16Vpp(600kHz < Freq ≤ 1MHz) 
+Frequency Range 
+0.05kHz~1MHz 
+Wave Symmetry 
+0%~100% 
+AWG 
+Pattern Depth 
+256K per bank 
+DA Update Rate 
+50MSPS 
+Step 
+0.02μs~60000μs 
+
+
+
+########## 2.13  四通道全浮动差分电压表模块QVMe  [p157-163] ##########
+----- 概述 -----
+ 
+ 
+www.accotest.com 
+ 
+152 
+2.13  四通道全浮动差分电压表模块QVMe 
+SM8212 四通道全浮动差分电压表模块是STS8300 系统中的标准模块，模块提供四
+路全浮动差分电压表。其主要性能如下： 
+⚫ 系统最多支持4 块QVMe 模块工作 
+⚫ 每模块四通道，每通道独立浮动 
+⚫ 具备最大1MSPS 18-bit 高精度测量模式 
+⚫ 具备最大10MSPS 12-bit 高速测量模式 
+⚫ 高精度模式10 个量程： 
+- ±100V，±50V，±20V，±10V，±5V，±2V，±1V，±500mV，±200mV，±100mV 
+⚫ 高速模式3 个量程： 
+- ±4V，±2V，±1V 
+⚫ 采样速率可调 
+⚫ 内置低通滤波器：400kHz /100kHz /40kHz /10kHz 
+⚫ 每通道具备64K*18-bit 的存储器 
+⚫ 具备板上硬件数据处理功能，包括最大值、最小值、平均值、跳变位置、均方根、
+快速傅里叶变换、总谐波失真、信噪比、信纳比 
+⚫ 隔离电压500V 
+⚫ 支持与STS8300 系统内模块同步功能 
+⚫ 支持多工位并行测试工作模式 
+⚫ 本板保存校准数据 
+
+----- 技术指标 p158 -----
+ 
+ 
+www.accotest.com 
+ 
+153 
+2.13.1  技术指标 
+表2- 17 QVMe Specifications 1 
+Base characteristic 
+Sample Depth 
+64K/channel 
+Measurement Type 
+MAX、MIN、AVG、Trigger point、RMS、
+FFT、THD、SNR、SINAD 
+High Precision Mode 
+Measurement Range 
+±100V，±50V，±20V，±10V，±5V，±2V，
+±1V，±500mV，±200mV，±100mV 
+Impedance 
+>1GΩ (≤ ±10V Range) 
+1MΩ (> ±10V Range) 
+Maximum Sample Rate 
+1MSPS 
+Range of Sampling Interval 
+1μs~1300μs 
+Resolution of Sampling Interval 
+0.1μs 
+Resolution 
+18-bit 
+LPF 
+10kHz、40kHz、100kHz、400kHz 
+THD 
+-90dBTyp.(1)(Vpp=10.0V, Freq=1kHz,LPF=40kHz) 
+SNR 
+78dBTyp.(2)(Vpp=10.0V, Freq=1kHz,LPF=40kHz) 
+SINAD 
+76dBTyp.(2)(Vpp=10.0V, Freq=1kHz,LPF=40kHz) 
+High Speed Mode 
+Measurement Range 
+±4V，±2V，±1V 
+Impedance 
+1M 
+Maximum Sample Rate 
+10MSPS 
+Range of Sampling Interval 
+0.1μs~1.0μs 
+
+----- 技术指标 p159 -----
+ 
+ 
+www.accotest.com 
+ 
+154 
+Resolution of Sampling Interval 
+0.1μs 
+Resolution 
+12-bit 
+Bandwidth 
+>10MHz 
+THD 
+-78dBTyp.(1)(Vpp=4.0V, Freq=100kHz) 
+（1）2nd to 19th harmonic. 
+（2）DC to 19kHz frequency band. 
+ 
+表2- 18 QVMe Specifications 2 
+High Precision Mode 
+Range 
+Input Z 
+Resolution 
+Accuracy{± (Offset+%Rdg)} 
+±100V 
+1MΩ 
+781.3μV 
+±(10mV+0.01%) 
+±50V 
+390.6μV 
+±(5mV+0.01%) 
+±20V 
+156.3μV 
+±(2mV+0.01%) 
+±10V 
+>1GΩ 
+78.1μV 
+±(1mV+0.01%) 
+±5V 
+39.1μV 
+±(500μV+0.01%) 
+±2V 
+15.6μV 
+±(200μV+0.01%) 
+±1V 
+7.8μV 
+±(150μV+0.01%) 
+±500mV 
+3.9μV 
+±(100μV+0.01%) 
+±200mV 
+1.56μV 
+±(100μV+0.01%) 
+±100mV 
+0.78μV 
+±(100μV+0.01%) 
+High Speed Mode 
+Range 
+Input Z 
+Resolution 
+Accuracy{± (Offset+%Rdg)} 
+±4V 
+1MΩ 
+2.44mV 
+±(4mV+0.1%) 
+±2V 
+1.22mV 
+±(2mV+0.1%) 
+±1V 
+0.61mV 
+±(1mV+0.1%) 
+
+
+
+########## 2.14  十八通道高精度源表模块HPSM  [p164-171] ##########
+----- 概述 -----
+ 
+ 
+www.accotest.com 
+ 
+159 
+2.14  十八通道高精度源表模块HPSM 
+HPSM 高精度源表模块是STS8300 系统中的标准模块，模块提供十八路浮动高精度
+高稳定性的电压源表和一路独立浮动的高压表，其主要性能如下： 
+⚫ 单板提供18 通道浮动精密电压源表 
+⚫ 单板提供单通道独立浮动高压表 
+⚫ 全四象限输出电压，一三象限满足精度指标 
+⚫ 近端Sense 四线Kelvin 输出 
+⚫ 每通道精密电压源包括1 个电压量程档： 
+- ±6.5V 
+⚫ 每通道精密电压表包括3 个电压量程档： 
+- ±6.5V，±2V，±200mV 
+⚫ 高压表包括3 个电压量程档： 
+- ±120V，±20V，±2V 
+⚫ 精密源驱动能力： 
+- 10mA 
+⚫ 每通道具备数据处理功能，包括最大值、最小值、平均值 
+⚫ 支持18 路精密源通过内部矩阵串联输出 
+⚫ 支持高压表通过内部矩阵搭接测量 
+⚫ 每通道具备OVP/OCP 功能 
+⚫ 支持多工位并行测试工作模式 
+⚫ 本板保存校准数据 
+⚫ 本板自带温度监测功能 
+⚫ 隔离电压150V 
+ 
+ 
+
+----- 技术指标 p165 -----
+ 
+ 
+www.accotest.com 
+ 
+160 
+2.14.1  技术指标 
+表2- 19 HPSM Specifications 
+Voltage Force 
+Range 
+Resolution(20-bit) 
+Accuracy(1) 
+（Cal Temperature ±5℃ (2)） 
+±6.5V 
+13.4μV 
+±(55μV + 0.001% Set Value) 
+ 
+Voltage Measure 
+Range 
+Resolution(24-bit) 
+Accuracy(1) 
+（Cal Temperature ±5℃） 
+±6.5V 
+0.82μV 
+±(55μV + 0.001% Rdg) 
+±2V 
+0.28μV 
+±(50μV + 0.001% Rdg) 
+±200mV 
+0.028μV 
+±(30μV + 0.002% Rdg) 
+ 
+Voltage Measure (HV) 
+Range 
+Resolution(24-bit) 
+Accuracy(1) 
+（Cal Temperature ±5℃） 
+±120V 
+28μV 
+±(4.8mV + 0.01% Rdg) 
+±20V 
+2.8μV 
+±(0.5mV + 0.01% Rdg) 
+±2V 
+0.28μV 
+±(100μV + 0.003% Rdg) 
+ 
+Voltage Measure (High-speed Mode) 
+Range 
+N*(PLC) 
+Accuracy(1) 
+（Cal Temperature ±5℃） 
+±6.5V 
+0.01 
+±(180μV + 0.005% Rdg) 
+±6.5V 
+0.1 
+±(120μV + 0.003% Rdg) 
+±6.5V 
+1 
+±(90μV + 0.002% Rdg) 
+±2V 
+0.01 
+±(120μV + 0.005% Rdg) 
+±2V 
+0.1 
+±(80μV + 0.003% Rdg) 
+±2V 
+1 
+±(60μV + 0.002% Rdg) 
+±0.2V 
+0.01 
+±(100μV + 0.008% Rdg) 
+±0.2V 
+0.1 
+±(70μV + 0.005% Rdg) 
+±0.2V 
+1 
+±(50μV + 0.003% Rdg) 
+ 
+ 
+ 
+ 
+
+
+
+########## 2.15 十八通道高精度源表模块HPSM_PLUS  [p172-179] ##########
+----- 概述 -----
+ 
+ 
+www.accotest.com 
+ 
+167 
+2.15 十八通道高精度源表模块HPSM_PLUS 
+HPSM_PLUS 高精度源表模块是STS8300 系统中的标准模块，模块提供十八路浮动
+高精度高稳定性的电压源表和一路独立浮动的高压表，其主要性能如下： 
+⚫ 单板提供18 通道浮动精密电压源表 
+⚫ 单板提供单通道独立浮动高压表 
+⚫ 全四象限输出电压，一三象限满足精度指标 
+⚫ 近端Sense 四线Kelvin 输出 
+⚫ 每通道精密电压源包括1 个电压量程档： 
+- ±6.5V 
+⚫ 每通道精密电压表包括3 个电压量程档： 
+- ±6.5V，±2V，±200mV 
+⚫ 高压表包括4 个电压量程档： 
+- ±200V，±120V，±20V，±2V 
+⚫ 精密源驱动能力： 
+- 10mA 
+⚫ 每通道具备数据处理功能，包括最大值、最小值、平均值 
+⚫ 支持18 路精密源通过内部矩阵串联输出 
+⚫ 支持高压表通过内部矩阵搭接测量 
+⚫ 每通道具备OVP/OCP 功能 
+⚫ 支持多工位并行测试工作模式 
+⚫ 本板保存校准数据 
+⚫ 本板自带温度监测功能 
+⚫ 隔离电压200V 
+ 
+ 
+
+----- 技术指标 p173 -----
+ 
+ 
+www.accotest.com 
+ 
+168 
+2.15.1  技术指标 
+表2- 20 HPSM_PLUS Specifications 
+Voltage Force 
+Range 
+Resolution(20-bit) 
+Accuracy(1) 
+（Cal Temperature ±5℃ (2)） 
+±6.5V 
+13.4μV 
+±(55μV + 0.001% Set Value) 
+ 
+Voltage Measure 
+Range 
+Resolution(24-bit) 
+Accuracy(1) 
+（Cal Temperature ±5℃） 
+±6.5V 
+0.82μV 
+±(55μV + 0.001% Rdg) 
+±2V 
+0.28μV 
+±(50μV + 0.001% Rdg) 
+±200mV 
+0.028μV 
+±(30μV + 0.002% Rdg) 
+ 
+Voltage Measure (HV) 
+Range 
+Resolution(24-bit) 
+Accuracy(1) 
+（Cal Temperature ±5℃） 
+±200V 
+28μV 
+±(5.8mV + 0.01% Rdg) 
+±120V 
+28μV 
+±(4.8mV + 0.01% Rdg) 
+±20V 
+2.8μV 
+±(0.5mV + 0.01% Rdg) 
+±2V 
+0.28μV 
+±(100μV + 0.003% Rdg) 
+ 
+Voltage Measure (High-speed Mode) 
+Range 
+N*(PLC) 
+Accuracy(1) 
+（Cal Temperature ±5） 
+±6.5V 
+0.01(3) 
+±(180μV + 0.005% Rdg) 
+±6.5V 
+0.1 
+±(120μV + 0.003% Rdg) 
+±6.5V 
+1 
+±(90μV + 0.002% Rdg) 
+±2V 
+0.01 
+±(120μV + 0.005% Rdg) 
+±2V 
+0.1 
+±(80μV + 0.003% Rdg) 
+±2V 
+1 
+±(60μV + 0.002% Rdg) 
+±0.2V 
+0.01 
+±(100μV + 0.008% Rdg) 
+±0.2V 
+0.1 
+±(70μV + 0.005% Rdg) 
+±0.2V 
+1 
+±(50μV + 0.003% Rdg) 
+ 
+Voltage Measure HV(High-speed Mode) 
+Range 
+N*(PLC) 
+Accuracy(1) 
+（Cal Temperature ±5℃） 
+±200V 
+0.01 
+±(5.8mV + 0.01% Rdg) 
+±200V 
+0.1 
+±(5.8mV + 0.01% Rdg) 
+
+----- 技术指标(续) p179 -----
+ 
+ 
+www.accotest.com 
+ 
+174 
+SetHVMeterRelay()说明。 
+3）HPSM_PLUS 放置规则： 
+TIB 类型 
+槽位 
+HPSM_PLUS 放置规则 
+TA28D4 
+Slot 1-8, Slot 11-16 
+放置位置无限制 
+Slot 17-22, Slot 25-32 
+相邻位置最多放置1 块ACM 系列或DCM 系
+列板卡 
+TA24D8 
+Slot 1-6, Slot 11-16 
+放置位置无限制 
+Slot 17-22, Slot 27-32 
+相邻位置最多放置1 块ACM 系列或DCM 系
+列板卡 
+4）使用外部源模式时，引入外部源电压需小于200V，电流需小于300mA。 
+5）使用远端Sense 线数字补偿功能时，需将通道的SENSE_L 和FORCE_L 短接，
+并且将通道的SENSE_H 和SENSE_L 引脚连接到被测芯片端，然后开启数字补偿功能对
+精密源进行补偿，数字补偿功能需保证在校准周期内使用。远端Sense 线数字补偿功能
+指标如下： 
+Voltage Force Digital compensation 
+Range 
+Compensation mode 
+Accuracy(1) 
+（Cal Temperature ±5℃） 
+±6.5V 
+High Speed 
+±(240μV + 0.005% Set Value) 
+±6.5V 
+Precision 
+±(180μV + 0.003% Set Value) 
+ 
+
+
+
+########## 2.16 四通道时间测量模块QTMUe  [p180-188] ##########
+----- 概述 -----
+ 
+ 
+www.accotest.com 
+ 
+175 
+2.16 四通道时间测量模块QTMUe 
+QTMUe 四通道时间测量模块是STS8300 系统中的标准模块，模块提供四通道时间
+测量功能，其主要特性如下： 
+⚫ 系统最多支持4 块QTMUe 模块工作 
+⚫ 每模块有4 个时间测量单元，每单元有2 个输入接口 
+⚫ 3 个时间量程档： 
+-  ms 级量程档，μs 级量程档，ns 级量程档 
+⚫ 五个电压量程档： 
+- ±50V，±25V，±10V，±5V，-2V~6V 
+⚫ 最高分辨率：30ps 
+⚫ 最高测量频率：50MHz 
+⚫ 内置低通滤波器：10MHz /1MHz /100kHz 
+⚫ 每个时间测量单元有64K 测量结果存储深度 
+⚫ 支持外部触发功能 
+⚫ 支持多工位并行测试工作模式 
+
+----- 技术指标 p181 -----
+ 
+ 
+www.accotest.com 
+ 
+176 
+2.16.1  技术指标 
+表2- 21 QTMUe Specifications 
+Measurement Unit 
+Number 
+4 banks/board 
+Measurement 
+Capability 
+Time 
+Frequency 
+5ns~40s 
+0.1Hz~50MHz 
+Measurement 
+Type 
+Propagation delay, rise/fall time, pulse width, frequency, duty cycle, event, etc.  
+Range 
+ns  
+μs 
+ms 
+5ns~950ns 
+800ns~4ms 
+5ns~40s 
+Accuracy 
+±
+(2ns+0.1%Rdg) 
+(1) 
+±(2ns+0.1%Rdg) 
+(1) 
+5ns~5μs 
+5μs~40s 
+±
+(10ns+0.1%Rdg) 
+(1) 
+±
+(5ns+0.1%Rdg) 
+(1) 
+Resolution 
+<50ps 
+<30ps 
+5ns 
+Re-sample Time 
+Interval 
+11μs 
+11μs 
+20ns(samplenum <256) 
+1us(samplenum≥256) 
+Sample Memory 
+64K/channel 
+Input Channel 
+Number 
+8/board 
+ 
+Analog Mode 
+Digital Mode(2) 
+Input Voltage 
+Range 
+±50V /±25V/±10V/±5V(3) 
+-2V~6V(3) 
+Input Bandwidth 
+50MHz 
+200MHz 
+Input Impedance 
+1MΩ 
+>10MΩ 
+LPF 
+Direct PASS/10MHz/1MHz/100kHz 
+Direct Pass 
+Trigger Level 
+±50V /±25V/±10V/±5V 
+-2V~6V 
+
+
+
+########## 2.17  四通道时间测量模块QTMUe 2.0  [p189-196] ##########
+----- 概述 -----
+ 
+ 
+www.accotest.com 
+ 
+184 
+2.17  四通道时间测量模块QTMUe 2.0 
+QTMUe 2.0 四通道时间测量模块是STS8300 系统中的标准模块，模块提供四通道时
+间测量，其主要特性如下： 
+⚫ 系统最多支持4块QTMUe 2.0模块工作 
+⚫ 每模块有4个时间测量单元，每单元有2个输入接口 
+⚫ 3个时间量程档： 
+-  ms 级量程档，μs 级量程档，ns 级量程档 
+⚫ 5个电压量程档： 
+-  ±50V，±25V，±10V，±5V，-1.5~6.5V 
+⚫ 最高分辨率：30ps 
+⚫ 最高测量频率：50MHz 
+⚫ 内置低通滤波器：10MHz /1MHz /100kHz 
+⚫ 每个时间测量通道有64K测量结果存储深度 
+⚫ 支持外部触发功能 
+⚫ 支持多工位并行测试工作模式 
+
+----- 技术指标 p190 -----
+ 
+ 
+www.accotest.com 
+ 
+185 
+2.17.1  技术指标 
+表2- 22 QTMUe 2.0 Specifications 
+Measurement Unit 
+Number 
+4 channels/ board 
+Measurement 
+Capability 
+Time 
+Frequency 
+5ns~40s 
+0.1Hz~50MHz 
+Measurement Type 
+Propagation delay, rise/fall time, pulse width, frequency, duty cycle, event, 
+etc.  
+Range 
+ns 
+μs 
+ms 
+5ns~950ns 
+800ns~4ms 
+5ns~40s 
+Accuracy 
+±(2ns+0.1%Rdg) 
+(1) 
+±(2ns+0.1%Rdg
+) (1) 
+5ns~5μs 
+5μs~40s 
+±(10ns+0.1%Rdg
+) (1) 
+±(5ns+0.1%Rdg) 
+(1) 
+Resolution 
+50ps 
+30ps 
+5ns 
+Re-sample Time 
+Interval 
+11μs 
+11μs 
+20ns(samplenum <256) 
+1us(samplenum≥256) 
+Sample Memory 
+64K/channel 
+Input Channel 
+Number 
+8/ board 
+ 
+Analog Mode 
+Digital Mode(2) 
+Input Voltage Range 
+±50V，±25V，±10V，±5V(3) 
+-1.5~6.5V(3) 
+Input Bandwidth 
+50MHz 
+200MHz 
+Input Impedance 
+1MΩ 
+>10MΩ 
+LPF 
+Direct Pass/10MHz/1MHz/100KHz 
+Direct Pass 
+Trigger Level Range 
+±50V，±25V，±10V，±5V 
+-1.5~6.5V 
+Trigger Level Resolution 
+16-bit 
+
+
+
+########## 2.18  多通道时间测量模块XTMU_PLUS  [p197-209] ##########
+----- 概述 -----
+ 
+ 
+www.accotest.com 
+ 
+192 
+2.18  多通道时间测量模块XTMU_PLUS 
+SM8252 多通道时间测量模块是STS8300 系统测试头内的标准模块，模块提供三十
+二通道时间测量和4 路高速数字化仪，其主要特性如下： 
+⚫ 系统最多支持4块XTMU_PLUS模块工作 
+TMU： 
+⚫ 每模块有8个时间测量单元，每单元有2个输入接口，可FANOUT出32通道 
+⚫ 3个时间量程档： 
+-  ms 级量程档，μs 级量程档，ns 级量程档 
+⚫ 5个电压量程档： 
+-  ±50V，±25V，±10V，±5V，-1.5~6.5V 
+⚫ 最高分辨率：30ps 
+⚫ 最高测量频率：50MHz 
+⚫ 每个时间测量通道有64K测量结果存储深度 
+⚫ 支持外部触发功能 
+⚫ 支持多工位并行测试工作模式 
+⚫ 支持图形化的辅助编程工具 
+ 
+HSD： 
+⚫ 每模块4路波形采集 
+⚫ 带宽：HSD input：200MHz   TMU input：50MHz 
+⚫ 最大采样率800M Sa/s 
+⚫ 每通道存储深度250M Pts 
+⚫ 电压量程： 
+- 1MΩ：±25V，±10V，±5V，±2.5V，±1V，±0.5V，±0.25V 
+- 50Ω：±2.5V，±1V，±0.5V，±0.25V 
+⚫ 垂直分辨率：12-bit
+
+----- 技术指标 p198 -----
+ 
+ 
+www.accotest.com 
+ 
+193 
+2.18.1  技术指标 
+表2- 23 XTMU_PLUS Specifications 
+TMU Measurement Unit 
+Number 
+8 channels/ board 
+Measurement 
+Capability 
+Time 
+Frequency 
+5ns~40s 
+0.1Hz~50MHz 
+Measurement Type 
+Propagation delay, rise/fall time, pulse width, frequency, duty cycle, event, etc.  
+Range 
+ns 
+μs 
+ms 
+5ns~950ns 
+800ns~4ms 
+5ns~40s 
+Accuracy 
+±(2ns+0.1%Rdg) 
+(1) 
+±(2ns+0.1%Rdg
+) (1) 
+5ns~5μs 
+5μs~40s 
+±(10ns+0.1%Rdg
+) (1) 
+±(5ns+0.1%Rdg) 
+(1) 
+Resolution 
+50ps 
+30ps 
+5ns 
+Re-sample Time 
+Interval 
+11μs 
+11μs 
+20ns(samplenum <256) 
+1us(samplenum≥256) 
+Sample Memory 
+64K/channel 
+TMU Input Channel 
+Number 
+64/ board 
+ 
+Analog Mode 
+Digital Mode(2) 
+Input Voltage Range 
+±50V，±25V，±10V，±5V(3) 
+-1.5~6.5V(3) 
+Input Bandwidth 
+50MHz 
+100MHz 
+Input Impedance 
+1MΩ 
+>10MΩ 
+LPF 
+Direct Pass/10MHz/1MHz/100KHz 
+Direct Pass 
+Trigger Level Range 
+±50V，±25V，±10V，±5V 
+-1.5~6.5V 
+Trigger Level Resolution 
+16-bit 
+TMU ARM(External Trigger) 
+
+
+
+########## 2.19  数字通道模块DCM_PLUS  [p210-219] ##########
+----- 概述 -----
+ 
+www.accotest.com 
+ 
+205 
+2.19  数字通道模块DCM_PLUS 
+SM8213 数字通道模块是STS8300 系统中的标准模块，是STS8300 完成对被测器件
+数字管脚的逻辑功能和交、直流参数测试的主要模块。模块提供最大64 通道数字输入/输
+出，可用于高速数字传输、数字向量波形发生、错误捕捉及逻辑分析等应用。其主要性能
+如下： 
+⚫ 系统最多支持4 块DCM_PLUS 模块工作 
+⚫ 每模块有64 个通道，每通道(-1.5V~6V)数字输入/输出 
+⚫ 最大测试速率：83.3MHz 
+⚫ 板载向量存储器深度：64M 
+⚫ Per Pin 时间参数设置(驱动数据前后沿T1R,T1F；I/O 切换边沿IOR,IOF；比较时
+刻边沿STBR) 
+⚫ Per Pin 驱动格式设置(驱动数据波形格式6 种) 
+⚫ Per Pin 驱动高低电平(VIH/VIL)、比较高低电平(VOH/VOL)设置 
+⚫ 专用高性能管脚驱动/比较电路 
+⚫ 每16 通道2 路TMU 
+⚫ Per Pin PMU 功能，支持恒压测压、恒压测流、恒流测压、恒流测流模式 
+⚫ 错误捕捉功能
+
+----- 技术指标 p211 -----
+ 
+www.accotest.com 
+ 
+206 
+2.19.1  技术指标 
+表2- 24 DCM_PLUS Specifications 
+Base characteristic 
+Channels 
+Max to 64 channels per board (16 channels per bank) 
+Maximum Vector Rate 
+83.3MHz(Driver and Receive)/125MHz(SBC Driver 
+only) (4) 
+Transfer Rate Range 
+12ns~4ms 
+Vector Period Resolution 
+1ns (On the fly change) 
+Minimum Pulsed Width 
+4ns @ 3.0V(1) 
+Rise/Fall time 
+≤ 3ns@ 3V 
+Depth Of The Vector 
+64M per channel 
+Drive and Compare 
+Drive Voltage Range 
+-1.5V~6V 
+Voltage Accuracy 
+±(0.1% Set value﹢10mV) 
+Compare Voltage Range 
+-1.5V~6V 
+Voltage Resolution 
+14-bit 
+Source Current 
+75 mA(Max) (2) 
+Timing  
+No. of timing sets 
+31 sets 
+Timing Edge Range 
+0~(Period – 1)ns(3) 
+Edge Resolution 
+1ns (On the fly change) 
+Fail Memory 
+Depth Of The Storage 
+1K per bank (16 channels) 
+Caputer Memory 
+Depth Of The Storage 
+1K per bank (16 channels) 
+Synchronization 
+Synchronization Accuracy 
+±2ns 
+
+----- 技术指标(续) p212 -----
+ 
+www.accotest.com 
+ 
+207 
+Drive Data Format 
+NRZ 
+Not Return to Zero 
+RO 
+Return to One 
+RZ 
+Return to Zero 
+SBH 
+Surround by High 
+SBL 
+Surround by Low 
+SBC 
+Surround by Complement 
+Compare mode 
+Edge 
+Compare at position of STBR  
+Per Pin PMU 
+Voltage Force/Measure Range 
+-1.5V~6V 
+Voltage Resolution 
+16-bit  
+Voltage Accuracy 
+±(0.1% Set value﹢8mV) 
+Current Force/Measure Range 
+±(32mA, 2mA, 200uA, 20uA, 2uA) 
+Current Resolution 
+16-bit 
+Current Accuracy 
+±1%FS 
+TMU 
+Number 
+2 channels per 16 channels 
+Measurement Type 
+Propagation delay, Rise/Fall time, Period, Frequency, 
+Duty cycle 
+Period 
+12ns~500ms 
+Accuracy 
+±(0.1%Rdgs+2ns) (5) 
+Duty cycle 
+High/Low Time ≥ 10ns 
+Accuracy 
+±5% 
+Rise/Fall Time  
+10ns~500ms 
+Accuracy 
+±(0.1%Rdgs+4ns) (5) 
+Propagation delay 
+10ns~500ms 
+Accuracy 
+±(0.1%Rdgs+4ns) (5) 
+
+
+
+########## 2.20  数字通道模块DCM_PLUS 2.0  [p220-235] ##########
+----- 概述 -----
+ 
+ 
+www.accotest.com 
+ 
+215 
+2.20  数字通道模块DCM_PLUS 2.0 
+DCM_PLUS 2.0 数字通道模块是STS8300 系统中的标准模块，是STS8300 完成对被
+测器件数字管脚的逻辑功能测试和交、直流参数测试的主要模块。模块可用于高速数字
+传输、数字向量波形发生、错误捕捉及逻辑分析等应用。其主要性能如下： 
+⚫ 系统最多支持4 块DCM_PLUS 2.0 模块工作 
+⚫ 每模块有64 个数字通道，每通道(-1.5V~6.5V)数字输入/输出 
+⚫ 最大测试速率：100MHz/200MHz 
+⚫ 最大向量存储器深度：64M 
+⚫ Per Pin 时间参数设置(驱动数据边沿T1R,T1F；驱动比较切换边沿IOR,IOF；比较
+时刻边沿STBR,STBF) 
+⚫ Per Pin 驱动格式设置(驱动数据波形格式9 种：详细说明参见“技术指标”章节
+中“Driver Data format”) 
+⚫ Per Pin 驱动高/低电平(VIH/VIL)、比较高/低电平(VOH/VOL)设置 
+⚫ 每16 通道2 路TMU 
+⚫ Per Pin PMU 功能，支持恒压测压、恒压测流、恒流测压、恒流测流模式 
+⚫ 错误捕获功能 
+ 
+ 
+ 
+
+----- 技术指标 p220 -----
+ 
+ 
+www.accotest.com 
+ 
+215 
+2.20  数字通道模块DCM_PLUS 2.0 
+DCM_PLUS 2.0 数字通道模块是STS8300 系统中的标准模块，是STS8300 完成对被
+测器件数字管脚的逻辑功能测试和交、直流参数测试的主要模块。模块可用于高速数字
+传输、数字向量波形发生、错误捕捉及逻辑分析等应用。其主要性能如下： 
+⚫ 系统最多支持4 块DCM_PLUS 2.0 模块工作 
+⚫ 每模块有64 个数字通道，每通道(-1.5V~6.5V)数字输入/输出 
+⚫ 最大测试速率：100MHz/200MHz 
+⚫ 最大向量存储器深度：64M 
+⚫ Per Pin 时间参数设置(驱动数据边沿T1R,T1F；驱动比较切换边沿IOR,IOF；比较
+时刻边沿STBR,STBF) 
+⚫ Per Pin 驱动格式设置(驱动数据波形格式9 种：详细说明参见“技术指标”章节
+中“Driver Data format”) 
+⚫ Per Pin 驱动高/低电平(VIH/VIL)、比较高/低电平(VOH/VOL)设置 
+⚫ 每16 通道2 路TMU 
+⚫ Per Pin PMU 功能，支持恒压测压、恒压测流、恒流测压、恒流测流模式 
+⚫ 错误捕获功能 
+ 
+ 
+ 
+
+----- 技术指标 p221 -----
+ 
+ 
+www.accotest.com 
+ 
+216 
+2.20.1  技术指标 
+表2- 25 DCM_PLUS 2.0 Specifications 
+Base characteristic 
+Normal Channels 
+64 channels per board (16 channels per bank) 
+Maximum Vector Rate 
+100MHz/200MHz(1) (2) 
+83.3MHz (3) 
+Rate Setting Range 
+10ns~4ms/5ns~4ms(1) (2) 
+12ns~4ms (3) 
+Vector Period Resolution 
+625ps (On the fly change) (2) 
+1ns (On the fly change) (3) 
+Minimum Pulsed Width 
+2.5ns@3.0V(4) 
+Rise/Fall time 
+≤1.25ns@3.0V 
+Depth Of The Vector 
+Max to 64M per channel 
+Driver and Comparator 
+Driver Voltage Range 
+-1.5V~6.4V (VIL) (5) 
+-1.4V~6.5V (VIH) (5) 
+-1.5V~6.5V (VIT) 
+Voltage Accuracy 
+±(0.1% Set value + 8mV) 
+Comparator Voltage Range 
+-1.5V~6.5V (6) 
+Voltage Accuracy 
+±(0.3% Set value + 30mV) 
+Voltage Resolution 
+16-bit 
+Source/Sink Current 
+±75 mA (Max) (6) (7) 
+Timing 
+Number of timing sets 
+31 sets 
+
+----- 技术指标 p235 -----
+ 
+ 
+www.accotest.com 
+ 
+230 
+PAT
+F wave
+IO
+IO wave
+Pin wave
+IOR
+T0
+T0
+T0
+T0
+T0
+T1R T1F
+IORT1R T1F
+IORT1R T1F
+IORT1R T1F
+IORT1R T1F
+ 
+图 2.20- 16 输出波形合成 
+2.20.3.6 
+ 兼容性 
+⚫ 系统不支持DCM_PLUS 和DCM_PLUS 2.0 混插 
+⚫ DCM_PLUS 2.0 应用编程支持DCM 类和DCM400 类，使用不同的类时，部分指
+标会有所差异，详见技术指标章节注释。 
+ 
+
+----- 技术指标(续) p223 -----
+ 
+ 
+www.accotest.com 
+ 
+218 
+I/O Format 
+NRZ 
+Not Return to Zero 
+RO 
+Return to One(2) 
+OFF 
+Channel is driven to a high impedance state(2) 
+Compare mode 
+EDGE 
+Compare at Edge STBR 
+WINDOWS 
+Compare between Edge STBR and Edge STBF(2) 
+OFF 
+Mask the comparator(2) 
+Per Pin PMU 
+Voltage Force Range 
+-2.0V~6.5V / (±1mA, ±100μA, ±10μA, ±2μA 
+Range) 
+-2.0V~5.75V / (±40mA Range) 
+Voltage Measure Range 
+-2.0V~6.5V 
+Voltage Resolution 
+16-bit 
+Voltage Accuracy 
+±(0.1% Set value + 8.5mV) 
+Current Force/Measure Range 
+±(40mA, 1mA, 100μA, 10μA, 2μA) 
+Current Resolution 
+16-bit 
+Current Accuracy 
+±1%FS 
+Active Load 
+VCOM Voltage Range 
+-1.5V~6.5V (| IOL and IOH | ≤ 1 mA) 
+-1.0V~5.5V (| IOL and IOH | ≤ 18 mA) 
+Source/Sink Current 
+18mA (Max) (8) 
+Current Accuracy 
+±(0.1% Set value + 180uA) 
+TMU 
+
+----- 技术指标(续) p224 -----
+ 
+ 
+www.accotest.com 
+ 
+219 
+Number 
+2 channels per bank (16 channels) 
+Measurement Type 
+Propagation delay, Rise/Fall time, Period, Frequency, 
+Duty cycle；(2) (3) Pulse width(2) 
+Period 
+10ns~500ms(2) 
+12ns~500ms(3) 
+Accuracy 
+±(0.1%Rdg + 2ns) (9) 
+Duty cycle 
+High/Low Time ≥ 5ns(2) 
+High/Low Time ≥ 10ns(3) 
+Accuracy 
+±5% (9) 
+Pulse width, Rise/Fall Time, Propagation 
+delay 
+10ns~500ms 
+Accuracy 
+±(0.1%Rdg + 4ns) (9) 
+High voltage output channels (Drive-Only) 
+Number 
+Max to 8 channels per board(10) 
+High Voltage Range 
+0~13V(11) 
+Voltage Resolution 
+16-bit 
+Accuracy 
+±(0.3% Set value + 30mV) 
+Source Current 
+100 mA (Max) (12) 
+Rise time 
+≤ 600ns @ 13V 
+Fall time 
+≤ 50ns @ 13V 
+（1）由License 授权不同的速率。 
+（2）应用编程时使用DCM400 类函数达到的指标。 
+（3）应用编程时使用DCM 类函数达到的指标。 
+（4） 
+
+
+
+########## 2.21  数字通道模块DCM400  [p236-251] ##########
+----- 概述 -----
+ 
+ 
+www.accotest.com 
+ 
+231 
+2.21  数字通道模块DCM400 
+DCM400 数字通道模块是STS8300 系统中的标准模块，是STS8300 完成对被测器件
+数字管脚的逻辑功能测试和交、直流参数测试的主要模块。模块可用于高速数字传输、
+数字向量波形发生、错误捕捉及逻辑分析等应用。其主要性能如下： 
+⚫ 系统最多支持4 块DCM400 模块工作 
+⚫ 每模块有64 个数字通道，每通道(-1.5V~6.5V)数字输入/输出 
+⚫ 最大测试速率：200MHz/400Mbps 
+⚫ 最大向量存储器深度：64M 
+⚫ Per Pin 时间参数设置(驱动数据边沿T1R,T1F；驱动比较切换边沿IOR,IOF；比较
+时刻边沿STBR,STBF) 
+⚫ Per Pin 驱动格式设置(驱动数据波形格式9 种：详细说明参见“技术指标”章节
+中“Driver Data format”) 
+⚫ Per Pin 驱动高/低电平(VIH/VIL)、比较高/低电平(VOH/VOL)设置 
+⚫ 每16 通道2 路TMU 
+⚫ Per Pin PMU 功能，支持恒压测压、恒压测流、恒流测压、恒流测流模式 
+⚫ 错误捕获功能 
+ 
+ 
+ 
+
+----- 技术指标 p236 -----
+ 
+ 
+www.accotest.com 
+ 
+231 
+2.21  数字通道模块DCM400 
+DCM400 数字通道模块是STS8300 系统中的标准模块，是STS8300 完成对被测器件
+数字管脚的逻辑功能测试和交、直流参数测试的主要模块。模块可用于高速数字传输、
+数字向量波形发生、错误捕捉及逻辑分析等应用。其主要性能如下： 
+⚫ 系统最多支持4 块DCM400 模块工作 
+⚫ 每模块有64 个数字通道，每通道(-1.5V~6.5V)数字输入/输出 
+⚫ 最大测试速率：200MHz/400Mbps 
+⚫ 最大向量存储器深度：64M 
+⚫ Per Pin 时间参数设置(驱动数据边沿T1R,T1F；驱动比较切换边沿IOR,IOF；比较
+时刻边沿STBR,STBF) 
+⚫ Per Pin 驱动格式设置(驱动数据波形格式9 种：详细说明参见“技术指标”章节
+中“Driver Data format”) 
+⚫ Per Pin 驱动高/低电平(VIH/VIL)、比较高/低电平(VOH/VOL)设置 
+⚫ 每16 通道2 路TMU 
+⚫ Per Pin PMU 功能，支持恒压测压、恒压测流、恒流测压、恒流测流模式 
+⚫ 错误捕获功能 
+ 
+ 
+ 
+
+----- 技术指标 p237 -----
+ 
+ 
+www.accotest.com 
+ 
+232 
+2.21.1  技术指标 
+表2- 26 DCM400 Specifications 
+Base characteristic 
+Normal Channels 
+64 channels per board (16 channels per bank) 
+Maximum Vector Rate 
+200MHz/400Mbps 
+Rate Setting Range 
+5ns~4ms 
+Vector Period Resolution 
+625ps (On the fly change) 
+Minimum Pulsed Width 
+2.5ns@3.0V(1) 
+Rise/Fall time 
+≤1.25ns@3.0V 
+Depth Of The Vector 
+Max to 64M per channel 
+Driver and Comparator 
+Driver Voltage Range 
+-1.5V~6.4V (VIL) (2) 
+-1.4V~6.5V (VIH) (2) 
+-1.5V~6.5V (VIT) 
+Voltage Accuracy 
+±(0.1% Set value + 8mV) 
+Comparator Voltage Range 
+-1.5V~6.5V (3) 
+Voltage Accuracy 
+±(0.3% Set value + 30mV) 
+Voltage Resolution 
+16-bit 
+Source/Sink Current 
+±75 mA (Max) (3) (4) 
+Timing 
+Number of timing sets 
+31 sets 
+Timing Edge Range 
+0~period 
+Edge Resolution 
+625ps (On the fly change) 
+
+----- 技术指标(续) p239 -----
+ 
+ 
+www.accotest.com 
+ 
+234 
+EDGE 
+Compare at Edge STBR 
+WINDOWS 
+Compare between Edge STBR and Edge STBF 
+OFF 
+Mask the comparator 
+Per Pin PMU 
+Voltage Force Range 
+-2.0V~6.5V / (±1mA, ±100μA, ±10μA, ±2μA 
+Range) 
+-2.0V~5.75V / (±40mA Range) 
+Voltage Measure Range 
+-2.0V~6.5V 
+Voltage Resolution 
+16-bit 
+Voltage Accuracy 
+±(0.1% Set value + 8.5mV) 
+Current Force/Measure Range 
+±(40mA, 1mA, 100μA, 10μA, 2μA) 
+Current Resolution 
+16-bit 
+Current Accuracy 
+±1%FS 
+Active Load 
+VCOM Voltage Range 
+-1.5V~6.5V (| IOL and IOH | ≤ 1 mA) 
+-1.0V~5.5V (| IOL and IOH | ≤ 18 mA) 
+Source/Sink Current 
+18mA (Max) (5) 
+Current Accuracy 
+±(0.1% Set value + 180uA) 
+TMU 
+Number 
+2 channels per bank (16 channels) 
+Measurement Type 
+Propagation delay, Rise/Fall time, Period, 
+Frequency, Duty cycle, Pulse width 
+Period 
+10ns~500ms 
+Accuracy 
+±(0.1%Rdg + 2ns) (6) 
+
+----- 技术指标(续) p240 -----
+ 
+ 
+www.accotest.com 
+ 
+235 
+Duty cycle 
+High/Low Time ≥ 5ns 
+Accuracy 
+±5% (6) 
+Pulse width, Rise/Fall Time, Propagation 
+delay 
+10ns~500ms 
+Accuracy 
+±(0.1%Rdg + 4ns) (6) 
+High voltage output channels (Drive-Only) 
+Number 
+Max to 8 channels per board(7) 
+High Voltage Range 
+0~13V(8) 
+Voltage Resolution 
+16-bit 
+Accuracy 
+±(0.3% Set value + 30mV) 
+Source Current 
+100 mA (Max) (9) 
+Rise time 
+≤ 600ns @ 13V 
+Fall time 
+≤ 50ns @ 13V 
+（1） 
+ 
+图2.21- 1 最小脉宽 
+ 
+（2）需设置VIH-VIL ≥ 100mV 以满足 DC 与 AC 指标。 
+（3）输入/输出电压(最大范围)：−2.0V ~ 6.5 V；DUTx I/O 电流(最大范围)：±75 mA； 
+通道继电器绝缘电压(DC)：200V； 
+超过如上所列最大工作范围的使用条件可能对产品造成损坏。 
+（4）驱动高电平，VIH = 6.5 V，将DUTx 管脚短路到 −1.5 V，测量电流。 
+
+
+
+########## 2.22  用户板控制模块CBITe  [p252-263] ##########
+----- 概述 -----
+ 
+ 
+www.accotest.com 
+ 
+247 
+2.22  用户板控制模块CBITe 
+SM8205 用户板控制模块是STS8300 系统中的标准模块，模块提供128 路控制位(C-
+Bit)，可用于控制用户板(DUT Board)上的继电器。其主要性能如下： 
+⚫ 系统最多支持2 块CBITe 模块工作 
+⚫ 每模块128 路控制位，每一路可独立编程 
+⚫ 每一路控制位最大驱动150mA 电流，可控制5V~24V 继电器 
+⚫ 提供+5V、+12V 继电器电源 
+⚫ 提供±15V 模拟电源 
+⚫ 支持I2C 读写系统配置信息 
+⚫ 本板自带温度湿度检测功能 
+⚫ 支持CBITe 控制位回读功能 
+ 
+
+----- 技术指标 p253 -----
+ 
+ 
+www.accotest.com 
+ 
+248 
+2.22.1  技术指标 
+表2- 27 CBITe Specifications 
+Base characteristic 
+Control bit 
+128 
+Load for control bit 
+150mA max 
++5V (Relay power supply: 5.0V~5.25V) 
+5A max 
++12V (Relay power supply: 11.5V~12.5V) 
+3A max 
++15V (Analog power supply: 14.5V~15.5V) 
+1A max 
+-15V (Analog power supply: -14.5V~-15.5V) 1A max 
+Driver relay voltage range 
+5V~24V 
+Voltage, C-Bit on 
+<0.15V (@30mA, TO POGO PIN) 
+ 
+
+----- 技术指标 p259 -----
+ 
+www.accotest.com 
+ 
+254 
+2.22.4.1 
+ 技术指标 
+表2- 28 MUX Specifications 
+Base characteristic 
+Number of single board relays 
+50 
+Single board relay switching mode 
+DPDT 
+Maximum switching voltage of single board 
+200VAC/200VDC  
+Maximum carry current of single board 
+1A  
+Maximum switching time of single channel 
+2.5ms  
+Current required for full load operation 
+0.6A  
+Temperature range for use 
+0℃~70℃ 
+Single channel insulation resistance 
+1000MΩ(@500VDC)  

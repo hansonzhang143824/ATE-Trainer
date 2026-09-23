@@ -1,0 +1,290 @@
+# per-proof relay chains, source = project/DALI/path_proofs.json.txt
+# engine=native_csv_graph_v2 status=PASS counts={"sources": 112, "raw_best_paths": 1004, "accepted_path_proofs": 669, "rejected_paths": 335, "kelvin_pairs": 219, "kelvin_pair_failures": 0}
+
+==== VAC1_F_S1 : 5 accepted proofs ====
+-- source_port=S10_CH0_B type=QTMU role= side= ch= domain= pair=QTMU::
+   dut_net=NetCap1_VAC1_S1_1 required_on=[17, 142] terminal_stop=True cbit={"17": [{"name": "K17_BUSL_VAC", "group": "G6K_DEDICATED", "raw": "S34_CBIT17", "value": 17}], "142": [{"name": "K142_QTMU_BUSB", "group": "G6K_SHARED", "raw": "S36_CBIT14", "value": 142}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K142_QTMU_BUSB         #142  state=ON  pin3->pin4  NetK142_QTMU_BUSB_S1S2_3 -> FPVIe0_FL_BUS_S1
+   K17_BUSL_VAC           #17   state=ON  pin3->pin4  FPVIe0_FL_BUS_S1 -> VAC_FORCE_S1
+   K18_VAC3               #18   state=NC  pin3->pin2  VAC_FORCE_S1 -> NetK18_VAC3_S1_2
+   K19_VAC2               #19   state=NC  pin3->pin2  NetK18_VAC3_S1_2 -> NetCap1_VAC1_S1_1
+-- source_port=S1_FPVIe_FH0 type=FPVIe role=F side=FH ch=0 domain=HIGH pair=S1_FPVIe:0:HIGH
+   dut_net=NetCap1_VAC1_S1_1 required_on=[70, 87, 90] terminal_stop=True cbit={"70": [{"name": "K70_VAC_F", "group": "MOS", "raw": "S34_CBIT70", "value": 70}], "87": [{"name": "K87_KELVIN0", "group": "G6K_SHARED", "raw": "S34_CBIT87", "value": 87}], "90": [{"name": "K90_PC0_Force", "group": "G6K_DEDICATED", "raw": "S34_CBIT90", "value": 90}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K87_KELVIN0            #87   state=ON  pin3->pin4  NetK86_KELVIN0_F_S1_2 -> NetK87_KELVIN0_S1S2_4
+   K90_PC0_Force          #90   state=ON  pin3->pin4  NetK87_KELVIN0_S1S2_4 -> FPVIe0_FH_PC_S1
+   K82_R_CS               #82   state=NC  pin3->pin2  FPVIe0_FH_PC_S1 -> NetC2_CS_S1_2
+   K70_VAC_F              #70   state=ON  pin1->pin2  NetC2_CS_S1_2 -> VAC_FORCE_S1
+   K18_VAC3               #18   state=NC  pin3->pin2  VAC_FORCE_S1 -> NetK18_VAC3_S1_2
+   K19_VAC2               #19   state=NC  pin3->pin2  NetK18_VAC3_S1_2 -> NetCap1_VAC1_S1_1
+-- source_port=S1_FPVIe_FL0 type=FPVIe role=F side=FL ch=0 domain=LOW pair=S1_FPVIe:0:LOW
+   dut_net=NetCap1_VAC1_S1_1 required_on=[17] terminal_stop=True cbit={"17": [{"name": "K17_BUSL_VAC", "group": "G6K_DEDICATED", "raw": "S34_CBIT17", "value": 17}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K89_KELVIN0            #89   state=NC  pin3->pin2  NetK86_KELVIN0_S_S1_2 -> FPVIe0_FL_BUS_S1
+   K17_BUSL_VAC           #17   state=ON  pin3->pin4  FPVIe0_FL_BUS_S1 -> VAC_FORCE_S1
+   K18_VAC3               #18   state=NC  pin3->pin2  VAC_FORCE_S1 -> NetK18_VAC3_S1_2
+   K19_VAC2               #19   state=NC  pin3->pin2  NetK18_VAC3_S1_2 -> NetCap1_VAC1_S1_1
+-- source_port=S1_FPVIe_FL1 type=FPVIe role=F side=FL ch=1 domain=LOW pair=S1_FPVIe:1:LOW
+   dut_net=NetCap1_VAC1_S1_1 required_on=[17, 145, 146] terminal_stop=True cbit={"17": [{"name": "K17_BUSL_VAC", "group": "G6K_DEDICATED", "raw": "S34_CBIT17", "value": 17}], "145": [{"name": "K145_DCM_BUS0_L", "group": "MOS", "raw": "S36_CBIT17", "value": 145}], "146": [{"name": "K146_DCM_BUS1_L", "group": "MOS", "raw": "S36_CBIT18", "value": 146}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K133_KELVIN1           #133  state=NC  pin3->pin2  NetK130_KELVIN1_S_S1_2 -> FPVIe1_FL_BUS_S1
+   K146_DCM_BUS1_L        #146  state=ON  pin2->pin1  FPVIe1_FL_BUS_S1 -> NetK145_DCM_BUS0_L_S1_1
+   K145_DCM_BUS0_L        #145  state=ON  pin1->pin2  NetK145_DCM_BUS0_L_S1_1 -> FPVIe0_FL_BUS_S1
+   K17_BUSL_VAC           #17   state=ON  pin3->pin4  FPVIe0_FL_BUS_S1 -> VAC_FORCE_S1
+   K18_VAC3               #18   state=NC  pin3->pin2  VAC_FORCE_S1 -> NetK18_VAC3_S1_2
+   K19_VAC2               #19   state=NC  pin3->pin2  NetK18_VAC3_S1_2 -> NetCap1_VAC1_S1_1
+-- source_port=S5_ACM200_FH0 type=ACM200 role=F side=FH ch=0 domain=HIGH pair=S5_ACM200:0:HIGH
+   dut_net=NetCap1_VAC1_S1_1 required_on=[] terminal_stop=True cbit={}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K18_VAC3               #18   state=NC  pin3->pin2  VAC_FORCE_S1 -> NetK18_VAC3_S1_2
+   K19_VAC2               #19   state=NC  pin3->pin2  NetK18_VAC3_S1_2 -> NetCap1_VAC1_S1_1
+-- rejected proofs for VAC1_F_S1: 2
+   src=S1_FPVIe_SH0           net=NetCap1_VAC1_S1_1            reason={"terminal_stop": true, "role_match": false, "cbit_complete": true, "missing_cbit": []}
+   src=S1_FPVIe_SL0           net=NetCap1_VAC1_S1_1            reason={"terminal_stop": true, "role_match": false, "cbit_complete": true, "missing_cbit": []}
+
+==== VAC1_S_S1 : 4 accepted proofs ====
+-- source_port=S1_FPVIe_SL0 type=FPVIe role=S side=SL ch=0 domain=LOW pair=S1_FPVIe:0:LOW
+   dut_net=NetK19_VAC2_S1_7 required_on=[17] terminal_stop=True cbit={"17": [{"name": "K17_BUSL_VAC", "group": "G6K_DEDICATED", "raw": "S34_CBIT17", "value": 17}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K88_KELVIN0            #88   state=NC  pin6->pin7  NetK86_KELVIN0_S_S1_1 -> FPVIe0_SL_BUS_S1
+   K17_BUSL_VAC           #17   state=ON  pin6->pin5  FPVIe0_SL_BUS_S1 -> VAC_SENSE_S1
+   K18_VAC3               #18   state=NC  pin6->pin7  VAC_SENSE_S1 -> NetK18_VAC3_S1_7
+   K19_VAC2               #19   state=NC  pin6->pin7  NetK18_VAC3_S1_7 -> NetK19_VAC2_S1_7
+-- source_port=S1_FPVIe_SL1 type=FPVIe role=S side=SL ch=1 domain=LOW pair=S1_FPVIe:1:LOW
+   dut_net=NetK19_VAC2_S1_7 required_on=[17, 138, 139] terminal_stop=True cbit={"17": [{"name": "K17_BUSL_VAC", "group": "G6K_DEDICATED", "raw": "S34_CBIT17", "value": 17}], "138": [{"name": "K138_QVML_BUS0", "group": "MOS", "raw": "S36_CBIT10", "value": 138}], "139": [{"name": "K139_QVML_BUS1", "group": "MOS", "raw": "S36_CBIT11", "value": 139}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K132_KELVIN1           #132  state=NC  pin6->pin7  NetK130_KELVIN1_S_S1_1 -> FPVIe1_SL_BUS_S1
+   K139_QVML_BUS1         #139  state=ON  pin2->pin1  FPVIe1_SL_BUS_S1 -> NetK138_QVML_BUS0_S1_1
+   K138_QVML_BUS0         #138  state=ON  pin1->pin2  NetK138_QVML_BUS0_S1_1 -> FPVIe0_SL_BUS_S1
+   K17_BUSL_VAC           #17   state=ON  pin6->pin5  FPVIe0_SL_BUS_S1 -> VAC_SENSE_S1
+   K18_VAC3               #18   state=NC  pin6->pin7  VAC_SENSE_S1 -> NetK18_VAC3_S1_7
+   K19_VAC2               #19   state=NC  pin6->pin7  NetK18_VAC3_S1_7 -> NetK19_VAC2_S1_7
+-- source_port=S5_ACM200_SH0 type=ACM200 role=S side=SH ch=0 domain=HIGH pair=S5_ACM200:0:HIGH
+   dut_net=NetK19_VAC2_S1_7 required_on=[] terminal_stop=True cbit={}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K18_VAC3               #18   state=NC  pin6->pin7  VAC_SENSE_S1 -> NetK18_VAC3_S1_7
+   K19_VAC2               #19   state=NC  pin6->pin7  NetK18_VAC3_S1_7 -> NetK19_VAC2_S1_7
+-- source_port=S8_QVM_CH0- type=QVM role=S side=- ch=0 domain=LOW pair=S8_QVM:0:
+   dut_net=NetK19_VAC2_S1_7 required_on=[17, 138] terminal_stop=True cbit={"17": [{"name": "K17_BUSL_VAC", "group": "G6K_DEDICATED", "raw": "S34_CBIT17", "value": 17}], "138": [{"name": "K138_QVML_BUS0", "group": "MOS", "raw": "S36_CBIT10", "value": 138}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K138_QVML_BUS0         #138  state=ON  pin1->pin2  NetK138_QVML_BUS0_S1_1 -> FPVIe0_SL_BUS_S1
+   K17_BUSL_VAC           #17   state=ON  pin6->pin5  FPVIe0_SL_BUS_S1 -> VAC_SENSE_S1
+   K18_VAC3               #18   state=NC  pin6->pin7  VAC_SENSE_S1 -> NetK18_VAC3_S1_7
+   K19_VAC2               #19   state=NC  pin6->pin7  NetK18_VAC3_S1_7 -> NetK19_VAC2_S1_7
+-- rejected proofs for VAC1_S_S1: 1
+   src=S1_FPVIe_FL0           net=NetK19_VAC2_S1_7             reason={"terminal_stop": true, "role_match": false, "cbit_complete": true, "missing_cbit": []}
+
+==== VBAT_F_S1 : 5 accepted proofs ====
+-- source_port=S10_CH0_A type=QTMU role= side= ch= domain= pair=QTMU::
+   dut_net=NetCap1_VBAT_S1_1 required_on=[7] terminal_stop=True cbit={"7": [{"name": "K7_BUSH_VBAT", "group": "G6K_DEDICATED", "raw": "S34_CBIT7", "value": 7}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K141_QTMU_BUSA         #141  state=NC  pin3->pin2  NetK66_TMU_nQON_S1_2 -> FPVIe1_FH_BUS_S1
+   K7_BUSH_VBAT           #7    state=ON  pin3->pin4  FPVIe1_FH_BUS_S1 -> NetK7_BUSH_VBAT_S1_4
+   K8_PD3                 #8    state=NC  pin6->pin7  NetK7_BUSH_VBAT_S1_4 -> NetCap1_VBAT_S1_1
+-- source_port=S1_FPVIe_FH0 type=FPVIe role=F side=FH ch=0 domain=HIGH pair=S1_FPVIe:0:HIGH
+   dut_net=NetCap1_VBAT_S1_1 required_on=[7, 143, 144] terminal_stop=True cbit={"7": [{"name": "K7_BUSH_VBAT", "group": "G6K_DEDICATED", "raw": "S34_CBIT7", "value": 7}], "143": [{"name": "K143_DCM_BUS0_H", "group": "MOS", "raw": "S36_CBIT15", "value": 143}], "144": [{"name": "K144_DCM_BUS1_H", "group": "MOS", "raw": "S36_CBIT16", "value": 144}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K87_KELVIN0            #87   state=NC  pin3->pin2  NetK86_KELVIN0_F_S1_2 -> FPVIe0_FH_BUS_S1
+   K143_DCM_BUS0_H        #143  state=ON  pin2->pin1  FPVIe0_FH_BUS_S1 -> NetK143_DCM_BUS0_H_S1_1
+   K144_DCM_BUS1_H        #144  state=ON  pin1->pin2  NetK143_DCM_BUS0_H_S1_1 -> FPVIe1_FH_BUS_S1
+   K7_BUSH_VBAT           #7    state=ON  pin3->pin4  FPVIe1_FH_BUS_S1 -> NetK7_BUSH_VBAT_S1_4
+   K8_PD3                 #8    state=NC  pin6->pin7  NetK7_BUSH_VBAT_S1_4 -> NetCap1_VBAT_S1_1
+-- source_port=S1_FPVIe_FH1 type=FPVIe role=F side=FH ch=1 domain=HIGH pair=S1_FPVIe:1:HIGH
+   dut_net=NetCap1_VBAT_S1_1 required_on=[7] terminal_stop=True cbit={"7": [{"name": "K7_BUSH_VBAT", "group": "G6K_DEDICATED", "raw": "S34_CBIT7", "value": 7}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K131_KELVIN1           #131  state=NC  pin3->pin2  NetK130_KELVIN1_F_S1_2 -> FPVIe1_FH_BUS_S1
+   K7_BUSH_VBAT           #7    state=ON  pin3->pin4  FPVIe1_FH_BUS_S1 -> NetK7_BUSH_VBAT_S1_4
+   K8_PD3                 #8    state=NC  pin6->pin7  NetK7_BUSH_VBAT_S1_4 -> NetCap1_VBAT_S1_1
+-- source_port=S3_FXVIe_PLUS_FH5 type=FXVIe_PLUS role=F side=FH ch=5 domain=HIGH pair=S3_FXVIe_PLUS:5:HIGH
+   dut_net=NetCap1_VBAT_S1_1 required_on=[] terminal_stop=True cbit={}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K8_PD3                 #8    state=NC  pin6->pin7  NetK7_BUSH_VBAT_S1_4 -> NetCap1_VBAT_S1_1
+-- source_port=S8_QVM_CH0+ type=QVM role=F side=+ ch=0 domain=HIGH pair=S8_QVM:0:
+   dut_net=NetCap1_VBAT_S1_1 required_on=[7, 130, 136] terminal_stop=True cbit={"7": [{"name": "K7_BUSH_VBAT", "group": "G6K_DEDICATED", "raw": "S34_CBIT7", "value": 7}], "130": [{"name": "K130_KELVIN1_F", "group": "MOS", "raw": "S36_CBIT2", "value": 130}, {"name": "K130_KELVIN1_S", "group": "MOS", "raw": "S36_CBIT2", "value": 130}], "136": [{"name": "K136_QVMH_BUS0", "group": "MOS", "raw": "S36_CBIT8", "value": 136}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K136_QVMH_BUS0         #136  state=ON  pin1->pin2  NetK2_BUF_S1S2_4 -> FPVIe1_SH_BUS_S1
+   K132_KELVIN1           #132  state=NC  pin2->pin3  FPVIe1_SH_BUS_S1 -> NetK130_KELVIN1_F_S1_1
+   K130_KELVIN1_F         #130  state=ON  pin1->pin2  NetK130_KELVIN1_F_S1_1 -> NetK130_KELVIN1_F_S1_2
+   K131_KELVIN1           #131  state=NC  pin3->pin2  NetK130_KELVIN1_F_S1_2 -> FPVIe1_FH_BUS_S1
+   K7_BUSH_VBAT           #7    state=ON  pin3->pin4  FPVIe1_FH_BUS_S1 -> NetK7_BUSH_VBAT_S1_4
+   K8_PD3                 #8    state=NC  pin6->pin7  NetK7_BUSH_VBAT_S1_4 -> NetCap1_VBAT_S1_1
+-- rejected proofs for VBAT_F_S1: 2
+   src=S1_FPVIe_SH0           net=NetCap1_VBAT_S1_1            reason={"terminal_stop": true, "role_match": false, "cbit_complete": true, "missing_cbit": []}
+   src=S1_FPVIe_SH1           net=NetCap1_VBAT_S1_1            reason={"terminal_stop": true, "role_match": false, "cbit_complete": true, "missing_cbit": []}
+
+==== VBAT_S_S1 : 4 accepted proofs ====
+-- source_port=S10_CH0_A type=QTMU role= side= ch= domain= pair=QTMU::
+   dut_net=NetK8_PD3_S1_2 required_on=[7, 130] terminal_stop=True cbit={"7": [{"name": "K7_BUSH_VBAT", "group": "G6K_DEDICATED", "raw": "S34_CBIT7", "value": 7}], "130": [{"name": "K130_KELVIN1_F", "group": "MOS", "raw": "S36_CBIT2", "value": 130}, {"name": "K130_KELVIN1_S", "group": "MOS", "raw": "S36_CBIT2", "value": 130}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K141_QTMU_BUSA         #141  state=NC  pin3->pin2  NetK66_TMU_nQON_S1_2 -> FPVIe1_FH_BUS_S1
+   K131_KELVIN1           #131  state=NC  pin2->pin3  FPVIe1_FH_BUS_S1 -> NetK130_KELVIN1_F_S1_2
+   K130_KELVIN1_F         #130  state=ON  pin2->pin1  NetK130_KELVIN1_F_S1_2 -> NetK130_KELVIN1_F_S1_1
+   K132_KELVIN1           #132  state=NC  pin3->pin2  NetK130_KELVIN1_F_S1_1 -> FPVIe1_SH_BUS_S1
+   K7_BUSH_VBAT           #7    state=ON  pin6->pin5  FPVIe1_SH_BUS_S1 -> NetK7_BUSH_VBAT_S1_5
+   K8_PD3                 #8    state=NC  pin3->pin2  NetK7_BUSH_VBAT_S1_5 -> NetK8_PD3_S1_2
+-- source_port=S1_FPVIe_SH0 type=FPVIe role=S side=SH ch=0 domain=HIGH pair=S1_FPVIe:0:HIGH
+   dut_net=NetK8_PD3_S1_2 required_on=[7, 136, 137] terminal_stop=True cbit={"7": [{"name": "K7_BUSH_VBAT", "group": "G6K_DEDICATED", "raw": "S34_CBIT7", "value": 7}], "136": [{"name": "K136_QVMH_BUS0", "group": "MOS", "raw": "S36_CBIT8", "value": 136}], "137": [{"name": "K137_QVMH_BUS1", "group": "MOS", "raw": "S36_CBIT9", "value": 137}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K88_KELVIN0            #88   state=NC  pin3->pin2  NetK86_KELVIN0_F_S1_1 -> FPVIe0_SH_BUS_S1
+   K137_QVMH_BUS1         #137  state=ON  pin2->pin1  FPVIe0_SH_BUS_S1 -> NetK2_BUF_S1S2_4
+   K136_QVMH_BUS0         #136  state=ON  pin1->pin2  NetK2_BUF_S1S2_4 -> FPVIe1_SH_BUS_S1
+   K7_BUSH_VBAT           #7    state=ON  pin6->pin5  FPVIe1_SH_BUS_S1 -> NetK7_BUSH_VBAT_S1_5
+   K8_PD3                 #8    state=NC  pin3->pin2  NetK7_BUSH_VBAT_S1_5 -> NetK8_PD3_S1_2
+-- source_port=S1_FPVIe_SH1 type=FPVIe role=S side=SH ch=1 domain=HIGH pair=S1_FPVIe:1:HIGH
+   dut_net=NetK8_PD3_S1_2 required_on=[7] terminal_stop=True cbit={"7": [{"name": "K7_BUSH_VBAT", "group": "G6K_DEDICATED", "raw": "S34_CBIT7", "value": 7}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K132_KELVIN1           #132  state=NC  pin3->pin2  NetK130_KELVIN1_F_S1_1 -> FPVIe1_SH_BUS_S1
+   K7_BUSH_VBAT           #7    state=ON  pin6->pin5  FPVIe1_SH_BUS_S1 -> NetK7_BUSH_VBAT_S1_5
+   K8_PD3                 #8    state=NC  pin3->pin2  NetK7_BUSH_VBAT_S1_5 -> NetK8_PD3_S1_2
+-- source_port=S3_FXVIe_PLUS_SH5 type=FXVIe_PLUS role=S side=SH ch=5 domain=HIGH pair=S3_FXVIe_PLUS:5:HIGH
+   dut_net=NetK8_PD3_S1_2 required_on=[] terminal_stop=True cbit={}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K8_PD3                 #8    state=NC  pin3->pin2  NetK7_BUSH_VBAT_S1_5 -> NetK8_PD3_S1_2
+-- rejected proofs for VBAT_S_S1: 3
+   src=S1_FPVIe_FH0           net=NetK8_PD3_S1_2               reason={"terminal_stop": true, "role_match": false, "cbit_complete": true, "missing_cbit": []}
+   src=S1_FPVIe_FH1           net=NetK8_PD3_S1_2               reason={"terminal_stop": true, "role_match": false, "cbit_complete": true, "missing_cbit": []}
+   src=S8_QVM_CH0+            net=NetK8_PD3_S1_2               reason={"terminal_stop": true, "role_match": false, "cbit_complete": true, "missing_cbit": []}
+
+==== nQON_F_S1 : 6 accepted proofs ====
+-- source_port=S10_CH0_A type=QTMU role= side= ch= domain= pair=QTMU::
+   dut_net=NetK64_HG1_S1_7 required_on=[66] terminal_stop=True cbit={"66": [{"name": "K66_TMU_nQON", "group": "MOS", "raw": "S34_CBIT66", "value": 66}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K66_TMU_nQON           #66   state=ON  pin2->pin1  NetK66_TMU_nQON_S1_2 -> NetK64_HG1_S1_7
+-- source_port=S1_FPVIe_FH0 type=FPVIe role=F side=FH ch=0 domain=HIGH pair=S1_FPVIe:0:HIGH
+   dut_net=NetK64_HG1_S1_7 required_on=[62] terminal_stop=True cbit={"62": [{"name": "K62_BUS_FH_QON", "group": "MOS", "raw": "S34_CBIT62", "value": 62}, {"name": "K62_BUS_SH_QON", "group": "MOS", "raw": "S34_CBIT62", "value": 62}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K87_KELVIN0            #87   state=NC  pin3->pin2  NetK86_KELVIN0_F_S1_2 -> FPVIe0_FH_BUS_S1
+   K62_BUS_FH_QON         #62   state=ON  pin1->pin2  FPVIe0_FH_BUS_S1 -> NetK62_BUS_FH_QON_S1_2
+   K64_HG1                #64   state=NC  pin6->pin7  NetK62_BUS_FH_QON_S1_2 -> NetK64_HG1_S1_7
+-- source_port=S1_FPVIe_FH1 type=FPVIe role=F side=FH ch=1 domain=HIGH pair=S1_FPVIe:1:HIGH
+   dut_net=NetK64_HG1_S1_7 required_on=[66] terminal_stop=True cbit={"66": [{"name": "K66_TMU_nQON", "group": "MOS", "raw": "S34_CBIT66", "value": 66}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K131_KELVIN1           #131  state=NC  pin3->pin2  NetK130_KELVIN1_F_S1_2 -> FPVIe1_FH_BUS_S1
+   K141_QTMU_BUSA         #141  state=NC  pin2->pin3  FPVIe1_FH_BUS_S1 -> NetK66_TMU_nQON_S1_2
+   K66_TMU_nQON           #66   state=ON  pin2->pin1  NetK66_TMU_nQON_S1_2 -> NetK64_HG1_S1_7
+-- source_port=S24_P0 type=DCM role=F side= ch=0 domain= pair=DCM:0:
+   dut_net=NetK64_HG1_S1_7 required_on=[] terminal_stop=True cbit={}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   path = []  (EMPTY: no relay transition recorded; port net == dut net group)
+-- source_port=S5_ACM200_FH9 type=ACM200 role=F side=FH ch=9 domain=HIGH pair=S5_ACM200:9:HIGH
+   dut_net=NetK64_HG1_S1_7 required_on=[] terminal_stop=True cbit={}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K64_HG1                #64   state=NC  pin6->pin7  NetK62_BUS_FH_QON_S1_2 -> NetK64_HG1_S1_7
+-- source_port=S8_QVM_CH0+ type=QVM role=F side=+ ch=0 domain=HIGH pair=S8_QVM:0:
+   dut_net=NetK64_HG1_S1_7 required_on=[66, 130, 136] terminal_stop=True cbit={"66": [{"name": "K66_TMU_nQON", "group": "MOS", "raw": "S34_CBIT66", "value": 66}], "130": [{"name": "K130_KELVIN1_F", "group": "MOS", "raw": "S36_CBIT2", "value": 130}, {"name": "K130_KELVIN1_S", "group": "MOS", "raw": "S36_CBIT2", "value": 130}], "136": [{"name": "K136_QVMH_BUS0", "group": "MOS", "raw": "S36_CBIT8", "value": 136}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K136_QVMH_BUS0         #136  state=ON  pin1->pin2  NetK2_BUF_S1S2_4 -> FPVIe1_SH_BUS_S1
+   K132_KELVIN1           #132  state=NC  pin2->pin3  FPVIe1_SH_BUS_S1 -> NetK130_KELVIN1_F_S1_1
+   K130_KELVIN1_F         #130  state=ON  pin1->pin2  NetK130_KELVIN1_F_S1_1 -> NetK130_KELVIN1_F_S1_2
+   K131_KELVIN1           #131  state=NC  pin3->pin2  NetK130_KELVIN1_F_S1_2 -> FPVIe1_FH_BUS_S1
+   K141_QTMU_BUSA         #141  state=NC  pin2->pin3  FPVIe1_FH_BUS_S1 -> NetK66_TMU_nQON_S1_2
+   K66_TMU_nQON           #66   state=ON  pin2->pin1  NetK66_TMU_nQON_S1_2 -> NetK64_HG1_S1_7
+-- rejected proofs for nQON_F_S1: 2
+   src=S1_FPVIe_SH0           net=NetK64_HG1_S1_7              reason={"terminal_stop": true, "role_match": false, "cbit_complete": true, "missing_cbit": []}
+   src=S1_FPVIe_SH1           net=NetK64_HG1_S1_7              reason={"terminal_stop": true, "role_match": false, "cbit_complete": true, "missing_cbit": []}
+
+==== nQON_S_S1 : 4 accepted proofs ====
+-- source_port=S10_CH0_A type=QTMU role= side= ch= domain= pair=QTMU::
+   dut_net=NetK64_HG1_S1_2 required_on=[62, 86, 141] terminal_stop=True cbit={"62": [{"name": "K62_BUS_FH_QON", "group": "MOS", "raw": "S34_CBIT62", "value": 62}, {"name": "K62_BUS_SH_QON", "group": "MOS", "raw": "S34_CBIT62", "value": 62}], "86": [{"name": "K86_KELVIN0_F", "group": "MOS", "raw": "S34_CBIT86", "value": 86}, {"name": "K86_KELVIN0_S", "group": "MOS", "raw": "S34_CBIT86", "value": 86}], "141": [{"name": "K141_QTMU_BUSA", "group": "G6K_SHARED", "raw": "S36_CBIT13", "value": 141}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K141_QTMU_BUSA         #141  state=ON  pin3->pin4  NetK66_TMU_nQON_S1_2 -> FPVIe0_FH_BUS_S1
+   K87_KELVIN0            #87   state=NC  pin2->pin3  FPVIe0_FH_BUS_S1 -> NetK86_KELVIN0_F_S1_2
+   K86_KELVIN0_F          #86   state=ON  pin2->pin1  NetK86_KELVIN0_F_S1_2 -> NetK86_KELVIN0_F_S1_1
+   K88_KELVIN0            #88   state=NC  pin3->pin2  NetK86_KELVIN0_F_S1_1 -> FPVIe0_SH_BUS_S1
+   K62_BUS_SH_QON         #62   state=ON  pin1->pin2  FPVIe0_SH_BUS_S1 -> NetK62_BUS_SH_QON_S1_2
+   K64_HG1                #64   state=NC  pin3->pin2  NetK62_BUS_SH_QON_S1_2 -> NetK64_HG1_S1_2
+-- source_port=S1_FPVIe_SH0 type=FPVIe role=S side=SH ch=0 domain=HIGH pair=S1_FPVIe:0:HIGH
+   dut_net=NetK64_HG1_S1_2 required_on=[62] terminal_stop=True cbit={"62": [{"name": "K62_BUS_FH_QON", "group": "MOS", "raw": "S34_CBIT62", "value": 62}, {"name": "K62_BUS_SH_QON", "group": "MOS", "raw": "S34_CBIT62", "value": 62}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K88_KELVIN0            #88   state=NC  pin3->pin2  NetK86_KELVIN0_F_S1_1 -> FPVIe0_SH_BUS_S1
+   K62_BUS_SH_QON         #62   state=ON  pin1->pin2  FPVIe0_SH_BUS_S1 -> NetK62_BUS_SH_QON_S1_2
+   K64_HG1                #64   state=NC  pin3->pin2  NetK62_BUS_SH_QON_S1_2 -> NetK64_HG1_S1_2
+-- source_port=S1_FPVIe_SH1 type=FPVIe role=S side=SH ch=1 domain=HIGH pair=S1_FPVIe:1:HIGH
+   dut_net=NetK64_HG1_S1_2 required_on=[62, 136, 137] terminal_stop=True cbit={"62": [{"name": "K62_BUS_FH_QON", "group": "MOS", "raw": "S34_CBIT62", "value": 62}, {"name": "K62_BUS_SH_QON", "group": "MOS", "raw": "S34_CBIT62", "value": 62}], "136": [{"name": "K136_QVMH_BUS0", "group": "MOS", "raw": "S36_CBIT8", "value": 136}], "137": [{"name": "K137_QVMH_BUS1", "group": "MOS", "raw": "S36_CBIT9", "value": 137}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K132_KELVIN1           #132  state=NC  pin3->pin2  NetK130_KELVIN1_F_S1_1 -> FPVIe1_SH_BUS_S1
+   K136_QVMH_BUS0         #136  state=ON  pin2->pin1  FPVIe1_SH_BUS_S1 -> NetK2_BUF_S1S2_4
+   K137_QVMH_BUS1         #137  state=ON  pin1->pin2  NetK2_BUF_S1S2_4 -> FPVIe0_SH_BUS_S1
+   K62_BUS_SH_QON         #62   state=ON  pin1->pin2  FPVIe0_SH_BUS_S1 -> NetK62_BUS_SH_QON_S1_2
+   K64_HG1                #64   state=NC  pin3->pin2  NetK62_BUS_SH_QON_S1_2 -> NetK64_HG1_S1_2
+-- source_port=S5_ACM200_SH9 type=ACM200 role=S side=SH ch=9 domain=HIGH pair=S5_ACM200:9:HIGH
+   dut_net=NetK64_HG1_S1_2 required_on=[] terminal_stop=True cbit={}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K64_HG1                #64   state=NC  pin3->pin2  NetK62_BUS_SH_QON_S1_2 -> NetK64_HG1_S1_2
+-- rejected proofs for nQON_S_S1: 3
+   src=S1_FPVIe_FH0           net=NetK64_HG1_S1_2              reason={"terminal_stop": true, "role_match": false, "cbit_complete": true, "missing_cbit": []}
+   src=S1_FPVIe_FH1           net=NetK64_HG1_S1_2              reason={"terminal_stop": true, "role_match": false, "cbit_complete": true, "missing_cbit": []}
+   src=S8_QVM_CH0+            net=NetK64_HG1_S1_2              reason={"terminal_stop": true, "role_match": false, "cbit_complete": true, "missing_cbit": []}
+
+==== AGND_F_S1 : 4 accepted proofs ====
+-- source_port=S3_FXVIe_PLUS_FL(0-3) type=FXVIe_PLUS role= side= ch= domain= pair=FXVIe_PLUS::
+   dut_net=AGND_F_S1 required_on=[] terminal_stop=True cbit={}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   path = []  (EMPTY: no relay transition recorded; port net == dut net group)
+-- source_port=S3_FXVIe_PLUS_FL(4-7) type=FXVIe_PLUS role= side= ch= domain= pair=FXVIe_PLUS::
+   dut_net=AGND_F_S1 required_on=[] terminal_stop=True cbit={}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   path = []  (EMPTY: no relay transition recorded; port net == dut net group)
+-- source_port=S5_ACM200_FL(0-11) type=ACM200 role= side= ch= domain= pair=ACM200::
+   dut_net=AGND_F_S1 required_on=[] terminal_stop=True cbit={}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   path = []  (EMPTY: no relay transition recorded; port net == dut net group)
+-- source_port=S5_ACM200_FL(12-23) type=ACM200 role= side= ch= domain= pair=ACM200::
+   dut_net=AGND_F_S1 required_on=[] terminal_stop=True cbit={}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   path = []  (EMPTY: no relay transition recorded; port net == dut net group)
+
+==== AGND_S_S1 : 10 accepted proofs ====
+-- source_port=S10_CH0_B type=QTMU role= side= ch= domain= pair=QTMU::
+   dut_net=NetK92_AGND_F2S_S1_2 required_on=[130, 139, 140] terminal_stop=True cbit={"130": [{"name": "K130_KELVIN1_F", "group": "MOS", "raw": "S36_CBIT2", "value": 130}, {"name": "K130_KELVIN1_S", "group": "MOS", "raw": "S36_CBIT2", "value": 130}], "139": [{"name": "K139_QVML_BUS1", "group": "MOS", "raw": "S36_CBIT11", "value": 139}], "140": [{"name": "K140_QVML_AGND", "group": "MOS", "raw": "S36_CBIT12", "value": 140}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K142_QTMU_BUSB         #142  state=NC  pin3->pin2  NetK142_QTMU_BUSB_S1S2_3 -> FPVIe1_FL_BUS_S1
+   K133_KELVIN1           #133  state=NC  pin2->pin3  FPVIe1_FL_BUS_S1 -> NetK130_KELVIN1_S_S1_2
+   K130_KELVIN1_S         #130  state=ON  pin2->pin1  NetK130_KELVIN1_S_S1_2 -> NetK130_KELVIN1_S_S1_1
+   K132_KELVIN1           #132  state=NC  pin6->pin7  NetK130_KELVIN1_S_S1_1 -> FPVIe1_SL_BUS_S1
+   K139_QVML_BUS1         #139  state=ON  pin2->pin1  FPVIe1_SL_BUS_S1 -> NetK138_QVML_BUS0_S1_1
+   K140_QVML_AGND         #140  state=ON  pin1->pin2  NetK138_QVML_BUS0_S1_1 -> NetK92_AGND_F2S_S1_2
+-- source_port=S1_FPVIe_SL0 type=FPVIe role=S side=SL ch=0 domain=LOW pair=S1_FPVIe:0:LOW
+   dut_net=NetK92_AGND_F2S_S1_2 required_on=[138, 140] terminal_stop=True cbit={"138": [{"name": "K138_QVML_BUS0", "group": "MOS", "raw": "S36_CBIT10", "value": 138}], "140": [{"name": "K140_QVML_AGND", "group": "MOS", "raw": "S36_CBIT12", "value": 140}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K88_KELVIN0            #88   state=NC  pin6->pin7  NetK86_KELVIN0_S_S1_1 -> FPVIe0_SL_BUS_S1
+   K138_QVML_BUS0         #138  state=ON  pin2->pin1  FPVIe0_SL_BUS_S1 -> NetK138_QVML_BUS0_S1_1
+   K140_QVML_AGND         #140  state=ON  pin1->pin2  NetK138_QVML_BUS0_S1_1 -> NetK92_AGND_F2S_S1_2
+-- source_port=S1_FPVIe_SL1 type=FPVIe role=S side=SL ch=1 domain=LOW pair=S1_FPVIe:1:LOW
+   dut_net=NetK92_AGND_F2S_S1_2 required_on=[139, 140] terminal_stop=True cbit={"139": [{"name": "K139_QVML_BUS1", "group": "MOS", "raw": "S36_CBIT11", "value": 139}], "140": [{"name": "K140_QVML_AGND", "group": "MOS", "raw": "S36_CBIT12", "value": 140}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K132_KELVIN1           #132  state=NC  pin6->pin7  NetK130_KELVIN1_S_S1_1 -> FPVIe1_SL_BUS_S1
+   K139_QVML_BUS1         #139  state=ON  pin2->pin1  FPVIe1_SL_BUS_S1 -> NetK138_QVML_BUS0_S1_1
+   K140_QVML_AGND         #140  state=ON  pin1->pin2  NetK138_QVML_BUS0_S1_1 -> NetK92_AGND_F2S_S1_2
+-- source_port=S3_FXVIe_PLUS_SL(0-3) type=FXVIe_PLUS role= side= ch= domain= pair=FXVIe_PLUS::
+   dut_net=NetK92_AGND_F2S_S1_2 required_on=[] terminal_stop=True cbit={}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   path = []  (EMPTY: no relay transition recorded; port net == dut net group)
+-- source_port=S3_FXVIe_PLUS_SL(4-7) type=FXVIe_PLUS role= side= ch= domain= pair=FXVIe_PLUS::
+   dut_net=NetK92_AGND_F2S_S1_2 required_on=[] terminal_stop=True cbit={}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   path = []  (EMPTY: no relay transition recorded; port net == dut net group)
+-- source_port=S5_ACM200_SL(0-5) type=ACM200 role= side= ch= domain= pair=ACM200::
+   dut_net=NetK92_AGND_F2S_S1_2 required_on=[] terminal_stop=True cbit={}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   path = []  (EMPTY: no relay transition recorded; port net == dut net group)
+-- source_port=S5_ACM200_SL(12-17) type=ACM200 role= side= ch= domain= pair=ACM200::
+   dut_net=NetK92_AGND_F2S_S1_2 required_on=[] terminal_stop=True cbit={}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   path = []  (EMPTY: no relay transition recorded; port net == dut net group)
+-- source_port=S5_ACM200_SL(18-23) type=ACM200 role= side= ch= domain= pair=ACM200::
+   dut_net=NetK92_AGND_F2S_S1_2 required_on=[] terminal_stop=True cbit={}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   path = []  (EMPTY: no relay transition recorded; port net == dut net group)
+-- source_port=S5_ACM200_SL(6-11) type=ACM200 role= side= ch= domain= pair=ACM200::
+   dut_net=NetK92_AGND_F2S_S1_2 required_on=[] terminal_stop=True cbit={}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   path = []  (EMPTY: no relay transition recorded; port net == dut net group)
+-- source_port=S8_QVM_CH0- type=QVM role=S side=- ch=0 domain=LOW pair=S8_QVM:0:
+   dut_net=NetK92_AGND_F2S_S1_2 required_on=[140] terminal_stop=True cbit={"140": [{"name": "K140_QVML_AGND", "group": "MOS", "raw": "S36_CBIT12", "value": 140}]}
+   validation={"terminal_stop": true, "role_match": true, "cbit_complete": true, "missing_cbit": []}
+   K140_QVML_AGND         #140  state=ON  pin1->pin2  NetK138_QVML_BUS0_S1_1 -> NetK92_AGND_F2S_S1_2
+-- rejected proofs for AGND_S_S1: 2
+   src=S1_FPVIe_FL0           net=NetK92_AGND_F2S_S1_2         reason={"terminal_stop": true, "role_match": false, "cbit_complete": true, "missing_cbit": []}
+   src=S1_FPVIe_FL1           net=NetK92_AGND_F2S_S1_2         reason={"terminal_stop": true, "role_match": false, "cbit_complete": true, "missing_cbit": []}

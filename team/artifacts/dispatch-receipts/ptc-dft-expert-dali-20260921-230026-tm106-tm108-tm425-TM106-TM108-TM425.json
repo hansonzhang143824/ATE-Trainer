@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "dispatchId": "ptc-dft-expert-dali-20260921-230026-tm106-tm108-tm425-TM106-TM108-TM425",
+  "runId": "dali-20260921-230026-tm106-tm108-tm425",
+  "profileId": "ptc-dft-expert",
+  "profileVersion": "v3",
+  "executionClass": "input-dft",
+  "personaSha256": "1aa3141e765a8a2f6646ee7970ede98ea1af7bb97399ee4056ed23cb489d799b",
+  "contractSha256": "258285d24d949391787f1994745980a5f4e7982ae51ea81eda4c357a6eb8c243",
+  "policySha256": "1e6be182a3fd6507e2e2af71efd475609b8db1c150f57f30e51c68025adc2301",
+  "targetTms": [
+    "TM106",
+    "TM108",
+    "TM425"
+  ],
+  "createdAt": "2026-09-21T15:00:26.459Z",
+  "label": "PTC dft expert [TM106,TM108,TM425]",
+  "digest": "a7105e8c5d7caa5b06b496388d75cd42b07cfacdd4ca42a5ebf0ab7595b12dd8",
+  "stage": "INPUT_SYNC",
+  "trialDirs": [
+    "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-230026-tm106-tm108-tm425\\tm106",
+    "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-230026-tm106-tm108-tm425\\tm108",
+    "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-230026-tm106-tm108-tm425\\tm425"
+  ],
+  "registryOwnership": {
+    "ok": true,
+    "stage": "INPUT_SYNC",
+    "registryOwner": "captain",
+    "ownershipNote": "registry owner for INPUT_SYNC is captain; the profile's ownerRole is dispatched as a source role of that stage"
+  },
+  "manifestDigest": "61d68479dc178cc742467fb85cb12390e637690576420688f38aca45e6532930",
+  "childSessionId": "e71d50c3-5cf5-45ef-a7e4-4f2a2da0e749",
+  "task": "Work only on these requested test items: TM106, TM108, TM425.\nYour isolated trial directories are: [\"D:\\\\Newtest\\\\DSH\\\\ATE-Coding-Flow\\\\team\\\\artifacts\\\\dali-20260921-230026-tm106-tm108-tm425\\\\tm106\",\"D:\\\\Newtest\\\\DSH\\\\ATE-Coding-Flow\\\\team\\\\artifacts\\\\dali-20260921-230026-tm106-tm108-tm425\\\\tm108\",\"D:\\\\Newtest\\\\DSH\\\\ATE-Coding-Flow\\\\team\\\\artifacts\\\\dali-20260921-230026-tm106-tm108-tm425\\\\tm425\"].\nThis is batch dali-20260921-230026-tm106-tm108-tm425, the enforced INPUT_SYNC stage.\nFollow your installed role contract and material boundary. Do not read Captain status, old trial records, or files outside your authorized input/output paths.\nProduce the required source-stage artifacts and report the result to the Captain.\nYour runtime label is: PTC dft expert [TM106,TM108,TM425]",
+  "dispatchedAt": "2026-09-21T15:00:26.524Z"
+}

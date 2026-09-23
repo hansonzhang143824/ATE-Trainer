@@ -1,0 +1,30 @@
+{
+  "event": "self_check",
+  "status": "pass",
+  "stage": "STRATEGY",
+  "tm": "TM106",
+  "validator": "python scripts/validate_strategy_contract.py",
+  "result": "PASS",
+  "contractSha256": "68bce392e8d197fca137c53457e48e78942fd55363561f24cba093008a5306a2",
+  "manifest": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm106-ptc\\input-manifest.json",
+  "expectedMonitor": "nQON",
+  "resolvedFindings": [
+    "TM106-METHOD-K13-001",
+    "TM106-METHOD-K65-001"
+  ],
+  "relayFlowAudit": {
+    "eightStepsCompleted": true,
+    "pathRequiredOnRelayUnion": [],
+    "functionalRelayUnion": [
+      13,
+      65
+    ],
+    "setOnRelayUnion": [
+      13,
+      65
+    ],
+    "rampCapExcluded": 5,
+    "p2pExcluded": true,
+    "newMissingRelay": false
+  }
+}

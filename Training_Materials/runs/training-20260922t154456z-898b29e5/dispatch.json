@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "kind": "ptc-training-dispatch",
+  "runId": "training-20260922t154456z-898b29e5",
+  "profileId": "ptc-dft-expert",
+  "profileSource": "draft-snapshot",
+  "testItems": [
+    "TM109"
+  ],
+  "label": "PTC training dft expert [TM109] training-20260922t154456z-898b29e5",
+  "parentSessionId": "session-ptc-training-parent-training-20260922t154456z-898b29e5",
+  "childSessionId": "dfbf854e-46f4-4503-bef4-4855e2455f6a",
+  "addressBook": {
+    "reads": "Training_Materials/runs/training-20260922t154456z-898b29e5/input",
+    "writes": "Training_Materials/runs/training-20260922t154456z-898b29e5/input-sync/dft",
+    "verification": "Training_Materials/runs/training-20260922t154456z-898b29e5/verification"
+  },
+  "materialCacheKey": "7e746c78dd4b428e0165b810d99a2412dbbdd19339d7cfcdbb0e90e77233eeb1",
+  "createdAt": "2026-09-22T15:45:03.945Z",
+  "dispatchedAt": "2026-09-22T15:45:04.012Z",
+  "executionStatus": "closed",
+  "closedAt": "2026-09-22T15:50:03.970Z",
+  "closeReason": "training execution exceeded 300000 ms",
+  "digest": "5b51017a7ce67d09afc954e963d508ea7b2f99d57b0352cc18cbcc420dbbee2c"
+}

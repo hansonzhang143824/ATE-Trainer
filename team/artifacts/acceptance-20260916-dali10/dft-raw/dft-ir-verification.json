@@ -1,0 +1,736 @@
+{
+ "runId": "acceptance-20260916-dali10",
+ "artifact": "team/artifacts/acceptance-20260916-dali10/dft-ir.json",
+ "artifactSha256": "d8f900a41e6a30f2c7022a881f5636a652c0fe0a6189e0d42aeb43fe1388a31b",
+ "checkedAt": "2026-09-16T15:32:11+08:00",
+ "checkCount": 145,
+ "passed": 144,
+ "failed": 1,
+ "checks": [
+  {
+   "check": "scope==items (order and content)",
+   "status": "passed",
+   "detail": "['TM000', 'TM001', 'TM102', 'TM103', 'TM108', 'TM109', 'TM135', 'TM600', 'TM601', 'TM1205'] vs ['TM000', 'TM001', 'TM102', 'TM103', 'TM108', 'TM109', 'TM135', 'TM600', 'TM601', 'TM1205']"
+  },
+  {
+   "check": "scope has 10 unique entries",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "every scope tm matches pattern TM[0-9]+",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM000 has >=1 evidence",
+   "status": "passed",
+   "detail": "5 evidence entries"
+  },
+  {
+   "check": "TM000 has >=1 measurement",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM000 has testType in schema enum",
+   "status": "passed",
+   "detail": "normal,grouped"
+  },
+  {
+   "check": "TM000 has confidence",
+   "status": "passed",
+   "detail": "high"
+  },
+  {
+   "check": "TM000 has limits or an explicit no-limit statement",
+   "status": "passed",
+   "detail": "1 limits"
+  },
+  {
+   "check": "TM000 all evidence has sha256",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM001 has >=1 evidence",
+   "status": "passed",
+   "detail": "6 evidence entries"
+  },
+  {
+   "check": "TM001 has >=1 measurement",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM001 has testType in schema enum",
+   "status": "passed",
+   "detail": "normal,grouped"
+  },
+  {
+   "check": "TM001 has confidence",
+   "status": "passed",
+   "detail": "medium"
+  },
+  {
+   "check": "TM001 has limits or an explicit no-limit statement",
+   "status": "passed",
+   "detail": "1 limits"
+  },
+  {
+   "check": "TM001 all evidence has sha256",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM102 has >=1 evidence",
+   "status": "passed",
+   "detail": "5 evidence entries"
+  },
+  {
+   "check": "TM102 has >=1 measurement",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM102 has testType in schema enum",
+   "status": "passed",
+   "detail": "normal"
+  },
+  {
+   "check": "TM102 has confidence",
+   "status": "passed",
+   "detail": "high"
+  },
+  {
+   "check": "TM102 has limits or an explicit no-limit statement",
+   "status": "passed",
+   "detail": "1 limits"
+  },
+  {
+   "check": "TM102 all evidence has sha256",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM103 has >=1 evidence",
+   "status": "passed",
+   "detail": "5 evidence entries"
+  },
+  {
+   "check": "TM103 has >=1 measurement",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM103 has testType in schema enum",
+   "status": "passed",
+   "detail": "normal"
+  },
+  {
+   "check": "TM103 has confidence",
+   "status": "passed",
+   "detail": "high"
+  },
+  {
+   "check": "TM103 has limits or an explicit no-limit statement",
+   "status": "passed",
+   "detail": "1 limits"
+  },
+  {
+   "check": "TM103 all evidence has sha256",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM108 has >=1 evidence",
+   "status": "passed",
+   "detail": "6 evidence entries"
+  },
+  {
+   "check": "TM108 has >=1 measurement",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM108 has testType in schema enum",
+   "status": "passed",
+   "detail": "toggle,grouped"
+  },
+  {
+   "check": "TM108 has confidence",
+   "status": "passed",
+   "detail": "high"
+  },
+  {
+   "check": "TM108 has limits or an explicit no-limit statement",
+   "status": "passed",
+   "detail": "2 limits"
+  },
+  {
+   "check": "TM108 all evidence has sha256",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM109 has >=1 evidence",
+   "status": "passed",
+   "detail": "6 evidence entries"
+  },
+  {
+   "check": "TM109 has >=1 measurement",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM109 has testType in schema enum",
+   "status": "passed",
+   "detail": "toggle"
+  },
+  {
+   "check": "TM109 has confidence",
+   "status": "passed",
+   "detail": "high"
+  },
+  {
+   "check": "TM109 has limits or an explicit no-limit statement",
+   "status": "passed",
+   "detail": "2 limits"
+  },
+  {
+   "check": "TM109 all evidence has sha256",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM135 has >=1 evidence",
+   "status": "passed",
+   "detail": "6 evidence entries"
+  },
+  {
+   "check": "TM135 has >=1 measurement",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM135 has testType in schema enum",
+   "status": "passed",
+   "detail": "trim"
+  },
+  {
+   "check": "TM135 has confidence",
+   "status": "passed",
+   "detail": "high"
+  },
+  {
+   "check": "TM135 has limits or an explicit no-limit statement",
+   "status": "passed",
+   "detail": "1 limits"
+  },
+  {
+   "check": "TM135 all evidence has sha256",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM600 has >=1 evidence",
+   "status": "passed",
+   "detail": "7 evidence entries"
+  },
+  {
+   "check": "TM600 has >=1 measurement",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM600 has testType in schema enum",
+   "status": "passed",
+   "detail": "normal,high-current,differential"
+  },
+  {
+   "check": "TM600 has confidence",
+   "status": "passed",
+   "detail": "medium"
+  },
+  {
+   "check": "TM600 has limits or an explicit no-limit statement",
+   "status": "passed",
+   "detail": "2 limits"
+  },
+  {
+   "check": "TM600 all evidence has sha256",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM601 has >=1 evidence",
+   "status": "passed",
+   "detail": "7 evidence entries"
+  },
+  {
+   "check": "TM601 has >=1 measurement",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM601 has testType in schema enum",
+   "status": "passed",
+   "detail": "normal,high-current,differential"
+  },
+  {
+   "check": "TM601 has confidence",
+   "status": "passed",
+   "detail": "medium"
+  },
+  {
+   "check": "TM601 has limits or an explicit no-limit statement",
+   "status": "passed",
+   "detail": "2 limits"
+  },
+  {
+   "check": "TM601 all evidence has sha256",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM1205 has >=1 evidence",
+   "status": "passed",
+   "detail": "7 evidence entries"
+  },
+  {
+   "check": "TM1205 has >=1 measurement",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM1205 has testType in schema enum",
+   "status": "passed",
+   "detail": "toggle,differential,awg,grouped"
+  },
+  {
+   "check": "TM1205 has confidence",
+   "status": "passed",
+   "detail": "high"
+  },
+  {
+   "check": "TM1205 has limits or an explicit no-limit statement",
+   "status": "passed",
+   "detail": "1 limits"
+  },
+  {
+   "check": "TM1205 all evidence has sha256",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "test.cpp contains no TM600",
+   "status": "passed",
+   "detail": "count=0"
+  },
+  {
+   "check": "test.cpp contains no TM601",
+   "status": "passed",
+   "detail": "count=0"
+  },
+  {
+   "check": "test.cpp contains no RDSON",
+   "status": "passed",
+   "detail": "count=0"
+  },
+  {
+   "check": "test.cpp contains no RDS",
+   "status": "passed",
+   "detail": "count=0"
+  },
+  {
+   "check": "sub.cpp contains no RDSON",
+   "status": "passed",
+   "detail": "count=0"
+  },
+  {
+   "check": "DUT_API count is 105",
+   "status": "passed",
+   "detail": "105"
+  },
+  {
+   "check": "devel and debug test.cpp are byte-identical",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "every blocker/high conflict has a blockingDecision",
+   "status": "passed",
+   "detail": "missing=[]"
+  },
+  {
+   "check": "all cited evidence paths exist",
+   "status": "passed",
+   "detail": "[]"
+  },
+  {
+   "check": "limitConflictPairs covers TM600 and TM601",
+   "status": "passed",
+   "detail": "['TM600', 'TM601']"
+  },
+  {
+   "check": "TM600 pair keeps both values verbatim (11 vs 10)",
+   "status": "passed",
+   "detail": "overview=11 csv=10"
+  },
+  {
+   "check": "TM601 pair keeps both values verbatim (7.5 vs 8)",
+   "status": "passed",
+   "detail": "overview=7.5 csv=8"
+  },
+  {
+   "check": "each pair carries its own locator",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "DFT.csv unit strings preserved as in the source (mohm)",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "OVERVIEW unit preserved as mΩ",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "no-fold policy declared (values retained in both slots)",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "pendingUserAdjudication has PA-01 and PA-02, both resolved",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "ruled limits are OVERVIEW 11 / 7.5 mΩ with the DFT.csv alternatives retained",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "DFT.csv plaintext anchor present (sha256 + size)",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "xlsx plaintext anchor present (sha256 + size)",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "reg_config tm600.sv / tm601.sv anchors present with sizes",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "hashConvention declares plaintext anchoring",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "symbols ruled as TM600_HS_RDSON / TM601_LS_RDSON",
+   "status": "passed",
+   "detail": "{'TM000': 'TM000_IQ_STANDBY', 'TM001': 'TM001_IIN_SUSPEND', 'TM102': 'TM102_HSKP_LP_ATEST0', 'TM103': 'TM103_HSKP_LP_HR_0P5U', 'TM108': 'TM108_HSKP_VAC1_PRST', 'TM109': 'TM109_HSKP_VAC2_PRST', 'TM135': 'Trim_BG_RES_DIV', 'TM600': 'TM600_HS_RDSON', 'TM601': 'TM601_LS_RDSON', 'TM1205': 'TM1205_TRX_BST_UV_GD'}"
+  },
+  {
+   "check": "captainRulings CR-01 cites gen_testitems_meta.py:91",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM600 MV&MI requirement records force + simultaneous Kelvin sense",
+   "status": "passed",
+   "detail": "force=['PMID (High)', 'SW (Low)'] sense=['PMID', 'SW']"
+  },
+  {
+   "check": "TM601 MV&MI requirement records force + simultaneous Kelvin sense",
+   "status": "passed",
+   "detail": "force=['PGND (High)', 'SW (Low)'] sense=['PGND (High)', 'SW (Low)']"
+  },
+  {
+   "check": "C-01 annotated with 0-based record indices",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "openQuestions lead with the resolved PA-01/PA-02 (value + retained alternative named)",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM600 forceAndSense: ruled force pmid2sw and sense PMID-SW (same physical pair)",
+   "status": "passed",
+   "detail": "['PMID', 'SW']"
+  },
+  {
+   "check": "TM601 forceAndSense: ruled force sw2pgnd with PGND=High / SW=Low polarity",
+   "status": "passed",
+   "detail": "['PGND (High)', 'SW (Low)']"
+  },
+  {
+   "check": "TM601 earlier INCONSISTENT verdict is explicitly WITHDRAWN with the reason kept",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM601 .sv instrument pin documented as notation, not as the physical force pair",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM601 items.channels force entry matches the ruled pair with polarity",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "captainRulings includes CR-01..CR-06",
+   "status": "passed",
+   "detail": "['CR-01', 'CR-02', 'CR-03', 'CR-04', 'CR-05', 'CR-06']"
+  },
+  {
+   "check": "CR-02 records the user limit ruling with reason, scope and reopen condition",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "CR-03 records force/sense pairs + PGND-High polarity with fixture evidence",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "CR-04 records the .sv register mapping ruling with the 4-TM basis",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "CR-05 records the iset ramp-time ruling",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "CR-06 records FS-01 as resolved with fixture evidence",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM601 .sv force notation marked SUPERSEDED-BY-RULING while kept verbatim",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "TM601 force authorityChain keeps all four provenance layers",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "fixtureEvidence cites the 4 verified schematic-ir paths with relay sets",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "fixtureEvidence records the absent PGND-Low / SW-High counterparts",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "fixtureEvidence keeps the PMID paths as TM600-only",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "FS-01 resolution block present and marked non-blocking",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "DD-01 status is resolved (CR-05) and the 8 nV reasoning is retained",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "C-01 carries the captain confirmation that OVERVIEW gives no force value",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "BD-07 is explicitly kept open next to the force-magnitude note",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "evidencePreservation block declares what was never modified",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "limit pairs still carry the source units verbatim (mΩ / mohm) after all rulings",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "schematic-ir.json fixture evidence digest matches the file on disk",
+   "status": "failed",
+   "detail": "ir=a83110d99207 disk=9f4a7707fb0a"
+  },
+  {
+   "check": "DFT.csv TM601 1e-6 anomaly recorded as DD-01",
+   "status": "passed",
+   "detail": "['DD-01']"
+  },
+  {
+   "check": "DD-01 closed by ruling R-04 with the 8 nV reasoning retained",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "DD-01 records this task's independent 125-occurrence iset enumeration",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "C-01 disambiguates forced magnitude (1 A is the .sv value, not agreed)",
+   "status": "passed",
+   "detail": "The two sources do NOT agree on the forced magnitude either: OVERVIEW (rows 132/133) state"
+  },
+  {
+   "check": "C-03 carries independent 4-TM shipped-code corroboration",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "notices N-01 records hash history with a re-hash instruction",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "FS-01 and DD-01 are present in openQuestions",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "N-01 hash history keeps every released digest verbatim, oldest-first, current revision last",
+   "status": "passed",
+   "detail": "entries=5 last=CURRENT-REVISION"
+  },
+  {
+   "check": "N-01 declares why the current digest is not self-embedded (no unstable self-reference)",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "sidecar dft-ir-hashes.json deliverable.sha256 matches the live artifact digest",
+   "status": "passed",
+   "detail": "sidecar=d8f900a41e6a30f2 live=d8f900a41e6a30f2"
+  },
+  {
+   "check": "sidecar records the 4th hash-history entry consistently",
+   "status": "passed",
+   "detail": "sidecar is the authoritative digest source declared by N-01"
+  },
+  {
+   "check": "sidecar retains auxiliary block hashHistory",
+   "status": "passed",
+   "detail": "keys=deliverable,fixtureAnchor,generatedAt,hashHistory,lateRulingsNotInIR,notRebuilt,producedBy,provenanceCorrection,runId,runOutputHashes,sourceHashes,t9HandoffDisciplines,task,verificationReports,writeBoundary"
+  },
+  {
+   "check": "sidecar retains auxiliary block provenanceCorrection",
+   "status": "passed",
+   "detail": "keys=deliverable,fixtureAnchor,generatedAt,hashHistory,lateRulingsNotInIR,notRebuilt,producedBy,provenanceCorrection,runId,runOutputHashes,sourceHashes,t9HandoffDisciplines,task,verificationReports,writeBoundary"
+  },
+  {
+   "check": "sidecar retains auxiliary block lateRulingsNotInIR",
+   "status": "passed",
+   "detail": "keys=deliverable,fixtureAnchor,generatedAt,hashHistory,lateRulingsNotInIR,notRebuilt,producedBy,provenanceCorrection,runId,runOutputHashes,sourceHashes,t9HandoffDisciplines,task,verificationReports,writeBoundary"
+  },
+  {
+   "check": "sidecar retains auxiliary block notRebuilt",
+   "status": "passed",
+   "detail": "keys=deliverable,fixtureAnchor,generatedAt,hashHistory,lateRulingsNotInIR,notRebuilt,producedBy,provenanceCorrection,runId,runOutputHashes,sourceHashes,t9HandoffDisciplines,task,verificationReports,writeBoundary"
+  },
+  {
+   "check": "sidecar retains auxiliary block fixtureAnchor",
+   "status": "passed",
+   "detail": "keys=deliverable,fixtureAnchor,generatedAt,hashHistory,lateRulingsNotInIR,notRebuilt,producedBy,provenanceCorrection,runId,runOutputHashes,sourceHashes,t9HandoffDisciplines,task,verificationReports,writeBoundary"
+  },
+  {
+   "check": "sidecar retains auxiliary block verificationReports",
+   "status": "passed",
+   "detail": "keys=deliverable,fixtureAnchor,generatedAt,hashHistory,lateRulingsNotInIR,notRebuilt,producedBy,provenanceCorrection,runId,runOutputHashes,sourceHashes,t9HandoffDisciplines,task,verificationReports,writeBoundary"
+  },
+  {
+   "check": "sidecar lateRulingsNotInIR records BD-04 with the 4.4 V ruling",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "sidecar lateRulingsNotInIR records BD-05 with the provisional SetClamp(50,50) ruling",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "sidecar records the frozen-by-captain decision",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "rulingsApplied records R-01..R-05",
+   "status": "passed",
+   "detail": "['R-01', 'R-02', 'R-03', 'R-04', 'R-05']"
+  },
+  {
+   "check": "R-01 covers the limit rulings with the user as ruling authority",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "R-02 covers BD-03 and names the .sv mapping authoritative",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "R-03 covers BD-02 and restates the ruled force pairs",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "R-04 covers DD-01 (third field is ramp time)",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "R-05 records the BD-07 two-floating-node reading as an assumption",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "BD-01/BD-02/BD-03 are closed with a resolution record",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "BD-05/BD-06/BD-07 remain open",
+   "status": "passed",
+   "detail": "{'BD-05': 'open', 'BD-06': 'open', 'BD-07': 'open'}"
+  },
+  {
+   "check": "blockingDecisionsSummary matches the per-entry statuses",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "FS-01 is restated as a t2 question and marked not a t5 blocker",
+   "status": "passed",
+   "detail": ""
+  },
+  {
+   "check": "C-03 carries the ruling resolution (sv authoritative, DFT.csv superseded)",
+   "status": "passed",
+   "detail": ""
+  }
+ ]
+}

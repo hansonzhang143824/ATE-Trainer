@@ -1,0 +1,12 @@
+=== ① 账本：头部加 hashPolicy，并追加一条带双哈希的行 ===
+  meta 已加 hashPolicy → 942 B
+  已追加双哈希行 → 账本 4 行
+    live_sha256 = 38ba37b268e328158cddca66…
+    live_lf_sha256 = ce256e6e903e945804d40670…
+
+=== ② 纪律登记：加"双哈希"条 + 把 CRLF 归属写准 ===
+  已并入: 12322 B
+    含 ### 纪律 2·补：双哈希（bytes 与 LF-normalized 并列） True
+    含 LF-normalized          True
+    含 换行是序列化产物               True
+    含 属推断（非实测）               True

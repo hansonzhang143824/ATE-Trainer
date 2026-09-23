@@ -1,0 +1,234 @@
+# -*- coding: utf-8 -*-
+"""
+check_input_sync.py — 输入同步一致性门（流水线之前 · 有货先验的上游）
+
+定位:
+  在 Step0(sch-parse) 与 CBIT 的 dll mtime 门 **之前**, 先判「输入侧的派生文件是否与源同版本」。
+  - 全部匹配 → **什么都不用改**（no-op），直接进下游流程。
+  - 有不匹配 → 才重生成（本脚本只报「该重生成哪一项 + 命令」，不自己动手改产物）。
+
+两条版本链:
+  [DFT 组]  Dali_testmode.xlsx --(gen_testitems_meta.py)--> dali_tm_meta.json
+                              --(gen_test_conditions.py)--> test_conditions.yaml
+      ① DFT↔meta : meta._syncStamp.dftSha256 == sha256(DFT)
+      ② meta↔YAML: yaml._sync.metaSha256     == sha256(meta)
+  [SCH 组]  Dali-SCH.csv --(csv_schematic_adapter_v2 + sch_parse)--> SCH-Connect-Map.txt
+                                                                 └-> Component-Statistic.txt
+      ③ csv↔map↔statistic : validation_manifest.json.txt 的
+           input.sha256 / artifacts.sch_connect_map_sha256 / artifacts.component_statistic_sha256
+           == 当前实算（三项全等才算同版本）
+
+判定状态:
+  MATCH     版本一致（下游可放心沿用）
+  DRIFT     源已变、派生文件落后 → 需重生成
+  NO-STAMP  派生文件无版本记录（老产物）→ 需重生成以建立基线
+  MISSING   文件缺失
+
+退出码: 0 = 全部 MATCH（无需修改）; 1 = 有 DRIFT / NO-STAMP / MISSING
+
+用法:
+  python check_input_sync.py [--config <json>] [--json]
+"""
+
+import json
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import proj_config
+
+
+def _sha(path):
+    """sha256 大写（与 csv_*_v2 侧 .hexdigest().upper() 对齐）；缺失返回 None。"""
+    v = proj_config.sha256_file(path)
+    return v.upper() if v else None
+
+
+def _read_json(path):
+    if not path or not os.path.isfile(path):
+        return None
+    with open(path, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+
+def _read_yaml_sync(path):
+    """只读 YAML 顶层 _sync 块（不引 yaml 依赖，认本平台 emit 的固定缩进格式）。
+
+    返回 (metaSha256, dftSha256)；文件或块缺失 → (None, None)。
+    """
+    if not path or not os.path.isfile(path):
+        return None, None
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            lines = f.read().splitlines()
+    except Exception:
+        return None, None
+    sync, in_sync = {}, False
+    for ln in lines:
+        if ln.startswith('_sync:'):
+            in_sync = True
+            continue
+        if in_sync:
+            if ln.startswith('  ') and ':' in ln:
+                k, v = ln.split(':', 1)
+                sync[k.strip()] = v.strip() or None
+            else:
+                break
+    return sync.get('metaSha256'), sync.get('dftSha256')
+
+
+def _cmp(expect, actual):
+    if expect is None:
+        return 'NO-STAMP'
+    if actual is None:
+        return 'MISSING'
+    return 'MATCH' if str(expect).upper() == str(actual).upper() else 'DRIFT'
+
+
+def check_dft_group(cfg):
+    """DFT 组: xlsx → meta → yaml"""
+    dft = cfg['inputs']['dft']
+    meta_p = cfg['outputs']['meta']
+    yaml_p = cfg['outputs'].get('test_conditions') or os.path.join(
+        cfg['project_dir'], 'meta', 'test_conditions.yaml')
+
+    dft_sha = _sha(dft)
+    meta = _read_json(meta_p)
+    meta_sha = _sha(meta_p)
+    y_meta_sha, y_dft_sha = _read_yaml_sync(yaml_p)
+
+    items = []
+
+    # ① DFT ↔ meta
+    if meta is None:
+        st, detail = 'MISSING', 'meta 文件不存在'
+    else:
+        stamp = meta.get('_syncStamp') or {}
+        st = _cmp(stamp.get('dftSha256'), dft_sha)
+        detail = 'meta._syncStamp.dftSha256 vs sha256(DFT)'
+    items.append({
+        'group': 'DFT', 'link': '① DFT↔meta', 'artifact': os.path.basename(meta_p),
+        'source': os.path.basename(dft), 'status': st, 'detail': detail,
+    })
+
+    # ② meta ↔ YAML
+    if not os.path.isfile(yaml_p):
+        st, detail = 'MISSING', 'yaml 文件不存在'
+    else:
+        st = _cmp(y_meta_sha, meta_sha)
+        detail = 'yaml._sync.metaSha256 vs sha256(meta)'
+    items.append({
+        'group': 'DFT', 'link': '② meta↔YAML', 'artifact': os.path.basename(yaml_p),
+        'source': os.path.basename(meta_p), 'status': st, 'detail': detail,
+    })
+
+    # ③ 三者的共同 DFT 版本（串起来看: yaml 里带的 dftSha256 也应等于当前 DFT）
+    if os.path.isfile(yaml_p) and y_dft_sha:
+        st = _cmp(y_dft_sha, dft_sha)
+        items.append({
+            'group': 'DFT', 'link': '③ YAML↔DFT', 'artifact': os.path.basename(yaml_p),
+            'source': os.path.basename(dft),
+            'status': st, 'detail': 'yaml._sync.dftSha256 vs sha256(DFT) (跨 meta 追溯一致性)',
+        })
+
+    return items
+
+
+def check_sch_group(cfg):
+    """SCH 组: csv → map + statistic（以 validation_manifest.json.txt 为版本记录）"""
+    csv_p = cfg['inputs']['csv_schematic']
+    map_p = cfg['intermediates']['sch_connect_map']
+    stat_p = cfg['intermediates']['component_statistic']
+    man_p = cfg['intermediates'].get('sch_validation_manifest') or os.path.join(
+        cfg['project_dir'], 'validation_manifest.json.txt')
+
+    man = _read_json(man_p)
+    items = []
+
+    if man is None:
+        for art, src in ((map_p, csv_p), (stat_p, csv_p)):
+            items.append({
+                'group': 'SCH', 'link': 'csv↔产物', 'artifact': os.path.basename(art),
+                'source': os.path.basename(src), 'status': 'NO-STAMP',
+                'detail': 'manifest 缺失 → 无版本记录',
+            })
+        return items
+
+    inp = man.get('input') or {}
+    arts = man.get('artifacts') or {}
+
+    # ③a csv: manifest 记录的输入哈希 vs 当前
+    items.append({
+        'group': 'SCH', 'link': '③ csv(manifest)', 'artifact': os.path.basename(man_p),
+        'source': os.path.basename(csv_p),
+        'status': _cmp(inp.get('sha256'), _sha(csv_p)),
+        'detail': 'manifest.input.sha256 vs sha256(csv)',
+    })
+    # ③b/c 产物: manifest 记录的产物哈希 vs 当前
+    for key, art, label in (('sch_connect_map_sha256', map_p, 'map'),
+                            ('component_statistic_sha256', stat_p, 'statistic')):
+        items.append({
+            'group': 'SCH', 'link': '③ %s(产物)' % label, 'artifact': os.path.basename(art),
+            'source': os.path.basename(csv_p),
+            'status': _cmp(arts.get(key), _sha(art)),
+            'detail': 'manifest.artifacts.%s vs sha256(产物)' % key,
+        })
+
+    return items
+
+
+def main():
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except AttributeError:
+        pass
+    args = sys.argv[1:]
+    as_json = '--json' in args
+    cfg = proj_config.load(proj_config.config_from_argv(args))
+
+    items = check_dft_group(cfg) + check_sch_group(cfg)
+
+    bad = [i for i in items if i['status'] != 'MATCH']
+    in_sync = not bad
+
+    if as_json:
+        print(json.dumps({'inSync': in_sync, 'items': items}, ensure_ascii=False, indent=2))
+        return 0 if in_sync else 1
+
+    print('=' * 72)
+    print('INPUT SYNC — 输入同步一致性门 (流水线之前)')
+    print('=' * 72)
+    cur = None
+    for i in items:
+        if i['group'] != cur:
+            cur = i['group']
+            print('\n[%s 组]  %s → 派生产物' % (cur, i['source']))
+        mark = {'MATCH': 'OK  ', 'DRIFT': 'DRIFT', 'NO-STAMP': 'NOSTM', 'MISSING': 'MISS '}[i['status']]
+        print('  [%s] %-16s %-28s  %s' % (mark, i['link'], i['artifact'], i['detail']))
+
+    print('\n' + '-' * 72)
+    if in_sync:
+        print('INPUT SYNC: **IN SYNC** — 输入与派生文件全部同版本, 无需修改任何产物。')
+        print('            (可直接进 Step0/CBIT-Definition/生成循环; 跳过一切重生成)')
+        print('-' * 72)
+        return 0
+
+    print('INPUT SYNC: **OUT OF SYNC** — %d 项需处理:' % len(bad))
+    for i in bad:
+        print('  - [%s] %s / %s  (%s)' % (i['status'], i['group'], i['artifact'], i['detail']))
+    groups = sorted({i['group'] for i in bad})
+    print('\n重生成命令:')
+    if 'DFT' in groups:
+        print('  # DFT 组 (先 meta 后 YAML, 顺序不可反)')
+        print('  python scripts/gen_testitems_meta.py')
+        print('  python scripts/gen_test_conditions.py')
+    if 'SCH' in groups:
+        print('  # SCH 组 (csv → 合成EDIF → map/statistic + manifest)')
+        print('  python scripts/schematic_parse/scripts/run_hardware_parse.py')
+    print('重新生成后复跑本门: python scripts/check_input_sync.py')
+    print('-' * 72)
+    return 1
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

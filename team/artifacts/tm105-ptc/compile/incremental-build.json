@@ -1,0 +1,11 @@
+{
+  "stage": "COMPILE",
+  "mode": "incremental",
+  "timeoutSeconds": 10.0,
+  "source": "D:\\PROJECT6-DALI\\ForCodexDebug\\source\\test.cpp",
+  "exitCode": 1,
+  "elapsedSeconds": 9.028,
+  "stdout": "\n>>> Step 0: 编译前保存 VS 文档\n  OK: VS12.0 (DTE) 已保存所有打开的文档\n\n>>> Step 1: 解析工程路径\n  OK: 解决方案: D:\\PROJECT6-DALI\\ForCodexDebug\\source\\F12011.sln\n  OK: MSBuild: C:\\Program Files (x86)\\MSBuild\\12.0\\Bin\\MSBuild.exe\n  OK: PlatformToolset: v120\n\n>>> 构建 [Release]  target=Build  platform=Win32\n  ERROR: Release FAILED (exit=1, errors=2)\n  test.obj : error LNK2019: unresolved external symbol \"void __cdecl measure_mnt_v1p2_buf(class TRIM_NODE *,enum TREG_MEASURE_FLAG,double *)\" (?measure_mnt_v1p2_buf@@YAXPAVTRIM_NODE@@W4TREG_MEASURE_FLAG@@PAN@Z) referenced in function _TM425_VREF_1P2V_BUF [D:\\PROJECT6-DALI\\ForCodexDebug\\source\\F12011.vcxproj]\n  ..\\F12011.dll : fatal error LNK1120: 1 unresolved externals [D:\\PROJECT6-DALI\\ForCodexDebug\\source\\F12011.vcxproj]\n  ERROR: 构建失败, 总耗时 7.6s\n",
+  "stderr": "",
+  "sourceSha256": "2ed19d63e8d761efcfbf7eaf187ee4e36e9a492bc965c94759e568dd7ff2c90c"
+}

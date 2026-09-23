@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PTC DFT Expert output contract",
+  "description": "Mirrors the fields scripts/validate_dft_outputs.py actually enforces, so the expert's declared contract and the gate cannot drift apart silently.",
+  "type": "object",
+  "required": ["tm", "sourceSha256", "rawIntent", "testCondition"],
+  "additionalProperties": true,
+  "properties": {
+    "tm": { "type": "string", "pattern": "^TM[0-9]+$" },
+    "sourceSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "rawIntent": { "type": "object", "description": "field-for-field copy of the canonical OVERVIEW row" },
+    "testCondition": {
+      "type": "object",
+      "required": [
+        "identity", "remarks", "expectedValue", "isTrim", "powerSequence", "staticPower",
+        "directPowerActions", "hasRamp", "ramps", "helperIntent", "scanIntent", "dynamicPins",
+        "highCurrent", "differentialVoltage", "internalComparison", "involvedPins",
+        "measurement", "registerFieldIntent", "referenceValue", "notes"
+      ]
+    }
+  },
+  "x-artifacts": [
+    "project/DALI/Output_Global_Material/dft/<TM>/dft-meta.json",
+    "project/DALI/Output_Global_Material/dft/<TM>/dft-conditions.yaml",
+    "project/DALI/Output_Global_Material/dft/<TM>/dft-semantic-review.json"
+  ],
+  "x-semantic-review": {
+    "type": "object",
+    "required": ["tm", "verdict", "readSources", "reviewedArtifacts"],
+    "verdict": "PASS",
+    "readSourcesItem": { "sha256": "^[a-f0-9]{64}$", "withinInputRoot": true }
+  }
+}

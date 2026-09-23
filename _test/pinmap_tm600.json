@@ -1,0 +1,11 @@
+{
+  "pinMap": {
+    "PMID": {"object": "PMID_FOVI", "type": "FXVIe_PLUS"},
+    "SW": {"object": "SW_ACM", "type": "ACM200"},
+    "BST": {"object": "BTST_ACM", "type": "ACM200"},
+    "VBAT": {"object": "VBAT_ACM", "type": "ACM200"},
+    "VDRV": {"object": "VDRV_AMP_ACM", "type": "ACM200"},
+    "FPVI": {"object": "FPVI", "type": "FPVIe"}
+  },
+  "currentLimit": {"VBAT": 0.05, "VDRV": 0.05, "SW": 0.05}
+}

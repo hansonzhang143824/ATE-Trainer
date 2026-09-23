@@ -1,0 +1,13 @@
+{
+  "artifact": "team/artifacts/tm109-direct-trial/strategy/tm109-resource-config-contract.json",
+  "beforeSha256": "9669bc01c49d7aeb11bca9085ae4ce0f1a611f21e287cf788c0bb379e39a8efd",
+  "afterSha256": "a22502ece50f321312a466b77cfef5a40efe8f9a41995f7ee8af3b44048107e2",
+  "backup": "team/artifacts/tm109-direct-trial/strategy/backup/tm109-resource-config-contract.before-int-allocation.json",
+  "change": "RA-3 and RG-3 now select ACM200 S5 ch15 for INT; K102 stays un-actuated. Method details remain deferred.",
+  "evidence": [
+    "team/ROLE_ROUTING.md:8",
+    "knowledge/hardware/pin-resource-map.md INT / SDA -> SDA_INT_ACM -> ACM200",
+    "SCH-Connect-Map.json source-centric ACM200 ch15 reaches INT_F_S1 and INT_S_S1"
+  ],
+  "timestampUtc": "2026-09-17T14:53:48.515739+00:00"
+}

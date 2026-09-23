@@ -1,0 +1,20 @@
+schemaVersion: 1
+id: ptc-schematic-expert
+displayName: PTC Schematic Expert
+presetId: ptc-schematic-expert
+executionClass: input-schematic
+stage: INPUT_SYNC
+ownerRole: schematic-expert
+# TM-less on purpose: the schematic product is ONE shared artifact set for the
+# whole batch, not one folder per test mode.
+runtimeLabel: PTC schematic expert
+readable:
+  - project/DALI/Input_GlobalMaterial/Dali-SCH.csv
+  - project/DALI/Input_GlobalMaterial/sch_confirmed.json
+  - project/DALI/Input_GlobalMaterial/CBIT表-DALI.xlsx
+  - project/DALI/Output_Global_Material/schematic
+writable:
+  - project/DALI/Output_Global_Material/schematic
+  - project/DALI/ErrorLog/schematic-expert.log
+requiredGates:
+  - scripts/validate_schematic_outputs.py

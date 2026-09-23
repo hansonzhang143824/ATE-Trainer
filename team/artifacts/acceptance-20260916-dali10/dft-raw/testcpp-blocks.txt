@@ -1,0 +1,1256 @@
+test.cpp sha256=5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317 encoding=utf-8-sig lines=8878
+
+==============================================================================================================
+### TM000_IQ_STANDBY : lines 1350-1425
+
+
+// =====================================================================
+// TM000: Top Iq_Standby (MI) — 待机模式静态电流
+// 合并: TM000 (w/o VAC_PLUG, ~22uA) + TM000_1 (w/i VAC_PLUG, ~31.5uA)
+// 流程: VBAT=4.4V 上电 → field APORT 开关 → 测 I(VBAT)
+// 闭环: VBAT_PD3_FXVI (FXVIe_PLUS S3_5, K8 默认NC直连)
+// =====================================================================
+DUT_API int TM000_IQ_STANDBY(short funcindex, LPCTSTR funclabel)
+{
+    //{{AFX_STS_PARAM_PROTOTYPES
+    CParam *Iq_Standby      = StsGetParam(funcindex, "Iq_Standby");
+    CParam *Iq_Standby_PLUG = StsGetParam(funcindex, "Iq_Standby_PLUG");
+    //}}AFX_STS_PARAM_PROTOTYPES
+
+    double iq_standby[SITE_NUM]      = { 0 };
+    double iq_standby_plug[SITE_NUM] = { 0 };
+
+    // ====== Step 1: Connect (继电器闭合) ======
+    // VBAT → VBAT_PD3_FXVI: K8 默认NC直连, 无需闭合继电器
+    // SetOn(-1): 仅关闭列表中的继电器(此处为空) → 全部释放, 干净起点
+    cbite.SetOn(-1);
+    delay_ms(3);
+
+    // ====== Step 2: Power On (上电) ======
+    // vset[vbat,4.4,100e-6,0] → VBAT=4.4V FV
+    // 电压量程 10V (≥2×4.4=8.8V), 电流量程 100UA (≥2×31.5uA)
+    // R-PON-09: 电流<100uA → 100MA 大量程上电稳定500us 后切测量量程
+    VBAT_PD3_FXVI.Set(FV, 4.4, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    delay_us(500);
+    VBAT_PD3_FXVI.Set(FV, 4.4, FXVIe_PLUS_10V, FXVIe_PLUS_100UA, FXVIe_PLUS_RELAY_ON);
+    delay_ms(1);
+
+    // ====== Step 3: Register Config (寄存器配置) ======
+    // (DFT 无 en_tm[] — DUT 默认处于 sleep 模式, 无需进入测试模式)
+
+    // ====== Step 4: Measure (逐参数配置寄存器 + 测量) ======
+
+    // --- TM000: Iq_Standby w/o VAC_PLUG (MI) ---
+    // field[(VAC1_APORT_DET_ENABLE,0),(VAC2_APORT_DET_ENABLE,0),(VAC_SNK_DET_SEL,0)]
+    //   → VAC1/2 APORT 检测关闭, VAC_PLUG 模块不唤醒
+    // 0x07: bit1=VAC1_APORT_DET_ENABLE, bit2=VAC2_APORT_DET_ENABLE, bit0=VAC_SNK_DET_SEL
+    // (位映射推导自 TM210~213 reg_config, 待寄存器地图复核)
+    entertestmode();  // 配寄存器前必须解锁（2026-09-13 规则: 只要配寄存器一律加, 不看 DFT en_tm[]）
+    I2CWriteSameData(DEV_ADDR, 0x07, 0x00);  // Write reg 0x07 = 0 (APORT 全关)
+    delay_ms(10);  // delay[10e-3] 稳定后测 I(VBAT)
+    VBAT_PD3_FXVI.MeasureVI(50, 5);
+    FOR_EACH_VALID_SITE(site)
+    {
+        iq_standby[site] = VBAT_PD3_FXVI.GetMeasResult(site, MIRET) * 1e6;  // A -> uA (DFT Unit=uA)
+    }
+
+    // --- TM000_1: Iq_Standby w/i VAC_PLUG (MI) ---
+    // field[(VAC1_APORT_DET_ENABLE,1),(VAC2_APORT_DET_ENABLE,1),(VAC_SNK_DET_SEL,0)]
+    //   → VAC1/2 APORT 检测使能, VAC_PLUG 模块唤醒
+    I2CWriteSameData(DEV_ADDR, 0x07, 0x06);  // Write reg 0x07 = 6 (bit1|bit2 使能)
+    delay_ms(10);
+    VBAT_PD3_FXVI.MeasureVI(50, 5);
+    FOR_EACH_VALID_SITE(site)
+    {
+        iq_standby_plug[site] = VBAT_PD3_FXVI.GetMeasResult(site, MIRET) * 1e6;  // A -> uA (DFT Unit=uA)
+    }
+
+    // ====== Step 5: Power Off (三步下电) ======
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100UA, FXVIe_PLUS_RELAY_ON);
+    delay_ms(1);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+
+    // ====== Step 6: LogData ======
+    FOR_EACH_VALID_SITE(site)
+    {
+        Iq_Standby->SetTestResult(site, 0, iq_standby[site]);
+        Iq_Standby_PLUG->SetTestResult(site, 0, iq_standby_plug[site]);
+    }
+    return 0;
+}
+
+==============================================================================================================
+### TM001_IIN_SUSPEND : lines 1425-1478
+
+
+// =====================================================================
+// TM001: Top Iin_Suspend — 挂起模式静态电流 (MI)
+// 期望: ~1.118mA (WAKE_UP=1 + AC1_GATE_ON=1)
+// 闭环: VBAT_PD3_FXVI (FXVIe_PLUS S3_5, K8 默认NC直连)
+// =====================================================================
+DUT_API int TM001_IIN_SUSPEND(short funcindex, LPCTSTR funclabel)
+{
+    //{{AFX_STS_PARAM_PROTOTYPES
+    CParam *Iin_Suspend = StsGetParam(funcindex, "Iin_Suspend");
+    //}}AFX_STS_PARAM_PROTOTYPES
+
+    double iin_suspend[SITE_NUM] = { 0 };
+
+    // ====== Step 1: Connect ======
+    // VBAT → VBAT_PD3_FXVI: K8 默认NC直连; 无需其他继电器
+    cbite.SetOn(-1);
+    delay_ms(3);
+
+    // ====== Step 2: Power On ======
+    // vset[vbat,3.7,100e-6,0] → VBAT=3.7V FV
+    // 电压量程 10V (≥2×3.7=7.4V), 电流量程 10MA (≥2×1.118mA)
+    VBAT_PD3_FXVI.Set(FV, 3.7, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_ON);
+    delay_ms(1);
+
+    // ====== Step 3: Register Config ======
+    // en_tm[] → 进入测试模式
+    entertestmode();
+    // field[(WAKE_UP,1),(AC1_GATE_ON,1)] → 唤醒 + AC1 gate 打开
+    // WAKE_UP=1 → 0x10 bit0 (AI.cpp 全部唤醒函数统一写 0x10=0x43)
+    I2CWriteSameData(DEV_ADDR, 0x10, 0x43);  // Write reg 0x10 = 67 (WAKE_UP=1)
+    // TODO: AC1_GATE_ON 位未知 (AI.cpp 无 reg_config, 待寄存器地图确认)
+
+    // ====== Step 4: Measure (MI) ======
+    delay_ms(10);  // delay[10e-3] 稳定后测 I(VBAT)
+    VBAT_PD3_FXVI.MeasureVI(50, 5);
+    FOR_EACH_VALID_SITE(site)
+    {
+        iin_suspend[site] = VBAT_PD3_FXVI.GetMeasResult(site, MIRET) * 1e3;  // A -> mA (spec 预期 1.118mA)
+    }
+
+    // ====== Step 5: Power Off ======
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_ON);
+    delay_ms(1);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+
+    // ====== Step 6: LogData ======
+    FOR_EACH_VALID_SITE(site)
+    {
+        Iin_Suspend->SetTestResult(site, 0, iin_suspend[site]);
+    }
+    return 0;
+}
+
+==============================================================================================================
+### TM001_2_IQ_SHIPMODE : lines 1478-1538
+
+
+// =====================================================================
+// TM001_2: Top Iq_Shipmode — 船运模式静态电流 (MI)
+// 流程: VBAT=3.7V + VAC1=5V 上电 → en_tm + SHIPMODE_EN=1 → VAC1=0 → 等60ms → 测 I(VBAT)
+// 闭环: VBAT_PD3_FXVI (S3_5) + VAC123_AMUX_ACM (S5_0, K18/K19默认NC→VAC1)
+// =====================================================================
+DUT_API int TM001_2_IQ_SHIPMODE(short funcindex, LPCTSTR funclabel)
+{
+    //{{AFX_STS_PARAM_PROTOTYPES
+    CParam *Iq_Shipmode = StsGetParam(funcindex, "Iq_Shipmode");
+    //}}AFX_STS_PARAM_PROTOTYPES
+
+    double iq_shipmode[SITE_NUM] = { 0 };
+
+    // ====== Step 1: Connect ======
+    // VBAT → VBAT_PD3_FXVI: K8 默认NC; VAC1 → VAC123_AMUX_ACM: K18/K19默认NC
+    // +K21_VAC_Cap → VAC1 供电稳定; ⚠K13_VBAT_Cap 严禁闭合(Iq测量)
+    cbite.SetOn(K21_VAC_Cap, -1);
+    delay_ms(3);
+
+    // ====== Step 2: Power On ======
+    // vset[vbat,3.7,100e-6,0] → VBAT=3.7V
+    // R-PON-09: 电流<100uA → 100MA 大量程上电稳定500us 后切测量量程
+    VBAT_PD3_FXVI.Set(FV, 3.7, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    delay_us(500);
+    VBAT_PD3_FXVI.Set(FV, 3.7, FXVIe_PLUS_10V, FXVIe_PLUS_100UA, FXVIe_PLUS_RELAY_ON);
+    // vset[vac1,5,100e-6,0] → VAC1=5V (量程 10V ≥2×5)
+    VAC123_AMUX_ACM.Set(FV, 5, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);
+    delay_ms(1);
+
+    // ====== Step 3: Register Config ======
+    // en_tm[] → 进入测试模式
+    entertestmode();
+    I2CWriteSameData(DEV_ADDR, 0x29, 0x01);  // Write reg 0x29 = 1
+    // field[(SHIPMODE_EN,1)] → 进入 shipmode (reg_config/tm001_2.sv)
+
+    // ====== Step 4: Measure (MI) ======
+    // vset[vac1,0,100e-6,0] → VAC1 掉电
+    VAC123_AMUX_ACM.Set(FV, 0, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);
+    delay_ms(60);  // delay[60e-3] 等 shipmode 稳定后测 I(VBAT)
+    VBAT_PD3_FXVI.MeasureVI(50, 5);
+    FOR_EACH_VALID_SITE(site)
+    {
+        iq_shipmode[site] = VBAT_PD3_FXVI.GetMeasResult(site, MIRET) * 1e6;  // A -> uA (shipmode Iq 典型 uA 级)
+    }
+
+    // ====== Step 5: Power Off ======
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100UA, FXVIe_PLUS_RELAY_ON);
+    VAC123_AMUX_ACM.Set(FV, 0, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);
+    delay_ms(1);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+    VAC123_AMUX_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+
+    // ====== Step 6: LogData ======
+    FOR_EACH_VALID_SITE(site)
+    {
+        Iq_Shipmode->SetTestResult(site, 0, iq_shipmode[site]);
+    }
+    return 0;
+}
+
+==============================================================================================================
+### TM001_3_IQ_OPERATION : lines 1538-1591
+
+
+// =====================================================================
+// TM001_3: Top Iq_Operation — 工作模式 VBAT 静态电流 (MI)
+// DFT 备注: Covered by bench test (信息项, 生产可裁剪)
+// 闭环: VBAT_PD3_FXVI + VAC123_AMUX_ACM
+// =====================================================================
+DUT_API int TM001_3_IQ_OPERATION(short funcindex, LPCTSTR funclabel)
+{
+    //{{AFX_STS_PARAM_PROTOTYPES
+    CParam *Iq_Operation = StsGetParam(funcindex, "Iq_Operation");
+    //}}AFX_STS_PARAM_PROTOTYPES
+
+    double iq_operation[SITE_NUM] = { 0 };
+
+    // ====== Step 1: Connect ======
+    cbite.SetOn(K21_VAC_Cap, -1);
+    delay_ms(3);
+
+    // ====== Step 2: Power On ======
+    // vset[vbat,3.7,100e-6,0] → VBAT=3.7V
+    // R-PON-09: 电流<100uA → 100MA 大量程上电稳定500us 后切测量量程
+    VBAT_PD3_FXVI.Set(FV, 3.7, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    delay_us(500);
+    VBAT_PD3_FXVI.Set(FV, 3.7, FXVIe_PLUS_10V, FXVIe_PLUS_100UA, FXVIe_PLUS_RELAY_ON);
+    // vset[vac1,5,100e-6,0] → VAC1=5V
+    VAC123_AMUX_ACM.Set(FV, 5, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);
+    delay_ms(1);
+
+    // ====== Step 3: Register Config ======
+    // (DFT 无 en_tm[], 无 field[] 寄存器配置)
+
+    // ====== Step 4: Measure (MI) ======
+    delay_ms(10);
+    VBAT_PD3_FXVI.MeasureVI(50, 5);
+    FOR_EACH_VALID_SITE(site)
+    {
+        iq_operation[site] = VBAT_PD3_FXVI.GetMeasResult(site, MIRET) * 1e6;  // A -> uA (spec 预期 uA)
+    }
+
+    // ====== Step 5: Power Off ======
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100UA, FXVIe_PLUS_RELAY_ON);
+    VAC123_AMUX_ACM.Set(FV, 0, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);
+    delay_ms(1);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+    VAC123_AMUX_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+
+    // ====== Step 6: LogData ======
+    FOR_EACH_VALID_SITE(site)
+    {
+        Iq_Operation->SetTestResult(site, 0, iq_operation[site]);
+    }
+    return 0;
+}
+
+==============================================================================================================
+### TM102_HSKP_LP_ATEST0 : lines 1722-1785
+
+
+// =====================================================================
+// TM102: HSKP ATEST0 — LP_VBG_BF 电压测量 (MV)
+// 期望: ~1.27V (低压 bg 缓冲电压, ATEST0_MUX=2)
+// 流程: 同 TM101 (VDM 先 FV=1.2V → 配寄存器 → vset_off → 测 V(ATEST0))
+// 闭环: VBAT_PD3_FXVI + VDM_SDA_ACM (同 TM100)
+// =====================================================================
+DUT_API int TM102_HSKP_LP_ATEST0(short funcindex, LPCTSTR funclabel)
+{
+    //{{AFX_STS_PARAM_PROTOTYPES
+    CParam *LP_VBG_BF = StsGetParam(funcindex, "LP_VBG_BF");
+    //}}AFX_STS_PARAM_PROTOTYPES
+
+    double lp_vbg_bf[SITE_NUM] = { 0 };
+
+    // ====== Step 1: Connect (继电器闭合) ======
+    // VBAT → VBAT_PD3_FXVI: K8 默认NC直连, 无需SetOn
+    // VDM  → VDM_SDA_ACM:   K59 默认NC=VDM直连, 无需SetOn
+    // ⚠K13_VBAT_Cap: MV 测试 VBAT 供电稳定
+    cbite.SetOn(K13_VBAT_Cap, -1);
+    delay_ms(3);
+
+    // ====== Step 2: Power On (上电) ======
+    // vset[vbat,4,100e-6,0] → VBAT=4V FV; 10V量程(≥2×4V), 100MA电流档
+    VBAT_PD3_FXVI.Set(FV, 4, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    delay_ms(1);
+
+    // ====== Step 3: Register Config (寄存器配置) ======
+    // en_tm[] → 进入测试模式
+    entertestmode();
+
+    // ====== Step 4: Measure (配置寄存器+测量) ======
+
+    // --- TM102: LP_VBG_BF (MV) ---
+    // vset[vdm,1.2,100e-6,0]: 先稳定外部 pin 上电
+    VDM_SDA_ACM.Set(FV, 1.2, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);
+    delay_ms(1);
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x02);  // Write reg 0x57 = 2
+    I2CWriteSameData(DEV_ADDR, 0x5E, 0x02);  // Write reg 0x5E = 2
+    //   field[(EN_ATEST0,1),(ATEST0_MUX,2)] → LP_VBG_BF 通路 (reg_config/tm102.sv)
+    // vset_off[vdm]: 释放VDM → 高阻FI=0, DUT的ATEST0输出驱动VDM pad
+    VDM_SDA_ACM.Set(FI, 0, ACM200_10V, ACM200_10UA, ACM200_RELAY_ON);
+    delay_ms(1);
+    VDM_SDA_ACM.MeasureVI(50, 5);
+    FOR_EACH_VALID_SITE(site)
+    {
+        lp_vbg_bf[site] = VDM_SDA_ACM.GetMeasResult(site, MVRET);
+    }
+
+    // ====== Step 5: Power Off (三步下电) ======
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    VDM_SDA_ACM.Set(FV, 0, ACM200_10V, ACM200_10UA, ACM200_RELAY_ON);
+    delay_ms(1);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+    VDM_SDA_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+
+    // ====== Step 6: LogData ======
+    FOR_EACH_VALID_SITE(site)
+    {
+        LP_VBG_BF->SetTestResult(site, 0, lp_vbg_bf[site]);
+    }
+    return 0;
+}
+
+==============================================================================================================
+### TM103_HSKP_LP_HR_0P5U : lines 1795-1853
+
+// =====================================================================
+// TM103: HSKP LP_HR_0P5U — IBP 0.5UA HR 电流测量 (MI, 测 I(ATEST0))
+// DFT: vset[vbat,4,100e-6,0] → en_tm[] → field[(EN_ATEST0,1),(ATEST0_MUX,4)]
+//      → vset[vdm,1,100e-6,0] → 测 I(VDM)=I(ATEST0), 期望 0.5uA
+// 闭环: VBAT_PD3_FXVI + VDM_SDA_ACM (同 TM100-102)
+// =====================================================================
+DUT_API int TM103_HSKP_LP_HR_0P5U(short funcindex, LPCTSTR funclabel)
+{
+    //{{AFX_STS_PARAM_PROTOTYPES
+    CParam *LP_HR_0P5U = StsGetParam(funcindex, "LP_HR_0P5U");
+    //}}AFX_STS_PARAM_PROTOTYPES
+
+    double lp_hr_0p5u[SITE_NUM] = { 0 };
+
+    // ====== Step 1: Connect (继电器闭合) ======
+    // VBAT → VBAT_PD3_FXVI: K8 默认NC直连, 无需SetOn
+    // VDM  → VDM_SDA_ACM:   K59 默认NC=VDM直连, 无需SetOn
+    // K13_VBAT_Cap: VBAT 静态供电稳定 (FR-001: 供电→闭; 被测电流是 I(VDM), 不流经 VBAT)
+    cbite.SetOn(K13_VBAT_Cap, -1);
+    delay_ms(3);
+
+    // ====== Step 2: Power On (上电) ======
+    // vset[vbat,4,100e-6,0] → VBAT=4V FV; 10V量程(>=2*4V), 100MA电流档
+    VBAT_PD3_FXVI.Set(FV, 4, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    delay_ms(1);
+
+    // ====== Step 3: Register Config (寄存器配置) ======
+    // en_tm[] → 进入测试模式
+    entertestmode();
+
+    // ====== Step 4: Measure (配置寄存器+测量) ======
+    // field[(EN_ATEST0,1),(ATEST0_MUX,4)] → IBP_HR_0.5UA 通路 (reg_config/tm103.sv)
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x02);  // EN_ATEST0=1
+    I2CWriteSameData(DEV_ADDR, 0x5E, 0x04);  // ATEST0_MUX=4 → IBP_HR_0.5UA
+    // vset[vdm,1,100e-6,0]: VDM=1V FV, 测 I(ATEST0) (10UA最小电流档, 量程2x>=1uA)
+    // VDM 为 ATEST 类模拟 PIN: 直接设测量量程, 无两段式 (R-PON-09)
+    VDM_SDA_ACM.Set(FV, 1, ACM200_10V, ACM200_10UA, ACM200_RELAY_ON);
+    delay_ms(1);
+    VDM_SDA_ACM.MeasureVI(50, 5);
+    FOR_EACH_VALID_SITE(site)
+    {
+        lp_hr_0p5u[site] = VDM_SDA_ACM.GetMeasResult(site, MIRET) * 1e6;  // A -> uA (DFT Unit=uA, Expect 0.5uA)
+    }
+
+    // ====== Step 5: Power Off (三步下电) ======
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    VDM_SDA_ACM.Set(FV, 0, ACM200_10V, ACM200_10UA, ACM200_RELAY_ON);
+    delay_ms(1);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+    VDM_SDA_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+
+    // ====== Step 6: LogData ======
+    FOR_EACH_VALID_SITE(site)
+    {
+        LP_HR_0P5U->SetTestResult(site, 0, lp_hr_0p5u[site]);
+    }
+    return 0;
+}
+
+==============================================================================================================
+### TM108_HSKP_VAC1_PRST : lines 2148-2225
+
+// =====================================================================
+// TM108: HSKP VAC1_PRST - VAC1 PRST CMP threshold (digital V(DTEST0))
+// DFT: vset[vbat,3] -> en_tm[] -> field[(DMUX_EN,1),(DMUX_SEL,22)] -> a2d_vac1_prst
+//      -> VAC1 0->10->0V scan, measure V(DTEST0)=nQON toggle (r 4.059 f 3.738)
+// Loop: VBAT_PD3_FXVI + VAC123_AMUX_ACM + NQON_HG1_ACM
+// =====================================================================
+DUT_API int TM108_HSKP_VAC1_PRST(short funcindex, LPCTSTR funclabel)
+{
+    //{{AFX_STS_PARAM_PROTOTYPES
+    CParam *VAC1_PRST_Rise = StsGetParam(funcindex, "VAC1_PRST_Rise");
+    CParam *VAC1_PRST_Fall = StsGetParam(funcindex, "VAC1_PRST_Fall");
+    CParam *VAC1_PRST_Hys = StsGetParam(funcindex, "VAC1_PRST_Hys");
+    //}}AFX_STS_PARAM_PROTOTYPES
+
+    double rise_result[SITE_NUM] = { 0 };
+    double fall_result[SITE_NUM] = { 0 };
+    double hys[SITE_NUM] = { 0 };
+
+    // ====== Step 1: Connect ======
+    // VBAT -> VBAT_PD3_FXVI: K8 default NC, static supply needs K13_VBAT_Cap
+    // VAC1 -> VAC123_AMUX_ACM: default NC; VAC1 is scanned input, do NOT close K21_VAC_Cap
+    // nQON -> NQON_HG1_ACM: K64 direct + K65_nQON_PU pull-up
+    cbite.SetOn(K13_VBAT_Cap, K65_nQON_PU, -1);
+    delay_ms(3);
+
+    // ====== Step 2: Power On ======
+    // vset[vbat,3,100e-6,0] -> VBAT=3V FV
+    VBAT_PD3_FXVI.Set(FV, 3, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    delay_ms(1);
+
+    // ====== Step 3: Register Config ======
+    entertestmode();
+    // field[(DMUX_EN,1),(DMUX_SEL,22)] -> a2d_vac1_prst (reg_config/tm108.sv)
+    I2CWriteSameData(DEV_ADDR, 0x56, 0x16);
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x08);
+
+    // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+    // nQON high-Z reads DTEST0 logic level; ramp VAC1 linearly and capture source voltage
+    double vth_r[SITE_NUM] = { 0 };
+    double vth_f[SITE_NUM] = { 0 };
+    // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+    test_method.rampv_capv(VAC123_AMUX_ACM, ACM200_20V, ACM200_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           0.0, 10.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+    // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+    test_method.rampv_capv(VAC123_AMUX_ACM, ACM200_20V, ACM200_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           10.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+    FOR_EACH_VALID_SITE(site)
+    {
+        rise_result[site] = vth_r[site];
+        fall_result[site] = vth_f[site];
+    }
+    // Hys = Rise - Fall; voltage hysteresis logs in mV
+    FOR_EACH_VALID_SITE(site)
+    {
+        hys[site] = (rise_result[site] - fall_result[site]) * 1e3;
+    }
+
+    // ====== Step 5: Power Off (three-step) ======
+    VAC123_AMUX_ACM.Set(FV, 0, ACM200_20V, ACM200_100MA, ACM200_RELAY_ON);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10UA, ACM200_RELAY_ON);
+    delay_ms(1);
+    VAC123_AMUX_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+
+    // ====== Step 6: LogData ======
+    FOR_EACH_VALID_SITE(site)
+    {
+        VAC1_PRST_Rise->SetTestResult(site, 0, rise_result[site]);
+        VAC1_PRST_Fall->SetTestResult(site, 0, fall_result[site]);
+        VAC1_PRST_Hys->SetTestResult(site, 0, hys[site]);
+    }
+    return 0;
+}
+
+==============================================================================================================
+### TM109_HSKP_VAC2_PRST : lines 2225-2303
+
+
+// =====================================================================
+// TM109: HSKP VAC2_PRST - VAC2 PRST CMP threshold (digital V(DTEST0))
+// DFT: vset[vbat,3] -> en_tm[] -> field[(DMUX_EN,1),(DMUX_SEL,21)] -> a2d_vac2_prst
+//      -> VAC2 0->10->0V scan, measure V(DTEST0)=nQON toggle (r 4.059 f 3.738)
+// Loop: VBAT_PD3_FXVI + VAC123_AMUX_ACM + K19_ACM0_VAC2 + NQON_HG1_ACM
+// =====================================================================
+DUT_API int TM109_HSKP_VAC2_PRST(short funcindex, LPCTSTR funclabel)
+{
+    //{{AFX_STS_PARAM_PROTOTYPES
+    CParam *VAC2_PRST_Rise = StsGetParam(funcindex, "VAC2_PRST_Rise");
+    CParam *VAC2_PRST_Fall = StsGetParam(funcindex, "VAC2_PRST_Fall");
+    CParam *VAC2_PRST_Hys = StsGetParam(funcindex, "VAC2_PRST_Hys");
+    //}}AFX_STS_PARAM_PROTOTYPES
+
+    double rise_result[SITE_NUM] = { 0 };
+    double fall_result[SITE_NUM] = { 0 };
+    double hys[SITE_NUM] = { 0 };
+
+    // ====== Step 1: Connect ======
+    // VBAT -> VBAT_PD3_FXVI: K8 default NC, static supply needs K13_VBAT_Cap
+    // VAC2 -> VAC123_AMUX_ACM through K19_ACM0_VAC2; VAC2 is scanned input, do NOT close K21_VAC_Cap
+    // nQON -> NQON_HG1_ACM: K64 direct + K65_nQON_PU pull-up
+    cbite.SetOn(K13_VBAT_Cap, K65_nQON_PU, K19_ACM0_VAC2, -1);
+    delay_ms(3);
+
+    // ====== Step 2: Power On ======
+    // vset[vbat,3,100e-6,0] -> VBAT=3V FV
+    VBAT_PD3_FXVI.Set(FV, 3, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    delay_ms(1);
+
+    // ====== Step 3: Register Config ======
+    entertestmode();
+    // field[(DMUX_EN,1),(DMUX_SEL,21)] -> a2d_vac2_prst (reg_config/tm109.sv)
+    I2CWriteSameData(DEV_ADDR, 0x56, 0x15);
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x08);
+
+    // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+    // nQON high-Z reads DTEST0 logic level; ramp VAC2 linearly and capture source voltage
+    double vth_r[SITE_NUM] = { 0 };
+    double vth_f[SITE_NUM] = { 0 };
+    // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+    test_method.rampv_capv(VAC123_AMUX_ACM, ACM200_20V, ACM200_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           0.0, 10.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+    // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+    test_method.rampv_capv(VAC123_AMUX_ACM, ACM200_20V, ACM200_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           10.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+    FOR_EACH_VALID_SITE(site)
+    {
+        rise_result[site] = vth_r[site];
+        fall_result[site] = vth_f[site];
+    }
+    // Hys = Rise - Fall; voltage hysteresis logs in mV
+    FOR_EACH_VALID_SITE(site)
+    {
+        hys[site] = (rise_result[site] - fall_result[site]) * 1e3;
+    }
+
+    // ====== Step 5: Power Off (three-step) ======
+    VAC123_AMUX_ACM.Set(FV, 0, ACM200_20V, ACM200_100MA, ACM200_RELAY_ON);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10UA, ACM200_RELAY_ON);
+    delay_ms(1);
+    VAC123_AMUX_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+
+    // ====== Step 6: LogData ======
+    FOR_EACH_VALID_SITE(site)
+    {
+        VAC2_PRST_Rise->SetTestResult(site, 0, rise_result[site]);
+        VAC2_PRST_Fall->SetTestResult(site, 0, fall_result[site]);
+        VAC2_PRST_Hys->SetTestResult(site, 0, hys[site]);
+    }
+    return 0;
+}
+
+==============================================================================================================
+### Trim_BG_RES_DIV : lines 3921-3987
+
+
+// =====================================================================
+// Trim_BG_RES_DIV (TM135) — BG 电阻分压 Trim (MV, mV)
+// treg: bg_res_div, 8步(ASSY F1 bits 2-4), Target=1000mV
+// DFT: vset[vbat,5] → en_tm[] → 0x10=0x43
+//      → 0x57=0x02, 0x5E=0x0A (ATEST0_MUX=10 → BG_RES_DIV) → vset_off[vdm]
+// 测量: measure_bg_res_div (写 F1, VDM MV, MVRET×1e3 mV)
+// =====================================================================
+DUT_API int Trim_BG_RES_DIV(short funcindex, LPCTSTR funclabel)
+{
+    //{{AFX_STS_PARAM_PROTOTYPES
+    CParam *BG_RES_DIV_step0 = StsGetParam(funcindex, "BG_RES_DIV_step0");
+    CParam *BG_RES_DIV_step1 = StsGetParam(funcindex, "BG_RES_DIV_step1");
+    CParam *BG_RES_DIV_step2 = StsGetParam(funcindex, "BG_RES_DIV_step2");
+    CParam *BG_RES_DIV_step3 = StsGetParam(funcindex, "BG_RES_DIV_step3");
+    CParam *BG_RES_DIV_step4 = StsGetParam(funcindex, "BG_RES_DIV_step4");
+    CParam *BG_RES_DIV_step5 = StsGetParam(funcindex, "BG_RES_DIV_step5");
+    CParam *BG_RES_DIV_step6 = StsGetParam(funcindex, "BG_RES_DIV_step6");
+    CParam *BG_RES_DIV_step7 = StsGetParam(funcindex, "BG_RES_DIV_step7");
+    CParam *BG_RES_DIV_pre_value = StsGetParam(funcindex, "BG_RES_DIV_pre_value");
+    CParam *BG_RES_DIV_pre_bit = StsGetParam(funcindex, "BG_RES_DIV_pre_bit");
+    CParam *BG_RES_DIV_post_bit = StsGetParam(funcindex, "BG_RES_DIV_post_bit");
+    CParam *BG_RES_DIV_updated = StsGetParam(funcindex, "BG_RES_DIV_updated");
+    CParam *BG_RES_DIV_guessed = StsGetParam(funcindex, "BG_RES_DIV_guessed");
+    CParam *BG_RES_DIV_target = StsGetParam(funcindex, "BG_RES_DIV_target");
+    CParam *BG_RES_DIV_post_value = StsGetParam(funcindex, "BG_RES_DIV_post_value");
+    CParam *BG_RES_DIV_post_rt = StsGetParam(funcindex, "BG_RES_DIV_post_rt");
+    //}}AFX_STS_PARAM_PROTOTYPES
+
+    TRIM_NODE &BG_RES_DIV = trim_reg.trim("bg_res_div");
+
+    // ====== Step 1: Connect ======
+    // VBAT -> VBAT_PD3_FXVI: K8 default NC
+    // VDM  -> VDM_SDA_ACM: K59 default NC=VDM
+    // K13_VBAT_Cap: MV 测试 VBAT 供电稳定
+    cbite.SetOn(K13_VBAT_Cap, -1);
+    delay_ms(3);
+
+    // ====== Step 2: Power On ======
+    // vset[vbat,5,100e-6,0] -> VBAT=5V FV
+    VBAT_PD3_FXVI.Set(FV, 5, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    delay_ms(1);
+
+    // ====== Step 3: Register Config ======
+    // en_tm[] + field[(WAKE_UP,1)] -> 0x10=0x43
+    // field[(EN_ATEST0,1),(ATEST0_MUX,10)] -> BG_RES_DIV 通路
+    entertestmode();
+    I2CWriteSameData(DEV_ADDR, 0x10, 0x43);
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x02);
+    I2CWriteSameData(DEV_ADDR, 0x5E, 0x0A);
+
+    // ====== Step 4: Measure (VDM high-Z, Trim execute 写 EFUSE + MV) ======
+    // vset_off[vdm]: 释放 VDM pin — DUT ATEST0 输出驱动 VDM pad
+    VDM_SDA_ACM.Set(FI, 0, ACM200_10V, ACM200_10UA, ACM200_RELAY_ON);
+    delay_ms(1);
+    BG_RES_DIV.execute(measure_bg_res_div, spec, funcindex, funclabel, 1, 0, 0, 0);
+
+    // ====== Step 5: Power Off (三步下电) ======
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    VDM_SDA_ACM.Set(FV, 0, ACM200_10V, ACM200_10UA, ACM200_RELAY_ON);
+    delay_ms(1);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+    VDM_SDA_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+
+    return 0;
+}
+
+==============================================================================================================
+### TM1205_TRX_BST_UV_GD : lines 8752-8877
+
+
+// =====================================================================
+// TM1205: TRX_BST_UV_GD — BST1-SW1 / BST2-SW2 两组 BST UVLO 阈值 (Toggle)
+// DFT OVERVIEW (Dali_testmode.xlsx): Test BST1-SW1, BST2-SW2 的 UVLO 值
+//   流程: vbat=4V → en_tm → D2A_OVRD_SEL 47/45/48=3 + BOOTGD_DEG_BYPASS
+//         → DMUX_SEL=57(路1 BST1-SW1) 双扫 → DMUX_SEL=58(路2 BST2-SW2) 双扫
+// 驱动: BST1/BST2 为自举高侧、SW1/SW2 为开关低侧 → V(BST) > V(SW)
+//   FPVI0 浮动差分跨对: High→SW(K46/K49), Low→BST(K41/K43)
+//   FPVI0 输出 = V(SW)-V(BST) = -(BST-SW 压差) ∈ [-4,0]V
+//   ramp 0→-4V ⟺ BST-SW 0→4V (上扫, 释放) / -4→0V ⟺ 4→0V (下扫, UVLO 触发)
+// 观测: nQON(DTEST0) 翻转 (TM641/643 同模式), 继电器 K65_nQON_PU 上拉
+// 两路串行: FPVI0 单通道, 先 DMUX 57 测 BST1-SW1, 再切 K43/K49 + DMUX 58 测 BST2-SW2
+// =====================================================================
+DUT_API int TM1205_TRX_BST_UV_GD(short funcindex, LPCTSTR funclabel)
+{
+    //{{AFX_STS_PARAM_PROTOTYPES
+    CParam *BST1_UV_Rise = StsGetParam(funcindex, "BST1_UV_Rise");
+    CParam *BST1_UV_Fall = StsGetParam(funcindex, "BST1_UV_Fall");
+    CParam *BST1_UV_Hys = StsGetParam(funcindex, "BST1_UV_Hys");
+    CParam *BST2_UV_Rise = StsGetParam(funcindex, "BST2_UV_Rise");
+    CParam *BST2_UV_Fall = StsGetParam(funcindex, "BST2_UV_Fall");
+    CParam *BST2_UV_Hys = StsGetParam(funcindex, "BST2_UV_Hys");
+    //}}AFX_STS_PARAM_PROTOTYPES
+
+    double bst1_rise[SITE_NUM] = { 0 };
+    double bst1_fall[SITE_NUM] = { 0 };
+    double bst1_hys[SITE_NUM] = { 0 };
+    double bst2_rise[SITE_NUM] = { 0 };
+    double bst2_fall[SITE_NUM] = { 0 };
+    double bst2_hys[SITE_NUM] = { 0 };
+    double vth_r[SITE_NUM] = { 0 };
+    double vth_f[SITE_NUM] = { 0 };
+
+    // ====== Step 1: Connect (继电器闭合) ======
+    // 路1 BST1-SW1: FPVI0 High→SW1 (K_FPVIH_TO_SW1_A=K46) + FPVI0 Low→BST1 (K_FPVIL_TO_BST1_A=K41)
+    //   K46/K41 均为 Relay-ON 需闭合; BST1/SW1 Kelvin 对
+    // VBAT 静态供电: K13_VBAT_Cap; nQON 观测: K65_nQON_PU 上拉
+    // ⚠ Cap 纪律 (FR-001): BST-SW 是差分 ramp 源 → 不闭 BST Cap (K45_Cap_SW1_BST1/K44_Cap_SW2_BST2 拖慢 ramp)
+    cbite.SetOn(K_FPVIH_TO_SW1_A, K_FPVIL_TO_BST1_A, K13_VBAT_Cap, K65_nQON_PU, -1);
+    delay_ms(3);
+
+    // ====== Step 2: Power On (VBAT 台阶, DFT: vbat=4V) ======
+    // FPVI0 先 0 差分 (SW1=BST1), VBAT 上电后 FPVI0 输出负域 ramp
+    FPVI0.Set(FV, 0, FPVIe_5V, FPVIe_100MA, FPVIe_RELAY_ON);  // 差分 0: BST1-SW1=0V
+    delay_us(200);
+    VBAT_PD3_FXVI.Set(FV, 4, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);  // VBAT=4V
+    delay_ms(1);
+
+    // ====== Step 3: Register Config (tm1205.sv 权威序列) ======
+    entertestmode();
+    I2CWriteSameData(DEV_ADDR, 0x10, 0x43);  // WAKE_UP=1
+    I2CWriteSameData(DEV_ADDR, 0x67, 0x2F);  I2CWriteSameData(DEV_ADDR, 0x68, 0x30);  // D2A_OVRD_SEL=47, ovrd=3
+    I2CWriteSameData(DEV_ADDR, 0x67, 0x2D);  I2CWriteSameData(DEV_ADDR, 0x68, 0x30);  // D2A_OVRD_SEL=45, ovrd=3
+    I2CWriteSameData(DEV_ADDR, 0x67, 0x30);  I2CWriteSameData(DEV_ADDR, 0x68, 0x30);  // D2A_OVRD_SEL=48, ovrd=3
+    I2CWriteSameData(DEV_ADDR, 0x5C, 0x02);  // D2A_TRX_TM_BOOTGD_DEG_BYPASS=1
+    delay_ms(1);                             // delay[1e-3]
+
+    // ====== Step 4: Measure (两路串行, 各 Toggle 双扫捕 nQON 翻转) ======
+    // 路1: BST1-SW1 (DMUX_SEL=57)
+    I2CWriteSameData(DEV_ADDR, 0x56, 0x39);  // DMUX_SEL=57
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // DMUX_EN=1
+    delay_us(100);
+    // FPVI0 输出 0→-4V = BST1-SW1 0→4V 上扫: 释放阈值 (nQON 与 ramp 反向, TRIG_FALLING 捕 rise)
+    test_method.rampv_capv(FPVI0, FPVIe_10V, FPVIe_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           0, -4, 200, 20, 1.65, TRIG_FALLING, vth_r);
+    // FPVI0 输出 -4→0V = BST1-SW1 4→0V 下扫: UVLO 触发阈值 (TRIG_RISING 捕 fall)
+    test_method.rampv_capv(FPVI0, FPVIe_10V, FPVIe_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           -4, 0, 200, 20, 1.65, TRIG_RISING, vth_f);
+    FOR_EACH_VALID_SITE(site)
+    {
+        bst1_rise[site] = fabs(vth_r[site]);   // |FPVIe 触发点| = BST1-SW1 压差
+        bst1_fall[site] = fabs(vth_f[site]);
+    }
+    FOR_EACH_VALID_SITE(site)
+    {
+        bst1_hys[site] = (bst1_rise[site] - bst1_fall[site]) * 1e3;  // V→mV (R-HYS)
+    }
+    delay_ms(1);
+
+    // 路2: BST2-SW2 (重新 SetOn 切路: K_FPVIH_TO_SW2_A=46,49 + K_FPVIL_TO_BST2_A=41,43; DMUX_SEL=58)
+    cbite.SetOn(K_FPVIH_TO_SW2_A, K_FPVIL_TO_BST2_A, K13_VBAT_Cap, K65_nQON_PU, -1);
+    delay_ms(3);
+    I2CWriteSameData(DEV_ADDR, 0x56, 0x3A);  // DMUX_SEL=58
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // DMUX_EN=1
+    delay_us(100);
+    test_method.rampv_capv(FPVI0, FPVIe_10V, FPVIe_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           0, -4, 200, 20, 1.65, TRIG_FALLING, vth_r);
+    test_method.rampv_capv(FPVI0, FPVIe_10V, FPVIe_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           -4, 0, 200, 20, 1.65, TRIG_RISING, vth_f);
+    FOR_EACH_VALID_SITE(site)
+    {
+        bst2_rise[site] = fabs(vth_r[site]);
+        bst2_fall[site] = fabs(vth_f[site]);
+    }
+    FOR_EACH_VALID_SITE(site)
+    {
+        bst2_hys[site] = (bst2_rise[site] - bst2_fall[site]) * 1e3;
+    }
+    delay_ms(1);
+
+    // ====== Step 5: Power Off ======
+    FPVI0.Set(FV, 0, FPVIe_5V, FPVIe_100MA, FPVIe_RELAY_ON);   // 差分回 0
+    delay_us(200);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    delay_ms(1);
+    FPVI0.Set(FV, 0, FPVIe_10V, FPVIe_10MA, FPVIe_RELAY_OFF);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10UA, ACM200_RELAY_OFF);
+
+    // ====== Step 6: LogData ======
+    FOR_EACH_VALID_SITE(site)
+    {
+        BST1_UV_Rise->SetTestResult(site, 0, bst1_rise[site]);
+        BST1_UV_Fall->SetTestResult(site, 0, bst1_fall[site]);
+        BST1_UV_Hys->SetTestResult(site, 0, bst1_hys[site]);
+        BST2_UV_Rise->SetTestResult(site, 0, bst2_rise[site]);
+        BST2_UV_Fall->SetTestResult(site, 0, bst2_fall[site]);
+        BST2_UV_Hys->SetTestResult(site, 0, bst2_hys[site]);
+    }
+    return 0;
+}
+
+==============================================================================================================
+### TM600 : NOT FOUND IN TEST.CPP (baseline missing)
+
+==============================================================================================================
+### TM601 : NOT FOUND IN TEST.CPP (baseline missing)
+
+==============================================================================================================
+### RDSON : NOT FOUND IN TEST.CPP (baseline missing)
+
+==============================================================================================================
+### TM105_HSKP_VSPRE_MAX_CMP : lines 1912-1989
+
+// =====================================================================
+// TM105: HSKP VSPRE_MAX_CMP - VSPRE power rail max comparator (digital V(DTEST0))
+// DFT: vset[vbat,4] -> en_tm[] -> field[(DMUX_EN,1),(DMUX_SEL,0)] -> a2d_vspre_max_cmp
+//      -> VAC1 0->10->0V scan, measure V(DTEST0)=nQON toggle (rising vth ~0.3V, falling 0V @VBAT=4V)
+// Loop: VBAT_PD3_FXVI + VAC123_AMUX_ACM + NQON_HG1_ACM
+// =====================================================================
+DUT_API int TM105_HSKP_VSPRE_MAX_CMP(short funcindex, LPCTSTR funclabel)
+{
+    //{{AFX_STS_PARAM_PROTOTYPES
+    CParam *VSPRE_MAX_CMP_Rise = StsGetParam(funcindex, "VSPRE_MAX_CMP_Rise");
+    CParam *VSPRE_MAX_CMP_Fall = StsGetParam(funcindex, "VSPRE_MAX_CMP_Fall");
+    CParam *VSPRE_MAX_CMP_Hys = StsGetParam(funcindex, "VSPRE_MAX_CMP_Hys");
+    //}}AFX_STS_PARAM_PROTOTYPES
+
+    double rise_result[SITE_NUM] = { 0 };
+    double fall_result[SITE_NUM] = { 0 };
+    double hys[SITE_NUM] = { 0 };
+
+    // ====== Step 1: Connect ======
+    // VBAT -> VBAT_PD3_FXVI: K8 default NC
+    // nQON -> NQON_HG1_ACM:  K64 direct + K65_nQON_PU pull-up (DTEST0 logic read)
+    // NOTE: VAC1 is scanned input, do NOT close K21_VAC_Cap (cap slows scan)
+    // K13_VBAT_Cap: VBAT 静态供电稳定 (FR-001: 供电→闭)
+    cbite.SetOn(K13_VBAT_Cap, K65_nQON_PU, -1);
+    delay_ms(3);
+
+    // ====== Step 2: Power On ======
+    // vset[vbat,4,100e-6,0] -> VBAT=4V FV; 10V range (>=2*4V)
+    VBAT_PD3_FXVI.Set(FV, 4, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    delay_ms(1);
+
+    // ====== Step 3: Register Config ======
+    entertestmode();
+    // field[(DMUX_EN,1),(DMUX_SEL,0)] -> a2d_vspre_max_cmp (reg_config/tm105.sv)
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x08);
+
+    // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+    // nQON high-Z reads DTEST0 logic level; ramp the scan source linearly and
+    // capture the source voltage at the instant V(nQON) crosses the 1.65V threshold
+    double vth_r[SITE_NUM] = { 0 };    // rising toggle threshold
+    double vth_f[SITE_NUM] = { 0 };    // falling toggle threshold
+    // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+    test_method.rampv_capv(VAC123_AMUX_ACM, ACM200_20V, ACM200_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           0.0, 10.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+    // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+    test_method.rampv_capv(VAC123_AMUX_ACM, ACM200_20V, ACM200_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           10.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+    FOR_EACH_VALID_SITE(site)
+    {
+        rise_result[site] = vth_r[site];
+        fall_result[site] = vth_f[site];
+    }
+    // Hys = Rise - Fall (Toggle 两段式, 3参数)
+    FOR_EACH_VALID_SITE(site)
+    {
+        hys[site] = (rise_result[site] - fall_result[site]) * 1e3;  // V -> mV (R-HYS: Hys 电压→mV, 电流→mA)
+    }
+    // ====== Step 5: Power Off (three-step) ======
+    VAC123_AMUX_ACM.Set(FV, 0, ACM200_20V, ACM200_100MA, ACM200_RELAY_ON);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10UA, ACM200_RELAY_ON);
+    delay_ms(1);
+    VAC123_AMUX_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+
+    // ====== Step 6: LogData ======
+    FOR_EACH_VALID_SITE(site)
+    {
+        VSPRE_MAX_CMP_Rise->SetTestResult(site, 0, rise_result[site]);
+        VSPRE_MAX_CMP_Fall->SetTestResult(site, 0, fall_result[site]);
+        VSPRE_MAX_CMP_Hys->SetTestResult(site, 0, hys[site]);
+    }
+    return 0;
+}
+
+==============================================================================================================
+### TM106_HSKP_VBUS_PRST : lines 1989-2069
+
+
+
+// =====================================================================
+// TM106: HSKP VBUS_PRST - VBUS PRST COMP threshold (digital V(DTEST0))
+// DFT: vset[vbat,3] -> en_tm[] -> field[(DMUX_EN,1),(DMUX_SEL,19)] -> a2d_vbus_prst
+//      -> VBUS 3->5->3V scan, measure V(DTEST0)=nQON toggle (r 3.798 f 3.613)
+// Loop: VBAT_PD3_FXVI + VBUS_DRVH1_ACM + NQON_HG1_ACM
+// =====================================================================
+DUT_API int TM106_HSKP_VBUS_PRST(short funcindex, LPCTSTR funclabel)
+{
+    //{{AFX_STS_PARAM_PROTOTYPES
+    CParam *VBUS_PRST_Rise = StsGetParam(funcindex, "VBUS_PRST_Rise");
+    CParam *VBUS_PRST_Fall = StsGetParam(funcindex, "VBUS_PRST_Fall");
+    CParam *VBUS_PRST_Hys = StsGetParam(funcindex, "VBUS_PRST_Hys");
+    //}}AFX_STS_PARAM_PROTOTYPES
+
+    double rise_result[SITE_NUM] = { 0 };
+    double fall_result[SITE_NUM] = { 0 };
+    double hys[SITE_NUM] = { 0 };
+
+    // ====== Step 1: Connect ======
+    // VBAT -> VBAT_PD3_FXVI: K8 default NC
+    // VBUS -> VBUS_DRVH1_ACM: default NC
+    // nQON -> NQON_HG1_ACM:  K64 direct + K65_nQON_PU pull-up
+    // K13_VBAT_Cap: VBAT 静态供电稳定 (FR-001: 供电→闭)
+    cbite.SetOn(K13_VBAT_Cap, K65_nQON_PU, -1);
+    delay_ms(3);
+
+    // ====== Step 2: Power On ======
+    // vset[vbat,3,100e-6,0] -> VBAT=3V FV
+    VBAT_PD3_FXVI.Set(FV, 3, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    delay_ms(1);
+
+    // ====== Step 3: Register Config ======
+    entertestmode();
+    // field[(DMUX_EN,1),(DMUX_SEL,19)] -> a2d_vbus_prst (reg_config/tm106.sv)
+    I2CWriteSameData(DEV_ADDR, 0x56, 0x13);
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x08);
+
+    // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+    // nQON high-Z reads DTEST0 logic level; ramp the scan source linearly and
+    // capture the source voltage at the instant V(nQON) crosses the 1.65V threshold
+    double vth_r[SITE_NUM] = { 0 };    // rising toggle threshold
+    double vth_f[SITE_NUM] = { 0 };    // falling toggle threshold
+    // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+    test_method.rampv_capv(VBUS_DRVH1_ACM, ACM200_10V, ACM200_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           3.0, 5.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+    // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+    test_method.rampv_capv(VBUS_DRVH1_ACM, ACM200_10V, ACM200_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           5.0, 3.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+    FOR_EACH_VALID_SITE(site)
+    {
+        rise_result[site] = vth_r[site];
+        fall_result[site] = vth_f[site];
+    }
+    // Hys = Rise - Fall (Toggle 两段式, 3参数)
+    FOR_EACH_VALID_SITE(site)
+    {
+        hys[site] = (rise_result[site] - fall_result[site]) * 1e3;  // V -> mV (R-HYS: Hys 电压→mV, 电流→mA)
+    }
+    // ====== Step 5: Power Off (three-step) ======
+    VBUS_DRVH1_ACM.Set(FV, 0, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10UA, ACM200_RELAY_ON);
+    delay_ms(1);
+    VBUS_DRVH1_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+
+    // ====== Step 6: LogData ======
+    FOR_EACH_VALID_SITE(site)
+    {
+        VBUS_PRST_Rise->SetTestResult(site, 0, rise_result[site]);
+        VBUS_PRST_Fall->SetTestResult(site, 0, fall_result[site]);
+        VBUS_PRST_Hys->SetTestResult(site, 0, hys[site]);
+    }
+    return 0;
+}
+
+==============================================================================================================
+### TM107_HSKP_VBUS_HT_VBAT : lines 2069-2148
+
+
+// =====================================================================
+// TM107: HSKP VBUS_HT_VBAT - VBUS HT_VBAT CMP threshold (digital V(DTEST0))
+// DFT: vset[vbat,4] -> en_tm[] -> field[(DMUX_EN,1),(DMUX_SEL,41)] -> a2d_vbus_path_on
+//      -> VBUS 2->5->2V scan, measure V(DTEST0)=nQON toggle (rising vth 0.126V @VBAT=4V)
+// Loop: VBAT_PD3_FXVI + VBUS_DRVH1_ACM + NQON_HG1_ACM
+// =====================================================================
+DUT_API int TM107_HSKP_VBUS_HT_VBAT(short funcindex, LPCTSTR funclabel)
+{
+    //{{AFX_STS_PARAM_PROTOTYPES
+    CParam *VBUS_HT_VBAT_Rise = StsGetParam(funcindex, "VBUS_HT_VBAT_Rise");
+    CParam *VBUS_HT_VBAT_Fall = StsGetParam(funcindex, "VBUS_HT_VBAT_Fall");
+    CParam *VBUS_HT_VBAT_Hys = StsGetParam(funcindex, "VBUS_HT_VBAT_Hys");
+    //}}AFX_STS_PARAM_PROTOTYPES
+
+    double rise_result[SITE_NUM] = { 0 };
+    double fall_result[SITE_NUM] = { 0 };
+    double hys[SITE_NUM] = { 0 };
+
+    // ====== Step 1: Connect ======
+    // VBAT -> VBAT_PD3_FXVI: K8 default NC
+    // VBUS -> VBUS_DRVH1_ACM: default NC
+    // nQON -> NQON_HG1_ACM:  K64 direct + K65_nQON_PU pull-up
+    // K13_VBAT_Cap: VBAT 静态供电稳定 (FR-001: 供电→闭)
+    cbite.SetOn(K13_VBAT_Cap, K65_nQON_PU, -1);
+    delay_ms(3);
+
+    // ====== Step 2: Power On ======
+    // vset[vbat,4,100e-6,0] -> VBAT=4V FV
+    VBAT_PD3_FXVI.Set(FV, 4, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    delay_ms(1);
+
+    // ====== Step 3: Register Config ======
+    entertestmode();
+    // field[(DMUX_EN,1),(DMUX_SEL,41)] -> a2d_vbus_path_on (reg_config/tm107.sv)
+    I2CWriteSameData(DEV_ADDR, 0x56, 0x29);
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x08);
+
+    // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+    // nQON high-Z reads DTEST0 logic level; ramp the scan source linearly and
+    // capture the source voltage at the instant V(nQON) crosses the 1.65V threshold
+    double vth_r[SITE_NUM] = { 0 };    // rising toggle threshold
+    double vth_f[SITE_NUM] = { 0 };    // falling toggle threshold
+    // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+    test_method.rampv_capv(VBUS_DRVH1_ACM, ACM200_10V, ACM200_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           2.0, 5.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+    // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+    test_method.rampv_capv(VBUS_DRVH1_ACM, ACM200_10V, ACM200_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           5.0, 2.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+    FOR_EACH_VALID_SITE(site)
+    {
+        rise_result[site] = vth_r[site];
+        fall_result[site] = vth_f[site];
+    }
+    // Hys = Rise - Fall (Toggle 两段式, 3参数)
+    FOR_EACH_VALID_SITE(site)
+    {
+        hys[site] = (rise_result[site] - fall_result[site]) * 1e3;  // V -> mV (R-HYS: Hys 电压→mV, 电流→mA)
+    }
+    // ====== Step 5: Power Off (three-step) ======
+    VBUS_DRVH1_ACM.Set(FV, 0, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10UA, ACM200_RELAY_ON);
+    delay_ms(1);
+    VBUS_DRVH1_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+
+    // ====== Step 6: LogData ======
+    FOR_EACH_VALID_SITE(site)
+    {
+        VBUS_HT_VBAT_Rise->SetTestResult(site, 0, rise_result[site]);
+        VBUS_HT_VBAT_Fall->SetTestResult(site, 0, fall_result[site]);
+        VBUS_HT_VBAT_Hys->SetTestResult(site, 0, hys[site]);
+    }
+    return 0;
+}
+
+==============================================================================================================
+### TM110_HSKP_VAC3_PRST : lines 2303-2381
+
+
+// =====================================================================
+// TM110: HSKP VAC3_PRST - VAC3 PRST CMP threshold (digital V(DTEST0))
+// DFT: vset[vbat,3] -> en_tm[] -> field[(DMUX_EN,1),(DMUX_SEL,20)] -> a2d_vac3_prst
+//      -> VAC3 0->10->0V scan, measure V(DTEST0)=nQON toggle (r 4.059 f 3.738)
+// Loop: VBAT_PD3_FXVI + VAC123_AMUX_ACM + K18_ACM0_VAC3 + NQON_HG1_ACM
+// =====================================================================
+DUT_API int TM110_HSKP_VAC3_PRST(short funcindex, LPCTSTR funclabel)
+{
+    //{{AFX_STS_PARAM_PROTOTYPES
+    CParam *VAC3_PRST_Rise = StsGetParam(funcindex, "VAC3_PRST_Rise");
+    CParam *VAC3_PRST_Fall = StsGetParam(funcindex, "VAC3_PRST_Fall");
+    CParam *VAC3_PRST_Hys = StsGetParam(funcindex, "VAC3_PRST_Hys");
+    //}}AFX_STS_PARAM_PROTOTYPES
+
+    double rise_result[SITE_NUM] = { 0 };
+    double fall_result[SITE_NUM] = { 0 };
+    double hys[SITE_NUM] = { 0 };
+
+    // ====== Step 1: Connect ======
+    // VBAT -> VBAT_PD3_FXVI: K8 default NC, static supply needs K13_VBAT_Cap
+    // VAC3 -> VAC123_AMUX_ACM through K18_ACM0_VAC3; VAC3 is scanned input, do NOT close K21_VAC_Cap
+    // nQON -> NQON_HG1_ACM: K64 direct + K65_nQON_PU pull-up
+    cbite.SetOn(K13_VBAT_Cap, K65_nQON_PU, K18_ACM0_VAC3, -1);
+    delay_ms(3);
+
+    // ====== Step 2: Power On ======
+    // vset[vbat,3,100e-6,0] -> VBAT=3V FV
+    VBAT_PD3_FXVI.Set(FV, 3, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    delay_ms(1);
+
+    // ====== Step 3: Register Config ======
+    entertestmode();
+    // field[(DMUX_EN,1),(DMUX_SEL,20)] -> a2d_vac3_prst (reg_config/tm110.sv)
+    I2CWriteSameData(DEV_ADDR, 0x56, 0x14);
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x08);
+
+    // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+    // nQON high-Z reads DTEST0 logic level; ramp VAC3 linearly and capture source voltage
+    double vth_r[SITE_NUM] = { 0 };
+    double vth_f[SITE_NUM] = { 0 };
+    // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+    test_method.rampv_capv(VAC123_AMUX_ACM, ACM200_20V, ACM200_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           0.0, 10.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+    // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+    test_method.rampv_capv(VAC123_AMUX_ACM, ACM200_20V, ACM200_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           10.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+    FOR_EACH_VALID_SITE(site)
+    {
+        rise_result[site] = vth_r[site];
+        fall_result[site] = vth_f[site];
+    }
+    // Hys = Rise - Fall; voltage hysteresis logs in mV
+    FOR_EACH_VALID_SITE(site)
+    {
+        hys[site] = (rise_result[site] - fall_result[site]) * 1e3;
+    }
+
+    // ====== Step 5: Power Off (three-step) ======
+    VAC123_AMUX_ACM.Set(FV, 0, ACM200_20V, ACM200_100MA, ACM200_RELAY_ON);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10UA, ACM200_RELAY_ON);
+    delay_ms(1);
+    VAC123_AMUX_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+
+    // ====== Step 6: LogData ======
+    FOR_EACH_VALID_SITE(site)
+    {
+        VAC3_PRST_Rise->SetTestResult(site, 0, rise_result[site]);
+        VAC3_PRST_Fall->SetTestResult(site, 0, fall_result[site]);
+        VAC3_PRST_Hys->SetTestResult(site, 0, hys[site]);
+    }
+    return 0;
+}
+
+==============================================================================================================
+### TM111_HSKP_VBAT_UV : lines 2381-2460
+
+
+
+// =====================================================================
+// TM111: HSKP VBAT_UV - VBAT_UV CMP threshold (digital V(DTEST0))
+// DFT: vset[vac1,5] -> en_tm[] -> field[(DMUX_EN,1),(DMUX_SEL,23)] -> a2d_vbat_uv_ok
+//      -> VBAT 5->0V scan, measure V(DTEST0)=nQON toggle (r 2.178 f 2.137)
+// Loop: VAC123_AMUX_ACM + VBAT_PD3_FXVI + NQON_HG1_ACM
+// =====================================================================
+DUT_API int TM111_HSKP_VBAT_UV(short funcindex, LPCTSTR funclabel)
+{
+    //{{AFX_STS_PARAM_PROTOTYPES
+    CParam *VBAT_UV_Rise = StsGetParam(funcindex, "VBAT_UV_Rise");
+    CParam *VBAT_UV_Fall = StsGetParam(funcindex, "VBAT_UV_Fall");
+    CParam *VBAT_UV_Hys = StsGetParam(funcindex, "VBAT_UV_Hys");
+    //}}AFX_STS_PARAM_PROTOTYPES
+
+    double rise_result[SITE_NUM] = { 0 };
+    double fall_result[SITE_NUM] = { 0 };
+    double hys[SITE_NUM] = { 0 };
+
+    // ====== Step 1: Connect ======
+    // VAC1 -> VAC123_AMUX_ACM: K18/K19 default NC + K21_VAC_Cap 供电稳定
+    // VBAT -> VBAT_PD3_FXVI: K8 default NC (VBAT 为被测扫描输入)
+    // nQON -> NQON_HG1_ACM:  K64 direct + K65_nQON_PU pull-up
+    cbite.SetOn(K21_VAC_Cap, K65_nQON_PU, -1);
+    delay_ms(3);
+
+    // ====== Step 2: Power On ======
+    // vset[vac1,5,1e-3,0] -> VAC1=5V FV (10V range)
+    VAC123_AMUX_ACM.Set(FV, 5, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);
+    delay_ms(1);
+
+    // ====== Step 3: Register Config ======
+    entertestmode();
+    // field[(DMUX_EN,1),(DMUX_SEL,23)] -> a2d_vbat_uv_ok (reg_config/tm111.sv)
+    I2CWriteSameData(DEV_ADDR, 0x56, 0x17);
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x08);
+
+    // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+    // nQON high-Z reads DTEST0 logic level; ramp the scan source linearly and
+    // capture the source voltage at the instant V(nQON) crosses the 1.65V threshold
+    double vth_r[SITE_NUM] = { 0 };    // rising toggle threshold
+    double vth_f[SITE_NUM] = { 0 };    // falling toggle threshold
+    // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+    test_method.rampv_capv(VBAT_PD3_FXVI, FXVIe_PLUS_10V, FXVIe_PLUS_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           0.0, 5.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+    // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+    test_method.rampv_capv(VBAT_PD3_FXVI, FXVIe_PLUS_10V, FXVIe_PLUS_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           5.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+    FOR_EACH_VALID_SITE(site)
+    {
+        rise_result[site] = vth_r[site];
+        fall_result[site] = vth_f[site];
+    }
+    // Hys = Rise - Fall (Toggle 两段式, 3参数)
+    FOR_EACH_VALID_SITE(site)
+    {
+        hys[site] = (rise_result[site] - fall_result[site]) * 1e3;  // V -> mV (R-HYS: Hys 电压→mV, 电流→mA)
+    }
+    // ====== Step 5: Power Off (three-step) ======
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    VAC123_AMUX_ACM.Set(FV, 0, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10UA, ACM200_RELAY_ON);
+    delay_ms(1);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+    VAC123_AMUX_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+
+    // ====== Step 6: LogData ======
+    FOR_EACH_VALID_SITE(site)
+    {
+        VBAT_UV_Rise->SetTestResult(site, 0, rise_result[site]);
+        VBAT_UV_Fall->SetTestResult(site, 0, fall_result[site]);
+        VBAT_UV_Hys->SetTestResult(site, 0, hys[site]);
+    }
+    return 0;
+}
+
+==============================================================================================================
+### TM112_HSKP_VBAT_HT_3P1V : lines 2460-2541
+
+
+
+// =====================================================================
+// TM112: HSKP VBAT_HT_3P1V - VBAT_HT_3P1V CMP threshold (digital V(DTEST0))
+// DFT: vset[vbat,2.5] + vset[vac1,5] -> en_tm[] -> field[(DMUX_EN,1),(DMUX_SEL,40),(D2A_REGN_TM_EN,1)]
+//      -> VBAT 4->0V scan, measure V(DTEST0)=nQON toggle (r 3.019 f 2.972)
+// Loop: VBAT_PD3_FXVI + VAC123_AMUX_ACM + NQON_HG1_ACM
+// =====================================================================
+DUT_API int TM112_HSKP_VBAT_HT_3P1V(short funcindex, LPCTSTR funclabel)
+{
+    //{{AFX_STS_PARAM_PROTOTYPES
+    CParam *VBAT_HT_3P1V_Rise = StsGetParam(funcindex, "VBAT_HT_3P1V_Rise");
+    CParam *VBAT_HT_3P1V_Fall = StsGetParam(funcindex, "VBAT_HT_3P1V_Fall");
+    CParam *VBAT_HT_3P1V_Hys = StsGetParam(funcindex, "VBAT_HT_3P1V_Hys");
+    //}}AFX_STS_PARAM_PROTOTYPES
+
+    double rise_result[SITE_NUM] = { 0 };
+    double fall_result[SITE_NUM] = { 0 };
+    double hys[SITE_NUM] = { 0 };
+
+    // ====== Step 1: Connect ======
+    // VBAT -> VBAT_PD3_FXVI: K8 default NC
+    // VAC1 -> VAC123_AMUX_ACM: K18/K19 default NC + K21_VAC_Cap 供电稳定
+    // nQON -> NQON_HG1_ACM:  K64 direct + K65_nQON_PU pull-up
+    cbite.SetOn(K21_VAC_Cap, K65_nQON_PU, -1);
+    delay_ms(3);
+
+    // ====== Step 2: Power On ======
+    // vset[vbat,2.5,1e-3,0] -> VBAT=2.5V FV; vset[vac1,5,1e-3,0] -> VAC1=5V
+    VBAT_PD3_FXVI.Set(FV, 2.5, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    VAC123_AMUX_ACM.Set(FV, 5, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);
+    delay_ms(1);
+
+    // ====== Step 3: Register Config ======
+    entertestmode();
+    // field[(DMUX_EN,1),(DMUX_SEL,40),(D2A_REGN_TM_EN,1)] -> a2d_vbat_path_on (reg_config/tm112.sv)
+    I2CWriteSameData(DEV_ADDR, 0x56, 0x28);
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x08);
+    I2CWriteSameData(DEV_ADDR, 0x58, 0x20);
+
+    // ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======
+    // nQON high-Z reads DTEST0 logic level; ramp the scan source linearly and
+    // capture the source voltage at the instant V(nQON) crosses the 1.65V threshold
+    double vth_r[SITE_NUM] = { 0 };    // rising toggle threshold
+    double vth_f[SITE_NUM] = { 0 };    // falling toggle threshold
+    // rising ramp: nQON falls through 1.65V (inverted) -> capture rise threshold
+    test_method.rampv_capv(VBAT_PD3_FXVI, FXVIe_PLUS_10V, FXVIe_PLUS_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           0.0, 4.0, 200, 20, 1.65, TRIG_FALLING, vth_r);
+    // falling ramp: nQON rises through 1.65V (inverted) -> capture fall threshold
+    test_method.rampv_capv(VBAT_PD3_FXVI, FXVIe_PLUS_10V, FXVIe_PLUS_100MA,
+                           NQON_HG1_ACM, ACM200_10V, ACM200_10UA,
+                           4.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f);
+    FOR_EACH_VALID_SITE(site)
+    {
+        rise_result[site] = vth_r[site];
+        fall_result[site] = vth_f[site];
+    }
+    // Hys = Rise - Fall (Toggle 两段式, 3参数)
+    FOR_EACH_VALID_SITE(site)
+    {
+        hys[site] = (rise_result[site] - fall_result[site]) * 1e3;  // V -> mV (R-HYS: Hys 电压→mV, 电流→mA)
+    }
+    // ====== Step 5: Power Off (three-step) ======
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);
+    VAC123_AMUX_ACM.Set(FV, 0, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10UA, ACM200_RELAY_ON);
+    delay_ms(1);
+    VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);
+    VAC123_AMUX_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+    NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);
+
+    // ====== Step 6: LogData ======
+    FOR_EACH_VALID_SITE(site)
+    {
+        VBAT_HT_3P1V_Rise->SetTestResult(site, 0, rise_result[site]);
+        VBAT_HT_3P1V_Fall->SetTestResult(site, 0, fall_result[site]);
+        VBAT_HT_3P1V_Hys->SetTestResult(site, 0, hys[site]);
+    }
+    return 0;
+}

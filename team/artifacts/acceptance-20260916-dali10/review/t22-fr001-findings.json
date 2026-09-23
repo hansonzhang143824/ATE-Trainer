@@ -1,0 +1,167 @@
+{
+  "task": "t22",
+  "attemptId": "ced1b66b-1ac3-4de7-b971-cc183f375d25",
+  "author": "rule-reviewer",
+  "kind": "requirements",
+  "round": 1,
+  "runId": "acceptance-20260916-dali10",
+  "date": "2026-09-16",
+  "readOnly": true,
+  "rule": {
+    "id": "FR-001-reverse",
+    "file": "scripts/verify_relay_trace.py",
+    "lines": "317-328",
+    "commentLines": "305-309",
+    "matchFunction": { "name": "fam_intersect", "file": "scripts/verify_relay_trace.py", "lines": "56-58", "code": "return {p for p in pins if p == fam or p.startswith(fam) or fam.startswith(p)}" },
+    "severity": "WARNING (L328 appends to warns); exit(1) only when errors non-empty (L416-420); --warn-as-error upgrades warnings (L237, L421-423)",
+    "preconditions": "meta present (L311) AND fam_intersect(powered_pins, cap PIN token) non-empty (L318-320)",
+    "skipConditions": ["testpad family (L321)", "cap already closed (L323)", "PIN in mi_pins or ramp_pins (L325)"],
+    "exemptionScope": "L325 compares the CAP's own PIN token (ptok). For K57_CAP_BST_SW that token is BST_SW, not SW.",
+    "inputsRead": "meta capAuthority only; the rule has no channel to the run's adjudications (BD-08) or the schematic",
+    "rawRuleQuote": ["313 powered = {p.upper() for p in ca.get('powered_pins', [])}", "318 fam_powered = fam_intersect(powered, ptok)", "319 if not fam_powered:", "320 continue", "323 if cap_relay in relays:", "324 continue  # 已闭其 Cap", "325 if fam_intersect(mi, ptok) or fam_intersect(ramp, ptok):", "326 continue  # 该 PIN 被测电流 / 是 ramp 扫描源 (按 PIN 豁免, 非按函数)"]
+  },
+  "applicability": {
+    "TM600_HS_RDSON": { "findingsRaised": 0, "verdict": "rule applies but is satisfied; no action", "evidence": ["meta TM600_HS_RDSON.capAuthority.powered_pins = [BST-SW, BST_SW, ISW, PMID, VBAT, VDRV] (no VBUS/SW)", "K57_CAP_BST_SW is closed (payload:201)", "degrades to duplicate/dead tokens only: 'BST-SW' (hyphen) never matches any cap_pin token"] },
+    "TM601_LS_RDSON": { "findingsRaised": 4, "verdict": "rule applies; 3 of 4 findings rest on false premises", "metaPoweredPins": ["ISW","SW","VBAT","VBUS","VDRV"], "metaMiPins": [], "metaRampPins": [], "metaTestpadPins": [] }
+  },
+  "findings": [
+    {
+      "id": "T22-01",
+      "severity": "high",
+      "ruleId": "FR-001-reverse",
+      "file": "scripts/verify_relay_trace.py",
+      "line": 313,
+      "symbol": "verify_relay_trace (FR-001 meta authority)",
+      "evidence": "gate message: 'TM601_LS_RDSON: 静态供电 VBUS 但未闭稳压电容 K5_VBUS_Cap' (gate-logs-t20/relay-trace.log L8). The only source of VBUS in powered_pins is hardwareInit {\"cmd\":\"vset\",\"pin\":\"vbus\",\"value\":5.0} in project/DALI/meta/dali_tm_meta.json -> functions[TM601_LS_RDSON]. BD-08 defines that as simulationDomainReference; the payload sources only VBAT 4.2 / PMID 9 / VDRV 5 (payload:356,357,359,361) - no VBUS source. python-scanned test.cpp contains no VBUS source object (only relay names such as K5_VBUS_Cap and unrelated TM names). Schematic: VBUS is a floating-channel arrival point, not a supply: SCH-Connect-Map.txt:213 'CH0 Low -> VBUS ... K3', :214 'S1_FPVIe_FL0 -> K89(NC) -> K3(ON) -> K4(NC) -> VBUS_F'.",
+      "verdict": "FALSE_POSITIVE",
+      "impact": "The gate demands closure of a bulk-cap relay on a rail that is not energised in this run; complying would add a 4.7 uF branch for no functional reason and would corrupt the forced-current measurement if the rail is tied to the floating channel.",
+      "correction": "Fix the model, not the code: drop VBUS from the run-scoped meta powered_pins (hardwareInit 'vset vbus' is simulation-domain), and remove K5_VBUS_Cap from the payload SetOn. Do NOT close K5 to make the gate green.",
+      "verification": "Re-run verify_relay_trace.py with the run-scoped meta: the K5_VBUS_Cap finding for TM601_LS_RDSON must disappear while no new finding appears; confirm VBUS absent from powered_pins by python read of the meta copy.",
+      "locators": ["project/DALI/SCH-Connect-Map.txt:213", "project/DALI/SCH-Connect-Map.txt:214", "project/DALI/SCH-Connect-Map.txt:421", "project/DALI/Dali-SCH.csv:316", "dali_tm_meta.json TM601_LS_RDSON.hardwareInit", "scripts/verify_relay_trace.py:313"]
+    },
+    {
+      "id": "T22-02",
+      "severity": "medium",
+      "ruleId": "FR-001-reverse",
+      "file": "scripts/verify_relay_trace.py",
+      "line": 56,
+      "symbol": "fam_intersect",
+      "evidence": "gate messages L5/L6 read '静态供电 SW' for caps whose PIN tokens are SW1_BST1 and SW2_BST2. Mechanism reproduced with the gate's own logic: cap_pin('K45_Cap_SW1_BST1')='SW1_BST1', cap_pin('K44_Cap_SW2_BST2')='SW2_BST2', and fam_intersect({'ISW','SW','VBAT','VBUS','VDRV'},'SW1_BST1')={'SW'} because 'SW1_BST1'.startswith('SW'). SW1/SW2 are NOT declared in the meta powered_pins at all; they are separate rails reached only via K46 (SCH-Connect-Map.txt:177) and K46+K49 (:183), while this item routes SW via K60,K61 (:174) and PGND via K154,K155 (:156).",
+      "verdict": "FALSE_POSITIVE",
+      "impact": "Two distinct rails (SW vs SW1/SW2) are folded into one family by name prefix, so any TM that powers SW triggers closure demands for the SW1/SW2 bootstrap caps. Reciprocally, an unpowered SW1/SW2 could mask a genuinely required closure.",
+      "correction": "Make the family match token-boundary aware (require p == fam or p.startswith(fam + '_')) OR stop declaring SW1_BST1/SW2_BST2 as members of the SW family in the meta. Scope the change to this run first; if the shared script is changed, land it only after a sandbox before/after comparison because fam_intersect is called at L318/L321/L325 and in the degraded branch L394.",
+      "verification": "With the tightened match, enumerate required closures for TM601_LS_RDSON and confirm K44/K45 drop out while K13/K57 remain; enumerate for the whole tree under --src sandbox to confirm no previously-satisfied function becomes newly red.",
+      "locators": ["scripts/verify_relay_trace.py:56-58", "scripts/verify_relay_trace.py:318", "project/DALI/SCH-Connect-Map.txt:177", "project/DALI/SCH-Connect-Map.txt:183", "project/DALI/SCH-Connect-Map.txt:174", "project/DALI/Dali-SCH.csv:326", "project/DALI/Dali-SCH.csv:336"]
+    },
+    {
+      "id": "T22-03",
+      "severity": "medium",
+      "ruleId": "FR-001-reverse",
+      "file": "group/DALI/meta/dali_tm_meta.json",
+      "symbol": "TM601_LS_RDSON.capAuthority",
+      "evidence": "TM601_LS_RDSON declares mi_pins=[] and ramp_pins=[] while its hardwareInit contains iset pmid_sw 1.0 (a forced 1 A current path). The rule's exemption at L325 compares the CAP's own token - for K57_CAP_BST_SW that token is BST_SW (cap_pin at L100-116), not SW - so the exemption cannot fire. The fields are demonstrably usable elsewhere: 27/101 functions populate mi_pins and 41/101 populate ramp_pins, including TM641_BST_UV.ramp_pins=['SW'] and TM1009_QDT_VPCHG_SHORT_CURRENT.mi_pins=['SW1'].",
+      "verdict": "MODEL_GAP",
+      "impact": "The item cannot express 'this pin carries the forced measurement current', so the gate falls back to demanding the static-power closure rule for a pin that is in the measurement loop.",
+      "correction": "Declare the forced-current / ramp pins explicitly for TM601_LS_RDSON in the run-scoped meta (minimal, exact token set). CAUTION measured: declaring 'PMID_SW' has NO collateral here (fam_intersect with the TM601 powered set returns [] for PMID_SW/PMID/PMIDSW), but this must be re-checked per token before adding, because the same prefix logic can over-match other families.",
+      "verification": "After adding the declaration, python-assert that the exemption fires for exactly the intended caps and that no other cap family loses its required closure.",
+      "locators": ["scripts/verify_relay_trace.py:100-116", "scripts/verify_relay_trace.py:325", "scripts/verify_relay_trace.py:326", "dali_tm_meta.json TM601_LS_RDSON.hardwareInit", "dali_tm_meta.json functions[TM641_BST_UV]", "dali_tm_meta.json functions[TM1009_QDT_VPCHG_SHORT_CURRENT]"]
+    },
+    {
+      "id": "T22-04",
+      "severity": "high",
+      "ruleId": "FR-001-reverse",
+      "file": "implementation-payload-TM600-TM601.cpp",
+      "line": 345,
+      "symbol": "TM601_LS_RDSON Step 1 close list",
+      "evidence": "At the time of first inspection the payload's SetOn list read 'K154_BUSH0_AMUX, K155_FOVI3_PGND, K60_BUSL0_VCP, K61_ACM8_SW, K13_VBAT_Cap, K85_CAP_PMID, K57_CAP_BST_SW, K44_Cap_SW2_BST2, K45_Cap_SW1_BST1, K5_VBUS_Cap, K126_V1P5_CAP'. It closed K5_VBUS_Cap (an unpowered rail per T22-01) while NOT closing K3_BUSL0_VBUS, the relay that actually reaches VBUS (SCH-Connect-Map.txt:213) - i.e. a relay switched in purely to satisfy the gate, on no electrical path. During this review the implementer revised the payload (18:36:18, sha256 7399598332fac6c342ec44f2e0217e5f43cebc499e17974e4b8c431aded1885b) to remove K5/K44/K45 and to withdraw that rationale in a comment.",
+      "verdict": "TRUE_RED_THEN_FIXED_IN_PAYLOAD_UNLANDED",
+      "impact": "Closing a cap relay on an unpowered node adds no function, adds relay actuation and contact-path risk on a shared _S1S2 family, and can corrupt the forced-current measurement if that rail is tied to the floating channel. The revised payload still is not written to the target tree.",
+      "correction": "Keep K5/K44/K45 OUT of the TM601 SetOn list (as the 18:36 revision does). Fix the false premises at the model level (T22-01..03) instead of silencing the gate with closures. Never edit scripts/gate_baseline.json to mask this.",
+      "verification": "Confirm the deployed ForCodexDebug/source/test.cpp TM601_LS_RDSON SetOn list contains K57_CAP_BST_SW and K126_V1P5_CAP but none of K5_VBUS_Cap / K44_Cap_SW2_BST2 / K45_Cap_SW1_BST1 and no bare 126, then re-run the gate.",
+      "locators": ["implementation-payload-TM600-TM601.cpp:348-360", "project/DALI/SCH-Connect-Map.txt:213", "ForCodexDebug/source/test.cpp:9197 (pre-fix deployed state)"]
+    },
+    {
+      "id": "T22-05",
+      "severity": "high",
+      "ruleId": "deployment-state",
+      "file": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "line": 9197,
+      "symbol": "TM601_LS_RDSON",
+      "evidence": "Deployed file = 462848 B / python-plaintext sha256 3dbceb496d79d7d08631713b98e46c0c2ba6163eaf5356a87dded677e35ba479 / mtime 18:23:31. Its TM601_LS_RDSON SetOn (line 9197) reads 'K154_BUSH0_AMUX, K155_FOVI3_PGND, K60_BUSL0_VCP, K61_ACM8_SW, K13_VBAT_Cap, K85_CAP_PMID, 126' - missing the four caps and using a bare 126. The gate log (mtime 18:27:08) therefore evaluated 18:23:31 code, while the fixed payload was revised at 18:33:33 and again at 18:36:18. The write has never landed.",
+      "verdict": "TRUE_RED_CURRENT_STATE",
+      "impact": "The recorded 4 FR-001 findings describe a superseded code state; equally, claims that those findings are 'gone' cannot be verified in the target tree. The bare 126 is a separate, unrelated ERROR class (fictional relay name) and is what actually makes the gate exit non-zero.",
+      "correction": "Write the final payload to the target tree as its own approved write task, then re-run the gate against the deployed state and re-record the log with the new hash.",
+      "verification": "python-plaintext sha256 of the deployed test.cpp changes from 3dbceb49..., and the re-run relay-trace log shows 0 errors and no FR-001 finding for TM601_LS_RDSON other than those registered by exception.",
+      "locators": ["gate-logs-t20/relay-trace.log:1", "gate-logs-t20/relay-trace.log:10-11", "t21-new-red-analysis.md:4-5", "t21-new-red-analysis.md:134-136"]
+    },
+    {
+      "id": "T22-06",
+      "severity": "low",
+      "ruleId": "traceability",
+      "file": "scripts/verify_relay_trace.py",
+      "line": 328,
+      "symbol": "FR-001 warning severity",
+      "evidence": "The four TM601 capacitor items are appended to warns (L328), not errors. sys.exit(1) happens only under 'if errors' (L416-420); warns cause failure only with --warn-as-error (L237, L421-423). The gate log's '*** FAIL ***' (L9) is produced by the two '虚构继电器名 126 (无 #define)' errors (L10-11).",
+      "verdict": "ACCURACY_NOTE",
+      "impact": "Treating the four capacitor items as the cause of the gate failure mis-attributes the failure and can misdirect the repair.",
+      "correction": "Record the two classes separately in the run ledger: (a) 4 FR-001 warnings (3 false positives + 1 true requirement already satisfied in the revised payload); (b) 2 fictional-relay-name errors causing exit 1.",
+      "verification": "Read the gate log's FAIL/WARNINGS sections and the exit path in verify_relay_trace.py:412-423.",
+      "locators": ["gate-logs-t20/relay-trace.log:2-11", "scripts/verify_relay_trace.py:412-423"]
+    }
+  ],
+  "plainAnswers": {
+    "mayRelaysOnUnpoweredNodesBeClosedToMakeTheGateGreen": "NO",
+    "reasoning": "The rule's own premise is 'this pin is statically powered' (L318-320). For VBUS that premise is factually false in this run (no VBUS source object in test.cpp; VBUS is a floating-channel arrival point at SCH-Connect-Map.txt:213/214/421). The payload at the time of inspection had added K5_VBUS_Cap to satisfy the gate while K3, the relay that actually reaches VBUS, was not closed - so the closure served no circuit. Counter-evidence inside the rule itself: L321 and L325 exist precisely to suppress needless closures. The correct fixes are a run-scoped model correction (T22-01..03) or a named, in-writing exception - never an electrically baseless SetOn, and never editing gate_baseline.json.",
+    "doesThemeasuredCurrentPathExemptionCoverSW": "NO - not as written, and not in this item",
+    "k57Ruling": "K57_CAP_BST_SW is required to be closed for TM601_LS_RDSON, but NOT because of the SW-measured-current argument: the exemption at L325 tests the cap's own token BST_SW, and BST_SW is genuinely statically powered (hardwareInit bst_sw 5.0, and BST_SW is explicitly in powered_pins). The correct statement is 'do not close K57 blindly' - close it because its rail is really powered - and equally do not delete it to make the gate green. Settling/isolation effect of the 220 nF branch on the measured rail is not analysed here and is a bring-up (U11) item, consistent with the payload comment at :361-364."
+  },
+  "recommendedRepair": {
+    "optionA": {
+      "name": "run-scoped gate-input/model correction (recommended)",
+      "steps": ["remove VBUS from the run-scoped meta powered_pins and mark the vset vbus entry simulationDomainReference", "declare the forced-current pins for TM601_LS_RDSON in mi_pins/ramp_pins with a minimal exact token set", "make the family match token-boundary aware, scoped to this run first"],
+      "mustNotTouch": ["scripts/gen_testitems_meta.py shared logic", "scripts/gate_baseline.json", "D:/PROJECT6-DALI/devel", "any code other than through an approved write task"],
+      "impact": "run-scoped meta copy plus a targeted matcher change; other TM behaviour provably unchanged only after a sandbox before/after comparison",
+      "reversible": "high - meta copy and matcher change are both revertible; no compiled artefact involved",
+      "risk": "tightening fam_intersect affects L318/L321/L325 and the degraded branch L394 tree-wide if applied to the shared script - hence sandbox-first"
+    },
+    "optionB": {
+      "name": "named exception register (temporary only)",
+      "entries": [
+        { "cap": "K5_VBUS_Cap", "function": "TM601_LS_RDSON", "applies": false, "basis": "VBUS not ATE-energised; SCH-Connect-Map.txt:213/214/421; no VBUS source object in test.cpp" },
+        { "cap": "K44_Cap_SW2_BST2 / K45_Cap_SW1_BST1", "function": "TM601_LS_RDSON", "applies": false, "basis": "prefix collision in fam_intersect (verify_relay_trace.py:56-58); SW1/SW2 not powered and not declared" },
+        { "cap": "K57_CAP_BST_SW", "function": "TM601_LS_RDSON", "applies": true, "basis": "BST_SW genuinely statically powered" }
+      ],
+      "impact": "zero code change but the gate keeps reporting the same items; requires manual whitelist checking every run",
+      "reversible": "highest - documentation only",
+      "drawback": "masks two real model defects (VBUS premise and prefix collision) that will recur for other items"
+    },
+    "preference": "A2 + A1 first (smallest, reversible, hits the root cause), A3 as a separate sandbox-verified task; B only as an interim register"
+  },
+  "readOnlyProof": {
+    "before": "review/t22-readonly-snapshot-BEFORE.json",
+    "after": "review/t22-readonly-snapshot-AFTER.json",
+    "verify": "review/t22-readonly-verify.json",
+    "objectsChecked": 12,
+    "unchanged": 11,
+    "changed": 1,
+    "changedExplanation": "artifacts/.../implementation-payload-TM600-TM601.cpp changed 620d99ea... -> 73995983... at mtime 18:36:18 by another team member (the implementer's concurrent revision), NOT by rule-reviewer. rule-reviewer performed no write outside team/artifacts/acceptance-20260916-dali10/review/.",
+    "develUntouched": "D:/PROJECT6-DALI/devel/source/test.cpp = 5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317 and StdAfx.h = ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6, both equal to the pre-run baseline"
+  },
+  "hashAnchors": {
+    "scripts/verify_relay_trace.py": "18654b3ccddad9a9 (see snapshot for full value)",
+    "project/DALI/meta/dali_tm_meta.json": "1c8496645492f7b75abf3a89f95679291490399d62f4a1a34d6cc5d8b1aa2693",
+    "project/DALI/SCH-Connect-Map.txt": "cc8009fbb27eef0cf29b45e4e50b05e1b5d7b5d49095a32005261a79d83cb427",
+    "ForCodexDebug/source/test.cpp": "3dbceb496d79d7d08631713b98e46c0c2ba6163eaf5356a87dded677e35ba479",
+    "ForCodexDebug/source/StdAfx.h": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+    "implementation-payload-TM600-TM601.cpp": "7399598332fac6c342ec44f2e0217e5f43cebc499e17974e4b8c431aded1885b",
+    "valueNote": "sizes/extended values are in the BEFORE/AFTER snapshots; all hashes are python-plaintext sha256 of the raw bytes"
+  },
+  "unresolvedRisks": [
+    "The revised payload (73995983...) is still not written to the target tree; the deployed test.cpp remains 3dbceb49... with the bare 126 error.",
+    "Sharing: K44/K45/K57/K5 all belong to the _S1S2 shared relay family (Dali-SCH.csv:336/326/346/316); any closure decision must respect the contract's cross-site rules.",
+    "UNKNOWN (not executed under this read-only task): whether re-running the meta generator overwrites the run-scoped corrections - needs a sandbox check by the repair task.",
+    "Settling effect of the 220 nF K57 branch on the measured rail is not analysed; it remains a bring-up item (U11)."
+  ],
+  "verdict": "pass",
+  "verdictScope": "The review requirement (independent, read-only applicability ruling with locators and actionable corrections) is satisfied. The verdict is NOT an approval of the implementation or of the current tree state: the deployed tree remains red (see T22-05)."
+}

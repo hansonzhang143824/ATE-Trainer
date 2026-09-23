@@ -1,0 +1,585 @@
+{
+  "runId": "tm108-v2-impl",
+  "reviewTask": "t8",
+  "reviewerRole": "rule-reviewer",
+  "reviewedAt": "2026-09-17T21:33:06+08:00",
+  "tm": "TM108",
+  "implementedSymbol": "TM108_HSKP_VAC1_PRST",
+  "dependsOn": { "task": "t7", "owner": "ate-implementer", "reportedStatus": "DONE" },
+
+  "independenceDeclaration": {
+    "readOnly": true,
+    "wroteToTargetRoot": false,
+    "wroteToDevel": false,
+    "inspectedCopyAt": "team/artifacts/tm108-v2-trial/review/copy/test.cpp",
+    "copyIsByteIdenticalToLiveFile": true,
+    "copySha256Plaintext": "b79b911a65a33abd62697f8576bd04b5022194751c9bfc5b174ecdab96d05d5a",
+    "dlpReaderDiscipline": "python byte mode only (open(p,'rb') / open(p,'wb')) using C:\\Users\\nvtt10241\\AppData\\Local\\Programs\\Python\\Python312\\python.exe; no pwsh Get-Content, Set-Content, Select-String or Get-FileHash and no .NET file API was applied to test.cpp, sub.cpp or StdAfx.h at any point in this review",
+    "hashLabel": "every sha256 in this file is a PLAINTEXT sha256 computed by python byte mode over the decrypted byte stream",
+    "nothingUnderReviewWasModified": true,
+    "modificationCheck": "the plaintext hash/byte/CRLF snapshot taken before this review is identical to the snapshot taken after it, for every reviewed file (see reviewedInputs[].hashStableAcrossReview)",
+    "openItemsNotResolved": ["OI-T4-01", "OI-T5-01", "OI-T5-02", "OI-T5-03", "OI-T5-05", "RT-1", "RT-2", "RT-3", "RT-4", "RT-5", "F1", "F2", "F3", "F4", "F5", "F6", "OI-T4-04", "OI-T4-10", "OI-T4-11", "OI-T4-12", "OI-T4-13", "OI-T4-14", "OI-T4-16"],
+    "noSideChosenInAnyConflict": true,
+    "noBuildNoGateScriptNoHardwareClaim": true
+  },
+
+  "reviewedInputs": [
+    {
+      "id": "R1",
+      "path": "team/artifacts/tm108-v2-trial/strategy/tm108-resource-config-contract.md",
+      "role": "signed upstream contract (authority for conformance)",
+      "sha256_plaintext": "6f6057721062e97ebda53531383aff22a91bd0aa8141aadc6bafc5ef448fe6e4",
+      "bytes": 42261,
+      "lines": 441,
+      "hashReVerifiedByReviewer": true,
+      "matchesTaskContract": true,
+      "hashStableAcrossReview": true,
+      "note": "441 lines confirmed, so the ':574' citation that the withdrawn RT-1 claim used is out of range for this file"
+    },
+    {
+      "id": "R2",
+      "path": "team/artifacts/tm108-v2-trial/strategy/tm108-resource-config-contract.json",
+      "role": "signed upstream contract, machine-readable twin",
+      "sha256_plaintext": "fba489b5d8ca06a12d74c187edbbfe1e2f3fc2d564b27dc6ab8b092f8bd3e4b9",
+      "bytes": 66422,
+      "hashReVerifiedByReviewer": true,
+      "matchesTaskContract": true,
+      "hashStableAcrossReview": true,
+      "keysInspected": [
+        "relayGroups[G1].closureSetActuatedThisStage = [] (line 453)",
+        "relayGroups[G2].closureSetActuatedThisStage = [] (line 467)",
+        "relayGroups[G3].closureSetActuatedThisStage = [13, 65] (line 493)",
+        "relayGroups[G4].closureSetActuatedThisStage = [17] (line 520) - the ALTERNATE allocation, not enabled with G1-G3",
+        "resourceSummary.keepOpenRelayNumbers = [14,15,16,21,38,39,40,70,82,86,87,90,92,130,141,142] (line 574) - 16 numbers, contains neither 13 nor 65"
+      ]
+    },
+    {
+      "id": "R3",
+      "path": "team/artifacts/tm108-v2-trial/method/tm108-test-method-contract.md",
+      "role": "signed upstream contract (authority for conformance)",
+      "sha256_plaintext": "8eb56d24678406219fe83c3d9e7f09d7d3ec5c39a7a52403f72464802fca1fa7",
+      "bytes": 90822,
+      "lines": 682,
+      "hashReVerifiedByReviewer": true,
+      "matchesTaskContract": true,
+      "hashStableAcrossReview": true
+    },
+    {
+      "id": "R4",
+      "path": "team/artifacts/tm108-v2-trial/method/tm108-test-method-contract.json",
+      "role": "signed upstream contract, machine-readable twin",
+      "sha256_plaintext": "f947e6c626d32a01fb159c57c32a8f9cc0e9ceff60b45ea445610123cc3c0e21",
+      "bytes": 102544,
+      "hashReVerifiedByReviewer": true,
+      "matchesTaskContract": true,
+      "hashStableAcrossReview": true
+    },
+    {
+      "id": "R5",
+      "path": "team/artifacts/tm108-v2-trial/method/bst-sw-phase-check.md",
+      "role": "signed per-phase BST-SW evaluation (9/9 phases unproven)",
+      "sha256_plaintext": "fa41e471ae549ab0affcf629fc1d691703281a08498cfe10c26d926c4d115e54",
+      "bytes": 9860,
+      "lines": 63,
+      "hashReVerifiedByReviewer": true,
+      "matchesTaskContract": true,
+      "hashStableAcrossReview": true,
+      "note": "line 59 forbids the implementer from adding any relay action or source setting to make the BST-SW check pass; line 60 instructs the reviewer to check that every phase carries the 9/9 conclusion rather than a number"
+    },
+    {
+      "id": "R6",
+      "path": "team/artifacts/tm108-v2-trial/implementation/implementation-manifest.json",
+      "role": "t7 deliverable (hash-bound manifest)",
+      "sha256_plaintext": "a4f5286da293f0e564849e37afce263e7bce38d08753503189a25e1bcbeba556",
+      "bytes": 25688,
+      "runIdField": "tm108-v2-impl",
+      "hashStableAcrossReview": true,
+      "hashBindingVerified": "changes[0].afterSha256 == b79b911a65a33abd62697f8576bd04b5022194751c9bfc5b174ecdab96d05d5a == the plaintext sha256 of the exact file this review inspected, computed by the reviewer itself"
+    },
+    {
+      "id": "R7",
+      "path": "team/artifacts/tm108-v2-trial/implementation/t7-selfcheck.md",
+      "role": "t7 deliverable (self-check, not an authority)",
+      "sha256_plaintext": "a13ef000e6305b20e2316262aeece15403afff16ba58a3b08ce2c49f98dac2db",
+      "bytes": 18594,
+      "hashStableAcrossReview": true
+    },
+    {
+      "id": "R8",
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "role": "the changed artifact under review",
+      "sha256_plaintext": "b79b911a65a33abd62697f8576bd04b5022194751c9bfc5b174ecdab96d05d5a",
+      "bytes": 477123,
+      "utf8_bom": true,
+      "crlf": 9434,
+      "bare_lf": 3,
+      "lines": 9437,
+      "tm108Span": "2193-2309 (DUT_API signature at 2193, closing brace at 2309)",
+      "hashStableAcrossReview": true,
+      "untouchedByReview": true
+    },
+    {
+      "id": "R9",
+      "path": "team/artifacts/tm108-v2-trial/implementation/backup/tm108-v2-impl__test.cpp.before",
+      "role": "pre-change snapshot recorded in manifest backups[]",
+      "sha256_plaintext": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a",
+      "bytes": 469714,
+      "utf8_bom": true,
+      "crlf": 9350,
+      "bare_lf": 3,
+      "lines": 9353,
+      "tm108Span": "2155-2225 (DUT_API signature at 2155)",
+      "hashStableAcrossReview": true,
+      "independentCorroboration": "the captain's independent pre-change extraction team/artifacts/tm108-v2-trial/captain-precheck/tm108-block-before.txt (sha256 19fe6b5c7770e8f0f9882a040d6354d29db07f7684e8cb9fabbf10abc4194416, 81 lines) matches this backup at lines 2147..2227 EXACTLY, line for line. The backup is therefore confirmed to be the genuine pre-change image and not a post-hoc reconstruction."
+    },
+    {
+      "id": "R10",
+      "path": "team/artifacts/tm108-v2-trial/captain-precheck/rt-1-record-correction.md",
+      "role": "captain ruling that forms part of the record (RT-1 premise refuted)",
+      "sha256_plaintext": "b9c1377b980ee53a197b6c8d574453a254b0eddb20bdee5af5c7a241cf3c3eaa",
+      "bytes": 4802,
+      "hashStableAcrossReview": true
+    },
+    {
+      "id": "R11",
+      "path": "team/artifacts/tm108-v2-trial/captain-precheck/oi-t4-01-status-addendum.md",
+      "role": "captain ruling that forms part of the record (OI-T4-01 stays unresolved)",
+      "sha256_plaintext": "626bb270bf2b803aa1e5ee1318f9dffc36d6c12254ffa5f745133a32ea12b9bf",
+      "bytes": 3321,
+      "hashStableAcrossReview": true
+    },
+    {
+      "id": "R12",
+      "path": "team/artifacts/tm108-v2-trial/captain-precheck/t7-pre-change-baseline.json",
+      "role": "captain baseline record for the pre-change state",
+      "sha256_plaintext": "e771bcf7c86377ea9d8f8f0e5f35e665ff4f5885dc8b0ef5f7a663e00bafa1f2",
+      "bytes": 1484,
+      "hashStableAcrossReview": true
+    },
+    {
+      "id": "R13",
+      "path": "team/artifacts/tm108-v2-trial/captain-precheck/tm108-block-before.txt",
+      "role": "captain's independent pre-change function image (cross-check anchor)",
+      "sha256_plaintext": "19fe6b5c7770e8f0f9882a040d6354d29db07f7684e8cb9fabbf10abc4194416",
+      "bytes": 3775,
+      "hashStableAcrossReview": true,
+      "byteLevelMatch": "matches backup/tm108-v2-impl__test.cpp.before lines 2147..2227 exactly"
+    },
+    {
+      "id": "R14",
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/BoardCheck.h",
+      "role": "framework header outside test.cpp, inspected for C11 under the widened scope (captain-named candidate)",
+      "sha256_plaintext": "ad562c1c14929bbf71f5549269ce6c44c16352eb4d4299a130952f714d5d83ea",
+      "bytes": 32536,
+      "hashStableAcrossReview": true,
+      "reasonInspected": "declares class CBC_log (:214) with public log() (:759) and test_log() (:760) taking a component string plus limits and unit, and the only instance CBC_log bc_log; (:778)"
+    },
+    {
+      "id": "R15",
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/treg.h",
+      "role": "framework header outside test.cpp, inspected for C11 under the widened scope (captain-named candidate)",
+      "sha256_plaintext": "e10c2ac7e2b53b043467ed1579e76de9c41bde2b6e7d5b787a3e0d8ccc262bbc",
+      "bytes": 51157,
+      "hashStableAcrossReview": true,
+      "reasonInspected": "declares TREG_LOG::log_data (:195, private), TREG_ERROR::treg_error_log (:176, public static), and the log_data_t / test_t callback typedefs (:108/:110); treg.h IS in the include closure of test.cpp through StdAfx.h"
+    },
+    {
+      "id": "R16",
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/src/treg.h",
+      "role": "second copy of treg.h in the tree, checked so that the C11 ruling is copy-independent",
+      "sha256_plaintext": "ae0d6d6221f8fdb5409e98956218211740170ad6bbfa70ef016d0efbf61450ff",
+      "bytes": 47730,
+      "hashStableAcrossReview": true,
+      "note": "NOT byte-identical to source/treg.h; in BOTH copies log_data is declared under 'private:' in class TREG_LOG, so the C11 conclusion does not depend on which copy the build uses"
+    }
+  ],
+
+  "applicableRules": [
+    { "id": "t8-contract-s4", "source": "team/artifacts/tm108-v2-trial/review/t8-review-task-contract.md", "scope": "required review content sections 4.1-4.8", "usedFor": "scope of this review" },
+    { "id": "t8-contract-s4b", "source": "t8-review-task-contract.md section 4b", "scope": "captain-flagged check items C1-C6", "usedFor": "checklist" },
+    { "id": "t8-contract-s4c", "source": "t8-review-task-contract.md section 4c", "scope": "C4-SUPERSEDED, C7-C12", "usedFor": "checklist and the two open judgments" },
+    { "id": "t8-contract-s3", "source": "t8-review-task-contract.md section 3", "scope": "independence, read-only, DLP reader discipline, no open-item resolution, no build, no hardware claim", "usedFor": "process compliance" },
+    { "id": "charter-rule-reviewer-1", "source": "team/TEAM_ARCHITECTURE_V2.md:397-512 (规则审查专家：职业定义草案 V1) section 1", "scope": "decision rights: judge whether code faithfully implements the resource/config contract and the method contract", "usedFor": "the core conformance judgment" },
+    { "id": "charter-rule-reviewer-2", "source": "TEAM_ARCHITECTURE_V2.md:419-431", "scope": "mandatory evidence and the precedence order: user ruling > current project facts and signed contracts > active standards > checked golden > chip knowledge > experience/draft", "usedFor": "authority order; the implemented function was treated as a downstream consumer, never an authority" },
+    { "id": "charter-rule-reviewer-3", "source": "TEAM_ARCHITECTURE_V2.md:433-444", "scope": "mandatory review flow steps 1-8", "usedFor": "the reviewed-input list, contract completeness, resource consistency, phase safety, measurement/log, type-specific, gate, findings output" },
+    { "id": "charter-rule-reviewer-4", "source": "TEAM_ARCHITECTURE_V2.md:446-464", "scope": "special hard rules (BST-SW per-phase check, Trim, library functions)", "usedFor": "BST/SW conformance and library-call traceability" },
+    { "id": "charter-rule-reviewer-5", "source": "TEAM_ARCHITECTURE_V2.md:466-494", "scope": "finding routing table and required output schema", "usedFor": "owner assignment and this file's field set" },
+    { "id": "routing", "source": "team/ROLE_ROUTING.md:9,15,39,46-53", "scope": "role ownership; review precedes compilation; a failed review stops the sequence", "usedFor": "routing and the no-downstream-handoff consequence of this verdict" },
+    { "id": "R1-G1", "source": "tm108-resource-config-contract.md:192-203", "scope": "VAC1 scanned-input group: K18/K19 default conducting, K17 required in the closed state, K21_VAC_Cap must stay un-actuated, closure set []", "usedFor": "C2, C3, C12, relay/phase conformance" },
+    { "id": "R1-G3", "source": "tm108-resource-config-contract.md:213-225", "scope": "functional relays K13_VBAT_Cap + K65_nQON_PU, closure set {13,65}, frozen-baseline cross-check to cbite.SetOn(K13_VBAT_Cap, K65_nQON_PU, -1)", "usedFor": "C2, C10, relay conformance" },
+    { "id": "R1-s6.1", "source": "tm108-resource-config-contract.md:241-252", "scope": "relay summary: must-actuate {13,65}; must-be-closed-state {17}; default-conducting {8,18,19,64,88,89}; keep-open 16 numbers excluding 13 and 65", "usedFor": "C2, C10, C12" },
+    { "id": "R1-s7", "source": "tm108-resource-config-contract.md:256-267", "scope": "register delta: entertestmode + field[(DMUX_EN,1),(DMUX_SEL,22)], CSV counterpart 0x55=0x97 registered not applied", "usedFor": "register conformance, C8" },
+    { "id": "R1-s4.1", "source": "tm108-resource-config-contract.md:103-113", "scope": "DTEST0 has 0 hits in the schematic set; the contract does not assume DTEST0 == nQON; RA-5 is CANDIDATE ONLY", "usedFor": "C1, C5, C9" },
+    { "id": "R3-s3", "source": "tm108-test-method-contract.md:159-439", "scope": "methodPhases[] P0-P8 with per-phase prerequisite/relayGroup/resourceState/registerActivation/actualNodeVoltages/differentialChecks/setpoint/ramp/delay/exitCondition", "usedFor": "phase order and phase conformance; the phaseTrace below" },
+    { "id": "R3-P1", "source": "tm108-test-method-contract.md:193-204 (line 199)", "scope": "closure {13,65}; K17 required in the closed state WITHOUT the method claiming how it got there; no actuation call for K17 is written by the contract; ate-implementer decides the call form under OI-T4-04; delay_ms(3)", "usedFor": "C12" },
+    { "id": "R3-P7", "source": "tm108-test-method-contract.md:378-389 (line 384)", "scope": "power-down step 1: VAC1 FV=0 with range/limit held as in P4 and relay ON; VBAT FV=0 range/limit held relay ON; observation FV=0 at ACM200_10V/ACM200_10UA relay ON; delay_ms(1)", "usedFor": "C4 (both the superseded suspicion and the refinements)" },
+    { "id": "R3-P8", "source": "tm108-test-method-contract.md:409-439 (line 428)", "scope": "release of the signed closure set and the safe end state; K17 is left as the VAC1 branch entry state requires and is NOT released by this method", "usedFor": "C7, C12, power-down conformance" },
+    { "id": "R3-s4", "source": "tm108-test-method-contract.md:443-492", "scope": "measurementPlan: ranges, sweep, step/interval semantics, trig level and mode, calculation, units, limits, failure context", "usedFor": "measurement conformance, C5, C6, C8, C11" },
+    { "id": "R3-s5", "source": "tm108-test-method-contract.md:496-526", "scope": "powerDownPlan actions 1-6 and the safe end state", "usedFor": "power-down conformance, C4, C7" },
+    { "id": "R3-s6", "source": "tm108-test-method-contract.md:530-551", "scope": "logPlan: the logicalId table (calculated / raw context / context kinds) and the prohibitions", "usedFor": "C11 - the blocking finding RF-01" },
+    { "id": "R3-s7", "source": "tm108-test-method-contract.md:555-578", "scope": "per-phase BST-SW evaluation, 9/9 phases unproven", "usedFor": "no-BST/SW-action conformance" },
+    { "id": "R3-s9-s10", "source": "tm108-test-method-contract.md:615-644", "scope": "openItems OI-T5-01..OI-T5-05 and return items RT-1..RT-5", "usedFor": "carried-open-item audit" },
+    { "id": "R5", "source": "bst-sw-phase-check.md:7-62", "scope": "9/9 phases unproven; SW_actual must not be defaulted to 0 V; the implementer must add no relay action or source setting for this check", "usedFor": "BST/SW conformance" },
+    { "id": "rules-registry-R-LOG", "source": "knowledge/standards/rules-registry.md:37", "scope": "R-LOG defines the log rule in terms of SetTestResult unit consistency (DFT Unit column is authoritative)", "usedFor": "C11 - establishing that the standard names no log primitive other than SetTestResult" },
+    { "id": "rules-registry-R-HYS", "source": "knowledge/standards/rules-registry.md:38", "scope": "voltage Hys must be logged in mV with the x1e3 applied at the hys[site]=rise-fall assignment and commented", "usedFor": "C8 hysteresis-unit conformance" },
+    { "id": "functions-registry-rampv_capv", "source": "knowledge/standards/functions-registry.md:43", "scope": "rampv_capv signature (13 args) and semantics: step is a sample count; result is the voltage at the trigger point. No no-trigger / failure signal is documented.", "usedFor": "C8 (C11 argument shape) and the residual risk about a no-trigger segment" },
+    { "id": "role-charter-precedence", "source": "t8-review-task-contract.md:14-16", "scope": "user ruling > signed resource/config contract > signed method contract > active standards > golden > experience; the implemented function is not an authority", "usedFor": "every conformance statement in this review" },
+    { "id": "scope-discipline", "source": "captain input during t8, withdrawing the test.cpp-only restriction of C11", "scope": "a claim scoped to one file must not be generalised to the project; conversely, absent from test.cpp is not absent from the project", "usedFor": "the widened C11 evidence: include closure, access specifiers, friend lists and method definitions were checked across the target root" }
+  ],
+
+  "phaseTrace": [
+    {
+      "phase": "P0",
+      "phaseName": "pre-state, no active closure, sources not enabled",
+      "contractRef": "R3 md :164-191",
+      "codeLocation": "no code; recorded in the comment at test.cpp:2205-2206 ('P0 pre-state -> P1 functional closure')",
+      "observedInCode": "entry state only; no source is enabled and no relay is actuated before the P1 closure",
+      "conformance": "conforms",
+      "note": "P0 is an inherited precondition (the project default relay state). Nothing to implement; the phase is named in the trace comment."
+    },
+    {
+      "phase": "P1",
+      "phaseName": "closure of the signed functional relays",
+      "contractRef": "R3 md :193-222 (line 199, line 203)",
+      "codeLocation": "test.cpp:2218 cbite.SetOn(K13_VBAT_Cap, K65_nQON_PU, -1); test.cpp:2219 delay_ms(3); comment 2205-2216",
+      "observedInCode": "closure set {13,65} exactly; no K21_VAC_Cap, no K17, no other relay added; site delay delay_ms(3) applied before VBAT is enabled",
+      "conformance": "conforms",
+      "note": "R1 G3 closure {13,65} and R1 :225 frozen-baseline cross-check name the identical call form. R3 P1's 'no actuation call for K17 is written by this contract' is honoured: 0 K17 actuation call. delay 3 ms matches R3 :203 and R1 :225-226."
+    },
+    {
+      "phase": "P2",
+      "phaseName": "VBAT static supply on",
+      "contractRef": "R3 md :224-253 (line 230, :232-234)",
+      "codeLocation": "test.cpp:2227 VBAT_PD3_FXVI.Set(FV, 3, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON); test.cpp:2228 delay_ms(1); comment 2221-2226",
+      "observedInCode": "VBAT setpoint 3 V FV on channel S3_5 with range FXVIe_PLUS_10V and limit FXVIe_PLUS_100MA (RA-3), then delay_ms(1)",
+      "conformance": "conforms",
+      "note": "3 V is R1/R3's DFT-intent value; the 4.2 V CSV counterpart is carried open as F4/OI-T4-12 and is not averaged. Range/limit pair matches R3 :230 (RA-3)."
+    },
+    {
+      "phase": "P3",
+      "phaseName": "register activation of the observation mux (staircase)",
+      "contractRef": "R3 md :255-283 (line 262-263)",
+      "codeLocation": "test.cpp:2235 entertestmode(); test.cpp:2237 I2CWriteSameData(DEV_ADDR, 0x56, 0x16); test.cpp:2238 I2CWriteSameData(DEV_ADDR, 0x57, 0x08); comment 2230-2234",
+      "observedInCode": "entertestmode() precedes the writes; 0x56=0x16 is DMUX_SEL=22 and 0x57=0x08 is DMUX_EN=1, written as one field directive; no de-activation write",
+      "conformance": "conforms",
+      "note": "Matches R1 s7 registerDelta exactly. The CSV-layer alternative 0x55=0x97 (EN_DTEST0/DTEST0_MUX=1/23) is registered as a conflict and correctly NOT applied - R1 s7 explicitly records it as 'registered, not adopted'. The absence of a de-activation write matches R3 :265 and OI-T5-05/RT-3."
+    },
+    {
+      "phase": "P4",
+      "phaseName": "rising sweep of VAC1 with capture during the sweep",
+      "contractRef": "R3 md :285-314, :449-457 (measurementPlan segment rise)",
+      "codeLocation": "test.cpp:2253-2255 test_method.rampv_capv(VAC123_AMUX_ACM, ACM200_20V, ACM200_100MA, NQON_HG1_ACM, ACM200_10V, ACM200_10UA, 0.0, 10.0, 200, 20, 1.65, TRIG_FALLING, vth_r); comment 2240-2252",
+      "observedInCode": "force on VAC123_AMUX_ACM channel S5_0 at range ACM200_20V / limit ACM200_100MA; observe on the RA-5 candidate NQON_HG1_ACM S5_9 at ACM200_10V / ACM200_10UA; sweep 0.0 -> 10.0; step 200 samples; interval 20 us; capture level 1.65; TRIG_FALLING",
+      "conformance": "conforms",
+      "note": "Every value matches R3 s4 segment rise (:451-457), including the step-is-a-sample-count semantics and the range derivation (>= 2x the 10 V scan end). The polarity premise is marked PENDING (OI-T4-01) in the comment at :2249-2252 rather than asserted."
+    },
+    {
+      "phase": "P5",
+      "phaseName": "hold at the sweep end / turn-around",
+      "contractRef": "R3 md :316-344 (line 326, :331, :342)",
+      "codeLocation": "no code; recorded in the comment at test.cpp:2240 and :2243-2244 ('no relay acts at the turn-around')",
+      "observedInCode": "the two rampv_capv calls are consecutive with no relay, range or level change between them - exactly what R3 :326 and :342 require",
+      "conformance": "conforms",
+      "note": "R3 states the method must not invent a turn-around delay; none was invented. The reversal is a consecutive call to the same primitive on the same source, so no source hand-off or series-relay switch occurs."
+    },
+    {
+      "phase": "P6",
+      "phaseName": "falling sweep of VAC1 with capture during the sweep",
+      "contractRef": "R3 md :346-376, :459-467 (measurementPlan segment fall)",
+      "codeLocation": "test.cpp:2260-2262 test_method.rampv_capv(VAC123_AMUX_ACM, ACM200_20V, ACM200_100MA, NQON_HG1_ACM, ACM200_10V, ACM200_10UA, 10.0, 0.0, 200, 20, 1.65, TRIG_RISING, vth_f); comment 2256-2259",
+      "observedInCode": "mirrored segment: 10.0 -> 0.0, same source, same range/limit pair, same step/interval, identical capture level 1.65, TRIG_RISING",
+      "conformance": "conforms",
+      "note": "R3 :373 requires the identical capture level so Hys cannot carry a measurement artefact; the comment at :2257-2259 states this rationale. R3 :361 requires the fall segment to mirror the rise segment; it does."
+    },
+    {
+      "phase": "P7",
+      "phaseName": "bounded settle window then de-energising the stimulus sources (power-down step 1 of 3)",
+      "contractRef": "R3 md :378-407 (line 384), R3 s5 actions 1-4 (md :502-505)",
+      "codeLocation": "test.cpp:2281 VAC123_AMUX_ACM.Set(FV, 0, ACM200_20V, ACM200_100MA, ACM200_RELAY_ON); :2282 VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON); :2283 NQON_HG1_ACM.Set(FV, 0, ACM200_10V, ACM200_10UA, ACM200_RELAY_ON); :2284 delay_ms(1)",
+      "observedInCode": "all three channels zeroed while HOLDING their working ranges with the relay still ON; VAC1 holds the exact P4 pair ACM200_20V/ACM200_100MA; VBAT holds its P2 pair; the observation channel holds ACM200_10V/ACM200_10UA; then delay_ms(1)",
+      "conformance": "conforms",
+      "note": "This is the row the captain's superseded C4 suspicion targeted. The fuller read confirms R3's stated 'range/limit held as in P4' is satisfied exactly, so the suspicion does not survive. The zero-before-open ordering also satisfies the anti-short-arcing requirement R3 cites at :404."
+    },
+    {
+      "phase": "P8",
+      "phaseName": "release of the signed closure set and the safe end state (power-down steps 2-3 of 3)",
+      "contractRef": "R3 md :409-439 (line 428), R3 s5 actions 5-6 (md :506-507)",
+      "codeLocation": "test.cpp:2290-2292 the three RELAY_OFF calls with the unified range pairs; comment 2285-2289",
+      "observedInCode": "all three channels released with ACM200_10V/ACM200_10MA and FXVIe_PLUS_10V/FXVIe_PLUS_10MA RELAY_OFF (R3 s5 action 5 satisfied exactly); NO explicit release call for the {13,65} closure; K17 is not released (R3 :428 says releasing it is NOT part of this method)",
+      "conformance": "partially conforms - action 5 conforms; action 6 (explicit release of K13 then K65) has no call in the code",
+      "note": "The absence of an explicit release is WAIVED as an implementation deviation (see waivedFindings WF-01): it is the project-wide pattern (104 cbite.SetOn and 0 release/reset calls in both the pre- and post-change file) and the framework's per-item relay reset was not verified in this session, so inventing a call would have been an unauthorised API decision. The framework behaviour itself is routed as a residual risk, not as a finding against t7. R3 P8's K17 statement (:428) is satisfied: the code neither actuates nor releases relay 17."
+    }
+  ],
+
+  "findings": [
+    {
+      "id": "RF-01",
+      "severity": "blocker",
+      "TM": "TM108",
+      "category": "measurement/log method - the logPlan record is not implemented (contract-vs-capability, NOT a code defect)",
+      "blocking": true,
+      "c11CheckItem": "C11",
+      "evidence": "In the TM108 body the only logging call is CParam::SetTestResult at test.cpp:2304-2306, i.e. 3 of the 10 logPlan rows. All 7 raw-context/context rows of R3 s6 exist ONLY as comment text and are emitted nowhere: 'relayActuationTrace' occurs 1 time in the entire 9437-line file and only at test.cpp:2207; 'registerActivationTrace' occurs 1 time in the entire file and only at test.cpp:2231; 'sweepGeometry' at test.cpp:2241; 'triggerModeRise/Fall' at test.cpp:2251 and :2256; 'captureLevel' at test.cpp:2257; 'failureContext' and 'bstSwStatus' at test.cpp:2297-2299. The code itself concedes this at test.cpp:2296-2297 ('The remaining logPlan context quantities ... are carried by the trace comments in this function'). INDEPENDENT CAPABILITY CHECK (the claim C11 told me to verify myself, not accept): I stripped comments from the whole copy with a string-literal-aware stripper and inventoried every callable in real code. The ONLY log-writing call anywhere in test.cpp is SetTestResult (187 code call sites; 188 raw text occurrences, the 188th being inside a comment). The only other callable whose name matches log|trace|report|print|record|output|result is GetMeasResult (64 sites, a measurement readback, not a log write) plus STSSetInitSelectDialog (2 sites, a UI dialog). 'LogData' occurs 91 times and is ALWAYS a '// ====== Step 6: LogData ======' comment header, never a call. printf/cout appear only in the hotkey/UI code at test.cpp:390 and :564-569. No function DEFINITION in test.cpp takes a string/format argument for logging. Independently, the active standard rules-registry.md:37 (R-LOG) itself defines the log rule in terms of SetTestResult unit consistency, i.e. the standard names no other log primitive. CONCLUSION AT THE ORIGINAL (test.cpp-ONLY) SCOPE: the file exposes no log-writing primitive other than SetTestResult. THE CAPTAIN THEN WIDENED THIS CHECK, withdrawing the test.cpp-only restriction as its own scope error, on the principle that absent-from-test.cpp is not absent-from-the-project. WIDENED RESULT - every named candidate outside test.cpp was probed in python byte mode and NONE is a usable vehicle for R3 s6 logPlan. (i) BoardCheck.h:214 class CBC_log with public log() at :759 and test_log() at :760 (component string plus limits plus unit), instance CBC_log bc_log; at :778: NOT USABLE - BoardCheck.h is NOT in the transitive include closure of test.cpp (closure computed over local headers: Coutlier.h, FMEA.h, LogDataStruct.h, Pin_Channel_define.h, StdAfx.h, Test_Method.h, mylib.h, spec.h, src/visa.h, src/visatype.h, stdafx.h, sub.cpp, sub.h, tempchar.h, test.cpp, treg.h - BoardCheck.h absent), so the type is not even declared for a TM translation unit; the only instance bc_log (:778) sits in BoardCheck's PRIVATE section (nearest specifier private: at :767); CBC_log, bc_log and test_log have ZERO users outside BoardCheck.h/.cpp across all 36 source files; the only instantiations are a local BoardCheck bc; at source/diags.cpp:80 and inside run_diags() (source/diags.cpp:188), which test.cpp:797 calls once from the startup path behind if (DO_BoardCheck) and never from a TM; and the qualified name CBC_log:: occurs 0 times ANYWHERE in the tree, i.e. log() and test_log() are declared but never defined and never called. BoardCheck is a dialog-based board-check utility (BoardCheckGroup, DialogTemplate, listbox, buttons) and BoardCheck.cpp writes NOTHING to the station datalog (0 SetTestResult, 0 msLogData, 0 SetTestNumber; only GetMeasResult 151, i.e. it READS results and CSV). (ii) treg.h:195 TREG_LOG::log_data: NOT REACHABLE - declared under private: (:194) in class TREG_LOG whose friends are only TREG, TRIM_NODE and TRIM_GRP_NODE (:187-189), and a TM function is none of those. This is the important negative result: its implementation (treg.cpp:285-348) IS a genuine datalog write path with exactly the shape R3 s6 needs - it carries a testname string plus limits and unit via log_data_func(site, testname, lolim, hilim, value, unit, no_scaling), else test_func(testnum, value, site, 0), else msLogData(...) - but every piece of the plumbing is private static (TREG_LOG::datalog_func at treg.cpp:275, registered by the private register_dlog_func at treg.h:197), and the ONLY public route into it is a TRIM/TRIM_GRP node execute(..., int log_level = TREG_LOG_STD, ...) at treg.h:559/:565/:742, i.e. the TRIM FRAMEWORK, which R1 s1 declares TM108 does not trigger (trim = null, Trim declared not to trigger the framework). There is no public TREG wrapper: the only log members on the TREG side are the private log_data, the TREG_LOGLEVEL enum, and the log_level default parameters. The conclusion holds for BOTH copies of treg.h in the tree. (iii) treg.h:176 TREG_ERROR::treg_error_log: technically CALLABLE (public static, and treg.h reaches test.cpp through StdAfx.h) but NOT A logPlan VEHICLE - its definition (treg.cpp:227-251) is a debug console error channel: it increments error_count and on the first call does FreeConsole(); AllocConsole(); SetConsoleTitleA(AccoTEST Debug Window); freopen(conout$, w+t, stdout); then printf_s on a numbered line built from the format. All 47 of its uses in treg.cpp are ERROR paths (TREG: No TRIM parameter defined.; post_value define is wrong in PGS...), none is a data record; its sibling TREG_ERROR::error (treg.cpp:256-267) routes to error_func then etsfatalerror() on ETS364 or MessageBox(), i.e. a FATAL error; and TREG_ERROR is used 0 times in test.cpp and sub.cpp. It cannot produce R3 s6 unit/precision/per-site datalog records and using it would misuse a fatal-error console channel. (iv) treg.h:108/:110 log_data_t and test_t: callback TYPEDEFS under #ifdef TREG_ETS364, not callable primitives; the callback is invoked only from the private TREG_LOG::log_data. Not a vehicle. CORROBORATION that SetTestResult IS this project datalog primitive: the framework own logdata helper source/src/treg.cpp:62 stslogdata() writes through CParam::SetTestResult; the active standard R-LOG (rules-registry.md:37) defines the log rule in terms of SetTestResult; and no other candidate API name exists in the tree (WriteLog, AddLog, LogMessage, PrintLog, SetLog, LogString = 0 hits; msLogData only in treg.cpp; DataLog once in BoardCheck.cpp; LogData 91 times in test.cpp and 0 times as a call). CONCLUSION AT THE WIDENED SCOPE: none of the captain candidates is usable, so DEV-3 is a contract-vs-capability finding, NOT a code defect against ate-implementer. RELATED SECOND GAP IN THE SAME RULE: R3 s4 'failure context' (md :486) requires that any segment producing no trigger, a boundary trigger or a negative Hys RECORD the failure context (phase, segment, trigger mode, capture level, the actual start/stop/step/interval used, and the pending item in force) instead of writing a substituted number, and R3 s6 (md :544) forbids logging a substituted number in place of a missing capture. The code has no no-trigger detection at all: vth_r/vth_f are initialised to 0 at test.cpp:2247-2248, copied into rise_result/fall_result at test.cpp:2265-2266 and logged at :2304-2306 unconditionally. So if a segment produces no trigger, 0 is logged as VAC1_PRST_Rise/Fall - the opposite of R3 :544 and of the code's own comment at test.cpp:2299 ('No placeholder number is ever logged in place of a missing capture'). This sub-point is an INFERENCE, not a measured fact: functions-registry.md:43 documents only the rampv_capv signature and 'result = the voltage at the trigger point', with no no-trigger signal and no documented return value, so the primitive's actual no-trigger behaviour is UNKNOWN to me and is recorded as residual risk RR-02 rather than asserted.",
+      "violatedRule": "tm108-test-method-contract.md s6 logPlan (md :530-551; raw-context rows :539-:545) and s4 failure context (md :486), with s6's prohibition at md :544; the same rule the package itself declared as manifest deviations[DEV-3]",
+      "responsibleOwner": "test-method-expert",
+      "repairCondition": "R3 s6 must be re-issued so that it is executable inside the signed boundary: either (a) each raw-context/context logicalId (triggerModeRise/Fall, captureLevel, sweepGeometry, registerActivationTrace, relayActuationTrace, failureContext, bstSwStatus) names the concrete reachable mechanism and the exact field mapping that carries it as a RECORD, or (b) R3 explicitly downgrades those rows to source-comment documentation, states that decision as the method's own position, and adds a failure-path rule for a no-trigger / boundary-trigger / negative-Hys segment that does not depend on a logging API this project does not have. Until (a) or (b) is signed, the implementation cannot be shown to conform to R3 s6, and 'the quantities are in the comments' is NOT accepted by this review as satisfying a logPlan record. WIDENED-SCOPE ADDENDUM: the re-issue must name a mechanism that is actually REACHABLE FROM A NON-TRIM TM ITEM. If the intended channel is the framework datalog, note that its only writer (TREG_LOG::log_data) is private and fenced to the Trim framework, so exposing it to ordinary TM items would be a PLATFORM/FRAMEWORK change outside ate-implementer's authority and must be raised as such rather than assigned to the implementer. If no reachable channel can be named, option (b) - explicit downgrade to documented comment provenance, stated as the method's own position - is the closure.",
+      "routingNote": "This is explicitly NOT returned to ate-implementer: the missing capability is a property of the platform and the signed boundary, not a defect the implementer could have fixed without inventing an API. No executable line of test.cpp needs to change to close RF-01. The widened project-level probe confirms this: the three captain-named candidates are respectively not declared for a TM translation unit (CBC_log - BoardCheck.h outside the include closure, instance private, qualified name used 0 times tree-wide), private to the Trim framework (TREG_LOG::log_data), and the wrong channel entirely (TREG_ERROR::treg_error_log, a debug-console error/fatal path)."
+    },
+    {
+      "id": "RF-02",
+      "severity": "low",
+      "TM": "TM108",
+      "category": "fidelity - an unverified framework behaviour is asserted as an established fact",
+      "blocking": false,
+      "c7CheckItem": "C7",
+      "evidence": "The code asserts, as fact, that the test framework releases the {13,65} closure when the function returns: test.cpp:2178-2179 ('safety end : the closure set is released implicitly with the cbite scope; no relay of this item is left actuated and no source is left energised') and test.cpp:2287-2289 ('{13,65} need no explicit release call: the cbite scope ends with the function, so no relay of this item outlives it'). The review record classifies this framework behaviour as UNKNOWN - not verified in this session (t8 contract section 4c, item C7). Every other unproven premise in this delivery is correctly labelled PENDING or carried as an open item; this one is the only place where an unevidenced premise is stated in the indicative mood.",
+      "violatedRule": "Charter section 2 (evidence precedence: charter/contract facts before experience and assumption) and section 4's library-function rule (every call must be traceable to the registered declaration, real implementation and call semantics, including implicit side effects) - here an implicit framework side effect is claimed without a registered source",
+      "responsibleOwner": "ate-implementer",
+      "repairCondition": "Reword test.cpp:2178-2179 and test.cpp:2287-2289 so the implicit release is presented as an assumption about the cbite scope that still has to be confirmed against the framework (naming the framework or compile-diagnostician as the confirming party), and so that the safe-end-state sentence reads as conditional on that confirmation. Do NOT add any release call and do NOT remove the P8 discussion - the fix is one of wording only, inside comments.",
+      "note": "This is a separate matter from the absence of the release call, which is waived (WF-01). RF-02 scores the ASSERTION, not the omission, and therefore does not conflict with the C7 instruction."
+    },
+    {
+      "id": "RF-03",
+      "severity": "low",
+      "TM": "TM108",
+      "category": "code placement / structural convention regression inside the touched region",
+      "blocking": false,
+      "evidence": "The edit replaced the heading '// ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======' (backup line 2185) with '// P4 rising sweep -> P5 turn-around -> P6 falling sweep (method sec.3 P4/P5/P6)' (test.cpp:2240, unified diff hunk @@ -2165,32 +2203,60 @@). TM108's step sequence is now Step 1 (test.cpp:2205), Step 2 (:2221), Step 3 (:2230), Step 5 (:2276), Step 6 (:2294) - there is no Step 4 anywhere in the span 2193-2309. The item's own self-check records this as deliberate (t7-selfcheck.md:83-84). Every sibling item in the same file keeps the complete 1..6 set, including the two nearest neighbours: TM107 at test.cpp:2108 and TM109 at test.cpp:2347 both read '// ====== Step 4: Measure (library AWG ramp, trigger-capture DTEST0 toggle) ======'. The result is that TM108 alone has a numbering gap in the file's own structural convention, and the contract phase markers P4/P5/P6 the banner asserts have no numbered anchor in the body.",
+      "violatedRule": "Charter section 2's engineering-rules row (framework / code structure review) and section 3 step 5 (the review must be able to follow the item's own step structure); also R1/R3 traceability, since the banner maps P0..P8 onto a step scheme that is now incomplete",
+      "responsibleOwner": "ate-implementer",
+      "repairCondition": "Restore a 'Step 4' heading for the P4/P5/P6 region - the contract phase markers may stay on the same line or on the following lines - so that TM108's step sequence is 1..6 like every other item in the file. Comment-only change; no executable line is involved.",
+      "note": "Cosmetic and non-blocking, but it is a self-inflicted regression in the exact region under review, and it defeats a reader trying to walk the item by step number."
+    },
+    {
+      "id": "RF-04",
+      "severity": "low",
+      "TM": "TM108",
+      "category": "evidence accuracy in the implementation artifacts (self-check and manifest numbers that do not reproduce)",
+      "blocking": false,
+      "evidence": "Four independent numbers in the reviewed evidence do not reproduce against the file I inspected, and a reviewer who follows them lands on the wrong line. (1) t7-selfcheck.md:131 states the signature is at 'test.cpp:2191'; the reviewed plaintext file has 'DUT_API int TM108_HSKP_VAC1_PRST(short funcindex, LPCTSTR funclabel)' at line 2193. (2) t7-selfcheck.md:129 and manifest changes[0].changeKind state '5625 non-comment lines before and after'; my count of lines whose stripped form is non-empty and not a comment opener is 5628 before and 5628 after. (3) t7-selfcheck.md:132 states '95 TM symbols in the file'; my count of /DUT_API\\s+int\\s+TM\\d+/ is 98. (4) manifest targetSymbols[0].sourceLocationBefore=2154 and sourceLocationAfter=2192, and t7-selfcheck.md:130 'every opcode inside display lines 2149-2216', are each 1 lower than the values I measure (2155, 2193, 2150-2217) - a consistent off-by-one convention, which is tolerable if declared, but it is not declared and it is applied inconsistently (2191 in item (1) is off by two, not one). NONE of the material claims is affected: I independently reproduced the hash binding, the comment-only nature, the scope confinement and the 97-added/13-removed line counts. The counts that matter are right; the counts that are wrong are the ones a reviewer would use to navigate.",
+      "violatedRule": "Charter section 6 (output and handoff: the review must be able to verify the implementation artifact against the code) and the evidence-locator discipline the whole delivery relies on - every other number in this run carries a path:line; these four do not land where they say they land",
+      "responsibleOwner": "ate-implementer",
+      "repairCondition": "Correct the four numbers in t7-selfcheck.md:129, :130, :131, :132 and the two sourceLocation values in implementation-manifest.json targetSymbols[0] (or state explicitly which line-numbering convention is in use and apply it consistently across both artifacts), so that a reviewer following the manifest arrives at the intended line and can reproduce the stated counts.",
+      "note": "Non-blocking documentation defect. If the line convention is intentionally 0-based, saying so once in the manifest readerDiscipline block would close items (1) and (4)."
+    },
+    {
+      "id": "RF-05",
+      "severity": "high",
+      "TM": "TM108",
+      "category": "process / gate integrity - the reviewed artifact was rewritten during the review, so no valid gate exists for the current revision",
+      "blocking": true,
+      "evidence": "The pair this review examined was test.cpp = b79b911a65a33abd62697f8576bd04b5022194751c9bfc5b174ecdab96d05d5a (477123 B, CRLF 9434, mtime 21:29:56) with implementation-manifest.json = a4f5286da293f0e564849e37afce263e7bce38d08753503189a25e1bcbeba556 (25688 B). During this review - not by me, I wrote only under team/artifacts/tm108-v2-trial/review/ - test.cpp was replaced by 456fba2ce30aea904ed852175dad5724cea06347d989beff0b7af752dc486eaa (477760 B, CRLF 9440, mtime 21:39:39) and the manifest was rewritten TWICE, observed as 25688 B (a4f5286d...) then 36494 B (26171fca...) then 41935 B (58c54c48..., mtime 21:41:13), the last happening between two consecutive verification reads of mine. Both revisions are preserved for audit: review/copy/test.cpp (as reviewed) and review/copy/test.cpp.r2-live (as newly observed). The newer pair is internally consistent (its changes[0].afterSha256 equals the newer live file), but it is NOT the pair this review examined, and my gate G-01/G-02/G-03 hash binding therefore no longer describes the state on disk. A reviewer cannot pass a gate on an artifact that is being rewritten underneath it, and the newest manifest may itself have been superseded after my last read (RR-14). I did re-verify against the newer revision where I could: RF-01 is unresolved there too (SetTestResult still the only log-writing call, 187 in code; LogData 0 in code; 3 SetTestResult sites in the TM108 span; the logPlan-deferring comment intact), and RF-02 and RF-03 are repaired there.",
+      "violatedRule": "team/ROLE_ROUTING.md:32-34 (a role must validate a handoff against the declared artifacts and hashes, and a blocking verdict must stop the sequence) together with the t8 contract section 4.7, which makes the deliverable the hash-bound pair (code + manifest) and treats a manifest naming a different revision as a blocking finding rather than a formality; charter section 5 also requires the reviewer to be able to re-check the reviewed artifact by snapshot",
+      "responsibleOwner": "captain (artifact freeze and dispatch discipline) with ate-implementer (the writer of both files)",
+      "repairCondition": "Declare a single frozen revision (one test.cpp hash + one manifest hash), complete every remaining repair against it first, and make no further writes to test.cpp or implementation-manifest.json while the re-review is in flight; then re-run t8 on that frozen pair. The re-review must re-verify all of RF-01, RF-02, RF-03 and RF-04 plus the hash binding on the frozen revision, because this review's own evidence is anchored to b79b911a... and cannot be carried over automatically.",
+      "note": "This finding is not a criticism of the code content - it is the reason the review cannot be closed as a pass. It is reported by me rather than silently absorbed because treating an older revision's review as the gate for a newer revision is exactly the failure mode the hash binding exists to prevent."
+    }
+  ],
+
+  "waivedFindings": [
+    {
+      "id": "WF-01",
+      "subject": "no explicit release call for the signed closure set {13,65} anywhere in the project",
+      "checkItem": "C7",
+      "whyWaived": "The absence is the project-wide pattern, not a TM108 deviation: measured count over the whole file is 104 'cbite.SetOn' occurrences and ZERO occurrences of any cbite release or reset call (SetOff, RelayOff, Reset, .Off(, DelayOff, SetOffAll) in both the pre-change and the post-change file. No item in this file releases a closure explicitly, so R3 s5 action 6 is realised by the framework's per-item relay reset or by the item boundary rather than by a call. The framework behaviour itself was NOT verified in this session (UNKNOWN) and is not the implementer's to invent; the t8 contract explicitly instructs that its absence in TM108 must not be scored as an implementation deviation. It is therefore recorded here and routed as gate G-09 / residual risk RR-01, in the test framework / compile-diagnostician territory, instead of being raised against ate-implementer. The separate matter of the code ASSERTING that framework behaviour as fact is raised, with a wording-only repair, as RF-02.",
+      "evidence": "python byte-mode scan of the reviewed copy and the pre-change backup; test.cpp:2218 is the item's only relay call",
+      "disposition": "waived as an implementation deviation; carried as an unverified framework behaviour"
+    },
+    {
+      "id": "WF-02",
+      "subject": "R3 s10 RT-1 (md :637) still states a K13 divergence and still cites 'contract md :248, :574'",
+      "checkItem": "C10",
+      "whyWaived": "The premise is refuted and I verified that myself: R1 md :248 lists exactly 16 keep-open relays (14,15,16,21,38,39,40,70,82,86,87,90,92,130,141,142) with neither 13 nor 65, and R2 line 574 resourceSummary.keepOpenRelayNumbers is the identical 16-number list, while R2 line 493 relayGroups[G3].closureSetActuatedThisStage is [13,65] and R1 :245 places 13 and 65 under 'must be actuated'. The refuted citation's ':574' is a valid line in R2 (the JSON) but is out of range for R1 (441 lines), which is why the row is self-inconsistent. However: (a) this text lives in the signed upstream method contract, not in the deliverable under review, so it is not a t7 conformance failure; (b) the t8 contract section 4.3 forbids failing the implementation for the non-existent inconsistency; and (c) my charter forbids me from resolving, closing or relabelling RT-1 or from choosing a side. The claim is therefore recorded as a waived item rather than scored, and it is carried as residual risk RR-10 so that whoever re-issues R3 corrects the row.",
+      "evidence": "R1 md :241-252; R2 lines 493, 520, 574; captain-precheck/rt-1-record-correction.md",
+      "disposition": "waived against the implementation; carried as an upstream-contract text correction for whoever re-issues R3"
+    },
+    {
+      "id": "WF-03",
+      "subject": "no tolerance, guard band or pass/fail criterion exists for the TM108 limits",
+      "checkItem": "C6 / RT-4 / OI-T4-09",
+      "whyWaived": "RT-4 is a spec-side gap that no code change can close, and the t8 contract explicitly records that no tolerance may be invented. I confirmed the code adds none: the only numeric literals in the whole TM108 body are 0, 1, 3, 20, 0.0, 1e3, 200, 1.65 and 10.0, all of them arguments of pre-existing calls; the per-site reporting at test.cpp:2304-2306 is SetTestResult(site, 0, value) with a literal second argument of 0 and no limit, guard band or tolerance expression anywhere. RT-4 remains carried in the manifest openItems and is restated in the code banner at test.cpp:2190.",
+      "evidence": "numeric-literal inventory of test.cpp:2193-2309; test.cpp:2304-2306; test.cpp:2190; manifest openItems RT-4",
+      "disposition": "waived as an implementation matter; remains an open item owned elsewhere"
+    }
+  ],
+
+  "gateResults": [
+    {
+      "id": "G-01",
+      "name": "manifest hash binding (the deliverable is the hash-bound pair code + manifest)",
+      "method": "python byte-mode sha256 of the exact live file the review inspected, compared to manifest changes[0].afterSha256",
+      "status": "PASS",
+      "evidence": "live test.cpp plaintext sha256 b79b911a65a33abd62697f8576bd04b5022194751c9bfc5b174ecdab96d05d5a (477123 B) == manifest changes[0].afterSha256 == sha256 of the review copy. The manifest names the revision that is on disk. Not stale."
+    },
+    {
+      "id": "G-02",
+      "name": "backup byte-identity to the recorded pre-change hash",
+      "method": "python byte-mode sha256 and size of backup/tm108-v2-impl__test.cpp.before",
+      "status": "PASS",
+      "evidence": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a, 469714 B, BOM present, CRLF 9350, bare LF 3 - reproduces manifest backups[0] and changes[0].beforeSha256 exactly."
+    },
+    {
+      "id": "G-03",
+      "name": "backup is the genuine pre-change image (independent anchor)",
+      "method": "byte comparison of the backup against the captain's independently captured pre-change block",
+      "status": "PASS",
+      "evidence": "captain-precheck/tm108-block-before.txt (sha256 19fe6b5c7770e8f0f9882a040d6354d29db07f7684e8cb9fabbf10abc4194416, 81 lines) matches backup lines 2147..2227 EXACTLY, line for line. This closes the only way the pre-change evidence could have been a reconstruction rather than a capture."
+    },
+    {
+      "id": "G-04",
+      "name": "executable content unchanged (comment-only change), whole file",
+      "method": "difflib.SequenceMatcher over all lines + a string-literal-aware comment stripper + whitespace-normalised comparison",
+      "status": "PASS",
+      "evidence": "non-comment line sequence identical before/after (5628 items each, sequence equality True). Stronger still: with all comments removed and whitespace normalised the two files are byte-identical, both hashing to 0341d69a9b23ffb62bff99e0c777392a609bef1a2316ce66664e460714cb739f (236169 chars each). Every added and removed line is a comment or a blank line (13 raw change blocks, 0 non-comment changed lines)."
+    },
+    {
+      "id": "G-05",
+      "name": "file integrity: BOM, CRLF and bare-LF preservation",
+      "method": "python byte-mode byte inspection",
+      "status": "PASS",
+      "evidence": "UTF-8 BOM present before and after (header bytes efbbbf). CRLF 9350 -> 9434, delta +84 = the net line change (97 added, 13 removed). Bare LF unchanged at 3 before and after. No line-ending or encoding damage."
+    },
+    {
+      "id": "G-06",
+      "name": "scope confinement (no other TM touched, no unrelated hunks)",
+      "method": "unified diff at context 3 plus opcode-level changed-range computation",
+      "status": "PASS",
+      "evidence": "3 unified hunks at standard context 3 (@@ -2147,10 +2147,48 @@, @@ -2165,32 +2203,60 @@, @@ -2199,22 +2265,40 @@); 13 raw change blocks; the changed range is backup lines 2150..2217 and test.cpp lines 2150..2301. TM108's own region before the change is banner 2149..2154 plus body 2155..2225, and after the change banner 2149..2192 plus body 2193..2309, so every changed line lies inside the TM108 banner and body. No line of TM107 or TM109 is touched. NOTE for the record: the captain's 'exactly 3 hunks' and my '13 change blocks' are the same measurement under two conventions and neither is wrong."
+    },
+    {
+      "id": "G-07",
+      "name": "signature unchanged and unique",
+      "method": "python exact text match",
+      "status": "PASS",
+      "evidence": "'DUT_API int TM108_HSKP_VAC1_PRST(short funcindex, LPCTSTR funclabel)' present exactly once in the reviewed file, at line 2193, byte-identical to the pre-change line 2155. The signature line is a non-comment line and therefore cannot have changed (G-04)."
+    },
+    {
+      "id": "G-08",
+      "name": "no BST/SW driving action added, and the 9/9 unproven conclusion carried",
+      "method": "relay-macro and call inventory of the TM108 body; comparison against R5",
+      "status": "PASS",
+      "evidence": "The only executable relay call in the body is test.cpp:2218 cbite.SetOn(K13_VBAT_Cap, K65_nQON_PU, -1). Relay macro tokens in the body are exactly K13_VBAT_Cap (3), K17_BUSL_VAC (2), K21_VAC_Cap (1), K65_nQON_PU (2); the last two are comment-only. None of K47, K48, K57, K61, K76, K109, K110, K141, K142, K86, K130 appears in the body. No numeric relay literal appears anywhere in the body. The banner at test.cpp:2185 states the 9/9 unproven conclusion and that no BST/SW action is added, satisfying R5 :59-:60."
+    },
+    {
+      "id": "G-09",
+      "name": "explicit release of the signed closure set at P8 (framework per-item relay reset)",
+      "method": "not run - out of scope for this role",
+      "status": "NOT VERIFIED - OUT OF SCOPE",
+      "evidence": "R3 s5 action 6 requires the release of K13 then K65 and the code has no release call (WF-01). Establishing the framework's per-item relay reset requires the test framework or the build/environment role; this review is forbidden to run a gate script or a build. Routed to compile-diagnostician as residual risk RR-01, and recorded here as NOT VERIFIED rather than passed or failed."
+    },
+    {
+      "id": "G-10",
+      "name": "compilation / build / link",
+      "method": "not run - explicitly out of scope for this role",
+      "status": "NOT VERIFIED - OUT OF SCOPE",
+      "evidence": "The t8 contract section 5 forbids compilation and gate-script execution; that gate is compile-diagnostician's. This review makes no compilation claim and no hardware claim."
+    },
+    {
+      "id": "G-11",
+      "name": "R3 s6 logPlan record completeness",
+      "method": "comment-stripped callable inventory of the reviewed file plus a per-row comparison against R3 s6's logicalId table",
+      "status": "FAIL",
+      "evidence": "3 of 10 logPlan rows are emitted (the three calculated quantities via SetTestResult at test.cpp:2304-2306); the 7 raw-context/context rows are comment text only, and the whole file contains no log-writing primitive other than SetTestResult (and no other is named by R-LOG at rules-registry.md:37). See RF-01. Re-run at the widened project scope ordered by the captain: BoardCheck.h CBC_log, treg.h TREG_LOG::log_data and treg.h TREG_ERROR::treg_error_log were each examined and none is a usable vehicle (see RF-01 evidence and C11). The gate stays FAIL."
+    },
+    {
+      "id": "G-12",
+      "name": "open items carried and not used as settled facts in the code",
+      "method": "grep of the reviewed file and structural inspection of the manifest openItems[] and the self-check carried-items table",
+      "status": "PASS",
+      "evidence": "OI-T4-01 / OI-T5-01 appear as PENDING in the code at test.cpp:2182-2184, :2245, :2250 and in the banner; RT-2 / OI-T5-02 at test.cpp:2185; RT-4 / OI-T4-09 at test.cpp:2190; F1-F6 / OI-T4-10/11/12/13/14/16 at test.cpp:2191; OI-T4-04 at test.cpp:2214; OI-T5-05 / RT-3 at test.cpp:2170. No open item is closed, relabelled or used as a settled premise. K17 is named only in comments and never actuated, so OI-T4-04 is not silently decided by the code. DMUX_SEL=22 is implemented as the signed value with the CSV counterpart recorded as not applied and F2 carried (test.cpp:2232-2234)."
+    },
+    {
+      "id": "G-13",
+      "name": "reviewed revision == revision currently on disk",
+      "method": "python byte-mode sha256 of the live file and the manifest, compared against the pair this review examined, and re-checked across the review window",
+      "status": "FAIL",
+      "evidence": "The live file is 456fba2ce30aea904ed852175dad5724cea06347d989beff0b7af752dc486eaa (477760 B) and the manifest is 58c54c48d1d72177551b32463ea62133a105fad4883f838a15e669d42638778e (41935 B), while this review examined b79b911a... (477123 B) and a4f5286d... (25688 B). The manifest was observed at three distinct sizes/hashes during the window. The reviewed pair no longer exists on disk. See RF-05 and RR-14."
+    }
+  ],
+
+  "scopeCorrection": {
+    "raisedBy": "captain (direct input received during t8)",
+    "whatChanged": "The t8 contract restricted C11's independent verification to 'no other logging primitive exists in test.cpp'. That scope was too narrow and the captain withdrew it as its own error. RF-01's evidence and the C11 answer were therefore re-based on a project-level probe of every named candidate: BoardCheck.h class CBC_log (:214/:759/:760), treg.h TREG_LOG::log_data (:195), treg.h TREG_ERROR::treg_error_log (:176), and treg.h log_data_t / test_t (:108/:110).",
+    "outcome": "Every candidate was ruled out as a usable vehicle for R3 s6 logPlan, each with mechanism-level evidence (include closure, access specifiers, friend lists, method definitions, call sites). The C11 ruling is therefore UNCHANGED in substance and SHARPENED in evidence: DEV-3 remains a contract-vs-capability finding owned by test-method-expert, not a code finding against ate-implementer.",
+    "verdictImpact": "none - the terminal verdict remains needs-revision for the same single blocking reason (RF-01)",
+    "scopeDisciplineRuleApplied": "absent-from-test.cpp does not mean absent-from-the-project; my first pass committed the narrow-scope error and it is corrected here",
+    "whatIsVerifiedVersusInferred": "VERIFIED (measured, not assumed): R1-R5 hashes; the live/backup/manifest hashes and their binding; the backup against the captain's independent pre-change block; the comment-only nature three ways; the TM108 spans; the include closure of test.cpp; the access specifiers and friend lists in BoardCheck.h and both treg.h copies; the absence of any CBC_log:: definition tree-wide; the definition of treg_error_log; the counts in test.cpp and the tree. INFERRED (flagged): that a no-trigger segment logs the 0 initialiser (RR-02), because rampv_capv's no-trigger behaviour is undocumented. UNKNOWN (flagged, not assumed): CParam's full public surface (RR-12), the framework's per-item relay reset (RR-01), and which treg copy is in the build (RR-13).",
+    "countDiscrepancyNoted": "The captain's figures 'SetTestResult (200 uses) and GetMeasResult (422)' do not reproduce against any file set I measured. My measurement of test.cpp: SetTestResult 188 call sites (188 raw tokens), GetMeasResult 65 raw and 64 comment-stripped. Tree totals over the 36 source files: SetTestResult 244; GetMeasResult 574 (source/sub.cpp 204, Test_Method.cpp 153, BoardCheck.cpp 151, test.cpp 65, tempchar.cpp 1). LogData: 91 raw tokens in test.cpp but 0 occurrences as a call, confirming the captain's point that it is a step label and not an API. This discrepancy does not affect the C11 conclusion, which rests on access specifiers, include closure and method definitions rather than on counts; it is recorded so the figures can be reconciled."
+  },
+
+  "revisionDrift": {
+    "status": "CRITICAL RECORD - the reviewed artifacts were rewritten by another party WHILE this review was running",
+    "reviewedRevision": {
+      "testCpp": { "sha256_plaintext": "b79b911a65a33abd62697f8576bd04b5022194751c9bfc5b174ecdab96d05d5a", "bytes": 477123, "crlf": 9434, "mtimeLocal": "2026-09-17 21:29:56", "preservedAt": "review/copy/test.cpp" },
+      "implementationManifest": { "sha256_plaintext": "a4f5286da293f0e564849e37afce263e7bce38d08753503189a25e1bcbeba556", "bytes": 25688 }
+    },
+    "observedLiveRevision": {
+      "testCpp": { "sha256_plaintext": "456fba2ce30aea904ed852175dad5724cea06347d989beff0b7af752dc486eaa", "bytes": 477760, "crlf": 9440, "bareLf": 3, "bom": true, "mtimeLocal": "2026-09-17 21:39:39", "preservedAt": "review/copy/test.cpp.r2-live" },
+      "implementationManifest": { "sha256_plaintext": "58c54c48d1d72177551b32463ea62133a105fad4883f838a15e669d42638778e", "bytes": 41935, "mtimeLocal": "2026-09-17 21:41:13", "deviations": ["DEV-1","DEV-2","DEV-3","DEV-4","DEV-5","DEV-6","DEV-7"], "selfChecksCount": 13, "openItemsCount": 15, "t7SelfcheckMd": { "sha256_plaintext": "160803f22435cef2862632a450d247cf1430625f4dce4a409d093c8aa5ab8ae1", "bytes": 30825, "mtimeLocal": "2026-09-17 21:42:27", "stateAsReviewed": "a13ef000e6305b20e2316262aeece15403afff16ba58a3b08ce2c49f98dac2db (18594 B)" } },
+      "manifestMovedTwiceInsideTheReviewWindow": "25688 B (a4f5286d...) -> 36494 B (26171fca...) -> 41935 B (58c54c48...), i.e. the manifest was still being rewritten between two consecutive verification reads",
+      "bindingToObservedLiveRevisionHolds": true,
+      "bindingNote": "the NEW manifest changes[0].afterSha256 == 456fba2c... == the observed live file, so the new pair is internally consistent; but that pair is NOT the pair this review examined"
+    },
+    "consequence": "This review is a valid review of revision b79b911a... + manifest a4f5286d... only. The hash-bound pair I inspected no longer exists on disk, so the review cannot serve as the gate for the current disk state. See RF-05.",
+    "repairsObservedInTheNewerRevision": {
+      "RF-02": "REPAIRED. The unverified framework behaviour is now explicitly marked assumed: the new revision contains 'ASSUMED, NOT verified (compile-diagnostician's item)' (1x) and 'That behaviour is ASSUMED here and NOT verified' (1x), and BOTH old assertive strings are gone ('released implicitly with the cbite scope' 0x, 'the cbite scope ends with the function' 0x). This conforms to RF-02's repair condition (wording only; no release call added).",
+      "RF-03": "REPAIRED. 'Step 4: Measure (library AWG ramp, capture on the observation candidate)' is present exactly once inside TM108, with a note recording why the sibling wording was deliberately not reused, so the item's step scheme is 1..6 again.",
+      "RF-04": "NOT VERIFIED. RF-04 concerns numbers in t7-selfcheck.md and implementation-manifest.json, and both artifacts have been rewritten to states this review has not read. Its status must be re-checked in the next pass.",
+      "RF-01": "NOT RESOLVED, and unresolvable by a code edit - by design it is a contract-vs-capability finding. Re-verified against the new revision: SetTestResult is still the only log-writing call anywhere in the file (188 raw / 187 in code), LogData is still 91 raw / 0 in code, the TM108 span still holds exactly 3 SetTestResult sites, and the logPlan-deferring comment is still present ('carried by the trace comments in this function' 1x, 'failureContext' 1x, 'bstSwStatus' 1x, 'sweepGeometry' 2x)."
+    },
+    "commentOnlyDisciplinePreservedOnTheNewRevision": "non-comment line sequence still identical to the pre-change backup (5628 items each), BOM present, bare LF still 3 - so the newer revision is still a comments-only change relative to the backup",
+    "requiredAction": "Freeze a single revision, complete every repair, and re-run t8 against that frozen pair; no writes to test.cpp or the manifest may occur while the re-review is in flight."
+  },
+
+  "reviewStatus": "needs-revision",
+
+  "verdictBasis": "The executable content of the deliverable is verified faithful to the signed contracts on every point this review could test: comment-only change (G-04), hash binding (G-01), backup authenticity (G-02, G-03), integrity (G-05), scope (G-06), signature (G-07), the whole R1 resource/relay/register set, the whole R3 P0-P8 phase order and power-down sequence, the measurement plan, and the BST/SW constraint. The verdict is needs-revision, not pass, on one blocking count: R3 s6 logPlan requires 10 log records and the code emits 3, with the remaining 7 present only as comments, and I independently confirmed that the file exposes no other log primitive - so the requirement as written cannot be met by code (RF-01). The t8 contract's own instruction is that this is a contract-vs-capability finding to be returned to the contract owner, and the charter requires a needs-revision verdict to name owner and repair condition and NOT to hand off downstream. RF-02 to RF-04 are non-blocking. Per ROLE_ROUTING.md:47 the compile stage may not start until a rule-reviewer pass exists, so t9 is held.",
+
+  "residualRisks": [
+    { "id": "RR-01", "severity": "high", "subject": "the framework's per-item relay reset is UNKNOWN", "detail": "R3 s5 action 6 (release of K13 then K65 at P8) has no call in the code and the code asserts the release happens with the cbite scope. No item in test.cpp releases a closure explicitly (104 cbite.SetOn, 0 release calls), so the behaviour is inherited, not proven. If the framework does not reset per item, the VBAT cap gate stays closed across items. Owner to verify: compile-diagnostician / test framework. Related: WF-01, RF-02, G-09." },
+    { "id": "RR-02", "severity": "high", "subject": "a no-trigger segment appears to be logged as 0", "detail": "INFERENCE, not measured: vth_r/vth_f are initialised to 0 (test.cpp:2247-2248), copied at :2265-2266 and logged unconditionally at :2304-2306, and the code ignores any failure signal from rampv_capv. functions-registry.md:43 documents only the signature and 'result = the voltage at the trigger point', with no no-trigger behaviour, so the primitive's real behaviour is UNKNOWN. If it leaves result untouched on a no-trigger, the item logs a defaulted 0 in place of a missing capture, contradicting R3 md :486 and :544 and the code's own claim at test.cpp:2299. Needs the primitive's contract or a bench observation." },
+    { "id": "RR-03", "severity": "high", "subject": "the observation endpoint identity is unresolved (OI-T4-01 / OI-T5-01)", "detail": "DTEST0 has 0 hits in the schematic three-artifact set and the contract forbids assuming DTEST0 == nQON, so the observation endpoint, the trigger polarity, the validity of the 1.65 V capture level and the sufficiency of DMUX_SEL=22 are all unproven. The code correctly never equates them and marks every dependent premise PENDING, but the item's entire measurement premise therefore remains unverified. No side taken by this review." },
+    { "id": "RR-04", "severity": "high", "subject": "BST/SW differential constraint unproven in 9/9 phases (OI-T5-02 / RT-2)", "detail": "The code adds no BST/SW action, which is correct and required by R5 :59. R5 itself warns that its conclusion is 'unproven', not 'no risk', and that a numeric BST-SW result is unobtainable until OI-T5-02 / RT-2 are closed." },
+    { "id": "RR-05", "severity": "medium", "subject": "the applied numbers are each one side of an unresolved DFT conflict", "detail": "VBAT 3 V vs 4.2 V (F4/OI-T4-12), DMUX_SEL 22 vs 23 (F2/OI-T4-10), the sweep geometry 0->10->0 V vs two competitors (F5/OI-T4-13), the rising limit 4.4 V vs 4.15 V (F1/OI-T4-09), V(DTEST0) vs Check=INT (F3/OI-T4-11) and the DFT timing self-contradiction (F6/OI-T4-14). All are carried on both sides with no averaging, as required, but the delivered item is unvalidatable as an engineering result until they are ruled." },
+    { "id": "RR-06", "severity": "medium", "subject": "R3's method-side numeric positions are not carried as an open item in the implementation artifacts", "detail": "R3 registers the capture level, the sweep resolution and the range/limit pair as method-side positions under OI-T5-03 (md :621). The code does state their provenance as method-side (test.cpp:2172-2174, :2241) and marks F5 open, so C5 passes, but the token OI-T5-03 appears nowhere in the code banner and there is no OI-T5-03 row in manifest openItems[]. Not raised as a finding because R3's own handoff list (md :658) does not require it to be carried by the implementation; recorded so the manager can decide whether the implementation artifacts should carry it." },
+    { "id": "RR-07", "severity": "medium", "subject": "no register de-activation exists (RT-3 / OI-T5-05)", "detail": "The delta has no disable field, so the mux activation is never un-written. The code correctly writes nothing rather than inventing a field, and R3 permits this only as an unclosed item. Out of scope for this review to resolve." },
+    { "id": "RR-08", "severity": "low", "subject": "no tolerance exists for the TM108 limits (RT-4 / OI-T4-09)", "detail": "Without a tolerance no pass/fail can be adjudicated; the code invents none (WF-03)." },
+    { "id": "RR-09", "severity": "low", "subject": "shared-ACM200 site concurrency unconfirmed (OI-T4-03 / RT-5)", "detail": "VAC123_AMUX_ACM serves VAC1/VAC2/VAC3 and AMUX; serial site use is assumed and never confirmed by a concurrency table. Not an implementation matter." },
+    { "id": "RR-10", "severity": "low", "subject": "R3 s10 RT-1 still carries the refuted K13 divergence and the ':574' citation", "detail": "Verified refuted by R1 :248 and R2 :574 (16 keep-open relays, no 13, no 65) against R1 :245 and R2 :493 (closure {13,65}). The deliverable no longer asserts it (manifest deviations[DEV-1] now reads WITHDRAWN, manifest openItems RT-1 reads REFUTED, code banner test.cpp:2186-2189 records it as refuted). The stale text survives only inside the signed upstream method contract. This review does not resolve, close or relabel RT-1 - recorded so that whoever re-issues R3 corrects the row." },
+    { "id": "RR-11", "severity": "low", "subject": "manifest/self-check line-number convention is off by one and applied inconsistently", "detail": "See RF-04. A reviewer navigating by the manifest's line numbers lands one line early; t7-selfcheck.md:131's 2191 is off by two. The hash-bound facts are unaffected." },
+    { "id": "RR-12", "severity": "medium", "subject": "CParam's full public surface is not enumerable from this checkout", "detail": "UNKNOWN, stated explicitly rather than assumed. CParam is the only framework object a TM receives (via StsGetParam), and no class CParam declaration exists anywhere under D:/PROJECT6-DALI/ForCodexDebug: the token appears only as a USE (test.cpp 668, source/src/treg.cpp 2, Shmoo.h 1, Test_Method.cpp 1). The class is therefore declared in an external SDK/framework include directory that is not present in this checkout. The observed surface actually used in test.cpp is SetTestResult (188 call sites), GetMaxLimit (3), getNextParam (4) and get_param_name_in_spec (4). Closing action: locate and read the SDK header that declares CParam and enumerate its public API; if it exposes a text or logging method reachable from a TM, RF-01 must be re-opened as a CODE finding against ate-implementer. Until that is done, RF-01 stands on the narrower but sufficient basis that no usable primitive was found among every candidate this tree does expose.", "ownerToVerify": "ate-implementer with compile-diagnostician (include-path owner)" },
+    { "id": "RR-13", "severity": "low", "subject": "the tree carries two non-identical copies of treg.h and treg.cpp, and the build's include configuration was not determined", "detail": "source/treg.h (e10c2ac7..., 51157 B) differs from source/src/treg.h (ae0d6d62..., 47730 B), and source/treg.cpp (ae86d1a1..., 160192 B) differs from source/src/treg.cpp (1cefbf11..., 155267 B). Both treg.h copies declare log_data under private: in class TREG_LOG, so the C11 ruling is copy-independent; source/src/treg.cpp:62 additionally defines stslogdata(), which itself uses CParam::SetTestResult. However no .sln/.vcxproj was opened by this role (out of scope, and compilation belongs to compile-diagnostician), so which copy is in the build is UNKNOWN. Closing action: compile-diagnostician records the include path actually used.", "ownerToVerify": "compile-diagnostician" },
+    { "id": "RR-14", "severity": "high", "subject": "the reviewed pair is no longer on disk, and the newest manifest was still changing when this review ended", "detail": "Both revisions are preserved (review/copy/test.cpp = as reviewed, review/copy/test.cpp.r2-live = as newly observed) but neither can be assumed current: the manifest was observed at three different sizes and hashes inside this review window (25688 B a4f5286d..., 36494 B 26171fca..., 41935 B 58c54c48...), so it may have been superseded again after my last read. Any consumer must re-hash test.cpp and implementation-manifest.json before acting on this review, and must not treat the RF-02/RF-03 repairs I observed as verified for whatever revision is current at the time of reading.", "ownerToVerify": "captain (freeze) + ate-implementer" }
+  ],
+
+  "checkItemsAnswered": {
+    "C1": { "verdict": "SATISFIED", "detail": "The 'DTEST0 == nQON' identity is gone, not merely softened. The pre-change banner asserted it twice (backup :2150 'digital V(DTEST0)' and :2152 'measure V(DTEST0)=nQON toggle (r 4.059 f 3.738)', with the two measured numbers having no basis in R1-R4), and the pre-change inline comment at backup :2189/:2193 asserted the inverted alias again. All of those are removed. The new banner reads 'capture the digital toggle on the observation candidate' (test.cpp:2152) and explicitly disclaims the equality at test.cpp:2182-2184 ('the DFT check pin V(DTEST0) is NOT equated with the nQON candidate - the observation allocation RA-5 is marked CANDIDATE ONLY'); the capture is labelled PENDING-OI-T4-01 at test.cpp:2245 and the polarity premise PENDING at test.cpp:2250. This is the re-wording-as-pending outcome C1 asked for, and it matches R1 s4.1 exactly." },
+    "C2": { "verdict": "SATISFIED", "detail": "The closure set is still exactly {13,65} and nothing was added or removed. test.cpp:2218 remains byte-identical to the pre-change line (backup :2171) - the non-comment line sequence is unchanged (G-04), so the SetOn call cannot have been altered. K21_VAC_Cap is not in the SetOn; the K21 token appears once in the body and only as comment text at test.cpp:2211. This matches R1 G3 (md :224 closure {13,65}), R1 :245 (must-actuate = 13,65) and R2 line 493 (relayGroups[G3].closureSetActuatedThisStage = [13,65])." },
+    "C3": { "verdict": "SATISFIED", "detail": "The cap-gate asymmetry is preserved and strengthened. Pre-change backup :2169 said 'VAC1 is scanned input, do NOT close K21_VAC_Cap'; test.cpp:2211 now says 'VAC1 is the scanned input, so K21_VAC_Cap must stay un-actuated - no cap across the node', and the banner lists K21_VAC_Cap first in the isolation set at test.cpp:2167. This matches R1 :200, :248 and R1-G3's isolation row, and the confirmation at R1 :225 ('K21_VAC_Cap must stay open')." },
+    "C4": { "verdict": "SUPERSEDED BY SECTION 4c; CONFORMS, NO FINDING", "detail": "Per the captain's refinement I verified the sub-steps separately against R3 rather than against the pre-change limits. Sub-step 1 at test.cpp:2281-2283 zeroes all three channels while HOLDING the P4 range/limit pairs with the relay still ON: VAC123_AMUX_ACM at ACM200_20V/ACM200_100MA (exactly R3 P4's pair), VBAT_PD3_FXVI at FXVIe_PLUS_10V/FXVIe_PLUS_100MA, NQON_HG1_ACM at ACM200_10V/ACM200_10UA. That is precisely R3 P7's stated 'FV=0, range/limit held as in P4, relay still ON' (md :384), and it satisfies R3 s5 actions 1-3. Sub-step 2 at test.cpp:2290-2292 uses the unified RELAY_OFF pairs ACM200_10V/10MA and FXVIe_PLUS_10V/10MA, which is exactly R3 s5 action 5 (md :506). The pre-change '10MA' difference in sub-step 2 is therefore NOT a deviation from anything R3 states - R3 prescribes no range for action 5 beyond the unified RELAY_OFF table, and the code matches that table. The original C4 suspicion does not survive, as the captain already ruled; no finding is raised, and no code-vs-contract wording gap exists for test-method-expert on this point. delay_ms(1) sits between the two sub-steps as R3 s5 action 4 requires." },
+    "C5": { "verdict": "SATISFIED", "detail": "The 1.65 V level is presented with its provenance, not as a DFT fact. The banner attributes it to the method contract and labels the geometry a method-side position with the governing conflict named open: test.cpp:2172-2174 ('capture level 1.65 V ... method sec.4 \"segment rise\"/\"segment fall\"; the geometry is a method-side position, F5 open'). The inline comment at test.cpp:2213 grounds the level physically ('the pull-up is what makes a 1.65 V capture level a mid-scale logic threshold'), matching R3 md :210 and :311 and R1 :121. The sweep geometry is separately attributed at test.cpp:2241 with 'recorded because F5/OI-T4-13 is open'. Nothing presents the level or the geometry as a DFT number. The only residual note, not a finding, is that the token OI-T5-03 (the open item under which R3 md :621 registers exactly these method-side positions) is not carried in the code or the manifest - recorded as residual risk RR-06." },
+    "C6": { "verdict": "SATISFIED", "detail": "No tolerance, guard band or limit literal was added, and RT-4 is carried. The Step 6 reporting is three calls of the form SetTestResult(site, 0, value) at test.cpp:2304-2306 with no limit argument, no tolerance expression and no pass/fail branch. Independent numeric inventory of the entire body test.cpp:2193-2309 finds only these literals: 0, 1, 3, 20, 0.0, 1e3, 200, 1.65, 10.0 - every one of them an argument of a pre-existing call, none of them a limit or tolerance. The banner states at test.cpp:2190 'RT-4/OI-T4-09 no tolerance is published for \"rising vth 4.4 V, hys 0.35 V\"; none is invented', and RT-4 is carried in manifest openItems. This confirms RT-4 is a spec-side matter and not a code artifact, as the check item expected." },
+    "C7": { "verdict": "WAIVED, NOT SCORED - and a separate assertion defect raised as RF-02", "detail": "I measured the project-wide pattern myself rather than accepting it: 104 'cbite.SetOn' occurrences and 0 occurrences of SetOff / RelayOff / Reset / .Off( / DelayOff / SetOffAll in BOTH the pre-change and the post-change file. No item in this file releases a closure explicitly, so TM108's lack of a release call is the project convention and not a deviation; per the check item it is therefore not scored against t7 (waived as WF-01). The framework behaviour that R3 P8's action 6 depends on was not verified in this session and is not the implementer's to invent; it is recorded as an unverified gate (G-09) and residual risk RR-01, in the test framework / compile-diagnostician territory. What I do score separately is that the code states that unverified framework behaviour as an established fact at test.cpp:2178-2179 and :2287-2289, which is a wording defect routed to ate-implementer as RF-02 - it does not contradict the waiver, because RF-02 scores the assertion and not the omission." },
+    "C8": { "verdict": "ALL REPRODUCED, NO REGRESSION", "detail": "I re-verified every item in the C8 checklist against the current file. Register staircase: entertestmode() at test.cpp:2235 precedes I2CWriteSameData(DEV_ADDR, 0x56, 0x16) at :2237 (= R1 s7 DMUX_SEL=22) and I2CWriteSameData(DEV_ADDR, 0x57, 0x08) at :2238 (= R1 s7 DMUX_EN=1). Power-on VBAT: VBAT_PD3_FXVI.Set(FV, 3, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON) at :2227. Measurement call pair at :2253-2255 and :2260-2262: source VAC123_AMUX_ACM at ACM200_20V/ACM200_100MA and observation NQON_HG1_ACM at ACM200_10V/ACM200_10UA, with 0.0->10.0 then 10.0->0.0, 200 samples, interval 20 us, capture 1.65, TRIG_FALLING then TRIG_RISING. Hysteresis at :2273 is (rise_result[site] - fall_result[site]) * 1e3, i.e. mV after the R-HYS conversion applied at the assignment. The CSV-layer alternative (0x55=0x97, EN_DTEST0/DTEST0_MUX=23) is absent from the executed code, which R1 s7 requires since it is a registered conflict. Because the non-comment line sequence is byte-identical before and after (G-04), none of these can have regressed - I confirmed the values positively rather than inferring them from the absence of a diff. The only comment-side change in this area is the replacement of the misleading 'nQON falls through 1.65 V (inverted)' wording with an explicit PENDING statement, which is an improvement, not a regression." },
+    "C9": { "verdict": "SATISFIED - and the alias was treated as non-evidence", "detail": "I treated codebase-wide usage and the knowledge base as non-authority, exactly as instructed. The 'DTEST0 = nQON' alias does appear in sibling items (my 1.65V/nQON scan shows the same 'nQON falls through 1.65V' pattern throughout TM109-TM111 and elsewhere), and TM109/TM110 are structurally the same test as the untouched TM108 baseline - so they are a convenience-copy risk, not corroboration. Nothing in TM108's own region asserts the alias (test.cpp:2182-2184 disclaims it), and no change outside TM108 was made or requested: the changed range is backup 2150..2217 / test.cpp 2150..2301, entirely inside TM108's banner and body (G-06), with zero non-comment lines changed (G-04). No request to change any sibling TM is raised in this review." },
+    "C10": { "verdict": "SATISFIED ON THE REVISION REVIEWED - the claim has been withdrawn, not merely reworded", "detail": "I judged the revision actually before me, and I checked all three of C10's sub-problems. (a) The substantive claim is no longer made: manifest deviations[DEV-1] now carries the subject 'RT-1 claim about K13 - WITHDRAWN by this role after independent re-check', and states that the contradiction 'does NOT survive re-checking' and that 'R1 and I3 AGREE and there was never a contradiction to resolve'. (b) The false framing is gone: the entry no longer describes RT-1 as a REPORTED CONTRACT INCONSISTENCY, and manifest openItems RT-1 reads 'REFUTED - NOT carried as an engineering item, and no R1 contradiction is claimed'. (c) The mis-routing is gone: DEV-1's ownerOfResolution now reads 'none required (captain already refuted RT-1...)' instead of routing a work item to test-strategy-architect. The code banner was corrected in the same way: test.cpp:2186-2189 reads 'RT-1 REFUTED by independent re-check of the signed strategy contract ... the earlier RT-1 claim is withdrawn, not carried'. So no artifact of this delivery asserts an R1 contradiction, and DEV-1 does not stand as a valid deviation. I also verified the premise myself rather than trusting the cancellation: R1 md :248 lists exactly 16 keep-open relays (14,15,16,21,38,39,40,70,82,86,87,90,92,130,141,142) with neither 13 nor 65; R2 line 574 keepOpenRelayNumbers is the identical 16-number list; R2 line 493 relayGroups[G3].closureSetActuatedThisStage = [13,65]; R1 :245 lists 13 and 65 as must-actuate; and R1 md is 441 lines, so the ':574' citation is out of range for that file (it is a valid line only in R2, the JSON). Timing: the correction post-dates the first manifest revision and is present in the revision under review, which is the revision that matters. The stale citation survives only inside R3 s10 (the upstream signed contract) - waived as WF-02 and carried as RR-10, because I may not resolve, close or relabel RT-1 and the t8 contract forbids failing the implementation for a non-existent inconsistency." },
+    "C11": { "verdict": "NOT SATISFIED - RULED AS A CONTRACT-VS-CAPABILITY FINDING, ROUTED TO test-method-expert (RF-01, blocking)", "detail": "I take the position that 'it is in the comments' does NOT satisfy R3 s6 logPlan as a record, and I say so as a verdict rather than deferring it. R3 s6 (md :530-551) is a table of logicalIds in a section called logPlan, with a kind column that distinguishes calculated from raw context from context; its notes justify each raw-context row by what a reader of the LOG must be able to see ('without it a reviewer cannot tell which premise was in force' for triggerModeRise/Fall; 'a log that hides the geometry makes the conflict unresolvable after the fact' for sweepGeometry; 'the applied values must be logged, not the contested ones' for registerActivationTrace), and R3 md :486 requires a no-trigger segment to RECORD the failure context including 'the actual start/stop/step/interval values used' rather than write a substituted number. A static comment cannot carry 'the values actually used' - it is text that would not follow the code if the code changed. So the requirement is for emitted records. The implementation emits 3 of 10 rows (test.cpp:2304-2306) and the code concedes the rest are comments (test.cpp:2296-2299). Both branches of C11 were checked, and the second one is the one that holds: I independently verified the capability claim rather than accepting it, with a string-literal-aware comment stripper over the whole file - the only log-writing call in real code anywhere in test.cpp is SetTestResult (187 call sites), GetMeasResult is a measurement readback, LogData's 91 occurrences are all comment headers, printf/cout exist only in the UI code at :390 and :564-569, and no logging function is defined in the file; the active standard R-LOG (rules-registry.md:37) likewise defines the log rule in terms of SetTestResult and names no other primitive. So there is no missed existing primitive and this is therefore NOT a code finding against ate-implementer: it is a contract-vs-capability finding, and the need returns to test-method-expert as RF-01's repair condition. I also found the same rule fails on the failure path: the code has no no-trigger detection, so a segment with no trigger would log the 0 initialiser (marked as inference RR-02, since the primitive's no-trigger behaviour is undocumented). WIDENED SCOPE (captain correction, accepted): the original check was confined to test.cpp, and absent-from-test.cpp is not absent-from-the-project. I therefore probed every named candidate outside test.cpp and ruled each one out individually with mechanism-level evidence. CBC_log (BoardCheck.h:214/:759/:760) is not usable: BoardCheck.h is NOT in the transitive include closure of test.cpp, its only instance bc_log is a private member of BoardCheck (BoardCheck.h:778 under private: at :767), it has zero users outside BoardCheck.* in the whole tree, and the qualified name CBC_log:: appears 0 times tree-wide so log()/test_log() are undefined and uncalled. TREG_LOG::log_data (treg.h:195) is a genuine datalog writer with exactly the needed shape (testname string plus limits plus unit, via log_data_func / test_func / msLogData) but is private with only TREG, TRIM_NODE and TRIM_GRP_NODE as friends, and its only public route is a Trim node execute() - so it is unreachable from a non-Trim TM item such as TM108, which R1 s1 classifies as trim = null. TREG_ERROR::treg_error_log (treg.h:176) is public static and therefore callable, but its definition (treg.cpp:227-251) AllocConsole()s an AccoTEST Debug Window and printf_s()es numbered lines - it is a debug console ERROR channel, all 47 of its uses in treg.cpp are error paths, its sibling error() is fatal (etsfatalerror / MessageBox), and TREG_ERROR is used 0 times in test.cpp - so it cannot carry R3 s6 unit/precision/per-site records. The log_data_t and test_t entries at treg.h:108/:110 are callback TYPEDEFS, not callable primitives. Corroboration: the framework own logdata helper source/src/treg.cpp:62 stslogdata() itself writes through CParam::SetTestResult, and no other log-API name exists anywhere in the tree. CONCLUSION UNCHANGED: none of the candidates is usable, so DEV-3 is a contract-vs-capability finding owned by test-method-expert, NOT a code finding against ate-implementer. One residual UNKNOWN is recorded honestly as RR-12: CParam's full public surface cannot be enumerated from this checkout because no class CParam declaration exists anywhere under the target root, so a text/logging method on CParam could exist in the external SDK header and would, if found, flip this finding to a code finding." },
+    "C12": { "verdict": "I ACCEPT THE 'NO CALL' READING - a valid exercise of the delegated decision, and R1's requirement is satisfied by inheritance", "detail": "I accept the implementer's reading (no actuation call for K17) over the 'unexercised delegation' reading, for four independently checked reasons rather than because the contract delegates it. (1) R1's own partition does not class relay 17 as an action of this item: R1 s6.1 separates '动作（必须闭）' = 13, 65 from '须处于闭合态' = 17, and annotates 17 as 'the VAC low-domain BUS entry (same source as the VAC branch, NOT a new action of this item)'; R1 G1's closure set is explicitly '[] (only K17 required in the closed state)'. So R1 requires the STATE, not an actuation. (2) R2 line 520 shows relay 17 appearing as an actuated closure only in relayGroups[G4].closureSetActuatedThisStage = [17], and G4 is the ALTERNATE allocation that R1 says must not be enabled together with G1-G3 - so the signed machine-readable boundary itself places relay 17's actuation in the group this item does not use. (3) R3 P1 (md :199) states the requirement and explicitly withholds the call form: '... the contract assigns no actuation form (OI-T4-04) ... no actuation call for K17 is written by this contract (ate-implementer decides the call form under OI-T4-04)', and R3 P8 (md :428) confirms the outcome - K17 'is left as the VAC branch entry state requires; releasing it would re-open the branch and is therefore NOT part of this method'. (4) The measured evidence is decisive and I reproduced it: K17_BUSL_VAC occurs 0 times in the entire pre-change test.cpp and exactly 3 times in the post-change file, all 3 inside TM108's own trace comments (test.cpp:2162, :2208, :2214). No TM in the file actuates relay 17, so the closed state is an inherited test-program precondition, and writing a SetOn would have invented an actuation decision that neither contract makes and that the R1 partition explicitly declines to call an action. The delegated decision was therefore exercised, not evaded, and R1's requirement is satisfied by inheritance. The disposition is also recorded openly rather than silently: manifest deviations[DEV-2], manifest openItems OI-T4-04, and the code comment at test.cpp:2214-2216. OI-T4-04 remains open and I neither close nor relabel it." }
+  },
+
+  "routingOutput": {
+    "noDownstreamHandoff": true,
+    "nextStageHeld": "t9 / compile (ROLE_ROUTING.md:47 requires a rule-reviewer pass before compile-diagnostician may start)",
+    "returns": [
+      { "findingId": "RF-01", "owner": "test-method-expert", "kind": "contract repair (re-issue R3 s6 logPlan and its failure-path rule)" },
+      { "findingId": "RF-02", "owner": "ate-implementer", "kind": "comment wording only" },
+      { "findingId": "RF-03", "owner": "ate-implementer", "kind": "comment only (restore the Step 4 heading)" },
+      { "findingId": "RF-04", "owner": "ate-implementer", "kind": "documentation only (correct line/count numbers in t7-selfcheck.md and implementation-manifest.json)" }
+    ],
+    "notReturnedButCarried": [
+      "OI-T4-01, OI-T5-01, OI-T5-02/RT-2, OI-T5-03, OI-T5-05/RT-3, RT-4/OI-T4-09, F1-F6/OI-T4-10..16 - all left exactly as open as they were found",
+      "RR-01 framework relay reset -> compile-diagnostician / test framework",
+      "RR-10 stale RT-1 text inside R3 -> whoever re-issues R3 (not resolved by this review)"
+    ]
+  }
+}

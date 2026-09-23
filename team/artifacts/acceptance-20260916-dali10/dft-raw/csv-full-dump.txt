@@ -1,0 +1,214 @@
+====================================================================================================
+DFT.csv sha256 b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4 encoding utf-8-sig records 35
+header: ['Item', 'Function Name', 'ShortName', 'ExpectValue', 'Unit', 'Trim', 'Record', 'Hardware_initial', 'Software_initial', 'Dynamic', 'Check', 'Type']
+----------------------------------------------------------------------------------------------------
+{
+ "csvRecord": 2,
+ "item": "TM000",
+ "Item": "TM000",
+ "Function Name": "IQ_TEST",
+ "ShortName": "IQ_Standby1_DSM",
+ "ExpectValue": "",
+ "Unit": "uA",
+ "Trim": "",
+ "Record": "",
+ "Hardware_initial": "vset[vbat,4.2,100e-6,0]\nvset[vdrv,4.2,100e-6,0]",
+ "Software_initial": "entertestmode();\nI2CWriteSameData(DEV_ADDR, 0x07, 0x00);",
+ "Dynamic": "",
+ "Check": "VBAT",
+ "Type": "MI"
+}
+----------------------------------------------------------------------------------------------------
+{
+ "csvRecord": 6,
+ "item": "TM103",
+ "Item": "TM103",
+ "Function Name": "",
+ "ShortName": "LP_HR_0P5U",
+ "ExpectValue": "0.5",
+ "Unit": "uA",
+ "Trim": "",
+ "Record": "",
+ "Hardware_initial": "vset[vbat,4.2,100e-6,0]\nvset[amux,1,100e-6,0]",
+ "Software_initial": "\tentertestmode();\n\tI2CWriteSameData(DEV_ADDR, 0x56, 0x22);//\t\tfield[(EN_ATEST0,1),(ATEST0_MUX,4)], LP_HR_0P5U",
+ "Dynamic": "",
+ "Check": "AMUX",
+ "Type": "MI"
+}
+----------------------------------------------------------------------------------------------------
+{
+ "csvRecord": 9,
+ "item": "TM108",
+ "Item": "TM108",
+ "Function Name": "VAC_PRST",
+ "ShortName": "VAC1_PRST",
+ "ExpectValue": "rising vth 4.15V, hys 0.35V",
+ "Unit": "V",
+ "Trim": "",
+ "Record": "",
+ "Hardware_initial": "vset[vbat,4.2,100e-6,0]",
+ "Software_initial": "\tentertestmode();\n\tI2CWriteSameData(DEV_ADDR, 0x55, 0x97);\t//\t\tfield[(EN_DTEST0,1),(DTEST0_MUX,23)]",
+ "Dynamic": "vset[vac1,3.8,100e-6,1]\nvset[vac1,4.4,1e-3,1]\nvset[vac1,4.1,100e-6,1]\nvset[vac1,3.5,1e-3,1]",
+ "Check": "INT",
+ "Type": "Toggle, MV"
+}
+----------------------------------------------------------------------------------------------------
+{
+ "csvRecord": 10,
+ "item": "TM109",
+ "Item": "TM109",
+ "Function Name": "",
+ "ShortName": "VAC2_PRST",
+ "ExpectValue": "rising vth 4.15V, hys 0.35V",
+ "Unit": "V",
+ "Trim": "",
+ "Record": "",
+ "Hardware_initial": "vset[vbat,4.2,100e-6,0]",
+ "Software_initial": "\tentertestmode();\n\tI2CWriteSameData(DEV_ADDR, 0x55, 0x96);\t//\t\tfield[(EN_DTEST0,1),(DTEST0_MUX,22)]",
+ "Dynamic": "vset[vac3,3.8,100e-6,1]\nvset[vac3,4.4,1e-3,1]\nvset[vac3,4.1,100e-6,1]\nvset[vac3,3.5,1e-3,1]",
+ "Check": "INT",
+ "Type": "Toggle, MV"
+}
+----------------------------------------------------------------------------------------------------
+{
+ "csvRecord": 19,
+ "item": "TM600",
+ "Item": "TM600",
+ "Function Name": "RDSON_TEST",
+ "ShortName": "HS_RDSON",
+ "ExpectValue": "10",
+ "Unit": "mohm",
+ "Trim": "",
+ "Record": "",
+ "Hardware_initial": "vset[vbat,4.2,100e-6,0]\nvset[pmid,15,100e-6,0]\nvset[bst2sw,5,1e-3,0]\nvset[vdrv,5,100e-6,0]",
+ "Software_initial": "\tentertestmode();\n\tI2CWriteSameData(DEV_ADDR, 0x58, 0x00);\n\tI2CWriteSameData(DEV_ADDR, 0x10, 0x43);\n\tI2CWriteSameData(DEV_ADDR, 0x59, 0x01);\n\tI2CWriteSameData(DEV_ADDR, 0x61, 0x0B);//\t\tfield[(WAKE_UP,1),(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_LSON,1),(BUBO_MODE,0)]",
+ "Dynamic": "iset[pmid2sw,1,1e-3,0]",
+ "Check": "PMID-SW",
+ "Type": "MV&MI"
+}
+----------------------------------------------------------------------------------------------------
+{
+ "csvRecord": 20,
+ "item": "TM601",
+ "Item": "TM601",
+ "Function Name": "",
+ "ShortName": "LS_RDSON",
+ "ExpectValue": "8",
+ "Unit": "mohm",
+ "Trim": "",
+ "Record": "",
+ "Hardware_initial": "vset[vbat,4.2,100e-6,0]\nvset[pmid,9,100e-6,0]\nvset[vdrv,5,100e-6,0]",
+ "Software_initial": "\tentertestmode();\n\tI2CWriteSameData(DEV_ADDR, 0x10, 0x43);\n\tI2CWriteSameData(DEV_ADDR, 0x58, 0x20);\n\tI2CWriteSameData(DEV_ADDR, 0x59, 0x02);\n\tI2CWriteSameData(DEV_ADDR, 0x61, 0x0B);\t//\t\tfield[(WAKE_UP,1),(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(D2A_BUBO_TM_HSON,1)]",
+ "Dynamic": "iset[sw2pgnd,1,1e-6,0]",
+ "Check": "PGND-SW",
+ "Type": "MV&MI"
+}
+wrote D:/Newtest/DSH/ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10\dft-raw\DFT-full.json
+all items: ['TM000', 'TM000_1', 'TM100', 'TM101', 'TM103', 'TM105', 'TM106', 'TM108', 'TM109', 'TM110', 'TM114', 'TM116', 'TM117', 'TM118', 'TM125', 'TM130', 'TM439_1', 'TM600', 'TM601', 'TM606', 'TM607', 'TM608', 'TM609', 'TM623', 'TM624', 'TM625', 'TM626', 'TM627', 'TM628', 'TM629', 'TM630', 'TM702', 'TM703', 'TM704', 'TM900_AMUX']
+====================================================================================================
+DFT_restored.csv sha256 0e0c31106586eacc0ef919b2c5a42d78c036e714d905ec9a7121dbffadcd8bc2 encoding utf-8-sig records 35
+header: ['Item', 'Function Name', 'ShortName', 'ExpectValue', 'Unit', 'Trim', 'Record', 'Hardware_initial', 'Software_initial', 'Dynamic', 'Check', 'Type']
+----------------------------------------------------------------------------------------------------
+{
+ "csvRecord": 2,
+ "item": "TM000",
+ "Item": "TM000",
+ "Function Name": "IQ_TEST",
+ "ShortName": "IQ_Standby1_DSM",
+ "ExpectValue": "",
+ "Unit": "uA",
+ "Trim": "",
+ "Record": "",
+ "Hardware_initial": "vset[vbat,4.2,100e-6,0]\nvset[vdrv,4.2,100e-6,0]",
+ "Software_initial": "entertestmode();\nI2CWriteSameData(DEV_ADDR, 0x07, 0x00);",
+ "Dynamic": "",
+ "Check": "VBAT",
+ "Type": "MI"
+}
+----------------------------------------------------------------------------------------------------
+{
+ "csvRecord": 6,
+ "item": "TM103",
+ "Item": "TM103",
+ "Function Name": "",
+ "ShortName": "LP_HR_0P5U",
+ "ExpectValue": "0.5",
+ "Unit": "uA",
+ "Trim": "",
+ "Record": "",
+ "Hardware_initial": "vset[vbat,4.2,100e-6,0]\nvset[amux,1,100e-6,0]",
+ "Software_initial": "\tentertestmode();\n\tI2CWriteSameData(DEV_ADDR, 0x56, 0x22);//\t\tfield[(EN_ATEST0,1),(ATEST0_MUX,4)], LP_HR_0P5U",
+ "Dynamic": "",
+ "Check": "AMUX",
+ "Type": "MI"
+}
+----------------------------------------------------------------------------------------------------
+{
+ "csvRecord": 9,
+ "item": "TM108",
+ "Item": "TM108",
+ "Function Name": "VAC_PRST",
+ "ShortName": "VAC1_PRST",
+ "ExpectValue": "rising vth 4.15V, hys 0.35V",
+ "Unit": "V",
+ "Trim": "",
+ "Record": "",
+ "Hardware_initial": "vset[vbat,4.2,100e-6,0]",
+ "Software_initial": "\tentertestmode();\n\tI2CWriteSameData(DEV_ADDR, 0x55, 0x97);\t//\t\tfield[(EN_DTEST0,1),(DTEST0_MUX,23)]",
+ "Dynamic": "vset[vac1,3.8,100e-6,1]\nvset[vac1,4.4,1e-3,1]\nvset[vac1,4.1,100e-6,1]\nvset[vac1,3.5,1e-3,1]",
+ "Check": "INT",
+ "Type": "Toggle, MV"
+}
+----------------------------------------------------------------------------------------------------
+{
+ "csvRecord": 10,
+ "item": "TM109",
+ "Item": "TM109",
+ "Function Name": "",
+ "ShortName": "VAC2_PRST",
+ "ExpectValue": "rising vth 4.15V, hys 0.35V",
+ "Unit": "V",
+ "Trim": "",
+ "Record": "",
+ "Hardware_initial": "vset[vbat,4.2,100e-6,0]",
+ "Software_initial": "\tentertestmode();\n\tI2CWriteSameData(DEV_ADDR, 0x55, 0x96);\t//\t\tfield[(EN_DTEST0,1),(DTEST0_MUX,22)]",
+ "Dynamic": "vset[vac3,3.8,100e-6,1]\nvset[vac3,4.4,1e-3,1]\nvset[vac3,4.1,100e-6,1]\nvset[vac3,3.5,1e-3,1]",
+ "Check": "INT",
+ "Type": "Toggle, MV"
+}
+----------------------------------------------------------------------------------------------------
+{
+ "csvRecord": 19,
+ "item": "TM600",
+ "Item": "TM600",
+ "Function Name": "RDSON_TEST",
+ "ShortName": "HS_RDSON",
+ "ExpectValue": "10",
+ "Unit": "mΩ",
+ "Trim": "",
+ "Record": "",
+ "Hardware_initial": "vset[vbat,4.2,100e-6,0]\nvset[pmid,15,100e-6,0]\nvset[bst2sw,5,1e-3,0]\nvset[vdrv,5,100e-6,0]",
+ "Software_initial": "\tentertestmode();\n\tI2CWriteSameData(DEV_ADDR, 0x58, 0x00);\n\tI2CWriteSameData(DEV_ADDR, 0x10, 0x43);\n\tI2CWriteSameData(DEV_ADDR, 0x59, 0x01);\n\tI2CWriteSameData(DEV_ADDR, 0x61, 0x0B);//\t\tfield[(WAKE_UP,1),(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_LSON,1),(BUBO_MODE,0)]",
+ "Dynamic": "iset[pmid2sw,1,1e-3,0]",
+ "Check": "PMID-SW",
+ "Type": "MV&MI"
+}
+----------------------------------------------------------------------------------------------------
+{
+ "csvRecord": 20,
+ "item": "TM601",
+ "Item": "TM601",
+ "Function Name": "",
+ "ShortName": "LS_RDSON",
+ "ExpectValue": "8",
+ "Unit": "mΩ",
+ "Trim": "",
+ "Record": "",
+ "Hardware_initial": "vset[vbat,4.2,100e-6,0]\nvset[pmid,9,100e-6,0]\nvset[vdrv,5,100e-6,0]",
+ "Software_initial": "\tentertestmode();\n\tI2CWriteSameData(DEV_ADDR, 0x10, 0x43);\n\tI2CWriteSameData(DEV_ADDR, 0x58, 0x20);\n\tI2CWriteSameData(DEV_ADDR, 0x59, 0x02);\n\tI2CWriteSameData(DEV_ADDR, 0x61, 0x0B);\t//\t\tfield[(WAKE_UP,1),(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(D2A_BUBO_TM_HSON,1)]",
+ "Dynamic": "iset[sw2pgnd,1,1e-6,0]",
+ "Check": "PGND-SW",
+ "Type": "MV&MI"
+}
+wrote D:/Newtest/DSH/ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10\dft-raw\DFT_restored-full.json
+all items: ['TM000', 'TM000_1', 'TM100', 'TM101', 'TM103', 'TM105', 'TM106', 'TM108', 'TM109', 'TM110', 'TM114', 'TM116', 'TM117', 'TM118', 'TM125', 'TM130', 'TM439_1', 'TM600', 'TM601', 'TM606', 'TM607', 'TM608', 'TM609', 'TM623', 'TM624', 'TM625', 'TM626', 'TM627', 'TM628', 'TM629', 'TM630', 'TM702', 'TM703', 'TM704', 'TM900_AMUX']

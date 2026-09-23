@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "test-plan.schema.json",
+  "type": "object",
+  "required": ["runId", "inputArtifacts", "items", "blockingDecisions"],
+  "properties": {
+    "runId": {"type": "string"},
+    "inputArtifacts": {"type": "array", "items": {"$ref": "#/$defs/artifact"}, "minItems": 3},
+    "items": {"type": "array", "items": {"type": "object", "required": ["tm", "methodFamily", "preconditions", "parameters", "sequence", "measurement", "calculation", "limits", "cleanup", "implementationEvidence"], "properties": {"tm": {"type": "string", "pattern": "^TM[0-9]+(?:_[0-9]+)?$"}, "methodFamily": {"type": "array", "items": {"type": "string"}, "minItems": 1}, "preconditions": {"type": "array", "items": {"type": "string"}}, "parameters": {"type": "array", "items": {"type": "object"}}, "sequence": {"type": "array", "items": {"type": "string"}, "minItems": 1}, "measurement": {"type": "object"}, "calculation": {"type": "object"}, "limits": {"type": "array", "items": {"type": "object"}}, "cleanup": {"type": "array", "items": {"type": "string"}, "minItems": 1}, "implementationEvidence": {"type": "array", "items": {"type": "object"}, "minItems": 1}}, "additionalProperties": true}},
+    "blockingDecisions": {"type": "array", "items": {"type": "object"}}
+  },
+  "$defs": {"artifact": {"type": "object", "required": ["path", "sha256"], "properties": {"path": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[A-Fa-f0-9]{64}$"}}}},
+  "additionalProperties": true
+}

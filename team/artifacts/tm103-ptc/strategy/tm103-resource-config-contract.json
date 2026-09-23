@@ -1,0 +1,714 @@
+{
+  "schemaVersion": 3,
+  "artifactId": "tm103-resource-config-contract",
+  "artifactKind": "resource-configuration-contract",
+  "taskId": "TM103-PTC-STRATEGY",
+  "trial": "tm103-ptc",
+  "role": "test-strategy-architect",
+  "stage": "STRATEGY",
+  "projectId": "DALI",
+  "tm": "TM103",
+  "generatedAt": "2026-09-18T03:26:01.067Z",
+  "revision": "v3 — re-emitted with the top-level pinResolution block required by the runtime Pin-resolution stop rule; all relay/path/register content re-proved from project evidence (the previous revision was rejected by the STRATEGY gate with 'contract has no pinResolution')",
+  "verdict": "deliverable_ready",
+  "boundary": {
+    "owned": [
+      "source allocation",
+      "routes",
+      "relay groups (functional + isolation)",
+      "register delta"
+    ],
+    "notOwned": [
+      "power sequencing",
+      "measurement procedure",
+      "limits",
+      "power-down",
+      "Log"
+    ],
+    "notOwnedOwner": "test-method-expert"
+  },
+  "pinResolution": {
+    "logicalSignal": "ATEST0",
+    "logicalSignalLabelVerbatim": "I(ATEST0)",
+    "physicalDutPin": "VDM",
+    "resolutionState": "RESOLVED",
+    "mappingKind": "current-project pin/function mapping: the DFT label is NOT itself a physical DUT pin, so it was bound to the physical pin through the project pad-name/Analog-Test table, and corroborated by the governing TM103 workbook row, the ATEST0 select map and the generated reg_config code — never by picking a similarly named pin",
+    "logicalSignalPresentInDutKelvinPins": false,
+    "componentsStatisticLocator": "team/artifacts/tm103-ptc/schematic/Components-Statistic.json -> dutKelvinPins[63] === \"VDM\" (the artifact declares 68 physical DUT pin bases; its own locator field is \"dutKelvinPinsLocator\": \"schematic-ir.json pins[].base (unique physical DUT pin bases)\"). For contrast dutKelvinPins[4] === \"AMUX\" and the token \"ATEST0\" does not occur anywhere in the list.",
+    "manifestBinding": "team/artifacts/tm103-ptc/input-manifest.json canonicalInputs.intentResolution.entry.decision.monitorDutPin === \"VDM\"; pinResolution.physicalDutPin is byte-equal to it and the decision.monitorIntent states 'I(ATEST0) IBP_HR 0.5 uA current, forced/measured on the VDM pin'",
+    "mappingEvidence": [
+      {
+        "source": "project/DALI/_archive/_dump_TestIO.txt:1-6 (project pad-name / Analog Test table)",
+        "fact": "Header row 'Pad Name | Analog Test | Digital Test | SCAN Function | Comment'; data row line 3 is 'VDM\\tATEST0\\t\\tSCAN_EN' — the Analog Test signal ATEST0 is brought out on pad VDM. The same table gives line 4 'AMUX(PD6)\\tATEST1' (pad AMUX carries ATEST1, not ATEST0) and line 2 'nQON\\t\\tDTEST0\\tSCAN_OUT' (the DTEST0->nQON style of binding the role contract cites as its worked example). File footer: 'update 2026/02/27'."
+      },
+      {
+        "source": "project/DALI/meta/dali_tm_meta.json functions[row=7, item=\"TM103\"]",
+        "fact": "check = \"I(ATEST0)\", checkLines = [\"I(ATEST0)\"], description = \"IBP 0.5UA HR\", expectValue = 0.5 uA, registerFields = [{EN_ATEST0,1},{ATEST0_MUX,4}], code2Raw = \"en_tm[]\\nfield[(EN_ATEST0,1),(ATEST0_MUX,4)]\\nvset[vdm,1,100e-6,0]\" with code2[2] = {kind:'vset', pin:'vdm', value:'1'} — the governing TM103 row enables the ATEST0 output with select 4 and drives/measures it on the physical pin vdm."
+      },
+      {
+        "source": "project/DALI/_archive/_dump_ATESTMAP.txt:6",
+        "fact": "ATEST0 select code 4 is '4 \\t 100 \\t D2A_HSKP_ATEST0 \\t 3 \\t IBP_HR_0.5UA' — select 4 chooses the internal IBP_HR 0.5 uA current branch, which matches the TM103 ExpectValue 0.5 uA and the name LP_HR_0P5U / description 'IBP 0.5UA HR'. This proves ATEST0 is a logical test-output function whose payload is mux-selected, i.e. exactly the case the stop rule says must be resolved to a physical pin rather than treated as a pin name."
+      },
+      {
+        "source": "project/DALI/meta/dali_tm_meta.json (uniqueness sweep over all 20 functions)",
+        "fact": "Every project function whose check is the ATEST0 current observation pairs it with pin vdm: TM103 (ATEST0_MUX 4), TM104 (5), TM133 (8), TM134 (9) all carry vset[vdm,...]; no function observes I(ATEST0) on any other pin, and no function observes ATEST0 without driving vdm. TM133/TM134 additionally set the amux rail, but the signed decision for THIS item declares no AMUX supply, sweep or monitor."
+      },
+      {
+        "source": "project/DALI/reg_config/tm103.sv:14-18",
+        "fact": "The generated TM103 code writes I2CWriteSameData(DEV_ADDR, 0x5E, 0x04) with the commented field[(EN_ATEST0,1),(ATEST0_MUX,4)] and then ramps the VDM source line ('NVT_STIM.en_vsrc_vdm = 1; NVT_STIM.vsrcVDM.ramp_vsrc_val(1, 100e-6)'), i.e. the ATEST0 observation is physically performed on the VDM source line."
+      },
+      {
+        "source": "team/artifacts/tm103-ptc/input-manifest.json canonicalInputs.intentResolution.entry (status resolved, authority 'accepted project baseline')",
+        "fact": "The binding resolved entry states the monitor as 'I(ATEST0) IBP_HR 0.5 uA current, forced/measured on the VDM pin' with monitorDutPin 'VDM' — the only physical DUT pin the decision declares for this monitor. The project evidence above independently corroborates that binding."
+      }
+    ],
+    "counterCandidatesConsidered": [
+      {
+        "candidate": "AMUX",
+        "whyConsidered": "project/DALI/input/DFT.csv record TM103 (legacy copy) pairs Hardware_initial vset[amux,1,100e-6,0] with Check = AMUX, and AMUX is itself present in Components-Statistic dutKelvinPins[4].",
+        "rejectedBecause": "The project pad/Analog-Test table assigns AMUX the Analog Test signal ATEST1 (project/DALI/_archive/_dump_TestIO.txt:4), not ATEST0; the legacy DFT.csv pairing was adjudicated as a divergent copy (input-manifest intentResolution.entry.conflict) and the resolved decision declares no AMUX supply, no AMUX sweep and no AMUX monitor. AMUX is therefore a declared non-endpoint, not the monitor pin."
+      },
+      {
+        "candidate": "nQON",
+        "whyConsidered": "nQON is a DUT Kelvin pin (dutKelvinPins[66]) and is the worked example of a logical-label-to-pin binding in the role contract.",
+        "rejectedBecause": "The project pad table assigns nQON the Digital Test signal DTEST0 (and SCAN_OUT), not ATEST0; the TM103 monitor is an ATEST0 current observation."
+      }
+    ],
+    "noGuessStatement": "The mapping produced exactly one physical DUT pin present in Components-Statistic dutKelvinPins (VDM). No similarly named pin was substituted, and no relay or source was selected before this resolution."
+  },
+  "bindingInput": {
+    "manifestPath": "team/artifacts/tm103-ptc/input-manifest.json",
+    "manifestEntry": "canonicalInputs.intentResolution.entry",
+    "manifestEntryStatus": "resolved",
+    "authority": "accepted project baseline",
+    "decision": {
+      "item": "LP_HR_0P5U",
+      "staticSupplies": [
+        {
+          "pin": "VBAT",
+          "voltageV": 4
+        }
+      ],
+      "sweptPin": "VDM",
+      "registerWrites": [
+        {
+          "address": "0x57",
+          "value": "0x02"
+        },
+        {
+          "address": "0x5E",
+          "value": "0x04"
+        }
+      ],
+      "monitorIntent": "I(ATEST0) IBP_HR 0.5 uA current, forced/measured on the VDM pin",
+      "monitorDutPin": "VDM"
+    },
+    "decisionScope": "adjudicates the DFT source contradiction only; relay and instrument selection remains the strategy architect's job and is proved here from project schematic/CBIT evidence"
+  },
+  "endpointDerivation": {
+    "requiredEndpointSet": [
+      "VBAT",
+      "VDM"
+    ],
+    "derivation": "{staticSupplies[].pin} U {sweptPin} U {monitorDutPin} = {VBAT} U {VDM} U {VDM} = {VBAT, VDM}",
+    "monitorDutPin": "VDM",
+    "sweptPin": "VDM",
+    "staticSupplyPins": [
+      "VBAT"
+    ],
+    "note": "the resolved decision declares exactly two distinct physical endpoints; sweptPin and monitorDutPin coincide on VDM, which is one physical pin and therefore one resourceAllocation row",
+    "declaredNonEndpoints": [
+      {
+        "pin": "AMUX",
+        "whyConsidered": "project/DALI/input/DFT.csv TM103 Hardware_initial carries vset[amux,1,100e-6,0] and its Check column is AMUX",
+        "ruling": "NOT an endpoint of the resolved decision: the manifest entry declares no AMUX supply, no AMUX sweep and no AMUX monitor. No AMUX row is written (inventing one is forbidden by the STRATEGY gate contract). The AMUX token is retained only as conflict evidence CF-1/CF-2 and as a rejected counter-candidate in pinResolution."
+      }
+    ]
+  },
+  "resourceAllocation": [
+    {
+      "allocationId": "RA-1",
+      "dutPin": "VBAT",
+      "endpointRole": "static supply rail (power), staticSupplies[0] of the resolved decision",
+      "selectionState": "SELECTED",
+      "sourceTable": "VBAT_PD3_FXVI",
+      "sourceTableKind": "FXVIe_PLUS",
+      "sourceTableDefinition": "project/DALI/Pin_Channel_define.h:12 declares _PIN_CHANNEL_DEFINE_VBAT_PD3_FXVI_ = \"S3_5,S4_5,S13_5,S14_5,S19_5,S20_5,S29_5,S30_5\"; project/DALI/Pin_Channel_define.h:93 declares 'extern FXVIe_PLUS VBAT_PD3_FXVI;'",
+      "instrument": "FXVIe_PLUS",
+      "slot": "S3",
+      "channel": 5,
+      "channelString": "S3_5",
+      "siteAssignment": "S1 (trial scope is site 1; the connect-map column-7 chains are written with _S1 instance names such as K8_PD3_S1)",
+      "ports": [
+        "S3_FXVIe_PLUS_FH5",
+        "S3_FXVIe_PLUS_SH5"
+      ],
+      "forcePort": "S3_FXVIe_PLUS_FH5",
+      "sensePort": "S3_FXVIe_PLUS_SH5",
+      "kelvinPairStatus": "PASS (team/artifacts/tm103-ptc/schematic/SCH-Connect-Map.json sourcePorts: 'S3_FXVIe_PLUS_FH5' candidates {PD3_F_S1, VBAT_F_S1} and 'S3_FXVIe_PLUS_SH5' candidates {PD3_S_S1, VBAT_S_S1}; both F and S terminals reach the same pin)",
+      "selectedPath": "S3_FXVIe_PLUS_FH5 -> K8_PD3(Relay-NC, default conducting) -> VBAT_F ; S3_FXVIe_PLUS_SH5 -> K8_PD3(Relay-NC, default conducting) -> VBAT_S",
+      "pathClosureStatement": "project/DALI/SCH-Connect-Map.txt:832 records 'VBAT [Kelvin] 需闭合: 无(默认导通)' = required energized relays: NONE (default conducting)",
+      "pathRequiredClosure": [],
+      "routeRelays": [],
+      "routeRelayState": "none energized; the series element K8_PD3 conducts through its un-actuated (NC) position",
+      "endpointSelectorRelay": {
+        "number": 8,
+        "name": "K8_PD3",
+        "cbit": "S34_CBIT8",
+        "requiredState": "NOT_ACTUATED",
+        "why": "K8_PD3 is the VBAT<->PD3 share selector on the S3_5 FXVIe_PLUS channel. The VBAT branch is the un-actuated side (SCH-Connect-Map.txt:832-834); every PD3 branch requires K8 energized (SCH-Connect-Map.txt:814-816 'PD3 [Kelvin] 需闭合: K8'). Energizing K8 would move this channel off VBAT and onto PD3.",
+        "evidence": [
+          "project/DALI/SCH-Connect-Map.txt:832-834",
+          "project/DALI/SCH-Connect-Map.txt:814-816",
+          "project/DALI/Component-Statistic.txt:457 (K8_PD3 listed in the [Share] relay group)",
+          "project/DALI/CBIT表-DALI.xlsx sheet1 row 114 (K8_PD3 -> S34_CBIT8)"
+        ]
+      },
+      "functionalRelays": [
+        13
+      ],
+      "functionalRelayEvidence": [
+        "project/DALI/SCH-Connect-Map.txt:914 ('VBAT 稳压 Cap2_VBAT_S1 C=4.7uF 需闭合: K13') - the VBAT reservoir-cap gate must be closed for a powered VBAT rail",
+        "knowledge/standards/relay-checklist.md:25-40 (Cap2 rule: a powered PIN requires its Cap closed by default)",
+        "project/DALI/Component-Statistic.txt:446-447 (K13_VBAT_Cap in the '[Connect(名称含Cap候选,需人工确认)]' group)",
+        "project/DALI/CBIT表-DALI.xlsx sheet1 row 178 (K13_VBAT_Cap -> S34_CBIT13)"
+      ],
+      "isolationRelay": {
+        "number": 7,
+        "name": "K7_BUSH_VBAT",
+        "cbit": "S34_CBIT7",
+        "requiredState": "NOT_ACTUATED",
+        "why": "K7_BUSH_VBAT joins this node to the shared force bus (QTMU_BUSA / QVMH / DCM buses). Every bus pathway that reaches VBAT requires K7 energized (SCH-Connect-Map.txt:210-212 FPVIe0, :418-420 FPVIe1, :513-514 QTMU CH0_A, :638-639 QVM high), while the selected S3_5 path does not. Leaving K7 un-actuated keeps every bus source off the VBAT rail.",
+        "evidence": [
+          "project/DALI/SCH-Connect-Map.txt:832-834 (dedicated S3 path requires no closure)",
+          "project/DALI/SCH-Connect-Map.txt:210-212, :418-420, :513-514, :638-639 (every bus pathway to VBAT requires K7 energized)",
+          "project/DALI/Component-Statistic.txt:441 (K7_BUSH_VBAT in the [BUS] relay group)",
+          "project/DALI/CBIT表-DALI.xlsx sheet1 row 113 (K7_BUSH_VBAT -> S34_CBIT7)"
+        ]
+      },
+      "rejectedAlternatives": [
+        {
+          "sourcePort": "S1_FPVIe_FH0/FH1",
+          "sourceTable": "FPVI0/FPVI1 (FPVIe)",
+          "requiredClosure": [
+            7,
+            143,
+            144,
+            136,
+            137
+          ],
+          "evidence": "project/DALI/SCH-Connect-Map.txt:210-212 and :418-420",
+          "rejectedBecause": "strictly larger actuation union; it energizes the shared-bus relay K7 (the very isolation this contract keeps open) and consumes a scarce FPVIe channel"
+        },
+        {
+          "sourcePort": "S10_CH0_A",
+          "sourceTable": "QTMU_S1",
+          "requiredClosure": [
+            7,
+            141
+          ],
+          "evidence": "project/DALI/SCH-Connect-Map.txt:513-514",
+          "rejectedBecause": "not required for a static DC rail, and it ties the VBAT node to the shared bus through K141 and K7"
+        },
+        {
+          "sourcePort": "S8_QVM_CH0+",
+          "sourceTable": "QVM_S1 (QVMe)",
+          "requiredClosure": [
+            7,
+            136
+          ],
+          "evidence": "project/DALI/SCH-Connect-Map.txt:638-639",
+          "rejectedBecause": "same node with a larger union, and QVMe is a two-wire sense instrument not needed by a force-only static supply"
+        }
+      ],
+      "selectionRank": 1,
+      "whySelected": "the only candidate whose path to VBAT requires zero relay actuation; it is the dedicated source table named for this pin (VBAT_PD3_FXVI), it keeps the shared bus and every FPVIe/QTMU/QVM channel un-actuated, and the PD3 sibling branch stays off because its share selector K8 is not actuated (anti-short rule)."
+    },
+    {
+      "allocationId": "RA-2",
+      "dutPin": "VDM",
+      "endpointRole": "swept/forced pin AND current monitor (sweptPin of the resolved decision; monitorDutPin of the resolved decision; the monitor is the I(ATEST0) IBP_HR 0.5 uA current forced/measured on this pin)",
+      "selectionState": "SELECTED",
+      "sourceTable": "VDM_SDA_ACM",
+      "sourceTableKind": "ACM200",
+      "sourceTableDefinition": "project/DALI/Pin_Channel_define.h:22 declares _PIN_CHANNEL_DEFINE_VDM_SDA_ACM_ = \"S5_7,S6_7,S11_7,S12_7,S21_7,S22_7,S27_7,S28_7\"; project/DALI/Pin_Channel_define.h:103 declares 'extern ACM200 VDM_SDA_ACM;'",
+      "instrument": "ACM200",
+      "slot": "S5",
+      "channel": 7,
+      "channelString": "S5_7",
+      "siteAssignment": "S1 (trial scope is site 1; the connect-map column-7 chains use _S1 instances such as K59_SDA_S1)",
+      "ports": [
+        "S5_ACM200_FH7",
+        "S5_ACM200_SH7"
+      ],
+      "forcePort": "S5_ACM200_FH7",
+      "sensePort": "S5_ACM200_SH7",
+      "kelvinPairStatus": "PASS (team/artifacts/tm103-ptc/schematic/SCH-Connect-Map.json sourcePorts: 'S5_ACM200_FH7' candidates {SDA_F_S1, VDM_F_S1} and 'S5_ACM200_SH7' candidates {SDA_S_S1, VDM_S_S1}; both F and S terminals reach the same pin)",
+      "selectedPath": "S5_ACM200_FH7 -> K59_SDA(Relay-NC, default conducting) -> VDM_F ; S5_ACM200_SH7 -> K59_SDA(Relay-NC, default conducting) -> VDM_S",
+      "pathClosureStatement": "project/DALI/SCH-Connect-Map.txt:795 records 'VDM [Kelvin] 需闭合: 无(默认导通)' = required energized relays: NONE (default conducting)",
+      "pathRequiredClosure": [],
+      "routeRelays": [],
+      "routeRelayState": "none energized; the series element K59_SDA conducts through its un-actuated (NC) position",
+      "endpointSelectorRelay": {
+        "number": 59,
+        "name": "K59_SDA",
+        "cbit": "S34_CBIT59",
+        "requiredState": "NOT_ACTUATED",
+        "why": "K59_SDA is the VDM<->SDA share selector on the S5_7 ACM200 channel (the source table is literally named VDM_SDA_ACM). The VDM branch is the un-actuated side (SCH-Connect-Map.txt:795-797); the SDA branch requires K59 energized (SCH-Connect-Map.txt:768-770 'SDA [Kelvin] 需闭合: K59', F: S5_ACM200_FH7 -> K59(Relay-ON) -> S24_P2). Energizing K59 would move this channel onto the I2C data pin and drive a non-target pin.",
+        "evidence": [
+          "project/DALI/SCH-Connect-Map.txt:795-797",
+          "project/DALI/SCH-Connect-Map.txt:768-770",
+          "project/DALI/Component-Statistic.txt:457 (K59_SDA listed in the [Share] relay group)",
+          "project/DALI/CBIT表-DALI.xlsx sheet1 row 135 (K59_SDA -> S34_CBIT59)",
+          "knowledge/standards/relay-checklist.md:44-50 (anti-short rule: a share selector may only be closed on the target side)"
+        ]
+      },
+      "functionalRelays": [],
+      "functionalRelayEvidence": [
+        "project/DALI/SCH-Connect-Map.txt:898-917 (the 稳压/Cap table lists PMID, SVLP, SW, SW1, SW2, U1_AMP_PS, U2_PS, U34_PS, V1P5_VDRV, VAC1, VBAT, VBUS, VCC, VCP - there is no VDM entry, so VDM has no cap gate to close)",
+        "knowledge/standards/relay-checklist.md:25-42 (Cap exemption case: the PIN whose current is measured does not get a Cap gate; TM103 measures the current on VDM while VBAT keeps K13)"
+      ],
+      "isolationRelay": {
+        "number": 58,
+        "name": "K58_BUSH_VDM",
+        "cbit": "S34_CBIT58",
+        "requiredState": "NOT_ACTUATED",
+        "why": "K58_BUSH_VDM joins this node to the shared force bus upstream of the K59 selector. Every bus pathway that reaches VDM requires K58 energized (SCH-Connect-Map.txt:234-236 FPVIe0, :436-438 FPVIe1, :519-520 QTMU CH0_A, :650-651 QVM high), while the selected S5_7 path does not. K58 stays un-actuated so no bus source can contend with the forced VDM level.",
+        "evidence": [
+          "project/DALI/SCH-Connect-Map.txt:795-797 (ACM200 ch7 path requires no closure)",
+          "project/DALI/SCH-Connect-Map.txt:234-236, :436-438, :519-520, :650-651 (every bus pathway to VDM requires K58 energized)",
+          "project/DALI/Component-Statistic.txt:441 (K58_BUSH_VDM in the [BUS] relay group)",
+          "project/DALI/CBIT表-DALI.xlsx sheet1 row 134 (K58_BUSH_VDM -> S34_CBIT58)"
+        ]
+      },
+      "secondIsolationRelay": {
+        "number": 152,
+        "name": "K152_VDM_TMU",
+        "cbit": "S36_CBIT24",
+        "requiredState": "NOT_ACTUATED",
+        "why": "K152_VDM_TMU is the QTMU-B injection path into the VDM node (SCH-Connect-Map.txt:847-848 'VDM <- S10_CH0_B [通路] 需闭合: K152'), and it is the only closure of the non-valid single-wire CH0-Low path (SCH-Connect-Map.txt:237, :439). It is not part of the selected path and must stay un-actuated so no second source or low-side path is attached to the measured node during the 0.5 uA current measurement.",
+        "evidence": [
+          "project/DALI/SCH-Connect-Map.txt:847-848",
+          "project/DALI/SCH-Connect-Map.txt:237-238 (CH0 Low -> VDM via K142,K152, flagged ⚠ as a non-valid path because F/S are not simultaneously connected)",
+          "project/DALI/Component-Statistic.txt:445 (K152_VDM_TMU in the [Connect] relay group)",
+          "project/DALI/CBIT表-DALI.xlsx sheet1 row 97 (K152_VDM_TMU -> S36_CBIT24)"
+        ]
+      },
+      "returnPath": {
+        "endpoint": "AGND",
+        "requirement": "the ACM200 low ends (FL/SL) are grouped to AGND_F on the board, so the ground-referenced loop closes through AGND without allocating an AGND source or energizing an AGND relay",
+        "relaysRequired": [],
+        "evidence": [
+          "project/DALI/SCH-Connect-Map.txt:801 ('注: ACM200 Low端 FL/SL 分组接 AGND_F, 闭环经 AGND 回流')",
+          "project/DALI/SCH-Connect-Map.txt:899-901 (AGND_F stabilization caps C2/C5/C7_GND_S1 require no relay)"
+        ]
+      },
+      "rejectedAlternatives": [
+        {
+          "sourcePort": "S10_CH0_A",
+          "sourceTable": "QTMU_S1",
+          "requiredClosure": [
+            141,
+            58
+          ],
+          "evidence": "project/DALI/SCH-Connect-Map.txt:519-520",
+          "rejectedBecause": "requires the bus relays K141 and K58 which this contract keeps open for isolation"
+        },
+        {
+          "sourcePort": "S10_CH0_B",
+          "sourceTable": "QTMU_S1",
+          "requiredClosure": [
+            152
+          ],
+          "evidence": "project/DALI/SCH-Connect-Map.txt:847-848",
+          "rejectedBecause": "requires K152 and attaches the QTMU-B low-side path to the measured node"
+        },
+        {
+          "sourcePort": "S1_FPVIe_FH0/SH0",
+          "sourceTable": "FPVI0 (FPVIe)",
+          "requiredClosure": [
+            58
+          ],
+          "evidence": "project/DALI/SCH-Connect-Map.txt:234-236",
+          "rejectedBecause": "requires K58 and consumes a scarce FPVIe channel"
+        },
+        {
+          "sourcePort": "S1_FPVIe_FH1/SH1",
+          "sourceTable": "FPVI1 (FPVIe)",
+          "requiredClosure": [
+            58,
+            136,
+            137,
+            143,
+            144
+          ],
+          "evidence": "project/DALI/SCH-Connect-Map.txt:436-438",
+          "rejectedBecause": "largest union; requires the QVMH/DCM bus relays as well as K58"
+        },
+        {
+          "sourcePort": "S8_QVM_CH0+",
+          "sourceTable": "QVM_S1 (QVMe)",
+          "requiredClosure": [
+            137,
+            58
+          ],
+          "evidence": "project/DALI/SCH-Connect-Map.txt:650-651",
+          "rejectedBecause": "requires K58 and a QVMe two-wire sense channel, which is not the forced/measured single-channel intent of this item"
+        }
+      ],
+      "selectionRank": 1,
+      "whySelected": "the only candidate whose path to VDM requires zero relay actuation, and it is the dedicated source table named for this pin (VDM_SDA_ACM); the single ACM200 channel carries both the force and the sense terminal of the same Kelvin pair, which is what the resolved monitor intent (force 1 V, measure the 0.5 uA current on that pin) needs."
+    }
+  ],
+  "selectionMethod": {
+    "unionVsPathRule": "pin-level relay unions in the schematic artifacts are unions across ALL candidate sources and are explicitly not a route. team/artifacts/tm103-ptc/schematic/SCH-Connect-Map.json declares \"derivation\": {\"reparsedRawHardware\": false, \"newElectricalInference\": false} and records in openQuestions[10] that 'many more accepted paths exist than the scope pins; no pin selection was performed here'. No union member was copied into this contract.",
+    "perChannelProof": "each selected row was proved from (a) the named source-table macro in project/DALI/Pin_Channel_define.h, (b) the source->PIN column entry of project/DALI/SCH-Connect-Map.txt giving that channel's relay chain and its 需闭合 (must-close) set, (c) the relay identity/bit in project/DALI/CBIT表-DALI.xlsx, and (d) the relay group classification in project/DALI/Component-Statistic.txt",
+    "unionMembersNotProvenAsRoute": [
+      {
+        "relays": [
+          {
+            "name": "K86_KELVIN0_F",
+            "number": 86,
+            "artifactState": "ON",
+            "artifactDutPins": [
+              "VDM_F_S1",
+              "VDM_S_S1",
+              "SDA_F_S1",
+              "SDA_S_S1"
+            ]
+          },
+          {
+            "name": "K130_KELVIN1_F",
+            "number": 130,
+            "artifactState": "ON",
+            "artifactDutPins": [
+              "VDM_F_S1",
+              "VDM_S_S1",
+              "SDA_F_S1",
+              "SDA_S_S1"
+            ]
+          }
+        ],
+        "observation": "Both tokens appear ON inside the trial artifact's relay union records (team/artifacts/tm103-ptc/schematic/SCH-Connect-Map.json relays[] entries at numbers 86 and 130) and their dutPins union includes VDM. The token 'K86' and the token 'K130' have ZERO occurrences in project/DALI/SCH-Connect-Map.txt (verified by search: 0 hits each), so the project's own path enumeration never names them on any route.",
+        "whatTheProjectEvidenceActuallyShows": "project/DALI/path_proofs.json.txt (relay contact records) shows K86_KELVIN0_F_S1 bridging NetK86_KELVIN0_F_S1_2 (fed by K87_KELVIN0 from FPVIe0_FH_BUS_S1) to NetK86_KELVIN0_F_S1_1 (feeding K88_KELVIN0 into FPVIe0_SH_BUS_S1), and symmetrically K130_KELVIN1_F_S1 bridging K131_KELVIN1 (FPVIe1_FH_BUS_S1) to K132_KELVIN1 (FPVIe1_SH_BUS_S1). They are therefore elements of the FPVIe force/sense bus Kelvin bridge, i.e. of the REJECTED FPVIe0/FPVIe1 bus alternatives, not of the selected S3_5 -> K8(NC) -> VBAT and S5_7 -> K59(NC) -> VDM paths.",
+        "handling": "NOT included in setOnClosure and NOT claimed as route elements of either selected path. They are reported here rather than silently dropped or substituted. The exclusion is safe for this item because K7_BUSH_VBAT stays un-actuated (every bus->VBAT path requires K7) and K58_BUSH_VDM stays un-actuated (every bus->VDM path requires K58), so an ON K86/K130 tie on the FPVIe bus cannot reach either endpoint. Their required frame state is nevertheless recorded as an open item (OI-TM103-STR-04) for the review/method stage, because no project path line proves them and this contract therefore does not assert them.",
+        "notSubstituted": "No similarly named relay (K87/K88/K89, K131/K132/K133) was used to stand in for them."
+      }
+    ]
+  },
+  "setOnClosure": {
+    "relays": [
+      13
+    ],
+    "relayNames": [
+      "K13_VBAT_Cap"
+    ],
+    "exclusive": true,
+    "oneCall": true,
+    "rationale": "both selected paths conduct through un-actuated series elements (K8_PD3 for VBAT, K59_SDA for VDM) and require zero energized route relays; the only mandatory energized relay is the VBAT reservoir-cap gate K13_VBAT_Cap. SetOn is exclusive, so every relay not listed here is OFF - which is exactly what the two selected paths and both isolation requirements demand.",
+    "scheduleOwnership": "when in the sequence K13 is closed is a power-sequencing decision and belongs to test-method-expert, not to this contract"
+  },
+  "relayGroups": [
+    {
+      "id": "RG-1",
+      "name": "VBAT supply rail stabilization",
+      "relays": [
+        13
+      ],
+      "relayNames": [
+        "K13_VBAT_Cap"
+      ],
+      "state": "ENERGIZED",
+      "cbit": [
+        "S34_CBIT13"
+      ],
+      "evidence": [
+        "project/DALI/SCH-Connect-Map.txt:914",
+        "knowledge/standards/relay-checklist.md:25-40",
+        "project/DALI/CBIT表-DALI.xlsx sheet1 row 178"
+      ]
+    },
+    {
+      "id": "RG-2",
+      "name": "VBAT endpoint selection and bus isolation",
+      "relays": [
+        8,
+        7
+      ],
+      "relayNames": [
+        "K8_PD3",
+        "K7_BUSH_VBAT"
+      ],
+      "state": "NOT_ACTUATED",
+      "cbit": [
+        "S34_CBIT8",
+        "S34_CBIT7"
+      ],
+      "evidence": [
+        "project/DALI/SCH-Connect-Map.txt:832-834",
+        "project/DALI/SCH-Connect-Map.txt:814-816",
+        "project/DALI/SCH-Connect-Map.txt:210-212",
+        "project/DALI/CBIT表-DALI.xlsx sheet1 rows 113-114"
+      ]
+    },
+    {
+      "id": "RG-3",
+      "name": "VDM endpoint selection and measured-node isolation",
+      "relays": [
+        59,
+        58,
+        152
+      ],
+      "relayNames": [
+        "K59_SDA",
+        "K58_BUSH_VDM",
+        "K152_VDM_TMU"
+      ],
+      "state": "NOT_ACTUATED",
+      "cbit": [
+        "S34_CBIT59",
+        "S34_CBIT58",
+        "S36_CBIT24"
+      ],
+      "evidence": [
+        "project/DALI/SCH-Connect-Map.txt:795-797",
+        "project/DALI/SCH-Connect-Map.txt:768-770",
+        "project/DALI/SCH-Connect-Map.txt:847-848",
+        "project/DALI/CBIT表-DALI.xlsx sheet1 rows 97, 134-135"
+      ]
+    },
+    {
+      "id": "RG-4",
+      "name": "shared force bus (not required by this item)",
+      "relays": [
+        141,
+        142,
+        136,
+        137,
+        143,
+        144
+      ],
+      "relayNames": [
+        "K141_QTMU_BUSA",
+        "K142_QTMU_BUSB",
+        "K136_QVMH_BUS0",
+        "K137_QVMH_BUS1",
+        "K143_DCM_BUS0_H",
+        "K144_DCM_BUS1_H"
+      ],
+      "state": "NOT_ACTUATED",
+      "reason": "upstream of the K7 / K58 isolation relays. Neither selected path requires any of them, so the whole shared-bus tree stays un-actuated; this is not a claim that they are dangerous on their own, only that this item needs none of them and that actuating one would add unneeded contention paths to the two endpoints.",
+      "evidence": [
+        "project/DALI/SCH-Connect-Map.txt:513-520",
+        "project/DALI/SCH-Connect-Map.txt:638-651",
+        "project/DALI/Component-Statistic.txt:441"
+      ]
+    }
+  ],
+  "isolationRequirements": {
+    "mustRemainUnactuated": [
+      8,
+      7,
+      59,
+      58,
+      152
+    ],
+    "reason": "K8_PD3 and K59_SDA decide the identity of the two endpoints (VBAT vs PD3, VDM vs SDA) and both selected branches are their un-actuated positions; K7_BUSH_VBAT and K58_BUSH_VDM would tie the endpoints to the shared force bus; K152_VDM_TMU would attach a second (QTMU-B) path to the node whose 0.5 uA current is measured.",
+    "antiShortStatement": "both selectors are [Share] relays (project/DALI/Component-Statistic.txt:457). Energizing either one drives the sibling pin instead of the target pin, which the project anti-short rule forbids (knowledge/standards/relay-checklist.md:44-50).",
+    "notRequiredUpstreamBusRelays": [
+      141,
+      142,
+      136,
+      137,
+      143,
+      144
+    ]
+  },
+  "registerDelta": [
+    {
+      "order": 1,
+      "after": "entertestmode()",
+      "address": null,
+      "value": null,
+      "call": "entertestmode()",
+      "meaning": "enter test mode (project/DALI/reg_config/tm103.sv:12)"
+    },
+    {
+      "order": 2,
+      "after": "entertestmode()",
+      "address": "0x57",
+      "value": "0x02",
+      "meaning": "EN_ATEST0=1 (ATEST0 enable) - resolved decision registerWrites[0]",
+      "evidence": [
+        "team/artifacts/tm103-ptc/input-manifest.json canonicalInputs.intentResolution.entry.decision.registerWrites[0]",
+        "project/DALI/reg_config/tm103.sv:14"
+      ]
+    },
+    {
+      "order": 3,
+      "after": "entertestmode()",
+      "address": "0x5E",
+      "value": "0x04",
+      "meaning": "ATEST0_MUX=4 - resolved decision registerWrites[1]; selects the IBP_HR 0.5 uA branch on the ATEST0 test-output function (project/DALI/_archive/_dump_ATESTMAP.txt:6)",
+      "evidence": [
+        "team/artifacts/tm103-ptc/input-manifest.json canonicalInputs.intentResolution.entry.decision.registerWrites[1]",
+        "project/DALI/reg_config/tm103.sv:15"
+      ]
+    }
+  ],
+  "conflicts": [
+    {
+      "id": "CF-1",
+      "status": "RESOLVED (by the binding intent entry; not re-opened here)",
+      "subject": "DFT.csv TM103 row is a divergent legacy copy",
+      "inputA_dftCsv": {
+        "source": "project/DALI/input/DFT.csv record TM103 (physical line 12)",
+        "Hardware_initial": "vset[vbat,4.2,100e-6,0] ; vset[amux,1,100e-6,0]",
+        "Software_initial": "entertestmode(); I2CWriteSameData(DEV_ADDR, 0x56, 0x22);",
+        "Check": "AMUX"
+      },
+      "inputB_governing": {
+        "source": "team/artifacts/tm103-ptc/input-manifest.json canonicalInputs.intentResolution.entry.decision (status resolved, authority 'accepted project baseline')",
+        "staticSupplies": "VBAT = 4.0 V",
+        "sweptPin": "VDM",
+        "monitorDutPin": "VDM",
+        "registerWrites": "0x57=0x02 ; 0x5E=0x04"
+      },
+      "resolution": "The manifest decision governs. This contract allocates VBAT (4.0 V static) and VDM only; it writes 0x57=0x02 and 0x5E=0x04 only; and it never uses vset[vbat,4.2], vset[amux,1], 0x56=0x22 or the Check=AMUX column as a route, stimulus or register authority. The CSV values are quoted here as conflict evidence only.",
+      "supportingGovernance": "project/DALI/meta/dali_tm_meta.json functions[row=7,item=TM103] (check 'I(ATEST0)', code1Raw 'vset[vbat,4,100e-6,0]', code2Raw '...field[(EN_ATEST0,1),(ATEST0_MUX,4)]...vset[vdm,1,100e-6,0]') and project/DALI/reg_config/tm103.sv:7, :14-:15, :17-:18 corroborate the governing branch"
+    },
+    {
+      "id": "CF-2",
+      "status": "RESOLVED",
+      "subject": "DFT.csv Check column says AMUX while the resolved monitor is on VDM",
+      "handling": "the endpoint set of this contract is exactly the manifest decision set {VBAT, VDM}. AMUX is not declared as an endpoint by the decision, and the project pad table assigns AMUX the Analog Test signal ATEST1 (project/DALI/_archive/_dump_TestIO.txt:4), so AMUX is not the ATEST0 monitor pin. The divergence is recorded, not re-adjudicated.",
+      "evidence": [
+        "project/DALI/input/DFT.csv:12 Check=AMUX",
+        "team/artifacts/tm103-ptc/input-manifest.json decision.monitorIntent",
+        "project/DALI/_archive/_dump_TestIO.txt:1-4"
+      ]
+    },
+    {
+      "id": "CF-3",
+      "status": "DOCUMENTED",
+      "subject": "chain-context relay states in the schematic artifacts could be mistaken for a schedule",
+      "handling": "the trial schematic artifact is a direct projection (derivation.reparsedRawHardware=false, newElectricalInference=false) and records that no pin selection was performed (openQuestions[10]). This contract therefore declares its own minimal SetOn closure (K13 only) instead of copying any union. Actuating a union member would add unneeded paths to the two endpoints.",
+      "evidence": [
+        "team/artifacts/tm103-ptc/schematic/SCH-Connect-Map.json derivation",
+        "team/artifacts/tm103-ptc/schematic/SCH-Connect-Map.json openQuestions[10]"
+      ]
+    },
+    {
+      "id": "CF-4",
+      "status": "RESOLVED",
+      "subject": "share-selector siblings (PD3 on K8, SDA on K59) are reachable from the same source channels",
+      "handling": "recorded as binding isolation requirements: both selectors stay un-actuated so that the forced/measured channel reaches only VBAT and VDM.",
+      "evidence": [
+        "project/DALI/SCH-Connect-Map.txt:814-816",
+        "project/DALI/SCH-Connect-Map.txt:768-770",
+        "project/DALI/Component-Statistic.txt:457"
+      ]
+    },
+    {
+      "id": "CF-5",
+      "status": "CORRECTED (locator hygiene of the rejected revision)",
+      "subject": "the previous revision of this contract cited three SCH-Connect-Map.json fields that do not exist in the current artifact revision",
+      "handling": "The earlier text cited 'consistencyNotes[1]', 'selection.anySelectionMade=false' and 'outOfScopeFlagsForDownstream[4]'. A direct search of the current signed artifact returns zero occurrences of consistencyNotes, anySelectionMade, outOfScopeFlagsForDownstream and the quoted 'chain-context' sentence; its actual top-level keys are schemaVersion, sourceSha256, artifactId, artifactKind, canonicalInput, projectionSource, derivation, counts, dutPins, sourcePorts, candidatePaths, relays, hazards, openQuestions, scope. Those three citations are withdrawn and replaced by the locators used in CF-3, OI-TM103-STR-02 and OI-TM103-STR-03 (openQuestions[8] and openQuestions[9]). No conclusion of the contract depended on them: the union-is-not-a-route rule is proved by derivation.openQuestions[10] and the fact that selection is absent from the artifact's schema.",
+      "evidence": [
+        "team/artifacts/tm103-ptc/schematic/SCH-Connect-Map.json:2-17 (top-level schema)",
+        "team/artifacts/tm103-ptc/schematic/SCH-Connect-Map.json:26247-26262 (openQuestions)"
+      ]
+    }
+  ],
+  "unresolvedRelays": [],
+  "unresolvedRelaysStatement": "unresolvedRelays = [] means: every relay this contract places in a route, a closure or an isolation requirement is proved by project evidence. It does not mean every token appearing anywhere in the trial artifact was proved - the two union/bridge members K86_KELVIN0_F and K130_KELVIN1_F are outside the selected paths and are reported, with the evidence that excludes them, in selectionMethod.unionMembersNotProvenAsRoute and OI-TM103-STR-04; they were neither substituted nor silently dropped.",
+  "resourceSummary": {
+    "sourceTablesUnresolved": false,
+    "selectedSourceTables": [
+      "VBAT_PD3_FXVI",
+      "VDM_SDA_ACM"
+    ],
+    "endpointsRequired": 2,
+    "endpointsSelected": 2,
+    "endpointsWithNamedSourceTable": 2,
+    "relaysEnergized": 1,
+    "relaysMustRemainUnactuated": 5,
+    "relayIdentitiesUnresolved": 0,
+    "relayIdentitiesUnresolvedScope": "relays required by the two selected paths (K8_PD3, K59_SDA), their isolation relays (K7, K58, K152) and the mandatory functional closure (K13) - all six are proved",
+    "unionOrBridgeRelaysOutsideSelectedPaths": 2,
+    "unprovenRelaysSubstituted": 0,
+    "pinResolutionState": "RESOLVED (ATEST0 -> VDM, see pinResolution)",
+    "statement": "every relay named in this contract is proved by project evidence (SCH-Connect-Map.txt path line, Component-Statistic.txt relay group, CBIT表-DALI.xlsx bit). No relay identity was copied from a union, a previous trial or a code block; relay tokens that could not be tied to a project-evidenced path were excluded and are reported under selectionMethod.unionMembersNotProvenAsRoute."
+  },
+  "openItemsForDownstream": [
+    {
+      "id": "OI-TM103-STR-01",
+      "owner": "test-method-expert",
+      "item": "power sequencing, ramp rates, delays, measurement procedure, limits and power-down for VBAT (4.0 V static) and VDM (1 V forced with a 0.5 uA-scale current measurement) are NOT decided here",
+      "evidence": [
+        "team/artifacts/tm103-ptc/dft/dft-meta.json governingConditions",
+        "project/DALI/reg_config/tm103.sv:7-8, :17-19"
+      ]
+    },
+    {
+      "id": "OI-TM103-STR-02",
+      "owner": "test-method-expert",
+      "item": "the ACM200 current range/limit and the FXVIe_PLUS compliance triple for a 0.5 uA resolution are not published in the parsed inputs; the artifact's open question 'The sanctioned compliance/range triple for the 1A force is not specified in the parsed inputs' remains open and is not decided by this contract",
+      "evidence": [
+        "team/artifacts/tm103-ptc/schematic/SCH-Connect-Map.json openQuestions[8]"
+      ]
+    },
+    {
+      "id": "OI-TM103-STR-03",
+      "owner": "rule-reviewer",
+      "item": "loop orientation (which terminal is HIGH) is a strategy-layer statement, not a netlist fact; this contract forces the source HIGH terminal onto VBAT and VDM with the low side returning through AGND (project/DALI/SCH-Connect-Map.txt:801, :804). The artifact records exactly this limitation in its open question 'Loop orientation (which terminal is HIGH) is a strategy decision, not derivable from the netlist'",
+      "evidence": [
+        "project/DALI/SCH-Connect-Map.txt:801",
+        "project/DALI/SCH-Connect-Map.txt:804",
+        "team/artifacts/tm103-ptc/schematic/SCH-Connect-Map.json openQuestions[9]"
+      ]
+    },
+    {
+      "id": "OI-TM103-STR-04",
+      "owner": "rule-reviewer",
+      "item": "the two union/bridge relays K86_KELVIN0_F (number 86) and K130_KELVIN1_F (number 130) appear ON in the trial artifact's relay union records with VDM in their dutPins union, but no project connect-map path names them. They are excluded from SetOn here because the selected S3_5 -> K8(NC) -> VBAT and S5_7 -> K59(NC) -> VDM paths never enter the FPVIe bus, and because K7/K58 stay un-actuated so no FPVIe bus tie can reach either endpoint. Their required frame state is not asserted by this contract and needs an independent confirmation rather than a substitution.",
+      "evidence": [
+        "team/artifacts/tm103-ptc/schematic/SCH-Connect-Map.json relays[] numbers 86 and 130",
+        "project/DALI/path_proofs.json.txt relay contacts K87_KELVIN0 -> K86_KELVIN0_F -> K88_KELVIN0 and K131_KELVIN1 -> K130_KELVIN1_F -> K132_KELVIN1",
+        "project/DALI/SCH-Connect-Map.txt (0 occurrences of the tokens K86 and K130)"
+      ]
+    }
+  ],
+  "evidence": [
+    "team/artifacts/tm103-ptc/input-manifest.json canonicalInputs.intentResolution.entry (status resolved): VBAT=4.0 V static, sweptPin=VDM, monitorDutPin=VDM, 0x57=0x02, 0x5E=0x04, monitorIntent 'I(ATEST0) IBP_HR 0.5 uA current, forced/measured on the VDM pin'",
+    "team/artifacts/tm103-ptc/schematic/Components-Statistic.json dutKelvinPins (68 physical DUT pin bases; dutKelvinPins[63]='VDM'; 'ATEST0' absent) and dutKelvinPinsLocator 'schematic-ir.json pins[].base (unique physical DUT pin bases)'",
+    "project/DALI/_archive/_dump_TestIO.txt:1-6 (pad-name / Analog Test table: VDM -> ATEST0, AMUX(PD6) -> ATEST1, nQON -> DTEST0)",
+    "project/DALI/meta/dali_tm_meta.json functions[row=7,item=TM103] (check 'I(ATEST0)', code1Raw 'vset[vbat,4,100e-6,0]', code2Raw 'en_tm[]/field[(EN_ATEST0,1),(ATEST0_MUX,4)]/vset[vdm,1,100e-6,0]')",
+    "project/DALI/_archive/_dump_ATESTMAP.txt:6 (ATEST0 select 4 -> D2A_HSKP_ATEST0 branch 3 = IBP_HR_0.5UA)",
+    "project/DALI/reg_config/tm103.sv:7-21 (VBAT ramp to 4 V, entertestmode, 0x57=0x02, 0x5E=0x04, VDM ramp to 1 V)",
+    "project/DALI/Pin_Channel_define.h:12 and :93 (VBAT_PD3_FXVI = S3_5..., extern FXVIe_PLUS)",
+    "project/DALI/Pin_Channel_define.h:22 and :103 (VDM_SDA_ACM = S5_7..., extern ACM200)",
+    "project/DALI/Component-Statistic.txt:308 (S3_5 -> VBAT_PD3_FXVI (FXVIe_PLUS))",
+    "project/DALI/Component-Statistic.txt:340 (S5_7 -> VDM_SDA_ACM (ACM200))",
+    "project/DALI/Component-Statistic.txt:403 and :429 (S5_ACM200_FH7 / S5_ACM200_SH7 -> VDM_SDA_ACM (ACM200))",
+    "project/DALI/Component-Statistic.txt:441 ([BUS] group: K7_BUSH_VBAT, K58_BUSH_VDM, K136/K137/K141/K142/K143/K144)",
+    "project/DALI/Component-Statistic.txt:445 ([Connect] group: K152_VDM_TMU)",
+    "project/DALI/Component-Statistic.txt:446-447 (K13_VBAT_Cap in the Cap-candidate group)",
+    "project/DALI/Component-Statistic.txt:457 ([Share] group: K8_PD3, K59_SDA)",
+    "project/DALI/SCH-Connect-Map.txt:832-834 (VBAT from S3_FXVIe_PLUS ch5 via K8 un-actuated; no relay to close)",
+    "project/DALI/SCH-Connect-Map.txt:795-797 (VDM from S5_ACM200 ch7 via K59 un-actuated; no relay to close)",
+    "project/DALI/SCH-Connect-Map.txt:814-816 (PD3 branch requires K8 energized - why K8 stays un-actuated)",
+    "project/DALI/SCH-Connect-Map.txt:768-770 (SDA branch requires K59 energized - why K59 stays un-actuated)",
+    "project/DALI/SCH-Connect-Map.txt:914 (VBAT stabilization cap requires K13 closed)",
+    "project/DALI/SCH-Connect-Map.txt:898-917 (the cap table has no VDM entry)",
+    "project/DALI/SCH-Connect-Map.txt:847-848 and :237 (QTMU-B / CH0-Low injection into VDM requires K152)",
+    "project/DALI/SCH-Connect-Map.txt:210-212, :418-420, :513-514, :638-639 (every bus pathway to VBAT requires K7)",
+    "project/DALI/SCH-Connect-Map.txt:234-236, :436-438, :519-520, :650-651 (every bus pathway to VDM requires K58)",
+    "project/DALI/SCH-Connect-Map.txt:801 and :804 (ACM200 / FXVIe_PLUS low ends grouped to AGND_F; loop returns through AGND)",
+    "project/DALI/CBIT表-DALI.xlsx sheet1 rows 97, 113, 114, 134, 135, 178 (K152_VDM_TMU=S36_CBIT24; K7_BUSH_VBAT=S34_CBIT7; K8_PD3=S34_CBIT8; K58_BUSH_VDM=S34_CBIT58; K59_SDA=S34_CBIT59; K13_VBAT_Cap=S34_CBIT13)",
+    "project/DALI/path_proofs.json.txt relay contacts (K87_KELVIN0 -> NetK86_KELVIN0_F_S1_2 -> K86_KELVIN0_F -> NetK86_KELVIN0_F_S1_1 -> K88_KELVIN0; K131_KELVIN1 -> NetK130_KELVIN1_F_S1_2 -> K130_KELVIN1_F -> NetK130_KELVIN1_F_S1_1 -> K132_KELVIN1)",
+    "knowledge/standards/relay-checklist.md:25-42 (Cap2 rule and the measured-pin exemption)",
+    "knowledge/standards/relay-checklist.md:44-50 (anti-short rule for share selectors)",
+    "team/artifacts/tm103-ptc/schematic/SCH-Connect-Map.json sourcePorts records for S3_FXVIe_PLUS_FH5/SH5 and S5_ACM200_FH7/SH7"
+  ]
+}

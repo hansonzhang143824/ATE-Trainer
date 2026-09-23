@@ -1,0 +1,16 @@
+=== ① 前缀纳入 ===
+  已纳入 → t28_make_anchors.py (11028 B)
+    含 setupArchitect-    True
+    含 t34-carrier        True
+    含 t34-CARRIER        True
+
+=== ② 对照实验（离线副本，验证"不丢当前内容"）===
+  注入后条数 = 4 （原 1 + 注入 3）
+  重跑生成器: 保留他方命名空间: setupArchitectFreezeAnchors
+  重跑后条数 = 4
+  注入的 3 条仍在 = ['TESTSENTINEL-1.json', 'TESTSENTINEL-2.json', 'TESTSENTINEL-3.json']
+
+  ⇒ (ii) 不丢当前内容： **成立**
+  ⇒ 本实验**只能**证明 (ii)；**不得**引作"恢复历史"（(iii) 原理上不可测）—— 与 rule-reviewer 的判据限定一致。
+
+  已还原活档（对照实验不改变我方真源）

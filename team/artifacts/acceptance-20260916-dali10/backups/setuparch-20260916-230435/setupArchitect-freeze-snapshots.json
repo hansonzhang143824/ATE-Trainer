@@ -1,0 +1,877 @@
+{
+  "purpose": "APPEND-ONLY snapshot log maintained by setup-architect. Each entry records one point-in-time snapshot of my own artifacts and the shared inputs I cite, so that a citation can be checked even after a live file is written again. Rule: filenames + recomputed sha256 + recomputed time; a remembered value is unverified; the log itself is the only thing I append to, never rewrite.",
+  "owner": "setup-architect",
+  "entries": [
+    {
+      "snapshotIndex": 1,
+      "takenAt": "2026-09-16 22:32:59",
+      "reason": "post rev-39 freeze (contract) + t34 L19/L20/L40/L41 updates + pin plan row at live v25 (reviewer requested a per-round snapshot instead of repeated freeze restatements)",
+      "contractRevision": 39,
+      "payloadCanonical": {
+        "path": "team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp",
+        "sizeBytes": 43806,
+        "sha256": "66abc088ae6bd5f9b9d7201673003fc0be2450fd6f1f222c6a4a902cbe4f0cc4",
+        "writesStopped": true
+      },
+      "gateReadField": {
+        "where": "aliasResolution[bst2sw].resolution.closedRelayNumbers",
+        "value": [
+          48,
+          60,
+          61,
+          76
+        ],
+        "expectedForTM600": [
+          48,
+          60,
+          61,
+          76,
+          83
+        ]
+      },
+      "artifacts": {
+        "setup-contract.json": {
+          "sizeBytes": 377694,
+          "sha256": "18587b83307d47e0d6f287ee28e812b6c8f25781d2e449b293e45b50282b6d9f",
+          "measuredAt": "2026-09-16 22:10:11"
+        },
+        "setup-contract-build.py": {
+          "sizeBytes": 213515,
+          "sha256": "33899111438f2f603d17d562fadd322a52bcae374d4f28820eb57a667731a051",
+          "measuredAt": "2026-09-16 22:10:10"
+        },
+        "setup-contract-pin.json": {
+          "sizeBytes": 11273,
+          "sha256": "6972e3ba0f5b2fea49da4893a98a80c79c7f8a421905019d95c4fe197f9e799e",
+          "measuredAt": "2026-09-16 22:10:11"
+        },
+        "implementation-input-pin.json": {
+          "sizeBytes": 19735,
+          "sha256": "04dfbb1b6967b4fb94700a7347864ed9aea1e1f35ae959bfa90e474c6415a574",
+          "measuredAt": "2026-09-16 22:23:08"
+        },
+        "acceptance-report.json": {
+          "sizeBytes": 56984,
+          "sha256": "007e7beb4f1e2b5f208e14ddc70544424463aec6f9b0e0f60434e53726febfe5",
+          "measuredAt": "2026-09-16 22:29:15"
+        },
+        "t35-contract-reconciliation.md": {
+          "sizeBytes": 59700,
+          "sha256": "32ad955c7b7c322a1d4946f657ba114586adf66b86e21f931f181b0bc61128fc",
+          "measuredAt": "2026-09-16 22:17:17"
+        },
+        "t41-tm601-bst-path-determination.md": {
+          "sizeBytes": 38351,
+          "sha256": "230c309000dfcc5674ed9762133ba4d59a5f35f8ff1c0282588a5f1f182ee16d",
+          "measuredAt": "2026-09-16 22:17:17"
+        },
+        "implementation-payload-TM600-TM601.cpp": {
+          "sizeBytes": 43806,
+          "sha256": "66abc088ae6bd5f9b9d7201673003fc0be2450fd6f1f222c6a4a902cbe4f0cc4",
+          "measuredAt": "2026-09-16 21:09:24"
+        },
+        "test-plan.json": {
+          "sizeBytes": 185689,
+          "sha256": "707ce845c5459b41b528059eab7f26b1a8e597e34daf8df40929346942a8ee69",
+          "measuredAt": "2026-09-16 21:54:50"
+        },
+        "scripts/gate_baseline.json": {
+          "sizeBytes": 28,
+          "sha256": "021015da84e6fd4c54a595796e1bad73e18c57db94f856871d5667044302cb1d",
+          "measuredAt": "2026-09-13 22:45:34"
+        }
+      }
+    },
+    {
+      "snapshotIndex": 2,
+      "takenAt": "2026-09-16 22:34:27",
+      "reason": "cross-check of the reviewer's K60 self-correction artifacts (recomputed on my side, not taken on trust); t34 carrier path confirmed for the reviewer",
+      "t34Carrier": {
+        "path": "team/artifacts/acceptance-20260916-dali10/acceptance-report.json",
+        "sizeBytes": 56984,
+        "sha256": "007e7beb4f1e2b5f208e14ddc70544424463aec6f9b0e0f60434e53726febfe5",
+        "note": "'t34' is a TASK LABEL, not a filename - there is no *t34* file anywhere in the tree"
+      },
+      "peerArtifacts": {
+        "t55-closure-set-correction.md": {
+          "sizeBytes": 3164,
+          "sha256": "3f029703c9c06189c6d90a2c6f4374095240c8ce87b4848fff4b5784fd74a6d7",
+          "measuredAt": "2026-09-16 22:30:53"
+        },
+        "t42-independent-review.md": {
+          "sizeBytes": 12403,
+          "sha256": "6f5feae45866fe5ac4c2702492d6ac84621896b3bd1d56d6467d21a5dd038fde",
+          "measuredAt": "2026-09-16 22:30:53"
+        },
+        "t43-final-consolidated-determination.md": {
+          "sizeBytes": 14673,
+          "sha256": "3ee511db349f4c10cb199792cd88280b706f574e4e2904b0e1424f6138a87f3b",
+          "measuredAt": "2026-09-16 22:30:53"
+        }
+      }
+    },
+    {
+      "snapshotIndex": 3,
+      "takenAt": "2026-09-16 22:35:47",
+      "reason": "deployed-tree anchor re-measured for t54's re-run (two-object comparison) + t34 L42 recorded",
+      "deployedTree": {
+        "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+        "sizeBytes": 469714,
+        "sha256": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a",
+        "measuredAt": "2026-09-16 18:53:33"
+      },
+      "t34": {
+        "sizeBytes": 57963,
+        "sha256": "710be274078a437593d8acae0c19041bba060ec97a10bd68fd336065ee06c041"
+      },
+      "anchorsFile": {
+        "sizeBytes": 3923,
+        "sha256": "9e2ba5c868a2e874536a83af984be751449d076a513dd72efdefd30bdf883a96"
+      }
+    },
+    {
+      "snapshotIndex": 4,
+      "takenAt": "2026-09-16 22:40:03",
+      "reason": "reviewer's demand for an empirical before/after count on the shared anchors file; this is the BEFORE measurement (to be paired with an AFTER taken after the next regeneration by its owner)",
+      "sharedAnchorsFile": {
+        "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28-anchors.json",
+        "sizeBytes": 11931,
+        "sha256": "32d956985742a6d6ed5da04f885f5a81c6c6c1c9e732cdfdf160990077f7ae87",
+        "measuredAt": "2026-09-16 22:24:15"
+      },
+      "preservedNamespaceEntries_before": 1,
+      "peerNamespaceKeys": [
+        "setupArchitectFreezeAnchors"
+      ],
+      "ownerAdmissionOnRecord": "compile-diagnostician stated in writing that an early version of its generator collapsed multi-keys into one and that the 8 lost entries cannot be restored; it has since switched to union accumulation + mirroring + DO_NOT_TOUCH_PREFIXES=('setupArchitect-',)",
+      "reviewerRulingAccepted": "rule-reviewer declined to use my self-maintained anchors file as its basis (independence + it also changes + the shared-file loss is unresolved); the practical rule both sides follow is: each side recomputes on citation.",
+      "t34CarrierPointer": {
+        "path": "team/artifacts/acceptance-20260916-dali10/t34-carrier-pointer.json",
+        "sizeBytes": 1122,
+        "sha256": "09d200bc927f9666d30b3d0627b238b9adbd1cb45ef76059e254f80daedfd2a3",
+        "measuredAt": "2026-09-16 22:40:03"
+      }
+    },
+    {
+      "snapshotIndex": 5,
+      "takenAt": "2026-09-16 22:45:17",
+      "reason": "WITHDRAWAL of my claim that the shared anchors generator drops peer namespaces (reviewer's empirical finding, verified by me)",
+      "withdrawnClaim": "'the shared file's generator drops my setupArchitectFreezeAnchors keys - only 1 of 8 came back'",
+      "preciseStatement": "The CURRENT generator preserves the peer namespace faithfully: the shared file carries preservedPeerNamespaces.setupArchitectFreezeAnchors with mirrorOf='setupArchitect-anchors.json', mirrorSize=3579, ledgerNote, and an anchors map. Its idempotence is self-proved by the ledger gate-logs-t28/t28-anchors.snapshots.jsonl (two rows, identical live_sha256 and identical live_body_sha256). So 'the shared file loses my keys' is NOT supported by the current mechanism and is withdrawn; my migration of the authoritative anchors into my own file stands only on independence/maintenance grounds, not on data loss.",
+      "remainingUnknown": "The preserved anchors map contains exactly ONE entry (acceptance-report.json, 50,681 B / 264a0fa4..., an earlier state of my report). Whether my earlier 8-entry namespace was ever captured in the shared file, and where it was reduced to one entry, is NOT provable from the present artifacts. The owner has stated in writing that an early version of its generator collapsed multiple keys into one; that attribution is recorded here as the owner's statement, not as my own measurement.",
+      "ledgerEvidence": {
+        "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28-anchors.snapshots.jsonl",
+        "sizeBytes": 662,
+        "sha256": "1c36e2494c0af1843dcb79f0c6247880a0c928e98f73a329f3c757194a789175",
+        "rows": 2,
+        "live_sha256_line1_eq_line2": true,
+        "live_body_sha256_line1_eq_line2": true,
+        "preservedPeerKeys": [
+          "setupArchitectFreezeAnchors"
+        ],
+        "entries": 32,
+        "live_size": 11931
+      },
+      "t56AttributionCorrectionAccepted": "the four BST-supply sites (test.cpp:6997/7000, 7085/7087, 7169/7170, 7512/7513) belong to TM607/TM608/TM609/TM640; deployed TM600's only call point is L9081 - recorded in t34 as L44 with a pointer added to L41"
+    },
+    {
+      "snapshotIndex": 6,
+      "takenAt": "2026-09-16 22:47:43",
+      "reason": "endorsed section 2.3 (per-owner anchors) in my own anchors file; recorded peer note value",
+      "myAnchorsFile": {
+        "sizeBytes": 5329,
+        "sha256": "881992586add178d88bead7fe409417b174936f3ae18da4d4d12d15ef22c9a5c"
+      },
+      "peerNote": {
+        "owner": "test-strategy-architect",
+        "sizeBytes": 56719,
+        "sha256": "56bb4050477d488986cd054149b35fcf8c132d27f8635ad1f5bd2cdfd59d11ac",
+        "measuredAt": "2026-09-16 22:44:03",
+        "citedAs": "peer-reported, not recomputed by me"
+      }
+    },
+    {
+      "snapshotIndex": 7,
+      "takenAt": "2026-09-16 22:52:20",
+      "kind": "full",
+      "reason": "schema declaration + retrospective classification of entries 2-5 + full value set (reviewer point 3: entries 2-5 carried no contractRevision/artifacts)",
+      "contractRevision": 39,
+      "gateReadField": {
+        "where": "aliasResolution[bst2sw].resolution.closedRelayNumbers",
+        "value": [
+          48,
+          60,
+          61,
+          76
+        ],
+        "expectedForTM600": [
+          48,
+          60,
+          61,
+          76,
+          83
+        ]
+      },
+      "classificationOfEarlierEntries": [
+        {
+          "snapshotIndex": 2,
+          "kind": "tick+cross-check",
+          "artifactsAbsent": true,
+          "artifactsAbsentReason": "recorded the reviewer's K60 self-correction artifacts; carried peerArtifacts (recomputed) and a t34Carrier mapping, but no per-artifact value set and no contract revision"
+        },
+        {
+          "snapshotIndex": 3,
+          "kind": "tick+anchor",
+          "artifactsAbsent": true,
+          "artifactsAbsentReason": "recorded the deployed-tree anchor (recomputed) for the two-object comparison and t34's hash at that moment; no contract revision, no full artifacts map"
+        },
+        {
+          "snapshotIndex": 4,
+          "kind": "tick+measurement",
+          "artifactsAbsent": true,
+          "artifactsAbsentReason": "recorded the BEFORE measurement of the shared anchors namespace (preservedNamespaceEntries_before=1) plus the owner's admission; no artifact value set"
+        },
+        {
+          "snapshotIndex": 5,
+          "kind": "tick+withdrawal",
+          "artifactsAbsent": true,
+          "artifactsAbsentReason": "recorded the withdrawal of my 'shared file drops my keys' claim with the ledger evidence and the residual UNKNOWN; no artifact value set"
+        }
+      ],
+      "note": "back-filling entries 2-5 is impossible (their per-artifact bytes were never captured) - recorded here rather than silently rewritten, because this file is append-only.",
+      "artifacts": {
+        "setup-contract.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+          "sizeBytes": 377694,
+          "sha256": "18587b83307d47e0d6f287ee28e812b6c8f25781d2e449b293e45b50282b6d9f",
+          "measuredAt": "2026-09-16 22:10:11"
+        },
+        "setup-contract-build.py": {
+          "path": "team/artifacts/acceptance-20260916-dali10/setup-contract-build.py",
+          "sizeBytes": 213515,
+          "sha256": "33899111438f2f603d17d562fadd322a52bcae374d4f28820eb57a667731a051",
+          "measuredAt": "2026-09-16 22:10:10"
+        },
+        "setup-contract-pin.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/setup-contract-pin.json",
+          "sizeBytes": 11273,
+          "sha256": "6972e3ba0f5b2fea49da4893a98a80c79c7f8a421905019d95c4fe197f9e799e",
+          "measuredAt": "2026-09-16 22:10:11"
+        },
+        "implementation-input-pin.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/implementation-input-pin.json",
+          "sizeBytes": 19735,
+          "sha256": "04dfbb1b6967b4fb94700a7347864ed9aea1e1f35ae959bfa90e474c6415a574",
+          "measuredAt": "2026-09-16 22:23:08"
+        },
+        "acceptance-report.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/acceptance-report.json",
+          "sizeBytes": 63975,
+          "sha256": "6acfaa7f0372dacc55b67470a26a8b7c31cf4816ecf9a1a7059f7a283e077c7a",
+          "measuredAt": "2026-09-16 22:50:52"
+        },
+        "t34-carrier-pointer.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/t34-carrier-pointer.json",
+          "sizeBytes": 1122,
+          "sha256": "09d200bc927f9666d30b3d0627b238b9adbd1cb45ef76059e254f80daedfd2a3",
+          "measuredAt": "2026-09-16 22:40:03"
+        },
+        "t34-CARRIER-PATH.md": {
+          "path": "team/artifacts/acceptance-20260916-dali10/t34-CARRIER-PATH.md",
+          "sizeBytes": 649,
+          "sha256": "b06dfe70a9366abce8ef2da13d9fbc85713b78e1e48fc2dc33e141086953a762",
+          "measuredAt": "2026-09-16 22:43:13"
+        },
+        "t35-contract-reconciliation.md": {
+          "path": "team/artifacts/acceptance-20260916-dali10/t35-contract-reconciliation.md",
+          "sizeBytes": 59700,
+          "sha256": "32ad955c7b7c322a1d4946f657ba114586adf66b86e21f931f181b0bc61128fc",
+          "measuredAt": "2026-09-16 22:17:17"
+        },
+        "t41-tm601-bst-path-determination.md": {
+          "path": "team/artifacts/acceptance-20260916-dali10/t41-tm601-bst-path-determination.md",
+          "sizeBytes": 38351,
+          "sha256": "230c309000dfcc5674ed9762133ba4d59a5f35f8ff1c0282588a5f1f182ee16d",
+          "measuredAt": "2026-09-16 22:17:17"
+        },
+        "implementation-payload-TM600-TM601.cpp": {
+          "path": "team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp",
+          "sizeBytes": 43806,
+          "sha256": "66abc088ae6bd5f9b9d7201673003fc0be2450fd6f1f222c6a4a902cbe4f0cc4",
+          "measuredAt": "2026-09-16 21:09:24"
+        },
+        "test-plan.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/test-plan.json",
+          "sizeBytes": 185689,
+          "sha256": "707ce845c5459b41b528059eab7f26b1a8e597e34daf8df40929346942a8ee69",
+          "measuredAt": "2026-09-16 21:54:50"
+        },
+        "gate-logs-t54/bst-sw.log": {
+          "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t54/bst-sw.log",
+          "sizeBytes": 1991,
+          "sha256": "bde9f7a56bb744a73c29b782dcf7ecd6a43301ff9ff97a7345de216eb5b73c17",
+          "measuredAt": "2026-09-16 21:35:20"
+        },
+        "scripts/gate_baseline.json": {
+          "path": "scripts/gate_baseline.json",
+          "sizeBytes": 28,
+          "sha256": "021015da84e6fd4c54a595796e1bad73e18c57db94f856871d5667044302cb1d",
+          "measuredAt": "2026-09-13 22:45:34"
+        }
+      }
+    },
+    {
+      "snapshotIndex": 8,
+      "takenAt": "2026-09-16 22:54:02",
+      "kind": "full",
+      "reason": "close the reviewer's finding: classify the remaining hollow entry (idx6) + add self-anchoring to every future entry + full value set",
+      "contractRevision": 39,
+      "gateReadField": {
+        "where": "aliasResolution[bst2sw].resolution.closedRelayNumbers",
+        "value": [
+          48,
+          60,
+          61,
+          76
+        ],
+        "expectedForTM600": [
+          48,
+          60,
+          61,
+          76,
+          83
+        ]
+      },
+      "selfAnchor": {
+        "ledgerSizeBytesBeforeThisWrite": 16848,
+        "ledgerSha256BeforeThisWrite": "9608acfa0938a92d5bdecb549afb160417315a650c11f93d7eb13e04eff16172",
+        "entriesBeforeThisWrite": 7
+      },
+      "classificationOfEarlierEntries": [
+        {
+          "snapshotIndex": 6,
+          "kind": "tick",
+          "artifactsAbsent": true,
+          "artifactsAbsentReason": "recorded the peer note value and my anchors-file hash and the endorsement of section 2.3 - a tick, not a full value-set snapshot"
+        }
+      ],
+      "note": "entries 2-6 remain hollow by construction (their per-artifact bytes were never captured); they are classified, not back-filled. From this entry onward every entry is kind=full and carries contractRevision + artifacts + selfAnchor.",
+      "artifacts": {
+        "setup-contract.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+          "sizeBytes": 377694,
+          "sha256": "18587b83307d47e0d6f287ee28e812b6c8f25781d2e449b293e45b50282b6d9f",
+          "measuredAt": "2026-09-16 22:10:11"
+        },
+        "setup-contract-build.py": {
+          "path": "team/artifacts/acceptance-20260916-dali10/setup-contract-build.py",
+          "sizeBytes": 213515,
+          "sha256": "33899111438f2f603d17d562fadd322a52bcae374d4f28820eb57a667731a051",
+          "measuredAt": "2026-09-16 22:10:10"
+        },
+        "setup-contract-pin.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/setup-contract-pin.json",
+          "sizeBytes": 11273,
+          "sha256": "6972e3ba0f5b2fea49da4893a98a80c79c7f8a421905019d95c4fe197f9e799e",
+          "measuredAt": "2026-09-16 22:10:11"
+        },
+        "implementation-input-pin.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/implementation-input-pin.json",
+          "sizeBytes": 19735,
+          "sha256": "04dfbb1b6967b4fb94700a7347864ed9aea1e1f35ae959bfa90e474c6415a574",
+          "measuredAt": "2026-09-16 22:23:08"
+        },
+        "acceptance-report.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/acceptance-report.json",
+          "sizeBytes": 63975,
+          "sha256": "6acfaa7f0372dacc55b67470a26a8b7c31cf4816ecf9a1a7059f7a283e077c7a",
+          "measuredAt": "2026-09-16 22:50:52"
+        },
+        "t34-carrier-pointer.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/t34-carrier-pointer.json",
+          "sizeBytes": 1122,
+          "sha256": "09d200bc927f9666d30b3d0627b238b9adbd1cb45ef76059e254f80daedfd2a3",
+          "measuredAt": "2026-09-16 22:40:03"
+        },
+        "t34-CARRIER-PATH.md": {
+          "path": "team/artifacts/acceptance-20260916-dali10/t34-CARRIER-PATH.md",
+          "sizeBytes": 649,
+          "sha256": "b06dfe70a9366abce8ef2da13d9fbc85713b78e1e48fc2dc33e141086953a762",
+          "measuredAt": "2026-09-16 22:43:13"
+        },
+        "t35-contract-reconciliation.md": {
+          "path": "team/artifacts/acceptance-20260916-dali10/t35-contract-reconciliation.md",
+          "sizeBytes": 59700,
+          "sha256": "32ad955c7b7c322a1d4946f657ba114586adf66b86e21f931f181b0bc61128fc",
+          "measuredAt": "2026-09-16 22:17:17"
+        },
+        "t41-tm601-bst-path-determination.md": {
+          "path": "team/artifacts/acceptance-20260916-dali10/t41-tm601-bst-path-determination.md",
+          "sizeBytes": 38351,
+          "sha256": "230c309000dfcc5674ed9762133ba4d59a5f35f8ff1c0282588a5f1f182ee16d",
+          "measuredAt": "2026-09-16 22:17:17"
+        },
+        "implementation-payload-TM600-TM601.cpp": {
+          "path": "team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp",
+          "sizeBytes": 43806,
+          "sha256": "66abc088ae6bd5f9b9d7201673003fc0be2450fd6f1f222c6a4a902cbe4f0cc4",
+          "measuredAt": "2026-09-16 21:09:24"
+        },
+        "test-plan.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/test-plan.json",
+          "sizeBytes": 185689,
+          "sha256": "707ce845c5459b41b528059eab7f26b1a8e597e34daf8df40929346942a8ee69",
+          "measuredAt": "2026-09-16 21:54:50"
+        },
+        "gate-logs-t54/bst-sw.log": {
+          "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t54/bst-sw.log",
+          "sizeBytes": 1991,
+          "sha256": "bde9f7a56bb744a73c29b782dcf7ecd6a43301ff9ff97a7345de216eb5b73c17",
+          "measuredAt": "2026-09-16 21:35:20"
+        },
+        "scripts/gate_baseline.json": {
+          "path": "scripts/gate_baseline.json",
+          "sizeBytes": 28,
+          "sha256": "021015da84e6fd4c54a595796e1bad73e18c57db94f856871d5667044302cb1d",
+          "measuredAt": "2026-09-13 22:45:34"
+        }
+      }
+    },
+    {
+      "snapshotIndex": 9,
+      "takenAt": "2026-09-16 22:56:46",
+      "kind": "full",
+      "reason": "receipt of test-strategy-architect's pin-note update + cross-check of the union-residue inventory (their parent-marker reading agrees with my L47) - first entry fully compliant with the new schema",
+      "contractRevision": 39,
+      "gateReadField": {
+        "where": "aliasResolution[bst2sw].resolution.closedRelayNumbers",
+        "value": [
+          48,
+          60,
+          61,
+          76
+        ],
+        "expectedForTM600": [
+          48,
+          60,
+          61,
+          76,
+          83
+        ]
+      },
+      "selfAnchor": {
+        "ledgerSizeBytesBeforeThisWrite": 22450,
+        "ledgerSha256BeforeThisWrite": "e0557a17a34d3f9ad4814bdeaae7e33506634b98959aabaa7765d52096953e33",
+        "entriesBeforeThisWrite": 8
+      },
+      "peerReceipts": [
+        {
+          "owner": "test-strategy-architect",
+          "claim": "their note now records the pin at 19,735 B / 04dfbb1b... and states plan-row byte-equality = True",
+          "crossCheck": "my own recomputation agrees (19,735 B / 04dfbb1b... @22:23:08; byte-match True)",
+          "peerNoteValue": {
+            "sizeBytes": 57349,
+            "sha256": "c529133bee2cdd30e5bdf41886f234980dc8f5b967c98dd618898ca7279a007e",
+            "measuredAt": "2026-09-16 22:48:40",
+            "citedAs": "peer-reported, not recomputed by me"
+          }
+        }
+      ],
+      "pendingDecisions": [
+        {
+          "item": "union residue revision29Bindings.completenessUnderBothReadings.why_the_union_and_not_either_single_form.union_form",
+          "owner": "captain",
+          "options": "(a) parent marker suffices [recommended] / (b) one-line wording correction as rev 40 / (c) delete the sub-key [not recommended]",
+          "status": "pending - contract untouched"
+        },
+        {
+          "item": "t34 platform ownership (content complete; claim refused 6 times)",
+          "owner": "captain",
+          "status": "pending"
+        },
+        {
+          "item": "minimal plan v26 (annotate a retracted argument; operative value unchanged)",
+          "owner": "captain / test-strategy-architect",
+          "status": "pending - they notify me before landing so the pin can be refreshed"
+        }
+      ],
+      "artifacts": {
+        "setup-contract.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+          "sizeBytes": 377694,
+          "sha256": "18587b83307d47e0d6f287ee28e812b6c8f25781d2e449b293e45b50282b6d9f",
+          "measuredAt": "2026-09-16 22:10:11"
+        },
+        "setup-contract-build.py": {
+          "path": "team/artifacts/acceptance-20260916-dali10/setup-contract-build.py",
+          "sizeBytes": 213515,
+          "sha256": "33899111438f2f603d17d562fadd322a52bcae374d4f28820eb57a667731a051",
+          "measuredAt": "2026-09-16 22:10:10"
+        },
+        "setup-contract-pin.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/setup-contract-pin.json",
+          "sizeBytes": 11273,
+          "sha256": "6972e3ba0f5b2fea49da4893a98a80c79c7f8a421905019d95c4fe197f9e799e",
+          "measuredAt": "2026-09-16 22:10:11"
+        },
+        "implementation-input-pin.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/implementation-input-pin.json",
+          "sizeBytes": 19735,
+          "sha256": "04dfbb1b6967b4fb94700a7347864ed9aea1e1f35ae959bfa90e474c6415a574",
+          "measuredAt": "2026-09-16 22:23:08"
+        },
+        "acceptance-report.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/acceptance-report.json",
+          "sizeBytes": 65550,
+          "sha256": "a87a5e0c7bcf007b7d238d1328b2725e827e6cea9d89166173b534029ac387b2",
+          "measuredAt": "2026-09-16 22:55:34"
+        },
+        "t35-contract-reconciliation.md": {
+          "path": "team/artifacts/acceptance-20260916-dali10/t35-contract-reconciliation.md",
+          "sizeBytes": 59700,
+          "sha256": "32ad955c7b7c322a1d4946f657ba114586adf66b86e21f931f181b0bc61128fc",
+          "measuredAt": "2026-09-16 22:17:17"
+        },
+        "t41-tm601-bst-path-determination.md": {
+          "path": "team/artifacts/acceptance-20260916-dali10/t41-tm601-bst-path-determination.md",
+          "sizeBytes": 38351,
+          "sha256": "230c309000dfcc5674ed9762133ba4d59a5f35f8ff1c0282588a5f1f182ee16d",
+          "measuredAt": "2026-09-16 22:17:17"
+        },
+        "implementation-payload-TM600-TM601.cpp": {
+          "path": "team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp",
+          "sizeBytes": 43806,
+          "sha256": "66abc088ae6bd5f9b9d7201673003fc0be2450fd6f1f222c6a4a902cbe4f0cc4",
+          "measuredAt": "2026-09-16 21:09:24"
+        },
+        "test-plan.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/test-plan.json",
+          "sizeBytes": 185689,
+          "sha256": "707ce845c5459b41b528059eab7f26b1a8e597e34daf8df40929346942a8ee69",
+          "measuredAt": "2026-09-16 21:54:50"
+        },
+        "gate-logs-t54/bst-sw.log": {
+          "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t54/bst-sw.log",
+          "sizeBytes": 1991,
+          "sha256": "bde9f7a56bb744a73c29b782dcf7ecd6a43301ff9ff97a7345de216eb5b73c17",
+          "measuredAt": "2026-09-16 21:35:20"
+        },
+        "scripts/gate_baseline.json": {
+          "path": "scripts/gate_baseline.json",
+          "sizeBytes": 28,
+          "sha256": "021015da84e6fd4c54a595796e1bad73e18c57db94f856871d5667044302cb1d",
+          "measuredAt": "2026-09-13 22:45:34"
+        }
+      }
+    },
+    {
+      "snapshotIndex": 10,
+      "takenAt": "2026-09-16 22:58:08",
+      "kind": "full",
+      "reason": "static verification of the shared-generator preservation fix (reviewer's 'declaration != enforcement' point) + receipt of the reviewer's new correction-convention artifact",
+      "contractRevision": 39,
+      "gateReadField": {
+        "where": "aliasResolution[bst2sw].resolution.closedRelayNumbers",
+        "value": [
+          48,
+          60,
+          61,
+          76
+        ],
+        "expectedForTM600": [
+          48,
+          60,
+          61,
+          76,
+          83
+        ]
+      },
+      "selfAnchor": {
+        "ledgerSizeBytesBeforeThisWrite": 28239,
+        "ledgerSha256BeforeThisWrite": "344d81b2470f6134f67c86a1de22ff973a1815c87dc1e4fae78cdc3e1e308dc3",
+        "entriesBeforeThisWrite": 9
+      },
+      "preservationFixEvidence": {
+        "generator": {
+          "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28_make_anchors.py",
+          "sizeBytes": 10913,
+          "sha256": "94a855665aaea252808703e381ce2cfbdb0917cffb536537b74dba737793fadb",
+          "measuredAt": "2026-09-16 22:22:54"
+        },
+        "fixScript": {
+          "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t54/t54_fix_preservation_union.py",
+          "sizeBytes": 4012,
+          "sha256": "915f989e8a3ca2998b27dcf619814d6348d9bbc30eaee9f8137fb28d788ee263",
+          "measuredAt": "2026-09-16 22:22:38"
+        },
+        "staticEvidence": {
+          "DO_NOT_TOUCH_PREFIXES_present": true,
+          "unionAccumulationComment_present": true,
+          "mirrorOf_assignment_present": true,
+          "ownerFixScriptStates": "the owner's own fix script states: preservedPeerNamespaces changed to UNION ACCUMULATION (does not drop sub-keys) - previously it collapsed 6~8 entries into 1"
+        },
+        "before": {
+          "measuredAt": "2026-09-16 22:24:15",
+          "preservedNamespaceEntries": 1,
+          "note": "measured from the shared file's preservedPeerNamespaces.setupArchitectFreezeAnchors.anchors"
+        },
+        "after": {
+          "status": "pending the owner's next regeneration - I asked for one regeneration so the before/after pair can be completed; the static evidence above plus the owner's own admission already establish that the OLD version dropped the sub-keys and the CURRENT version does not"
+        }
+      },
+      "artifacts": {
+        "acceptance-report.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/acceptance-report.json",
+          "sizeBytes": 65550,
+          "sha256": "a87a5e0c7bcf007b7d238d1328b2725e827e6cea9d89166173b534029ac387b2",
+          "measuredAt": "2026-09-16 22:55:34"
+        },
+        "gate-logs-t28/setupArchitect-anchors.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/setupArchitect-anchors.json",
+          "sizeBytes": 6902,
+          "sha256": "ebd5528baf58db56fb7cf349eece848c7080d646f6db131588ac2d726825679e",
+          "measuredAt": "2026-09-16 22:52:42"
+        },
+        "gate-logs-t28/t28-anchors.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28-anchors.json",
+          "sizeBytes": 11931,
+          "sha256": "32d956985742a6d6ed5da04f885f5a81c6c6c1c9e732cdfdf160990077f7ae87",
+          "measuredAt": "2026-09-16 22:24:15"
+        },
+        "setup-contract.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+          "sizeBytes": 377694,
+          "sha256": "18587b83307d47e0d6f287ee28e812b6c8f25781d2e449b293e45b50282b6d9f",
+          "measuredAt": "2026-09-16 22:10:11"
+        },
+        "implementation-payload-TM600-TM601.cpp": {
+          "path": "team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp",
+          "sizeBytes": 43806,
+          "sha256": "66abc088ae6bd5f9b9d7201673003fc0be2450fd6f1f222c6a4a902cbe4f0cc4",
+          "measuredAt": "2026-09-16 21:09:24"
+        },
+        "test-plan.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/test-plan.json",
+          "sizeBytes": 185689,
+          "sha256": "707ce845c5459b41b528059eab7f26b1a8e597e34daf8df40929346942a8ee69",
+          "measuredAt": "2026-09-16 21:54:50"
+        },
+        "review/correction-convention.md": {
+          "path": "team/artifacts/acceptance-20260916-dali10/review/correction-convention.md",
+          "sizeBytes": 2820,
+          "sha256": "0ec7d100e91d26a39b80cdcd175782079589af298e0eb16d072b2b717fcb4516",
+          "measuredAt": "2026-09-16 22:50:35"
+        },
+        "scripts/gate_baseline.json": {
+          "path": "scripts/gate_baseline.json",
+          "sizeBytes": 28,
+          "sha256": "021015da84e6fd4c54a595796e1bad73e18c57db94f856871d5667044302cb1d",
+          "measuredAt": "2026-09-13 22:45:34"
+        }
+      }
+    },
+    {
+      "snapshotIndex": 11,
+      "takenAt": "2026-09-16 23:00:55",
+      "kind": "full",
+      "reason": "t34 L48: rev-32 attribution caveat + append-only-ledger discipline line + recomputed build-report value (peer value re-measured instead of relayed)",
+      "contractRevision": 39,
+      "gateReadField": {
+        "where": "aliasResolution[bst2sw].resolution.closedRelayNumbers",
+        "value": [
+          48,
+          60,
+          61,
+          76
+        ],
+        "expectedForTM600": [
+          48,
+          60,
+          61,
+          76,
+          83
+        ]
+      },
+      "selfAnchor": {
+        "ledgerSizeBytesBeforeThisWrite": 33212,
+        "ledgerSha256BeforeThisWrite": "daae73727e6189097437ff852f1e48ff7fc970cd6cf1e26c66e83ef5441319e1",
+        "entriesBeforeThisWrite": 10
+      },
+      "artifacts": {
+        "acceptance-report.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/acceptance-report.json",
+          "sizeBytes": 66725,
+          "sha256": "c056ba85b7377dc6fb55e1a9a4e4574711e44b0692e6fda45788c2c08afd7f4f",
+          "measuredAt": "2026-09-16 23:00:55"
+        },
+        "gate-logs-t28/setupArchitect-anchors.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/setupArchitect-anchors.json",
+          "sizeBytes": 7324,
+          "sha256": "9759bb54c4523a6a430874ab2fff35580832fc776b6424374a1bab99565c3131",
+          "measuredAt": "2026-09-16 23:00:55"
+        },
+        "build-report.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/build-report.json",
+          "sizeBytes": 27268,
+          "sha256": "ea90bb0c34620ba6cfb4f5c5e33eccdaef6024815704cbb2eeb7d8ab7b7846f7",
+          "measuredAt": "2026-09-16 22:50:36"
+        },
+        "setup-contract.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+          "sizeBytes": 377694,
+          "sha256": "18587b83307d47e0d6f287ee28e812b6c8f25781d2e449b293e45b50282b6d9f",
+          "measuredAt": "2026-09-16 22:10:11"
+        },
+        "implementation-payload-TM600-TM601.cpp": {
+          "path": "team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp",
+          "sizeBytes": 43806,
+          "sha256": "66abc088ae6bd5f9b9d7201673003fc0be2450fd6f1f222c6a4a902cbe4f0cc4",
+          "measuredAt": "2026-09-16 21:09:24"
+        },
+        "test-plan.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/test-plan.json",
+          "sizeBytes": 185689,
+          "sha256": "707ce845c5459b41b528059eab7f26b1a8e597e34daf8df40929346942a8ee69",
+          "measuredAt": "2026-09-16 21:54:50"
+        },
+        "scripts/gate_baseline.json": {
+          "path": "scripts/gate_baseline.json",
+          "sizeBytes": 28,
+          "sha256": "021015da84e6fd4c54a595796e1bad73e18c57db94f856871d5667044302cb1d",
+          "measuredAt": "2026-09-13 22:45:34"
+        }
+      }
+    },
+    {
+      "snapshotIndex": 12,
+      "takenAt": "2026-09-16 23:02:56",
+      "kind": "full",
+      "reason": "reviewer round: pointer automation note; generator-version annotation; BEFORE/AFTER namespace counts measured on the FIXED generator; ledger self-proof (their point: append-only is still a promise, not a mechanism)",
+      "contractRevision": 39,
+      "gateReadField": {
+        "where": "aliasResolution[bst2sw].resolution.closedRelayNumbers",
+        "value": [
+          48,
+          60,
+          61,
+          76
+        ],
+        "expectedForTM600": [
+          48,
+          60,
+          61,
+          76,
+          83
+        ]
+      },
+      "selfAnchor": {
+        "ledgerSizeBytesBeforeThisWrite": 36218,
+        "ledgerSha256BeforeThisWrite": "1d6ed10abe704ea8a2e76ee89de78bab3362425436028af66b2450dedf36e8e0",
+        "entriesBeforeThisWrite": 11
+      },
+      "namespaceCounts": {
+        "before": {
+          "measuredAt": "2026-09-16 22:24:15",
+          "entries": 1
+        },
+        "after": {
+          "measuredAt": "2026-09-16 22:58:53",
+          "entries": 1,
+          "sharedFileSizeBytes": 11941,
+          "sharedFileSha256": "38ba37b268e328158cddca660ab1b514d4c0dfcef6e2cd5be3c6e1e296a52874"
+        },
+        "interpretation": "BEFORE and AFTER are both on the FIXED generator (see generatorVersionAnnotation); equality shows preservation of what exists, not restoration of what was lost"
+      },
+      "generatorVersionAnnotation": "BEFORE=1 was measured at 2026-09-16 22:24:15. Measured facts about versions: the union-accumulation fix script has mtime 2026-09-16 22:22:38 and the generator t28_make_anchors.py has mtime 2026-09-16 22:22:54, i.e. BOTH PREDATE that measurement - so BEFORE=1 was already produced by the FIXED generator. AFTER is measured on the same fixed generator after its 22:58:53 regeneration. Consequence: a BEFORE==AFTER==1 result here shows that the fix preserves what exists but does not restore previously lost entries; it is NOT evidence about the pre-fix generator, whose output was never snapshotted.",
+      "artifacts": {
+        "acceptance-report.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/acceptance-report.json",
+          "sizeBytes": 66725,
+          "sha256": "c056ba85b7377dc6fb55e1a9a4e4574711e44b0692e6fda45788c2c08afd7f4f",
+          "measuredAt": "2026-09-16 23:00:55"
+        },
+        "t34-carrier-pointer.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/t34-carrier-pointer.json",
+          "sizeBytes": 1517,
+          "sha256": "f2b6760b0958726b2370c04301fc5d41d2feb75e9eedba7c41fddaf25a1ae64d",
+          "measuredAt": "2026-09-16 23:02:33"
+        },
+        "t34-CARRIER-PATH.md": {
+          "path": "team/artifacts/acceptance-20260916-dali10/t34-CARRIER-PATH.md",
+          "sizeBytes": 649,
+          "sha256": "b06dfe70a9366abce8ef2da13d9fbc85713b78e1e48fc2dc33e141086953a762",
+          "measuredAt": "2026-09-16 22:43:13"
+        },
+        "PATH-MAP.md": {
+          "path": "team/artifacts/acceptance-20260916-dali10/PATH-MAP.md",
+          "sizeBytes": 2388,
+          "sha256": "6c971cff065e09aeb043058159d86265253bcf13bbd21f61b5b675f3b91cf1ee",
+          "measuredAt": "2026-09-16 22:59:08"
+        },
+        "gate-logs-t28/setupArchitect-anchors.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/setupArchitect-anchors.json",
+          "sizeBytes": 7324,
+          "sha256": "9759bb54c4523a6a430874ab2fff35580832fc776b6424374a1bab99565c3131",
+          "measuredAt": "2026-09-16 23:00:55"
+        },
+        "gate-logs-t28/t28-anchors.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28-anchors.json",
+          "sizeBytes": 11941,
+          "sha256": "38ba37b268e328158cddca660ab1b514d4c0dfcef6e2cd5be3c6e1e296a52874",
+          "measuredAt": "2026-09-16 22:58:53"
+        },
+        "gate-logs-t28/t28_make_anchors.py": {
+          "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28_make_anchors.py",
+          "sizeBytes": 10913,
+          "sha256": "94a855665aaea252808703e381ce2cfbdb0917cffb536537b74dba737793fadb",
+          "measuredAt": "2026-09-16 22:22:54"
+        },
+        "gate-logs-t54/t54_fix_preservation_union.py": {
+          "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t54/t54_fix_preservation_union.py",
+          "sizeBytes": 4012,
+          "sha256": "915f989e8a3ca2998b27dcf619814d6348d9bbc30eaee9f8137fb28d788ee263",
+          "measuredAt": "2026-09-16 22:22:38"
+        },
+        "setup-contract.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+          "sizeBytes": 377694,
+          "sha256": "18587b83307d47e0d6f287ee28e812b6c8f25781d2e449b293e45b50282b6d9f",
+          "measuredAt": "2026-09-16 22:10:11"
+        },
+        "implementation-payload-TM600-TM601.cpp": {
+          "path": "team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp",
+          "sizeBytes": 43806,
+          "sha256": "66abc088ae6bd5f9b9d7201673003fc0be2450fd6f1f222c6a4a902cbe4f0cc4",
+          "measuredAt": "2026-09-16 21:09:24"
+        },
+        "scripts/gate_baseline.json": {
+          "path": "scripts/gate_baseline.json",
+          "sizeBytes": 28,
+          "sha256": "021015da84e6fd4c54a595796e1bad73e18c57db94f856871d5667044302cb1d",
+          "measuredAt": "2026-09-13 22:45:34"
+        }
+      },
+      "ledgerSelfProof": {
+        "rule": "Each entry records the ledger sha256 BEFORE its write, the canonical JSON hash of the entry, and (from this entry on) the ledger sha256 AFTER its write. An auditor can verify an entry's content by recomputing its canonical hash and can detect a rewrite of history, because editing any earlier entry changes that entry's canonical hash. Limitation stated honestly: the pre-write hashes of earlier entries cannot be recomputed retrospectively, since the ledger's earlier serializations were not captured - which is exactly why the rule starts here.",
+        "entryCanonicalSha256": "134fe66aac3042787704ef80e52aac523f2450eabf44543bf9ccc284d003ac7c",
+        "ledgerSha256AfterThisWrite": "1bab63058d8b3f6cc63eaa919227d3a8e8937b2d9e13bcd807f8e92d13fa4d1e"
+      }
+    }
+  ],
+  "schema": {
+    "requiredPerEntry": [
+      "snapshotIndex",
+      "takenAt",
+      "kind",
+      "reason",
+      "contractRevision",
+      "artifacts"
+    ],
+    "kindEnum": [
+      "full",
+      "tick"
+    ],
+    "rule": "An entry whose value set was not recorded must say so: kind='tick' and artifactsAbsentReason. 'A record that carries no values' and 'no record' must remain distinguishable after the fact. Entries 2-5 were written before this schema was declared and are classified in the appended entry below; their bytes cannot be back-filled, which is exactly why the schema is now explicit.",
+    "selfRecord": "each entry records the ledger's OWN sizeBytes/sha256 as measured immediately before that write, so 'when was the ledger appended to' is itself recomputable"
+  }
+}

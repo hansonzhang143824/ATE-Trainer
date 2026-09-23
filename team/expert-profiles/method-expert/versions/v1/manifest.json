@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "profileId": "method-expert",
+  "version": "v1",
+  "publishedAt": "2026-09-20T14:28:14.054759Z",
+  "executionClass": "method-standard",
+  "evaluation": {
+    "verdict": "pass",
+    "failed": [],
+    "caseCount": 1,
+    "checks": [
+      {
+        "id": "assets",
+        "ok": true,
+        "detail": "all required assets present"
+      },
+      {
+        "id": "profile_metadata",
+        "ok": true,
+        "detail": "profile.yaml parsed and identified"
+      },
+      {
+        "id": "execution_class_registered",
+        "ok": true,
+        "detail": "executionClass 'method-standard' is registered in the plugin policy registry"
+      },
+      {
+        "id": "execution_class_matches_profile_map",
+        "ok": true,
+        "detail": "plugin maps method-expert to 'method-standard'"
+      },
+      {
+        "id": "declared_readable",
+        "ok": true,
+        "detail": "readable: ['<run>/strategy']"
+      },
+      {
+        "id": "declared_writable",
+        "ok": true,
+        "detail": "writable: ['<run>/method']"
+      },
+      {
+        "id": "declared_requiredGates",
+        "ok": true,
+        "detail": "requiredGates: ['scripts/validate_method_contract.py']"
+      },
+      {
+        "id": "readable_has_no_retired_artifact",
+        "ok": true,
+        "detail": "readable declares no retired artifact"
+      },
+      {
+        "id": "output_contract",
+        "ok": true,
+        "detail": "object schema with required=['tm', 'measurementPlan', 'testConditions', 'trimPlan']"
+      },
+      {
+        "id": "case_index_matches_disk",
+        "ok": true,
+        "detail": "index ['TM106'] vs cases/ ['TM106']"
+      },
+      {
+        "id": "case_TM106",
+        "ok": true,
+        "detail": "case is complete and inside the allowed read scope"
+      },
+      {
+        "id": "preset_agreement",
+        "ok": true,
+        "detail": "preset.yml name matches displayName 'PTC Method Expert'"
+      },
+      {
+        "id": "boundary_regression",
+        "ok": true,
+        "detail": "plugin boundary suite passed"
+      }
+    ]
+  },
+  "files": {
+    "CHANGELOG.md": "b146546b8301a5ecd7d3e8f473aeb7755194172b658d577c9c1d4da92eba6227",
+    "cases/TM106/expected.json": "ba8107401a75c245f55cef5782e6cb6796d1546952355c2b444a9a5d14de64cd",
+    "evaluation/expected-results.json": "7ce09cb7869c88683a7973e3a0234e461c6fdc9064fd8439796382daf20e0f34",
+    "instructions.md": "86ff715f2dae8de5a18bd0859af563a999dfa31165844ef916708c1feb4c9282",
+    "output-contract.schema.json": "3852e4eabf0efe2c42319a6856c03178228f2754dfc8d4bb648ce6a37ffe7270",
+    "profile.yaml": "0c78275b8ec5e548fa2ab6eb37b35b536885110673f8157cd03ec1877ed61f28",
+    "status.json": "a23f5d83fbc2a025cd9319720d7790a9f0f9f066b10e1cd28c27169be1a46023"
+  },
+  "digest": "90853aad1f868503469757d4b5b7e02167a29d93ad5d0ed89f31f6aea01325e7"
+}

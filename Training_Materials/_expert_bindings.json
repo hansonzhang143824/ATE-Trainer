@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 2,
+  "purpose": "Training folder system + expert binding. Training_Materials/ is the training-mode root; a new delivery project copies this whole structure as Project_Name/ (same layout, one root per project).",
+  "root": "Training_Materials",
+  "modes": {
+    "training": {
+      "root": "Training_Materials",
+      "label": "训练态（Training_Materials）"
+    },
+    "delivery": {
+      "root": "project/DALI",
+      "label": "交付态（project/DALI，当前项目）"
+    }
+  },
+  "activeMode": "training",
+  "naming": "displayName 是面板/文档统一使用的名字（如 Method_Expert）；profileId 是系统派发与 profile.yaml 目录的真实角色 ID，仅供内部路由。",
+  "inputs": {
+    "location": "Training_Materials/Input_GlobalMaterial",
+    "documents": [
+      {
+        "file": "Dali-SCH.csv",
+        "type": "schematic"
+      },
+      {
+        "file": "Dali_testmode.xlsx",
+        "type": "dft"
+      },
+      {
+        "file": "CBIT表-DALI.xlsx",
+        "type": "cbit"
+      }
+    ]
+  },
+  "experts": [
+    {
+      "displayName": "DFT_Expert",
+      "profileId": "ptc-dft-expert",
+      "stage": "INPUT_SYNC",
+      "reads": "Training_Materials/Input_GlobalMaterial",
+      "writes": "Training_Materials/Output_Global_Material/dft",
+      "verification": "Training_Materials/Output_Global_Material/verification",
+      "note": "解析校验产物写 Output_Global_Material/verification/，文件名前缀 dft-*；Setup_Expert_Output 用途待定，未来哈希校验结果可落此。"
+    },
+    {
+      "displayName": "Schematic_Expert",
+      "profileId": "ptc-schematic-expert",
+      "stage": "INPUT_SYNC",
+      "reads": "Training_Materials/Input_GlobalMaterial",
+      "writes": "Training_Materials/Output_Global_Material/schematic",
+      "verification": "Training_Materials/Output_Global_Material/verification"
+    },
+    {
+      "displayName": "Strategic_Expert",
+      "profileId": "strategy-expert",
+      "stage": "STRATEGY",
+      "reads": "Training_Materials/Output_Global_Material",
+      "writes": "Training_Materials/Strategic_Expert_Output",
+      "verification": "Training_Materials/Strategic_Expert_Output/verification"
+    },
+    {
+      "displayName": "Method_Expert",
+      "profileId": "method-expert",
+      "stage": "METHOD",
+      "reads": "Training_Materials/Strategic_Expert_Output",
+      "writes": "Training_Materials/Method_Expert_Output",
+      "verification": "Training_Materials/Method_Expert_Output/verification"
+    },
+    {
+      "displayName": "Review_Expert",
+      "profileId": "rule-reviewer",
+      "stage": "RULE_REVIEW_METHOD + RULE_REVIEW_IMPLEMENTATION",
+      "reads": "Training_Materials/Method_Expert_Output | Training_Materials/Implement_Expert_Output",
+      "writes": "Training_Materials/Review_Expert_Output",
+      "verification": "Training_Materials/Review_Expert_Output/verification",
+      "note": "方法评审与实现评审产物都放本文件夹；建议文件名前缀区分（method-* / implementation-*）。"
+    },
+    {
+      "displayName": "Implement_Expert",
+      "profileId": "ate-implementer",
+      "stage": "IMPLEMENTATION",
+      "reads": "Training_Materials/Method_Expert_Output",
+      "writes": "Training_Materials/Implement_Expert_Output",
+      "verification": "Training_Materials/Implement_Expert_Output/verification"
+    },
+    {
+      "displayName": "Compile_Expert",
+      "profileId": "compile-diagnostician",
+      "stage": "COMPILE",
+      "reads": "Training_Materials/Implement_Expert_Output",
+      "writes": "Training_Materials/Compile_Expert_Output",
+      "verification": "Training_Materials/Compile_Expert_Output/verification"
+    },
+    {
+      "displayName": "Captain",
+      "profileId": "captain",
+      "stage": "batch orchestration",
+      "reads": "team/ptc/.captain-project-cache.json",
+      "writes": "Training_Materials/Captain_Check_Output",
+      "note": "Captain 批次检查/终检产物。"
+    }
+  ],
+  "conventions": {
+    "trainingMode": "单任务平铺：专家产物直接写自己的 *_Expert_Output 根目录。",
+    "deliveryMode": "交付批次按 TM 分子目录：<Expert_Output>/<TM号>/，避免同阶段多 TM 互相覆盖；新项目根目录为 project/<Project_Name>/，结构与本模板一致。",
+    "verification": "校验结果写在各专家产物文件夹内与产物平级的 verification/ 子目录；解析阶段（DFT_Expert/Schematic_Expert）统一写 Output_Global_Material/verification/，文件名前缀区分（dft-* / schematic-*）。",
+    "parseRules": "批准的解析规则文件：User_input/DFT解析规则.txt（DFT 字段/单位/上电/寄存器/测量语义与处理方法）。",
+    "errorLog": "Training_Materials/ErrorLog"
+  },
+  "history": {
+    "createdAt": "2026-09-21",
+    "source": "Input_GlobalMaterial 与 Output_Global_Material 由 project/DALI 复制而来（训练快照，DALI 交付链路原位不动）。",
+    "2026-09-21-rename": "专家显示名统一为 *_Expert 风格（Method_Expert 等），profileId 保留系统真实角色 ID 供派发路由。"
+  }
+}

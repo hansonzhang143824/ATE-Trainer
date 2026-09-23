@@ -1,0 +1,19 @@
+=== ① anchors 生成器：stdout UTF-8 安全 ===
+  已加入 reconfigure → 12440 B
+  语法 OK
+
+=== ② 报告：记入其"第三方独立复现" ===
+  已记入 thirdPartyReproduction → 45379 B
+  语法 OK
+  run1 末行: RECEIPT-HISTORY D:\Newtest\DSH\ATE-Coding-Plat\team\artifact
+  run2 末行: RECEIPT-HISTORY D:\Newtest\DSH\ATE-Coding-Plat\team\artifact
+
+=== 自证 ===
+  报告含 thirdPartyReproduction = True
+  报告 35743 B ; verdict=blocked
+
+=== ③ 用 --in/--out 验证"零改动复跑"（不触碰活档）===
+  exit=0 ; stderr 长度=0（应为 0 ⇒ UTF-8 安全生效）
+  qaProbeAnchors = 3 条（应 3）
+  setupArchitectFreezeAnchors 在 = True
+  活档 sha 前后一致 ✓（6edfc659e930d5bdc5dd）

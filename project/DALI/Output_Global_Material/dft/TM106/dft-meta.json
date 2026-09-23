@@ -1,0 +1,106 @@
+{
+  "tm": "TM106",
+  "sourceSha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+  "sourceLocation": {
+    "sheet": "OVERVIEW",
+    "row": 10
+  },
+  "rawIntent": {
+    "Item": "TM106",
+    "Level": "HSKP",
+    "Name": "VBUS_PRST",
+    "Description": "VBUS PRST COMP threshold",
+    "ExpectValue": "rising vth 3.9V, hys 0.2V",
+    "Unit": "V",
+    "Test": "",
+    "Special": "",
+    "Purpose": "SCM",
+    "Trim": "",
+    "Notes": "ramp up/down vbus from 3~5V,\nmux A2D_VBUS_PRST to dtest0\ncheck int pin toggle",
+    "Code1": "vset[vbat,3,100e-6,0]",
+    "Code2": "en_tm[]\nfield[(DMUX_EN,1),(DMUX_SEL,19)]\nvset[vbus,3,100e-6,1]\nvset[vbus,5,1e-3,0]\nvset[vbus,3,1e-3,0]",
+    "Code3": "delay[1e-3]\nfinish[]",
+    "Power": "VBAT",
+    "Dynamic": "VBUS",
+    "Check": "V(DTEST0)",
+    "isCodeGen": "Y",
+    "isRun": "",
+    "Assign": "",
+    "State \nAMS\nValidation": "Done",
+    "State\nBench Validation": "",
+    "is CP test?": "",
+    "CP comment": "",
+    "State\nATE Validation": "",
+    "HELPER": "ramp VBUS, INT toggle",
+    "de test": "r 3.798\nf 3.613",
+    "aetest": "",
+    "is test": "checked"
+  },
+  "testCondition": {
+    "identity": "VBUS_PRST",
+    "isTrim": false,
+    "powerSequence": [
+      {
+        "cmd": "vset",
+        "pin": "vbat",
+        "value": 3,
+        "pluseTime": "100e-6",
+        "status": 0
+      },
+      {
+        "cmd": "vset",
+        "pin": "vbus",
+        "value": 3,
+        "pluseTime": "100e-6",
+        "status": 1
+      },
+      {
+        "cmd": "vset",
+        "pin": "vbus",
+        "value": 5,
+        "pluseTime": "1e-3",
+        "status": 0,
+        "rampFrom": 3
+      },
+      {
+        "cmd": "vset",
+        "pin": "vbus",
+        "value": 3,
+        "pluseTime": "1e-3",
+        "status": 0,
+        "rampFrom": 5
+      }
+    ],
+    "registerFieldIntent": [
+      {
+        "kind": "en_tm",
+        "raw": "en_tm[]"
+      },
+      {
+        "kind": "field",
+        "raw": "field[(DMUX_EN,1),(DMUX_SEL,19)]"
+      }
+    ],
+    "measurement": "V(DTEST0)",
+    "involvedPins": [
+      "vbat",
+      "vbus",
+      "DTEST0"
+    ],
+    "level": "HSKP",
+    "description": "VBUS PRST COMP threshold",
+    "expectedValue": "rising vth 3.9V, hys 0.2V",
+    "unit": "V",
+    "dynamic": "VBUS",
+    "helper": "ramp VBUS, INT toggle",
+    "deTest": "r 3.798\nf 3.613",
+    "notes": "ramp up/down vbus from 3~5V,\nmux A2D_VBUS_PRST to dtest0\ncheck int pin toggle"
+  },
+  "parseStatus": "selfResolved",
+  "openItems": [],
+  "sourceWorkbook": "Input_GlobalMaterial/Dali_testmode.xlsx",
+  "generatedBy": {
+    "profile": "ptc-dft-expert",
+    "stage": "INPUT_SYNC"
+  }
+}

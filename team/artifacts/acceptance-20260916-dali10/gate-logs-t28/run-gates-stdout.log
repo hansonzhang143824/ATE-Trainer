@@ -1,0 +1,18 @@
+基线(存量红) 已加载: cbit
+================ run_gates 汇总 ================
+  id               门禁                       状态         exit  秒
+  material-audit   材料门 规则自检                 GREEN      0     0.58
+  material         材料门 主门                   GREEN      0     0.29
+  material-status  材料状态索引 漂移                GREEN      0     0.78
+  awg              AWG/Toggle 3参数 E005      GREEN      0     0.53
+  meta             meta 全覆盖门                GREEN      0     1.96
+  smoke            单函数冒烟                    GREEN      0     0.38
+  input-sync       输入同步门                    GREEN      0     0.54
+  relay-trace      继电器反向检查 E                GREEN      0     0.76
+  merge            合并纪律                     GREEN      0     0.36
+  bst-sw           BST-SW 黄金约束              GREEN      0     0.60
+  cbit             CBIT 定义校验                KNOWN-RED  1     1.40
+  path-def         通路定义校验                   GREEN      0     0.55
+存量红（已知, 不阻塞）: cbit
+结论: 无新增红 —— 收尾通过（存量红 1 个）
+日志目录: team/artifacts/acceptance-20260916-dali10/gate-logs-t28

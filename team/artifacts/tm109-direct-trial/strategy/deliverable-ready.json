@@ -1,0 +1,27 @@
+{
+  "event": "deliverable_ready",
+  "fromRole": "test-strategy-architect",
+  "nextRole": "test-method-expert",
+  "taskId": "TM109-STRATEGY-R1",
+  "tm": "TM109",
+  "projectId": "DALI",
+  "artifact": "team/artifacts/tm109-direct-trial/strategy/tm109-resource-config-contract.json",
+  "sha256": "a22502ece50f321312a466b77cfef5a40efe8f9a41995f7ee8af3b44048107e2",
+  "verdict": "deliverable_ready",
+  "permittedNextAction": "Create the method contract using this resource/configuration contract. Do not alter source allocation, relay groups or register delta without returning a routed finding.",
+  "blockingItems": [],
+  "nonBlockingItems": [
+    "TM109-OI-2",
+    "TM109-OI-3",
+    "TM109-OI-4",
+    "TM109-OI-5",
+    "OI-S-01",
+    "OI-S-02",
+    "OI-S-04",
+    "OI-S-05",
+    "OI-S-06",
+    "OI-S-07",
+    "OI-S-08",
+    "OI-S-09"
+  ]
+}

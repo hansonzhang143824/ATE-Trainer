@@ -1,0 +1,24 @@
+=== ① 文件真实行尾 ===
+  CRLF 次数 = 54 ｜ 孤立 LF = 0
+
+=== ② 四种口径实测（复现其过程）===
+  split 原样（保留 \r）          ⇒ 不匹配 = 53 / 53
+  去掉尾部 \r                  ⇒ 不匹配 = 0 / 53
+  去掉尾部 \r\n                ⇒ 不匹配 = 0 / 53
+  行尾加 \n                   ⇒ 不匹配 = 53 / 53
+  行尾加 \r\n                 ⇒ 不匹配 = 53 / 53
+
+=== ③ 我方生成器实际写的口径 ===
+  生成器代码： "件（schematic-expert ③）\n# 字段定义（务必区分）：\n#   prevLineSha256    = 上一行**原始行字节**的 sha256 —— **链用的就是它**\n#   ledger_self_sha256= 本行**语义摘要**的 sha256 —— **不是链用的那个**（用错会得错结论）\n_line['p"
+
+=== ④ 把定义改成**可执行式**（meta + 生成器注释）===
+  meta 已改 → 1729 B
+  生成器已改 → 50102 B
+
+=== ⑤ 规则入册 ===
+  已并入 → 57303 B
+  run1: RECEIPT D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260
+  run2: RECEIPT D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260
+
+改后链校验（去 CRLF 口径）：不匹配 = 0 / 53
+登记 = 57303 B ｜ 标题 45 ｜ 唯一 45 ｜ 重复 无

@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm103-method-self-check",
+  "taskId": "TM103-PTC-METHOD",
+  "trial": "tm103-ptc",
+  "tm": "TM103",
+  "role": "test-method-expert",
+  "stage": "METHOD",
+  "generatedAt": "2026-09-18T03:07:39.553Z",
+  "contract": "team/artifacts/tm103-ptc/method/tm103-test-method-contract.json",
+  "contractSha256": "210d6058f99287ee22e89ca7d8accbd597d08b102f5b8cca622b6686f879a79a",
+  "outputAbi": {
+    "filesWritten": [
+      "team/artifacts/tm103-ptc/method/tm103-test-method-contract.json",
+      "team/artifacts/tm103-ptc/method/deliverable-ready.json",
+      "team/artifacts/tm103-ptc/method/self-check.json"
+    ],
+    "handoffFields": {
+      "event": "deliverable_ready",
+      "status": "success",
+      "stage": "METHOD",
+      "verdict": "deliverable_ready",
+      "sha256BindsContract": true
+    },
+    "abiSource": "team/ptc/OUTPUT_CONTRACTS.md (METHOD section) and team/roles/test-method-expert.md"
+  },
+  "inputAcceptance": [
+    {
+      "check": "strategy handoff declares event=deliverable_ready, status=success, stage=STRATEGY, verdict=deliverable_ready, nextRole=test-method-expert",
+      "result": "PASS"
+    },
+    {
+      "check": "strategy contract byte SHA-256 equals the handoff claim",
+      "result": "PASS",
+      "actual": "92eb967dcc96807010c811e4c4d46ddc205ec2d1dd467dcd8d238bb249c6954a",
+      "expected": "92eb967dcc96807010c811e4c4d46ddc205ec2d1dd467dcd8d238bb249c6954a"
+    },
+    {
+      "check": "strategy contract verdict is deliverable_ready and resourceSummary.sourceTablesUnresolved is false",
+      "result": "PASS"
+    },
+    {
+      "check": "all runner-listed inputs read (strategy contract, strategy handoff, input-manifest, dft-meta, dft-conditions)",
+      "result": "PASS"
+    }
+  ],
+  "boundaryChecks": [
+    {
+      "check": "no source re-allocated: only VBAT_PD3_FXVI (S3_5) and VDM_SDA_ACM (S5_7) appear, both quoted from the signed resourceAllocation",
+      "result": "PASS"
+    },
+    {
+      "check": "no relay added or removed: the only commanded closure is the signed setOnClosure {13 / K13_VBAT_Cap} in one exclusive SetOn; no second SetOn or SetOff is issued",
+      "result": "PASS"
+    },
+    {
+      "check": "no register value changed: 0x57=0x02 and 0x5E=0x04 are quoted verbatim; this stage decides only their position in the sequence (after VBAT power-up, before the VDM stimulus)",
+      "result": "PASS"
+    },
+    {
+      "check": "resolved intent decision not re-opened: VBAT 4.0 V, VDM 1 V forced/measured, monitor VDM, AMUX remains a declared non-endpoint and is not driven or measured",
+      "result": "PASS"
+    },
+    {
+      "check": "DFT.csv legacy row not used as authority (VBAT 4.2 V, vset[amux,...], 0x56=0x22, Check=AMUX appear nowhere as a stimulus, route or register)",
+      "result": "PASS"
+    }
+  ],
+  "methodCompleteness": [
+    {
+      "check": "power sequencing present with per-phase prerequisites, commands, delays and exit conditions",
+      "result": "PASS",
+      "detail": "methodPhases PH-01..PH-08"
+    },
+    {
+      "check": "phase state table with actual node voltages",
+      "result": "PASS",
+      "detail": "phaseStateTable.referenceNode + per-phase actualNodeVoltages for VBAT, VDM and AGND"
+    },
+    {
+      "check": "measurement procedure and calculation present",
+      "result": "PASS",
+      "detail": "measurementPlan + logPlan: MeasureVI(50, 5), GetMeasResult(site, MIRET) x 1e6 -> uA"
+    },
+    {
+      "check": "limits present and honest",
+      "result": "PASS",
+      "detail": "measurementPlan.limit is UNRESOLVED_NO_PROJECT_AUTHORITY with null bounds; no numeric tolerance or limit literal was invented anywhere in the contract"
+    },
+    {
+      "check": "power-down present with ordered actions and a safe end state",
+      "result": "PASS",
+      "detail": "powerDownPlan V1..V5 (ordinary three-step, reversed order), safeEndState, relay and register end states"
+    },
+    {
+      "check": "Log present",
+      "result": "PASS",
+      "detail": "logPlan with raw/calculated/judgement/unit/precision/context and the framework SetTestResult call"
+    },
+    {
+      "check": "Golden applicability stated",
+      "result": "PASS",
+      "detail": "goldenApplicability: TM130 partial (ATEST mux skeleton, different measured quantity); all other located Goldens unavailable with reasons"
+    }
+  ],
+  "differentialConstraintChecks": [
+    {
+      "check": "BST-SW 0 V <= BST_actual - SW_actual <= 5 V for every phase",
+      "result": "NOT_APPLICABLE_WITH_ENDPOINT_PROOF",
+      "detail": "endpoint set {VBAT, VDM}; no BST or SW pin, source table or route appears in the signed boundary"
+    },
+    {
+      "check": "floating-pair step rule (<=5 V per step, delay_us(200))",
+      "result": "NOT_APPLICABLE_WITH_RESOURCE_PROOF",
+      "detail": "no floating pair and no two-pin differential source is allocated"
+    },
+    {
+      "check": "each phase lists its differential evaluation",
+      "result": "PASS",
+      "detail": "every phase carries differentialChecks with either a bound or an explicit not-applicable reason plus the |VBAT - VDM| observation (4 V, 3 V, then 0 V, all inside the 5 V envelope)"
+    }
+  ],
+  "openItemHandling": [
+    {
+      "id": "OI-TM103-STR-01",
+      "action": "RESOLVED_BY_METHOD",
+      "evidenceCount": 5
+    },
+    {
+      "id": "OI-TM103-STR-02",
+      "action": "RESOLVED_BY_METHOD",
+      "evidenceCount": 5
+    },
+    {
+      "id": "OI-TM103-STR-03",
+      "action": "ACKNOWLEDGED, owner rule-reviewer, not re-opened",
+      "evidenceCount": 1
+    },
+    {
+      "id": "OI-TM103-MTH-01",
+      "action": "RAISED, non-blocking, bound to evidence (no authority exists for a numeric tolerance)",
+      "evidenceCount": 4
+    },
+    {
+      "id": "OI-TM103-MTH-02",
+      "action": "RAISED, non-blocking, bound to evidence (ramp token unit undefined; instrument default used)",
+      "evidenceCount": 5
+    },
+    {
+      "id": "OI-TM103-MTH-03",
+      "action": "CLOSED here (site scope)",
+      "evidenceCount": 3
+    }
+  ],
+  "readbackDecision": {
+    "check": "a relay-state readback was not made a code requirement",
+    "result": "PASS",
+    "detail": "cbit.GetCbiteStatus exists but the S34_CBIT13 / S36_CBIT24 byte-and-bit mapping is not published in any runner-listed input, so commanded relay state plus the measurable electrical observations are recorded instead (role contract rule)"
+  },
+  "gate": {
+    "command": "python scripts/ate_ptc_runner.py --tm TM103 --trial-dir team/artifacts/tm103-ptc --command next",
+    "result": "PASS",
+    "observedState": "RULE_REVIEW_METHOD",
+    "observedDispatch": "rule-reviewer",
+    "observedReason": "strategy and method contracts require independent rule review",
+    "exitCode": 0,
+    "expectedState": "RULE_REVIEW_METHOD"
+  },
+  "blocking": {
+    "state": "NONE",
+    "statement": "No blocking condition: every open item is non-blocking and bound to evidence; no input is missing, unreadable or hash-mismatched."
+  }
+}

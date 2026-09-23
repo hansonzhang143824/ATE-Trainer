@@ -1,0 +1,17 @@
+=== (a) 给生成器加 --out 输出重定向 ===
+  已加入 --out → 12016 B
+  语法 OK
+
+=== (b) 沙箱重跑实验 + 跑后断言 ===
+  输入副本注入 3 条（第三方前缀 qaProbeAnchors）
+  跑生成器(--out) exit=0
+    [out-redirect] 输出目标 = D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10\gate-logs-t28\t28-anchors.json.sandbox-out
+    WROTE D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10\gate-logs-t28\t28-anchors.json.sandbox-out (11261 B / d3ea98b7943952f898e8585df66ff550c36b6ccdb3f11af960e9f5b4a1a1967a)
+  **输出写到沙箱**：t28-anchors.json.sandbox-out 存在=True
+  qaProbeAnchors.anchors = 0 条（应 3）
+  setupArchitectFreezeAnchors 在 = False
+
+=== (b) 跑后断言（固定动作）===
+  活档 sha 实验前 = 6edfc659e930d5bdc5ddfcd229c814af
+  活档 sha 实验后 = 6edfc659e930d5bdc5ddfcd229c814af
+  **assert 通过：活档未被改变** ✓

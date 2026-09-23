@@ -1,0 +1,233 @@
+{
+  "schemaVersion": 1,
+  "tm": "TM108",
+  "verdict": "PASS",
+  "reviewer": "dft-expert (PTC label: PTC dft expert [TM108])",
+  "reviewedAtUtc": "2026-09-22T08:45:59.303Z",
+  "batchId": "dali-20260922-155636-tm108",
+  "sourceSha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+  "readSources": [
+    {
+      "path": "project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx",
+      "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "withinInputRoot": true
+    }
+  ],
+  "reviewedArtifacts": [
+    {
+      "path": "project/DALI/Output_Global_Material/dft/TM108/dft-meta.json",
+      "sha256": "0dee4fa0759e25664dc25f5ab10bd98a2853dd6b009ceeaafe297ae74b7e048e"
+    },
+    {
+      "path": "project/DALI/Output_Global_Material/dft/TM108/dft-conditions.yaml",
+      "sha256": "709da49b538b1447afd9a83214555a2cef2afa1ae4e57730b0a3d360fa515426"
+    }
+  ],
+  "scriptPrintedHashes": {
+    "refreshMetaSha256": "d9ebf5886c23e650d7b5363f72efe69d8dc5869014e3367286f5102f547e9ceb",
+    "renderOutputSha256": "19852fcef05c474f683eba92e46b6ce817ffc830cc1a06ee5114d913cae4461c",
+    "note": "byte hashes printed by the whitelisted scripts before the gate-required schema enrichment; superseded by reviewedArtifacts (final artifact bytes)"
+  },
+  "supersedes": {
+    "staleReviewBatchId": "dali-20260922-152339-tm108",
+    "reason": "dead-batch leftovers; artifacts regenerated and enriched in this session, bindings above are authoritative"
+  },
+  "semanticChecks": [
+    {
+      "field": "identity",
+      "expected": "VAC1_PRST (Name)",
+      "actual": "VAC1_PRST",
+      "match": true
+    },
+    {
+      "field": "isTrim",
+      "expected": false,
+      "actual": false,
+      "match": true,
+      "note": "Trim cell empty"
+    },
+    {
+      "field": "powerSequence",
+      "expected": "vset[vbat,3,100e-6,0]; vset[vac1,10,1e-3,0]; vset[vac1,0,1e-3,0] (Code1+Code2 verbatim)",
+      "actual": "[{cmd:vset,pin:vbat,value:3,pluseTime:100e-6,status:0},{cmd:vset,pin:vac1,value:10,pluseTime:1e-3,status:0},{cmd:vset,pin:vac1,value:0,pluseTime:1e-3,status:0}]",
+      "match": true
+    },
+    {
+      "field": "registerFieldIntent",
+      "expected": "en_tm[] + field[(DMUX_EN,1),(DMUX_SEL,22)] (verbatim Code2 tokens)",
+      "actual": "[{kind:en_tm,raw:en_tm[]},{kind:field,raw:field[(DMUX_EN,1),(DMUX_SEL,22)]}]",
+      "match": true
+    },
+    {
+      "field": "measurement",
+      "expected": "V(DTEST0) (Check column verbatim)",
+      "actual": "V(DTEST0)",
+      "match": true,
+      "note": "int-pin toggle intent from Notes kept in rawIntent; no numbers invented"
+    },
+    {
+      "field": "involvedPins",
+      "expected": "pin names appearing in source: VBAT (Power), VAC1 (Dynamic), DTEST0 (Check), A2D_VAC1_PRST (Notes mux)",
+      "actual": [
+        "VBAT",
+        "VAC1",
+        "DTEST0",
+        "A2D_VAC1_PRST"
+      ],
+      "match": true
+    },
+    {
+      "field": "sourceLocation",
+      "expected": "OVERVIEW row 11",
+      "actual": {
+        "sheet": "OVERVIEW",
+        "row": 11
+      },
+      "match": true
+    },
+    {
+      "field": "parseStatus/openItems",
+      "expected": "ok / []",
+      "actual": "ok / []",
+      "match": true
+    },
+    {
+      "field": "rawIntent coverage",
+      "expected": "19/19 non-empty OVERVIEW TM108 cells verbatim",
+      "actual": "Item, Level, Name, Description, ExpectValue, Unit, Purpose, Notes, Code1, Code2, Code3, Power, Dynamic, Check, isCodeGen, State AMS Validation(Done), HELPER, de test, is test — all verbatim",
+      "match": true
+    },
+    {
+      "field": "source binding",
+      "expected": "artifacts bound to verified workbook plaintext hash with Input_GlobalMaterial provenance",
+      "actual": "meta.sourceSha256 == yaml.sourceSha256 == review.sourceSha256 == 896770d2...c04b; canonicalInput under project/DALI/Input_GlobalMaterial (insideInputRoot=true); review.readSources.withinInputRoot=true",
+      "match": true
+    },
+    {
+      "field": "direct power-on semantics",
+      "expected": "vset[...,100e-6,...] means direct power-on",
+      "actual": "parsedVsetCommands[0] (vbat 3V/100e-6) powerOnDirect=true; it is the sole direct power action",
+      "match": true
+    },
+    {
+      "field": "yaml structure",
+      "expected": "tm line, sourceSha256 line, exact 'testCondition:' block with key set equal to meta.testCondition",
+      "actual": "all present; 6-key set equal, values aligned",
+      "match": true
+    }
+  ],
+  "schemaEnrichment": {
+    "reason": "validate_dft_outputs.py first run returned status=stale: 'DFT JSON/YAML lacks the required source coverage or condition fields' and review 'not bound to the canonical input plaintext hash inside Input_GlobalMaterial'",
+    "addedFields": [
+      "meta root: parseStatus=ok (openItems already [])",
+      "testCondition.powerSequence entries: pluseTime (copied from args[1]), status (documented derivation: vbat direct power-on=0, vac1 ramp run=1), rampFrom=10 on the second vac1 stage",
+      "testCondition.involvedPins: measuredPin=DTEST0 and all=[vbat, vac1, DTEST0] (declared vset pins + measured pin)",
+      "testCondition carried fields: level, description, unit, dynamic, helper, deTest (copied verbatim from rawIntent)",
+      "testCondition.sourceColumns: sanitized mirror of all 29 rawIntent columns (values copied programmatically, never retyped)",
+      "yaml root: parseStatus; yaml testCondition mirrors meta key-for-key",
+      "review: sourceSha256 + readSources binding structure",
+      "attempt 2: registerFieldIntent=[en_tm[], field[(DMUX_EN,1),(DMUX_SEL,22)]] (both tokens verbatim from Code2)",
+      "attempt 2: testCondition top-level carried-field superset (all rawIntent columns, camelCase)",
+      "attempt 2: identity.name, meta.sourceSheet=OVERVIEW"
+    ],
+    "valuesCopiedFrom": "rawIntent / parsedVsetCommands / existing testCondition fields",
+    "electricalValuesAltered": false,
+    "sourceTextChanged": false,
+    "pathsChanged": false,
+    "sourceHashChanged": false
+  },
+  "gateHistory": [
+    {
+      "attempt": 1,
+      "command": "python scripts/validate_dft_outputs.py --tm TM108",
+      "exitCode": 1,
+      "status": "stale",
+      "findings": [
+        "DFT JSON/YAML lacks the required source coverage or condition fields",
+        "dft-semantic-review.json: review is not bound to the canonical input plaintext hash inside Input_GlobalMaterial"
+      ]
+    },
+    {
+      "attempt": 2,
+      "command": "python scripts/validate_dft_outputs.py --tm TM108",
+      "exitCode": 1,
+      "status": "stale",
+      "findings": [
+        "DFT JSON/YAML lacks the required source coverage or condition fields"
+      ],
+      "resolution": "registerFieldIntent extended with en_tm[] (verbatim Code2 token); testCondition top-level carried fields extended to a superset of all rawIntent columns (item/name/expectValue/power/check/isCodeGen/purpose/trim/test/special/code1-3/aetest/assign/isRun/isTest/isCPTest/cpComment/state validations); identity.name and meta.sourceSheet added as supersets"
+    },
+    {
+      "attempt": 3,
+      "command": "python scripts/validate_dft_outputs.py --tm TM108",
+      "exitCode": 1,
+      "status": "stale",
+      "findings": [
+        "DFT JSON/YAML lacks the required source coverage or condition fields"
+      ],
+      "evidenceExhausted": [
+        "old dead-batch review v5 contract wording implemented item by item plus supersets (parseStatus, powerSequence pluseTime/status/rampFrom, involvedPins measuredPin+all, carried-field superset, registerFieldIntent with en_tm[], identity.name, sourceSheet)",
+        "project/DALI/Input_GlobalMaterial/DALI-special-information.json read (allowed reference): DTEST0 -> nQON digital_mux_pin; its useRule assigns recording to the STRATEGY contract, not the dft artifacts; no dft-output field requirement found in it",
+        "ErrorLog unreadable/unwritable (material boundary)",
+        "DALI-special-information.json and gate stdout contain no further required-field names"
+      ]
+    }
+  ],
+  "electricalCoherence": "PRST spec rising vth 4.4V with 0.35V hysteresis measured as V(DTEST0) int-toggle via mux (DMUX_EN=1, DMUX_SEL=22); Power VBAT matches vset[vbat,...] direct power-on; Dynamic VAC1 matches the vac1 drive/ramp; no electrical contradiction among Code columns, Check, Power, Dynamic.",
+  "unknownsMarked": [
+    "source-text nuance preserved verbatim: Notes/HELPER describe the ramp window as vac1 3~5V while Code2 vset drives 10V -> 0V; Code columns are authoritative for the drive sequence, both texts kept unaltered in rawIntent",
+    "helper commands en_tm[] / delay[] / finish[] carry no in-workbook definitions; intent (enter test mode / settle wait / end-of-test) is inference only, raw text preserved verbatim",
+    "de test 'r 4.059\\nf 3.738' implies measured hysteresis ~0.32V vs the 0.35V spec line; recorded as bench measurement data, not a source conflict; no value altered or 'corrected'"
+  ],
+  "deviations": [
+    {
+      "item": "cmd3 --expected-sha binding value",
+      "briefSaid": "pass the metaSha256 printed by step 2",
+      "observed": "renderer validates --expected-sha against the workbook plaintext SHA-256 (with metaSha256 it exited 1); rerun with the step-1 verified workbook baseline exited 0",
+      "resolution": "all cmd3 runs used 896770d2...c04b; no hash, path or source altered",
+      "impact": "none on verdict; brief annotation and script semantics disagree (Captain informed)"
+    },
+    {
+      "item": "artifact byte hashes vs script-printed hashes",
+      "briefSaid": "bind the metaSha256 / outputSha256 printed by steps 2 and 3",
+      "observed": "gate-required contract alignment changed artifact bytes; the final cmd3 re-render printed outputSha256=19852fce... identical to the first render because the renderer derives the yaml from the workbook, not from meta",
+      "resolution": "reviewedArtifacts bind the final byte hashes (0dee4fa0... / 709da49b...) computed over the exact written bytes; script prints preserved under scriptPrintedHashes",
+      "impact": "brief's literal binding target superseded by the authoritative contract's final-binding requirement"
+    },
+    {
+      "item": "testCondition supersets removed",
+      "briefSaid": "(contract) exactly the 6-field testCondition",
+      "observed": "attempts 1-3 had added carried-field supersets, nested identity/involvedPins/measurement objects, sourceColumns and yaml parseStatus",
+      "resolution": "replaced by the authoritative contract structures; all removed content remains verbatim in rawIntent and parsedVsetCommands; nothing retyped, no electrical value or source text changed",
+      "impact": "none"
+    }
+  ],
+  "openItems": [],
+  "deliveryStatus": "BLOCKED",
+  "gateStatus": {
+    "final": "PASS",
+    "command": "python scripts/validate_dft_outputs.py --tm TM108",
+    "passingRun": {
+      "attempt": 4,
+      "exitCode": 0,
+      "status": "ready",
+      "missingOrStaleOutputs": []
+    },
+    "note": "gate passed on the exact artifact bytes bound in reviewedArtifacts; a final re-run (attempt 5) verifies the state after this last review write"
+  },
+  "contractAlignment": {
+    "authority": "Captain-provided validate_dft_outputs.py field contract for dft/TM108 (source-code verified by Captain; specialist aligned artifacts without reading the script)",
+    "metaAligned": [
+      "tm=TM108; sourceSha256=896770d2...c04b (workbook plaintext hash)",
+      "rawIntent: 19/19 non-empty OVERVIEW row cells verbatim",
+      "testCondition 6-field contract: identity='VAC1_PRST' (string); isTrim=false (bool); powerSequence=[vset vbat 3/100e-6 status 0; vset vac1 10/1e-3 status 0; vset vac1 0/1e-3 status 0] (cmd/pin/value/pluseTime/status, no rampFrom); registerFieldIntent=[{kind:en_tm,raw:en_tm[]},{kind:field,raw:field[(DMUX_EN,1),(DMUX_SEL,22)]}]; measurement='V(DTEST0)' (string); involvedPins=['VBAT','VAC1','DTEST0','A2D_VAC1_PRST']",
+      "sourceLocation={sheet:'OVERVIEW',row:11}",
+      "parseStatus='ok'; openItems=[]"
+    ],
+    "yamlAligned": [
+      "tm line and sourceSha256 line present (script-emitted header)",
+      "testCondition block header exactly 'testCondition:'; block normalized to the Captain-sanctioned safe form (bare list headers, dash items as compact JSON without space after colons); key set equals meta.testCondition (6 keys), values aligned"
+    ],
+    "rendererBehaviorNote": "the render script re-derives the yaml from the workbook itself (its outputSha256 was byte-identical across runs and its testCondition is script-owned structure), so per the Captain's sequence the yaml testCondition block was hand-normalized to the contract form after re-rendering; meta was not touched afterwards"
+  }
+}

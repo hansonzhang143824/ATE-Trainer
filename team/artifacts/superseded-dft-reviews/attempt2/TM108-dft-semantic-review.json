@@ -1,0 +1,237 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "LLM semantic review",
+  "tm": "TM108",
+  "reviewPurpose": "Semantically verify that every field of the canonical OVERVIEW row for TM108 is covered by dft-meta.json and dft-conditions.yaml, and that each derived testCondition field is explained by a source locator.",
+  "rule": "Read the single OVERVIEW row of Dali_testmode.xlsx (plaintext sha256 896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b) and compare rawIntent with testCondition field by field. A source contradiction is preserved as an open item and reported, never resolved. No value may be inferred, no source substituted, no hash re-bound.",
+  "verdict": "PASS",
+  "readSources": [
+    {
+      "path": "project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx",
+      "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "hashMethod": "scripts/hash_ate_plaintext.py",
+      "withinInputRoot": true,
+      "sheet": "OVERVIEW"
+    }
+  ],
+  "reviewedArtifacts": [
+    {
+      "path": "project/DALI/Output_Global_Material/dft/TM108/dft-meta.json",
+      "sha256": "dc42680cb9842e9d8043ab16a82167b90dee916dae13ac8142b60065a4a1a527"
+    },
+    {
+      "path": "project/DALI/Output_Global_Material/dft/TM108/dft-conditions.yaml",
+      "sha256": "a45b9b5e7b06d20c8364669576dfbc84f9e4c2d26913af957389f2f4ff2d4553"
+    }
+  ],
+  "fieldChecks": [
+    {
+      "field": "identity",
+      "rawIntent": {
+        "Item": "TM108",
+        "Level": "HSKP",
+        "Name": "VAC1_PRST",
+        "Description": "VAC1 PRST CMOP threshold",
+        "Purpose": "SCM",
+        "Unit": "V"
+      },
+      "derived": {
+        "testItem": "TM108",
+        "level": "HSKP",
+        "parameterName": "VAC1_PRST",
+        "description": "VAC1 PRST CMOP threshold",
+        "purpose": "SCM",
+        "unit": "V"
+      },
+      "match": true,
+      "evidence": "testCondition.identity copies OVERVIEW columns Item, Level, Name, Description, Purpose and Unit verbatim for the single row whose Item is TM108."
+    },
+    {
+      "field": "staticPower / powerSequence / directPowerActions",
+      "rawIntent": {
+        "Code1": "vset[vbat,3,100e-6,0]",
+        "Code2": "en_tm[]\nfield[(DMUX_EN,1),(DMUX_SEL,22)]\nvset[vac1,10,1e-3,0]\nvset[vac1,0,1e-3,0]",
+        "Power": "VBAT"
+      },
+      "derived": {
+        "staticPower": [
+          {
+            "pin": "vbat",
+            "raw": "vset[vbat,3,100e-6,0]",
+            "directPowerOn": true
+          }
+        ],
+        "powerSequenceOrder": [
+          "vbat@Code1",
+          "vac1@Code2",
+          "vac1@Code2"
+        ]
+      },
+      "match": true,
+      "evidence": "OVERVIEW column Code1 declares vset[vbat,3,100e-6,0] as the only static rail and the Power column names VBAT; column Code2 adds the ordered vac1 sequence, with every vset kept in source order and tagged with its Code column locator."
+    },
+    {
+      "field": "dynamicPins",
+      "rawIntent": {
+        "Dynamic": "VAC1"
+      },
+      "derived": {
+        "dynamicPins": [
+          "VAC1"
+        ]
+      },
+      "match": true,
+      "evidence": "OVERVIEW column Dynamic reads VAC1 for TM108, so testCondition.dynamicPins contains exactly VAC1."
+    },
+    {
+      "field": "hasRamp / ramps",
+      "rawIntent": {
+        "Code2": "vset[vac1,10,1e-3,0]\nvset[vac1,0,1e-3,0]",
+        "Notes": "ramp up/down vac1 from 3~5V, 1V/ms\nmux A2D_VAC1_PRST to dtest0\ncheck int pin toggle"
+      },
+      "derived": {
+        "hasRamp": true,
+        "ramps": [
+          {
+            "pin": "vac1",
+            "orderedVset": [
+              "vset[vac1,10,1e-3,0]",
+              "vset[vac1,0,1e-3,0]"
+            ]
+          }
+        ]
+      },
+      "match": true,
+      "evidence": "OVERVIEW column Code2 contains the ordered vac1 sweep vset[vac1,10,1e-3,0] then vset[vac1,0,1e-3,0] with the 1e-3 ramp slot, and the Notes column states ramp up/down vac1 from 3~5V, 1V/ms, so hasRamp is true with one ramp on vac1 whose values are taken from Code2."
+    },
+    {
+      "field": "isTrim",
+      "rawIntent": {
+        "Trim": ""
+      },
+      "derived": {
+        "isTrim": false
+      },
+      "match": true,
+      "evidence": "OVERVIEW column Trim is empty for TM108, so the item is not a trim test."
+    },
+    {
+      "field": "involvedPins",
+      "rawIntent": {
+        "Check": "V(DTEST0)",
+        "Code1": "vset[vbat,3,100e-6,0]",
+        "Code2": "vset[vac1,...]"
+      },
+      "derived": {
+        "vsetPins": [
+          "vbat",
+          "vac1"
+        ],
+        "logicalCheck": "V(DTEST0)"
+      },
+      "match": true,
+      "evidence": "OVERVIEW columns Code1 and Code2 supply the vset pin names vbat and vac1; the Check column supplies the logical monitor label V(DTEST0), preserved as a label and not converted into a physical DUT pin."
+    },
+    {
+      "field": "measurement",
+      "rawIntent": {
+        "Check": "V(DTEST0)",
+        "Unit": "V",
+        "Notes": "ramp up/down vac1 from 3~5V, 1V/ms\nmux A2D_VAC1_PRST to dtest0\ncheck int pin toggle",
+        "HELPER": "ramp VAC , INT toggle"
+      },
+      "derived": {
+        "check": "V(DTEST0)",
+        "quantity": "VOLTAGE",
+        "isToggle": true,
+        "resultTypes": [
+          "Rise",
+          "Fall"
+        ]
+      },
+      "match": true,
+      "evidence": "OVERVIEW column Check is V(DTEST0) with Unit V, so the measured quantity is voltage; the Notes column check int pin toggle and the HELPER column ramp VAC , INT toggle make isToggle true with Rise and Fall result types, and Hys is marked DERIVED rather than source-declared."
+    },
+    {
+      "field": "expectedValue / referenceValue / remarks",
+      "rawIntent": {
+        "ExpectValue": "rising vth 4.4V, hys 0.35V",
+        "Notes": "ramp up/down vac1 from 3~5V, 1V/ms\nmux A2D_VAC1_PRST to dtest0\ncheck int pin toggle"
+      },
+      "derived": {
+        "expectedValue": "rising vth 4.4V, hys 0.35V",
+        "referenceValue": "rising vth 4.4V, hys 0.35V",
+        "remarks": "ramp up/down vac1 from 3~5V, 1V/ms\nmux A2D_VAC1_PRST to dtest0\ncheck int pin toggle"
+      },
+      "match": true,
+      "evidence": "testCondition.expectedValue and referenceValue are the OVERVIEW ExpectValue text rising vth 4.4V, hys 0.35V verbatim, and remarks is the Notes column copy verbatim."
+    },
+    {
+      "field": "registerFieldIntent",
+      "rawIntent": {
+        "Code2": "en_tm[]\nfield[(DMUX_EN,1),(DMUX_SEL,22)]\nvset[vac1,10,1e-3,0]\nvset[vac1,0,1e-3,0]"
+      },
+      "derived": {
+        "registerFieldIntent": [
+          "(DMUX_EN,1),(DMUX_SEL,22)"
+        ]
+      },
+      "match": true,
+      "evidence": "OVERVIEW column Code2 contains field[(DMUX_EN,1),(DMUX_SEL,22)], preserved as register-field intent in source order; the mux text in the Notes column (mux A2D_VAC1_PRST to dtest0) stays Notes text and is not turned into a register value."
+    },
+    {
+      "field": "differentialVoltage",
+      "rawIntent": {
+        "Name": "VAC1_PRST",
+        "Description": "VAC1 PRST CMOP threshold",
+        "Notes": "ramp up/down vac1 from 3~5V, 1V/ms\nmux A2D_VAC1_PRST to dtest0\ncheck int pin toggle",
+        "Special": ""
+      },
+      "derived": {
+        "differentialVoltage": {
+          "state": "NOT_DECLARED"
+        }
+      },
+      "match": true,
+      "evidence": "No OVERVIEW column Name, Description, Notes or Special declares a differential voltage pair, so the state is NOT_DECLARED."
+    },
+    {
+      "field": "highCurrent",
+      "rawIntent": {
+        "Name": "VAC1_PRST",
+        "Description": "VAC1 PRST CMOP threshold",
+        "Notes": "ramp up/down vac1 from 3~5V, 1V/ms\nmux A2D_VAC1_PRST to dtest0\ncheck int pin toggle",
+        "Special": ""
+      },
+      "derived": {
+        "highCurrent": {
+          "state": "NOT_DECLARED"
+        }
+      },
+      "match": true,
+      "evidence": "No OVERVIEW column Name, Description, Notes or Special declares a high-current mode, so the state is NOT_DECLARED."
+    },
+    {
+      "field": "ramp-range text versus Code2 values (source difference, preserved not resolved)",
+      "rawIntent": {
+        "Notes": "ramp up/down vac1 from 3~5V, 1V/ms",
+        "Code2": "vset[vac1,10,1e-3,0]\nvset[vac1,0,1e-3,0]"
+      },
+      "derived": {
+        "ramps": [
+          {
+            "pin": "vac1",
+            "orderedVset": [
+              "vset[vac1,10,1e-3,0]",
+              "vset[vac1,0,1e-3,0]"
+            ]
+          }
+        ],
+        "notes": "ramp up/down vac1 from 3~5V, 1V/ms..."
+      },
+      "match": true,
+      "evidence": "The OVERVIEW Notes column says the vac1 ramp runs from 3~5V at 1V/ms while column Code2 sweeps vac1 10 -> 0 with a 1e-3 ramp slot. Both texts are preserved with their column locators: the Notes text is copied to remarks/notes and the ramp values come from Code2 (the executable authority), so this is a recorded source difference for downstream review and not a contradiction invented or silently corrected by this role."
+    }
+  ],
+  "discrepancies": []
+}

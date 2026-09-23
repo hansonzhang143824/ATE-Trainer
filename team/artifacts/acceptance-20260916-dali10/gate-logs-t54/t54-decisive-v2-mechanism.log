@@ -1,0 +1,28 @@
+=== ① 澄清：正文有 / 没有哪些键（其三处 = [] 复核）===
+  正文含 "projectionSpec" 的路径 = []
+  正文含 "receipts" 的路径 = []
+  正文含 "hashInvariance" 的路径 = []
+  正文含 "standardTriHash" 的路径 = ['/standardTriHash']
+  正文含 "generatedAt" 的路径 = ['/generatedAt']
+  ⇒ 与 rule-reviewer 的三处 [] 一致 ✓（`projectionSpec`/`receipts`/`hashInvariance` **均不在正文**）
+
+=== ② body 哈希到底"有什么用"：(a) 排除项 vs (b) 序列化 —— 分别固定 ===
+  同一字节上（两个变量各跑一遍）：
+    序列化=sort_keys，排除={gen}            = 9804fbe2272477ecf51de616
+    序列化=sort_keys，排除={gen,receipts}    = 9804fbe2272477ecf51de616 ← 现行 v2
+    序列化=去行字节，排除={gen}              = febf9518df45f3aa9583d96b ← 旧 v1
+  ⇒ (a) 排除项（gen vs gen+receipts）**在同序列化下相同** ⇒ 排除 receipts 确为 no-op ✓
+  ⇒ (b) 序列化（去行字节 vs sort_keys）**不同** ⇒ 这才是 v1→v2 的口径差 ✓
+
+=== ③ v1 的取值是否稳定（我原先的触发理由）===
+  v1(去行字节,排gen)      run1=febf9518df45f3aa  run2=febf9518df45f3aa  ⇒ 恒定=True
+  v2(现行,收据值)         run1=9804fbe2272477ec  run2=9804fbe2272477ec  ⇒ 恒定=True
+  收据历史行数             run1=54  run2=54  ⇒ 恒定=True
+
+  ⇒ **v1 恒定** ⇒ 我原先"v1 不稳 ⇒ 排除表不完整"的触发理由**不成立**（已撤回，§附十八）
+
+=== ④ 直答其三选项 ===
+  (甲) body 对象不是 build-report.json ？ → **否**：定义域就是报告正文的字节（上表可复算）
+  (乙) receipts 属预防性排除？          → **是**（正文无该键，防将来嵌入）
+  (丙) 先注入后剔除？                    → **否**（生成器不注入 receipts）
+  ⇒ **v2 的正当理由＝"v1 未声明序列化/编码 ⇒ 第三方无法复现"**（其③的建议我采纳）

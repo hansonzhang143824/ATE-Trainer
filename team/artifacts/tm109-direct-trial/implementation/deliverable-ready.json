@@ -1,0 +1,61 @@
+{
+  "event": "preflight_blocked",
+  "status": "blocked",
+  "stage": "IMPLEMENTATION",
+  "fromRole": "ate-implementer",
+  "nextRole": null,
+  "taskId": "TM109-IMPLEMENTATION",
+  "tm": "TM109",
+  "projectId": "DALI",
+  "generatedAt": "2026-09-18 00:32:38 +08:00",
+  "verdict": "blocked",
+  "verdictMeaning": "The IMPLEMENTATION stage did NOT produce a deliverable. This file is deliberately written with status=blocked / verdict=blocked so that scripts/ate_ptc_runner.py is_ready() (which requires status==success AND stage==IMPLEMENTATION AND verdict==deliverable_ready) does not advance the chain to RULE_REVIEW_IMPLEMENTATION.",
+  "artifact": "team/artifacts/tm109-direct-trial/implementation/preflight-blocked.json",
+  "artifacts": [
+    {
+      "path": "team/artifacts/tm109-direct-trial/implementation/preflight-capability.json",
+      "sha256": "54cead15239f24b3e6866bad32e8e777ed82dc247a0f6383db68acf4031377d7",
+      "bytes": 12818,
+      "role": "t7 preflight capability artifact (gate input)"
+    },
+    {
+      "path": "team/artifacts/tm109-direct-trial/implementation/preflight-blocked.json",
+      "sha256": "2d28b44d77451f5b155de19f3f6c0c1484b5bcaba1309dfbff216d57778ac6df",
+      "bytes": 9186,
+      "role": "blocked record required by team/roles/ate-implementer.md"
+    },
+    {
+      "path": "team/artifacts/tm109-direct-trial/implementation/self-check-tm109-implementation.md",
+      "sha256": null,
+      "role": "role self-check"
+    }
+  ],
+  "hashReader": "python hashlib.sha256(Path.read_bytes()) - the same reader as the preflight gate",
+  "gate": {
+    "command": "python scripts/verify_t7_preflight.py team/artifacts/tm109-direct-trial/implementation/preflight-capability.json",
+    "exitCode": 2,
+    "stdout": "BLOCKED: 8 requirements; method hash and target hashes verified",
+    "signedMethodContractReVerified": true,
+    "methodContractSha256": "d9d7e10f9dc96730695a97a7e2b59b235987b3745689a3eaccc738a893000459",
+    "targetSourceHashesReVerified": true
+  },
+  "blockers": [
+    "B-1 (hard): the designated VS project source D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp is outside this session's workspace-write scope; every write attempt is denied and approval escalation is disabled",
+    "B-2 (signed-scope): the method contract's MP-1/MP-2/MP-9 actuation-state read-back has no reachable symbol in the declared target-source scope"
+  ],
+  "noSourceWritten": true,
+  "implementationManifest": "NOT PRODUCED - there is no code change to manifest",
+  "blockingItems": [
+    "B-1",
+    "B-2"
+  ],
+  "nonBlockingItems": [
+    "SF-01 logPlan runtime publication primitive (recorded for the implementation review)"
+  ],
+  "carriedConditions": [
+    "RV-03/MF-04 (no numeric tolerance: PENDING_LIMIT_RULING)",
+    "RV-04/MF-01/MF-02 (empty RG-1 / RG-3 closures)"
+  ],
+  "questionForOwner": "The IMPLEMENTATION stage must write D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp, which lies outside this session's workspace-write scope and cannot be reached (escalation disabled): should the implementer be re-dispatched in a session whose writable scope includes D:/PROJECT6-DALI, or should the TM109 code be delivered as a patch inside the trial artifact directory instead?",
+  "permittedNextAction": "Do not dispatch RULE_REVIEW_IMPLEMENTATION: there is no implementation to review. Resolve B-1 (write scope) and B-2 (read-back primitive / method re-scope), then re-dispatch ate-implementer once."
+}

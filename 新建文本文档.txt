@@ -1,0 +1,4 @@
+node --input-type=module -e "const m = await import('file:///C:/Users/nvt10241/.dsh/plugins/dsh-command-clear/lib/index.js'); console.log(m.name, m.inject, typeof m.apply)"
+
+Copy-Item C:\Users\nvt10241\.dsh\profiles\web\package.json.before-clear.bak C:\Users\nvt10241\.dsh\profiles\web\package.json -Force
+cd C:\Users\nvt10241\.dsh\profiles\web; pnpm install

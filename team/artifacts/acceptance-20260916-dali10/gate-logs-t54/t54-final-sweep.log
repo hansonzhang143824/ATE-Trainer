@@ -1,0 +1,31 @@
+=== 扫描（含 .md/.json/.log/.py/.txt/.jsonl）===
+  总命中 48 行；剔除更正/扫描脚本与已标注撤回者后剩 29 行：
+    RUN-LEDGER.md                                  L682  2. **上游 IR 在 t1/t2 完成之后仍被修订**（`dft-ir.json` mtime 14:15:18 / 130,724 B；`schematic-ir.json` 14:15:05 / 455,676 B）→ 契约已按 14:15 版整份重跑，`inputs[]
+    RUN-LEDGER.md                                  L887  1. 对 **live** 文件复验四条夹具路径（`FH0→PGND_F_S1`[154,155]/HIGH、`FL0→SW_F_S1`[60,61]/LOW、`SH0→PGND_S_S1`、`SL0→SW_S_S1`）**全部仍成立**，两个反向配对**仍不存在** ⇒ **F
+    RUN-LEDGER.md                                  L1737 - **`t41` 现冻结值**：**34,850 B / `b0ff71b752e5997a8a16829cde2cbbdb774eab1feeff3d6ddc4467841b9100b7`**（新增 **G.3 机制更正（待 t43）**：ch5 未动作时经 `K48(NC)
+    t41-tm601-bst-path-determination.md            L278  4. **不受影响**：`t39` 的**处置结论**（TM601 无 BST 授权 ⇒ 移除悬空驱动；`t38` 已执行）**成立且已关闭**；`K48+K76`（ch5 ⇒ BST）与 `BST–SW 闭集 [48,60,61,76]` 的临时结论**待 `t43`**。
+    gate-logs-t33/t44-count-correction.md          L71   **§3 的 FACT 不受影响**（`K110.pin4`↔`K76.pin4` 同网、`pin5`↔`pin5` 同网，仍成立）。
+    gate-logs-t33/t44_update_loadbearing.py        L40   **§3 的 FACT 不受影响**（`K110.pin4`↔`K76.pin4` 同网、`pin5`↔`pin5` 同网，仍成立）。
+    gate-logs-t54/t54-relaytrace-settled.log       L17   L376 的 n 之后未再参与数值比较 ⇒ **relay-trace 的 PASS 不依赖被截断值** ⇒
+    gate-logs-t54/t54-relaytrace-settled.log       L18   该 PASS 可以作为"多值宏路线"的证据（不是被截断值造成的假通过）。
+    gate-logs-t54/t54_final_sweep_withdrawn.py     L8    PAT = re.compile(r'不受影响|不是被截断值造成|未再参与数值比较|未再使用\s*n')
+    gate-logs-t54/t54_final_sweep_withdrawn.py     L39   print('    （无）⇒ 已无残留的"不受影响"式表述')
+    gate-logs-t54/t54_make_report.py               L255  'affectsThisRunGate': '**否** —— 其判据只消费 Cap 家族（19 个，多值宏 0）⇒ `relay-trace` 的 PASS 不受影响',
+    gate-logs-t54/t54_relaytrace_settled.py        L7    L376-397  `n = defines[r]` 之后，功能规则用的是 `cap_pin(r)` / `is_pu(r)` / `is_p2p(r)`，**未再使用 n 做数值比较**
+    gate-logs-t54/t54_relaytrace_settled.py        L52   print('     L376 的 n 之后未再参与数值比较 ⇒ **relay-trace 的 PASS 不依赖被截断值** ⇒')
+    gate-logs-t54/t54_relaytrace_settled.py        L53   print('     该 PASS 可以作为"多值宏路线"的证据（不是被截断值造成的假通过）。')
+    gate-logs-t54/t54_settle_relaytrace_unknown.py L9    ⇒ 关键问题：这些"无通道号别名"是否落在**多值宏**里？若是 ⇒ 截断影响判据；若否 ⇒ PASS 不受影响。
+    gate-logs-t54/t54_settle_relaytrace_unknown.py L55   print('     其 PASS **可以**作为"多值宏路线"的证据（即：PASS 不是被截断值造成的假通过）。')
+    review/t25-independent-opinion.md              L134  - **F-1（low–medium）**：`verify_relay_trace.py` 新 docstring/结论中"`K_SW_BST_Cap` 修复后不再被 `SW` 触发"与实测不符（`SW_BST` 仍被 `SW` 命中；消失的是 `SW1`/`SW1_BST1`/
+    review/t26-correction-8-confirmation.md        L6    - **与 setup-architect 公告不一致（须记录）**：其消息称现盘为 `t26-correction-7` = 27,517 B / `4de0ec9b0db2a1af21b834929b95aa0c2c0252fee24ab5571a4a7680e066c3de
+    review/t26-tp20-k110-finding.md                L97   | t22 的 4 条电容判定（K5/K44/K45 假阳性、K57 真红） | **不受影响**（K57 判定与 BST 路径闭合集合是两件事；K57 仍是电容继电器） |
+    review/t26-tp20-k110-finding.md                L99   | t26 的 meta ACCEPT | **不受影响**（meta 侧；且 `powered_pins` 含 `BST_SW` 恰与 B 相符） |
+    review/t26-tp20-k110-finding.md                L100  | 门禁"11 GREEN + cbit KNOWN-RED" | **不受影响**，但**其绿不能证明 BST 路径闭合**（B-3 盲区）—— 这正是"编译/门禁通过 ≠ 电性正确"的又一实例 |
+    review/t28-independent-opinion.md              L95   **影响面（我判定）**：**不阻断** —— ① 汇总层仍打印 `[input-sync] exit=1`，`NEW-RED` 分类与 `exit 1` 传播不受影响；② 若单独跑 `check_input_sync.py`，**stdout 明确打印 `*** NEW-RED
+    review/t40-crosscheck-t39-opinion.md           L54   ⇒ **操作性结论（未激磁→PB0）不受影响**，但**若日后有人据 L31 的"NO/NC"字面推理，会得到相反结论**。**建议 `t41` 与 payload `L416-420` 均改为只陈述操作事实**，或**引网表/派生表**而非 L31 口诀。
+    review/t40-tm601-bst-determination.md          L128  1. **"`K110(Relay-NC)` 指未动作路径"——正确** ✅（本项可达性分析不受影响）。
+    review/t40-tm601-bst-determination.md          L132  4. **副作用（重要，我实测澄清）**：若该器件确为**磁保持**，则**"未 SetOn"≠"未动作"**——继电器会保持上一次状态。**本项不受影响**：`cbite.SetOn(...)`（`L426`）给出的是**完整显式闭合列表**，`K110` 不在其中即被置于**
+    review/t43-addendum-ch5-production-evidence.md L61   **⇒ `t40` 的处置结论（TM601 无 BST 授权 ⇒ 移除正确）**不受影响**：移除的依据是"无授权 + 任何路线都到不了 BST"，与"未动作落 PB0 还是 SW1"无关。**t40 的 `verdict=pass` 维持**，仅其 Q1 的分级归属按本节重写。
+    review/t43-final-consolidated-determination.md L83   ⇒ **表自洽、且与网表一致**。**"未动作 → 由默认通的那一掷决定落点"**这一操作结论**不受影响**。
+    review/t43-final-consolidated-determination.md L89   - **`relays.md` 通用默认态**：**无须手册/机台裁决**（表与口诀一致、且我以网表三器件验证）—— 此项**从 UNKNOWN 清单中移除**；**本项结论自始不受影响**。
+    review/t52-payload-review-final.md             L88   verify_bst_sw_sequence.py parse_defines 使用 0 处、defines[...] 0 处、import 0 ⇒ **不受影响**

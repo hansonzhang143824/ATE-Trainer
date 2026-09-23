@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "reviewGeneration": 2,
+  "reviewer": "LLM semantic review",
+  "tm": "TM102",
+  "reviewPurpose": "Re-check current deterministic DFT output against the canonical DFT row only.",
+  "readSources": [
+    {
+      "path": "project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx",
+      "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "hashMethod": "scripts/hash_ate_plaintext.py",
+      "withinInputRoot": true,
+      "sheet": "OVERVIEW"
+    }
+  ],
+  "reviewedArtifacts": [
+    {
+      "path": "project/DALI/Output_Global_Material/dft/TM102/dft-meta.json",
+      "sha256": "72ee457190a2d74c2503d3dc9dadd0eaa561dca9a33cc07066cff97499083b6b"
+    },
+    {
+      "path": "project/DALI/Output_Global_Material/dft/TM102/dft-conditions.yaml",
+      "sha256": "0797c8ef0d2320e70a34e0e20c309a981dc653743250843577c72aa3eaea28cc"
+    }
+  ],
+  "rule": "PASS means the reviewed testCondition preserves declared test meaning and labels derived meaning as derived. It does not infer missing electrical semantics.",
+  "verdict": "PASS",
+  "fieldChecks": [
+    {
+      "field": "identity, remarks, expected value, trim",
+      "verdict": "PASS",
+      "evidence": "OVERVIEW TM102 gives LP_VBG_BF, low power bg_buf, Debug, 1.27 V, blank Trim and the external-pin caution."
+    },
+    {
+      "field": "power order and direct power",
+      "verdict": "PASS",
+      "evidence": "Code1 vset[vbat,4,100e-6,0] is sourceOrder 1; Code2 vset[vdm,1.2,100e-6,0] is sourceOrder 2. Both are listed in powerSequence and directPowerActions with directPowerOn=true."
+    },
+    {
+      "field": "dynamic pins",
+      "verdict": "PASS",
+      "evidence": "Dynamic is blank and generated dynamicPins is empty."
+    },
+    {
+      "field": "measurement and register fields",
+      "verdict": "PASS",
+      "evidence": "Check V(ATEST0), no toggle wording, and Code2 fields EN_ATEST0/ATEST0_MUX are retained."
+    }
+  ],
+  "discrepancies": []
+}

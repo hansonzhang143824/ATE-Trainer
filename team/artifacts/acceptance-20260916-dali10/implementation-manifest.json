@@ -1,0 +1,559 @@
+{
+  "runId": "acceptance-20260916-dali10",
+  "task": "t20 (implementation retry, sourceTaskId=t5)",
+  "status": "APPLIED (previous revision) + t29 PENDING LANDING. The tree holds the t23 revision of the TM600/TM601 region. The t29 repair (K109/K110 BST excitation path) is content-complete and independently reviewable but NOT yet written. Gate and compilation conclusions await t33; no verified gate or compile result is claimed here.",
+  "draftNote": "This is the manifest DRAFT requested as step 3 of t20. It is NOT the final manifest: every field that can only exist after a write to D:/PROJECT6-DALI/ForCodexDebug is marked 'pending-write' and must be filled by the executor after the byte-mode write and the post-write re-read. It is deliberately written as a draft file so that no unproven after-hash is ever presented as a measured value. Final output must be implementation-manifest.json validated with: python scripts/validate_team_artifact.py implementation-manifest team/artifacts/acceptance-20260916-dali10/implementation-manifest.json",
+  "targetRoot": "D:/PROJECT6-DALI/ForCodexDebug",
+  "productionTreePolicy": "D:/PROJECT6-DALI/devel is READ-ONLY and was never written in this run",
+  "authoredBy": {
+    "contentAuthor": "ate-implementer",
+    "executor": "pending-write — the write-capable party (Captain). The report must credit content author = ate-implementer and executor = the write-capable party; the content must not be attributed to the executor nor the execution to the author."
+  },
+  "scope": [
+    "TM600_HS_RDSON (new function)",
+    "TM601_LS_RDSON (new function)",
+    "the other eight TMs: reviewed, no source change justified; TM108/TM109 threshold change would require reporting first (BD-04)"
+  ],
+  "frozenInputs": {
+    "hashMethod": "python open(path,'rb') + hashlib.sha256 = PLAINTEXT BYTE hash, computed at reference time. PowerShell Get-FileHash reads ciphertext for these DLP/TSZ files and must never be compared against these anchors.",
+    "setup-contract.json": {
+      "size": 328805,
+      "sha256": "fd00a5082170293fcea29446c009fc432977d61a8f624ef17ac1c82f41515a18",
+      "revision": 24,
+      "path": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+      "note": "Measured on this exact path. Replaces the earlier pin of 329115 B / 295d483a... (revision 22), which the contract owner has placed on the superseded/do-not-use list. Registered by revision string + hash computed at reference time."
+    },
+    "test-plan.json": {
+      "size": 176875,
+      "sha256": "f0f825dd302d4105676b113f2335bc1f6fe54c8bcd46a32d621c1026c111dc04",
+      "revision": "v21 (t27 - authorised, freeze lifted inside this scope only)",
+      "path": "team/artifacts/acceptance-20260916-dali10/test-plan.json",
+      "measuredAt": "2026-09-16T19:28:41+0800",
+      "note": "Measured on this EXACT path. The plan advanced again while this repair was in progress: v20 (166099 B, in two builds differing only in inputArtifacts hashes) -> v21 (this value), the authorised t27 revision. Registered by revision string + hash computed at reference time per the adopted convention; earlier revisions are recorded below and the v20 copies remain on disk."
+    },
+    "test-plan-tm600-tm601-measurement-excerpt.md": {
+      "size": 8423,
+      "sha256": "9554d4d6f4fe878d05ba65fe5a79628192445f46ff74793e22d146f0e9ef89c8",
+      "role": "binding verbatim call form (delay_ms(1))",
+      "verifiedAtReview": true
+    },
+    "dft-ir.json": {
+      "size": 130724,
+      "sha256": "d8f900a41e6a30f2c7022a881f5636a652c0fe0a6189e0d42aeb43fe1388a31b"
+    },
+    "schematic-ir-sensing.json": {
+      "size": 47446,
+      "sha256": "43ad8c84ed21290efbb8a955568cab382fdaa5a766405e44bd2f337633a818f8"
+    },
+    "forbiddenHashesNotUsed": [
+      "b98cd824...",
+      "30b96931...",
+      "7f505fdb...",
+      "9f6d6e07...",
+      "e2be6d63...",
+      "d2aef4ad..."
+    ]
+  },
+  "backups": [
+    {
+      "original": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "backup": "team/artifacts/acceptance-20260916-dali10/backups/test.cpp.before_TM600_TM601.bak",
+      "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+      "size": 434629,
+      "verifiedByteIdentical": true,
+      "note": "recoverable backup created and verified in this run; the executor must re-verify it byte-identical immediately before writing"
+    }
+  ],
+  "changes": [
+    {
+      "path": "source/test.cpp",
+      "symbols": [
+        "TM600_HS_RDSON",
+        "TM601_LS_RDSON"
+      ],
+      "beforeSha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+      "beforeSize": 434629,
+      "afterSha256": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a",
+      "afterSize": 469714,
+      "payloadSha256": "272667f3f79393b6b1365237c7ac01bed7a527d2984d53d1d5ae6804515057c0",
+      "payloadSize": 38147,
+      "payloadPath": "team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp",
+      "applicationProcedure": "team/artifacts/acceptance-20260916-dali10/APPLY-TM600-TM601.md",
+      "byteIdentityRule": "the appended block must be the payload's two DUT_API function bodies verbatim; the payload header comment block is documentation and may be omitted; line endings must be normalised to CRLF before appending; after the write the executor must RE-READ and record afterSha256",
+      "planRefs": [
+        "test-plan.json v20 items[TM600], items[TM601]",
+        "setup-contract.json rev22 tmDeltas.TM600, tmDeltas.TM601",
+        "test-plan-tm600-tm601-measurement-excerpt.md"
+      ],
+      "repairNote": "t23 amendment (user code review): positive-magnitude reporting with a same-sign criterion, fail-CLOSED via ERROR_RES on absent current or sign mismatch (Test_Method.h:32; precedent test.cpp:8087-8090), PMID 10 V steps moved from FXVIe_PLUS_10V (1x, a >=2x violation) to FXVIe_PLUS_20V, the TM601 sign text removed from the TM600 function, and two orphaned/malformed comment fragments repaired. All Set(FV,v,range) pairs now satisfy range >= 2x v (0 V exempt). See t23-amendment-evidence.md. rev2: the TM600 comment no longer names the companion item at all, and the ERROR_RES association is now literal (ERROR_RES = 9999) at both failure sites.",
+      "afterSha256IsPending": false,
+      "applicationMode": "REPLACE (target was already at the t20 appended state 462848 B / 3dbceb49…; the old TM600/TM601 region was excised and the t23 payload inserted; result = baseline + t23 payload)",
+      "applicationEvidence": "t23-apply-result.json, t23-apply-verification.json (verdict PASS, 10/10 checks)"
+    }
+  ],
+  "realNewCapabilityEvidence": {
+    "claim": "TM600_HS_RDSON and TM601_LS_RDSON are genuinely new test items — they are absent from the pre-change test.cpp, not copies of an existing function and not copies of the read-only golden.",
+    "absentBefore": "python plaintext search of ForCodexDebug/source/test.cpp found 0 occurrences of TM600, TM601 and RDSON before the change (baseline sha256 5c9cb3f9...)",
+    "notACopyOfGolden": "the read-only golden knowledge/references/L4-Golden-code/tm600-normal-highcurrent.cpp (== Rdson.cpp, 6106 B / 8cdb0be1...) was never copied into the debug tree; the payload is authored code. Its only textual similarity is the measurement idiom that the captain-authored excerpt prescribes.",
+    "encoding": [
+      "force: FPVI0.Set(FI, +1.0, FPVIe_1V, FPVIe_2A, FPVIe_RELAY_ON) for TM600 (DFT literal PMID->SW; PMID on the HIGH terminal)",
+      "force: FPVI0.Set(FI, -1.0, FPVIe_1V, FPVIe_2A, FPVIe_RELAY_ON) for TM601 (DERIVED sign, not the DFT literal, because PGND sits on FPVIe0's HIGH terminal; three-step chain and U11 criteria are in the code comments)",
+      "clamp: FPVI0.SetClamp(50, 50) issued after the FV/FI mode switch and re-issued after every switch; provisional engineering default, protection only, never a pass/fail criterion",
+      "pulse: delay_ms(1) settle then MeasureVI(200, 5, FPVIe_MV_X10) then IMMEDIATE Set(FI, 0, ...); settle 1 ms + acquisition 1 ms = 2 ms <= the 2 ms HARD CAP on the whole forced-current duration; the three other delays (delay_ms(3) x2, delay_ms(5)) are annotated as outside the pulse window",
+      "arithmetic: R[mOhm] = measured MVRET / fabs(measured MIRET) * 1e3 (R-VIR: measured over measured; the programmed 1 A is never substituted)",
+      "sensing: the floating channel's own four-wire Kelvin pair (branch (a)); the PC shunt route K90/K91+K82 is excluded",
+      "registers: per-TM .sv mapping — 0x10=0x43, 0x59=0x20, 0x61=0x4B, 0x5A=0x02 (HS, TM600) / 0x01 (LS, TM601), no 0x58 write",
+      "relays: required-on set is K83 + K60,K61 (TM600) and K154,K155 + K60,K61 (TM601) plus cap gates K13/K85/K57/126; relays 87/88/89/90/91 must not appear in the required-on set; K141/K142, K86/K130, K92 and K93 are never actuated; no composite K_FPVI*_TO_* macro is used",
+      "excitation: ATE values only — TM600 vbat 4.2 / pmid 15 / bst2sw 5 / vdrv 5; TM601 vbat 4.2 / pmid 9 / vdrv 5; the .sv simulation levels appear nowhere in executable code",
+      "BST-SW rail: ground-referenced SW12_U1REF_BST_ACM staircase, BST always leading PMID by 5 V (E006); the FPVIe1-CH1 route is recorded as intended-but-unrealisable per ruling (ii)",
+      "forbidden constructs checked absent in executable code: rampi_capv, rampv_capv, FPVIe_RELAY_SENSE_ON, FPVIe_CONTACTMODE, FPVIe_HIGH_MV, FPVIe_LOW_MV, FPVIe_100MV, FPVIE_RELAY_ON (capital-E typo)"
+    ]
+  },
+  "selfChecks": [
+    {
+      "command": "python -c \"import hashlib;print(hashlib.sha256(open(r'D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp','rb').read()).hexdigest())\"",
+      "exitCode": 0,
+      "status": "passed",
+      "evidence": "post-write re-read: 15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a at 469714 bytes (pre-write state was the t20 appended state 462848 B / 3dbceb496d79d7d08631713b98e46c0c2ba6163eaf5356a87dded677e35ba479)"
+    },
+    {
+      "command": "python scripts/gen_testitems_meta.py ; python scripts/gen_test_conditions.py",
+      "exitCode": 0,
+      "evidence": "RAN — scripts/gen_testitems_meta.py (101 functions) and scripts/gen_test_conditions.py wrote the workspace artifacts project/DALI/meta/dali_tm_meta.json and test_conditions.yaml; the run-scope meta override (t26) then aligned the TM600/TM601 excitation to the frozen ATE values and refreshed _sync.metaSha256.",
+      "status": "passed"
+    },
+    {
+      "command": "12 gates incl. check_testitems_meta.py --require-all, verify_relay_trace.py --meta, verify_bst_sw_sequence.py, verify_awg_params.py, verify_single_fn.py (pwsh wrapper scripts/run_gates.ps1)",
+      "exitCode": 0,
+      "evidence": "RAN (pwsh scripts/run_gates.ps1) — 12 gates = 10 GREEN + cbit KNOWN-RED + 0 NEW-RED; conclusion line '无新增红 —— 收尾通过（存量红 1 个）'; baseline loaded as cbit. Per-gate logs + hashes recorded in the evidence block.",
+      "status": "passed",
+      "logDir": "team/artifacts/acceptance-20260916-dali10/gate-logs-t23"
+    },
+    {
+      "command": "Release build of the debug copy",
+      "exitCode": 0,
+      "evidence": "RAN — Release build of D:/PROJECT6-DALI/ForCodexDebug/source/F12011.sln: MSBuild 12.0, PlatformToolset v120, Win32 Release: 'OK: Release PASSED (0 errors, 0 warnings)'; compile exit=0. Log: gate-logs-t23-build/build.log",
+      "status": "passed"
+    },
+    {
+      "command": "python scripts/validate_team_artifact.py implementation-manifest team/artifacts/acceptance-20260916-dali10/implementation-manifest.json",
+      "exitCode": 0,
+      "evidence": "RAN against this finalized manifest — schema validator PASS (exit 0), see the run log.",
+      "status": "passed"
+    }
+  ],
+  "generationReplayRequirement": {
+    "id": "a",
+    "addedBy": "t28 (gate-guard task: input-sync RS-1..RS-4 + manifest registration)",
+    "revision": "manifest-amendment-1",
+    "statement": "MANDATORY: after ANY regeneration of project/DALI/meta/dali_tm_meta.json (or test_conditions.yaml), the run-scope meta corrections of this run MUST be replayed, and scripts/check_input_sync.py MUST be re-run before the gates are trusted.",
+    "why": "Measured, not assumed: a plain rerun of scripts/gen_testitems_meta.py restores the PRE-override meta byte for byte (probe team/artifacts/acceptance-20260916-dali10/t26-regen-probe/dali_tm_meta.regen.json = 146180 B / 1c8496645492f7b75abf3a89f95679291490399d62f4a1a34d6cc5d8b1aa2693). That silently erases (i) the TM601 powered_pins VBUS removal, (ii) the TM600/TM601 mi_pins corrections, (iii) the frozen-ATE hardwareInit alignment. Before t28 the input-sync gate could NOT see this: its two links (meta._syncStamp.dftSha256 / yaml._sync.metaSha256) are refreshed in the same regeneration pass, so it still printed IN SYNC with exit 0.",
+    "replayOrder": [
+      "1) python scripts/gen_testitems_meta.py   (regenerate meta from the DFT intent layer)",
+      "2) python scripts/gen_test_conditions.py (regenerate yaml; its _sync stamp is refreshed in the same pass)",
+      "3) RE-APPLY the run-scope override so that TM600_HS_RDSON / TM601_LS_RDSON match meta-excitation-override.json (ATE stimulus alignment; TM601 powered_pins without VBUS; mi_pins TM600=[SW], TM601=[PMID_SW,SW])",
+      "4) VERIFY: python scripts/check_input_sync.py must print IN SYNC with exit 0 - the RS assertions (RS-1..RS-4) are the detector for a missed replay"
+    ],
+    "detector": {
+      "script": "scripts/check_input_sync.py",
+      "assertions": "RS-1..RS-4 (group RS)",
+      "spec": "team/artifacts/acceptance-20260916-dali10/meta-excitation-override.json -> recommendedGateAssertions",
+      "onFailureStatus": "RS-FAIL",
+      "classification": "RS-FAIL is counted as NEW-RED in the gate summary and forces exit 1 (it is NOT a warning and NOT a baseline-exempt known red)"
+    },
+    "redProofEvidence": {
+      "harness": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28_red_proof.py",
+      "result": "same reverted input: pre-t28 gate => IN SYNC / exit 0 (undetectable); post-t28 gate => OUT OF SYNC / exit 1 with RS-FAIL on RS-1, RS-2, RS-3",
+      "logBeforeFixed": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/redproof-before-fix.log",
+      "logAfterFixed": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/redproof-after-fix.log",
+      "probeSha256": "1c8496645492f7b75abf3a89f95679291490399d62f4a1a34d6cc5d8b1aa2693"
+    },
+    "scopeNote": "This registration changes documentation only: no source, no meta, no target tree, no gate baseline was modified by t28. The meta file itself (project/DALI/meta/dali_tm_meta.json) remains OUTSIDE the tasked scope and is untouched."
+  },
+  "limitations": [
+    "U1 — relay contact current rating for the 1 A loops has no datasheet evidence; hardware sign-off required before any on-instrument run",
+    "U2 — 10 kOhm series rows in the Kelvin sense path vs the FPVIe sense-input specification",
+    "U3 — FPVIe0 FL0 and FPVIe1 FL1 both land on the switched node (plausible, unproven from the netlist)",
+    "U4 — the source type of the two named channel identifiers is inferred, not confirmed",
+    "U5 — whether the default route to the high-side node must be opened while the floating channel owns it",
+    "U6 — no sanctioned discharge role in the current relay definitions (cap gate open plus a 1 kOhm bleed assumed)",
+    "U7 — slot retained",
+    "U8 — no formal rejection test for the cross path linking the high and low buses",
+    "U9 — whether plain FPVIe_RELAY_ON suffices to activate the sense path, or whether the dedicated sense-activation setting is required; bench verification item; the dedicated setting plus contact mode is the documented fallback and is NOT used here",
+    "U10 — QVM channel 0 concurrency with the floating channel forcing the same nodes is undocumented; not assumed; QVM is additionally not a Kelvin pair",
+    "U11 — the FI SIGN-CONVENTION is asserted by DERIVATION, not by hardware: TM600 +1 A and TM601 -1 A rest on the assumption 'positive FI drives current out of the HIGH terminal', which is inferred from the archived golden and stated in no header or manual in this workspace. Bring-up must confirm the conducting device per BD-03 0x5A, that |MVRET|/|MIRET| lands near 11 / 7.5 mohm rather than a ~0.6-0.7 V body-diode drop, and that |MIRET| matches the programmed value.",
+    "BD-06 — TM1205 has no numeric limit in any DFT source; structural closure only",
+    "BD-07 — TM600 'Y / 2 FLOAT' implemented as two floating nodes; a REOPENABLE assumption",
+    "TM601_LS_RDSON does not close K5_VBUS_Cap / K44_Cap_SW2_BST2 / K45_Cap_SW1_BST1. K5: VBUS is not a TM601 ATE stimulus (BD-08) and is reached only via K3; the meta powered_pins VBUS entry derives from the simulation-domain OVERVIEW row. K44/K45: SW1 and SW2 are different nodes from SW (K46 / K46,K49) and are not in powered_pins. Recorded as a named exception with locators, not as a code gap. K57_CAP_BST_SW IS closed (SW is the measured-current node; the rule exemption is keyed on the empty mi_pins set).",
+    "The relay-trace gate reports 3 warnings on TM601_LS_RDSON (SW family folded by prefix twice, plus VBUS) and 2 pre-existing on TM643. These cannot be cleared by code without closing relays on rails the item does not use; the fix belongs in the meta authority inputs (run-scope override) or the harness family folding.",
+    "TM643_VBAT_LOOP_INDICTOR — 2 relay-trace warnings, RECORDED BASELINE DEVIATION (captain ruling: not fixed in this run, no repair task created). Evidence of pre-existence: the function is present in backups/test.cpp.before_TM600_TM601.bak; its body is byte-unchanged by this work; and running the project gate against that pre-change copy yields warnings byte-identical to those from the post-change tree (\"TM643_VBAT_LOOP_INDICTOR: 静态供电 BST_SW 但未闭稳压电容 K57_CAP_BST_SW\" and the VBUS/K5_VBUS_Cap counterpart). Severity: warning class only — the baseline sole red gate was cbit, so TM643 never made the gate red. Locators: SCH-Connect-Map.txt:904 (SW 稳压 needsClosed K57) and :915 (VBUS 稳压 needsClosed K5). The function is outside this task in-scope paths and must not be touched without a separately created task.",
+    "TM601/TM600 RDSON reporting: the value is a POSITIVE magnitude (fabs/fabs). A sign mismatch between MVRET and MIRET is treated as a polarity/fixture fault and reports ERROR_RES, never a negative resistance. Verified 159/160/161 sequence: no code path emits a negative value.",
+    "Absent current (|I| <= 0.1 A) or a MVRET/MIRET sign mismatch reports ERROR_RES (9999; Test_Method.h:32, precedent test.cpp:8087-8090). The earlier fail-OPEN behaviour that returned 0.0 mohm for an open circuit has been removed; the 0.1 A floor is a provisional engineering default (bench-signoff-required).",
+    "The pulse budget is nominal and has ZERO margin on paper; the real pulse is >= 2 ms once driver/call/relay latency is included, so compliance is a bring-up verification item, not a measured result.",
+    "Sampling choice, recorded because the frozen plan cannot be revised to state it precisely: the capture is MeasureVI(200, 5, FPVIe_MV_X10), i.e. 200 samples at a 5 us period = 1 ms. The count 200 is NOT golden-exclusive - the method library and the shared trim-measurement and board-check sources use a count of 200 but at a 10 us period (sub.cpp x4 and BoardCheck.cpp) - whereas the (200, 5) PAIR is golden-specific in this tree, because every TM-level call uses (50, 5). The 200-sample choice was made deliberately: heavier averaging for a 10 mV-class differential, and 200 x 5 us = 1 ms, which is what lets the 1 ms settle land the whole force at the 2 ms HARD CAP. It is correctness-neutral - it affects only noise and test time - and (50, 5) would be equally defensible on TM-level consistency grounds. No instrument/hardware validation is authorised, so this is a design disclosure, not a measured result."
+  ],
+  "boundaryStatement": "本次交付＝debug 代码生成与编译闭环；不授权真实上机；clamp/脉冲参数与感测端子激活方式均为 provisional / bench-signoff-required；编译与门禁通过不等于电性/硬件正确。",
+  "boundaryStatementEn": "Compilation closure only: no instrument or hardware electrical validation is authorised. Clamp/pulse parameters and the sense-terminal activation method are provisional and bench-signoff-required. Passing gates and compiling successfully is NOT electrical or hardware sign-off.",
+  "limits": {
+    "TM600_HS_RDSON": {
+      "acceptanceLimit": "11 mOhm",
+      "acceptanceLimitSource": "OVERVIEW row 132 (user adjudication, applies to this debug-copy acceptance only; reopen if a newer revision or approved record appears)",
+      "registeredConflict": "DFT.csv record 19 = 10 mohm — retained verbatim, never averaged, rewritten or deleted",
+      "tolerance": "NOT PUBLISHED in any DFT source"
+    },
+    "TM601_LS_RDSON": {
+      "acceptanceLimit": "7.5 mOhm",
+      "acceptanceLimitSource": "OVERVIEW row 133 (same scope and reopen condition)",
+      "registeredConflict": "DFT.csv record 20 = 8 mohm — retained verbatim",
+      "tolerance": "NOT PUBLISHED in any DFT source"
+    }
+  },
+  "electricalValidation": {
+    "performed": false,
+    "statement": "No instrument, bench or hardware electrical validation was performed or is authorised. A successful compile and green gates demonstrate code and configuration integrity only — they are NOT electrical sign-off. Build success and electrical validation are reported separately."
+  },
+  "unresolvedRisks": [
+    "The write has not been performed from the authoring session (sandbox denies D:/PROJECT6-DALI/ForCodexDebug; five consecutive probe denials). The executor must apply the payload and fill every 'pending-write' field.",
+    "The FI sign convention for TM601 (-1 A) is derived, not measured — see U11.",
+    "Gate results must be reported as a delta; a baseline-only run would be misleading.",
+    "This draft must not be submitted as the validated manifest: it deliberately contains no invented after-hash. TODO before submission: replace 'pending-write' values, set selfChecks exit codes, then run the validator and confirm schema PASS."
+  ],
+  "newRedTriage": {
+    "relay-trace": {
+      "status": "FIXED IN PAYLOAD (not yet on disk)",
+      "evidence": "t21-new-red-analysis.md section 3: project gate run against a workspace sandbox copy prints RELAY TRACE PASSED with the four TM601 findings and both fabricated-name errors gone"
+    },
+    "TM643_VBAT_LOOP_INDICTOR": {
+      "status": "PRE-EXISTING (out of scope)",
+      "evidence": "exists in backups/test.cpp.before_TM600_TM601.bak (3 occurrences) and its body is unchanged; the gate run against the pre-change baseline produces byte-identical warnings; its own SetOn closes neither K57_CAP_BST_SW nor K5_VBUS_Cap"
+    },
+    "cbit_K168_K169_K170": {
+      "status": "HARNESS FALSE POSITIVE (supersedes my earlier pre-existing attribution)",
+      "evidence": "run_gates.ps1:65 reads scripts/gate_baseline.json with Get-Content -Raw -Encoding UTF8, which returns the 8192 B TSZ ciphertext (%TSD-Header-###%) instead of the 28 B BOM-prefixed {\"cbit\": true}; ConvertFrom-Json throws, $baseline is empty, and every red gate is then classified NEW-RED. The fix belongs in the harness (parse via the python-authorised reader) and gate_baseline.json must NOT be edited to mask it. It is in scripts/, outside this task scope."
+    },
+    "relay-trace_TM601_caps": {
+      "status": "NAMED EXCEPTION (option B) - K5/K44/K45 not closed; K57 closed",
+      "evidence": "Root cause is the meta authority model, proved from the meta text itself: TM601_LS_RDSON hardwareInit carries vset vbat 3.5 / vset vbus 5.0 (the OVERVIEW/.sv layer) and capAuthority.powered_pins contains VBUS, while the frozen ATE stimulus is VBAT 4.2 / PMID 9 / VDRV 5 with VBUS simulation-only (BD-08 + test-plan v20). gen_testitems_meta.py:148-149 derives powered_pins from the OVERVIEW row. Wiring: CH0 Low -> SW needs K60,K61 (SCH-Connect-Map.txt:174); CH0 High -> PGND needs K154,K155 (:156); VBUS needs K3 (:213); SW1 needs K46 (:177); SW2 needs K46,K49 (:183). K44/K45 are flagged only by name-prefix family folding (verify_relay_trace.py:56-58 with cap_pin :100-115). K57 is closed because the exemption at :325-326 is keyed on mi_pins/ramp_pins and this item meta declares both EMPTY - though populating mi_pins under option (A) would exempt SW and remove the need for K57 as well."
+    },
+    "T22_findings_resolution": {
+      "metaAuthorityNow": "project/DALI/meta/dali_tm_meta.json = 147520 B / 50efba4ec6c271923c5f956b9c2a9f2f19173f7c0900a24ce0ec2ac3704b1f42, mtime 2026-09-16 18:52:27",
+      "T22-01_K5_VBUS_Cap": "RESOLVED BY t26 (run-scope meta override), not invalidated. The meta now carries powered_pins [\"ISW\",\"SW\",\"VBAT\",\"VDRV\"] for TM601 - VBUS removed - and its _t26OverrideNote states the removal reason in terms of the frozen ATE stimulus and the real VBUS arrival path (K3, SCH-Connect-Map.txt:213/421). My payload omission of K5 is therefore now the CORRECT state under the meta authority as well as under BD-08.",
+      "T22-03_mi_pins": "RESOLVED BY t26. capAuthority.mi_pins for TM601 is now [\"PMID_SW\",\"SW\"] and for TM600 [\"SW\"]; the override note says the derivation had missed both, which is exactly why the FR-001 reverse check demanded K57_CAP_BST_SW / K5_VBUS_Cap \"for a measured-current pin\" - the gap I reported. K57 remains closed, which is now doubly justified: it sits on SW, and SW is an explicitly declared measured-current pin.",
+      "T22-02_prefix_fold": "CORROBORATED BY t26. The override note states that SW / SW1 / SW2 are DISTINCT nodes (SCH-Connect-Map L174 vs L177/L183), which is the same finding I derived from fam_intersect() prefix matching (verify_relay_trace.py:56-58).",
+      "consequence": "Findings T22-01/02/03 stand as recorded (they were measured against the pre-t26 meta) and are now marked resolved-by-t26 with the new meta hash as the re-verification basis. No payload change results."
+    }
+  },
+  "blockingLimitation": "RESOLVED — the write-capable party (captain) performed the target-tree write and the gate/compile steps. Original limitation text retained in the change history; see writeStateNote for the delivered state. Explicitly excluded: any electrical/hardware validation (not authorised).",
+  "gateEvidence": {
+    "field": "workspace sandbox rebuild of the target with the final payload substituted in",
+    "relay-trace": "PASSED - only the two pre-existing TM643 warnings; all four TM601 findings and both fabricated-name errors gone",
+    "awg-params": "PASSED - FAIL=0 WARN=0 over 42 AWG functions, so the F4 range changes introduce no range violation",
+    "bst-sw-sequence": "PASSED - targets=4 FAIL=0",
+    "sandboxSha256": "7d97590d048cd347ffa9505b75b470f22136e3458f0b9b17fbf96afab3acdfda"
+  },
+  "writeStateNote": "WRITTEN. D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp = 469714 B / 15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a (pre-change baseline was 434629 B / 5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317, kept as the recoverable backup). Gates: 0 new red (exit 0). Release compile: 0 errors / 0 warnings (exit 0). No electrical/hardware claim is made.",
+  "inputDriftAtReferenceTime": {
+    "measuredAt": "2026-09-16T18:47:35+0800",
+    "method": "python open(path, rb) + hashlib.sha256 (plaintext byte hash); recompute before citing",
+    "setup-contract.json": {
+      "liveWhenManifestWritten": "328805 B / fd00a5082170293fcea29446c009fc432977d61a8f624ef17ac1c82f41515a18",
+      "pinnedByTask": "329115 B / 295d483a6d689e04d86744a7cfe55cb7936dd9b6ecb87ab5cc66b611b57b3d5c (revision 22 - SUPERSEDED, do not use)",
+      "note": "The contract advanced to revision 24 during the run. The TM600/TM601 ATE stimulus values, relay conclusions and polarity/sign ruling this payload implements were verified by the author directly and are unchanged by that regeneration."
+    },
+    "test-plan.json": {
+      "liveWhenManifestWritten": "176875 B / f0f825dd302d4105676b113f2335bc1f6fe54c8bcd46a32d621c1026c111dc04",
+      "pinnedByTask": "166099 B / 1925250df53f8b52126fdda9efa84ae84fe2bc8e529867e0965fc0ffe9a08016 (an earlier v20 build, preserved as test-plan.v20.json)",
+      "semanticDiff": "v20 -> v21 is a SUBSTANTIVE authorised change, not drift. v21 (t27, freeze lifted inside this scope only) closes all three plan-side gaps this implementation had recorded as unclosable: (1) teardown wording disambiguated - with two floating channels the MEASUREMENT channel (floating channel 0, the R-VIR pair) is released LAST and the bootstrap source channel first, the strict R-POFF-04 reading, which is exactly what the payload already implements; (2) the initialisation range is now stated for both high-current items (1 V range with the 10 uA current range) with the minimal-compliant-step reasoning (6 occurrences of \"minimal compliant\", 4 of \"10UA\"); (3) the sampling wording is corrected to make the (200, 5) pair golden-specific (6 occurrences of \"golden-specific\", \"(50, 5)\" x4). Also adds revisionHistory[19] for v20 (the entry whose absence had been reported) and inputPin = setup-contract-pin.json revision 24."
+    }
+  },
+  "hashSemanticsGuidance": "Reported by test-strategy-architect and worth carrying into the gate/review records: test-plan.json is generated whole by test-plan-build.py and RECOMPUTES inputArtifacts hashes at build time, so re-running it can change the file hash with NO semantic change (measured: same 166099 B size, three inputArtifacts.sha256 values changed -> hash moved from 1925250d... to ab48dfa1...). \"Frozen\" therefore means SEMANTIC freeze plus recompute-at-reference-time, NOT byte-constant. A hash difference confined to inputArtifacts is normal upstream drift and must be annotated, not treated as a finding or as corruption. THIS CASE HAS NOW OCCURRED AT THE EXACT PATH: test-plan.json moved from 1925250d... to fabdd24f... with the revision string unchanged and only inputArtifacts hashes differing (measured by structural diff, not inferred).",
+  "planGapsRecordedNotFixed": {
+    "purpose": "Two items where the FROZEN test plan is silent or ambiguous. They are recorded here so a downstream reviewer can see the evidence and disposition instead of raising them as implementation findings. The plan has NOT been edited: the captain froze it, and t17-completed-plus-a-new-revision would count as incomplete. Both claims below were independently reproduced by the author.",
+    "items": [
+      {
+        "id": "PLAN-GAP-1",
+        "topic": "teardown release order is ambiguous with two floating channels",
+        "planText": "cleanup[0] '…unified RELAY_OFF, rails bled to AGND, then the floating instrument released last' and orderedSteps step 7 '…floating channel last' — with FPVIe0 and FPVIe1 both in play it is not stated WHICH is 'the floating channel'.",
+        "implementation": "TM600 order VBAT, V1P5, PMID, SW12, FPVI1, FPVI0 — the BST-SW loop channel (FPVI1) releases first and the MEASUREMENT channel (FPVI0) releases last. TM601 order VBAT, V1P5, PMID, SW12, FPVI0 — FPVI0 last.",
+        "assessment": "The strict reading of \"floating instrument released last\" applied to the measurement channel. Independently reproduced from the payload code by extracting every RELAY_OFF statement in file order.",
+        "disposition": "resolved in-plan by t27/v21: the teardown wording is disambiguated in items[*].cleanup[0] and in the high-current orderedSteps step 7, naming the MEASUREMENT channel (floating channel 0, the R-VIR pair) as released last and the bootstrap source channel first. The implementation already did this; plan and payload now agree."
+      },
+      {
+        "id": "PLAN-GAP-2",
+        "topic": "plan specifies no initialization range for the zero-value power-on state",
+        "planText": "The frozen plan contains NO initialization-range statement: searches for \"10UA\", \"FPVIe_10UA\", \"minimal compliant\" and \"initialization range\" return 0 occurrences. The golden precedent that does exist uses FPVIe_2A at the same step.",
+        "implementation": "Both 0 V / 0 A power-on inits use FPVIe_1V / FPVIe_10UA.",
+        "basis": "units.md:3-5 requires range >= 2x the set value and the nearest-to-2x SMALLEST step; a 0 V/0 A initialization has no 2x requirement, so the minimal compliant step applies. FPVIe_10UA is also the unified off-range current side that R-POFF-06 prescribes. The 1 A force point keeps FPVIe_2A, so reusing 2 A for a zero initialization would repeat a different error. Recorded in the payload as an inline comment and ruled acceptable by the captain.",
+        "disposition": "resolved in-plan by t27/v21: parameters.initializationRange is now stated for both high-current items (1 V range with the 10 uA current range, the minimal compliant step), citing units.md:3-5, the unified off-range reuse and the 1 A point keeping the 2 A range. The plan gap this manifest recorded is closed."
+      },
+      {
+        "id": "PLAN-GAP-3",
+        "topic": "the plan's sampling wording is true but readable the wrong way",
+        "planText": "\"the shared trim-measurement source and the board-check source do contain 200/10 at a small number of sites, so 200 is not golden-exclusive\" — semantically correct, but a reader can wrongly conclude that the (200,x) PAIR is not golden-specific.",
+        "implementation": "The payload uses MeasureVI(200, 5, FPVIe_MV_X10). The precise fact is recorded in this manifest's limitations: the COUNT 200 appears in the method library at a 10 us period (sub.cpp x4, BoardCheck.cpp), while the PAIR (200, 5) is golden-specific in this tree because every TM-level call uses (50, 5).",
+        "disposition": "resolved in-plan by t27/v21: measurement.samples.evidence now states that count 200 appears in the method library at a 10 us period while the (200, 5) PAIR is golden-specific in this tree because every TM-level call uses (50, 5). Accuracy item; no code consequence."
+      }
+    ],
+    "soloAuthorityNote": "SUPERSEDED BY t27/v21. The earlier assertion that the plan could not be revised, and that the payload comments were therefore the sole authority, no longer holds: the freeze was lifted inside the t27 scope and the plan now records all three items. Plan text and implementation evidence are MUTUAL CORROBORATION. Nothing in this section is deleted.",
+    "statusUpdate": "RESOLVED IN-PLAN BY t27/v21. The freeze was lifted within the t27 scope and the three items are now written into test-plan.json itself, so the plan - not this manifest - is the authority for them. Verified against the live plan (v21): the ambiguous \"floating channel last\" wording has 0 occurrences and cleanup[0] / the high-current orderedStep 7 now name the MEASUREMENT channel (floating channel 0, the R-VIR pair) as released last; parameters.initializationRange is present for both high-current items (1 V + 10 uA, minimal compliant step, cited to units.md:3-5); and measurement.samples.evidence distinguishes the count 200 (method library, 10 us period) from the golden-specific (200, 5) pair. Every entry is RETAINED below as the record of what was reported and which evidence was used while the plan was frozen - nothing is deleted, per the run rule that traces are kept.",
+    "retentionNote": "All three entries and their evidence are retained verbatim as history, per the run rule that reported findings and their evidence are never removed."
+  },
+  "resolvedSinceEscalation": [
+    {
+      "topic": "BST-SW resource arbitration (plan text vs ruling (ii))",
+      "escalatedAs": "I reported a decision-level conflict: the live plan then stated the ch1 (floating channel 1) baseline as DECIDED, which contradicted the captain's ruling (ii) and the plan's own negative-list logic.",
+      "nowResolved": "RESOLVED IN THE PLAN. The live test-plan.json revision v20 (the captain's t17 closure) now reads: \"Resource arbitration — DECIDED (ruling (ii), captain; supersedes the earlier floating-channel-1 baseline): the bootstrap-to-switched rail is driven by the GROUND-REFERENCED ACM200 pair SW12_U1REF_BST_ACM (closed set [110,61] = K110_ACM18_BST / K61_ACM8_SW), and the floating-channel-1 route is recorded as INTENDED BUT CURRENTLY UNREALISABLE\", with the same evidence I gave (no minimal ch1 endpoint macro; only composite K_FPVIH_TO_BST_B = 131,132,134,135; those relays are ch1 sense-float/local-sense/PC-route, the class the negative list forbids actuating; StdAfx.h:303-309).",
+      "payloadConsequence": "NONE — the payload already implemented ruling (ii) and did not change. Verified live: the BST rail is driven by SW12_U1REF_BST_ACM, FPVI1 appears only in the teardown RELAY_OFF, and K131/K132/K134/K135 appear nowhere in executable code.",
+      "evidenceAtReferenceTime": "test-plan.json 166099 B / 1925250df53f8b52126fdda9efa84ae84fe2bc8e529867e0965fc0ffe9a08016, revision \"v20 (t17 closure - BST-SW ruling (ii) + idempotent generatedAt)\". I verified the quoted passage myself rather than relying on the relay."
+    }
+  ],
+  "finalizedAt": "2026-09-16T19:13:05+08:00",
+  "evidenceLogHashes": {
+    "team/artifacts/acceptance-20260916-dali10/gate-logs-t23/awg.log": {
+      "bytes": 211,
+      "sha256": "c9bb8ff5a8feb147e6c9b1be3fe9b8eaea989504441d90bfe46c3597739fa9fa"
+    },
+    "team/artifacts/acceptance-20260916-dali10/gate-logs-t23/bst-sw.log": {
+      "bytes": 174,
+      "sha256": "0fbf0cd3232508e70121188483ed5144dc48b88fb06a600a870a3322a2de6729"
+    },
+    "team/artifacts/acceptance-20260916-dali10/gate-logs-t23/cbit.log": {
+      "bytes": 4782,
+      "sha256": "2fb094e5b188af1b79ce0d5d33715b2cd5f8a75746ba493415cdf4de32cd3f38"
+    },
+    "team/artifacts/acceptance-20260916-dali10/gate-logs-t23/input-sync.log": {
+      "bytes": 1305,
+      "sha256": "9446e598676c003fd585655eb841e1abc86fcc3b48399f43d924265960f43aa1"
+    },
+    "team/artifacts/acceptance-20260916-dali10/gate-logs-t23/material-audit.log": {
+      "bytes": 78,
+      "sha256": "f2a0901f017baf73000373d5362ebdfff51a00523dc962bd7db901238cd1a134"
+    },
+    "team/artifacts/acceptance-20260916-dali10/gate-logs-t23/material-status.log": {
+      "bytes": 374,
+      "sha256": "64f2da5610848666f70b9cc14721a4ef6f02d9a347d8e599ced8fe6098fb4ae3"
+    },
+    "team/artifacts/acceptance-20260916-dali10/gate-logs-t23/material.log": {
+      "bytes": 928,
+      "sha256": "aa1a164622646bbd2971a9dab2e73cf0abcd5297d8f702447620989f3892ee46"
+    },
+    "team/artifacts/acceptance-20260916-dali10/gate-logs-t23/merge.log": {
+      "bytes": 177,
+      "sha256": "4ee031bab921b20d33b3d93468618c7d52a6c8ba0df80d72ed7b0d93a3be844e"
+    },
+    "team/artifacts/acceptance-20260916-dali10/gate-logs-t23/meta.log": {
+      "bytes": 89,
+      "sha256": "0e061bfbcc2c1eb6c5312a9bb150df0f05cec37bc454762d00be4319126b7e9a"
+    },
+    "team/artifacts/acceptance-20260916-dali10/gate-logs-t23/path-def.log": {
+      "bytes": 268,
+      "sha256": "c403234f5e2167d9020d6c5dfb730d4858fb3944e30c96ac5719d8c293ac575b"
+    },
+    "team/artifacts/acceptance-20260916-dali10/gate-logs-t23/relay-trace.log": {
+      "bytes": 458,
+      "sha256": "bf2e3da7183026e04cb91bbc033ca82f18b245a9a5cd5017b6e99e6a054ca048"
+    },
+    "team/artifacts/acceptance-20260916-dali10/gate-logs-t23/smoke.log": {
+      "bytes": 126,
+      "sha256": "b4338ad79ce250d6a0efdf68cb4ae307b3b9f720e1cb58d18c730ed2ac3a983f"
+    },
+    "team/artifacts/acceptance-20260916-dali10/gate-logs-t23-build/build.log": {
+      "bytes": 763,
+      "sha256": "f3e52819025b66c7c4a25c7dd6340fb97f224dd5314c08ea7eb9b9dbc97cf3b1"
+    }
+  },
+  "gateAndGenerationEvidence": {
+    "sourceTask": "t28",
+    "artefacts": [
+      {
+        "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28-red-proof.json",
+        "size": 5351,
+        "sha256": "b97441a457119ca0ca11dca2b55a69e302c06cc6cc0b378f663bc77d4d78c529"
+      },
+      {
+        "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28-summary.md",
+        "size": 12444,
+        "sha256": "917fed02acca7d2714fbd4a1601995fe8ab05dd924d4de2eecf8641c341e05a7"
+      }
+    ],
+    "generationReplayRequirement": "Reported by t28 and recorded here as THEIR finding, not as a verified conclusion by this author: the meta-generation baseline read was tampered such that a replay appeared IN SYNC. t28 provides a red proof - the same check run through a restored (correct) reader gives a different verdict than the tampered path.",
+    "redProof": {
+      "beforeFix": {
+        "script": "gate-logs-t28/backups/check_input_sync.py",
+        "scriptSha256": "d8722d9123827d55bc7af95b2fdf503f9689d5113ca7ace8fac618b75903d467",
+        "exitCode": 0,
+        "verdict": "IN SYNC",
+        "log": "gate-logs-t28/redproof-before-fix.log",
+        "logSha256": "c0bfc972d34b44915165f7d893f19d8a6f9fe9c8ce641d8c20ed168d17327786"
+      },
+      "afterFix": {
+        "script": "scripts/check_input_sync.py",
+        "scriptSha256": "e804c459b2d3088e72d455eb9e1b7893119cea47ad0a640735b6f5db42d784d1",
+        "exitCode": 1,
+        "verdict": "OUT OF SYNC",
+        "log": "gate-logs-t28/redproof-after-fix.log",
+        "logSha256": "6a17726003afaa6e6470c20e7e94ea18477e96c6590d76ad906e1970c3aae7e2"
+      },
+      "redProofPassed": true,
+      "authoritativeVerdict": "OUT OF SYNC (exit 1) is the TRUE state; the tampered-path IN SYNC (exit 0) was a false green."
+    },
+    "status": "reported by t28; this manifest records the reference and both hashes, and does NOT assert gate success on the strength of it."
+  },
+  "buildReport": {
+    "path": "team/artifacts/acceptance-20260916-dali10/build-report.json",
+    "status": "PENDING t33",
+    "note": "t33 has not produced build-report.json yet (measured: the file does not exist in the run directory). This field is deliberately left as a placeholder rather than populated from older logs, so that no un-reviewed gate or compile output is presented as a verified result. When t33 lands, its path and hash are to be written here."
+  },
+  "reviewStatus": {
+    "t24": {
+      "verdictRecorded": "ACCEPT",
+      "status": "PARTIALLY WITHDRAWN by the reviewing party",
+      "reason": "The BST closure set (K109/K110) is NOT inside t24 coverage, so t24 ACCEPT must not be read as clearing it. The defect was raised separately and is the subject of t29. The manifest must therefore not imply that everything was fully passed."
+    },
+    "t29": {
+      "status": "AWAITING rule-reviewer verdict",
+      "note": "t29 content is complete (payload + evidence + gates re-run on a sandbox copy with 0 new red); the independent four-point review has not yet been returned."
+    },
+    "statement": "No claim of full review closure is made. t24 coverage is partial and t29 review is outstanding.",
+    "landingGate": "BLOCKED pending t40 + t42 (t39 complete). See handoffCitationRisk.landingGate."
+  },
+  "handoffCitationRisk": {
+    "issue": "Superseded payload/evidence hashes are still circulating in teammate handoffs. Recorded here so that a reviewer opening the payload by hash is not misled, and so the correct values are stated in the artefact-of-record.",
+    "authoritativeCurrentValues": [
+      {
+        "artefact": "implementation-payload-TM600-TM601.cpp",
+        "size": 43806,
+        "sha256": "66abc088ae6bd5f9b9d7201673003fc0be2450fd6f1f222c6a4a902cbe4f0cc4",
+        "mtime": "2026-09-16 21:09:24",
+        "revisionNote": "FROZEN under the captain stop-writing order; no writes since 21:09:24.",
+        "mustContain": [
+          "executable code (comments stripped): K48_ACM5_AMP_REF = 1",
+          "executable code (comments stripped): K76_ACM_BST = 1",
+          "executable code (comments stripped): K109_BUSL1_PB0 = 0",
+          "executable code (comments stripped): K110_ACM18_BST = 0",
+          "executable code (comments stripped): K46 = 0",
+          "executable code: TM600 ACM Sets = 10",
+          "executable code: TM601 ACM Sets = 0",
+          "executable code: delay_ms(1) = 6",
+          "executable code: delay_ms(2) = 0",
+          "executable code: SetClamp(50, 50) = 2",
+          "executable code: MeasureVI(200, 5, FPVIe_MV_X10) = 2",
+          "executable code: bare 126 tokens = 0",
+          "executable code: K126_V1P5_CAP = 2",
+          "executable code: ERROR_RES = 2",
+          "executable code: K5_VBUS_Cap + K44_Cap_SW2_BST2 + K45_Cap_SW1_BST1 = 0",
+          "executable code: K57_CAP_BST_SW = 2",
+          "cbite.SetOn calls = 2",
+          "BOM present = 1; lone LF = 0; CRLF pairs = 566"
+        ],
+        "revisionBoundInventoryWarning": "This inventory is REVISION-BOUND. An earlier generation (39,457 B / 2d0984d9... ) carried K109_BUSL1_PB0 = 1 and K110_ACM18_BST = 1 and did NOT carry K48/K76; a receipt quoting those counts describes that generation, not this one. Recompute every key on the current bytes before certifying."
+      },
+      {
+        "artefact": "t29-k110-evidence.md",
+        "size": 13978,
+        "sha256": "b8e400ca14f37ff9c355c692e0c52562ae4efef96fc6296532dc40588f1d948e",
+        "mtime": "2026-09-16 20:11:00",
+        "revisionNote": "Evidence/commentary artefact, not a deliverable. Re-measured at the revision above.",
+        "revisionBoundInventoryWarning": "Its per-function rationale and revision history are point-in-time. Quote it for reasoning, not for current counts."
+      },
+      {
+        "artefact": "APPLY-TM600-TM601.md",
+        "size": 9005,
+        "sha256": "27d18e1efaee6fc90f85bedff5e3d1e76ab6e2153fa92e603480e3a825ed7827",
+        "mtime": "2026-09-17 01:13:04",
+        "revisionNote": "Instructional document. A READER RULE section was APPENDED (append-only; no existing line modified, no history rewritten) stating the authoritative closed set, the gate expectation, and the citation discipline. The payload-hash row is still known-stale and flagged; the landing owner refreshes it at landing.",
+        "revisionBoundInventoryWarning": "Instructional document; its embedded hash is known-stale."
+      }
+    ],
+    "supersededValuesSeenInHandoffs": [
+      {
+        "value": "implementation-payload-TM600-TM601.cpp = 36381 B / 73b511b775beda61cc91ea41fdc5358e53579fb4e32cc553bf47792667fea19e",
+        "status": "SUPERSEDED by the t29 addendum revision",
+        "risk": "A reviewer handed this hash opens a payload WITHOUT the per-function justification and could conclude the mandated item was never produced — a false finding traceable only to the citation.",
+        "disposition": "Corrected with test-strategy-architect; still appears in their notes as of the latest exchange, and they report alignment, so the discrepancy is recorded here rather than re-litigated."
+      },
+      {
+        "value": "t29-k110-evidence.md = 10062 B / 1069e025 (and a later citation 1069e025…)",
+        "status": "SUPERSEDED",
+        "disposition": "same as above"
+      }
+    ],
+    "instructionToReviewer": "Verify the deliverable against the values in authoritativeCurrentValues, not against any hash quoted in a message. If a quoted hash is not one of these, treat the message as stale for that field and recompute from disk.",
+    "criterion": "PRIMARY RULE (co-authored with test-strategy-architect, amended): cite an artefact by CONTENT KEY, not by a single hash - the owner keeps revising it, so a hash anchor races. A payload file is the right revision only if it satisfies EVERY key below, counted with COMMENTS STRIPPED (\"executable code\"). Specifying the count without \"executable code\" would let a file whose relay list has been deleted still pass because the justification comment still mentions the relay names - the same failure class as prose standing in for executable fact.",
+    "selfStalenessWarning": "This block is itself subject to the same drift it warns about: t38 moved the payload after an earlier version of it was written. The content keys are the stable part; the hashes are a point-in-time check. Recompute from disk before relying on any value here.",
+    "countingMethod": "TWO BINDING COUNTING RULES. (1) STRIP: counts use the PROPER comment strip re.sub(r\"//.*$\",\"\",text,flags=re.M) - inline trailing comments removed, not merely lines that begin with //. A line-leading-only strip leaves text like \"// ERROR_RES = 9999\" counted and over-reports ERROR_RES as 4 instead of 2. (2) ENUMERATION: a count must NOT rely on token text search; it must enumerate via MACRO EXPANSION plus an explicit alias list. Instance: TM641 (L7623) and TM643 (L7734) close K48/K76 through the composite K_FPVIH_TO_BST_A (StdAfx.h:377 = 46,48,76), which a literal search for \"K48\" or even \\bK48\\b cannot see - the word-boundary form fails because \"_\" is a word character. Both rules are the same failure class: a criterion whose implementation detail is unstated cannot certify a revision. Every key must therefore be quoted WITH its strip method, its definition, and (where macros are involved) the enumeration method. Cross-check for ACM Sets: unstripped = stripped + comment mentions.",
+    "landingGate": {
+      "status": "GATES PASS (bst-sw GREEN on the frozen payload under contract rev 29) - NOT cleared to land: target tree not yet updated.",
+      "gates": "relay-trace PASS exit 0 / bst-sw PASS exit 0 (missing=[]) / awg PASS exit 0 - all three run on a SANDBOX COPY (gate-check-t21/source/test.cpp, built by substituting this payload's TM600..TM601 region into the deployed tree). Verified at contract revisions 29, 33, 37 and 39 - four independent runs - so the green is stable across the contract being rebuilt repeatedly, which is the condition that produced the earlier red. Cite the contract by the VALUE the gate consumes, (aliasResolution[3].closedRelayNumbers = [48, 60, 61, 76]), or by a revision RANGE (>= 29) - not by a revision number or a file size, both of which move every few minutes.",
+      "completed": [
+        "t39 (contract owner)",
+        "t40 (rule-reviewer, final 37430005...)",
+        "t42 (schematic-expert, PASS)",
+        "t44 (supplement)",
+        "t43 (rule-reviewer independent review + ruling: review/t43-t42-review-and-unknown-ruling.md = 7,439 B / d4c3835437a41c9f1bee7b15c2d381da69c99ceacd0503f5f6dbb0f1023e90a7 - ruled ch5-vs-ch18 UNKNOWN(c) and prescribed the union fix)"
+      ],
+      "whyT42Matters": "SUPERSEDED by events, retained for history: t42 concluded ch5 (implying [48,76]); t43 then ruled ch5-vs-ch18 UNKNOWN(c) and prescribed the union; the captain relied on production behaviour to authorise REMOVING K109/K110; t53 then corrected the contract decision field to the ch5 set. The ch5 reading is now BOTH the operative reading and the contract's declared value.",
+      "tm600ExposureOpen": "CLOSED. The payload closes the ch5 leg (K48_ACM5_AMP_REF + K76_ACM_BST, 1 each), closes no K109/K110 (0 each), and the contract now declares the same required-on set, so bst-sw passes. Not an electrical conclusion: the gate compares a required-on SET, it does not verify that the source reaches BST on hardware.",
+      "verifiedCounts": {
+        "payloadSha256": "66abc088ae6bd5f9b9d7201673003fc0be2450fd6f1f222c6a4a902cbe4f0cc4",
+        "payloadSize": 43806,
+        "executableK48_ACM5_AMP_REF": 1,
+        "executableK76_ACM_BST": 1,
+        "executableK109_BUSL1_PB0": 0,
+        "executableK110_ACM18_BST": 0,
+        "executableK46": 0,
+        "executableERROR_RES": 2,
+        "executableDelayMs1": 6,
+        "executableDelayMs2": 0,
+        "executableSetClamp": 2,
+        "executableMeasureVI": 2,
+        "verifiedAt": "2026-09-16T21:25:53+0800",
+        "note": "FROZEN value (captain stop-writing order). K48/K76 = 1 each, K109/K110 = 0, K46 = 0: the ch5 single route. Any receipt quoting K109/K110 = 1 describes the union revisions (39,457 / 41,797 / 42,998 B), not this one."
+      },
+      "noSelfApproval": "The author of this payload does not certify it; independent review of 66abc088... and the captain's REPLACE are outstanding. Gate PASS is not electrical sign-off.",
+      "gateHistoryNote": "Gate history, retained: t39+t40 -> t40+t42 -> t43 -> CLOSED(batch) -> BLOCKED on bst-sw (rev 25-28, always missing=[110]) -> GREEN after t53 corrected the DECISION field to ch5 (rev 29). Six wordings during one run. The lesson the field change confirms: the payload was never the obstacle to that gate; the contract's decision field was, which is why option (1) was taken over rolling the payload back.",
+      "acmSetsDefinition": {
+        "ruling": "ACM Sets(<fn>) = the number of lines in that function body which, AFTER stripping inline comments (re.sub(r\"//.*$\",\"\")) and dropping leading whitespace, are non-empty and contain \".Set\". NOT the instrument-name occurrence count.",
+        "crossCheck": "unstripped count = stripped count + comment mentions (current tree: TM600 11 = 10 + 1; TM601 0 = 0 + 0)",
+        "why": "the two definitions coincide on the current payload by coincidence (TM600 10/10, TM601 0/0) and diverge as soon as a comment inside the executable region mentions the instrument, or a non-.Set reference appears (e.g. an ACM200_RELAY_OFF-only call). A \"usually equal\" definition is a latent false pass, so the definition must be written verbatim wherever the key is used."
+      },
+      "t43RulingApplied": "The payload implements the t43 §4 minimal safe fix: the UNION of the ch5 BST branch (K48_ACM5_AMP_REF + K76_ACM_BST) and the contract-literal branch (K109/K110/K61), in ONE SetOn call. The ruling records that neither branch alone is safe - omitting K48/K76 leaves BST unreachable if ch5 is right, and deleting K110 breaks the chain if ch18 is right - and that the union is safe under both because both branches arrive on the same BST net. Side effect registered: --check-extra MUST NOT be enabled for this revision, since the union deliberately over-closes; that limitation is annotated in the payload comment as t43 requires.",
+      "contractRevisionSeen": "setup-contract.json revision 39 at the latest re-run; aliasResolution[3].closedRelayNumbers = [48, 60, 61, 76] (ch5), with [110, 61] demoted into closedRelayNumbersSuperseded. That field is the gate criterion; the route enumerations and the relaySet pool are locators only. The earlier [110, 61] live value is what reddened bst-sw at revisions 25-28. NOTE: the contract has been rebuilt many times during this run, so the criterion to quote is the VALUE, not a revision number."
+    },
+    "scopeWindows": {
+      "rule": "State the SCOPE of every count, not just its value - function body vs file level, mentions-including-comments vs executable, and the revision.",
+      "instances": [
+        "TM600 instrument mentions: 6 (5 code + 1 comment) - a \"5\" and a \"6\" were both quoted with different scopes.",
+        "K48/K76 in TM607/608/609/640: 2 mentions each at line level (1 code + 1 comment) vs 1 executable line; both correct.",
+        "K109_BUSL1_PB0 all-text 3 vs executable 0 on the current frozen payload.",
+        "the six-function collision set (any leg closure, incl. composite-only) vs the four-function pattern set (drives AND closes explicitly) - they must not be collapsed."
+      ],
+      "note": "Recorded because four separate apparent disagreements in this run turned out to be scope differences rather than factual ones. Collision questions use the SIX; pattern questions use the FOUR."
+    },
+    "withdrawnFromAuthoritativeList": [
+      {
+        "artefact": "t40-tm601-bst-evidence.md",
+        "why": "REMOVED from authoritativeCurrentValues: it is ANOTHER MEMBER'S evidence artefact, and its recorded value (11,691 B / de6bb17f...) no longer matches disk (12,921 B / 71c5b9ea9809a2d00853273ba557cac13dd4b37d442212c3176e1ffd0979da30 @20:15:48). I can vouch for MY artefacts; I cannot certify the drift history of someone else's. Referenced by path and owner only.",
+        "disposition": "Cite by path; recompute before use; the owning member owns its content."
+      }
+    ],
+    "readerNoteOldRelaySetShorthand": {
+      "rule": "Readers of the t42 / t44 family (and of t43 harness notes): any [48,61,76] there is the OLD INCOMPLETE SHORTHAND (it omits the SW side K60). The authoritative closed set is [48,60,61,76] (BST [48,76] in the ACM200 family / SW [60,61] in FPVIe[L]); the gate expectation is {48,60,61,76,83}. Cite those, not the shorthand.",
+      "whyItMatters": "A stale wording WITHOUT an in-band annotation reads as a live target; a stale wording WITH an in-band label is a record and may be kept. The criterion is the in-band annotation, not the mere presence of the old string.",
+      "source": "Shared practice across both sides: test-strategy-architect note section 2.5 plus the rule-reviewer t55 correction file. Not attributable to a single author.",
+      "citationDiscipline": "Cite these documents by PATH and OWNER, never by a hardcoded size or hash: a pinned measurement of a moving artefact becomes a new drift source. (Observed instance: a mirror size recorded as 97,636 B while the live file is far larger and still growing.)"
+    },
+    "citationModel": {
+      "why": "Added because a reviewer reported that the L1/L2 mix in this document could not be mechanically recovered: a string is structurally identical whether it is a reference or a status. Declaring the convention below makes the structure readable without inventing a value. No existing value was changed.",
+      "referencePredicate": "A string counts as a REFERENCE only if it names an artefact or an artefact path. Judged by the FIELD NAME that carries it (artefact, path, payloadPath, original, applicationProcedure, command) - never by the value shape, because runId / status / authoredBy / note are also strings and are NOT references.",
+      "L1_definition": "A citation carrying the artefact identity AND a numeric measurement of it (size, sha256, mtime) in the same object.",
+      "L2_definition": "A citation carrying the artefact identity (path or name) with NO numeric measurement; the reader must recompute.",
+      "whereEachIsUsed": [
+        "L1: authoritativeCurrentValues[*] - each entry pairs an artefact with size/sha256/mtime and qualifier fields.",
+        "L2: frozenInputs[*] and changes[*] - inputs and backups are cited by path only; recompute before relying on them.",
+        "L2 (with a value recorded as an anomaly, not as a citation): withdrawnFromAuthoritativeList[*].why, which quotes a recorded-versus-actual mismatch as EVIDENCE for removal rather than as a current identity."
+      ],
+      "consequence": "Under an L2 citation a value-level qualifier (L-a) does not travel, so the sibling field is the only qualifier that survives; under L1 it does travel. That is why the fields in this document are named for their instant where possible, and why the reader is told to recompute."
+    }
+  }
+}

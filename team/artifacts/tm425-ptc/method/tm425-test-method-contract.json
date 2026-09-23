@@ -1,0 +1,343 @@
+{
+  "schemaVersion": "PTC-METHOD-V3",
+  "artifactId": "TM425-test-method-contract",
+  "artifactKind": "test-method-contract",
+  "tm": "TM425",
+  "trial": "tm425-ptc",
+  "role": "test-method-expert",
+  "stage": "METHOD",
+  "verdict": "deliverable_ready",
+  "title": "MNT 1.2V reference trim",
+  "signedInputBoundary": {
+    "strategyContract": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm425-ptc\\strategy\\tm425-resource-config-contract.json",
+    "dftMeta": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM425\\dft-meta.json"
+  },
+  "signedInputs": {
+    "strategyContractPath": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm425-ptc\\strategy\\tm425-resource-config-contract.json",
+    "strategyContractSha256": "b5de503e74efa5dd051f2c57a23ec0a23e409e6452498ab1d78c83c8d1b19009",
+    "dftMetaPath": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM425\\dft-meta.json",
+    "dftMetaSha256": "59af92fda9fe506916009d9922756dc1b95c856a0ca72a392ed0311d0b2b667d",
+    "registerEvidencePath": "team/artifacts/tm425-ptc/strategy/register-config-evidence.json",
+    "registerEvidenceSha256": "c7184b122cb78e5e057bf70705efec2869c6e769de6f4f56c82a1257095cb191"
+  },
+  "classification": {
+    "parameterName": "MNT_1P2V_BUF",
+    "isTrim": true,
+    "hasRamp": false,
+    "measurement": {
+      "check": "V(ATEST1)",
+      "quantity": "VOLTAGE",
+      "isToggle": false,
+      "resultTypes": [
+        "Measurement"
+      ],
+      "resultTypeProvenance": [
+        {
+          "type": "Measurement",
+          "state": "SOURCE_DECLARED"
+        }
+      ]
+    }
+  },
+  "methodFamily": "trim",
+  "resourceBoundary": {
+    "allocations": [
+      {
+        "endpointId": "VBAT",
+        "dutPin": "VBAT",
+        "selectionState": "SELECTED",
+        "sourceTable": "VBAT_PD3_FXVI",
+        "instrumentCategory": "FXVIe_PLUS",
+        "ports": [
+          "S3_FXVIe_PLUS_FH5",
+          "S3_FXVIe_PLUS_SH5"
+        ],
+        "selectedPath": "S3_FXVIe_PLUS_FH5 -> VBAT_F_S1 ; S3_FXVIe_PLUS_SH5 -> VBAT_S_S1",
+        "requiredActuations": [],
+        "physicalProofs": [
+          {
+            "sourcePort": "S3_FXVIe_PLUS_FH5",
+            "dutPin": "VBAT_F_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S3_FXVIe_PLUS_FH5;dut_pin=VBAT_F_S1]"
+          },
+          {
+            "sourcePort": "S3_FXVIe_PLUS_SH5",
+            "dutPin": "VBAT_S_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S3_FXVIe_PLUS_SH5;dut_pin=VBAT_S_S1]"
+          }
+        ],
+        "functionalRelays": [
+          {
+            "id": "K13",
+            "state": "ON",
+            "reason": "DFT functional relay rule"
+          }
+        ],
+        "evidenceChain": {
+          "dftEndpointLocator": "project/DALI/Output_Global_Material/dft/TM425/dft-meta.json:testCondition.involvedPins",
+          "sourceTableLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h:_PIN_CHANNEL_DEFINE_VBAT_PD3_FXVI_ and extern VBAT_PD3_FXVI",
+          "schematicRouteLocator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs",
+          "relayDefinitionLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h plus Path-Proofs.json required_on",
+          "registerConfigurationLocator": "team/artifacts/tm425-ptc/strategy/register-config-evidence.json"
+        }
+      },
+      {
+        "endpointId": "VDM",
+        "dutPin": "VDM",
+        "selectionState": "SELECTED",
+        "sourceTable": "VDM_SDA_ACM",
+        "instrumentCategory": "ACM200",
+        "ports": [
+          "S5_ACM200_FH7",
+          "S5_ACM200_SH7"
+        ],
+        "selectedPath": "S5_ACM200_FH7 -> VDM_F_S1 ; S5_ACM200_SH7 -> VDM_S_S1",
+        "requiredActuations": [],
+        "physicalProofs": [
+          {
+            "sourcePort": "S5_ACM200_FH7",
+            "dutPin": "VDM_F_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S5_ACM200_FH7;dut_pin=VDM_F_S1]"
+          },
+          {
+            "sourcePort": "S5_ACM200_SH7",
+            "dutPin": "VDM_S_S1",
+            "requiredOn": [],
+            "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S5_ACM200_SH7;dut_pin=VDM_S_S1]"
+          }
+        ],
+        "functionalRelays": [],
+        "evidenceChain": {
+          "dftEndpointLocator": "project/DALI/Output_Global_Material/dft/TM425/dft-meta.json:testCondition.involvedPins",
+          "sourceTableLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h:_PIN_CHANNEL_DEFINE_VDM_SDA_ACM_ and extern VDM_SDA_ACM",
+          "schematicRouteLocator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs",
+          "relayDefinitionLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h plus Path-Proofs.json required_on",
+          "registerConfigurationLocator": "team/artifacts/tm425-ptc/strategy/register-config-evidence.json"
+        }
+      }
+    ],
+    "functionalRelayIds": [
+      "K13"
+    ],
+    "registerConfiguration": {
+      "evidencePath": "team/artifacts/tm425-ptc/strategy/register-config-evidence.json",
+      "evidenceSha256": "c7184b122cb78e5e057bf70705efec2869c6e769de6f4f56c82a1257095cb191",
+      "sourcePath": "project/DALI/reg_config/tm425.sv",
+      "sourceSha256": "16500415e4769c4175305682368b3bf64d3b423d52bd6b0268f03eb55d962c4d",
+      "orderedWrites": [
+        {
+          "sourceLine": 14,
+          "sourceText": "I2CWriteSameData(DEV_ADDR, 0x10, 0x43);  // Write reg 0x10 = 67",
+          "address": "0X10",
+          "value": "0X43"
+        },
+        {
+          "sourceLine": 15,
+          "sourceText": "I2CWriteSameData(DEV_ADDR, 0x57, 0x04);  // Write reg 0x57 = 4",
+          "address": "0X57",
+          "value": "0X04"
+        },
+        {
+          "sourceLine": 16,
+          "sourceText": "I2CWriteSameData(DEV_ADDR, 0x58, 0x02);  // Write reg 0x58 = 2",
+          "address": "0X58",
+          "value": "0X02"
+        }
+      ]
+    }
+  },
+  "methodEvidence": [
+    {
+      "source": "DFT testCondition",
+      "locator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM425\\dft-meta.json:testCondition",
+      "usedFor": "test semantics and power sequence"
+    },
+    {
+      "source": "signed strategy",
+      "locator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm425-ptc\\strategy\\tm425-resource-config-contract.json",
+      "usedFor": "source tables, routes, relays and register source"
+    },
+    {
+      "source": "NU1201.treg",
+      "locator": "D:/PROJECT6-DALI/ForCodexDebug/NU1201.treg:[mnt_v1p2_buf], [_EFUSE_REG_F8]",
+      "usedFor": "TM425 trim target, 16-step size and EFUSE F8 bits 4..7 callback mapping"
+    }
+  ],
+  "methodPhases": [
+    {
+      "id": "MP-01",
+      "name": "safe_start",
+      "actions": [
+        "Verify all selected sources are 0 V.",
+        "Close functional relays: K13."
+      ],
+      "exitCondition": "sources are 0 V and functional relays are closed"
+    },
+    {
+      "id": "MP-02",
+      "name": "static_power",
+      "actions": [
+        "VBAT=4.4 V, current limit 100e-6; DFT vset[vbat,4.4,100e-6,0]"
+      ],
+      "exitCondition": "Code1 power values are present"
+    },
+    {
+      "id": "MP-03",
+      "name": "test_mode",
+      "actions": [
+        "entertestmode();"
+      ],
+      "exitCondition": "test mode entered"
+    },
+    {
+      "id": "MP-04",
+      "name": "register_activation",
+      "actions": [
+        "I2CWriteSameData(DEV_ADDR, 0x10, 0x43);  // Write reg 0x10 = 67",
+        "I2CWriteSameData(DEV_ADDR, 0x57, 0x04);  // Write reg 0x57 = 4",
+        "I2CWriteSameData(DEV_ADDR, 0x58, 0x02);  // Write reg 0x58 = 2"
+      ],
+      "exitCondition": "verified register writes issued in source order"
+    },
+    {
+      "id": "MP-05",
+      "name": "trim_measure",
+      "actions": [
+        "Invoke measure_mnt_v1p2_buf from sub.cpp.",
+        "Write the current EFUSE_REG_F8 work byte to 0xF8; mnt_v1p2_buf occupies bits 4..7.",
+        "Measure V(ATEST1) through VDM_SDA_ACM and return mV to the 1200 mV, 16-step TREG node."
+      ],
+      "exitCondition": "one mV trim measurement per valid site is available"
+    },
+    {
+      "id": "MP-06",
+      "name": "power_down",
+      "actions": [
+        "Set dynamic sources to 0 V.",
+        "Set static sources to 0 V.",
+        "Open functional relays."
+      ],
+      "exitCondition": "all selected sources read 0 V and relays are open"
+    }
+  ],
+  "measurementPlan": {
+    "technique": "direct voltage measurement",
+    "scanRangeResolution": {
+      "state": "NOT_APPLICABLE",
+      "reason": "DFT testCondition.hasRamp is false"
+    },
+    "forceSenseBoundary": [
+      {
+        "sourcePort": "S3_FXVIe_PLUS_FH5",
+        "dutPin": "VBAT_F_S1",
+        "requiredOn": [],
+        "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S3_FXVIe_PLUS_FH5;dut_pin=VBAT_F_S1]"
+      },
+      {
+        "sourcePort": "S3_FXVIe_PLUS_SH5",
+        "dutPin": "VBAT_S_S1",
+        "requiredOn": [],
+        "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S3_FXVIe_PLUS_SH5;dut_pin=VBAT_S_S1]"
+      },
+      {
+        "sourcePort": "S5_ACM200_FH7",
+        "dutPin": "VDM_F_S1",
+        "requiredOn": [],
+        "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S5_ACM200_FH7;dut_pin=VDM_F_S1]"
+      },
+      {
+        "sourcePort": "S5_ACM200_SH7",
+        "dutPin": "VDM_S_S1",
+        "requiredOn": [],
+        "locator": "Path-Proofs.json:accepted_path_proofs[source_port=S5_ACM200_SH7;dut_pin=VDM_S_S1]"
+      }
+    ],
+    "measurementPin": "V(ATEST1)",
+    "quantity": "VOLTAGE",
+    "expectedValue": 1.2,
+    "resultTypes": [
+      "Measurement"
+    ],
+    "trimExecution": {
+      "required": true,
+      "node": "TRIM_NODE &MNT_V1P2_BUF = trim_reg.trim(\"mnt_v1p2_buf\");",
+      "nodeVariable": "MNT_V1P2_BUF",
+      "trimKey": "mnt_v1p2_buf",
+      "executeCallPrefix": "MNT_V1P2_BUF.execute(measure_mnt_v1p2_buf, spec, funcindex, funclabel,",
+      "resultPublisher": "trim_node_execute",
+      "evidence": {
+        "sourcePath": "D:\\PROJECT6-DALI\\ForCodexDebug\\source\\test.cpp",
+        "sourceSha256": "2ed19d63e8d761efcfbf7eaf187ee4e36e9a492bc965c94759e568dd7ff2c90c",
+        "nodeLine": 9327,
+        "executeLine": 9347,
+        "nodeSourceText": "TRIM_NODE &MNT_V1P2_BUF = trim_reg.trim(\"mnt_v1p2_buf\");",
+        "executeSourceText": "MNT_V1P2_BUF.execute(measure_mnt_v1p2_buf, spec, funcindex, funclabel, 1, 0, 0, 0);"
+      },
+      "callback": {
+        "sourcePath": "D:/PROJECT6-DALI/ForCodexDebug/source/sub.cpp",
+        "symbol": "measure_mnt_v1p2_buf",
+        "signature": "void measure_mnt_v1p2_buf(TRIM_NODE*, TREG_MEASURE_FLAG, double*)",
+        "measurementSourceTable": "VDM_SDA_ACM",
+        "sourceSha256": "228be739e4160c75a7c206e438f70600a7846822f62ae173b3db13079107f038",
+        "resultUnit": "mV"
+      },
+      "treg": {
+        "sourcePath": "D:/PROJECT6-DALI/ForCodexDebug/NU1201.treg",
+        "section": "mnt_v1p2_buf",
+        "targetMv": 1200,
+        "stepCount": 16,
+        "assembly": "EFUSE_REG_F8",
+        "i2cAddress": "0xF8",
+        "bitRange": "4..7",
+        "sourceSha256": "a40f74e859d45c9a3a0b355642a1dc4a34036673a29e2b8723a31c844d4e32fa",
+        "key": "mnt_v1p2_buf",
+        "targetUnit": "mV",
+        "targetMillivolts": 1200,
+        "registerBitMappings": [
+          {
+            "register": "F8",
+            "bits": [
+              4,
+              5,
+              6,
+              7
+            ]
+          }
+        ]
+      }
+    },
+    "resultPublisher": {
+      "kind": "trim_node_execute",
+      "minimumCount": 1,
+      "resultNames": [
+        "Measurement"
+      ]
+    }
+  },
+  "powerDownPlan": {
+    "actions": [
+      "Set dynamic sources to 0 V.",
+      "Set static sources to 0 V.",
+      "Open functional relays."
+    ],
+    "safeEndState": "all selected sources at 0 V; selected functional relays open"
+  },
+  "logPlan": {
+    "requiredResults": [
+      "Measurement"
+    ],
+    "context": [
+      "per-site source values",
+      "relay state",
+      "register write source lines"
+    ]
+  },
+  "openItems": [],
+  "handoff": {
+    "nextStage": "RULE_REVIEW_METHOD",
+    "instruction": "Review this exact signed method contract before implementation."
+  }
+}

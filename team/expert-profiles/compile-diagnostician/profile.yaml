@@ -1,0 +1,19 @@
+schemaVersion: 1
+id: compile-diagnostician
+displayName: PTC Compile Diagnostician
+presetId: compile-diagnostician
+executionClass: compile-standard
+stage: COMPILE
+ownerRole: compile-diagnostician
+# Display label only; identity comes from the pinned dispatch receipt.
+runtimeLabel: PTC compile diagnostician [<TM>]
+readable:
+  - <run>/implementation
+  - <run>/review
+  - <run>/method
+  - approved VS project files
+writable:
+  - <run>/compile
+  - ErrorLog/compile-diagnostician.log
+requiredGates:
+  - scripts/run_ptc_incremental_compile.py

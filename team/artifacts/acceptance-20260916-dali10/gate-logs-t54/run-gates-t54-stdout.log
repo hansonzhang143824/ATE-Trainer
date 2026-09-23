@@ -1,0 +1,22 @@
+基线(存量红) 已加载: cbit
+================ run_gates 汇总 ================
+  id               门禁                       状态         exit  秒
+  material-audit   材料门 规则自检                 GREEN      0     0.33
+  material         材料门 主门                   GREEN      0     0.20
+  material-status  材料状态索引 漂移                GREEN      0     0.50
+  awg              AWG/Toggle 3参数 E005      GREEN      0     0.25
+  meta             meta 全覆盖门                GREEN      0     1.90
+  smoke            单函数冒烟                    GREEN      0     0.40
+  input-sync       输入同步门                    GREEN      0     0.26
+  relay-trace      继电器反向检查 E                GREEN      0     0.38
+  merge            合并纪律                     GREEN      0     0.32
+  bst-sw           BST-SW 黄金约束              NEW-RED    1     0.30
+  cbit             CBIT 定义校验                KNOWN-RED  1     1.08
+  path-def         通路定义校验                   GREEN      0     0.30
+*** 新增红 1 个（阻塞）***
+  [bst-sw] BST-SW 黄金约束  exit=1
+      - TM600_HS_RDSON: 契约声明必需的继电器 K48 **未出现在 cbite.SetOn 中** (契约来源: aliasResolution[bst2sw].closedRelayNumbers (usedByTm lists TM600) | 契约侧 locator: pinRouteTable[BST][列2: FPVIe → PIN (BUS继电器) | CH0 High] L39; pinRouteTable[BST][列3: QTMUe → PIN (BUS继电器) | None] L461; pinRouteTable[BST][列4: QVMe → PIN (BUS继电器) | None] L536; pinRouteTable[BST][列6: ACM200 → PIN (Share继电器) | None] L672; relaySet; payload locator: test.cpp:9081; 该函数实际闭合=['K126_V1P5_CAP', 'K13_VBAT_Cap', 'K57_CAP_BST_SW', 'K60_BUSL0_VCP', 'K61_ACM8_SW', 'K83_BUSH0_PMID', 'K85_CAP_PMID'])
+      - TM600_HS_RDSON: 契约声明必需的继电器 K76 **未出现在 cbite.SetOn 中** (契约来源: aliasResolution[bst2sw].closedRelayNumbers (usedByTm lists TM600) | 契约侧 locator: pinRouteTable[BST][列2: FPVIe → PIN (BUS继电器) | CH0 High] L39; pinRouteTable[BST][列3: QTMUe → PIN (BUS继电器) | None] L461; pinRouteTable[BST][列4: QVMe → PIN (BUS继电器) | None] L536; pinRouteTable[BST][列6: ACM200 → PIN (Share继电器) | None] L672; relaySet; payload locator: test.cpp:9081; 该函数实际闭合=['K126_V1P5_CAP', 'K13_VBAT_Cap', 'K57_CAP_BST_SW', 'K60_BUSL0_VCP', 'K61_ACM8_SW', 'K83_BUSH0_PMID', 'K85_CAP_PMID'])
+      日志: team\artifacts\acceptance-20260916-dali10\gate-logs-t54\bst-sw.log
+存量红（已知, 不阻塞）: cbit
+日志目录: team/artifacts/acceptance-20260916-dali10/gate-logs-t54

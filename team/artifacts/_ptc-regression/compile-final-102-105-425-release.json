@@ -1,0 +1,11 @@
+{
+  "stage": "COMPILE",
+  "mode": "incremental",
+  "timeoutSeconds": 10.0,
+  "source": "D:\\PROJECT6-DALI\\ForCodexDebug\\source\\test.cpp",
+  "exitCode": 0,
+  "elapsedSeconds": 5.365,
+  "stdout": "\n>>> Step 0: 编译前保存 VS 文档\n  OK: VS12.0 (DTE) 已保存所有打开的文档\n\n>>> Step 1: 解析工程路径\n  OK: 项目文件: D:\\PROJECT6-DALI\\ForCodexDebug\\source\\F12011.vcxproj\n  OK: MSBuild: C:\\Program Files (x86)\\MSBuild\\12.0\\Bin\\MSBuild.exe\n  OK: PlatformToolset: v120\n\n>>> 构建 [Release]  target=Build  platform=Win32\n  OK: Release PASSED (0 errors, 0 warnings)\n\n=== 全部完成, 总耗时 4.5s ===\n",
+  "stderr": "",
+  "sourceSha256": "2ed19d63e8d761efcfbf7eaf187ee4e36e9a492bc965c94759e568dd7ff2c90c"
+}

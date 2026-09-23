@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "tm": "TM108",
+  "trial": "tm108-ptc",
+  "role": "test-method-expert",
+  "stage": "METHOD",
+  "status": "BLOCKED",
+  "verdict": "blocked_routed_to_owner",
+  "finding": {
+    "id": "TM108-METHOD-K13-001",
+    "type": "missing_functional_relay",
+    "summary": "The signed strategy omits K13 VBAT stabilizing capacitor relay required for the VBAT supply phase.",
+    "affectedEndpoint": "VBAT",
+    "evidence": [
+      {
+        "path": "project/DALI/Output_Global_Material/dft/TM108/dft-meta.json",
+        "locator": "rawIntent.Power, rawIntent.Dynamic, rawIntent.Code1",
+        "fact": "VBAT is a 3 V supply, while another pin is the voltage-ramp source; no VBAT current measurement is declared."
+      },
+      {
+        "path": "knowledge/hardware/relays.md",
+        "locator": "lines 120-138, FR-001",
+        "fact": "A powered pin requires its Cap by default; only current measurement or voltage ramp on that same pin removes it. DALI VBAT Cap is K13."
+      },
+      {
+        "path": "knowledge/standards/relay-checklist.md",
+        "locator": "lines 30-42, FR-001 reverse check",
+        "fact": "A pure supply pin keeps its capacitor relay; VBAT uses K13_VBAT_Cap."
+      },
+      {
+        "path": "project/DALI/Output_Global_Material/schematic/SCH-Connect-Map.txt",
+        "locator": "line 914; VBAT 稳压 Cap2_VBAT_S1 C=4.7uF 需闭合: K13",
+        "fact": "The current schematic product identifies K13 as the relay for VBAT's stabilizing capacitor."
+      },
+      {
+        "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm108-ptc\\strategy\\tm108-resource-config-contract.json",
+        "locator": "resourceSummary.setOnRelayUnion and relayGroups[endpointId=VBAT].setOnRelayIds",
+        "fact": "The signed SetOn union is [65]; no relay group includes K13."
+      }
+    ],
+    "impact": "METHOD cannot define the required VBAT power-on phase inside the signed relay boundary."
+  },
+  "signedInputBoundary": [
+    {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm108-ptc\\strategy\\tm108-resource-config-contract.json",
+      "sha256": "c57da3f1fe134597cd6ca092007b4d4b68044fab996be78664e26a8bf8c4c820"
+    }
+  ],
+  "requiredOwnerAction": {
+    "owner": "test-strategy-architect",
+    "action": "Re-evaluate VBAT's functional stabilizing capacitor; if required, add K13 to the VBAT relay group and SetOn union, validate the revised strategy, and acknowledge this finding id in resolvedFindings.",
+    "findingId": "TM108-METHOD-K13-001"
+  },
+  "audit": {
+    "priorResolvedFindingId": "TM108-METHOD-K65-001",
+    "priorResolvedFindingPath": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm108-ptc\\method\\tm108-method-blocked-K65-resolved.json",
+    "priorResolvedFindingSha256": "240bdee181d731a9d3dc3f6347a874225bb94de4f760b643ad53894a53c18d4f",
+    "acknowledgedInStrategy": true
+  },
+  "methodDeliverableWritten": false
+}

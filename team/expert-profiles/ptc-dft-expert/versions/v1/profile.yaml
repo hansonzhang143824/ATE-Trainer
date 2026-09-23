@@ -1,0 +1,15 @@
+schemaVersion: 1
+id: ptc-dft-expert
+displayName: PTC DFT Expert
+presetId: ptc-dft-expert
+executionClass: input-dft
+stage: INPUT_SYNC
+ownerRole: dft-expert
+readable:
+  - project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx
+  - project/DALI/Output_Global_Material/dft/<TM>
+writable:
+  - project/DALI/Output_Global_Material/dft/<TM>
+  - project/DALI/ErrorLog/dft-expert.log
+requiredGates:
+  - scripts/validate_dft_outputs.py

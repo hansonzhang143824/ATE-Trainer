@@ -1,0 +1,1082 @@
+{
+  "schemaVersion": 2,
+  "artifactId": "tm103-test-method-contract",
+  "artifactKind": "test-method-contract",
+  "taskId": "TM103-PTC-METHOD",
+  "trial": "tm103-ptc",
+  "role": "test-method-expert",
+  "stage": "METHOD",
+  "projectId": "DALI",
+  "tm": "TM103",
+  "generatedAt": "2026-09-18T03:07:24.629Z",
+  "verdict": "deliverable_ready",
+  "boundary": {
+    "owned": [
+      "power sequencing",
+      "phase states and actual node voltages",
+      "measurement procedure and calculation",
+      "limits usage",
+      "power-down",
+      "Log",
+      "Golden applicability"
+    ],
+    "notOwned": [
+      "source allocation",
+      "routes",
+      "relay groups (functional + isolation)",
+      "register delta values"
+    ],
+    "notOwnedOwner": "test-strategy-architect",
+    "statement": "Every source, route, relay and register value in this contract is quoted from the signed strategy contract and was not re-decided. This contract decides only when and in what order those resources are used, what is measured, how it is logged, and how the item is powered down."
+  },
+  "bindingInputs": [
+    {
+      "path": "team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json",
+      "role": "signed strategy boundary",
+      "sha256": "92eb967dcc96807010c811e4c4d46ddc205ec2d1dd467dcd8d238bb249c6954a",
+      "sha256Verified": true,
+      "sha256Command": "python -c \"import hashlib;print(hashlib.sha256(open(r'team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json','rb').read()).hexdigest())\"",
+      "sha256MatchesHandoffClaim": true
+    },
+    {
+      "path": "team/artifacts/tm103-ptc/strategy/deliverable-ready.json",
+      "role": "strategy handoff (event deliverable_ready, nextRole test-method-expert)"
+    },
+    {
+      "path": "team/artifacts/tm103-ptc/input-manifest.json",
+      "role": "binding resolved intent decision"
+    },
+    {
+      "path": "team/artifacts/tm103-ptc/dft/dft-meta.json",
+      "role": "DFT intent facts for TM103"
+    },
+    {
+      "path": "team/artifacts/tm103-ptc/dft/dft-conditions.yaml",
+      "role": "DFT intent facts for TM103 (raw)"
+    }
+  ],
+  "handedOffOpenItems": [
+    {
+      "id": "OI-TM103-STR-01",
+      "owner": "test-method-expert",
+      "state": "RESOLVED_BY_METHOD",
+      "question": "ACM200 measurement range/limit for the I(ATEST0) 0.5 uA measurement",
+      "resolution": {
+        "voltageRange": "ACM200_3p6V",
+        "currentRange": "ACM200_1UA",
+        "mode": "FV"
+      },
+      "authority": [
+        "scripts/gen_power_sequence.py:41-44 (ACM200 ascending range table, table_max = 50% of full scale)",
+        "scripts/gen_power_sequence.py:269-277 (select_range: first table_max >= value, equality boundary takes that range)",
+        "scripts/gen_power_sequence.py:102 and :353-364 (VDM is an ATEST-class analog pin)",
+        "skills/agents/power-on-agent.md:71 (R-PON-09: ATEST-class analog pin -> set the measurement range directly, no two-stage)",
+        "knowledge/standards/rules-registry.md:53 (R-PON-09 pin-type correction names VDM as an ATEST-class analog pin)"
+      ]
+    },
+    {
+      "id": "OI-TM103-STR-02",
+      "owner": "test-method-expert",
+      "state": "RESOLVED_BY_METHOD",
+      "question": "FXVIe_PLUS compliance/range triple for VBAT = 4.0 V",
+      "resolution": {
+        "viMode": "FV",
+        "voltageRange": "FXVIe_PLUS_10V",
+        "currentRange": "FXVIe_PLUS_100MA"
+      },
+      "authority": [
+        "scripts/gen_power_sequence.py:46-51 (FXVIe_PLUS range table)",
+        "scripts/gen_power_sequence.py:243-249 (vset -> vRange from the setpoint, iRange from the compliance limit)",
+        "scripts/gen_power_sequence.py:106 (DEFAULT_IRANGE_A = 0.05 A, the project convention for a vset source with no published current limit)",
+        "scripts/gen_power_sequence.py:264-266 (R-PON-01: vset -> FV)",
+        "Library-Functions/Test_Method/Test_Method.cpp:95-108 (Test_Method::get_fxvi_v_range(4.0) returns FXVIe_PLUS_10V - independent project corroboration of the voltage range)"
+      ],
+      "residual": "The current range is the project's documented default compliance (0.05 A) because no VBAT current is published in any runner-listed input. It is a compliance range, not a pass/fail limit."
+    },
+    {
+      "id": "OI-TM103-STR-03",
+      "owner": "rule-reviewer",
+      "state": "ACKNOWLEDGED_INHERITED_NOT_REOPENED",
+      "statement": "Loop orientation (source HIGH terminal forced onto VBAT and VDM, low side returning through AGND) is a strategy-layer statement owned by rule-reviewer. This method carries it as an inherited boundary statement for its phase state table and does not re-decide it.",
+      "inherited": "team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json openItemsForDownstream[OI-TM103-STR-03] and resourceAllocation[].returnPath"
+    }
+  ],
+  "methodSelection": {
+    "structuralType": "general test item (normal framework, static DC point)",
+    "structuralTypeEvidence": [
+      "knowledge/standards/test-types.md:60 (class 7 general test item = FV-MV / FI-MV / FV-MI / FI-MI / AWG)",
+      "knowledge/standards/test-types.md:85 (ATEST static measurement guard: Check contains only V(ATESTx)/I(ATESTx), Dynamic empty, no multi-value vset on the same pin -> NOT a toggle, it is a pure ATEST mux static measurement)",
+      "team/artifacts/tm103-ptc/dft/dft-meta.json pinConditions.dftDynamicTokens (DFT Dynamic field is empty for TM103)"
+    ],
+    "measurementMethod": "FV-MI (force voltage on the measurement pin, measure its current) - one of the four basic IV methods",
+    "measurementMethodEvidence": [
+      "knowledge/standards/test-types.md:70 (no AWG -> one of FV-MV / FI-MV / FV-MI / FI-MI via MeasureVI)",
+      "knowledge/standards/test-types.md:74 (R-AWG: AWG is an addition, not a replacement; without AWG it is forbidden to write it as AWG)",
+      "skills/agents/measure-agent.md:19-38 (mode 1 MI: MeasureVI then GetMeasResult(site, MIRET))"
+    ],
+    "notToggle": {
+      "state": "NOT_APPLICABLE",
+      "reason": "No ramp-and-toggle intent, no DTEST observation, no same-pin multi-value vset; the DFT Check is a DC current on an ATEST-muxed pin.",
+      "evidence": [
+        "knowledge/standards/test-types.md:85",
+        "team/artifacts/tm103-ptc/dft/dft-meta.json pinConditions",
+        "team/artifacts/tm103-ptc/input-manifest.json canonicalInputs.intentResolution.entry.decision.monitorIntent"
+      ]
+    },
+    "notTrim": {
+      "state": "NOT_APPLICABLE",
+      "reason": "DFT Trim column is empty and the item declares no trim parameter family.",
+      "evidence": [
+        "team/artifacts/tm103-ptc/dft/dft-meta.json identity/rawIntent (Trim empty)",
+        "project/DALI/meta/dali_tm_meta.json TM103 row (trim: null)"
+      ]
+    },
+    "chipMechanism": "In test mode the die routes the internal IBP_HR 0.5 uA reference current to the ATEST0 multiplexer output (EN_ATEST0=1, ATEST0_MUX=4). The pin designated by the resolved decision, VDM, carries that current; with VBAT = 4.0 V as the supply the die is in its normal test-mode bias condition, and forcing VDM to 1.0 V and reading the current on the same pin measures I(ATEST0).",
+    "chipMechanismEvidence": [
+      "team/artifacts/tm103-ptc/input-manifest.json canonicalInputs.intentResolution.entry.decision.monitorIntent ('I(ATEST0) IBP_HR 0.5 uA current, forced/measured on the VDM pin')",
+      "project/DALI/reg_config/tm103.sv:14-16 (0x57=0x02 EN_ATEST0=1, 0x5E=0x04 ATEST0_MUX=4)",
+      "team/artifacts/tm103-ptc/dft/dft-meta.json limits (ExpectValue 0.5, Unit uA, checkGoverning I(ATEST0))"
+    ],
+    "checkPinIsSourcePin": {
+      "state": "NO_SEPARATE_MONITOR_SOURCE",
+      "reason": "The monitor quantity is the current of the pin that is itself forced, so the check pin and the force pin are the same physical endpoint and no separate monitor source is allocated by the signed strategy.",
+      "evidence": [
+        "team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json endpointDerivation.note (sweptPin and monitorDutPin coincide on VDM, one physical pin and one resourceAllocation row)",
+        "knowledge/standards/relay-checklist.md:42 (Cap reverse check: test-pad bias pins AMUX/VDM/NTC are not supply rails)"
+      ]
+    }
+  },
+  "goldenApplicability": [
+    {
+      "golden": "knowledge/references/L4-Golden-code/TM130_Trim_VBG.md + TM130_sub_measure.md",
+      "applicability": "partial",
+      "reason": "Same chip family and the same ATEST0-mux observation skeleton (enter test mode -> write EN_ATEST0/ATEST0_MUX -> settle -> observe) is reused. The measured quantity differs: TM130 observes a muxed VOLTAGE with FI=0 and MVRET, while TM103 forces 1 V on the pin and reads its CURRENT with MIRET. The relay set (K30_VBAT_Cap) and the register bytes also differ, so nothing was copied by name.",
+      "reusedAs": "ATEST mux observation skeleton and power sequencing shape only",
+      "rewritten": [
+        "measurement quantity (voltage -> current)",
+        "source mode (FI=0 MV -> FV 1 V MI)",
+        "current range (none -> ACM200_1UA)",
+        "settle time (Golden 2 ms -> the governing project value delay[1e-3], see methodPhases PH-06)",
+        "registers (0x56/0x67/0x68 -> the signed 0x57/0x5E)"
+      ]
+    },
+    {
+      "golden": "knowledge/references/L4-Golden-code/tm600-normal-highcurrent.md",
+      "applicability": "unavailable",
+      "reason": "High-current FPVIe method; TM103 is a sub-microamp static measurement and allocates no FPVIe source."
+    },
+    {
+      "golden": "knowledge/references/L4-Golden-code/UVLO.md, OVP.md, ZCD/HS_ZCD/LS_ZCD.md, Rdson.md, toggle-template.md",
+      "applicability": "unavailable",
+      "reason": "Threshold / ramp-toggle / RDSON methods. TM103 is explicitly not a toggle (see methodSelection.notToggle) and has no ramp-and-flip intent."
+    },
+    {
+      "golden": "knowledge/references/L4-Golden-code/OTP_READ_PRE_POST_BURN-*.md, sub-measure-template.md, TM623_*.md",
+      "applicability": "unavailable",
+      "reason": "OTP/MTP burn-readback and Trim sub.cpp templates; TM103 has no trim, no NVM access and no sub.cpp measure callback."
+    }
+  ],
+  "inheritedStrategyBoundary": {
+    "endpointSet": [
+      "VBAT",
+      "VDM"
+    ],
+    "resourceAllocation": [
+      {
+        "allocationId": "RA-1",
+        "dutPin": "VBAT",
+        "object": "VBAT_PD3_FXVI",
+        "sourceTableKind": "FXVIe_PLUS",
+        "channel": "S3_5",
+        "objectEvidence": "project/DALI/Pin_Channel_define.h:12 and :93",
+        "pathClosure": "none energized (K8_PD3 un-actuated NC path)",
+        "endpointSelectorRelay": {
+          "number": 8,
+          "name": "K8_PD3",
+          "requiredState": "NOT_ACTUATED"
+        },
+        "functionalRelays": [
+          13
+        ],
+        "isolationRelay": {
+          "number": 7,
+          "name": "K7_BUSH_VBAT",
+          "requiredState": "NOT_ACTUATED"
+        }
+      },
+      {
+        "allocationId": "RA-2",
+        "dutPin": "VDM",
+        "object": "VDM_SDA_ACM",
+        "sourceTableKind": "ACM200",
+        "channel": "S5_7",
+        "objectEvidence": "project/DALI/Pin_Channel_define.h:22 and :103",
+        "pathClosure": "none energized (K59_SDA un-actuated NC path)",
+        "endpointSelectorRelay": {
+          "number": 59,
+          "name": "K59_SDA",
+          "requiredState": "NOT_ACTUATED"
+        },
+        "functionalRelays": [],
+        "isolationRelays": [
+          {
+            "number": 58,
+            "name": "K58_BUSH_VDM",
+            "requiredState": "NOT_ACTUATED"
+          },
+          {
+            "number": 152,
+            "name": "K152_VDM_TMU",
+            "requiredState": "NOT_ACTUATED"
+          }
+        ],
+        "returnPath": "ACM200 low ends grouped to AGND_F; the loop closes through AGND with no relay"
+      }
+    ],
+    "setOnClosure": {
+      "relays": [
+        13
+      ],
+      "relayNames": [
+        "K13_VBAT_Cap"
+      ],
+      "exclusive": true,
+      "oneCall": true,
+      "cbit": [
+        "S34_CBIT13"
+      ],
+      "source": "team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json setOnClosure and relayGroups[RG-1]; the schedule (when inside the sequence K13 is closed) is assigned to this stage by that contract"
+    },
+    "mustRemainUnactuated": {
+      "relays": [
+        8,
+        7,
+        59,
+        58,
+        152
+      ],
+      "relayNames": [
+        "K8_PD3",
+        "K7_BUSH_VBAT",
+        "K59_SDA",
+        "K58_BUSH_VDM",
+        "K152_VDM_TMU"
+      ],
+      "note": "SetOn is exclusive, so a single SetOn(K13_VBAT_Cap, -1) releases every relay not listed. This method issues no second SetOn and therefore cannot close any of them.",
+      "evidence": [
+        "knowledge/sources/cbite-qtmue.md:92-94 (SetOn is exclusive: only the listed relays close, all others are released)",
+        "team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json isolationRequirements"
+      ]
+    },
+    "notRequiredUpstreamBusRelays": [
+      141,
+      142,
+      136,
+      137,
+      143,
+      144
+    ],
+    "registerDelta": [
+      {
+        "order": 1,
+        "call": "entertestmode()",
+        "meaning": "enter test mode",
+        "evidence": "project/DALI/reg_config/tm103.sv:12"
+      },
+      {
+        "order": 2,
+        "address": "0x57",
+        "value": "0x02",
+        "meaning": "EN_ATEST0=1",
+        "evidence": "team/artifacts/tm103-ptc/input-manifest.json decision.registerWrites[0]"
+      },
+      {
+        "order": 3,
+        "address": "0x5E",
+        "value": "0x04",
+        "meaning": "ATEST0_MUX=4",
+        "evidence": "team/artifacts/tm103-ptc/input-manifest.json decision.registerWrites[1]"
+      }
+    ],
+    "registerValuesNotRestated": "The register addresses and values are quoted verbatim. This stage decides only that test-mode entry and the two writes happen after VBAT is up and before the VDM stimulus/measurement, and does not alter any value.",
+    "staticSupplies": [
+      {
+        "pin": "VBAT",
+        "voltageV": 4
+      }
+    ],
+    "sweptPin": "VDM",
+    "forcedLevel": {
+      "pin": "VDM",
+      "voltageV": 1,
+      "source": "team/artifacts/tm103-ptc/dft/dft-meta.json pinConditions.governingConditions.valueProvenance ('VDM=1V' from the governing workbook OVERVIEW row 7 and project/DALI/reg_config/tm103.sv:17-21); no numeric VDM voltage is stated in the decision fields"
+    },
+    "nonEndpoint": {
+      "pin": "AMUX",
+      "status": "declared non-endpoint, not allocated, not driven, not measured",
+      "evidence": "team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json endpointDerivation.declaredNonEndpoints (conflict CF-1/CF-2 resolved by the binding intent entry; not re-opened)"
+    }
+  },
+  "phaseStateTable": {
+    "referenceNode": "AGND (0 V). Both selected sources are single-ended to AGND on the board: project/DALI/SCH-Connect-Map.txt:801 (ACM200 low ends FL/SL grouped to AGND_F) and :804 (FXVIe_PLUS low end to AGND_F).",
+    "inheritedOrientationStatement": "The source HIGH terminals are forced onto VBAT and VDM with the return through AGND; this is the strategy-layer statement inherited from OI-TM103-STR-03 and is used here as the node-voltage reference convention, not re-decided.",
+    "noFloatingPair": {
+      "state": "NONE",
+      "reason": "The signed strategy allocates no floating pair and no two-pin differential source; both resources are separate single-ended channels to two different DUT pins.",
+      "evidence": [
+        "team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json resourceAllocation[RA-1,RA-2]",
+        "scripts/gen_power_sequence.py:201-215 (floating pairs come from meta.floatingPairs; the TM103 hardwareInit has no pair), and :232-233 skips pins in a floating pair"
+      ],
+      "consequence": "R-PON-07 / R-FLT / R-POFF-03 step rules (<=5 V per step, delay_us(200)) do not apply; see differentialChecks per phase."
+    },
+    "phases": [
+      {
+        "phaseId": "PH-01",
+        "name": "entry / idle precondition",
+        "prerequisite": "function entry; no source energised by this method",
+        "relayGroup": "none (RG-2, RG-3, RG-4 unactuated; RG-1 not yet closed)",
+        "resourceState": {
+          "VBAT_PD3_FXVI": "not energised",
+          "VDM_SDA_ACM": "not energised"
+        },
+        "registerActivation": "none (test mode not entered yet)",
+        "actualNodeVoltages": {
+          "VBAT": {
+            "valueV": 0,
+            "basis": "no source energised before PH-03"
+          },
+          "VDM": {
+            "valueV": 0,
+            "basis": "no source energised before PH-05"
+          },
+          "AGND": {
+            "valueV": 0,
+            "basis": "reference node"
+          }
+        },
+        "differentialChecks": {
+          "applicable": false,
+          "reason": "no BST/SW or paired endpoint exists in the signed endpoint set {VBAT, VDM}; see notApplicable.bstSw",
+          "actualAndResult": "not applicable"
+        },
+        "setpoint": null,
+        "ramp": null,
+        "delay": null,
+        "exitCondition": "method proceeds to PH-02 when the function has been entered and the previous item's exclusive SetOn state has been replaced by this item's SetOn",
+        "evidence": [
+          "knowledge/sources/cbite-qtmue.md:92-94 (exclusive SetOn semantics)",
+          "team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json setOnClosure.oneCall"
+        ]
+      },
+      {
+        "phaseId": "PH-02",
+        "name": "relay closure (VBAT rail stabilisation)",
+        "prerequisite": "PH-01",
+        "relayGroup": "RG-1 (VBAT supply rail stabilization) - signed strategy, exclusive one-call closure",
+        "commandedAction": "cbite.SetOn(K13_VBAT_Cap, -1);  // signed setOnClosure relays [13]; all other relays released by exclusivity\n    delay_ms(3);",
+        "resourceState": {
+          "VBAT_PD3_FXVI": "not energised",
+          "VDM_SDA_ACM": "not energised",
+          "closure": "K13_VBAT_Cap closed; K8/K7/K59/K58/K152 and the shared-bus relays released"
+        },
+        "registerActivation": "none",
+        "actualNodeVoltages": {
+          "VBAT": {
+            "valueV": 0,
+            "basis": "the rail is still unpowered; only the reservoir cap is connected (SCH-Connect-Map.txt:914)"
+          },
+          "VDM": {
+            "valueV": 0,
+            "basis": "unpowered"
+          },
+          "AGND": {
+            "valueV": 0,
+            "basis": "reference"
+          }
+        },
+        "differentialChecks": {
+          "applicable": false,
+          "reason": "no paired/floating endpoint in the signed endpoint set",
+          "actualAndResult": "not applicable"
+        },
+        "setpoint": null,
+        "ramp": null,
+        "delay": "delay_ms(3) after the SetOn call",
+        "delayBasis": [
+          "knowledge/standards/units.md:86-95 (cbite.SetOn(...) followed by delay_ms(3))",
+          "skills/agents/relay-agent.md:120 and :158 (R004: an explicit SetOn is mandatory with the 3 ms delay even when no relay needs closing)"
+        ],
+        "whyCapBeforeRail": [
+          "knowledge/standards/relay-checklist.md:25-38 (Cap2 rule: a powered PIN requires its own Cap closed by default; line 38 names TM103 exactly and requires K13_VBAT_Cap closed)",
+          "team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json relayGroups[RG-1].evidence (SCH-Connect-Map.txt:914: the VBAT reservoir cap gate must be closed for a powered VBAT rail)"
+        ],
+        "exitCondition": "K13_VBAT_Cap is commanded closed and the 3 ms CBIT settle has elapsed",
+        "relayReadback": "not required (see readbackPolicy)"
+      },
+      {
+        "phaseId": "PH-03",
+        "name": "VBAT static supply power-up",
+        "prerequisite": "PH-02",
+        "relayGroup": "RG-1 energized; RG-2/3/4 unactuated (unchanged)",
+        "resourceStateCommanded": "VBAT_PD3_FXVI.Set(FV, 4, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);",
+        "resourceState": {
+          "mode": "FV",
+          "setpointV": 4,
+          "voltageRange": "FXVIe_PLUS_10V",
+          "complianceRange": "FXVIe_PLUS_100MA",
+          "channel": "S3_5"
+        },
+        "registerActivation": "none yet",
+        "actualNodeVoltages": {
+          "VBAT": {
+            "setpointV": 4,
+            "forceErrorBudget": "+/-(2 mV + 0.025%Rdg) = about +/-3 mV at 4 V on the 10 V range",
+            "basis": "hardware-specs.md:67 (FXVIe_PLUS +/-10 V force accuracy)"
+          },
+          "VDM": {
+            "valueV": 0,
+            "basis": "VDM channel still not energised; no source drives it"
+          },
+          "AGND": {
+            "valueV": 0,
+            "basis": "reference"
+          }
+        },
+        "differentialChecks": {
+          "applicable": false,
+          "reason": "no paired endpoint",
+          "observation": "the VBAT-to-VDM pin difference is 4 V, which is inside the 5 V envelope used by the project step rule even though that rule does not bind a non-paired set",
+          "calculation": "|VBAT - VDM| = |4.0 - 0.0| = 4.0 V <= 5 V"
+        },
+        "setpoint": {
+          "pin": "VBAT",
+          "voltageV": 4
+        },
+        "ramp": "the project's standard power-on Set() call is emitted without an explicit risingTime argument, so the instrument default applies: FXVIe/FXVIe_PLUS risingTime default 0.02 ms (knowledge/sources/fxvie.md:137,144); ACM200 default 0.1 ms (knowledge/sources/acm200.md:148-151)",
+        "rampTokenNote": "The DFT carries the token 100e-6 in the vset third position (project/DALI/meta/dali_tm_meta.json TM103 code1Raw) and project/DALI/reg_config/tm103.sv:7 passes it to ramp_vsrc_val(4, 100e-6). No located project artifact defines that token's unit or its mapping onto the platform Set() risingTime parameter, and the project's own power-sequence generator emits no risingTime argument (scripts/gen_power_sequence.py:324-326). The method therefore carries the token as metadata and uses the documented instrument default; see openItems[OI-TM103-MTH-02].",
+        "delay": "delay_ms(1) after the Set call",
+        "delayBasis": [
+          "scripts/gen_power_sequence.py:90,381-400 (R-PON-06: one Set per source followed by delay_ms(1))",
+          "skills/agents/power-on-agent.md:68 (R-PON-06)"
+        ],
+        "sequencingEvidence": [
+          "project/DALI/reg_config/tm103.sv:6-11 (the governing stimulus enables and ramps VBAT to 4 V before test-mode entry; tm103.sv:8 places a timing point after the ramp)",
+          "knowledge/standards/framework.md:18-23 (Step 2 power on precedes Step 3 register configuration)"
+        ],
+        "exitCondition": "VBAT is at 4.0 V and the 1 ms settle has elapsed",
+        "twoStageCheck": {
+          "state": "NOT_APPLICABLE",
+          "reason": "R-PON-09's two-stage power-up applies only when the selected current range is a small measurement range (1UA/10UA/100UA). VBAT's selected range is the 100MA compliance range, so a single Set is correct.",
+          "evidence": [
+            "scripts/gen_power_sequence.py:95 (_is_small_irange suffixes), :343-345, :392-400 (two-stage only when the selected iRange is small)",
+            "skills/agents/power-on-agent.md:71 (R-PON-09)",
+            "knowledge/standards/rules-registry.md:53 (R-PON-09: two-stage applies when the FV measured current is below 100 uA; VBAT current is not the measured quantity of this item)"
+          ]
+        }
+      },
+      {
+        "phaseId": "PH-04",
+        "name": "test-mode entry and ATEST0 register activation",
+        "prerequisite": "PH-03 (VBAT at 4.0 V)",
+        "relayGroup": "RG-1 energized (unchanged)",
+        "resourceState": "VBAT at 4.0 V FV; VDM still not energised",
+        "registerActivation": {
+          "orderedCalls": [
+            "entertestmode();",
+            "I2CWriteSameData(DEV_ADDR, 0x57, 0x02);  // EN_ATEST0=1",
+            "I2CWriteSameData(DEV_ADDR, 0x5E, 0x04);  // ATEST0_MUX=4"
+          ],
+          "valuesQuotedFrom": "signed strategy registerDelta (not modified by this stage)"
+        },
+        "actualNodeVoltages": {
+          "VBAT": {
+            "setpointV": 4,
+            "basis": "PH-03"
+          },
+          "VDM": {
+            "valueV": 0,
+            "basis": "not energised"
+          },
+          "AGND": {
+            "valueV": 0,
+            "basis": "reference"
+          }
+        },
+        "differentialChecks": {
+          "applicable": false,
+          "reason": "no paired endpoint",
+          "actualAndResult": "not applicable"
+        },
+        "setpoint": null,
+        "ramp": null,
+        "delay": "none in this phase; the settle for the configured mode is PH-06",
+        "exitCondition": "test mode is entered and both register writes have been issued before any VDM stimulus or measurement",
+        "orderingEvidence": [
+          "knowledge/standards/error-checklist.md:20 (H011) and :24 (R034): after a (re)power-up, entertestmode() must precede any register write, otherwise FAIL",
+          "project/DALI/reg_config/tm103.sv:12-15 (governing order: entertestmode, then 0x57, then 0x5E)",
+          "knowledge/standards/framework.md:21-23 (Step 3 register configuration)"
+        ]
+      },
+      {
+        "phaseId": "PH-05",
+        "name": "VDM force (swept/forced pin) and measurement range selection",
+        "prerequisite": "PH-04 (ATEST0 enabled and muxed)",
+        "relayGroup": "RG-1 energized; RG-3 unactuated (K59_SDA, K58_BUSH_VDM, K152_VDM_TMU) - unchanged",
+        "resourceStateCommanded": "VDM_SDA_ACM.Set(FV, 1, ACM200_3p6V, ACM200_1UA, ACM200_RELAY_ON);",
+        "resourceState": {
+          "mode": "FV",
+          "setpointV": 1,
+          "voltageRange": "ACM200_3p6V",
+          "currentRange": "ACM200_1UA",
+          "channel": "S5_7"
+        },
+        "currentRangeIsTheMeasurementRange": true,
+        "rangeSelectionBasis": [
+          "scripts/gen_power_sequence.py:41 (ACM200 voltage table: 3p6V table_max 1.8 V) and :269-277 (first table_max >= 1.0 V) -> ACM200_3p6V",
+          "scripts/gen_power_sequence.py:42 (ACM200 current table: 1UA table_max 500e-9 A) and :272 (equality boundary takes that range) with DFT ExpectValue 0.5 uA -> ACM200_1UA",
+          "skills/agents/power-on-agent.md:66 (R-PON-04 range >= 2x setpoint, smallest satisfying) and :73 (R-RNG >=2x and <=90%)",
+          "knowledge/standards/units.md:3-5 (range selection: nearest range at or above twice the value)"
+        ],
+        "atestPinRule": {
+          "state": "APPLIED",
+          "rule": "R-PON-09 ATEST-class analog pin: set the measurement range directly, no two-stage power-up",
+          "pin": "VDM",
+          "evidence": [
+            "scripts/gen_power_sequence.py:102 (ATEST_PIN_TOKENS includes VDM), :353-364 (pin_category), :393-395 (atest -> direct measurement range)",
+            "knowledge/standards/rules-registry.md:53"
+          ]
+        },
+        "actualNodeVoltages": {
+          "VDM": {
+            "setpointV": 1,
+            "forceErrorBudget": "+/-(0.6 mV + 0.025%Rdg) = about +/-0.85 mV at 1 V on the 3.6 V range",
+            "basis": "hardware-specs.md:46 (ACM200 +/-3.6 V force/measure accuracy)"
+          },
+          "VBAT": {
+            "setpointV": 4,
+            "basis": "PH-03"
+          },
+          "AGND": {
+            "valueV": 0,
+            "basis": "reference; the ACM200 low end is grouped to AGND_F (SCH-Connect-Map.txt:801), so this source is single-ended and the current loop closes to AGND"
+          }
+        },
+        "differentialChecks": {
+          "applicable": false,
+          "reason": "no paired endpoint",
+          "observation": "the VBAT-to-VDM pin difference becomes 3 V after this phase",
+          "calculation": "|VBAT - VDM| = |4.0 - 1.0| = 3.0 V <= 5 V"
+        },
+        "setpoint": {
+          "pin": "VDM",
+          "voltageV": 1
+        },
+        "ramp": "same convention as PH-03: the power-on Set() is emitted without an explicit risingTime, so the ACM200 default 0.1 ms applies (knowledge/sources/acm200.md:148-151)",
+        "delay": "none in this phase; the single settle window is PH-06 (1 ms), which also satisfies R-PON-06's delay_ms(1) after this Set",
+        "exitCondition": "VDM is forced to 1.0 V with a 1 uA measurement range and the ATEST0 current is established",
+        "unactuatedIsolationEvidence": [
+          "team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json resourceAllocation[RA-2].isolationRelay/secondIsolationRelay (K58_BUSH_VDM and K152_VDM_TMU must stay un-actuated while the 0.5 uA current is measured)",
+          "knowledge/sources/cbite-qtmue.md:92-94 (single exclusive SetOn keeps them released)"
+        ]
+      },
+      {
+        "phaseId": "PH-06",
+        "name": "settle window before measurement",
+        "prerequisite": "PH-05",
+        "relayGroup": "unchanged (RG-1 energized)",
+        "resourceState": "VBAT 4.0 V FV, VDM 1.0 V FV with the ACM200_1UA range, ATEST0 mux active",
+        "registerActivation": "held from PH-04 (no write in this phase)",
+        "actualNodeVoltages": {
+          "VBAT": {
+            "setpointV": 4,
+            "basis": "PH-03"
+          },
+          "VDM": {
+            "setpointV": 1,
+            "basis": "PH-05"
+          },
+          "AGND": {
+            "valueV": 0,
+            "basis": "reference"
+          }
+        },
+        "differentialChecks": {
+          "applicable": false,
+          "reason": "no paired endpoint",
+          "calculation": "|VBAT - VDM| = 3.0 V <= 5 V"
+        },
+        "setpoint": null,
+        "ramp": null,
+        "delay": "delay_ms(1)  // DFT delay[1e-3]",
+        "delayBasis": [
+          "project/DALI/meta/dali_tm_meta.json TM103 code3Raw 'delay[1e-3]' and delays: ['1e-3']",
+          "project/DALI/reg_config/tm103.sv:23-24 ('#1000000;  // delay 1e-3s') - the governing stimulus places this delay after the VDM ramp and before finish, i.e. before the measurement",
+          "scripts/gen_power_sequence.py:90 (D_MS = delay_ms(1)) - the project delay convention"
+        ],
+        "exitCondition": "1 ms has elapsed with both rails and the mux configuration unchanged, so the ATEST0 current is settled",
+        "goldenConflictResolution": "The TM130 Golden uses a 2 ms bandgap settle (knowledge/references/L4-Golden-code/TM130_Trim_VBG.md:18). The governing DFT/SV value 1 ms wins because a DFT/decided value outranks a Golden (TEAM_ARCHITECTURE_V2.md evidence priority 2 over 4)."
+      },
+      {
+        "phaseId": "PH-07",
+        "name": "measurement (FV-MI on VDM)",
+        "prerequisite": "PH-06",
+        "relayGroup": "unchanged (RG-1 energized; RG-2/3/4 unactuated)",
+        "resourceState": "unchanged from PH-06",
+        "registerActivation": "held from PH-04",
+        "actualNodeVoltages": {
+          "VBAT": {
+            "setpointV": 4,
+            "basis": "PH-03"
+          },
+          "VDM": {
+            "setpointV": 1,
+            "basis": "PH-05"
+          },
+          "AGND": {
+            "valueV": 0,
+            "basis": "reference"
+          }
+        },
+        "differentialChecks": {
+          "applicable": false,
+          "reason": "no paired endpoint",
+          "calculation": "|VBAT - VDM| = 3.0 V <= 5 V"
+        },
+        "setpoint": null,
+        "ramp": null,
+        "delay": "delay_ms(1) immediately before MeasureVI is the project's measurement-entry convention (skills/agents/measure-agent.md:23-24); it is the same settle window as PH-06 and is not counted a second time",
+        "measurementCalls": [
+          "VDM_SDA_ACM.MeasureVI(50, 5);",
+          "FOR_EACH_VALID_SITE(site) { param[site] = VDM_SDA_ACM.GetMeasResult(site, MIRET) * 1e6;  // A -> uA }"
+        ],
+        "exitCondition": "one MeasureVI result set has been read for every valid site and converted to uA",
+        "evidence": [
+          "skills/agents/measure-agent.md:19-38 (MI mode: MeasureVI(sampleTimes, samplePeriod) then GetMeasResult(site, MIRET))",
+          "knowledge/sources/acm200.md:266-336 (MeasureVI signature and GetMeasResult(MIRET) semantics; voltage and current are measured together, only the read-back type is chosen)",
+          "knowledge/standards/framework.md:25-26 (Step 4 measurement)"
+        ]
+      },
+      {
+        "phaseId": "PH-08",
+        "name": "power-down and safe end state",
+        "prerequisite": "PH-07 (or any abort path that must reach the safe end state - see exceptionCleanup)",
+        "relayGroup": "RG-1 energized during teardown, unchanged",
+        "resourceState": "ordered teardown, see powerDownPlan",
+        "registerActivation": "held; no register write during power-down",
+        "actualNodeVoltages": {
+          "VBAT": {
+            "endValueV": 0,
+            "basis": "powerDownPlan step V2"
+          },
+          "VDM": {
+            "endValueV": 0,
+            "basis": "powerDownPlan step V1"
+          },
+          "AGND": {
+            "valueV": 0,
+            "basis": "reference"
+          }
+        },
+        "differentialChecks": {
+          "applicable": false,
+          "reason": "no paired endpoint",
+          "calculation": "|VBAT - VDM| ends at 0.0 V"
+        },
+        "setpoint": null,
+        "ramp": null,
+        "delay": "delay_ms(1) between the zeroing step and the RELAY_OFF step",
+        "exitCondition": "both sources are at 0 V with their output relays open, and the datalog write of PH-07 has been completed",
+        "evidence": [
+          "skills/agents/power-off-agent.md:46-51 (R-POFF-02 ordinary three-step power-down)",
+          "scripts/gen_power_sequence.py:522-534 (gen_normal_power_off)"
+        ]
+      }
+    ]
+  },
+  "measurementPlan": {
+    "forceMeasureEndpoints": [
+      {
+        "pin": "VBAT",
+        "role": "static supply rail (not measured)",
+        "source": "VBAT_PD3_FXVI",
+        "instrument": "FXVIe_PLUS",
+        "channel": "S3_5",
+        "mode": "FV",
+        "setpoint": "4 V",
+        "voltageRange": "FXVIe_PLUS_10V",
+        "currentRange": "FXVIe_PLUS_100MA"
+      },
+      {
+        "pin": "VDM",
+        "role": "forced pin AND measured pin (FV-MI)",
+        "source": "VDM_SDA_ACM",
+        "instrument": "ACM200",
+        "channel": "S5_7",
+        "mode": "FV",
+        "setpoint": "1 V",
+        "voltageRange": "ACM200_3p6V",
+        "currentRange": "ACM200_1UA",
+        "readback": "MIRET (current), average of the sample set"
+      }
+    ],
+    "staticPoint": true,
+    "sweepOrStep": {
+      "state": "NONE",
+      "reason": "The DFT declares no Dynamic content and no multi-value vset on any pin; the item is a single static DC operating point, so there is no sweep, no step size and no search.",
+      "evidence": [
+        "team/artifacts/tm103-ptc/dft/dft-meta.json pinConditions.dftDynamicTokens (empty) and explicitRelations.dftRowSequence",
+        "team/artifacts/tm103-ptc/input-manifest.json canonicalInputs.dft.rawRows[0].Dynamic (empty)"
+      ]
+    },
+    "sample": {
+      "sampleTimes": 50,
+      "samplePeriodUs": 5,
+      "returnType": "AVERAGE_RESULT (instrument default)",
+      "call": "MeasureVI(50, 5)",
+      "basis": [
+        "skills/agents/measure-agent.md:24 and :45 (the project's measurement convention: MeasureVI(50, 5))",
+        "knowledge/sources/acm200.md:270-289 (sampleTimes 1..4096, samplePeriod in us)",
+        "knowledge/sources/acm200.md:317-322 (sampleNumber default AVERAGE_RESULT)"
+      ]
+    },
+    "calculation": {
+      "expression": "I_ATEST0_uA[site] = GetMeasResult(site, MIRET) * 1e6",
+      "steps": [
+        "read the current average in A from the same MeasureVI set",
+        "convert A to uA by multiplying by 1e6 at the assignment site"
+      ],
+      "basis": [
+        "knowledge/standards/units.md:22-35 (MIRET is in A; the datalog unit must equal the spec/DFT expected unit; the conversion belongs at the GetMeasResult assignment)",
+        "skills/agents/measure-agent.md:31-38 (MI -> MIRET and the uA conversion)"
+      ]
+    },
+    "siteHandling": {
+      "scope": "every valid site",
+      "loop": "FOR_EACH_VALID_SITE(site)",
+      "indexing": "GetMeasResult(siteCount) where 0 = Site1 (knowledge/sources/acm200.md:315)",
+      "trialSiteScope": "site 1 (the strategy contract assigns every selected channel to S1); the loop form is kept because the framework template and the source-table object are multi-site",
+      "basis": [
+        "knowledge/standards/framework.md:32-35",
+        "team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json resourceAllocation[].siteAssignment"
+      ]
+    },
+    "limit": {
+      "state": "UNRESOLVED_NO_PROJECT_AUTHORITY",
+      "expectedValue": 0.5,
+      "unit": "uA",
+      "lowerBound": null,
+      "upperBound": null,
+      "tolerance": null,
+      "usage": "The measured value is logged in uA; the pass/fail comparison is owned by the test spec limits and is NOT asserted by this method. No numeric bound is written anywhere in this contract.",
+      "whyNotDerived": "No project artifact publishes a bound or tolerance for TM103. project/DALI/meta/dali_tm_meta.json contains 0 occurrences of limit/lsl/usl/min/max/tol; the DFT row carries ExpectValue 0.5 and Unit uA with no bounds; no located active standard defines a default MI tolerance (grep over knowledge/standards for limit/tolerance/LSL/USL returns 0 matches).",
+      "forbidden": "The instrument accuracy figures recorded under metrologyFacts are NOT a pass/fail bound and must not be used as one; deriving a tolerance from them would invent a limit literal.",
+      "openItemId": "OI-TM103-MTH-01"
+    }
+  },
+  "metrologyFacts": [
+    {
+      "fact": "ACM200 current range set is +/-200mA, 100mA, 10mA, 1mA, 100uA, 10uA, 1uA",
+      "source": "knowledge/sources/hardware-specs.md:16",
+      "kind": "specFact"
+    },
+    {
+      "fact": "On the +/-1 uA range the ACM200 current force/measure accuracy is +/-(8 nA + 0.05%Rdg + 0.5 nA/V)",
+      "source": "knowledge/sources/hardware-specs.md:47",
+      "kind": "specFact"
+    },
+    {
+      "fact": "At the 0.5 uA operating point the reading-proportional term is 0.05% x 0.5 uA = 0.25 nA, so the range's own accuracy is dominated by the 8 nA offset term, about 1.7% of the reading before the common-mode term",
+      "source": "derived from knowledge/sources/hardware-specs.md:47",
+      "kind": "derivedEstimate"
+    },
+    {
+      "fact": "STS8300 source modules use 16-bit DAC/ADC (HPSM/QVMe excepted), so on the +/-1 uA range one LSB is about 2 uA / 65536 = 30.5 pA",
+      "source": "derived from knowledge/sources/hardware-specs.md:36",
+      "kind": "derivedEstimate"
+    },
+    {
+      "fact": "The 0.5 uA operating point sits at 50% of the +/-1 uA range, which is the boundary the project range rule targets (range >= 2x the value, value <= 90% of full scale)",
+      "source": "knowledge/standards/units.md:3-5 and scripts/gen_power_sequence.py:36-37,269-277",
+      "kind": "derivedEstimate"
+    },
+    {
+      "fact": "FXVIe_PLUS +/-10 V force accuracy is +/-(2 mV + 0.025%Rdg), i.e. about +/-3 mV at 4 V",
+      "source": "knowledge/sources/hardware-specs.md:67",
+      "kind": "specFact"
+    },
+    {
+      "fact": "ACM200 +/-3.6 V force/measure accuracy is +/-(0.6 mV + 0.025%Rdg), i.e. about +/-0.85 mV at 1 V",
+      "source": "knowledge/sources/hardware-specs.md:46",
+      "kind": "specFact"
+    }
+  ],
+  "powerDownPlan": {
+    "type": "ordinary power-down (R-POFF-02); no floating pair to reverse and no current source at or above 1 A",
+    "typeEvidence": [
+      "scripts/gen_power_sequence.py:305-317 (classify_power_off: floating pairs -> floating; iset >= 1 A -> high current; everything else -> normal)",
+      "skills/agents/power-off-agent.md:39-44"
+    ],
+    "orderedActions": [
+      {
+        "step": "V1",
+        "action": "VDM_SDA_ACM.Set(FV, 0, ACM200_3p6V, ACM200_1UA, ACM200_RELAY_ON);",
+        "note": "zero the forced/measured pin first, keeping its original ranges while the output relay stays closed"
+      },
+      {
+        "step": "V2",
+        "action": "VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_100MA, FXVIe_PLUS_RELAY_ON);",
+        "note": "then zero the supply rail"
+      },
+      {
+        "step": "V3",
+        "action": "delay_ms(1);",
+        "note": "R-POFF-02 settle between zeroing and opening the output relays"
+      },
+      {
+        "step": "V4",
+        "action": "VDM_SDA_ACM.Set(FV, 0, ACM200_10V, ACM200_10MA, ACM200_RELAY_OFF);",
+        "note": "RELAY_OFF uses the unified ranges"
+      },
+      {
+        "step": "V5",
+        "action": "VBAT_PD3_FXVI.Set(FV, 0, FXVIe_PLUS_10V, FXVIe_PLUS_10MA, FXVIe_PLUS_RELAY_OFF);",
+        "note": "unified ranges for the FXVIe_PLUS family"
+      }
+    ],
+    "orderRationale": "The power-down sequence reverses the power-up sequence (check-agent rule R021) and therefore zeroes VDM before VBAT, which is the reverse of the up order (VBAT in PH-03, VDM in PH-05).",
+    "orderDivergenceNote": "scripts/gen_power_sequence.py:527 iterates its source list in the up-sequence order, which would zero VBAT first. This contract follows the explicit rule knowledge/standards/... /skills/agents/check-agent.md:137 (R021: the power-down sequence reverses the up sequence) because it is the enforceable check rule and because VDM is the externally forced pin while VBAT is the chip supply. Both orders reach the same 0 V end state; no paired constraint distinguishes them.",
+    "unifiedRangeEvidence": [
+      "scripts/gen_power_sequence.py:62-66 (RELAY_OFF_RANGES: ACM200 -> 10V/10MA, FXVIe_PLUS -> FXVIe_PLUS_10V/FXVIe_PLUS_10MA)",
+      "skills/agents/power-off-agent.md:108-115 (R-POFF-06)"
+    ],
+    "actualNodeVoltages": {
+      "VBAT": {
+        "startV": 4,
+        "endV": 0
+      },
+      "VDM": {
+        "startV": 1,
+        "endV": 0
+      },
+      "AGND": {
+        "valueV": 0
+      }
+    },
+    "differentialChecks": {
+      "applicable": false,
+      "reason": "no paired endpoint and no floating pair exists in the signed boundary, so the R-FLT step rule and the BST-SW constraint do not bind any teardown step",
+      "observation": "the pin-to-pin difference passes through 4 V and 3 V and ends at 0 V, always inside the 5 V envelope"
+    },
+    "fpviLastRelayOff": {
+      "state": "NOT_APPLICABLE",
+      "reason": "no FPVIe source is allocated by the signed strategy (R-POFF-04 binds only when an FPVIe channel is in use)",
+      "evidence": [
+        "team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json resourceAllocation (FXVIe_PLUS and ACM200 only)"
+      ]
+    },
+    "safeEndState": {
+      "sources": "VBAT and VDM at 0 V with output relays open",
+      "pins": "no source drives VBAT or VDM; the only closed relay is the signed K13_VBAT_Cap reservoir gate, which places no voltage on any pin",
+      "relayClosureEndState": "The signed setOnClosure (K13_VBAT_Cap) remains commanded closed. This method issues no additional SetOn/SetOff: the platform's next function starts with its own exclusive SetOn, and no located rule requires an end-of-function relay release (knowledge/standards/framework.md has no release step; skills/agents/relay-agent.md:120 requires an explicit SetOn only as the mandatory Step 1 statement). Releasing K13 here would alter the signed closure set, which is outside this stage's ownership."
+    },
+    "registerEndState": "No register reset is written. The signed registerDelta contains no teardown entry and the DFT row declares none (project/DALI/meta/dali_tm_meta.json TM103 code3 = delay then finish). Test mode is not explicitly exited by the governing stimulus either (project/DALI/reg_config/tm103.sv:25-26)."
+  },
+  "exceptionCleanup": {
+    "requirement": "Every abort path (a failed Set/MeasureVI call, an instrument error return, or an early return for any reason) must still execute powerDownPlan V1..V5 before the function returns, so that no pin is left driven.",
+    "scopeNote": "This stage owns the teardown requirement; the mechanism is not published in the located project templates (knowledge/standards/framework.md defines Steps 1-6 with no error hook), so the implementation must reach the teardown before any early return rather than inventing a framework mechanism.",
+    "evidence": [
+      "TEAM_ARCHITECTURE_V2.md test-method-expert charter (the method owns the safe final state and the exception cleanup ordering)",
+      "skills/agents/power-off-agent.md:24-26 (the power-down起点 is the real power-up end state, so the off-sequence is the safety net)",
+      "knowledge/sources/acm200.md:6-34 (the instrument returns negative codes on failure; a non-zero return means the requested state was not established)"
+    ]
+  },
+  "readbackPolicy": {
+    "relayStateReadback": {
+      "required": false,
+      "reason": "The role contract permits a hardware readback as a code requirement only when the target project provides a callable API AND the exact mapping and semantics. cbit.GetCbiteStatus(CBITe_BYTE_NO) exists (knowledge/sources/cbite-qtmue.md:154-185, 16 control bits per byte group, bit 0 = lowest channel of the group), but the mapping of the strategy's CBIT identifiers (S34_CBIT13, S36_CBIT24) to a byte group and bit index is not published in any runner-listed input or located project artifact (knowledge/hardware/cbit-mapping.md has no S34/byte mapping). This method therefore does not require a relay-number readback and does not invent the mapping.",
+      "substitutedEvidence": [
+        "commanded relay state: one exclusive SetOn(K13_VBAT_Cap, -1) in PH-02 (scripts/gen_power_sequence.py and knowledge/sources/cbite-qtmue.md:92-94)",
+        "measurable electrical observations: VBAT node at 4.0 V (PH-03), VDM node at 1.0 V (PH-05), and the logged I(ATEST0) in the uA decade at the expected 0.5 uA operating point (PH-07)"
+      ]
+    },
+    "instrumentReadback": {
+      "required": true,
+      "detail": "GetMeasResult(site, MIRET) is the measured current itself and is mandatory; Set()/MeasureVI() return codes must be checked by the implementation (knowledge/sources/acm200.md:153, :289)"
+    }
+  },
+  "logPlan": {
+    "parameterName": "I(ATEST0)",
+    "frameworkCall": "I(ATEST0)->SetTestResult(site, 0, param[site]);",
+    "rawValues": {
+      "expression": "VDM_SDA_ACM.GetMeasResult(site, MIRET)",
+      "unit": "A",
+      "note": "instrument-native current average of the 50-sample set"
+    },
+    "calculatedValues": {
+      "expression": "param[site] = VDM_SDA_ACM.GetMeasResult(site, MIRET) * 1e6;  // A -> uA",
+      "unit": "uA"
+    },
+    "judgement": {
+      "state": "LOGGED_WITHOUT_METHOD_BOUND",
+      "statement": "This method logs the value and applies no numeric bound. The pass/fail decision belongs to the test spec limits, which no located project artifact publishes for TM103 (see measurementPlan.limit and OI-TM103-MTH-01)."
+    },
+    "unitBasis": [
+      "knowledge/standards/units.md:18-39 (LogData unit = spec/DFT expected unit; MIRET A -> uA uses x1e6 at the assignment)",
+      "project/DALI/meta/dali_tm_meta.json TM103 unit 'uA' and expectValue 0.5",
+      "team/artifacts/tm103-ptc/dft/dft-meta.json limits.unit"
+    ],
+    "precision": {
+      "methodRounding": "none - the value is passed to SetTestResult as a double with no rounding applied by the method",
+      "displayCaveat": "the datalog column format comes from the spec, not from this contract",
+      "resolutionNote": "the 0.5 uA operating point is 10x above the +/-1 uA range LSB estimate (~30.5 pA, see metrologyFacts) and inside the range's stated accuracy budget; these are metrology facts and are not a pass/fail bound"
+    },
+    "context": {
+      "site": "site index of each logged value",
+      "item": "TM103 / LP_HR_0P5U",
+      "check": "I(ATEST0)",
+      "conditions": [
+        "VBAT forced at 4.0 V (PH-03)",
+        "VDM forced at 1.0 V on the ACM200_1UA range (PH-05)",
+        "register state 0x57=0x02, 0x5E=0x04 with test mode entered (PH-04)"
+      ],
+      "purpose": "on a failing site the logged value must be traceable to the phase state in which it was taken"
+    },
+    "oneWritePoint": "Step 6 of the framework template writes the result after Step 5 power-down; this method keeps that placement (knowledge/standards/framework.md:31-35) so the log write never occurs while a pin is driven."
+  },
+  "notApplicable": [
+    {
+      "rule": "BST-SW differential constraint (0 V <= BST_actual - SW_actual <= 5 V for every phase)",
+      "state": "NOT_APPLICABLE_WITH_ENDPOINT_PROOF",
+      "proof": "The signed endpoint set is exactly {VBAT, VDM} (team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json endpointDerivation.requiredEndpointSet). Neither BST nor SW appears as an endpoint, as a sourceTable (VBAT_PD3_FXVI, VDM_SDA_ACM), or in any relayGroup route (RG-1..RG-4). The item's supply is VBAT and the observed pin is VDM, so no BST node and no SW node is driven, referenced or measured by this method.",
+      "evidence": [
+        "TEAM_ARCHITECTURE_V2.md section 4 (the constraint applies to tests involving BST, SW, or a PMID-formed SW potential)",
+        "knowledge/standards/context-management.md:97 and :100 (BST-SW pairing role)",
+        "knowledge/standards/rules-registry.md:44 (R-BST-SW is scoped to Current Threshold / ZCD items)"
+      ]
+    },
+    {
+      "rule": "Floating-source step power-up/power-down (R-PON-07, R-FLT, R-POFF-03, delay_us(200) per step)",
+      "state": "NOT_APPLICABLE_WITH_RESOURCE_PROOF",
+      "proof": "The signed strategy allocates two separate single-ended channels to two different pins and declares no floating pair; the generator's floating path triggers only on meta.floatingPairs, which TM103 does not have.",
+      "evidence": [
+        "scripts/gen_power_sequence.py:201-215, :232-233",
+        "team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json resourceAllocation"
+      ]
+    },
+    {
+      "rule": "R-PON-08 / R-POFF-05 high-current (iset >= 1 A) three-stage handling",
+      "state": "NOT_APPLICABLE",
+      "proof": "No iset stimulus exists in the DFT for TM103 (the item has one vset on VBAT and one vset on VDM) and no FPVIe source is allocated.",
+      "evidence": [
+        "team/artifacts/tm103-ptc/dft/dft-meta.json pinConditions (vset tokens only)",
+        "team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json resourceAllocation"
+      ]
+    },
+    {
+      "rule": "R-PON-02 (MV measurement without an FI configuration -> FI=0 with the minimum range)",
+      "state": "NOT_APPLICABLE",
+      "proof": "The item measures current (MI), not voltage; the read-back type is MIRET, so no FI=0 voltmeter configuration is involved.",
+      "evidence": [
+        "team/artifacts/tm103-ptc/input-manifest.json decision.monitorIntent",
+        "skills/agents/measure-agent.md:40-53 (mode 2 MV is the case that needs FI=0)"
+      ]
+    },
+    {
+      "rule": "AWG / ramp-toggle method and the three-parameter Rise/Fall/Hys naming",
+      "state": "NOT_APPLICABLE",
+      "proof": "No ramp-and-flip intent: the DFT Dynamic field is empty and the Check is a DC current on an ATEST-muxed pin.",
+      "evidence": [
+        "knowledge/standards/test-types.md:85 (ATEST static measurement guard)",
+        "team/artifacts/tm103-ptc/dft/dft-meta.json pinConditions.dftDynamicTokens"
+      ]
+    },
+    {
+      "rule": "Trim framework and sub.cpp measure callbacks",
+      "state": "NOT_APPLICABLE",
+      "proof": "Trim is empty in the DFT row and the item is a Direct/Debug measurement with no treg parameter.",
+      "evidence": [
+        "project/DALI/meta/dali_tm_meta.json TM103 row (trim null, test 'Direct', purpose 'Debug')"
+      ]
+    }
+  ],
+  "evidence": [
+    "team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json (signed boundary: endpoints, sources, channels, relay groups, setOnClosure, isolation, register delta; sha256 92eb967dcc96807010c811e4c4d46ddc205ec2d1dd467dcd8d238bb249c6954a verified byte-for-byte)",
+    "team/artifacts/tm103-ptc/input-manifest.json canonicalInputs.intentResolution.entry.decision (VBAT 4.0 V, VDM 1 V forced/measured, 0x57=0x02, 0x5E=0x04, monitor I(ATEST0) on VDM)",
+    "team/artifacts/tm103-ptc/dft/dft-meta.json (ExpectValue 0.5, Unit uA, Check I(ATEST0), empty Dynamic, delay 1e-3 via code3Raw, adjudicated DFT.csv divergence recorded verbatim)",
+    "team/artifacts/tm103-ptc/dft/dft-conditions.yaml (raw DFT intent, sourceSha256 bound)",
+    "project/DALI/reg_config/tm103.sv:6-26 (governing stimulus order: VBAT ramp to 4 V, timing point, entertestmode, 0x57=0x02, 0x5E=0x04, VDM ramp to 1 V, timing point, delay 1e-3 s, finish)",
+    "project/DALI/meta/dali_tm_meta.json TM103 row (line 877-996: expectValue 0.5, unit uA, check I(ATEST0), code1/code2/code3, delays ['1e-3'], power VBAT, no limit fields)",
+    "project/DALI/Pin_Channel_define.h:12 and :93 (VBAT_PD3_FXVI on S3_5, extern FXVIe_PLUS), :22 and :103 (VDM_SDA_ACM on S5_7, extern ACM200)",
+    "project/DALI/SCH-Connect-Map.txt:832-834 (VBAT path needs no relay closure), :795-797 (VDM path needs no relay closure), :914 (VBAT reservoir cap requires K13), :801/:804 (low ends grouped to AGND_F)",
+    "scripts/gen_power_sequence.py (the project's deterministic power sequencing authority: RANGE_TABLES lines 39-59, RELAY_OFF_RANGES 62-66, R-PON-09 pin categories 95-104, DEFAULT_IRANGE_A 106, resolve_all_sources 216-257, mode_for_cmd 264-266, select_range 269-277, _is_small_irange 343-345, pin_category 348-364, gen_two_stage_power_on 367-379, gen_simple_power_on 381-400, gen_normal_power_off 522-534, _set_line 324-326)",
+    "skills/agents/power-on-agent.md:59-76 (R-PON-01..09, R-FLT, R-RNG, R-SRC, R-ST) and :91-108 (range and mode decisions)",
+    "skills/agents/power-off-agent.md:39-51 and :108-128 (R-POFF-02 three-step, R-POFF-06 unified RELAY_OFF ranges, R-POFF-04 FPVI last)",
+    "skills/agents/measure-agent.md:19-38 (MI mode measurement and the uA conversion) and :133-143 (knowledge references and unit iron rules)",
+    "knowledge/standards/framework.md:4-38 (the six-step test function template this method maps onto) and :143-156 (comment requirements)",
+    "knowledge/standards/units.md:3-5 (range selection), :18-39 (LogData unit rule), :68-95 (FV/FI decision, LogData format, cbite.SetOn format), :97-101 (step rule)",
+    "knowledge/standards/rules-registry.md:32-33 (R-PON/R-POFF summaries), :44 (R-BST-SW scope), :53 (R-PON-09 pin-type correction naming VDM as an ATEST-class analog pin)",
+    "knowledge/standards/relay-checklist.md:25-42 (Cap2 rule; line 38 names TM103 and requires K13_VBAT_Cap while VDM has no cap) and :44-50 (anti-short rule for share selectors)",
+    "knowledge/standards/test-types.md:60, :70-74, :85 (general test item, four basic IV methods, ATEST static measurement guard)",
+    "knowledge/standards/error-checklist.md:20-24 (H011/R034 entertestmode ordering, E025 LogData unit, E011 explicit SetOn when no relay is needed)",
+    "skills/agents/check-agent.md:137 (R021 power-down reverses the up sequence), :141-142 (R025/R026 all sources covered and the high-current order)",
+    "knowledge/sources/acm200.md:44-63 (voltage/current range enums), :128-167 (Set signature and risingTime), :266-336 (MeasureVI and GetMeasResult), :403-434 (Pulse - not used)",
+    "knowledge/sources/fxvie.md:137-144 (Set signature and risingTime default 0.02 ms)",
+    "knowledge/sources/hardware-specs.md:16 (ACM200 channel/range table), :46-48 (ACM200 accuracy and clamp), :67 (FXVIe_PLUS accuracy), :96-110 (DALI card mapping)",
+    "knowledge/sources/cbite-qtmue.md:61-94 (SetOn signature and exclusive semantics), :154-185 (GetCbiteStatus readback API)",
+    "Library-Functions/Test_Method/Test_Method.cpp:95-108 (get_fxvi_v_range returns FXVIe_PLUS_10V for 4 V - independent corroboration of the VBAT voltage range)",
+    "knowledge/references/L4-Golden-code/TM130_Trim_VBG.md:10-23 and TM130_sub_measure.md:11 (partial Golden: ATEST0-mux observation skeleton; different measured quantity)"
+  ],
+  "openItems": [
+    {
+      "id": "OI-TM103-MTH-01",
+      "owner": "project test spec / user ruling (no ATE role owns numeric pass/fail tolerances)",
+      "blocking": false,
+      "item": "The numeric pass/fail bound (or tolerance) for I(ATEST0) at the 0.5 uA expected value is not published in any located project artifact, so this method logs the value without a bound.",
+      "evidence": [
+        "project/DALI/meta/dali_tm_meta.json TM103 row and the whole file: 0 matches for limit/Limit/lsl/usl/Min/Max/tol",
+        "project/DALI/input/DFT.csv TM103 row: ExpectValue 0.5, Unit uA, no bound columns populated (Trim/Record empty)",
+        "knowledge/standards (grep for limit/tolerance/LSL/USL): 0 matches",
+        "knowledge/standards/units.md:18-39 (the datalog unit rule carries no tolerance rule)"
+      ],
+      "requiredRuling": "Provide the acceptance bound for I(ATEST0) (absolute uA window or a percentage tolerance) if the item must judge PASS/FAIL; until then the method logs only.",
+      "impact": "None on code generation: the framework logs the value in uA and the spec limits are applied by the test program, not by this contract."
+    },
+    {
+      "id": "OI-TM103-MTH-02",
+      "owner": "project DFT input owner / user ruling",
+      "blocking": false,
+      "item": "The vset third token 100e-6 is not consumed as a platform argument by any located artifact and its unit is undefined by the located authority, while the project's power-sequence generator emits Set() without a risingTime argument.",
+      "evidence": [
+        "skills/agents/dft-parse-agent.md:74 (the token is parsed into the field named 'time')",
+        "team/artifacts/tm103-ptc/dft/dft-meta.json pinConditions.interpretationBoundary (the DFT stage explicitly does not interpret the third and fourth vset arguments)",
+        "scripts/gen_power_sequence.py:324-326 (_set_line emits no risingTime argument)",
+        "knowledge/sources/acm200.md:148-151 (ACM200 risingTime is in ms, default 0.1 ms) and knowledge/sources/fxvie.md:137-144 (FXVIe_PLUS default 0.02 ms)",
+        "project/DALI/reg_config/tm103.sv:7,:18 (the SV passes the token to ramp_vsrc_val and does not state a unit)"
+      ],
+      "requiredRuling": "State whether TM103 requires a specific slew/rise time on VBAT and VDM; if it does, give the value and unit.",
+      "impact": "Low: the method uses the documented instrument default, which is the deterministic project convention, and the token is carried as metadata so no invented slew is written."
+    },
+    {
+      "id": "OI-TM103-MTH-03",
+      "owner": "test-method-expert (closed here)",
+      "blocking": false,
+      "item": "Site scope for the measurement loop and the per-site source binding.",
+      "resolution": "One shared source-table object serves all eight site channels (project/DALI/Pin_Channel_define.h:12,:22), and the trial scope is site 1 (strategy resourceAllocation[].siteAssignment). The method keeps the framework's FOR_EACH_VALID_SITE loop and the GetMeasResult(site) index so that multi-site operation needs no method change.",
+      "evidence": [
+        "knowledge/standards/framework.md:32-35",
+        "team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json resourceAllocation[].siteAssignment",
+        "knowledge/sources/acm200.md:315 (siteCount 0 = Site1)"
+      ]
+    }
+  ],
+  "resolvedFindings": [],
+  "resolvedFindingsNote": "No routed correction finding was delivered with this dispatch and no method-blocked.json was written, so this contract acknowledges none.",
+  "selfCheck": {
+    "strategy contract sha256 verified against the handoff claim": true,
+    "no source, route, relay or register value re-decided": true,
+    "power sequence, phase states, measurement, limits, power-down and Log all present": true,
+    "every differential constraint bounded or marked not applicable with endpoint proof": true,
+    "method uncertainty routed to an owner as an open item, not converted into a fact": true,
+    "no numeric tolerance or limit literal invented": true
+  }
+}

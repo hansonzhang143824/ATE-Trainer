@@ -1,0 +1,29 @@
+{
+  "tm": "TM109",
+  "stage": "METHOD",
+  "status": "PASS",
+  "strategySha256": "a48e55a350b5bdd1167f812823643bc2a860bdf0174cefe7ba950611e2070901",
+  "contractSha256": "0b1c49be36eec6657ed0bc6159444fa67a06ff833223f471ea8a62fcf68c1f6f",
+  "checks": {
+    "signedStrategyHandoffHashMatches": true,
+    "canonicalDftHashMatchesManifest": true,
+    "registerEvidenceHashAndDftBindingMatch": true,
+    "sourceTablesForceSenseRelaysUnchanged": true,
+    "signedOneCallClosureIncludesK13K19K65": true,
+    "scanRangeRuleVerified": true,
+    "scanRangeSourcesVerified": true,
+    "upSweepTriggerFalling": true,
+    "downSweepTriggerRising": true,
+    "riseFallHysPerSite": true,
+    "numericPassFailNotSpecified": true,
+    "bstSwNotApplicableWithEndpointProof": true,
+    "safeZeroBeforeDisconnect": true,
+    "noHistoricalReadbackRequirement": true
+  },
+  "evidence": [
+    "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-ptc-v2\\method\\tm109-test-method-contract.json",
+    "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-ptc-v2\\strategy\\tm109-resource-config-contract.json",
+    "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-meta.json",
+    "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-ptc-v2\\strategy\\register-config-evidence.json"
+  ]
+}

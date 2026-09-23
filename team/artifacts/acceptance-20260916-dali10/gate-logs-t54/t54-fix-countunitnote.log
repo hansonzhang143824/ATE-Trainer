@@ -1,0 +1,11 @@
+前置：语法 OK（42672 B）
+  已从历史行写法移除 countUnitNote
+  已加入收据 countUnitNote → 42761 B
+后置：语法 OK
+  run1 末行: RECEIPT-HISTORY D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptan
+  run2 末行: RECEIPT-HISTORY D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptan
+
+=== 自证 ===
+  收据含 countUnitNote = True
+  历史行含 countUnitNote = True
+  收据键 = ['subject', 'at', 'size', 'sha256', 'sha256_lf_normalized', 'topLevelEntries', 'reproducibleBodySha256', 'reproducibleNote', 'projectionSpec', 'hashInvariance', 'isFrozen', 'countUnitNote', 'note']

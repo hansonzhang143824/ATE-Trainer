@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{6B8D2F63-D932-45A8-8E2F-3197F5506DD2}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>../</OutDir>
+    <IntDir>.\debug\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\</OutDir>
+    <IntDir>.\Release\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\$(Configuration)\F12011.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>C:\AccoTEST\AccoTEST System\INCLude;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;F12011_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>.\$(Configuration)\F12011.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\$(Configuration)\</AssemblerListingLocation>
+      <ObjectFileName>.\$(Configuration)\</ObjectFileName>
+      <ProgramDataBaseFileName>.\$(Configuration)\</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0804</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>odbc32.lib;odbccp32.lib;UserRes.lib;UserType.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>..\F12011.dll</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>C:\AccoTEST\AccoTEST System\lIB;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\ACCOTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\$(Configuration)\F12011.pdb</ProgramDatabaseFile>
+      <ImportLibrary>.\$(Configuration)\F12011.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalOptions>/SAFESEH:NO</AdditionalOptions>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\$(Configuration)\F12011.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\$(Configuration)\F12011.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>C:\AccoTEST\AccoTEST System\INCLude;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;F12011_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>.\$(Configuration)\F12011.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\$(Configuration)\</AssemblerListingLocation>
+      <ObjectFileName>.\$(Configuration)\</ObjectFileName>
+      <ProgramDataBaseFileName>.\$(Configuration)\</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0804</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>odbc32.lib;odbccp32.lib;UserRes.lib;UserType.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>..\F12011.dll</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>C:\AccoTEST\AccoTEST System\lIB;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\ACCOTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;D:\SoftwareInstall\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;C:\AccoTEST\AccoTEST System\INCLude;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ProgramDatabaseFile>.\$(Configuration)\F12011.pdb</ProgramDatabaseFile>
+      <ImportLibrary>.\$(Configuration)\F12011.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\$(Configuration)\F12011.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="BoardCheck.cpp" />
+    <ClCompile Include="Coutlier.cpp" />
+    <ClCompile Include="diags.cpp" />
+    <ClCompile Include="FMEA.cpp" />
+    <ClCompile Include="inireader.cpp" />
+    <ClCompile Include="F12011.cpp" />
+    <ClCompile Include="Shmoo.cpp" />
+    <ClCompile Include="spec.cpp" />
+    <ClCompile Include="StdAfx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="sub.cpp" />
+    <ClCompile Include="tempchar.cpp" />
+    <ClCompile Include="test.cpp" />
+    <ClCompile Include="Test_Method.cpp" />
+    <ClCompile Include="treg.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BoardCheck.h" />
+    <ClInclude Include="Coutlier.h" />
+    <ClInclude Include="FMEA.h" />
+    <ClInclude Include="inireader.h" />
+    <ClInclude Include="LogDataStruct.h" />
+    <ClInclude Include="mylib.h" />
+    <ClInclude Include="Pin_Channel_define.h" />
+    <ClInclude Include="Shmoo.h" />
+    <ClInclude Include="spec.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="sub.h" />
+    <ClInclude Include="tempchar.h" />
+    <ClInclude Include="Test_Method.h" />
+    <ClInclude Include="treg.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\NU1201.spec" />
+    <None Include="..\NU1201.treg" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

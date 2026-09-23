@@ -1,0 +1,16 @@
+{
+  "runId": "TM109-IMPLEMENTATION-preflight-20260919",
+  "methodContract": {"path": "team/artifacts/tm109-ptc-v2/method/tm109-test-method-contract.json", "sha256": "0b1c49be36eec6657ed0bc6159444fa67a06ff833223f471ea8a62fcf68c1f6f"},
+  "targetSources": [
+    {"path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp", "sha256": "7b2476ce081612907b9619e466876ad086119c0334cb05dea9642ff0c3ecf573"},
+    {"path": "D:/PROJECT6-DALI/ForCodexDebug/source/sub.cpp", "sha256": "e86d49bef7ae725106311d8205df6dbc11184c7a0920eeaed416a515ac391470"},
+    {"path": "D:/PROJECT6-DALI/ForCodexDebug/source/Test_Method.h", "sha256": "a432f2b602f550a29dd6b76b78ac37245622a71efdcaa42d91ae77a40dc0ba56"},
+    {"path": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h", "sha256": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6"}
+  ],
+  "requirements": [
+    {"id": "REQ-01-sources-and-relays", "contractEvidence": "resourceBoundary.sourceTablesByEndpoint and setOnClosure", "requiredSymbols": ["VBAT_PD3_FXVI", "VAC123_AMUX_ACM", "NQON_HG1_ACM", "K13_VBAT_Cap", "K19_ACM0_VAC2", "K65_nQON_PU", "cbite.SetOn"], "verdict": "supported"},
+    {"id": "REQ-02-awg-capture", "contractEvidence": "measurementPlan.technique and sweeps", "requiredSymbols": ["rampv_capv", "TRIG_FALLING", "TRIG_RISING"], "verdict": "supported"},
+    {"id": "REQ-03-test-mode-and-registers", "contractEvidence": "methodPhases[test_mode_and_registers] and strategy/register-config-evidence.json", "requiredSymbols": ["entertestmode", "I2CWriteSameData", "DEV_ADDR"], "verdict": "supported"}
+  ],
+  "verdict": "pass"
+}

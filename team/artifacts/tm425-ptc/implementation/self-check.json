@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "PTC-IMPLEMENTATION-SELF-CHECK-V2",
+  "tm": "TM425",
+  "stage": "IMPLEMENTATION",
+  "status": "PASS",
+  "methodFamily": "trim",
+  "command": "python scripts/verify_implementation_batch.py team/artifacts/tm102-ptc team/artifacts/tm105-ptc team/artifacts/tm425-ptc",
+  "exitCode": 0,
+  "sourcePath": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+  "sourceSha256": "2ed19d63e8d761efcfbf7eaf187ee4e36e9a492bc965c94759e568dd7ff2c90c",
+  "symbol": "TM425_VREF_1P2V_BUF",
+  "check": {
+    "trial": "tm425-ptc",
+    "tm": "TM425",
+    "symbol": "TM425_VREF_1P2V_BUF",
+    "methodFamily": "trim",
+    "sourceSha256": "2ed19d63e8d761efcfbf7eaf187ee4e36e9a492bc965c94759e568dd7ff2c90c",
+    "status": "PASS",
+    "trimCallback": {
+      "symbol": "measure_mnt_v1p2_buf",
+      "source": "D:/PROJECT6-DALI/ForCodexDebug/source/sub.cpp",
+      "sourceSha256": "228be739e4160c75a7c206e438f70600a7846822f62ae173b3db13079107f038",
+      "tregAssembly": "EFUSE_REG_F8",
+      "tregAddress": "0xF8",
+      "tregBitRange": "4..7"
+    }
+  },
+  "sourceHashes": {
+    "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp": "2ed19d63e8d761efcfbf7eaf187ee4e36e9a492bc965c94759e568dd7ff2c90c",
+    "D:/PROJECT6-DALI/ForCodexDebug/source/sub.cpp": "228be739e4160c75a7c206e438f70600a7846822f62ae173b3db13079107f038"
+  }
+}

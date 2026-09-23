@@ -1,0 +1,538 @@
+{
+  "name": "ate-dali-tm601r3",
+  "id": "ate-dali-tm601r3",
+  "description": "DALI TM601/TM600 rework after the user modified the TM601 DFT. The modified Dali_testmode.xlsx (Python SHA-256 f4bbb8569763784c500974121fca0d18dc3018061c50875e49c8da1fa0569564, 2026-09-16 21:46:39) is the sole authority: TM601 now has vset[bst,5,100e-6,0] (BST=5 V), force iset[pmid_sw,1,1e-3,0], Check SW-PGND / Power VBAT,SW / ISW, ExpectValue 7.5 mOhm, while TM600 keeps PMID=5 V and BST-SW=5 V. All earlier TM601 \"no BST\" inference, plans, payloads and reviews are audit-only and must not gate, repair or fail acceptance. Duty chain: dft-expert re-extracts the new DFT -> schematic/Setup verify physical path, channel and shared/exclusive resources -> test-strategy-architect writes per-TM resources, phases, registers, measurement, power-down and logging -> rule-reviewer reviews independently -> only then does ate-implementer map tester APIs. Captain coordinates dependencies only and lands nothing. Separately re-examine TM600 ACM200 channel 5 -> BST closures K48/K76, BST-SW closed set, multi-source exclusivity, and PMID=5 V versus the older golden 15 V. Old t55 REPLACE stays stopped: no predecessor payload may be landed. Write only under D:/PROJECT6-DALI/ForCodexDebug and DSH artifacts; never D:/PROJECT6-DALI/devel.",
+  "profile": {
+    "name": "ate-delivery",
+    "description": "DALI ATE production pipeline with persistent specialist roles and auditable file artifacts",
+    "protocol": "Captain builds a DAG for the requested TM scope. DFT and schematic analysis are independent upstream tasks. Setup, strategy, implementation, independent rule review, repair loops, gates, and compilation follow. All durable outputs are files under team/artifacts/<run-id>; messages are short handoffs. Only D:/PROJECT6-DALI/ForCodexDebug may be modified or built. Never write to D:/PROJECT6-DALI/devel. A downstream task may start only after required artifact validation passes. Strategy owns per-TM resource allocation, ordered power/test/teardown phases, register provenance, measurement and logging. Schema validation alone does not prove this handoff is complete.",
+    "executionPrompt": "Work in D:/Newtest/DSH/ATE-Coding-Plat. Read team/README.md, team/ROLE_ROUTING.md and your role charter before acting. Use project_config.json as the sole path authority. Put complete outputs in team/artifacts/<run-id>/ and return a compact handoff containing paths, SHA-256 hashes, evidence, unresolved risks, and the intended next member. Preserve source encoding and the TSZ/DLP workflow. Never modify the production tree D:/PROJECT6-DALI/devel.",
+    "taskPlanning": "captain",
+    "reviewPolicy": {
+      "requiredReviewers": []
+    }
+  },
+  "reviewPolicy": {
+    "requiredReviewers": []
+  },
+  "captainSessionId": "session-24944f25-105f-43b9-b3d0-b6e413fd5bac",
+  "createdAt": 1789567119808,
+  "phase": "staged",
+  "planReviewState": "awaiting_review",
+  "members": [
+    {
+      "id": "",
+      "name": "dft-expert",
+      "role": "Extract and validate DFT intent, limits, modes, pins, trims, and coverage into DFT IR",
+      "provider": "deepseek-official",
+      "model": "deepseek-v4-flash",
+      "reasoningEffort": "high",
+      "executionPrompt": "Read team/roles/dft-expert.md completely and obey its contract.",
+      "joinedAt": 1789567119808,
+      "status": "idle"
+    },
+    {
+      "id": "",
+      "name": "schematic-expert",
+      "role": "Extract electrical connectivity, resources, relay paths, and safety constraints into schematic IR",
+      "provider": "deepseek-official",
+      "model": "deepseek-v4-flash",
+      "reasoningEffort": "high",
+      "executionPrompt": "Read team/roles/schematic-expert.md completely and obey its contract.",
+      "joinedAt": 1789567119808,
+      "status": "idle"
+    },
+    {
+      "id": "",
+      "name": "setup-architect",
+      "role": "Own global relay, source, channel, TReg, power-sequence, and cleanup contracts",
+      "provider": "deepseek-official",
+      "model": "deepseek-v4-flash",
+      "reasoningEffort": "high",
+      "executionPrompt": "Read team/roles/setup-architect.md completely and obey its contract.",
+      "joinedAt": 1789567119808,
+      "status": "idle"
+    },
+    {
+      "id": "",
+      "name": "test-strategy-architect",
+      "role": "Own per-TM resource selection, explicit electrical phases, register provenance, measurement, parameters and logs using validated Setup routes and matched golden cases",
+      "provider": "deepseek-official",
+      "model": "deepseek-v4-flash",
+      "reasoningEffort": "high",
+      "executionPrompt": "Read team/roles/test-strategy-architect.md completely and obey its contract.",
+      "joinedAt": 1789567119808,
+      "status": "idle"
+    },
+    {
+      "id": "",
+      "name": "ate-implementer",
+      "role": "Map signed implementation-ready ATE plans to verified tester APIs without inventing electrical method or resource decisions",
+      "provider": "deepseek-official",
+      "model": "deepseek-v4-flash",
+      "reasoningEffort": "high",
+      "executionPrompt": "Read team/roles/ate-implementer.md completely and obey its contract.",
+      "joinedAt": 1789567119808,
+      "status": "idle"
+    },
+    {
+      "id": "",
+      "name": "rule-reviewer",
+      "role": "Independently review generated code against accumulated rules and failure examples",
+      "provider": "deepseek-official",
+      "model": "deepseek-v4-flash",
+      "reasoningEffort": "high",
+      "executionPrompt": "Read team/roles/rule-reviewer.md completely and obey its contract.",
+      "joinedAt": 1789567119808,
+      "status": "idle"
+    },
+    {
+      "id": "",
+      "name": "compile-diagnostician",
+      "role": "Run gates and compilation, classify diagnostics, fix syntax-only defects, and report closure",
+      "provider": "deepseek-official",
+      "model": "deepseek-v4-flash",
+      "reasoningEffort": "high",
+      "executionPrompt": "Read team/roles/compile-diagnostician.md completely and obey its contract.",
+      "joinedAt": 1789567119808,
+      "status": "idle"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "subject": "重提取新版 DFT 意图：以用户修改后的 Dali_testmode.xlsx 为唯一权威重建 dft-ir.json（TM600/TM601 主线）",
+      "status": "pending",
+      "assignee": "dft-expert",
+      "dependencies": [],
+      "attempt": 0,
+      "createdAt": 1789567142611,
+      "updatedAt": 1789567142611,
+      "kind": "requirements",
+      "round": 1,
+      "objective": "以用户修改后的 DFT 工作簿为唯一权威，重新提取并落盘新版 dft-ir.json，使 TM600 与 TM601 的测试意图、数值、顺序、限值全部可追溯到新字节。旧版 dft-ir.json 中由 TM601「无 BST」旧推断导出的内容一律标注 superseded，仅留审计用途。",
+      "inScope": [
+        "team/artifacts/tm601r3-20260916/"
+      ],
+      "outOfScope": [
+        "D:/PROJECT6-DALI/devel",
+        "D:/PROJECT6-DALI/ForCodexDebug/source/",
+        "project/DALI/Dali_testmode.xlsx",
+        "project/DALI/input/",
+        "project/DALI/meta/",
+        "team/schemas/",
+        "team/roles/",
+        "team/artifacts/acceptance-20260916-dali10/"
+      ],
+      "acceptance": [
+        "输入 pin 化：读取的 project/DALI/Dali_testmode.xlsx 必须是 python read_bytes 现算 12,210,680 B / SHA-256 f4bbb8569763784c500974121fca0d18dc3018061c50875e49c8da1fa0569564，并记录读取时刻；若现盘不一致则停止并上报，不得沿用旧值",
+        "TM601 条目逐字段绑定新版 locator：vset[vbat,3.5,100e-6,0]、vset[vdrv,5,100e-6,0]、vset[vbus,5,100e-6,0]、vset[bst,5,100e-6,0]、en_tm[]、field[(WAKE_UP,1)]、field[(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(D2A_BUBO_TM_LSON,1)]、delay[5e-3]、iset[pmid_sw,1,1e-3,0]、delay[2e-3]、finish[]；Power=VBAT,SW；Check/Dynamic 含 SW-PGND 与 I(PMID_SW)；ExpectValue=7.5 mΩ",
+        "TM600 条目同样绑定新版 locator：vset[pmid,5,...]（PMID=5 V）与 vset[bst_sw,5,1e-3,0]（BST−SW=5 V）逐字保留，不改为 15 V；ExpectValue=11 mΩ、Special='Y / 2 FLOAT' 照录",
+        "TM601 旧「无 BST / 不采用 ACM 驱动」推断在产物内显式标 superseded 并注明「不得作为门禁、修复或验收失败依据」，不得删除历史文本",
+        "凡因工作簿版本变化而数值变化的其它 TM 条目全部具名登记（字段、旧值、新值、locator），不得静默沿用旧值",
+        "dft-ir.json 通过 python scripts/validate_team_artifact.py dft-ir 校验且 exit 0；产物落在 team/artifacts/tm601r3-20260916/dft-ir.json；旧 dft-ir.json 保持原字节不动"
+      ],
+      "verify": [
+        "python scripts/validate_team_artifact.py dft-ir team/artifacts/tm601r3-20260916/dft-ir.json"
+      ],
+      "deliverables": [
+        "team/artifacts/tm601r3-20260916/dft-ir.json",
+        "team/artifacts/tm601r3-20260916/inputs/t1-input-diff-new-dft.md"
+      ],
+      "nonGoals": [
+        "不选择机台源表、通道或继电器",
+        "不规划 BST/PMID 台阶或完整测试步骤",
+        "不写任何 C++ 或机台 API",
+        "不做电性结论"
+      ]
+    },
+    {
+      "id": "t2",
+      "subject": "核实物理通路与共享/互斥：TM601 SW—PGND + BST=5 V 可实施性；TM600 ACM200 ch5→BST 与 K48/K76 闭集、多源互斥",
+      "status": "pending",
+      "assignee": "schematic-expert",
+      "dependencies": [
+        "t1"
+      ],
+      "attempt": 0,
+      "createdAt": 1789567161837,
+      "updatedAt": 1789567161837,
+      "kind": "verification",
+      "round": 1,
+      "objective": "在原则图/网表/宏表与已冻结契约字节上，核实 TM601 的 SW—PGND 激励/感测通路与 BST=5 V 的物理可实施性，并单独复核 TM600 的 ACM200 channel 5 → BST 通路、K48/K76 闭集与多源互斥。只给物理事实与共享/互斥结论，不选测试方法、不写台阶。",
+      "inScope": [
+        "team/artifacts/tm601r3-20260916/"
+      ],
+      "outOfScope": [
+        "D:/PROJECT6-DALI/devel",
+        "D:/PROJECT6-DALI/ForCodexDebug/source/",
+        "project/DALI/Dali-SCH.csv",
+        "project/DALI/CSV_CONNECTIVITY.NET",
+        "project/DALI/SCH-Connect-Map.txt",
+        "team/artifacts/acceptance-20260916-dali10/"
+      ],
+      "acceptance": [
+        "未解析的冻结清单：必须读取并逐项报告 team/artifacts/tm601r3-20260916/snapshot/snapshot-manifest.json 里 setup_contract(d9ecffb0…/376308 B)、test_plan(707ce845…/185689 B)、dft_ir_old(d8f900a4…)、schematic_ir(9f4a7707…/457531 B)、target_test_cpp(15c7d2b8…/469714 B)、old_payload(66abc088…/43806 B) 的现算字节与哈希，与冻结值逐一比对并列出任何漂移；漂移项必须具名上报，不得静默沿用",
+        "TM601 物理通路：给出 SW 与 PGND 两个端点在 DUT 引脚、连接器与继电器网上的确证路径，并给出 BST 节点（含自举电容 K57_CAP_BST_SW）由哪些源可驱动、各需闭合哪些继电器；每条结论带 file:line 或 NetName locator",
+        "TM600+ch5：给出 ACM200 channel 5 源到 BST 的物理路径与所需闭合集（K48/K76 的物理依据），并给出 BST–SW 闭集；用端子图/宏表/网表三类证据分别标注强度，明确哪一类是物理层证据、哪一类只是意图证据",
+        "ch5 三目的地事实：列出 channel 5 源的全部目的地及其共享/互斥（至少覆盖 BST、SW1、SW2 三个方向），说明同一时刻能否同时成立、改道靠什么动作",
+        "TM600 与 TM601 能否同时/先后使用同一批 SW/PMID/BST 节点：给出共享继电器与节点清单，并判定需要「显式 RELAY_OFF 共驱仪器」配对的情形（若有，引用既有已部署先例），不得由实现层决定",
+        "PMID=5 V 与旧黄金 15 V：记录两侧原文与 locator（新版 DFT 的 vset[pmid,5,...] vs knowledge/hardware/voltage-inference.md 等历史示例），标为待裁定；不得静默采用任一侧，也不得平均",
+        "报告明确区分 FACT / INFERENCE / UNKNOWN；UNKNOWN 不得写成「已排除」或「安全」",
+        "产物落在 team/artifacts/tm601r3-20260916/review/，旧目录产物字节不动；verify 命令 exit 0"
+      ],
+      "verify": [
+        "python -c \"import json,hashlib;print(hashlib.sha256(open(r'team/artifacts/tm601r3-20260916/inputs/t2-path-and-exclusivity.json','rb').read()).hexdigest())\""
+      ],
+      "deliverables": [
+        "team/artifacts/tm601r3-20260916/schematic-verification-tm600-tm601.md",
+        "team/artifacts/tm601r3-20260916/inputs/t2-path-and-exclusivity.json"
+      ],
+      "nonGoals": [
+        "不决定采用哪条候选通路（资源选择属策略专家）",
+        "不写 Setup 契约或测试计划",
+        "不改目标树或 devel"
+      ]
+    },
+    {
+      "id": "t6",
+      "subject": "契约受控修订（合并批）：ch5 按通道分组闭集 + ch5 三目的地互斥 + TM601 BST=5 V 资源登记 + 旧 TM601「无 BST」条目 superseded",
+      "status": "pending",
+      "assignee": "setup-architect",
+      "dependencies": [
+        "t1",
+        "t2"
+      ],
+      "attempt": 0,
+      "createdAt": 1789567214533,
+      "updatedAt": 1789567214533,
+      "kind": "implementation",
+      "round": 1,
+      "objective": "把 TM600 与 TM601 的契约修订合并为一次受控修订，产出 team/artifacts/tm601r3-20260916/contract/setup-contract.json：按通道分组登记 ch5 路线与闭集、登记 ch5 三目的地互斥、登记 TM601 的 BST=5 V 供电源与 SW—PGND 端点资源、把由旧「TM601 无 BST」推断登记的条目标 superseded、并并列保留 PMID=5 V 与旧黄金 15 V。",
+      "inScope": [
+        "team/artifacts/tm601r3-20260916/contract/",
+        "team/artifacts/tm601r3-20260916/pin/",
+        "team/artifacts/tm601r3-20260916/snapshot/"
+      ],
+      "outOfScope": [
+        "D:/PROJECT6-DALI/devel",
+        "D:/PROJECT6-DALI/ForCodexDebug/source/",
+        "project/DALI/meta/",
+        "team/schemas/",
+        "team/roles/",
+        "team/artifacts/acceptance-20260916-dali10/"
+      ],
+      "acceptance": [
+        "契约修订 pin：新版 setup-contract.json 的字节数与 python 明文 SHA-256 由同一命令现算，并把修订号单调递增；旧版 376308 B / d9ecffb0… 标 superseded 且不删除",
+        "TM600 继电器与路线组：ACM200 ch5 到 BST 的闭集依据（K48/K76）、BST–SW 闭集、以及 ch5 端点的排他闭集以「按通道分组」或等价的显式形式表达，并附 locator",
+        "TM601 修订：登记 BST=5 V 供电源与 SW–PGND 激励/感测端点所需的资源、继电器、通道与安全约束；旧契约中由「TM601 无 BST」旧推断登记的条目（若有）标为 superseded 并保留原文",
+        "ch5 目的地互斥：契约内具名登记 channel 5 的三个目的地及其互斥约束，使实现层不可能在同一次 SetOn 中同时选中两个目的地",
+        "仪器与共享节点：逐 TM 的资源组合可判定共享/互斥；BST 共享节点若需要「显式 RELAY_OFF 共驱仪器」配对，必须在契约内写成显式不变量，不得留给实现者推断",
+        "PMID=5 V vs 旧黄金 15 V：契约内并列登记两侧原文与 locator 并标为待裁定；不得静默采用任一侧",
+        "契约通过 python scripts/validate_team_artifact.py setup-contract 且 exit 0；产物落在 team/artifacts/tm601r3-20260916/contract/setup-contract.json 并通过 sidecar pin 固定字节",
+        "把新契约与关键输入复制到 team/artifacts/tm601r3-20260916/snapshot/，并更新 team/artifacts/tm601r3-20260916/pin/snapshot-manifest.json（含新契约 size/sha256/mtime），使旧团队对旧目录的写入不影响本 DAG 的输入 pin",
+        "未写任何 C++、未动 D:/PROJECT6-DALI/devel 与目标树（前后哈希一致）"
+      ],
+      "verify": [
+        "python scripts/validate_team_artifact.py setup-contract team/artifacts/tm601r3-20260916/contract/setup-contract.json"
+      ],
+      "deliverables": [
+        "team/artifacts/tm601r3-20260916/contract/setup-contract.json",
+        "team/artifacts/tm601r3-20260916/contract/setup-contract-pin.json",
+        "team/artifacts/tm601r3-20260916/pin/snapshot-manifest.json"
+      ],
+      "nonGoals": [
+        "不替逐 TM 策略选择资源组合与完整测试步骤",
+        "不写测试函数或机台 API 调用",
+        "不做电性结论"
+      ]
+    },
+    {
+      "id": "t7",
+      "subject": "策略受控修订（合并）：TM601 SW—PGND 激励/感测与 BST=5 V 逐阶段计划 + TM600 PMID/BST−SW 计划、寄存器、测量、下电与日志",
+      "status": "pending",
+      "assignee": "test-strategy-architect",
+      "dependencies": [
+        "t6"
+      ],
+      "attempt": 0,
+      "createdAt": 1789567221708,
+      "updatedAt": 1789567221708,
+      "kind": "requirements",
+      "round": 1,
+      "objective": "依据新版 dft-ir 与已验证契约，把 TM601 与 TM600 的逐 TM 策略合并为一次受控修订：每个端点的仪器与通道选择、逐阶段上电/测试/下电状态与顺序、寄存器依据、测量与计算、log 字段、异常清理与未决项，全部写成实现者不需猜测即可编码的形式。",
+      "inScope": [
+        "team/artifacts/tm601r3-20260916/plan/"
+      ],
+      "outOfScope": [
+        "D:/PROJECT6-DALI/devel",
+        "D:/PROJECT6-DALI/ForCodexDebug/source/",
+        "project/DALI/meta/",
+        "team/schemas/",
+        "team/roles/",
+        "team/artifacts/acceptance-20260916-dali10/"
+      ],
+      "acceptance": [
+        "计划 pin：新版 test-plan.json 的字节数与 python 明文 SHA-256 现算并写入产物；引用的 setup-contract.json 与 dft-ir.json 均以字节 pin（size+sha256+mtime 同命令取得）",
+        "TM601 条目完整：BST=5 V 电源的端点/通道/已验证路由；SW—PGND 1 A 激励源；SW—PGND 差分感测；ExpectValue=7.5 mΩ；Power=VBAT,SW；逐阶段相对电压条件与动作先后；不含任何「无 BST」旧推断",
+        "TM600 条目完整：PMID=5 V 与 BST−SW=5 V 两轨、ACM200 ch5 到 BST 的已验证路由（含 K48/K76 与改道说明）、PMID—SW 1 A 回路、差分感测、ExpectValue=11 mΩ",
+        "每个 force/sense/供电/观测端点都写明仪器类别、具体通道或对象、以及「已验证路由」的引用；不允许只写「见 Setup 契约」",
+        "电源与测试阶段逐阶段给出：目标电压/电流、相对电压条件、动作先后、寄存器状态、等待与采样窗；包含正常与异常下电；两个浮动通道的下电顺序明确（测量通道最后释放、自举源通道先释放）与撤流顺序",
+        "寄存器：全局初始化与逐 TM delta 分开，每项回指 DFT / reg_config / 已批准裁定；冲突不静默择一",
+        "测量与日志：实测通道、同步性、公式（用实测值）、site 维度、log 名/单位/限值、失败处理",
+        "明确禁令：TM601 不得以旧「无 BST」或旧 payload 形态为步骤依据；TM600 不得改用 15 V PMID 除非用户裁定且已登记",
+        "计划通过 python scripts/validate_team_artifact.py test-plan 且 exit 0；全文不出现具体机台 API 名与 C++ 代码；产物落在 team/artifacts/tm601r3-20260916/plan/test-plan.json；旧 test-plan.json 字节不动"
+      ],
+      "verify": [
+        "python scripts/validate_team_artifact.py test-plan team/artifacts/tm601r3-20260916/plan/test-plan.json"
+      ],
+      "deliverables": [
+        "team/artifacts/tm601r3-20260916/plan/test-plan.json",
+        "team/artifacts/tm601r3-20260916/plan/test-plan-pin.json"
+      ],
+      "nonGoals": [
+        "不写 C++ 或具体机台 API 名",
+        "不重新定义 DFT 意图",
+        "不改 Setup 契约或原理图产物",
+        "不做电性结论"
+      ]
+    },
+    {
+      "id": "t8",
+      "subject": "独立审查：合并后的契约与逐 TM 计划（资源/通道/阶段/寄存器/测量/下电/日志）并对 TM600 ch5 闭集与 TM601 BST=5 V 相容性给出 verdict",
+      "status": "pending",
+      "assignee": "rule-reviewer",
+      "dependencies": [
+        "t2",
+        "t6",
+        "t7"
+      ],
+      "attempt": 0,
+      "createdAt": 1789567221851,
+      "updatedAt": 1789567221851,
+      "kind": "review",
+      "round": 1,
+      "objective": "独立审查合并后的 Setup 契约与逐 TM 测试计划：核对其资源选择、逐阶段电气状态、寄存器依据、测量与日志、异常清理是否覆盖 DFT 意图与已验证物理通路，并对 TM600 的 ch5 闭集与 TM601 的 BST=5 V 资源相容性给出可定位裁定。仅出结论，不改动被审产物。",
+      "inScope": [
+        "team/artifacts/tm601r3-20260916/review/"
+      ],
+      "outOfScope": [
+        "D:/PROJECT6-DALI/devel",
+        "D:/PROJECT6-DALI/ForCodexDebug/source/",
+        "team/artifacts/acceptance-20260916-dali10/",
+        "team/schemas/",
+        "team/roles/"
+      ],
+      "acceptance": [
+        "审查对象 pin：报告开头列出被审字节（dft-ir / setup-contract / test-plan 的 size + python 明文 SHA-256 + mtime），并声明审查后复核这些文件未被改写",
+        "独立性：显式声明未复用旧 run 的 TM601「无 BST」推断、未把契约标签当权威；ch5 位置、K48/K76、BST–SW 闭集均由本任务独立重推并给出 locator",
+        "TM600 闭集判定：给出 ACM200 ch5 → BST 所需闭合集与 BST–SW 闭集，区分「契约字面合规」与「物理实际必需」，并点名任何只满足字面而物理欠缺的条目",
+        "TM601 资源相容性：验证 SW—PGND 激励/感测与 BST=5 V 能否共存、下电顺序是否可实施、有无未决数值被当成已知值使用",
+        "需求完整性：按 team/ROLE_ROUTING.md §3 逐条核对 intent/resourceAllocation/powerAndTestPhases/registerProgram/measurementAndLog/evidenceAndStatus，缺项即退回",
+        "产物：review/t8-plan-review.md（含 verdict 与 findings 表）与 review/t8-plan-review-pin.json；旧审查文件不得改写；verify exit 0"
+      ],
+      "verify": [
+        "python -c \"import json;d=json.load(open(r'team/artifacts/tm601r3-20260916/review/t8-plan-review-pin.json',encoding='utf-8'));print(d.get('verdict'))\""
+      ],
+      "deliverables": [
+        "team/artifacts/tm601r3-20260916/review/t8-plan-review.md",
+        "team/artifacts/tm601r3-20260916/review/t8-plan-review-pin.json"
+      ],
+      "nonGoals": [
+        "不修改计划、契约或代码",
+        "不自行裁定电气意图（退回 owner）",
+        "不做电性结论"
+      ],
+      "reviewedTaskId": "t7"
+    },
+    {
+      "id": "t9",
+      "subject": "按已签收计划映射机台 API：产出 TM600/TM601 候选 payload 与 implementation-manifest.json（不落盘目标树）",
+      "status": "pending",
+      "assignee": "ate-implementer",
+      "dependencies": [
+        "t8"
+      ],
+      "attempt": 0,
+      "createdAt": 1789567229667,
+      "updatedAt": 1789567229667,
+      "kind": "implementation",
+      "round": 1,
+      "objective": "把已通过独立审查的合并计划映射为机台 API 实现，产出候选 payload 与 implementation-manifest.json。不改动目标树、不改契约或计划，不自行决定电气方法或资源。",
+      "inScope": [
+        "team/artifacts/tm601r3-20260916/implementer/"
+      ],
+      "outOfScope": [
+        "D:/PROJECT6-DALI/devel",
+        "D:/PROJECT6-DALI/ForCodexDebug/source/",
+        "team/artifacts/acceptance-20260916-dali10/",
+        "team/schemas/",
+        "team/roles/",
+        "scripts/"
+      ],
+      "acceptance": [
+        "前置：必须先读到 t8 审查的 verdict=pass 与对应 pin，且在产物内引用该 pin 的哈希；不得在审查未通过前写任何代码",
+        "零新决策：payload 中每个资源、通道、继电器闭合集、寄存器写入、量程、测量与下电动作都能回指计划或契约的具体条目；出现计划未覆盖的选择即停止并退回",
+        "TM601：按新版计划实现 SW—PGND 激励/感测与 BST=5 V 电源，且不得沿用旧「无 BST」形态或旧 payload 的 TM601 片段（需给出 grep 证据说明未引入）",
+        "TM600：闭集与计划一致（含 ch5 改道所需的完整集合同一次调用内完整表达）；若计划要求显式 RELAY_OFF 配对则必须成对出现",
+        "候选产物不落盘：payload 写到 team/artifacts/tm601r3-20260916/implementer/implementation-payload-TM600-TM601.cpp，目标树 D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp 保持 469714 B / 15c7d2b8… 不变（报告前后现算哈希）",
+        "implementation-manifest.json 通过 python scripts/validate_team_artifact.py implementation-manifest 且 exit 0；字节数与 python 明文 SHA-256 现算写入；登记 DELIVERED≠DEPLOYED",
+        "负例检查：给出含剥离方法说明的可执行计数（如 re.sub(r\"//.*$\",\"\",line)），证明未引入被计划禁止的继电器或旧推断资源",
+        "未写 devel、未改契约/计划/门禁脚本；旧 payload 与旧 manifest 字节不动"
+      ],
+      "verify": [
+        "python scripts/validate_team_artifact.py implementation-manifest team/artifacts/tm601r3-20260916/implementer/implementation-manifest.json"
+      ],
+      "deliverables": [
+        "team/artifacts/tm601r3-20260916/implementer/implementation-payload-TM600-TM601.cpp",
+        "team/artifacts/tm601r3-20260916/implementer/implementation-manifest.json"
+      ],
+      "nonGoals": [
+        "不写目标树（落盘由受控检查点与 Captain 执行）",
+        "不重新选择资源或步骤",
+        "不修改计划、契约、门禁或输入文件"
+      ]
+    },
+    {
+      "id": "t10",
+      "subject": "落盘前受控检查点：目标树 pin、备份可用性、候选与已审字节一致性判定（不写入）",
+      "status": "pending",
+      "assignee": "rule-reviewer",
+      "dependencies": [
+        "t8",
+        "t9"
+      ],
+      "attempt": 0,
+      "createdAt": 1789567229791,
+      "updatedAt": 1789567229791,
+      "kind": "verification",
+      "round": 1,
+      "objective": "在受控落盘前，独立判定目标树字节是否与冻结 pin 一致、t8 审查是否仍覆盖当前候选字节、备份是否可用，输出逐条 GO/NOGO 判定表，供 Captain 一次性执行精确 REPLACE。禁止任何写入。",
+      "inScope": [
+        "team/artifacts/tm601r3-20260916/review/"
+      ],
+      "outOfScope": [
+        "D:/PROJECT6-DALI/devel",
+        "D:/PROJECT6-DALI/ForCodexDebug/source/",
+        "team/artifacts/acceptance-20260916-dali10/",
+        "team/schemas/",
+        "team/roles/"
+      ],
+      "acceptance": [
+        "目标树 pin：现算 D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp 的字节数与 python 明文 SHA-256，必须等于冻结值 469714 B / 15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a；不等则整体 NOGO",
+        "备份：判定备份是否可生成且可回读校验（size+sha256 一致），并把确定的备份路径与预期哈希写入报告",
+        "一致性判定：候选 payload 与应用到目标树后的预期字节（payload→test.cpp 映射方法必须写明并验证）现算哈希必须与 t8 审查 pin 中的被审字节一致；不一致即 NOGO 并说明需重审",
+        "落盘判定表：逐条列出 GO/NOGO 与依据（目标 pin 一致、t8 审查覆盖当前候选、契约/计划 pin 一致、备份可用、用户授权口径存在），任一 NOGO 即整体不写",
+        "devel 只读核对：报告给出 D:/PROJECT6-DALI/devel/source/test.cpp 前后哈希一致（5c9cb3f9…/434629 B）",
+        "产物：review/t10-apply-checkpoint.md；本任务不执行任何写入动作；verify exit 0"
+      ],
+      "verify": [
+        "python -c \"import hashlib;b=open(r'D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp','rb').read();print(len(b),hashlib.sha256(b).hexdigest())\""
+      ],
+      "deliverables": [
+        "team/artifacts/tm601r3-20260916/review/t10-apply-checkpoint.md"
+      ],
+      "nonGoals": [
+        "不执行写入",
+        "不修改 payload 或计划",
+        "不做编译与电性结论"
+      ]
+    },
+    {
+      "id": "t11",
+      "subject": "受控落盘后的门禁重跑与 Release 编译：bst-sw 期望 GREEN、无新增红、build-report.json 绑定新树哈希与归因",
+      "status": "pending",
+      "assignee": "compile-diagnostician",
+      "dependencies": [
+        "t10"
+      ],
+      "attempt": 0,
+      "createdAt": 1789567238627,
+      "updatedAt": 1789567238627,
+      "kind": "verification",
+      "round": 1,
+      "objective": "在受控落盘后，以固定契约/计划字节在目标树上重跑门禁与 Release 编译，产出带现算哈希与归因的 build-report.json，并如实登记缺口。若会话无写权限，如实标 failed 并给出转 pass 的条件，不得伪绿。",
+      "inScope": [
+        "team/artifacts/tm601r3-20260916/gates/"
+      ],
+      "outOfScope": [
+        "D:/PROJECT6-DALI/devel",
+        "team/artifacts/acceptance-20260916-dali10/",
+        "team/schemas/",
+        "team/roles/",
+        "scripts/run_gates.ps1",
+        "scripts/gate_baseline.json"
+      ],
+      "acceptance": [
+        "落盘前置：只有在 t10 判定表为整体 GO 且用户授权口径存在时执行；报告须写明落盘前后两次现算哈希与时刻",
+        "落盘方式：写入前生成逐字节备份并回读校验；写入后立即复读目标文件并核对字节数与 python 明文 SHA-256 与预期一致",
+        "门禁：以目标树为工作区、绑定固定契约/计划字节，完整运行一次 scripts/run_gates.ps1；期望 bst-sw 转 GREEN、无新增红、cbit 保持 KNOWN-RED；suite exit code 如实记录",
+        "编译：若会话具备写权限则尝试 Release Win32 构建（目标 D:/PROJECT6-DALI/ForCodexDebug/source/F12011.sln），交回 build.log 路径、0 error/0 warning 原文与输出 DLL 的 python 明文哈希；若无权限（如 MSBuild MSB3491）则如实标 failed 并给出转 pass 的确切条件，不得伪造",
+        "归因：逐门列出 NEW-RED/KNOWN-RED 与归因，并明确「GREEN 不等于闭集被物理约束」这类限制",
+        "缺口登记：把门禁脚本自身被发现的缺口（如 verify_bst_sw_sequence.py 在 targets 为空时提前 return 使契约闭集断言被静默跳过）具名登记为残余项，不得在本任务内改门禁脚本或 gate_baseline.json",
+        "产物：gates/build-report.json 通过 schema 校验且 exit 0，含 contract pin、compiledRevision（现算）、gateTable、attributionLimitations、diagnostics；verify exit 0",
+        "不得把旧部署树的红灯当作本任务失败；不得把编译通过写成电性签核"
+      ],
+      "verify": [
+        "python scripts/validate_team_artifact.py build-report team/artifacts/tm601r3-20260916/gates/build-report.json"
+      ],
+      "deliverables": [
+        "team/artifacts/tm601r3-20260916/gates/build-report.json",
+        "team/artifacts/tm601r3-20260916/gates/run-gates.log"
+      ],
+      "nonGoals": [
+        "不改门禁脚本、基线或输入文件",
+        "不修改测试意图相关代码",
+        "不做电性结论或机台验证声明"
+      ]
+    },
+    {
+      "id": "t12",
+      "subject": "集成与终稿：十项逐项验收报告、残余项与限制登记（绑定本次新哈希）",
+      "status": "pending",
+      "assignee": "setup-architect",
+      "dependencies": [
+        "t8",
+        "t9",
+        "t10",
+        "t11"
+      ],
+      "attempt": 0,
+      "createdAt": 1789567238683,
+      "updatedAt": 1789567238683,
+      "kind": "integration",
+      "round": 1,
+      "objective": "汇总本次新证据形成十项逐项验收报告：每项给出通过/失败/未测与证据哈希，并如实登记残余项与限制。",
+      "inScope": [
+        "team/artifacts/tm601r3-20260916/report/"
+      ],
+      "outOfScope": [
+        "D:/PROJECT6-DALI/devel",
+        "team/artifacts/acceptance-20260916-dali10/",
+        "team/schemas/",
+        "team/roles/"
+      ],
+      "acceptance": [
+        "逐项覆盖：TM000、TM001、TM102、TM103、TM108、TM109、TM135、TM600、TM601、TM1205 每项给出 pass / fail / not-tested 与证据路径、哈希、命令",
+        "不得复用旧结论：任何来自旧 run 的判据必须重新绑定本次新哈希后重跑，否则只能标 not-tested",
+        "TM601 与 TM600 条目必须绑定新版 DFT（f4bbb856…）、新契约与新计划的实际字节，并写明操作点（TM601 BST=5 V 与 SW—PGND 激励；TM600 PMID=5 V 与 BST−SW=5 V）",
+        "具名登记未闭合/残余项：历史 verification 缺口（T32-F1/F2/F3）、DELIVERED≠DEPLOYED、门禁盲区与脚本缺口、meta 重生成风险、K109↔FPVIe1 耦合、静态门禁与编译不等于电性、无机台验证",
+        "分层声明：明确区分 payload authored ≠ target deployed ≠ independently reviewed ≠ gates/build on final tree ≠ hardware signed off",
+        "产物：report/acceptance-report.json 与 report/integration-summary.md，含所有 pin 与限制；旧验收报告不得改写；verify exit 0"
+      ],
+      "verify": [
+        "python -c \"import json;d=json.load(open(r'team/artifacts/tm601r3-20260916/report/acceptance-report.json',encoding='utf-8'));print(sorted(d.keys()))\""
+      ],
+      "deliverables": [
+        "team/artifacts/tm601r3-20260916/report/acceptance-report.json",
+        "team/artifacts/tm601r3-20260916/report/integration-summary.md"
+      ],
+      "nonGoals": [
+        "不重新裁定电气意图",
+        "不修改代码、契约或计划",
+        "不声明电性或机台结论"
+      ]
+    }
+  ],
+  "taskSeq": 12
+}

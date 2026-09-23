@@ -1,0 +1,60 @@
+schemaVersion: 1
+artifact: "dft-conditions"
+projectId: "DALI"
+tm: "TM103"
+sourcePath: "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\Dali_testmode.xlsx"
+sourceSheet: "OVERVIEW"
+sourceSha256: "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b"
+rawIntent:
+  Item: "TM103"
+  Level: "HSKP"
+  Name: "LP_HR_0P5U"
+  Description: "IBP 0.5UA HR "
+  ExpectValue: 0.5
+  Unit: "uA"
+  Test: "Direct"
+  Special: ""
+  Purpose: "Debug"
+  Trim: ""
+  Notes: ""
+  Code1: "vset[vbat,4,100e-6,0]"
+  Code2: "en_tm[]\nfield[(EN_ATEST0,1),(ATEST0_MUX,4)]\nvset[vdm,1,100e-6,0]"
+  Code3: "delay[1e-3]\nfinish[]"
+  Power: "VBAT"
+  Dynamic: ""
+  Check: "I(ATEST0)"
+  isCodeGen: "Y"
+  isRun: ""
+  Assign: ""
+  State__AMS_Validation: "Done"
+  State_Bench_Validation: ""
+  is_CP_test?: ""
+  CP_comment: ""
+  State_ATE_Validation: ""
+  HELPER: ""
+  de_test: "0.5uA"
+  aetest: ""
+  is_test: "checked"
+derivedTokens:
+  vsetPins: ["vbat", "vdm"]
+testCondition:
+  identity: {"testItem": "TM103", "level": "HSKP", "parameterName": "LP_HR_0P5U", "description": "IBP 0.5UA HR ", "purpose": "Debug", "unit": "uA"}
+  remarks: ""
+  expectedValue: 0.5
+  isTrim: false
+  powerSequence: [{"column": "Code1", "order": 1, "sourceOrder": 1, "pin": "vbat", "args": ["4", "100e-6", "0"], "raw": "vset[vbat,4,100e-6,0]", "directPowerOn": true}, {"column": "Code2", "order": 1, "sourceOrder": 2, "pin": "vdm", "args": ["1", "100e-6", "0"], "raw": "vset[vdm,1,100e-6,0]", "directPowerOn": true}]
+  staticPower: [{"column": "Code1", "order": 1, "sourceOrder": 1, "pin": "vbat", "args": ["4", "100e-6", "0"], "raw": "vset[vbat,4,100e-6,0]", "directPowerOn": true}]
+  directPowerActions: [{"column": "Code1", "order": 1, "sourceOrder": 1, "pin": "vbat", "args": ["4", "100e-6", "0"], "raw": "vset[vbat,4,100e-6,0]", "directPowerOn": true}, {"column": "Code2", "order": 1, "sourceOrder": 2, "pin": "vdm", "args": ["1", "100e-6", "0"], "raw": "vset[vdm,1,100e-6,0]", "directPowerOn": true}]
+  hasRamp: false
+  ramps: []
+  helperIntent: ""
+  scanIntent: {"state": "NOT_DECLARED", "source": "HELPER", "raw": "", "entries": []}
+  dynamicPins: []
+  highCurrent: {"state": "NOT_DECLARED", "evidenceColumns": ["Name", "Description", "Notes", "Special"]}
+  differentialVoltage: {"state": "NOT_DECLARED", "evidenceColumns": ["Name", "Description", "Notes", "Special"]}
+  internalComparison: {"state": "NOT_DECLARED", "expression": "", "sourceText": ""}
+  involvedPins: {"vsetPins": ["vbat", "vdm"], "logicalCheck": "I(ATEST0)"}
+  measurement: {"check": "I(ATEST0)", "quantity": "CURRENT", "isToggle": false, "resultTypes": ["Measurement"], "resultTypeProvenance": [{"type": "Measurement", "state": "SOURCE_DECLARED"}]}
+  registerFieldIntent: ["(EN_ATEST0,1),(ATEST0_MUX,4)"]
+  referenceValue: 0.5
+  notes: ""

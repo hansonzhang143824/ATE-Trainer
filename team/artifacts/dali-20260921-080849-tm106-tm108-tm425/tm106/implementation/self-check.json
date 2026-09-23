@@ -1,0 +1,52 @@
+{
+  "stage": "IMPLEMENTATION",
+  "role": "ate-implementer",
+  "batchId": "dali-20260921-080849-tm106-tm108-tm425",
+  "tm": "TM106",
+  "state": "DONE",
+  "mode": "skeleton-verification (empty-shell), user ruling option B: pre-seeded implementation accepted as-is, no source edits",
+  "gateResults": {
+    "verify_implementation_batch_py": {
+      "exitCode": 0,
+      "status": "PASS",
+      "symbol": "TM106_HSKP_VBUS_PRST",
+      "methodFamily": "scan",
+      "sourceSha256": "8c2fd155839958dae7952653e892e5918a90352ce67601b04a447072235f495d"
+    },
+    "write_implementation_deliverable_py": {
+      "exitCode": 0,
+      "status": "PASS",
+      "handoff": "implementation/deliverable-ready.json"
+    },
+    "apply_ptc_source_comments_py": {
+      "exitCode": 1,
+      "note": "deterministic comments could not be written: sandbox denies all out-of-workspace writes (PermissionError Errno 13 on test.cpp, whitelisted script included); gate does not require them for this PASS"
+    }
+  },
+  "implementationSummary": {
+    "function": "TM106_HSKP_VBUS_PRST (test.cpp:8875-8919, pre-seeded, unmodified)",
+    "hardRules": {
+      "functionalRelayDelay3ms": "cbite.SetOn(K13_VBAT_Cap, K65_nQON_PU, -1); delay_ms(3); (lines 8884-8885)",
+      "zeroBeforeRelayOff": "Set(FV,0,...RELAY_ON) then Set(FV,0,...RELAY_OFF) for VBUS_DRVH1_ACM / VBAT_PD3_FXVI / NQON_HG1_ACM (lines 8911-8917)",
+      "registerWritesVerbatim": "I2CWriteSameData(DEV_ADDR, 0x56, 0x13); I2CWriteSameData(DEV_ADDR, 0x57, 0x08); (lines 8892-8893)"
+    },
+    "sweeps": "rampv_capv(VBUS_DRVH1_ACM -> NQON_HG1_ACM): 3->5V TRIG_FALLING, 5->3V TRIG_RISING; per-site SetTestResult VBUS_PRST_Fall/Rise/Hys"
+  },
+  "knownDeviationsAccepted": {
+    "ref": "preflight-blocked.json findings F2; batch ledger gateHold.decision option B",
+    "summary": "Rising-sweep capture routed to VBUS_PRST_Fall and falling-sweep to VBUS_PRST_Rise (signed contract requires the opposite); Hys *1e3 (mV) vs contract unit V; contract P3 delay_ms(1) after register writes absent. Accepted as-is under skeleton mode; not fixed, not bypassed; validate_body did not reject them."
+  },
+  "manifestBinding": {
+    "methodContractEmbedded": true,
+    "methodContractSha256": "74f2f33459954fcc65fc4f370aa330739f35009c07e5dd3c7b74b456fbfcde2b",
+    "changes0AfterSha256": "8c2fd155839958dae7952653e892e5918a90352ce67601b04a447072235f495d"
+  },
+  "sourceFilesModifiedByThisRun": [],
+  "artifacts": [
+    "implementation/implementation-manifest.json",
+    "implementation/deliverable-ready.json",
+    "implementation/self-check.json",
+    "implementation/preflight-blocked.json (deviation evidence F2)",
+    "implementation/verify-fail.json (9-run gate history before PASS)"
+  ]
+}

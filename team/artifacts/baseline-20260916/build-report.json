@@ -1,0 +1,35 @@
+{
+  "runId": "baseline-20260916",
+  "targetRoot": "D:/PROJECT6-DALI/ForCodexDebug",
+  "configuration": "Release",
+  "gates": [
+    {
+      "command": "powershell -ExecutionPolicy Bypass -File scripts/run_gates.ps1 -Only material-audit -Build -Config Release -LogDir team/artifacts/baseline-20260916/build-verified",
+      "cwd": "D:/Newtest/DSH/ATE-Coding-Plat",
+      "startedAt": "2026-09-16T13:28:11+08:00",
+      "exitCode": 0,
+      "log": "team/artifacts/baseline-20260916/build-verified/material-audit.log",
+      "logSha256": "d2d937477b2153abcdb86f2baca8ec66ce035d288ea49398469ba9d04e2c8f75"
+    }
+  ],
+  "builds": [
+    {
+      "command": "scripts/fast_rebuild.ps1 D:/PROJECT6-DALI/ForCodexDebug/source -Config Release -Incremental",
+      "cwd": "D:/Newtest/DSH/ATE-Coding-Plat",
+      "startedAt": "2026-09-16T13:28:11+08:00",
+      "exitCode": 0,
+      "log": "team/artifacts/baseline-20260916/build-verified/build.log",
+      "logSha256": "2d02021c40a2415d8def1c7e7b568df261856c3c218e4fa7eaabd22e4a6ff3dd",
+      "result": "0 errors, 0 warnings",
+      "binary": "D:/PROJECT6-DALI/ForCodexDebug/F12011.dll",
+      "binarySha256": "9482a211c7c00d1af360102386db02e72a55e91f47308394347e220cc6d0218c"
+    }
+  ],
+  "diagnostics": [],
+  "fixes": [],
+  "verdict": "pass",
+  "limitations": [
+    "This baseline proves gates and compilation only; no tester hardware or electrical validation was executed.",
+    "Visual Studio was not running, so automatic Save All was skipped; the build used the on-disk debug-copy sources."
+  ]
+}

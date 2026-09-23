@@ -1,0 +1,44 @@
+{
+  "task": "TM109-DFT",
+  "role": "dft-expert",
+  "status": "failed",
+  "verdict": "BLOCKED",
+  "stage": "input identity verification (pre-derivation, G0)",
+  "projectId": "DALI",
+  "tm": "TM109",
+  "problem": "Canonical DFT input hash mismatch. The task pinned SHA-256 b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4 for project/DALI/input/DFT.csv, but the file on disk hashes to c87e601534d5d4cacea3a68793585473874cf541c44c4e10b68f1dd34485a5c5. The on-disk file is also not CSV text: it is a binary container (magic bytes 54 53 5a 23 = 'TSZ#', NUL bytes present, 54.3% non-ASCII/control bytes), so it cannot be the parsed DFT workbook export that the pinned hash implies.",
+  "impact": "The DFT derivation could not be trusted for any downstream consumer. Per the dispatched stop condition, no metadata was derived: team/artifacts/tm109-direct-trial/dft/dft-meta.json was deliberately NOT created. test-strategy-architect remains blocked because its mandatory DFT input for TM109 is unresolved.",
+  "evidence": [
+    {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\input\\DFT.csv",
+      "key": "whole-file (16862 bytes, mtime 2026-07-18 16:12:54)",
+      "observedSha256": "c87e601534d5d4cacea3a68793585473874cf541c44c4e10b68f1dd34485a5c5",
+      "expectedSha256": "b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4",
+      "confirmedBy": "two independent tools agreeing: Get-FileHash -Algorithm SHA256 and certutil -hashfile SHA256",
+      "headerBytesHex": "54 53 5a 23 05 35 07 0e e7 00 00 00 36 e4 37 58 5b f0 00 00 62 12 98 0b de 41 00 00 00 00 00 00",
+      "headerAscii": "TSZ#.5......6.7X"
+    },
+    {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\meta\\manifest.json",
+      "key": "input.path (line 5), input.sha256 (line 7), completeness.sheetCount (line 49)",
+      "observed": "The project's own authoritative manifest declares its DFT source as project\\DALI\\Dali_testmode.xlsx (10677032 bytes, sha256 0b0480a290581fd3d10ec9db7aef45664949174bb8f1a94e926f24cfa582abbd, 22 sheets). It contains no record of DFT.csv and no record of hash b92d203f, so the pinned path/hash cannot be corroborated from project evidence."
+    }
+  ],
+  "alternativesEliminated": [
+    "Not a line-ending or encoding artifact: LF normalization, BOM-stripped, UTF-8 with BOM re-encoded, and UTF-16LE re-encoded variants hash to 724a0347..., c87e6015..., 85a0555b..., and 7a0929aa... respectively; none equals b92d203f...",
+    "Not a hashing-tool discrepancy: Get-FileHash and certutil independently report the identical c87e6015... value.",
+    "Not a wrong-file-at-wrong-path case within the workspace: a recursive search for DFT*.csv under ATE-Coding-Plat returns exactly two files, DFT.csv (c87e6015...) and DFT_restored.csv (757924e3..., 16824 bytes); neither matches the pinned hash.",
+    "Not a truncation or empty-file artifact: the file is 16862 bytes and readable; only its identity and format are wrong.",
+    "No parser was invoked: because the identity gate failed before derivation, binary content was never interpreted."
+  ],
+  "filesRead": [
+    "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\roles\\dft-expert.md",
+    "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\AGENT_RUNTIME_BASE.md",
+    "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\meta\\manifest.json"
+  ],
+  "artifactsNotWritten": [
+    "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-direct-trial\\dft\\dft-meta.json"
+  ],
+  "nextActionOwner": "Commander",
+  "requiredRuling": "Decide which DFT identity is authoritative for TM109 before any re-dispatch; a re-dispatch with the same pinned hash will fail identically."
+}

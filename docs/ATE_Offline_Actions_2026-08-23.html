@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ATE Offline Coding Actions 清单</title>
+  <style>
+    :root{--bg:#f7f7fb;--card:#fff;--ink:#1f2937;--muted:#64748b;--line:#d8dee9;--blue:#2563eb;--green:#059669;--amber:#d97706;--red:#dc2626;--purple:#7c3aed}
+    body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.65 "Microsoft YaHei",Segoe UI,Arial,sans-serif}
+    .wrap{max-width:1240px;margin:auto;padding:28px 22px 72px}
+    h1{margin:0 0 6px;font-size:28px} h2{margin:34px 0 14px;font-size:20px;border-left:5px solid var(--blue);padding-left:10px}
+    .sub{color:var(--muted);margin:0 0 18px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:14px 0}
+    .stats{display:flex;gap:12px;flex-wrap:wrap}.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-width:150px}.stat b{font-size:22px}
+    .idx{display:inline-flex;min-width:46px;height:28px;align-items:center;justify-content:center;border-radius:8px;background:#0f172a;color:#fff;font-weight:800;font-family:Consolas,monospace}
+    .tag{display:inline-block;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:800}
+    .done{background:#ecfdf5;color:var(--green)}.todo{background:#eff6ff;color:var(--blue)}.skel{background:#fffbeb;color:var(--amber)}.block{background:#fef2f2;color:var(--red)}.ext{background:#f5f3ff;color:var(--purple)}
+    .p0{background:#fee2e2;color:#991b1b}.p1{background:#fef3c7;color:#92400e}.p2{background:#dbeafe;color:#1d4ed8}
+    code,.path{font-family:Consolas,"Courier New",monospace;font-size:12.5px}.path{background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;padding:1px 6px;white-space:nowrap}
+    table{border-collapse:collapse;width:100%;font-size:13px;background:#fff} th,td{border:1px solid var(--line);padding:9px 10px;vertical-align:top;text-align:left} th{background:#f8fafc;white-space:nowrap}
+    .scroll{overflow:auto;border-radius:10px;border:1px solid var(--line)}.scroll table{border:0}
+    .lane{display:grid;grid-template-columns:160px 1fr;gap:12px;margin:10px 0}.lane .name{font-weight:800;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:10px}.lane .items{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px}
+    ul{margin:6px 0 0 20px;padding:0}li{margin:4px 0}.footer{margin-top:34px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:14px}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ATE Offline Coding Actions 清单</h1>
+  <p class="sub">整理自旧版 <span class="path">工作流Action清单.html</span>、<span class="path">工作流全景.md</span>、<span class="path">讨论记录-知识分层方案.md</span>、<span class="path">现状盘点报告.md</span>，并按迁移后 4-agent 架构重新归类。日期：2026-08-23。</p>
+
+  <div class="stats">
+    <div class="stat"><b>14</b><br>长期 Action</div>
+    <div class="stat"><b>1</b><br>已完成</div>
+    <div class="stat"><b>7</b><br>P1 知识补全</div>
+    <div class="stat"><b>3</b><br>P2 工具/收尾</div>
+    <div class="stat"><b>2</b><br>外部依赖</div>
+  </div>
+
+  <h2>一、Action 总表 A01–A14</h2>
+  <div class="scroll">
+    <table>
+      <tr><th>索引</th><th>Action 内容</th><th>落点/唯一家</th><th>状态</th><th>优先级</th><th>所属环节</th><th>依赖/备注</th></tr>
+      <tr><td><span class="idx">A01</span></td><td>补 7 类项目结构类型判定表：Trim / Contact / OTP Readback / OTP Burn / P2P / Leakage / 一般测试项目，命中即停。</td><td><span class="path">.claude/knowledge/standards/test-types.md</span></td><td><span class="tag done">已完成</span></td><td><span class="tag p0">P0</span></td><td>Step3 分类</td><td>当前 test-types 已落地；Contact/OTP/P2P/Leakage 框架仍待案例。</td></tr>
+      <tr><td><span class="idx">A02</span></td><td>补寄存器配置读取：test.cpp vs sub.cpp 放置规则、registermap 读取方法、是否脚本化。</td><td><span class="path">standards/register-config.md</span></td><td><span class="tag skel">骨架待填</span></td><td><span class="tag p0">P0</span></td><td>Step6 寄存器</td><td>与 <span class="path">reg_config/*.sv</span>、I2CWriteSameData 生成强相关。</td></tr>
+      <tr><td><span class="idx">A03</span></td><td>补测量经验：采样点数/间隔、切量程、clamp、大电流恢复 0、量程转换。</td><td><span class="path">experience/measurement.md</span></td><td><span class="tag skel">空壳待填</span></td><td><span class="tag p1">P1</span></td><td>Step7 测量</td><td>与 R-VIR、R-HYS、rampv/rampi 调用语义联动。</td></tr>
+      <tr><td><span class="idx">A04</span></td><td>补上下电经验：上电绕法/台阶、下电次序、量程统一教训。</td><td><span class="path">experience/power-sequence.md</span></td><td><span class="tag skel">空壳待填</span></td><td><span class="tag p1">P1</span></td><td>Step5/8 上下电</td><td>对应 R-PON / R-POFF；脚本在 <span class="path">gen_power_sequence.py</span>。</td></tr>
+      <tr><td><span class="idx">A05</span></td><td>补 11 步继电器检查清单正文。</td><td><span class="path">experience/relay-check.md</span></td><td><span class="tag skel">正文待回灌</span></td><td><span class="tag p1">P1</span></td><td>Step4 继电器</td><td>与 <span class="path">verify_relay_trace.py</span>、FR-001/002/003 绑定。</td></tr>
+      <tr><td><span class="idx">A06</span></td><td>完善 references 四件套：优秀案例、Block 介绍、典型方法、排查方法论。</td><td><span class="path">.claude/references/code|chip|method|debug</span></td><td><span class="tag skel">待归档</span></td><td><span class="tag p1">P1</span></td><td>分类 + 案例贯穿</td><td>案例不重命名、不物理改写，靠索引建立参数关联。</td></tr>
+      <tr><td><span class="idx">A07</span></td><td>补参数类型索引：同名联动 chip/method/code/debug，和功能类型索引互不干涉。</td><td><span class="path">references/param_type_index.md</span></td><td><span class="tag skel">待补</span></td><td><span class="tag p1">P1</span></td><td>索引</td><td>当前已有 RDSON、UVLO、CurrentSense、Current Threshold、VBG 等。</td></tr>
+      <tr><td><span class="idx">A08</span></td><td>补函数注册表：ramp64、shared_functions 条目，签名/触发/语义/调用点。</td><td><span class="path">standards/functions-registry.md</span></td><td><span class="tag skel">待补</span></td><td><span class="tag p1">P1</span></td><td>Step7 + 复用</td><td>当前以 test_method 家族登记为主，shared_functions 还未发布 active 函数。</td></tr>
+      <tr><td><span class="idx">A09</span></td><td>建立知识完整性审计脚本：ID 连续、反向引用、来源清单对照、active 规则强制层检查。</td><td><span class="path">gen_knowledge_audit.py</span></td><td><span class="tag todo">待建</span></td><td><span class="tag p2">P2</span></td><td>知识审计</td><td>建议等 A01–A08 主要内容落地后实施。</td></tr>
+      <tr><td><span class="idx">A10</span></td><td>建立规则导出脚本：Excel + HTML，支持 <code>--changed</code> 只看改动。</td><td><span class="path">gen_rules_report.py</span></td><td><span class="tag todo">待建</span></td><td><span class="tag p2">P2</span></td><td>Review 导出</td><td>用于人工 review active/draft 规则。</td></tr>
+      <tr><td><span class="idx">A11</span></td><td>把 nuvola-*.md / 记忆文件降为指针：正文回灌到 knowledge 后，记忆只留索引和非显然上下文。</td><td><span class="path">auto-memory / 记忆层</span></td><td><span class="tag block">阻塞</span></td><td><span class="tag p1">P1</span></td><td>收尾</td><td>依赖 A01–A05 先把正文落到唯一家。</td></tr>
+      <tr><td><span class="idx">A12</span></td><td>更新入口文档，使 CLAUDE.md 与 AGENT_MAP.md / 工作流全景一致。</td><td><span class="path">CLAUDE.md</span></td><td><span class="tag skel">需持续校准</span></td><td><span class="tag p2">P2</span></td><td>文档收尾</td><td>当前 CLAUDE.md 已是 2.0 指针入口，但路径说明仍需随目录迁移校准。</td></tr>
+      <tr><td><span class="idx">A13</span></td><td>源表 + 继电器定义 / ChannelMap 的生产。</td><td><span class="path">VS 工程源目录</span></td><td><span class="tag ext">外部依赖</span></td><td><span class="tag p0">P0</span></td><td>G1 前置</td><td>由外部团队生成，本流程只消费和验证。</td></tr>
+      <tr><td><span class="idx">A14</span></td><td>TREG / Trim 库定义。</td><td><span class="path">standards/treg.md</span> + <span class="path">库函数/treg</span></td><td><span class="tag ext">外部依赖</span></td><td><span class="tag p0">P0</span></td><td>Trim 前置</td><td>TREG 属于 VS 工程资产；流程读取和验证。</td></tr>
+    </table>
+  </div>
+
+  <h2>二、按执行阶段看 Action</h2>
+  <div class="lane"><div class="name">G0 Manifest</div><div class="items">无长期 Action；执行动作是 <span class="path">project_manifest.py --write</span>，冻结输入与哈希。</div></div>
+  <div class="lane"><div class="name">G1 Hardware</div><div class="items"><span class="idx">A13</span> 外部资源/继电器定义；<span class="idx">A05</span> 继电器检查经验回灌；执行动作：SCH/COMPONENT 生成、CBIT 审计、路径追踪。</div></div>
+  <div class="lane"><div class="name">G2 Design</div><div class="items"><span class="idx">A01</span> 分类表；<span class="idx">A02</span> 寄存器；<span class="idx">A06</span> 案例；<span class="idx">A07</span> 参数索引；<span class="idx">A14</span> TREG。</div></div>
+  <div class="lane"><div class="name">G3 Generate</div><div class="items"><span class="idx">A03</span> 测量经验；<span class="idx">A04</span> 上下电经验；<span class="idx">A08</span> 函数注册表。执行动作：staging 生成、无占位符、无 TODO/stub。</div></div>
+  <div class="lane"><div class="name">G4 Verify</div><div class="items"><span class="idx">A09</span> 知识审计；执行动作：meta 全覆盖、single fn、relay trace、merge rules、library status、目标项 gate。</div></div>
+  <div class="lane"><div class="name">G5 Build</div><div class="items">无长期 Action；执行动作：用户触发 VS/MSBuild，记录日志/退出码/哈希。</div></div>
+  <div class="lane"><div class="name">Knowledge</div><div class="items"><span class="idx">A10</span> 规则导出；<span class="idx">A11</span> 记忆降指针；<span class="idx">A12</span> 入口文档校准。</div></div>
+
+  <h2>三、运行时动作库：脚本/检查动作</h2>
+  <div class="scroll">
+    <table>
+      <tr><th>动作类型</th><th>命令/脚本</th><th>用途</th><th>日常/迁移</th></tr>
+      <tr><td>输入冻结</td><td><code>project_manifest.py --write</code></td><td>冻结输入路径、项目身份、哈希。</td><td>日常关键批次 / 迁移必跑</td></tr>
+      <tr><td>原理图解析</td><td><code>Project/DALI/sch_parse.py</code></td><td>生成 <code>SCH-Connect-Map.txt</code> 和 <code>COMPONENT-STATISTIC.txt</code>。</td><td>输入变化/迁移必跑</td></tr>
+      <tr><td>CBIT 定义/审计</td><td><code>gen_cbit_defines.py --audit-rules</code></td><td>CBIT 单点继电器定义、规则覆盖映射。</td><td>定义变化/迁移必跑</td></tr>
+      <tr><td>路径追踪</td><td><code>gen_paths.py</code> / <code>gen_path_defines.py</code></td><td>BFS 通路追踪、路径继电器定义。</td><td>硬件路径相关</td></tr>
+      <tr><td>meta 生成</td><td><code>gen_testitems_meta.py</code></td><td>生成 TestItemMeta，当前 81 函数覆盖；支持历史 dump 与 active code fallback。</td><td>DFT/源码/分类变更</td></tr>
+      <tr><td>L1 单项目冒烟</td><td><code>verify_single_fn.py --src &lt;staging源码&gt; --fn &lt;当前TM&gt;</code></td><td>每个函数生成后立即检查占位符、分号、括号、CRLF、生命周期和寄存器顺序；PASS 才允许下一项。</td><td>日常/迁移强制逐项执行</td></tr>
+      <tr><td>L2 整批覆盖门</td><td><code>check_testitems_meta.py --require-all --require-scope &lt;批次&gt;</code></td><td>全部目标 TM 完成后，统一证明源码→meta 与 DFT scope→源码双向覆盖。</td><td>每批统一执行一次</td></tr>
+      <tr><td>L2 继电器反查</td><td><code>verify_relay_trace.py --require-path-proof --warn-as-error</code></td><td>整批结构规则、功能规则、meta capAuthority 和 Source→DUT PIN PathProof。</td><td>每批统一执行一次</td></tr>
+      <tr><td>合并纪律</td><td><code>verify_merge_rules.py</code></td><td>默认一个 TM 一个函数；只有 waiver 可合并。</td><td>日常/迁移</td></tr>
+      <tr><td>库状态</td><td><code>verify_library_status.py</code></td><td>检查 TODO/stub helper 不进生产工程。</td><td>日常/迁移</td></tr>
+      <tr><td>样例/目标项 gate</td><td><code>compare_codegen_samples.py</code> / targeted gate</td><td>验证指定 TM 的 meta → source/golden → VS active code。</td><td>迁移专用；日常按需</td></tr>
+      <tr><td>编译</td><td><code>fast_rebuild.ps1</code> / <code>compile.ps1</code> / MSBuild</td><td>实际 VS 编译，记录日志、退出码、DLL。</td><td>用户触发</td></tr>
+    </table>
+  </div>
+
+  <h2>四、建议执行优先级</h2>
+  <div class="card">
+    <ol>
+      <li><b>P0：</b>A02、A13、A14。寄存器/TREG/外部定义决定能否稳定生成真实测试。</li>
+      <li><b>P1：</b>A05、A03、A04。继电器、测量、上下电经验最容易造成“编译过但电气错”。</li>
+      <li><b>P1：</b>A06、A07、A08。把黄金案例、参数索引和函数注册表补齐，减少 agent 猜测。</li>
+      <li><b>P2：</b>A09、A10、A11、A12。做审计、导出、记忆降指针和入口文档收口。</li>
+    </ol>
+  </div>
+
+  <div class="footer">
+    注：本文件里的 Action 是长期体系建设动作；运行时脚本动作是每次任务可选择执行的验证/生成动作，两者不要混淆。
+  </div>
+</div>
+</body>
+</html>

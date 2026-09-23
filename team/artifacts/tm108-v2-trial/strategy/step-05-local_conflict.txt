@@ -1,0 +1,19 @@
+TM108 relay workflow STEP5 LOCAL-CONFLICT (step 5/8) - owner=test-strategy-architect run=tm108-v2-trial
+flow: knowledge/references/L3-method/relay-design-flow.md:39-75
+closure-set source: proof required_on + full proof relay chain
+
+-- LC-1 VAC1 f/s pairing
+   VAC1_F and VAC1_S share ONE branch: the FPVIe CH0 Low pair (K17 -> K18(NC) -> K19(NC)) lands FL0 on VAC1_F and SL0 on VAC1_S (SCH-Connect-Map.txt:193-194). Closing K17 therefore reaches BOTH sides with one actuation and no extra union: no conflict.
+-- LC-2 VAC1 CH0 High vs CH0 Low branch
+   the CH0 High branch needs K70/K87/K90 (SCH-Connect-Map.txt:190) while the Low branch needs only K17 (SCH-Connect-Map.txt:193); they join at VAC_FORCE_S1 (proof from_net/to_net in tm108-paths-proofs.txt). Selecting the Low branch avoids K70/K87/K90/K82 entirely: the High branch is DROPPED, it is not merged.
+-- LC-3 VBAT vs PD3 share
+   K8_PD3_S1 is the VBAT<->PD3 two-way selector: VBAT needs K8 default-conducting (SCH-Connect-Map.txt:832-834) while PD3 needs K8(Relay-ON) (SCH-Connect-Map.txt:814-816). TM108 uses VBAT only, so K8 stays at its un-actuated state; PD3 is not used by this TM.
+-- LC-4 nQON vs HG1 share
+   K64_HG1_S1 pin7 = nQON net, pin2 = NetK62_BUS_FH_QON_S1_2 (tm108-paths-proofs.txt nQON_F_S1 chains). nQON needs K64 un-actuated (SCH-Connect-Map.txt:242-244) while HG1 needs K64(Relay-ON) (SCH-Connect-Map.txt:469-470). TM108 observes nQON, so K64 must stay un-actuated.
+-- LC-5 observation both sides
+   the DFT check is ONE single-ended pin. Reading nQON_F and nQON_S at the same time is not permitted as a measurement, but the F-side chain (K62) and the S-side chain (K62_BUS_SH_QON) are two different relays on the same node group; only the side the resolved observation endpoint needs may be actuated. This is carried as an open item (OI-T4-02) until the DTEST0<->nQON relation is proven.
+-- LC-6 time-division candidate
+   VAC1 (ramp) and VBAT (static) are DIFFERENT nets with disjoint relay chains in the selected allocation, so no time-division is needed: one closure set covers the whole item.
+degrade chain used: none (no shortest path was in conflict, so no second-shortest, no
+differential-drop and no 定点补证-on-conflict branch was triggered) - relay-design-flow.md:54-61.
+

@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm109-review-evidence-scope",
+  "taskId": "TM109-RULE-REVIEW-METHOD",
+  "stage": "RULE_REVIEW_METHOD",
+  "tm": "TM109",
+  "generatedAt": "2026-09-18 00:26:51 +08:00",
+  "snapshotPath": "team/artifacts/tm109-direct-trial/review/immutable-review-snapshot.json",
+  "reviewerRole": "rule-reviewer",
+  "note": "Every executable/presence claim made by this review is bounded here: searched files are named, the query is stated, the candidate count is the number of matches actually observed, and the evidence cites the line records. The method contract makes no executable claim at this gate (no code exists yet), so these are document-content claims.",
+  "checks": [
+    {
+      "id": "RE-01",
+      "assertionKind": "presence",
+      "status": "pass",
+      "candidateCount": 10,
+      "scope": {
+        "files": [
+          "team/artifacts/tm109-direct-trial/method/tm109-test-method-contract.json"
+        ],
+        "query": "\"phaseId\": \"MP-"
+      },
+      "evidence": [
+        "method contract lines 372,431,499,562,646,709,783,856,924,1013 = MP-1..MP-10",
+        "categories: MP-1..MP-3 power-up, MP-4 configuration, MP-5 stimulus, MP-6/MP-7 measurement, MP-8 judgement, MP-9 power-down, MP-10 cleanup"
+      ]
+    },
+    {
+      "id": "RE-02",
+      "assertionKind": "presence",
+      "status": "pass",
+      "candidateCount": 11,
+      "scope": {
+        "files": [
+          "team/artifacts/tm109-direct-trial/method/tm109-test-method-contract.json"
+        ],
+        "query": "\"bstSwCheck\": {"
+      },
+      "evidence": [
+        "method contract lines 400,467,531,614,678,741,815,884,956,1045 = one bstSwCheck per phase MP-1..MP-10",
+        "line 1268 = the powerDownPlan bstSwCheck"
+      ]
+    },
+    {
+      "id": "RE-03",
+      "assertionKind": "presence",
+      "status": "pass",
+      "candidateCount": 22,
+      "scope": {
+        "files": [
+          "team/artifacts/tm109-direct-trial/method/tm109-test-method-contract.json"
+        ],
+        "query": "\"result\": \"NOT_APPLICABLE\""
+      },
+      "evidence": [
+        "method contract lines 396,406,455,473,523,537,606,620,670,684,733,747,807,821,880,890,948,962,1037,1051 = two differentialChecks per phase",
+        "lines 1260,1274 = powerDownPlan differentialChecks and bstSwCheck"
+      ]
+    },
+    {
+      "id": "RE-04",
+      "assertionKind": "presence",
+      "status": "pass",
+      "candidateCount": 4,
+      "scope": {
+        "files": [
+          "team/artifacts/tm109-direct-trial/method/tm109-test-method-contract.json"
+        ],
+        "query": "PENDING_LIMIT_RULING"
+      },
+      "evidence": [
+        "method contract lines 1186 (limitPlan.parameters[0].judgement), 1205 (parameters[2].judgement), 1308 (logPlan.judgement), 1584 (handoff-adjacent repeat)",
+        "limitPlan key at line 1176; parameters[1] uses LOG_ONLY_PENDING_RULING"
+      ]
+    },
+    {
+      "id": "RE-05",
+      "assertionKind": "presence",
+      "status": "pass",
+      "candidateCount": 2,
+      "scope": {
+        "files": [
+          "team/artifacts/tm109-direct-trial/method/tm109-test-method-contract.json"
+        ],
+        "query": "\"orderedActions\""
+      },
+      "evidence": [
+        "method contract line 976 = MP-9 orderedActions (6 ordered steps)",
+        "line 1065 = MP-10 orderedActions (5 ordered steps)",
+        "powerDownPlan key at line 1221 with actions[] and safeEndState"
+      ]
+    },
+    {
+      "id": "RE-06",
+      "assertionKind": "presence",
+      "status": "pass",
+      "candidateCount": 5,
+      "scope": {
+        "files": [
+          "team/artifacts/tm109-direct-trial/method/tm109-test-method-contract.json"
+        ],
+        "query": "\"logPlan\" sub-keys rawValues|calculatedValues|judgement|precision|failureContextRule"
+      },
+      "evidence": [
+        "method contract line 1291 logPlan; rawValues 1292; calculatedValues 1301; judgement 1306; precision 1315; failureContextRule 1330; publication 1329"
+      ]
+    },
+    {
+      "id": "RE-07",
+      "assertionKind": "presence",
+      "status": "pass",
+      "candidateCount": 3,
+      "scope": {
+        "files": [
+          "team/artifacts/tm109-direct-trial/strategy/tm109-resource-config-contract.json"
+        ],
+        "query": "\"allocationId\":"
+      },
+      "evidence": [
+        "strategy contract lines 234 (RA-1/EP-VBAT), 292 (RA-2/EP-VAC2), 369 (RA-3/EP-INT)",
+        "each allocation block carries an evidence[] array (lines 282, 357, 395)"
+      ]
+    },
+    {
+      "id": "RE-08",
+      "assertionKind": "presence",
+      "status": "pass",
+      "candidateCount": 9,
+      "scope": {
+        "files": [
+          "team/artifacts/tm109-direct-trial/method/tm109-test-method-contract.json"
+        ],
+        "query": "\"owner\":"
+      },
+      "evidence": [
+        "method contract lines 1492,1502,1512,1522,1533,1543,1553,1563,1573 = openItems MF-01..MF-09, each naming an owner"
+      ]
+    },
+    {
+      "id": "RE-09",
+      "assertionKind": "presence",
+      "status": "pass",
+      "candidateCount": 4,
+      "scope": {
+        "files": [
+          "team/artifacts/tm109-direct-trial/method/tm109-test-method-contract.json"
+        ],
+        "query": "\"id\": \"RF-0"
+      },
+      "evidence": [
+        "method contract lines 1353,1366,1379,1390 = RF-01..RF-04, each with routedTo and closingSource"
+      ]
+    },
+    {
+      "id": "RE-10",
+      "assertionKind": "absence",
+      "status": "pass",
+      "candidateCount": 0,
+      "scope": {
+        "files": [
+          "team/artifacts/tm109-direct-trial/strategy/tm109-resource-config-contract.json",
+          "team/artifacts/tm109-direct-trial/method/tm109-test-method-contract.json"
+        ],
+        "query": "set difference of K<number>_ relay tokens between the method contract and the signed strategy contract"
+      },
+      "evidence": [
+        "python comparison over both contracts: method relay numbers [0,5,7,8,13,17,18,19,20,21,43,58,68,70,82,87,89,90,101,102,130,131,132,133,136,137,138,139,141,142,143,144,145,146]; method-only numbers = [] (empty)",
+        "the only actuated set in the method contract is the strategy-owned {19,70} (strategy resourceSummary.relaysActuatedByThisContract)"
+      ]
+    },
+    {
+      "id": "RE-11",
+      "assertionKind": "absence",
+      "status": "pass",
+      "candidateCount": 0,
+      "scope": {
+        "files": [
+          "team/artifacts/tm109-direct-trial/strategy/tm109-resource-config-contract.json",
+          "team/artifacts/tm109-direct-trial/method/tm109-test-method-contract.json"
+        ],
+        "query": "raw byte scan for the UTF-8 replacement character EF BF BD"
+      },
+      "evidence": [
+        "python byte scan: strategy contract 58850 bytes, method contract 97854 bytes, neither contains b'\\xef\\xbf\\xbd'; both decode as valid UTF-8 and the CJK text is intact (e.g. method itemUnderTest.projectType = 'normal (\\u4e00\\u822c\\u6d4b\\u8bd5\\u9879\\u76ee)')"
+      ]
+    }
+  ]
+}

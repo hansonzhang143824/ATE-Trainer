@@ -1,0 +1,247 @@
+"""Phase 2: Single-Point Define Generation from CBIT Map"""
+import re
+from collections import defaultdict, OrderedDict
+
+# ===== RAW CBIT DATA (from Excel) =====
+MOS_CBIT = [
+('K1_COMP_AMP','S34_CBIT1','MOS'),('K6_VBUS_LP','S34_CBIT6','MOS'),
+('K9_COMP_SVLP1','S34_CBIT9','MOS'),('K10_COMP_SVLP2','S34_CBIT10','MOS'),
+('K11_VBUS_SVLP','S34_CBIT11','MOS'),('K12_VBAT_SVLP','S34_CBIT12','MOS'),
+('K14_VAC1_P2P','S34_CBIT14','MOS'),('K15_VAC2_P2P','S34_CBIT15','MOS'),
+('K16_VAC3_P2P','S34_CBIT16','MOS'),
+('K22_ACDRV1_F','S34_CBIT22','MOS'),('K22_ACDRV1_S','S34_CBIT22','MOS'),
+('K23_ACDRV2_F','S34_CBIT23','MOS'),('K23_ACDRV2_S','S34_CBIT23','MOS'),
+('K24_ACDRV3_F','S34_CBIT24','MOS'),('K24_ACDRV3_S','S34_CBIT24','MOS'),
+('K25_VCC_F','S34_CBIT25','MOS'),('K25_VCC_S','S34_CBIT25','MOS'),
+('K26_ACDRV1_P2P','S34_CBIT26','MOS'),('K27_ACDRV2_P2P','S34_CBIT27','MOS'),
+('K28_ACDRV3_P2P','S34_CBIT28','MOS'),
+('K34_SCL_PU','S34_CBIT34','MOS'),('K38_KLV1_2_short','S34_CBIT38','MOS'),
+('K39_KLV1_P2P','S34_CBIT39','MOS'),('K40_KLV2_P2P','S34_CBIT40','MOS'),
+('K41_BUS_FL_BST','S34_CBIT41','MOS'),('K41_BUS_SL_BST','S34_CBIT41','MOS'),
+('K46_BUS_FH_SW1','S34_CBIT46','MOS'),('K46_BUS_SH_SW1','S34_CBIT46','MOS'),
+('K47_BUS_FL_SW1','S34_CBIT47','MOS'),('K47_BUS_SL_SW1','S34_CBIT47','MOS'),
+('K53_LG2_P2P','S34_CBIT53','MOS'),('K54_LG1_P2P','S34_CBIT54','MOS'),
+('K55_HG2_P2P','S34_CBIT55','MOS'),('K56_HG1_P2P','S34_CBIT56','MOS'),
+('K62_BUS_FH_QON','S34_CBIT62','MOS'),('K62_BUS_SH_QON','S34_CBIT62','MOS'),
+('K63_SDA_PU','S34_CBIT63','MOS'),('K65_nQON_PU','S34_CBIT65','MOS'),
+('K66_TMU_nQON','S34_CBIT66','MOS'),
+('K68_VCP_F','S34_CBIT68','MOS'),('K69_PB5_F','S34_CBIT69','MOS'),
+('K70_VAC_F','S34_CBIT70','MOS'),('K71_KLV_F','S34_CBIT71','MOS'),
+('K72_PA5_F','S34_CBIT72','MOS'),('K73_VCN_F','S34_CBIT73','MOS'),
+('K77_VAC_S','S34_CBIT77','MOS'),('K78_PB5_S','S34_CBIT78','MOS'),
+('K79_KLV_S','S34_CBIT79','MOS'),('K80_PA5_S','S34_CBIT80','MOS'),
+('K81_AMPOUT_QVM','S34_CBIT81','MOS'),
+('K86_KELVIN0_F','S34_CBIT86','MOS'),('K86_KELVIN0_S','S34_CBIT86','MOS'),
+('K92_AGND_F2S','S34_CBIT92','MOS'),
+('K94_BUS_FL_PC8','S34_CBIT94','MOS'),('K94_BUS_SL_PC8','S34_CBIT94','MOS'),
+('K96_BUS_FH_CC1','S34_CBIT96','MOS'),('K96_BUS_SH_CC1','S34_CBIT96','MOS'),
+('K101_BUS_FH_PA0','S34_CBIT101','MOS'),('K101_BUS_SH_PA0','S34_CBIT101','MOS'),
+('K103_PA0_PU','S34_CBIT103','MOS'),
+('K104_BUS_FL_PD5','S34_CBIT104','MOS'),('K104_BUS_SL_PD5','S34_CBIT104','MOS'),
+('K106_BUS_FH_PA1','S34_CBIT106','MOS'),('K106_BUS_SH_PA1','S34_CBIT106','MOS'),
+('K108_PA1_PU','S34_CBIT108','MOS'),
+('K111_BUS_FH_PA6','S34_CBIT111','MOS'),('K111_BUS_SH_PA6','S34_CBIT111','MOS'),
+('K113_PA6_PU','S34_CBIT113','MOS'),
+('K116_BUS_FH_PB7','S34_CBIT116','MOS'),('K116_BUS_SH_PB7','S34_CBIT116','MOS'),
+('K118_BUS_FL_PA4','S34_CBIT118','MOS'),('K118_BUS_SL_PA4','S34_CBIT118','MOS'),
+('K120_BUS_FH_PA7','S34_CBIT120','MOS'),('K120_BUS_SH_PA7','S34_CBIT120','MOS'),
+('K122_PA7_PU','S34_CBIT122','MOS'),
+('K127_U2_PS','S34_CBIT127','MOS'),
+('K128_PU_PS','S36_CBIT0','MOS'),('K129_Backup','S36_CBIT1','MOS'),
+('K130_KELVIN1_F','S36_CBIT2','MOS'),('K130_KELVIN1_S','S36_CBIT2','MOS'),
+('K136_QVMH_BUS0','S36_CBIT8','MOS'),('K137_QVMH_BUS1','S36_CBIT9','MOS'),
+('K138_QVML_BUS0','S36_CBIT10','MOS'),('K139_QVML_BUS1','S36_CBIT11','MOS'),
+('K140_QVML_AGND','S36_CBIT12','MOS'),
+('K143_DCM_BUS0_H','S36_CBIT15','MOS'),('K144_DCM_BUS1_H','S36_CBIT16','MOS'),
+('K145_DCM_BUS0_L','S36_CBIT17','MOS'),('K146_DCM_BUS1_L','S36_CBIT18','MOS'),
+('K147_PB0_OSC','S36_CBIT19','MOS'),('K147_PB1_OSC','S36_CBIT19','MOS'),
+('K148_PC4_PD','S36_CBIT20','MOS'),('K149_PA1_PD','S36_CBIT21','MOS'),
+('K150_PA4_PD','S36_CBIT22','MOS'),
+('K152_VDM_TMU','S36_CBIT24','MOS'),('K153_PA4','S36_CBIT25','MOS'),
+('K156_BUS_FH_VCN','S36_CBIT28','MOS'),('K156_BUS_SH_VCN','S36_CBIT28','MOS'),
+('K158_AMPOUT','S36_CBIT30','MOS'),
+('K168_VCP_F','S36_CBIT31','MOS'),('K169_PB5_F','S36_CBIT32','MOS'),
+('K170_VAC_F','S36_CBIT33','MOS'),
+]
+
+G6K_DEDICATED = [
+('K3_BUSL_VBUS','S34_CBIT3','G6K_DEDICATED'),('K4_DRVH1','S34_CBIT4','G6K_DEDICATED'),
+('K7_BUSL_VBAT','S34_CBIT7','G6K_DEDICATED'),('K8_PD3','S34_CBIT8','G6K_DEDICATED'),
+('K17_BUSL_VAC','S34_CBIT17','G6K_DEDICATED'),('K18_VAC3','S34_CBIT18','G6K_DEDICATED'),
+('K19_VAC2','S34_CBIT19','G6K_DEDICATED'),('K20_AMUX','S34_CBIT20','G6K_DEDICATED'),
+('K29_BUSL_VCC','S34_CBIT29','G6K_DEDICATED'),('K30_BUSH_ACDRV','S34_CBIT30','G6K_DEDICATED'),
+('K31_VMCU','S34_CBIT31','G6K_DEDICATED'),('K32_BUSL_SCL','S34_CBIT32','G6K_DEDICATED'),
+('K33_VAC_WL','S34_CBIT33','G6K_DEDICATED'),('K35_BUSH_KLV','S34_CBIT35','G6K_DEDICATED'),
+('K36_PGND_WL','S34_CBIT36','G6K_DEDICATED'),('K37_KLV2','S34_CBIT37','G6K_DEDICATED'),
+('K42_AMP_PS','S34_CBIT42','G6K_DEDICATED'),('K43_BST2','S34_CBIT43','G6K_DEDICATED'),
+('K48_AMP_REF','S34_CBIT48','G6K_DEDICATED'),('K49_ACM_SW2','S34_CBIT49','G6K_DEDICATED'),
+('K50_FOVI_SW2','S34_CBIT50','G6K_DEDICATED'),('K51_BUSL_LG','S34_CBIT51','G6K_DEDICATED'),
+('K52_LG2','S34_CBIT52','G6K_DEDICATED'),
+('K58_BUSH_VDM','S34_CBIT58','G6K_DEDICATED'),('K59_SDA','S34_CBIT59','G6K_DEDICATED'),
+('K60_BUSL_VCP','S34_CBIT60','G6K_DEDICATED'),('K61_SW','S34_CBIT61','G6K_DEDICATED'),
+('K64_HG1','S34_CBIT64','G6K_DEDICATED'),('K76_ACM_BST','S34_CBIT76','G6K_DEDICATED'),
+('K83_BUSH_PMID','S34_CBIT83','G6K_DEDICATED'),('K84_HG2','S34_CBIT84','G6K_DEDICATED'),
+('K88_KELVIN0','S34_CBIT88','G6K_DEDICATED'),
+('K90_PC0_Force','S34_CBIT90','G6K_DEDICATED'),('K91_PC0_Sense','S34_CBIT91','G6K_DEDICATED'),
+('K93_AGND2PGND','S34_CBIT93','G6K_DEDICATED'),
+('K95_PC6','S34_CBIT95','G6K_DEDICATED'),('K97_Qpoint','S34_CBIT97','G6K_DEDICATED'),
+('K98_PB3','S34_CBIT98','G6K_DEDICATED'),('K99_BUSL_PB5','S34_CBIT99','G6K_DEDICATED'),
+('K100_PC4','S34_CBIT100','G6K_DEDICATED'),('K102_PC3','S34_CBIT102','G6K_DEDICATED'),
+('K105_CC2','S34_CBIT105','G6K_DEDICATED'),('K107_PB1','S34_CBIT107','G6K_DEDICATED'),
+('K109_BUSL_PB0','S34_CBIT109','G6K_DEDICATED'),('K110_BST','S34_CBIT110','G6K_DEDICATED'),
+('K112_PC5','S34_CBIT112','G6K_DEDICATED'),('K114_BUSL_PA5','S34_CBIT114','G6K_DEDICATED'),
+('K115_PB2','S34_CBIT115','G6K_DEDICATED'),('K117_PB6','S34_CBIT117','G6K_DEDICATED'),
+('K119_PB4','S34_CBIT119','G6K_DEDICATED'),('K121_PD2','S34_CBIT121','G6K_DEDICATED'),
+('K123_BUSL_PB5','S34_CBIT123','G6K_DEDICATED'),('K124_nRST','S34_CBIT124','G6K_DEDICATED'),
+('K125_U34_PS','S34_CBIT125','G6K_DEDICATED'),('K126_V1P5_CAP','S34_CBIT126','G6K_DEDICATED'),
+('K132_KELVIN1','S36_CBIT4','G6K_DEDICATED'),
+('K134_PC1_Force','S36_CBIT6','G6K_DEDICATED'),('K135_PC1_Sense','S36_CBIT7','G6K_DEDICATED'),
+('K154_BUSH_AMUX','S36_CBIT26','G6K_DEDICATED'),('K155_FOVI_PGND','S36_CBIT27','G6K_DEDICATED'),
+('K157_COMP','S36_CBIT29','G6K_DEDICATED'),
+]
+
+G6K_SHARED = [
+('K0_VCC_Cap','S34_CBIT0','G6K_SHARED'),('K2_BUF','S34_CBIT2','G6K_SHARED'),
+('K5_VBUS_Cap','S34_CBIT5','G6K_SHARED'),('K13_VBAT_Cap','S34_CBIT13','G6K_SHARED'),
+('K21_VAC_Cap','S34_CBIT21','G6K_SHARED'),
+('K44_Cap_SW2_BST2','S34_CBIT44','G6K_SHARED'),('K45_Cap_SW1_BST1','S34_CBIT45','G6K_SHARED'),
+('K57_CAP_BST_SW','S34_CBIT57','G6K_SHARED'),
+('K74_GAIN1_SEL','S34_CBIT74','G6K_SHARED'),('K75_GAIN2_SEL','S34_CBIT75','G6K_SHARED'),
+('K82_R_CS','S34_CBIT82','G6K_SHARED'),('K85_CAP_PMID','S34_CBIT85','G6K_SHARED'),
+('K87_KELVIN0','S34_CBIT87','G6K_SHARED'),('K89_KELVIN0','S34_CBIT89','G6K_SHARED'),
+('K131_KELVIN1','S36_CBIT3','G6K_SHARED'),('K133_KELVIN1','S36_CBIT5','G6K_SHARED'),
+('K141_QTMU_BUSA','S36_CBIT13','G6K_SHARED'),('K142_QTMU_BUSB','S36_CBIT14','G6K_SHARED'),
+('K151_NC_GND','S36_CBIT23','G6K_SHARED'),
+]
+
+ALL_CBIT = MOS_CBIT + G6K_DEDICATED + G6K_SHARED
+
+def cbit_val(cbit_str):
+    m = re.match(r'S3(\d)_CBIT(\d+)', cbit_str)
+    if not m: return -1
+    board, bit = int(m.group(1)), int(m.group(2))
+    return bit if board == 4 else bit + 128
+
+# Build cbit_map: cbit_value -> [{name, group, cbit_raw}]
+cbit_map = defaultdict(list)
+for name, cbit_str, group in ALL_CBIT:
+    v = cbit_val(cbit_str)
+    cbit_map[v].append({'name': name, 'group': group, 'cbit_raw': cbit_str})
+
+# ===== MERGE LOGIC =====
+def merge_names(names):
+    """Merge multiple names sharing the same CBIT value into single-point name."""
+    if len(names) == 1:
+        return names[0]
+
+    # Priority 1a: KELVIN F/S pair
+    f_kelvin = [n for n in names if 'KELVIN' in n and n.endswith('_F')]
+    s_kelvin = [n for n in names if 'KELVIN' in n and n.endswith('_S')]
+    if f_kelvin and s_kelvin:
+        base = f_kelvin[0][:-2]
+        others = [n for n in names if n not in (f_kelvin[0], s_kelvin[0])]
+        if others:
+            return base + '_FS_' + '_'.join(sorted(others))
+        return base + '_FS'
+
+    # Priority 1b: Non-KELVIN F/S pair (single letter)
+    f_names = [n for n in names if n.endswith('_F') and 'KELVIN' not in n and 'FORCE' not in n.upper()]
+    s_names = [n for n in names if n.endswith('_S') and 'KELVIN' not in n and 'SENSE' not in n.upper()]
+    # Check if F and S pairs share the same base
+    if f_names and s_names:
+        merged_remainder = []
+        for f in f_names:
+            base_f = f[:-2]
+            matching_s = [s for s in s_names if s[:-2] == base_f]
+            if matching_s:
+                merged_remainder.append(base_f)
+            else:
+                merged_remainder.append(f)
+        for s in s_names:
+            base_s = s[:-2]
+            if not any(f[:-2] == base_s for f in f_names):
+                merged_remainder.append(s)
+        other = [n for n in names if n not in set(f_names + s_names)]
+        all_merged = merged_remainder + other
+        if len(all_merged) == 1:
+            return all_merged[0]
+
+    # Priority 1c: FORCE/SENSE full-word pair -> FOS_SNS
+    f_force = [n for n in names if re.search(r'_Force$', n)]
+    s_sense = [n for n in names if re.search(r'_Sense$', n)]
+    if f_force and s_sense and len(f_force) == 1 and len(s_sense) == 1:
+        base = re.sub(r'_Force$', '', f_force[0])
+        others = [n for n in names if n not in (f_force[0], s_sense[0])]
+        if others:
+            return base + '_FOS_SNS_' + '_'.join(sorted(others))
+        return base + '_FOS_SNS'
+
+    # Priority 2: BUS direction merge (FH+SH or FL+SL)
+    # Check if all names are BUS direction variants
+    bus_pairs = defaultdict(list)
+    for n in names:
+        m = re.match(r'(K\d+_BUS)_(FH|SH|FL|SL)_(\S+)', n)
+        if m:
+            key = m.group(1) + '_' + m.group(3)
+            bus_pairs[key].append(n)
+
+    if len(bus_pairs) == 1:
+        for key, group in bus_pairs.items():
+            if len(group) == len(names):
+                # All names are direction variants of same bus -> merge
+                return 'K' + key.split('_')[0][1:] + '_' + '_'.join(key.split('_')[1:])
+
+    # Other: same K number, concatenate suffixes
+    k_nums = set()
+    for n in names:
+        m = re.match(r'(K\d+)', n)
+        if m: k_nums.add(m.group(1))
+
+    if len(k_nums) == 1:
+        k = list(k_nums)[0]
+        suffixes = []
+        for n in sorted(names):
+            rest = n[len(k)+1:] if n.startswith(k + '_') else n
+            suffixes.append(rest)
+        return k + '_' + '_'.join(suffixes)
+
+    # Fallback: concatenate
+    return '_'.join(sorted(names))
+
+# ===== OUTPUT =====
+print('#ifndef _RELAY_H_')
+print('#define _RELAY_H_')
+print()
+print('// ===== 1. Single-Point Defines =====')
+print()
+
+# Group order
+for group_name, group_label in [('MOS', '1.1 MOS SPST (TLP3412)'),
+                                  ('G6K_DEDICATED', '1.2 G6K Dedicated'),
+                                  ('G6K_SHARED', '1.3 G6K Shared')]:
+    print(f'// {group_label}')
+    seen = set()
+    for v in sorted(cbit_map.keys()):
+        entries = [e for e in cbit_map[v] if e['group'] == group_name]
+        if not entries:
+            continue
+        names = [e['name'] for e in entries]
+        merged = merge_names(names)
+        if merged in seen:
+            # Check if duplicate-cbit alias
+            print(f'#define {merged} {v}  // alias, CBIT={v}')
+        else:
+            print(f'#define {merged} {v}')
+        seen.add(merged)
+    print()
+
+print('#endif // _RELAY_H_')
+
+# Stats
+import sys
+total_unique = 0
+for v, entries in cbit_map.items():
+    groups = set(e['group'] for e in entries)
+    total_unique += len(groups)
+print(f'// Total unique CBIT values: {len(cbit_map)}', file=sys.stderr)
+print(f'// Group counts: MOS={len(MOS_CBIT)}, G6K_Dedicated={len(G6K_DEDICATED)}, G6K_Shared={len(G6K_SHARED)}', file=sys.stderr)

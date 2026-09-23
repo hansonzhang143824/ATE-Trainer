@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "kind": "ptc-training-dispatch",
+  "profileId": "ptc-dft-expert",
+  "profileSource": "draft",
+  "testItems": [
+    "TM109"
+  ],
+  "label": "PTC training dft expert [TM109] undefined",
+  "parentSessionId": "session-ptc-training-parent-undefined",
+  "childSessionId": "f64233f1-7484-484a-9200-5566d2de99bf",
+  "addressBook": {
+    "reads": "Training_Materials/Input_GlobalMaterial",
+    "writes": "Training_Materials/Output_Global_Material/dft",
+    "verification": "Training_Materials/Output_Global_Material/verification"
+  },
+  "createdAt": "2026-09-22T14:27:50.386Z",
+  "dispatchedAt": "2026-09-22T14:27:50.420Z",
+  "digest": "843a848dd4629642b7728a5e6c99e5acb81eab68c7d05996cef58be54de3d5c7"
+}

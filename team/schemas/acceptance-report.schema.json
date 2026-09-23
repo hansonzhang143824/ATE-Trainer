@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "acceptance-report.schema.json",
+  "title": "Final integration + acceptance evidence pack (isolation audit included)",
+  "type": "object",
+  "required": [
+    "runId",
+    "targetRoot",
+    "verdict",
+    "coverage",
+    "isolationAudit",
+    "evidenceReferences",
+    "limitations",
+    "electricalDisclaimer"
+  ],
+  "properties": {
+    "schema": {"type": "string"},
+    "runId": {"type": "string"},
+    "producedBy": {"type": "string"},
+    "generatedAt": {"type": "string"},
+    "targetRoot": {"const": "D:/PROJECT6-DALI/ForCodexDebug"},
+    "verdict": {"enum": ["pass", "fail", "blocked", "partial"]},
+    "verdictReason": {"type": "string"},
+    "coverage": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["item", "status", "evidence"],
+        "properties": {
+          "item": {"type": "string"},
+          "status": {"enum": ["passed", "failed", "blocked", "not_applicable"]},
+          "evidence": {"type": "string"},
+          "sourceTask": {"type": "string"},
+          "artifact": {"type": "string"},
+          "artifactSha256": {"type": "string"},
+          "exitCode": {"type": "integer"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "isolationAudit": {
+      "type": "object",
+      "required": ["develUntouched", "modifiedTrees", "undeclaredArtifacts"],
+      "properties": {
+        "develUntouched": {"type": "boolean"},
+        "modifiedTrees": {"type": "array", "items": {"type": "string"}},
+        "undeclaredArtifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["path", "disposition"],
+            "properties": {
+              "path": {"type": "string"},
+              "disposition": {"enum": ["evidence-kept", "temporary-removed", "declared"]},
+              "sha256": {"type": "string"},
+              "note": {"type": "string"}
+            },
+            "additionalProperties": true
+          }
+        },
+        "measuredAt": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "evidenceReferences": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": {"type": "string"},
+          "sha256": {"type": "string"},
+          "role": {"type": "string"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "limitations": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "electricalDisclaimer": {"type": "string", "minLength": 10}
+  },
+  "additionalProperties": true
+}

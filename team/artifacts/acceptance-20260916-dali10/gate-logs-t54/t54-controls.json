@@ -1,0 +1,74 @@
+{
+  "contract": {
+    "revision": 33,
+    "size": 372138,
+    "sha256": "72e8b552d1da004d07d5d96903ddc8793c30fab39054c4c1a147756816d6c5a8",
+    "bst2sw_closedRelayNumbers": [
+      48,
+      60,
+      61,
+      76
+    ]
+  },
+  "expected_TM600": [
+    48,
+    60,
+    61,
+    76,
+    83
+  ],
+  "controls": [
+    {
+      "label": "阳性（沙箱副本，去 K48+K76）",
+      "file": "t54_positive_control.cpp",
+      "tm600_seton": [
+        13,
+        57,
+        60,
+        61,
+        83,
+        85,
+        126
+      ],
+      "missing": [
+        48,
+        76
+      ]
+    },
+    {
+      "label": "阴性（终批 payload 原样）",
+      "file": "implementation-payload-TM600-TM601.cpp",
+      "tm600_seton": [
+        13,
+        48,
+        57,
+        60,
+        61,
+        76,
+        83,
+        85,
+        126
+      ],
+      "missing": []
+    },
+    {
+      "label": "部署态对照（真实门禁输入）",
+      "file": "test.cpp",
+      "tm600_seton": [
+        13,
+        57,
+        60,
+        61,
+        83,
+        85,
+        126
+      ],
+      "missing": [
+        48,
+        76
+      ]
+    }
+  ],
+  "capabilityNote": "本对照复现 `expected_for_tm()` 派生规则与 `missing = set(exp) - SetOn` 判据；**不是** `verify_bst_sw_sequence.py` 进程输出 —— 该脚本 main() 在 targets 为空时提前 return，故无法用 --src 对仅有 TM600/TM601 的副本端到端跑。部署态一列为真实 run_gates 输出。",
+  "discipline": "沙箱内完成；未改脚本、未动 gate_baseline.json、未启用 --check-extra、未写目标树。"
+}

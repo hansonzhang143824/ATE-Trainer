@@ -1,0 +1,21 @@
+import sys,io,os,json,hashlib,time
+sys.stdout=io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8',errors='replace')
+d=r'D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10'
+p=os.path.join(d,'test-plan.json'); r=open(p,'rb').read()
+J=json.loads(r.decode('utf-8-sig'))
+print('live: %d B / %s'%(len(r),hashlib.sha256(r).hexdigest()))
+print('revision:',str(J.get('revision'))[:150])
+print('mtime',time.strftime('%H:%M:%S',time.localtime(os.path.getmtime(p))))
+print("t4 v11 claim: 146422 B / 0fd162b98692706b22a26092e31557f15b443d8934ba7e9b3f1d5dcff67ba8df")
+pv=os.path.join(d,'test-plan.v11.json')
+print('  test-plan.v11.json:', (os.path.getsize(pv), hashlib.sha256(open(pv,'rb').read()).hexdigest()) if os.path.exists(pv) else 'absent')
+print()
+it=[x for x in J.get('items',[]) if x.get('tm')=='TM600'][0]
+print('=== TM600 assumptions ===')
+for a in it.get('assumptions',[]): print('  -',str(a)[:240])
+print()
+s=json.dumps(J,ensure_ascii=False)
+print('ALTERNATIVE-NOT-ADOPTED present:', 'ALTERNATIVE-NOT-ADOPTED' in s or 'alternative-not-adopted' in s.lower())
+print('K131 in plan:', 'K131' in s, '| K132:', 'K132' in s, '| K134:', 'K134' in s, '| K135:', 'K135' in s)
+i=s.find('K131')
+print('context:',s[max(0,i-250):i+200].replace('\n',' ') if i>0 else '(none)')

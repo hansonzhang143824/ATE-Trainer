@@ -1,0 +1,17 @@
+=== ① 跨秒跑两次：body 哈希是否稳定？（决定能否按身份去重）===
+  run1 body=9804fbe2272477ec file=a684048b697d622d size=35743
+  run2 body=9804fbe2272477ec file=5dbc42c76b17fe96 size=35743
+  ⇒ **body 哈希稳定 = True** ⇒ 可按"身份变化才追加"去重 ✓
+
+=== ② 统计当前膨胀情况 ===
+  行数 = 51 ｜ 文件 = 97917 B
+  不同 body 哈希数 = 5 ⇒ **其中 (行数 − 该数) = 46 行为"例行复验"（身份未变）**
+
+=== ③ 落地：仅在 body 哈希变化时追加（并加 reason 字段）===
+  WARN: 追加处锚点未命中
+  语法 OK
+
+=== ④ 自证：连跑三次，行数应只 +0/+1（不随每次运行膨胀）===
+  run1: 51 → 52 行 ｜ RECEIPT-HISTORY D:\Newtest\DSH\ATE-Coding-Plat\team\artifact
+  run2: 52 → 53 行 ｜ RECEIPT-HISTORY D:\Newtest\DSH\ATE-Coding-Plat\team\artifact
+  run3: 53 → 54 行 ｜ RECEIPT-HISTORY D:\Newtest\DSH\ATE-Coding-Plat\team\artifact

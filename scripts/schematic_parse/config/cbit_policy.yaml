@@ -1,0 +1,9 @@
+# CBIT 策略（V2 通路解析）。CBIT 权威源 = Project/DALI/CBIT表-DALI.xlsx，
+# 由 gen_cbit_defines.read_excel_cbit 读取，路径来自 project_config.json inputs.cbit。
+
+source: "CBIT表-DALI.xlsx"            # 唯一 CBIT 权威源
+key: "relay_number"                   # 按继电器号 K\d+ 关联通路 required_on
+conflict_policy: "fail"               # 同一继电器号多值冲突 → hard_issue（MISSING_CBIT/conflict）
+required_on_must_be_in_cbit: true     # 通路每个需闭合继电器都必须有 CBIT 记录
+validation_gates: ["V1_no_dup", "V2_path_integrity", "V3_naming", "V4_range",
+                   "V5_coverage", "V6_fs_pair", "V7_fpvi_naming", "V8_relay_state"]

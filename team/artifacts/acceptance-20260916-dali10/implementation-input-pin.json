@@ -1,0 +1,207 @@
+{
+  "purpose": "Implementation input confirmation table (t14/t5 input pin). Content key + locator + revision string + hash recomputed at reference time.",
+  "generatedAt": "2026-09-16 19:40:48",
+  "hashPolicy": "A sha256 is a build-time snapshot only; consumers MUST recompute (python plaintext, over file BYTES) at reference time. Cite revision + recomputed hash, never a hash carried across messages.",
+  "setupSide": [
+    {
+      "contentKey": "setup-contract.json",
+      "path": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+      "locator": "whole file (revision header + tmDeltas + aliasResolution + globalInitialization/Cleanup + safetyInvariants)",
+      "revisionString": "revision 24 (generatedAt 2026-09-16 19:30:00 (revision 24))",
+      "sizeBytes": 328805,
+      "sha256": "fd00a5082170293fcea29446c009fc432977d61a8f624ef17ac1c82f41515a18",
+      "mtime": "2026-09-16 18:43:40",
+      "status": "FINAL (t18 close-out passed; two consecutive runs byte-identical)"
+    },
+    {
+      "contentKey": "TM600 ATE stimulus",
+      "path": "setup-contract.json",
+      "locator": "/tmDeltas/TM600/ateStimulus + powerSequenceDelta[1]",
+      "value": {
+        "vbat": "4.2 V",
+        "pmid": "15 V",
+        "bst2sw": "5 V",
+        "vdrv": "5 V"
+      },
+      "status": "FINAL"
+    },
+    {
+      "contentKey": "TM601 ATE stimulus",
+      "path": "setup-contract.json",
+      "locator": "/tmDeltas/TM601/ateStimulus + powerSequenceDelta[1]",
+      "value": {
+        "vbat": "4.2 V",
+        "pmid": "9 V",
+        "vdrv": "5 V"
+      },
+      "status": "FINAL"
+    },
+    {
+      "contentKey": "TM600 sense slot + commandSign",
+      "path": "setup-contract.json",
+      "locator": "/tmDeltas/TM600/senseInstrumentSlot + /tmDeltas/TM600/commandSign",
+      "status": "FINAL - slot PENDING by design (U9 bring-up criteria); commandSign +1 A / TM601 -1 A"
+    },
+    {
+      "contentKey": "U10 / U11 numbering",
+      "path": "setup-contract.json",
+      "locator": "/openItems[U10], /openItems[U11]",
+      "value": {
+        "U10": "QVM ch0 concurrency",
+        "U11": "SIGN-CONVENTION"
+      },
+      "status": "FINAL"
+    },
+    {
+      "contentKey": "BST-SW resource",
+      "path": "setup-contract.json",
+      "locator": "/aliasResolution[3]/resolution (bst2sw) + /tmDeltas/TM600/resourceBudget",
+      "value": {
+        "forceInstrument": "SW12_U1REF_BST_ACM",
+        "closedRelayNumbers": [
+          110,
+          61
+        ],
+        "FPVIe1-CH1": "intended but currently unrealisable"
+      },
+      "status": "FINAL"
+    },
+    {
+      "contentKey": "setup-contract-build.py",
+      "path": "team/artifacts/acceptance-20260916-dali10/setup-contract-build.py",
+      "locator": "whole file",
+      "generatorHash": "d6039ca7ad893e1896ff517624ff21a4ce0d4ca5914efa0e6ca1b49dd71032ee",
+      "sizeBytes": 171431,
+      "status": "FINAL (re-running it reproduces the artifact byte-for-byte)"
+    }
+  ],
+  "planSide": [
+    {
+      "contentKey": "test-plan.json",
+      "path": "team/artifacts/acceptance-20260916-dali10/test-plan.json",
+      "locator": "whole file",
+      "revisionString": "v25 (t51 follow-up, captain-ordered NARROWING; the ch5/ch18 conflict is CLOSED in favour of ch5): the operative closure is the ch5 set [48,60,61,76] alone - BST [48,76] in the ACM200 family (StdAfx.h:620) and SW [60,61] in the FPVIe[L] family (StdAfx.h:490) - with [110,61] retained only as SUPERSEDED history (it is incomplete under either reading: the ACM200 reading lacks 48/76, the FPVIe[L] reading lacks K109), the final batch removing K109/K110 from the payload and lifting the --check-extra prohibition; it also carries forward v23's value [48,60,61,76], stated per side - BST [48,76] belongs to the ACM200 family (StdAfx.h:620 K_BST_ACM = 48,76) and SW [60,61] to the FPVIe[L] family (StdAfx.h:490 K_FPVIL_TO_SW_A = 60,61), so the instrument is a cross-domain composite and 110 (StdAfx.h:452 K_FPVIL_TO_BST_B, FPVIe[L] -> BST) must not be used on the ACM200-driven BST side; v22's [48,61,76] lacked the SW side's K60 and the pre-v22 [110,61] mixed the families - both are retained in place and marked, not deleted. Carried forward from v22/v21: (1) the teardown wording is disambiguated - with two floating channels the MEASUREMENT channel (floating channel 0, the R-VIR pair) is released LAST and the bootstrap source channel first, the strict reading of R-POFF-04; (2) the initialisation range is now stated for both high-current items (1 V range with the 10 uA current range, the minimal compliant step, because a zero setpoint has no 'at least twice' requirement, and the same step is the unified relay-off range) with its basis; (3) the sampling note is precise - the COUNT 200 appears at the method-library layer at a 10 us period while the PAIR (200, 5) is golden-specific because every TM-level call uses (50, 5); (4) the history now carries a v20 entry recording the captain's freeze repair, so the top-level revision and the history agree; (5) inputArtifacts keeps its build-time recomputation and additionally carries the setup contract's sidecar pin (revision + sha). Carried forward unchanged from v20: BST-SW ruling (ii) as the baseline with the floating-channel-1 route recorded as intended-but-currently-unrealisable, the R-BST-SW rule aligned to it, and the revision-derived generatedAt that makes consecutive runs byte-identical. No engineering constraint added or removed.",
+      "currentAtReferenceTime": {
+        "size": 185689,
+        "sha256": "707ce845c5459b41b528059eab7f26b1a8e597e34daf8df40929346942a8ee69",
+        "mtime": "2026-09-16 21:54:50",
+        "measuredAt": "2026-09-16 21:59:31",
+        "revisionField": "v25 (t51 follow-up, captain-ordered NARROWING; the ch5/ch18 conflict is CLOSED in favour of ch5): the operative closure is the ch5 set [48,60,61,76] alone - BST [48,76] in the ACM200 family (StdAfx.h:620) and SW [60,61] in the FPVIe[L] family (StdAfx.h:490) - with [110,61] retained only as SUPERSEDED history (it is incomplete under either reading: the ACM200 reading lacks 48/76, the FPVIe[L] reading lacks K109), the final batch removing K109/K110 from the payload and lifting the --check-extra prohibition; it also carries forward v23's value [48,60,61,76], stated per side - BST [48,76] belongs to the ACM200 family (StdAfx.h:620 K_BST_ACM = 48,76) and SW [60,61] to the FPVIe[L] family (StdAfx.h:490 K_FPVIL_TO_SW_A = 60,61), so the instrument is a cross-domain composite and 110 (StdAfx.h:452 K_FPVIL_TO_BST_B, FPVIe[L] -> BST) must not be used on the ACM200-driven BST side; v22's [48,61,76] lacked the SW side's K60 and the pre-v22 [110,61] mixed the families - both are retained in place and marked, not deleted. Carried forward from v22/v21: (1) the teardown wording is disambiguated - with two floating channels the MEASUREMENT channel (floating channel 0, the R-VIR pair) is released LAST and the bootstrap source channel first, the strict reading of R-POFF-04; (2) the initialisation range is now stated for both high-current items (1 V range with the 10 uA current range, the minimal compliant step, because a zero setpoint has no 'at least twice' requirement, and the same step is the unified relay-off range) with its basis; (3) the sampling note is precise - the COUNT 200 appears at the method-library layer at a 10 us period while the PAIR (200, 5) is golden-specific because every TM-level call uses (50, 5); (4) the history now carries a v20 entry recording the captain's freeze repair, so the top-level revision and the history agree; (5) inputArtifacts keeps its build-time recomputation and additionally carries the setup contract's sidecar pin (revision + sha). Carried forward unchanged from v20: BST-SW ruling (ii) as the baseline with the floating-channel-1 route recorded as intended-but-currently-unrealisable, the R-BST-SW rule aligned to it, and the revision-derived generatedAt that makes consecutive runs byte-identical. No engineering constraint added or removed.",
+        "canonicalRule": "CANONICAL = the live bytes at this path. Any generator re-run reproduces them (the plan owner verified two consecutive runs are byte-identical). test-plan.<vN>.json files are historical copies and are never anchors."
+      },
+      "status": "NOT FINAL - the plan-side FINAL pin is computed by the captain at verification (captain ruling). This row tracks the LIVE plan bytes; the plan moved v21 -> v22 -> v23 -> v24 -> v25 and each earlier value is recorded below with its reason.",
+      "supersededValues": [
+        {
+          "revision": "v24 (t51, captain-ordered ADDITIVE change): the ACM200 bootstrap-to-switched baseline keeps the ch5 route [48,60,61,76] AND retains the contract-literal pair [110,61] marked contested - the operative closure for this batch is their UNION, with removal of K109/K110 deferred and --check-extra not enabled; it also carries forward v23's value [48,60,61,76], stated per side - BST [48,76] belongs to the ACM200 family (StdAfx.h:620 K_BST_ACM = 48,76) and SW [60,61] to the FPVIe[L] family (StdAfx.h:490 K_FPVIL_TO_SW_A = 60,61), so the instrument is a cross-domain composite and 110 (StdAfx.h:452 K_FPVIL_TO_BST_B, FPVIe[L] -> BST) must not be used on the ACM200-driven BST side; v22's [48,61,76] lacked the SW side's K60 and the pre-v22 [110,61] mixed the families - both are retained in place and marked, not deleted. Carried forward from v22/v21: (1) the teardown wording is disambiguated - with two floating channels the MEASUREMENT channel (floating channel 0, the R-VIR pair) is released LAST and the bootstrap source channel first, the strict reading of R-POFF-04; (2) the initialisation range is now stated for both high-current items (1 V range with the 10 uA current range, the minimal compliant step, because a zero setpoint has no 'at least twice' requirement, and the same step is the unified relay-off range) with its basis; (3) the sampling note is precise - the COUNT 200 appears at the method-library layer at a 10 us period while the PAIR (200, 5) is golden-specific because every TM-level call uses (50, 5); (4) the history now carries a v20 entry recording the captain's freeze repair, so the top-level revision and the history agree; (5) inputArtifacts keeps its build-time recomputation and additionally carries the setup contract's sidecar pin (revision + sha). Carried forward unchanged from v20: BST-SW ruling (ii) as the baseline with the floating-channel-1 route recorded as intended-but-currently-unrealisable, the R-BST-SW rule aligned to it, and the revision-derived generatedAt that makes consecutive runs byte-identical. No engineering constraint added or removed.",
+          "size": 183339,
+          "sha256": "0b0a44ab7d02cb3857bd63bf95163d2d9def9c0e198e0a1bfbb2d931e1b3fe6c",
+          "mtime": "2026-09-16 21:50:09",
+          "status": "SUPERSEDED - the union disposition was replaced by the captain-ordered NARROWING (v25); kept as history",
+          "previousStatus": "SUPERSEDED by the plan's continuing edits; kept as history"
+        },
+        {
+          "revision": "v23 (captain's minimal correction to v22: closure -> [48,60,61,76], two-sided)",
+          "size": 180977,
+          "sha256": "9591e21703e2991594bf35ab388a1e27d2168419cbc40c0128735f30e3e3bd62",
+          "mtime": "2026-09-16 21:21:09",
+          "status": "INTERMEDIATE - one of the two steps of the cross-family correction ([48,61,76] -> [48,60,61,76]); superseded by v24/v25",
+          "previousStatus": "INTERMEDIATE - already superseded by the live revision when this pin was refreshed"
+        },
+        {
+          "revision": "v22 (minimal correction; wrote [48,61,76] - incomplete, omitted SW-side K60)",
+          "size": 179565,
+          "sha256": "89bcc180d3bc66ffd8c8265f7c25e930f6367d346145520abfee878fa49d7af3",
+          "mtime": "2026-09-16 21:12:17",
+          "status": "INTERMEDIATE - first correction step; wrote [48,61,76], incomplete (omitted SW-side K60); superseded by v23",
+          "previousStatus": "SUPERSEDED - superseded by v23"
+        },
+        {
+          "revision": "v21 (t27 - authorised, freeze lifted inside this scope only)",
+          "size": 176875,
+          "sha256": "f0f825dd302d4105676b113f2335bc1f6fe54c8bcd46a32d621c1026c111dc04",
+          "mtime": "2026-09-16 19:24:17",
+          "status": "SUPERSEDED - carried the old closure [110,61]; superseded by the cross-family correction",
+          "previousStatus": "SUPERSEDED - superseded by the v22 minimal correction ([110,61] cross-family mixture -> ch5 form) and then by v24 (t51, additive); kept as history"
+        },
+        {
+          "revision": "v20 (earlier build)",
+          "size": 166099,
+          "sha256": "1925250df53f8b52126fdda9efa84ae84fe2bc8e529867e0965fc0ffe9a08016",
+          "mtime": "2026-09-17 18:17:42",
+          "status": "HISTORICAL - archived as test-plan.v20.json; never an anchor"
+        },
+        {
+          "revision": "v20 (later build)",
+          "size": 166099,
+          "sha256": "fabdd24f220d3b3e1eaf2bc782bf896adceb38074a72bffa7ba0d2d181ec8ed4",
+          "mtime": "2026-09-16 19:04:49",
+          "status": "HISTORICAL - archived as test-plan.v20final.json; differs from the earlier v20 build only in 3 inputArtifacts hashes; never an anchor"
+        },
+        {
+          "revision": "v18",
+          "size": 161516,
+          "sha256": "0578bd5e5b17f7bee0feafb75641c22f4105eb0bcf410126def47bdd5920ea62",
+          "mtime": "2026-09-16 18:09:28",
+          "status": "VOID - do not pin"
+        }
+      ],
+      "noteForDownstream": "Do not copy any test-plan value other than the v21 bytes in currentAtReferenceTime. Every test-plan.<vN>.json sibling and both recorded v20 builds are HISTORICAL; pinning them would lock the implementation to the wrong bytes.",
+      "siblingExplanation": {
+        "status": "RESOLVED - not two versions; explained by the plan owner (test-strategy-architect) after this pin flagged it",
+        "canonical": [
+          {
+            "path": "team/artifacts/acceptance-20260916-dali10/test-plan.json",
+            "sizeBytes": 166099,
+            "sha256": "fabdd24f220d3b3e1eaf2bc782bf896adceb38074a72bffa7ba0d2d181ec8ed4",
+            "mtime": "2026-09-16 19:04:49"
+          },
+          {
+            "revisionField": "v20",
+            "role": "LIVE / canonical - use these bytes"
+          }
+        ],
+        "archivedEarlierBuild": [
+          {
+            "path": "team/artifacts/acceptance-20260916-dali10/test-plan.v20.json",
+            "sizeBytes": 166099,
+            "sha256": "1925250df53f8b52126fdda9efa84ae84fe2bc8e529867e0965fc0ffe9a08016",
+            "mtime": "2026-09-16 18:17:42"
+          },
+          {
+            "revisionField": "v20",
+            "role": "earlier build of the SAME v20 (mtime 18:17:42), archived for audit; NOT a different revision"
+          }
+        ],
+        "actualDifference": "only three inputArtifacts.sha256 entries differ - setup-contract.json 7f505fdb... -> fd00a508... (rev 24), dali_tm_meta.json and test_conditions.yaml - because the generator recomputes input hashes at BUILD time (hashPolicy) and the owner re-ran it twice for idempotency evidence.",
+        "therefore": "the 'same size, different hash' observation was an upstream pin refresh, not a new plan revision. This pin correctly points at the LIVE bytes.",
+        "v18Archived": [
+          {
+            "path": "team/artifacts/acceptance-20260916-dali10/test-plan.v18.json",
+            "sizeBytes": 161516,
+            "sha256": "0578bd5e5b17f7bee0feafb75641c22f4105eb0bcf410126def47bdd5920ea62",
+            "mtime": "2026-09-16 18:09:28"
+          },
+          {
+            "revisionField": "v18",
+            "role": "VOID - superseded, kept for audit only"
+          }
+        ]
+      },
+      "note": "authorised single-field update (captain, v20 era): currentAtReferenceTime carries the v20 bytes 166099 / fabdd24f... / mtime 2026-09-16 19:04:49. The v18 value 161516 / 0578bd5e... (18:09:28) is VOID and must not be pinned; test-plan.v18.json is an audit archive. status stays NOT FINAL: the plan-side FINAL pin is for the captain to compute at verification. || 2026-09-16 UPDATE (plan owner = test-strategy-architect, t27): the live plan is now v21 = 176875 B / f0f825dd302d4105676b113f2335bc1f6fe54c8bcd46a32d621c1026c111dc04 / mtime 19:24:17, revision \"v21 (t27 - authorised, freeze lifted inside this scope only)\". The v20 bytes recorded in currentAtReferenceTime below are therefore SUPERSEDED - do not pin them. The values were NOT written into currentAtReferenceTime because the captain's last authorisation for this field covered the v20 update only and expressly forbade marking the plan side FINAL; a one-word captain GO is pending to write the v21 values. Until then treat this row as stale-in-value, not as a v21 pin.",
+      "pendingAuthorisation": {
+        "requestedOf": "captain",
+        "item": "mark the plan side FINAL, anchored on v21",
+        "planOwnerPosition": "test-strategy-architect (plan owner) states the FINAL form is now appropriate because v21 was produced inside the captain's t27 authorisation and t27 is completed; their earlier 'wait for t17' advice referred to the previous freeze task (t17) which precedes v21.",
+        "whyStillNotMarked": "the captain's explicit instruction for this field was: do not mark the plan side FINAL - the plan-side FINAL pin is the captain's to compute at verification. A plan-owner statement does not override a captain ruling, so the status stays NOT FINAL until the captain amends it.",
+        "actionIfApproved": "flip status to FINAL with the v21 anchor; no further value changes needed."
+      }
+    }
+  ],
+  "forbiddenHashes": [
+    "b98cd82495d522a12d1c0321c19... (superseded t13 build)",
+    "30b96931... (superseded build)",
+    "7e6ca7f5... (superseded build)"
+  ],
+  "note": "Only the t18 close-out two-run byte hash of setup-contract.json may pin the setup input; superseded values (284a6fa1… / 295d483a… / 7f505fdb… / b98cd824… / 30b96931…) must not be adopted.",
+  "correctionNote": "plan side corrected: the old currentAtReferenceTime pointed at v18 (161516 / 0578bd5e...) while the live test-plan.json is v20 (166099 / fabdd24f...). Raised by test-strategy-architect; the field is now pinned to the measured v20 bytes with the v18 value demoted to supersededValues. | plan-side sibling question RESOLVED by the plan owner: the two same-size v20 byte sequences differ only in 3 refreshed inputArtifacts hashes; canonical = the LIVE test-plan.json bytes, which is what this pin carries. | REFRESH (setup-architect, on test-strategy-architect's request): the plan-side row was refreshed to the LIVE bytes. The request cited v22 (179,565 B / 89bcc180d3bc66ffd8c8265f7c25e930f6367d346145520abfee878fa49d7af3 @21:12:17), but the file had already advanced to v24 (t51, captain-ordered additive) by the time of measurement, so v24 is pinned and v21 is demoted. v22's own value is recorded here as an intermediate. FLAG: v22's corrected closure was written as [48,61,76], which omits the SW-side K60 - the captain's authoritative cross-domain closure is {48,60,61,76} (BST [48,76] + SW [60,61]); the live v24 file contains BOTH forms ([48,60,61,76] x8 and [48,61,76] x4), so the mixture still needs the plan owner's attention. | REFRESH 2: pinned the LIVE plan bytes again; the requested v23 (180,977 / 9591e217... @21:21:09) was already superseded when measured, so it is recorded as an intermediate together with v22 and v21."
+}

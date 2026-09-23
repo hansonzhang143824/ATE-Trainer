@@ -1,0 +1,925 @@
+{
+  "runId": "tm108-v2-trial",
+  "task": "t4",
+  "owner": "test-strategy-architect",
+  "artifact": "tm108-resource-config-contract",
+  "tm": "TM108",
+  "dftItem": "TM108",
+  "dftName": "VAC1_PRST",
+  "implementedSymbol": "TM108_HSKP_VAC1_PRST",
+  "date": "2026-09-17",
+
+  "projectType": {
+    "value": "一般测试项目 (normal test item)",
+    "evidenceLayerValue": "projectType=一般测试项目(AWG)",
+    "functionArchitectureFamily": "toggle (threshold AWG) + grouped",
+    "citation": [
+      "team/artifacts/acceptance-20260916-dali10/dft-raw/compact-dump.txt:146",
+      "team/artifacts/acceptance-20260916-dali10/dft-raw/meta-refs-dump.txt:337-341"
+    ],
+    "ruleBasis": [
+      "knowledge/standards/test-types.md:47-60 (7 类判定表, 按序命中即停: TM108 无 Trim 字样/无 Trim=Y/无 treg 同名, 非 Contact/OTP/P2P/Leakage -> 第 7 类 一般测试项目)",
+      "knowledge/references/func_type_index.md:12-20",
+      "knowledge/references/param_type_index.md:20 (UVLO -> 一般测试项目)",
+      "knowledge/references/L3-method/voltage-threshold-ate.md:9-11 (方法 A 代表项目含 VAC1_PRST)"
+    ],
+    "classificationDecision": "normal / toggle / not trim / not high-current / not differential",
+    "notApplied": [
+      "Trim framework not triggered: project/DALI/meta/dali_tm_meta.json:1395 trim=null; project/DALI/meta/test_conditions.yaml:268 trim=null; team/artifacts/acceptance-20260916-dali10/dft-raw/csv-full-dump.txt:47 Trim=''",
+      "High-current not triggered: team/artifacts/acceptance-20260916-dali10/dft-raw/compact-dump.txt:151 mi_pins=[] and project/DALI/meta/dali_tm_meta.json:1494 currentStimuli=[]",
+      "Differential pair not triggered: single-ended check project/DALI/meta/dali_tm_meta.json:1402 check=V(DTEST0), checkLines length 1 at :1426-1428",
+      "OTP/MTP/Contact/P2P/Leakage not triggered: no such DFT field (team/artifacts/acceptance-20260916-dali10/dft-raw/overview-dump.txt:147-168)"
+    ]
+  },
+
+  "parameterType": {
+    "value": "UVLO",
+    "observable": "VAC1_PRST (rising threshold + falling threshold + hysteresis)",
+    "evidenceLayerValue": "paramType=UVLO",
+    "citation": [
+      "team/artifacts/acceptance-20260916-dali10/dft-raw/compact-dump.txt:146",
+      "team/artifacts/acceptance-20260916-dali10/dft-raw/compact-dump.txt:147"
+    ],
+    "referenceFourPack": {
+      "L1-chip": "knowledge/references/L1-chip/UVLO.md",
+      "L3-method": "knowledge/references/L3-method/UVLO.md",
+      "L3-method-variant": "knowledge/references/L3-method/voltage-threshold-ate.md:9-30",
+      "L4-Golden-code": "knowledge/references/L4-Golden-code/UVLO.cpp (PRST threshold AWG)",
+      "L4-Golden-code-alt": "knowledge/references/L4-Golden-code/toggle-template.cpp",
+      "index": "knowledge/references/param_type_index.md:20-25"
+    },
+    "awgParameterContract": {
+      "shape": "<base>_Rise / <base>_Fall / <base>_Hys with Hys = Rise - Fall",
+      "ruleBasis": "knowledge/standards/toggle-awg-rules.md:14-26",
+      "rampCallCount": 2,
+      "rampCallCountEvidence": "two vset steps on vac1 and two ramp_vsrc_val calls: project/DALI/meta/dali_tm_meta.json:1459-1471; project/DALI/reg_config/tm108.sv:17-26",
+      "note": "the three parameters VAC1_PRST_Rise/_Fall/_Hys already exist in the current implementation (team/artifacts/acceptance-20260916-dali10/dft-raw/testcpp-blocks.txt:401-403) - the naming contract is recorded here, its code realisation is implementation-side"
+    },
+    "triggerRule": {
+      "basis": "knowledge/standards/toggle-awg-rules.md:28-30",
+      "upRampTrigger": "RISING ramp -> observe FALLING edge of the digital observer (the DTEST0/nQON signal is inverted)",
+      "downRampTrigger": "FALLING ramp -> observe RISING edge",
+      "note": "the actual trigger constants are method-side (test-method expert owns measurement)"
+    },
+    "limits": {
+      "authoritative": "rising vth 4.4V, hys 0.35V",
+      "unit": "V",
+      "citation": [
+        "project/DALI/meta/dali_tm_meta.json:1390",
+        "project/DALI/meta/test_conditions.yaml:263",
+        "team/artifacts/acceptance-20260916-dali10/dft-raw/overview-dump.txt:152"
+      ],
+      "tolerance": "NOT PUBLISHED in any DFT source (project/DALI/input/DFT-full.json:5-18 header list has no tolerance column)",
+      "openConflict": "F1 - the CSV layer states 4.15 V (team/artifacts/acceptance-20260916-dali10/dft-raw/csv-full-dump.txt:45). NOT resolved here."
+    }
+  },
+
+  "functionArchitecture": {
+    "family": "一般测试项目 + 阈值 AWG (toggle) + grouped",
+    "mainFunction": "one threshold item on the VAC1 pin, observed on a digital check pin, configured through one DMUX field pair",
+    "subFunctions": [
+      "static VBAT supply at the DFT setpoint",
+      "VAC1 linear sweep in both directions (two segments = two ramp calls = 3 result parameters)",
+      "digital toggle capture on the observation endpoint",
+      "one register delta (entertestmode + DMUX_EN/DMUX_SEL), no trim, no treg, no OTP"
+    ],
+    "observationChainIntent": "the check is a digital node muxed onto a test pad; the DFT notes say 'mux A2D_VAC1_PRST to dtest0' (project/DALI/meta/dali_tm_meta.json:1396)",
+    "compositionRequired": false,
+    "differentialRequired": false,
+    "highCurrentRequired": false,
+    "awgRequired": true,
+    "awgEvidence": [
+      "project/DALI/meta/dali_tm_meta.json:1459-1471 (two vset steps on vac1)",
+      "project/DALI/meta/dali_tm_meta.json:1496-1498 delays=['1e-3']",
+      "project/DALI/reg_config/tm108.sv:18 and :23 (two ramp_vsrc_val calls)"
+    ],
+    "capabilityBoundary": "no resource-family decision beyond the source allocation in resourceAllocation[]; power sequence, measurement, power-down and log are NOT decided here (test-method expert owns those)"
+  },
+
+  "endpointRequirements": [
+    {
+      "pin": "VBAT",
+      "role": "power",
+      "requirement": "static DC supply rail, force only, no sense requirement, no current measurement",
+      "dftBasis": "Power column = VBAT",
+      "citation": [
+        "project/DALI/meta/dali_tm_meta.json:1400",
+        "project/DALI/meta/dali_tm_meta.json:1420-1422",
+        "project/DALI/meta/test_conditions.yaml:255",
+        "team/artifacts/acceptance-20260916-dali10/dft-raw/overview-dump.txt:159"
+      ],
+      "setpointIntent": "vset[vbat,3,100e-6,0]",
+      "setpointCitation": [
+        "project/DALI/meta/dali_tm_meta.json:1429-1437",
+        "project/DALI/meta/dali_tm_meta.json:1484-1492",
+        "project/DALI/reg_config/tm108.sv:6-10",
+        "team/artifacts/acceptance-20260916-dali10/dft-raw/overview-dump.txt:156"
+      ],
+      "status": "resolved (allocation in resourceAllocation[0]); setpoint value remains an open DFT conflict (F4)",
+      "functionalRelayRequirement": "the VBAT cap gate is a functional relay for a powered rail",
+      "functionalRelayBasis": "knowledge/standards/relay-checklist.md:26-40 (Cap2 规则: 加电 PIN 默认闭其 Cap) and project/DALI/SCH-Connect-Map.txt:914"
+    },
+    {
+      "pin": "VAC1",
+      "role": "dynamic (scanned input)",
+      "requirement": "force ramp in both directions; the diagram's per-path proofs carry both a force and a sense terminal on this pin, so the available candidates are Kelvin pairs",
+      "dftBasis": "Dynamic column = VAC1",
+      "citation": [
+        "project/DALI/meta/dali_tm_meta.json:1401",
+        "project/DALI/meta/dali_tm_meta.json:1423-1425",
+        "project/DALI/meta/test_conditions.yaml:259",
+        "team/artifacts/acceptance-20260916-dali10/dft-raw/overview-dump.txt:160"
+      ],
+      "rampIntentAsWritten": "vset[vac1,10,1e-3,0] then vset[vac1,0,1e-3,0]",
+      "rampCitation": [
+        "project/DALI/meta/dali_tm_meta.json:1458-1471",
+        "project/DALI/reg_config/tm108.sv:17-26"
+      ],
+      "rampConflicts": "F5 (three-way range disagreement) and F6 (Notes 1V/ms vs Code 10 V in 1e-3 s) - both carried as openItems, NOT resolved",
+      "status": "resolved (allocation in resourceAllocation[1] and resourceAllocation[2])",
+      "capRule": "K21_VAC_Cap must stay at its un-actuated default while VAC1 is the ramp source",
+      "capRuleCitation": [
+        "project/DALI/SCH-Connect-Map.txt:913",
+        "team/artifacts/acceptance-20260916-dali10/setup-contract.json:3953-3958",
+        "knowledge/standards/relay-checklist.md:31-38"
+      ]
+    },
+    {
+      "pin": "DTEST0",
+      "role": "check / observation",
+      "requirement": "digital toggle observation endpoint; the DFT names the internal node, not a board port",
+      "dftBasis": "Check column = V(DTEST0)",
+      "citation": [
+        "project/DALI/meta/dali_tm_meta.json:1402",
+        "project/DALI/meta/dali_tm_meta.json:1426-1428",
+        "project/DALI/meta/test_conditions.yaml:267",
+        "team/artifacts/acceptance-20260916-dali10/dft-raw/overview-dump.txt:161",
+        "team/artifacts/acceptance-20260916-dali10/dft-raw/compact-dump.txt:148"
+      ],
+      "status": "NOT RESOLVED - registered as 定点补证 (OI-T4-01)",
+      "measuredFact": "DTEST0 has 0 hits in the schematic three-artifact set and in PINLIST (re-scanned in this run, see tm108-relay-workflow.txt step 8)",
+      "candidateOnlyEndpoint": "nQON (the only schematic-level observable on the NQON_HG1_ACM port group)",
+      "candidateCitation": [
+        "team/artifacts/tm108-v2-trial/schematic/schematic-fact-audit.md:94",
+        "team/artifacts/tm108-v2-trial/schematic/schematic-fact-audit.md:172",
+        "team/artifacts/tm108-v2-trial/schematic/schematic-fact-audit.md:270",
+        "project/DALI/Component-Statistic.txt:114",
+        "project/DALI/Component-Statistic.txt:405"
+      ],
+      "explicitProhibition": "the DTEST0 -> nQON relation is NOT assumed anywhere in this contract; the nQON paths are listed as an observation CANDIDATE with its relay requirement, and the relation must be closed by DFT-side evidence before the allocation is consumed",
+      "alternativeCheckReading": "the CSV layer says Check = INT (F3) - registered, not chosen",
+      "alternativeReadingCitation": [
+        "team/artifacts/acceptance-20260916-dali10/dft-raw/csv-full-dump.txt:52",
+        "team/artifacts/acceptance-20260916-dali10/dft-raw/DFT-full.json:136"
+      ]
+    },
+    {
+      "pin": "AGND",
+      "role": "reference return candidate",
+      "requirement": "the ACM200 and FXVIe_PLUS low ends are grouped to AGND_F on the board, so a ground-referenced single-ended force closes its return through AGND without an allocated endpoint",
+      "dutBasis": "no DFT column names AGND for TM108; it appears only as a board topology fact",
+      "citation": [
+        "project/DALI/SCH-Connect-Map.txt:801",
+        "project/DALI/SCH-Connect-Map.txt:804",
+        "project/DALI/Component-Statistic.txt:453"
+      ],
+      "status": "reference only - no source allocated, no relay closed for AGND by this contract",
+      "openItem": "OI-T4-08 (schematic OI-10): whether AGND is a package pin or a board reference, and whether AGND_S_S1 is a valid path end, is unproven",
+      "noForcedSencePair": "the AGND_S side self-labels '单线-仅SL, 非有效通路' at project/DALI/SCH-Connect-Map.txt:31 and :257"
+    },
+    {
+      "pin": "KLV1",
+      "role": "not required by this TM",
+      "requirement": "no allocation",
+      "basis": "the frozen baseline lists KLV1/KLV2 in tmDeltas.TM108.scopePins, which is the project-side static candidate scope; the TM108 DFT row has no KLV1 column, no ramp and no measurement on it",
+      "citation": [
+        "team/artifacts/acceptance-20260916-dali10/setup-contract.json:5319-5325",
+        "team/artifacts/acceptance-20260916-dali10/dft-raw/overview-dump.txt:147-168"
+      ],
+      "routesExistButUnused": [
+        "project/DALI/SCH-Connect-Map.txt:78-79",
+        "project/DALI/SCH-Connect-Map.txt:475-476"
+      ],
+      "consequence": "the setup tmDeltas TM108 relaySet (…,35,37,73,…) is superseded for the endpoints this contract actually uses, because every KLV1/KLV2 candidate path requires a strictly larger actuation union than the selected path and none of them is needed by the DFT intent",
+      "citationForSupersededSet": "team/artifacts/acceptance-20260916-dali10/setup-contract.json:5326-5345"
+    },
+    {
+      "pin": "KLV2",
+      "role": "not required by this TM",
+      "requirement": "no allocation",
+      "basis": "same as KLV1",
+      "citation": [
+        "team/artifacts/acceptance-20260916-dali10/setup-contract.json:5319-5325",
+        "project/DALI/SCH-Connect-Map.txt:84-85"
+      ]
+    }
+  ],
+
+  "resourceAllocation": [
+    {
+      "id": "RA-1",
+      "endpoint": "VAC1",
+      "side": "force",
+      "sourceTable": "VAC123_AMUX_ACM",
+      "sourceTableKind": "ACM200",
+      "sourcePort": "S5_ACM200_FH0",
+      "channel": "S5_0",
+      "selectedPath": "S5_ACM200_FH0 -> K18_VAC3(Relay-NC) -> K19_VAC2(Relay-NC) -> VAC1_F",
+      "pathProofReference": "tm108-paths-proofs.json proofs.VAC1_F_S1 source_port=S5_ACM200_FH0",
+      "actuationUnion": [],
+      "actuationUnionSize": 0,
+      "selectionRank": 1,
+      "definitionEvidence": [
+        "project/DALI/Pin_Channel_define.h:15 (_PIN_CHANNEL_DEFINE_VAC123_AMUX_ACM_ = \"S5_0,S6_0,S11_0,S12_0,S21_0,S22_0,S27_0,S28_0\")",
+        "project/DALI/Pin_Channel_define.h:96 (extern ACM200 VAC123_AMUX_ACM;)",
+        "project/DALI/Component-Statistic.txt:382 (S5_ACM200_FH0 -> VAC123_AMUX_ACM (ACM200))",
+        "project/DALI/SCH-Connect-Map.txt:15 and :319"
+      ],
+      "physicalPathEvidence": [
+        "team/artifacts/tm108-v2-trial/schematic/tm108-paths-proofs.txt (VAC1_F_S1, source_port=S5_ACM200_FH0, required_on=[], path steps 2, terminal_stop=True, role_match=True)",
+        "team/artifacts/tm108-v2-trial/schematic/schematic-fact-audit.md:111"
+      ],
+      "capabilityEvidence": {
+        "voltageRangeNeeded": "0-10 V per the DFT ramp expression (project/DALI/meta/dali_tm_meta.json:1459-1470); the frozen baseline lists a 20 V range for the ACM200 channel family",
+        "locator": "team/artifacts/acceptance-20260916-dali10/setup-contract.json:130-160 (ACM200 group: currentLimit +-200mA, usedBy 'VAC ramp source' for the VAC threshold items)",
+        "baselineAlreadyAssignedThisSource": "team/artifacts/acceptance-20260916-dali10/setup-contract.json:156 (usedBy: VAC ramp source for the VAC threshold items)"
+      },
+      "whyNotScarceSource": "TM108 has no differential pair and no heavy current (see functionArchitecture), so relay-design-flow step 3 sends it down the non-scarce branch; FPVIe capacity stays untouched and available to the differential / high-current items that the frozen baseline reserves it for",
+      "variantsConsidered": [
+        {
+          "sourceTable": "FPVI0",
+          "sourcePort": "S1_FPVIe_FL0",
+          "channel": "S1_0 Low",
+          "union": [17],
+          "rank": 2,
+          "evidence": "tm108-paths-proofs.json proofs.VAC1_F_S1 source_port=S1_FPVIe_FL0 required_on=[17]",
+          "rejectedBecause": "same physical node with a strictly larger actuation union and it consumes a scarce FPVIe channel that the frozen baseline reserves for the mOhm items"
+        },
+        {
+          "sourceTable": "FPVI1",
+          "sourcePort": "S1_FPVIe_FL1",
+          "channel": "S1_1 Low",
+          "union": [17, 145, 146],
+          "rank": 5,
+          "evidence": "tm108-paths-proofs.json proofs.VAC1_F_S1 source_port=S1_FPVIe_FL1 required_on=[17,145,146]",
+          "rejectedBecause": "largest union on this terminal and it needs DCM low-side BUS relays"
+        },
+        {
+          "sourceTable": "FPVI0",
+          "sourcePort": "S1_FPVIe_FH0",
+          "channel": "S1_0 High",
+          "union": [70, 87, 90],
+          "rank": 4,
+          "evidence": "tm108-paths-proofs.json proofs.VAC1_F_S1 source_port=S1_FPVIe_FH0 required_on=[70,87,90]",
+          "rejectedBecause": "the High branch routes through the FPVIe0 F/S board-shorted PC nets (K82_R_CS in the chain, project/DALI/SCH-Connect-Map.txt:190) - recorded, and its union is the largest of the two FPVIe0 options"
+        },
+        {
+          "sourceTable": "QTMU_S1",
+          "sourcePort": "S10_CH0_B",
+          "channel": "S10_0",
+          "union": [17, 142],
+          "rank": 3,
+          "evidence": "tm108-paths-proofs.json proofs.VAC1_F_S1 source_port=S10_CH0_B required_on=[17,142]",
+          "rejectedBecause": "requires the QTMU bridge relay K142, which the frozen baseline requires to stay un-actuated whenever an FPVIe channel owns a pin (team/artifacts/acceptance-20260916-dali10/setup-contract.json:8158) and which ties the two FPVIe BUS wires together"
+        }
+      ]
+    },
+    {
+      "id": "RA-2",
+      "endpoint": "VAC1",
+      "side": "sense",
+      "sourceTable": "VAC123_AMUX_ACM",
+      "sourceTableKind": "ACM200",
+      "sourcePort": "S5_ACM200_SH0",
+      "channel": "S5_0",
+      "selectedPath": "S5_ACM200_SH0 -> K18_VAC3(Relay-NC) -> K19_VAC2(Relay-NC) -> VAC1_S",
+      "pathProofReference": "tm108-paths-proofs.json proofs.VAC1_S_S1 source_port=S5_ACM200_SH0",
+      "actuationUnion": [],
+      "actuationUnionSize": 0,
+      "selectionRank": 1,
+      "definitionEvidence": [
+        "project/DALI/Pin_Channel_define.h:15",
+        "project/DALI/Pin_Channel_define.h:96",
+        "project/DALI/Component-Statistic.txt:408 (S5_ACM200_SH0 -> VAC123_AMUX_ACM (ACM200))"
+      ],
+      "physicalPathEvidence": [
+        "team/artifacts/tm108-v2-trial/schematic/tm108-paths-proofs.txt (VAC1_S_S1, source_port=S5_ACM200_SH0, required_on=[], path steps 2)",
+        "project/DALI/SCH-Connect-Map.txt:192-194"
+      ],
+      "senseCharacter": "in the ACM200 allocation the sense terminal is on the same channel pair as the force terminal, i.e. the measurement reference is the source's own reading on the same node, not an independent Kelvin pair; the DFT only asks for a digital toggle on a separate check pin, so no remote sense resolution is required",
+      "note": "the sense side of the check pair is the observation pin, not VAC1_S (see endpointRequirements DTEST0)",
+      "variantsConsidered": [
+        {"sourceTable": "FPVI0", "sourcePort": "S1_FPVIe_SL0", "union": [17], "rank": 2, "evidence": "tm108-paths-proofs.json proofs.VAC1_S_S1 source_port=S1_FPVIe_SL0 required_on=[17]"},
+        {"sourceTable": "QVM_S1", "sourcePort": "S8_QVM_CH0-", "union": [17, 138], "rank": 3, "evidence": "tm108-paths-proofs.json proofs.VAC1_S_S1 source_port=S8_QVM_CH0- required_on=[17,138]"},
+        {"sourceTable": "FPVI1", "sourcePort": "S1_FPVIe_SL1", "union": [17, 138, 139], "rank": 4, "evidence": "tm108-paths-proofs.json proofs.VAC1_S_S1 source_port=S1_FPVIe_SL1 required_on=[17,138,139]"}
+      ]
+    },
+    {
+      "id": "RA-3",
+      "endpoint": "VBAT",
+      "side": "force",
+      "sourceTable": "VBAT_PD3_FXVI",
+      "sourceTableKind": "FXVIe_PLUS",
+      "sourcePort": "S3_FXVIe_PLUS_FH5",
+      "channel": "S3_5",
+      "selectedPath": "S3_FXVIe_PLUS_FH5 -> K8_PD3(Relay-NC) -> VBAT_F",
+      "pathProofReference": "tm108-paths-proofs.json proofs.VBAT_F_S1 source_port=S3_FXVIe_PLUS_FH5",
+      "actuationUnion": [],
+      "actuationUnionSize": 0,
+      "selectionRank": 1,
+      "definitionEvidence": [
+        "project/DALI/Pin_Channel_define.h:12 (_PIN_CHANNEL_DEFINE_VBAT_PD3_FXVI_ = \"S3_5,S4_5,S13_5,S14_5,S19_5,S20_5,S29_5,S30_5\")",
+        "project/DALI/Pin_Channel_define.h:93 (extern FXVIe_PLUS VBAT_PD3_FXVI;)",
+        "project/DALI/Component-Statistic.txt:308 (S3_5 -> VBAT_PD3_FXVI (FXVIe_PLUS))"
+      ],
+      "physicalPathEvidence": [
+        "project/DALI/SCH-Connect-Map.txt:832-833 ([Kelvin] 需闭合: 无(默认导通); F: S3_FXVIe_PLUS_FH5 -> K8(Relay-NC) -> VBAT_F)",
+        "team/artifacts/tm108-v2-trial/schematic/tm108-paths-proofs.txt (VBAT_F_S1, source_port=S3_FXVIe_PLUS_FH5, required_on=[])"
+      ],
+      "sharedChannelStatus": "the macro lists 8 site channels (S3_5/S4_5/S13_5/S14_5/S19_5/S20_5/S29_5/S30_5) and the frozen baseline records exactly this channel set for the VBAT_PD3_FXVI macro; per-site channel ownership is a setup fact, not re-decided here",
+      "sharedChannelEvidence": "team/artifacts/acceptance-20260916-dali10/setup-contract.json:204-215",
+      "pd3ShareHandling": "K8_PD3 is the VBAT<->PD3 selector; TM108 drives VBAT only, so K8 stays un-actuated and PD3 is never reached",
+      "pd3Evidence": [
+        "project/DALI/SCH-Connect-Map.txt:814-816 (PD3 branch needs K8 Relay-ON)",
+        "project/DALI/SCH-Connect-Map.txt:832-834 (VBAT branch keeps K8 Relay-NC)"
+      ],
+      "variantsConsidered": [
+        {"sourceTable": "QTMU_S1", "sourcePort": "S10_CH0_A", "union": [7], "rank": 2, "evidence": "tm108-paths-proofs.json proofs.VBAT_F_S1 source_port=S10_CH0_A required_on=[7]"},
+        {"sourceTable": "FPVI1", "sourcePort": "S1_FPVIe_FH1", "union": [7], "rank": 3, "evidence": "tm108-paths-proofs.json proofs.VBAT_F_S1 source_port=S1_FPVIe_FH1 required_on=[7]"},
+        {"sourceTable": "FPVI0", "sourcePort": "S1_FPVIe_FH0", "union": [7, 143, 144], "rank": 4},
+        {"sourceTable": "QVM_S1", "sourcePort": "S8_QVM_CH0+", "union": [7, 130, 136], "rank": 5}
+      ],
+      "whySelected": "only candidate with a 0-size actuation union on this terminal; it also keeps every FPVIe and QTMU channel free, which is the strongest possible position against the frozen baseline's shared-resource invariants"
+    },
+    {
+      "id": "RA-4",
+      "endpoint": "VBAT",
+      "side": "sense",
+      "sourceTable": "VBAT_PD3_FXVI",
+      "sourceTableKind": "FXVIe_PLUS",
+      "sourcePort": "S3_FXVIe_PLUS_SH5",
+      "channel": "S3_5",
+      "selectedPath": "S3_FXVIe_PLUS_SH5 -> K8_PD3(Relay-NC) -> VBAT_S",
+      "pathProofReference": "tm108-paths-proofs.json proofs.VBAT_S_S1 source_port=S3_FXVIe_PLUS_SH5",
+      "actuationUnion": [],
+      "actuationUnionSize": 0,
+      "selectionRank": 1,
+      "definitionEvidence": [
+        "project/DALI/Pin_Channel_define.h:12",
+        "project/DALI/Pin_Channel_define.h:93",
+        "project/DALI/Component-Statistic.txt:833-834"
+      ],
+      "physicalPathEvidence": [
+        "project/DALI/SCH-Connect-Map.txt:834 (S: S3_FXVIe_PLUS_SH5 -> K8(Relay-NC) -> VBAT_S)",
+        "team/artifacts/tm108-v2-trial/schematic/tm108-paths-proofs.txt (VBAT_S_S1, source_port=S3_FXVIe_PLUS_SH5, required_on=[])"
+      ],
+      "nodeFact": "VBAT_S_S1 is on net NetK8_PD3_S1_2, i.e. the same net as the K8 PD3 side; the VBAT force side is NetCap1_VBAT_S1_1 on K8 pin 7. This is why the K8 selector state is the only thing standing between VBAT and PD3",
+      "nodeFactEvidence": "team/artifacts/tm108-v2-trial/schematic/schematic-fact-audit.md:151 and :248",
+      "variantsConsidered": [
+        {"sourceTable": "FPVI1", "sourcePort": "S1_FPVIe_SH1", "union": [7], "rank": 2},
+        {"sourceTable": "QTMU_S1", "sourcePort": "S10_CH0_A", "union": [7, 130], "rank": 3},
+        {"sourceTable": "FPVI0", "sourcePort": "S1_FPVIe_SH0", "union": [7, 136, 137], "rank": 4}
+      ]
+    },
+    {
+      "id": "RA-5",
+      "endpoint": "DTEST0 (observation candidate)",
+      "side": "observation",
+      "sourceTable": "NQON_HG1_ACM",
+      "sourceTableKind": "ACM200",
+      "sourcePort": "S5_ACM200_FH9",
+      "channel": "S5_9",
+      "selectedPath": "S5_ACM200_FH9 -> K64_HG1(Relay-NC) -> nQON_F",
+      "pathProofReference": "tm108-paths-proofs.json proofs.nQON_F_S1 source_port=S5_ACM200_FH9",
+      "actuationUnion": [],
+      "actuationUnionSize": 0,
+      "selectionRank": 2,
+      "status": "CANDIDATE ONLY - the endpoint identity DTEST0 -> nQON is unproven (OI-T4-01); this allocation must not be consumed until that relation is closed",
+      "definitionEvidence": [
+        "project/DALI/Pin_Channel_define.h:24 (_PIN_CHANNEL_DEFINE_NQON_HG1_ACM_ = \"S5_9,S6_9,S11_9,S12_9,S21_9,S22_9,S27_9,S28_9\")",
+        "project/DALI/Pin_Channel_define.h:105 (extern ACM200 NQON_HG1_ACM;)",
+        "project/DALI/Component-Statistic.txt:405 (S5_ACM200_FH9 -> NQON_HG1_ACM (ACM200))"
+      ],
+      "physicalPathEvidence": [
+        "project/DALI/SCH-Connect-Map.txt:798-800 (nQON [Kelvin] 需闭合: 无(默认导通); F: S5_ACM200_FH9 -> K64(Relay-NC) -> nQON_F)",
+        "team/artifacts/tm108-v2-trial/schematic/tm108-paths-proofs.txt (nQON_F_S1, source_port=S5_ACM200_FH9, required_on=[])"
+      ],
+      "rejectedRank1": {
+        "sourcePort": "S24_P0",
+        "union": [],
+        "reason": "the proof for this port has path=[] (0 relay steps, no net transition), so it asserts connectivity with no physical evidence; the port also carries two identities in the same file (DCM source port vs DCM internal node). Not usable. See OI-T4-06 / schematic-fact-audit.md:272 and :313.",
+        "evidence": "tm108-paths-proofs.json proofs.nQON_F_S1 source_port=S24_P0 path=[]"
+      },
+      "variantsConsidered": [
+        {"sourceTable": "QTMU_S1", "sourcePort": "S10_CH0_A", "union": [66], "rank": 3},
+        {"sourceTable": "FPVI0", "sourcePort": "S1_FPVIe_FH0", "union": [62], "rank": 4},
+        {"sourceTable": "FPVI1", "sourcePort": "S1_FPVIe_FH1", "union": [66], "rank": 5},
+        {"sourceTable": "QVM_S1", "sourcePort": "S8_QVM_CH0+", "union": [66, 130, 136], "rank": 6}
+      ],
+      "functionalRelayRequirement": {
+        "relay": "K65_nQON_PU",
+        "role": "5 V pull-up for the open-drain observation node",
+        "citation": [
+          "project/DALI/SCH-Connect-Map.txt:891",
+          "project/DALI/Component-Statistic.txt:445",
+          "knowledge/standards/relay-checklist.md:60-63"
+        ]
+      },
+      "senseTerminalNotUsed": "nQON_S_S1 (the K62_BUS_SH_QON side) is NOT allocated: the DFT check is a single-ended digital observation and closing both sides would be a two-sided connection on the same node group. Its proof is recorded for completeness (tm108-paths-proofs.json proofs.nQON_S_S1)."
+    }
+  ],
+
+  "relayGroups": [
+    {
+      "id": "G1",
+      "stage": "VAC1 scanned input - rising sweep",
+      "path": "S5_ACM200_FH0 -> K18(NC) -> K19(NC) -> VAC1_F  |  S5_ACM200_SH0 -> K18(NC) -> K19(NC) -> VAC1_S",
+      "force": "VAC123_AMUX_ACM (S5_ACM200_FH0, channel S5_0)",
+      "sense": "VAC123_AMUX_ACM (S5_ACM200_SH0, channel S5_0)",
+      "functionalRelays": [],
+      "isolationRequirements": [
+        "K21_VAC_Cap must stay at its un-actuated default (VAC1 is the ramp source)",
+        "K14_VAC1_P2P must stay at its un-actuated default (anti-short)",
+        "K70_VAC_F / K87_KELVIN0 / K90_PC0_Force / K82_R_CS must stay at their un-actuated defaults (they belong to the CH0 High branch, which is not selected)",
+        "K141 / K142 must stay at their un-actuated defaults (QTMU bridge across the FPVIe BUS wires)"
+      ],
+      "pathRelays": [
+        {"relay": "K18_VAC3", "number": 18, "requiredState": "un-actuated (default-conducting)", "contact": "pin3->pin2 (F)", "evidence": "tm108-paths-proofs.txt VAC1_F_S1 S5_ACM200_FH0 chain; project/DALI/SCH-Connect-Map.txt:190"},
+        {"relay": "K19_VAC2", "number": 19, "requiredState": "un-actuated (default-conducting)", "contact": "pin3->pin2 (F)", "evidence": "tm108-paths-proofs.txt VAC1_F_S1 S5_ACM200_FH0 chain; project/DALI/SCH-Connect-Map.txt:190"},
+        {"relay": "K17_BUSL_VAC", "number": 17, "requiredState": "closed; already ON in every VAC branching chain, so it is a shared BUS entry state rather than an item-added closure", "contact": "pin3->pin4 (F) / pin6->pin5 (S)", "evidence": "project/DALI/SCH-Connect-Map.txt:192-194; Component-Statistic [BUS] list at project/DALI/Component-Statistic.txt:441"}
+      ],
+      "conflictStatus": "no conflict",
+      "conflictBasis": "K18/K19 are the VAC3/VAC2 selectors and are both at their default state, so the VAC1 branch is selected by NOT branching; no other VACn/AMUX/VAC_WL function is reachable",
+      "closureSetActuatedThisStage": [],
+      "closureSetDerivation": "required_on=[] plus full proof chain (both contacts default-conducting); NOT a pins[].requiredRelays intersection and NOT a relays[].state read"
+    },
+    {
+      "id": "G2",
+      "stage": "VAC1 scanned input - falling sweep",
+      "path": "same closure set as G1",
+      "force": "VAC123_AMUX_ACM (S5_ACM200_FH0, channel S5_0)",
+      "sense": "VAC123_AMUX_ACM (S5_ACM200_SH0, channel S5_0)",
+      "functionalRelays": [],
+      "isolationRequirements": ["identical to G1"],
+      "pathRelays": ["identical to G1"],
+      "conflictStatus": "no conflict",
+      "conflictBasis": "no relay on this path has a direction-dependent required state, so the rising and falling sweeps share one closure set; no time-division is needed",
+      "closureSetActuatedThisStage": [],
+      "note": "recorded as a separate group only so the method contract can order the two sweeps; it is the SAME closure set"
+    },
+    {
+      "id": "G3",
+      "stage": "static supply and observation path (valid before, during and after both sweeps)",
+      "path": "S3_FXVIe_PLUS_FH5 -> K8(NC) -> VBAT_F  |  S3_FXVIe_PLUS_SH5 -> K8(NC) -> VBAT_S  ||  S5_ACM200_FH9 -> K64(NC) -> nQON_F",
+      "force": "VBAT_PD3_FXVI (S3_FXVIe_PLUS_FH5, channel S3_5)",
+      "sense": "VBAT_PD3_FXVI (S3_FXVIe_PLUS_SH5, channel S3_5)",
+      "pathRelays": [
+        {"relay": "K8_PD3", "number": 8, "requiredState": "un-actuated (VBAT side)", "contact": "pin6->pin7", "evidence": "project/DALI/SCH-Connect-Map.txt:832-834; tm108-paths-proofs.txt VBAT_F_S1/VBAT_S_S1 S3_FXVIe_PLUS_FH5/SH5 chains"},
+        {"relay": "K64_HG1", "number": 64, "requiredState": "un-actuated (nQON side)", "contact": "pin6->pin7", "evidence": "project/DALI/SCH-Connect-Map.txt:799; tm108-paths-proofs.txt nQON_F_S1 S5_ACM200_FH9 chain"}
+      ],
+      "functionalRelays": [
+        {"relay": "K13_VBAT_Cap", "number": 13, "role": "VBAT stabiliser cap gate for a powered rail", "evidence": "project/DALI/SCH-Connect-Map.txt:914; knowledge/standards/relay-checklist.md:31-38"},
+        {"relay": "K65_nQON_PU", "number": 65, "role": "5 V pull-up for the open-drain observation node", "evidence": "project/DALI/SCH-Connect-Map.txt:891"}
+      ],
+      "isolationRequirements": [
+        "K8 must not be actuated (that would route PD3 instead of VBAT)",
+        "K64 must not be actuated (that would route HG1 instead of nQON)",
+        "K141 / K142 un-actuated (QTMU bridge)",
+        "K92_AGND_F2S un-actuated (no AGND-Kelvin bridging is needed)",
+        "K7_BUSH_VBAT is NOT used by this allocation (the FXVIe_PLUS route reaches VBAT through K8 alone)"
+      ],
+      "conflictStatus": "no conflict",
+      "conflictBasis": "disjoint from G1/G2: no relay number is shared between the VBAT path, the observation path and the VAC1 path with a differing required state",
+      "closureSetActuatedThisStage": [13, 65],
+      "closureSetDerivation": "required_on=[] for both path chains (both contacts default-conducting) PLUS the two functional relays taken from the per-path functional rules (cap gate + pull-up), which are also backed by the frozen baseline's per-TM powerSequenceDelta",
+      "baselineCrossReference": "team/artifacts/acceptance-20260916-dali10/setup-contract.json:5666-5671 (powerSequenceDelta: 'cbite.SetOn(K13_VBAT_Cap, K65_nQON_PU, -1)' with the explicit note that K21_VAC_Cap must stay open)"
+    },
+    {
+      "id": "G4",
+      "stage": "ALTERNATE allocation (not added to G1-G3; select it only if the ACM200 VAC123_AMUX_ACM channel is unavailable)",
+      "path": "S1_FPVIe_FL0 -> K89(NC) -> K17(ON) -> K18(NC) -> K19(NC) -> VAC1_F  |  S1_FPVIe_SL0 -> K88(NC) -> K17(ON) -> K18(NC) -> K19(NC) -> VAC1_S",
+      "force": "FPVI0 (S1_FPVIe_FL0, channel S1_0 Low)",
+      "sense": "FPVI0 (S1_FPVIe_SL0, channel S1_0 Low)",
+      "pathRelays": [
+        {"relay": "K89_KELVIN0", "number": 89, "requiredState": "un-actuated (default-conducting)", "evidence": "tm108-paths-proofs.txt VAC1_F_S1 S1_FPVIe_FL0 chain"},
+        {"relay": "K88_KELVIN0", "number": 88, "requiredState": "un-actuated (default-conducting)", "evidence": "tm108-paths-proofs.txt VAC1_S_S1 S1_FPVIe_SL0 chain"},
+        {"relay": "K17_BUSL_VAC", "number": 17, "requiredState": "closed (VAC1 branch entry)", "evidence": "project/DALI/SCH-Connect-Map.txt:193-194"}
+      ],
+      "functionalRelays": [
+        {"relay": "K13_VBAT_Cap", "number": 13, "role": "VBAT cap gate", "evidence": "project/DALI/SCH-Connect-Map.txt:914"},
+        {"relay": "K65_nQON_PU", "number": 65, "role": "observation pull-up", "evidence": "project/DALI/SCH-Connect-Map.txt:891"}
+      ],
+      "isolationRequirements": [
+        "K21_VAC_Cap un-actuated",
+        "K70_VAC_F / K87_KELVIN0 / K90_PC0_Force / K82_R_CS un-actuated",
+        "K141 / K142 un-actuated",
+        "K86_KELVIN0_F / K130_KELVIN1_F un-actuated (force-sense bridges)"
+      ],
+      "conflictStatus": "no conflict",
+      "conflictBasis": "FL0 and SL0 land on two different contacts of K17 (pin3->pin4 = VAC_FORCE_S1, pin6->pin5 = VAC_SENSE_S1), so one actuation serves both sides",
+      "closureSetActuatedThisStage": [17],
+      "closureSetDerivation": "required_on=[17] for BOTH proofs (VAC1_F_S1 from S1_FPVIe_FL0 and VAC1_S_S1 from S1_FPVIe_SL0) plus the full chains; the union is therefore {17}, one relay number",
+      "resourceCost": "consumes FPVIe channel 0 (S1_0), which the frozen baseline reserves for the mOhm items - this is why it is the alternate and not the default"
+    }
+  ],
+
+  "registerDelta": [
+    {
+      "field": "entertestmode() (test-register key unlock; not a register field but a mandatory precondition)",
+      "value": "call before any register write",
+      "source": "project/DALI/reg_config/tm108.sv:12 (entertestmode();) and project/DALI/meta/dali_tm_meta.json:1441-1443 (code2[0] kind=en_tm)",
+      "scope": "per-TM delta, this item only",
+      "ruleBasis": "knowledge/standards/register-config.md:12-22 (无条件先解锁, 不看 DFT 有没有 en_tm[])",
+      "evidence": [
+        "project/DALI/meta/test_conditions.yaml:269 (enTm: true)",
+        "project/DALI/meta/dali_tm_meta.json:1509 (hasEnTm: true)"
+      ]
+    },
+    {
+      "field": "DMUX_SEL",
+      "value": "22",
+      "source": "project/DALI/meta/dali_tm_meta.json:1505-1507 and project/DALI/meta/test_conditions.yaml:261; written as I2CWriteSameData(DEV_ADDR, 0x56, 0x16) at project/DALI/reg_config/tm108.sv:14",
+      "scope": "per-TM delta, this item only",
+      "fieldInventoryBasis": "project/DALI/meta/manifest.json:86 (DMUX_SEL is one of the 16 register fields of this project)",
+      "openConflict": "F2 - the CSV layer states DMUX_SEL/DTEST0_MUX = 23 via 0x55 = 0x97 (team/artifacts/acceptance-20260916-dali10/dft-raw/csv-full-dump.txt:50). Carried as an open item, NOT resolved."
+    },
+    {
+      "field": "DMUX_EN",
+      "value": "1",
+      "source": "project/DALI/meta/dali_tm_meta.json:1500-1503 and project/DALI/meta/test_conditions.yaml:261; written as I2CWriteSameData(DEV_ADDR, 0x57, 0x08) at project/DALI/reg_config/tm108.sv:15",
+      "scope": "per-TM delta, this item only",
+      "fieldInventoryBasis": "project/DALI/meta/manifest.json:85"
+    },
+    {
+      "field": "field[(DMUX_EN,1),(DMUX_SEL,22)] as one field directive",
+      "value": "both fields written together as one directive",
+      "source": "project/DALI/meta/dali_tm_meta.json:1444-1457 (code2[1] raw='field[(DMUX_EN,1),(DMUX_SEL,22)]')",
+      "scope": "per-TM delta, this item only",
+      "ruleBasis": "knowledge/standards/register-config.md:8-11 (REGISTER_CODE 来源 = DFT Software_initial 原样复制)"
+    },
+    {
+      "field": "EN_DTEST0 / DTEST0_MUX",
+      "value": "1 / 23 (CSV layer only)",
+      "source": "team/artifacts/acceptance-20260916-dali10/dft-raw/csv-full-dump.txt:50 (I2CWriteSameData(DEV_ADDR, 0x55, 0x97); field[(EN_DTEST0,1),(DTEST0_MUX,23)])",
+      "scope": "REGISTERED CONFLICT, NOT APPLIED - this is the F2/F3 counterpart at register level",
+      "openConflict": "only the CSV layer carries these fields; the artifact layer, the OVERVIEW sheet and reg_config/tm108.sv carry DMUX_EN/DMUX_SEL instead. Because the observation endpoint itself is unresolved (OI-T4-01), neither side is adopted here."
+    }
+  ],
+
+  "resourceSummary": {
+    "actuatedRelayNumbers": [13, 17, 65],
+    "pathRelayNumbersClosed": [17],
+    "functionalRelayNumbersClosed": [13, 65],
+    "defaultConductingPathRelaysReliedUpon": [8, 18, 19, 64, 88, 89],
+    "keepOpenRelayNumbers": [14, 15, 16, 21, 38, 39, 40, 70, 82, 86, 87, 90, 92, 130, 141, 142],
+    "keepOpenBasis": [
+      "project/DALI/SCH-Connect-Map.txt:877 (K14_VAC1_P2P)",
+      "project/DALI/SCH-Connect-Map.txt:882 (K38_KLV1_2_short)",
+      "project/DALI/SCH-Connect-Map.txt:872-873 (K39/K40)",
+      "project/DALI/SCH-Connect-Map.txt:913 (K21_VAC_Cap)",
+      "project/DALI/SCH-Connect-Map.txt:190 (K70/K87/K90/K82 CH0 High branch)",
+      "team/artifacts/acceptance-20260916-dali10/setup-contract.json:8152 (K86/K130 force-sense bridges must stay open)",
+      "team/artifacts/acceptance-20260916-dali10/setup-contract.json:8156 (K92 must stay open)",
+      "team/artifacts/acceptance-20260916-dali10/setup-contract.json:8158 (K141/K142 must stay open whenever an FPVIe channel owns a pin)"
+    ],
+    "relayNumbersAcceptedFromProofRecords": [8, 13, 17, 18, 19, 64, 65, 82, 87, 88, 89, 90, 141, 142, 145, 146, 136, 137, 138, 139, 140, 70, 86, 130, 131, 132, 133, 66, 62, 7, 143, 144, 35, 37, 73],
+    "relayNumbersAcceptedFromProofRecordsBasis": "every number above appears inside a proof relay chain for one of the eight TM108 terminals in team/artifacts/tm108-v2-trial/schematic/tm108-paths-proofs.txt",
+    "baselineTmDeltaRelaySet": {"value": [17, 35, 37, 70, 73, 87, 89, 90, 136, 137, 138, 139, 141, 142, 143, 144, 145, 146], "citation": "team/artifacts/acceptance-20260916-dali10/setup-contract.json:5326-5345", "treatment": "used as a candidate pool only; the allocation above is re-derived per endpoint and does NOT inherit it. Numbers 35/37/73 relate to KLV1/KLV2, which this TM does not use."},
+    "channelsUsed": [
+      {"channel": "S5_0", "instrument": "ACM200", "object": "VAC123_AMUX_ACM", "role": "VAC1 ramp force/sense"},
+      {"channel": "S5_9", "instrument": "ACM200", "object": "NQON_HG1_ACM", "role": "observation candidate (unproven endpoint)"},
+      {"channel": "S3_5", "instrument": "FXVIe_PLUS", "object": "VBAT_PD3_FXVI", "role": "static supply (VBAT/PD3 shared channel)"}
+    ],
+    "channelsNotUsed": [
+      {"instrument": "FPVIe", "objects": ["FPVI0", "FPVI1"], "reason": "no differential and no heavy current; capacity preserved for the mOhm items (team/artifacts/acceptance-20260916-dali10/setup-contract.json:8165)"},
+      {"instrument": "QVMe", "objects": ["QVM_S1"], "reason": "not needed; every QVM path on these terminals carries a larger actuation union"},
+      {"instrument": "QTMUe", "objects": ["QTMU_S1"], "reason": "every QTMU path needs K141 and/or K142, which must stay un-actuated here"},
+      {"instrument": "DCM", "objects": ["S24_P0"], "reason": "the only proof for this port has an empty path (no physical evidence)"}
+    ],
+    "setupBaselineUsage": {
+      "mode": "read-only baseline input",
+      "filesRead": [
+        "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+        "project/DALI/Pin_Channel_define.h"
+      ],
+      "filesWritten": [],
+      "declaration": "no Setup file was written and no per-TM source decision was delegated back to Setup. The scopePins and relaySet of team/artifacts/acceptance-20260916-dali10/setup-contract.json:5313-5345 are used as a candidate pool; the per-endpoint allocation above is this role's decision.",
+      "projectTreeWrites": "none - project/DALI/meta/, project/DALI/SCH-Connect-Map.txt, project/DALI/Component-Statistic.txt and project/DALI/schematic-ir.json were read only"
+    }
+  },
+
+  "evidence": [
+    {"file": "project/DALI/meta/dali_tm_meta.json", "locator": "1382-1510 (TM108 object: identity, code1/code2/code3, registerFields)", "class": "READ-VISIBLE (the file carries a TSZ# wrapper on disk; the logical text is what was read)"},
+    {"file": "project/DALI/meta/test_conditions.yaml", "locator": "251-276 (TM108 item)", "class": "READ-VISIBLE"},
+    {"file": "project/DALI/meta/manifest.json", "locator": "74-93 (rail/register-field inventories), 119-172 (noTest/notRun/noStimulusAndNoRamp declarations)", "class": "READ-VISIBLE"},
+    {"file": "project/DALI/reg_config/tm108.sv", "locator": "6-31 (VBAT 3 V ramp, entertestmode, DMUX writes, VAC1 10 V/0 V ramps, delay)", "class": "FACT"},
+    {"file": "project/DALI/reg_config/tm108.sv", "locator": "sha256 4d0ea5c30fe5369e98a6d81215bbfb5b5f41bf44ea1c5dbc8df94af75bb92dc1", "class": "FACT (artifact key regconfig-scope.json:33)"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "4 (legend: Relay-ON = 需SetOn闭合, Relay-NC = 默认导通)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "9-19 (FPVIe BUS Kelvin relays, Relay-NC)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "78-89 (KLV1/KLV2 candidate paths)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "189-206 (VAC1/VAC2/VAC3 CH0 High/Low groups)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "210-212 (CH0 High -> VBAT)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "242-244 (CH0 High -> nQON)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "31 and 257 (CH0/CH1 Low -> AGND self-labelled 非有效通路)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "406-408 (CH1 Low -> VAC1)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "418-420 (CH1 High -> VBAT)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "444-446 (CH1 High -> nQON)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "513-514 (QTMU VBAT route)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "630-631 (QVM low -> VAC1)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "638-639 (QVM high -> VBAT)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "654-655 (QVM high -> nQON)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "798-800 (ACM200 ch9 -> nQON default-conducting)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "801 and 804 (ACM200/FXVIe_PLUS low ends grouped to AGND_F)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "814-816 (FXVIe_PLUS ch5 -> PD3 needs K8 Relay-ON)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "832-834 (FXVIe_PLUS ch5 -> VBAT, 需闭合 无(默认导通))", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "849-850 (QTMU A -> nQON needs K66)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "866-882 (P2P class: K14/K15/K16, K38, K39/K40)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "891 (nQON 上拉-固定5V, 需闭合 K65)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "913 (VAC1 稳压 Cap2_VAC 需闭合 K21)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "914 (VBAT 稳压 Cap2_VBAT 需闭合 K13)", "class": "FACT"},
+    {"file": "project/DALI/SCH-Connect-Map.txt", "locator": "sha256 cc8009fbb27eef0cf29b45e4e50b05e1b5d7b5d49095a32005261a79d83cb427", "class": "FACT"},
+    {"file": "project/DALI/Component-Statistic.txt", "locator": "69 (DCM port list)", "class": "FACT"},
+    {"file": "project/DALI/Component-Statistic.txt", "locator": "87 (S10_0 -> QTMU_S1)", "class": "FACT"},
+    {"file": "project/DALI/Component-Statistic.txt", "locator": "114 (S11_9 -> NQON_HG1_ACM), 138, 204, 228, 256, 280, 342, 366, 431 (port-group members)", "class": "FACT"},
+    {"file": "project/DALI/Component-Statistic.txt", "locator": "308 (S3_5 -> VBAT_PD3_FXVI)", "class": "FACT"},
+    {"file": "project/DALI/Component-Statistic.txt", "locator": "319 and 382 (S5_0 / S5_ACM200_FH0 -> VAC123_AMUX_ACM)", "class": "FACT"},
+    {"file": "project/DALI/Component-Statistic.txt", "locator": "371, 436-437 (QVM_S1 ports)", "class": "FACT"},
+    {"file": "project/DALI/Component-Statistic.txt", "locator": "376-381 (QTMU_S1 / FPVI0 / FPVI1 ports)", "class": "FACT"},
+    {"file": "project/DALI/Component-Statistic.txt", "locator": "405, 408 (S5_ACM200_FH9 / SH0)", "class": "FACT"},
+    {"file": "project/DALI/Component-Statistic.txt", "locator": "439-459 (182 relays by function: [BUS], [Cap], [Connect], [Kelvin], [P2P], [P2P(到地)], [PU], [Share], [通用])", "class": "FACT"},
+    {"file": "project/DALI/Component-Statistic.txt", "locator": "sha256 30a11536a3781bac58f10cc400cf9f9c9f0c4b32469c81cfc583eb7d475beb74", "class": "FACT"},
+    {"file": "project/DALI/schematic-ir.json", "locator": "454933 bytes; sha256 (disk/cipher view) 7ef9d702892093a5de75031500f78a6d627e44d5130cc832be9292d2577d8bdc; sha256 (python/plaintext view) 35fdd1582958eb6e4fd63e29da59dec63dfe19e3fd6198d8cc8b8f727a5c7ff5", "class": "FACT (the file is a TSZ#/DLP transparent-encryption file: two legitimate digests, never mixed)"},
+    {"file": "project/DALI/path_proofs.json.txt", "locator": "accepted_path_proofs = 669 (source of every closure set in this contract); VAC1_F_S1 5, VAC1_S_S1 4, VBAT_F_S1 5, VBAT_S_S1 4, nQON_F_S1 6, nQON_S_S1 4, AGND_F_S1 4, AGND_S_S1 10", "class": "FACT"},
+    {"file": "project/DALI/Pin_Channel_define.h", "locator": "12 (VBAT_PD3_FXVI macro), 15 (VAC123_AMUX_ACM macro), 24 (NQON_HG1_ACM macro), 39-41 (FPVI0/FPVI1/QVM_S1 macros), 49 (QTMU_S1 macro), 93, 96, 105, 120-122, 130 (extern object declarations)", "class": "FACT"},
+    {"file": "team/artifacts/tm108-v2-trial/dft/dft-fact-audit.md", "locator": "110-260 (TM108 field table), 262-280 (conflicts F1-F9), 318-337 (open items P1-P10)", "class": "dependency artifact (upstream t2 result)"},
+    {"file": "team/artifacts/tm108-v2-trial/schematic/schematic-fact-audit.md", "locator": "98-203 (per-endpoint candidates and closure sets), 205-257 (relay facts), 261-274 (conflicts C-1..C-8), 301-315 (open items OI-1..OI-11)", "class": "dependency artifact (upstream t3 result)"},
+    {"file": "team/artifacts/tm108-v2-trial/schematic/tm108-paths-proofs.txt", "locator": "per-terminal proof chains with required_on and full path[] (closure-set source)", "class": "dependency artifact (upstream t3 result)"},
+    {"file": "team/artifacts/acceptance-20260916-dali10/setup-contract.json", "locator": "5313-5725 (tmDeltas.TM108), 3905-3960 (globalInitialization), 8150-8179 (safetyInvariants), 8181-8204 (conflicts), 8205+ (openItems)", "class": "READ-VISIBLE (frozen Setup baseline, read-only)"},
+    {"file": "team/artifacts/acceptance-20260916-dali10/dft-raw/compact-dump.txt", "locator": "146-151 (TM108 compact row)", "class": "FACT"},
+    {"file": "team/artifacts/acceptance-20260916-dali10/dft-raw/overview-dump.txt", "locator": "147-168 (TM108 OVERVIEW row)", "class": "FACT"},
+    {"file": "team/artifacts/acceptance-20260916-dali10/dft-raw/csv-full-dump.txt", "locator": "40-54 (TM108 CSV record, the conflict layer)", "class": "FACT"},
+    {"file": "team/artifacts/acceptance-20260916-dali10/dft-raw/regconfig-scope.json", "locator": "32-41 (tm108.sv and tm108_1.sv bodies plus hashes)", "class": "FACT"},
+    {"file": "knowledge/references/L3-method/relay-design-flow.md", "locator": "39-75 (mandatory eight steps), 80-87 (key points), 115 (do not merge two groups into one SetOn)", "class": "active rule"},
+    {"file": "knowledge/references/L3-method/path-principles.md", "locator": "6 (precision gate), 8 (shortest path by union size), 12-15 (measured ranking), 19-24 (conflict degradation), 28 (single-ended-to-ground excludes FPVIe)", "class": "active rule"},
+    {"file": "knowledge/standards/relay-checklist.md", "locator": "8-15 (closed-loop models), 17-23 (BUS decision table), 26-40 (Cap2 rule), 44-50 (anti-short), 52-69 (column-11 classification)", "class": "active rule"},
+    {"file": "knowledge/standards/test-types.md", "locator": "47-60 (7-class decision table), 76-86 (threshold = AWG)", "class": "active rule"},
+    {"file": "knowledge/standards/toggle-awg-rules.md", "locator": "12-26 (3-parameter contract), 28-34 (trigger direction, mandatory relays)", "class": "active rule"},
+    {"file": "knowledge/standards/register-config.md", "locator": "12-22 (entertestmode is unconditional)", "class": "active rule"},
+    {"file": "team/ROLE_ROUTING.md", "locator": "4-15 (role ownership: strategy owns type, sources, routes, relay groups, register configuration)", "class": "team contract"},
+    {"file": "team/TEAM_ARCHITECTURE_V2.md", "locator": "100-138 (relay iron rules, contract field list, handoff content)", "class": "team contract"},
+    {"file": "team/artifacts/tm108-v2-trial/strategy/tm108-relay-workflow.txt", "locator": "full eight-step execution log", "class": "this task's output"},
+    {"file": "team/artifacts/tm108-v2-trial/strategy/step-01-find_pin.txt", "locator": "step 1 output", "class": "this task's output"},
+    {"file": "team/artifacts/tm108-v2-trial/strategy/step-02-find_path.txt", "locator": "step 2 output", "class": "this task's output"},
+    {"file": "team/artifacts/tm108-v2-trial/strategy/step-03-source_split.txt", "locator": "step 3 output", "class": "this task's output"},
+    {"file": "team/artifacts/tm108-v2-trial/strategy/step-04-shortest_path.txt", "locator": "step 4 output", "class": "this task's output"},
+    {"file": "team/artifacts/tm108-v2-trial/strategy/step-05-local_conflict.txt", "locator": "step 5 output", "class": "this task's output"},
+    {"file": "team/artifacts/tm108-v2-trial/strategy/step-06-global_conflict.txt", "locator": "step 6 output", "class": "this task's output"},
+    {"file": "team/artifacts/tm108-v2-trial/strategy/step-07-closure_grouping.txt", "locator": "step 7 output", "class": "this task's output"},
+    {"file": "team/artifacts/tm108-v2-trial/strategy/step-08-closure_set.txt", "locator": "step 8 output plus the independent DTEST0 re-scan", "class": "this task's output"}
+  ],
+
+  "openItems": [
+    {
+      "id": "OI-T4-01",
+      "severity": "blocker-for-observation-endpoint",
+      "kind": "定点补证",
+      "topic": "DTEST0 has no schematic evidence and the DTEST0 -> nQON relation is unproven",
+      "fact": "DTEST0 hits = 0 in SCH-Connect-Map.txt, Component-Statistic.txt, schematic-ir.json and PINLIST.txt (re-scanned in this run; see step-08-closure_set.txt). The DFT names DTEST0 as the check pin while the schematic-level observable is nQON.",
+      "notResolvedBy": "this contract does NOT assume DTEST0 == nQON. The nQON allocation is recorded as a candidate with an explicit status field.",
+      "exactSourceThatWouldCloseIt": "the device DTEST0 -> nQON (A2D_VAC1_PRST mux) evidence from the DFT side plus the register map for DMUX_SEL=22; DFT notes already assert 'mux A2D_VAC1_PRST to dtest0' (project/DALI/meta/dali_tm_meta.json:1396) but that is DFT intent, not a board fact",
+      "owner": "dft-expert (relation) + test-strategy-architect (re-allocation once proven)",
+      "upstreamReference": "team/artifacts/tm108-v2-trial/schematic/schematic-fact-audit.md:172 and :270 (C-6/OI-6)"
+    },
+    {
+      "id": "OI-T4-02",
+      "severity": "medium",
+      "kind": "定点补证",
+      "topic": "which nQON side the observation uses",
+      "fact": "nQON_F_S1 has 6 accepted proofs and nQON_S_S1 has 4; they are two different node groups (NetK64_HG1_S1_7 vs NetK64_HG1_S1_2) reached by different relays (K62_BUS_FH_QON vs K62_BUS_SH_QON).",
+      "notResolvedBy": "the DFT check is a single-ended digital observation, so only one side may be actuated; which one depends on the unproven DTEST0 relation.",
+      "exactSourceThatWouldCloseIt": "the same evidence as OI-T4-01, or a captain ruling on which nQON side carries the mux output",
+      "owner": "test-strategy-architect after OI-T4-01"
+    },
+    {
+      "id": "OI-T4-03",
+      "severity": "medium",
+      "kind": "定点补证",
+      "topic": "VAC123_AMUX_ACM channel S5_0 shared with the AMUX pin function",
+      "fact": "the macro VAC123_AMUX_ACM is one ACM200 object serving VAC1/VAC2/VAC3/AMUX (project/DALI/Pin_Channel_define.h:15; project/DALI/SCH-Connect-Map.txt:33-38 for the AMUX branch). Whether AMUX-related items can run concurrently on the same site with TM108 is not decidable from the schematic set.",
+      "notResolvedBy": "no concurrency assumption is made; a serial schedule is implied by the shared object",
+      "exactSourceThatWouldCloseIt": "the frozen baseline's per-channel concurrency table or a captain ruling on same-site concurrency",
+      "owner": "setup-architect (baseline fact) + captain (scheduling ruling)"
+    },
+    {
+      "id": "OI-T4-04",
+      "severity": "medium",
+      "kind": "定点补证",
+      "topic": "K17_BUSL_VAC is published as 'Relay-ON' in every VAC branching chain",
+      "fact": "SCH-Connect-Map.txt:192-194 and :189-206 print K17 inside the 需闭合 lists while its state in the branching chains is ON by default. Whether K17 must be explicitly actuated for the VAC1 branch or is already conducting is not decidable from the connect map alone (the same publication also omits K82 in one group header and over-counts K18 in another - schematic-fact-audit C-2).",
+      "notResolvedBy": "this contract requires K17 to be in the closed state on the VAC1 branch WITHOUT claiming how it gets there; the actuation form is implementation-side and the underlying publication defect belongs to the schematic owner",
+      "exactSourceThatWouldCloseIt": "CSV_CONNECTIVITY.NET net-level re-check of K17 K82/K18 membership, or the corrected group-header generator",
+      "owner": "schematic-expert (publication) + ate-implementer (explicit state)"
+    },
+    {
+      "id": "OI-T4-05",
+      "severity": "low",
+      "kind": "定点补证",
+      "topic": "K65_nQON_PU stays at its un-actuated default",
+      "fact": "SCH-Connect-Map.txt:891 lists 需闭合: K65 for the 'nQON 上拉-固定5V' branch with no default state printed, so the connect map does not prove whether the pull-up is present or absent by default.",
+      "notResolvedBy": "the pull-up is required for an open-drain observation and is therefore recorded as a functional closure; the default state is not asserted",
+      "exactSourceThatWouldCloseIt": "the CSV_CONNECTIVITY.NET net for R_nQON_PU_S1, or the corrected connect-map branch that prints the default state",
+      "owner": "schematic-expert"
+    },
+    {
+      "id": "OI-T4-06",
+      "severity": "medium",
+      "kind": "定点补证",
+      "topic": "S24_P0 -> nQON_F_S1 proof has an empty path",
+      "fact": "the proof asserts connectivity with path=[] (0 relay steps, no net transition) and S24_Pn carries two identities in the same file (DCM source port vs DCM internal node).",
+      "notResolvedBy": "the port is excluded from every allocation in this contract",
+      "exactSourceThatWouldCloseIt": "CSV_CONNECTIVITY.NET and Dali-SCH.csv net-level check of the S24 port group",
+      "owner": "schematic-expert",
+      "upstreamReference": "team/artifacts/tm108-v2-trial/schematic/schematic-fact-audit.md:272 (C-8) and :313 (OI-9)"
+    },
+    {
+      "id": "OI-T4-07",
+      "severity": "medium",
+      "kind": "定点补证",
+      "topic": "K13_VBAT_Cap and K65_nQON_PU appear in NO proof required_on list",
+      "fact": "the frozen baseline records that PIN-attached relays appear in no proof required_on list, so path checking cannot cover them and their state must come from a functional rule (team/artifacts/acceptance-20260916-dali10/setup-contract.json:8156). Both relays used as functional closures here are in that class.",
+      "notResolvedBy": "the functional rule (Cap2 for a powered rail, pull-up for an open-drain observation) plus the baseline powerSequenceDelta are used as the basis; no proof is cited as proof of them",
+      "exactSourceThatWouldCloseIt": "a relay-trace gate run that covers PIN-attached relays, or the corrected baseline that adds them to a coverage list",
+      "owner": "test-strategy-architect (rule) + compile-diagnostician (gate coverage)"
+    },
+    {
+      "id": "OI-T4-08",
+      "severity": "low",
+      "kind": "定点补证",
+      "topic": "AGND endpoint qualification",
+      "fact": "AGND_F_S1 accepted proofs all have path=[] and AGND_S_S1 self-labels 单线-仅SL, 非有效通路 (project/DALI/SCH-Connect-Map.txt:31 and :257). Whether AGND is a package pin or a board reference is unproven.",
+      "notResolvedBy": "no source is allocated to AGND by this contract and no relay is closed for it; the ACM200/FXVIe_PLUS low ends are grouped to AGND_F on the board, which is why the single-ended force still closes its loop",
+      "exactSourceThatWouldCloseIt": "the device pin table and package drawing cross-check against Pin_Channel_define.h",
+      "owner": "schematic-expert + setup-architect",
+      "upstreamReference": "team/artifacts/tm108-v2-trial/schematic/schematic-fact-audit.md:314 (OI-10)"
+    },
+    {
+      "id": "OI-T4-09",
+      "severity": "high",
+      "kind": "定点补证",
+      "topic": "unresolved DFT conflict F1 - rising threshold limit stated twice",
+      "fact": "4.4 V (artifact/OVERVIEW layer) vs 4.15 V (CSV layer), 250 mV apart.",
+      "carriedCitations": [
+        "project/DALI/meta/dali_tm_meta.json:1390",
+        "project/DALI/meta/test_conditions.yaml:263",
+        "team/artifacts/acceptance-20260916-dali10/dft-raw/csv-full-dump.txt:45"
+      ],
+      "notResolvedBy": "this contract does NOT choose a side; both values are recorded and no averaging was performed",
+      "exactSourceThatWouldCloseIt": "a user/captain ruling, or a re-dump of the current workbook OVERVIEW row 15 plus the matching CSV row",
+      "owner": "dft-expert + captain"
+    },
+    {
+      "id": "OI-T4-10",
+      "severity": "medium",
+      "kind": "定点补证",
+      "topic": "unresolved DFT conflict F2 - DMUX_SEL / DTEST0_MUX value",
+      "fact": "22 (0x56=0x16; artifact, OVERVIEW, reg_config/tm108.sv) vs 23 (0x55=0x97; CSV layer).",
+      "carriedCitations": [
+        "project/DALI/meta/dali_tm_meta.json:1505",
+        "project/DALI/reg_config/tm108.sv:14",
+        "team/artifacts/acceptance-20260916-dali10/dft-raw/csv-full-dump.txt:50"
+      ],
+      "notResolvedBy": "registerDelta[] records both sides; neither is adopted as sole authority because the observation endpoint itself is unresolved (OI-T4-01)",
+      "exactSourceThatWouldCloseIt": "the workbook SETTING_MAP/DTESTMAP sheets for DMUX_SEL/DTEST0_MUX, or the register map used by the .sv generator",
+      "owner": "dft-expert + test-strategy-architect"
+    },
+    {
+      "id": "OI-T4-11",
+      "severity": "high",
+      "kind": "定点补证",
+      "topic": "unresolved DFT conflict F3 - observation pin identity",
+      "fact": "V(DTEST0) (artifact/OVERVIEW) vs Check = INT (CSV layer).",
+      "carriedCitations": [
+        "project/DALI/meta/dali_tm_meta.json:1402",
+        "team/artifacts/acceptance-20260916-dali10/dft-raw/csv-full-dump.txt:52"
+      ],
+      "notResolvedBy": "both readings are recorded; the allocation is marked candidate-only",
+      "exactSourceThatWouldCloseIt": "the workbook DTESTMAP sheet and the Check column of the current DFT CSV",
+      "owner": "dft-expert + captain"
+    },
+    {
+      "id": "OI-T4-12",
+      "severity": "medium",
+      "kind": "定点补证",
+      "topic": "unresolved DFT conflict F4 - VBAT setpoint",
+      "fact": "vbat = 3 V (artifact/OVERVIEW/reg_config/tm108.sv) vs vset[vbat,4.2,100e-6,0] (CSV layer). The frozen baseline also registers this divergence.",
+      "carriedCitations": [
+        "project/DALI/meta/dali_tm_meta.json:1433",
+        "project/DALI/reg_config/tm108.sv:7",
+        "team/artifacts/acceptance-20260916-dali10/dft-raw/csv-full-dump.txt:49",
+        "team/artifacts/acceptance-20260916-dali10/setup-contract.json:8183"
+      ],
+      "notResolvedBy": "the contract records both values; no setpoint is adopted as sole authority and no averaging was performed",
+      "exactSourceThatWouldCloseIt": "a captain/user ruling, matching the frozen baseline treatment of the same divergence",
+      "owner": "captain + dft-expert"
+    },
+    {
+      "id": "OI-T4-13",
+      "severity": "high",
+      "kind": "定点补证",
+      "topic": "unresolved DFT conflict F5 - VAC1 dynamic range, three-way",
+      "fact": "(0 -> 10 -> 0) V from Code2/reg_config vs 3~5 V at 1 V/ms from Notes vs 3.8 -> 4.4 -> 4.1 -> 3.5 V from the CSV layer.",
+      "carriedCitations": [
+        "project/DALI/meta/dali_tm_meta.json:1459-1471",
+        "project/DALI/meta/dali_tm_meta.json:1396",
+        "project/DALI/reg_config/tm108.sv:17-26",
+        "team/artifacts/acceptance-20260916-dali10/dft-raw/csv-full-dump.txt:51"
+      ],
+      "notResolvedBy": "the resource allocation is range-agnostic (the ACM200 channel family covers 0-10 V), so the allocation survives whichever side is ruled; the ramp itself is NOT decided here (method-side)",
+      "exactSourceThatWouldCloseIt": "a captain ruling choosing between the Code-column expression and the Notes sentence",
+      "owner": "captain + dft-expert"
+    },
+    {
+      "id": "OI-T4-14",
+      "severity": "medium",
+      "kind": "定点补证",
+      "topic": "unresolved DFT conflict F6 - DFT-internal timing self-contradiction",
+      "fact": "Notes states 3~5 V at 1 V/ms while Code2 expresses 10 V in 1e-3 s (i.e. 10 V/ms).",
+      "carriedCitations": [
+        "project/DALI/meta/dali_tm_meta.json:1396",
+        "project/DALI/meta/dali_tm_meta.json:1459-1463",
+        "project/DALI/reg_config/tm108.sv:18"
+      ],
+      "notResolvedBy": "recorded verbatim, not reconciled",
+      "exactSourceThatWouldCloseIt": "the workbook ramp intent, or a captain ruling",
+      "owner": "dft-expert + captain"
+    },
+    {
+      "id": "OI-T4-15",
+      "severity": "low",
+      "kind": "定点补证",
+      "topic": "TM108_1 variant (VAC1_PRST_DMO_A) scope",
+      "fact": "the workbook row 16 carries a TM108_1 variant with isRun=Y that is absent from both artifact inventories, and its .sv carries an extra D2A_DMO register write (0x71=0x3B).",
+      "carriedCitations": [
+        "team/artifacts/acceptance-20260916-dali10/dft-raw/overview-dump.txt:170-184",
+        "project/DALI/reg_config/tm108_1.sv:19-20"
+      ],
+      "notResolvedBy": "this contract covers TM108 only; TM108_1 is not allocated and no content of it is merged",
+      "exactSourceThatWouldCloseIt": "a captain ruling on whether the variant is in scope",
+      "owner": "captain + dft-expert"
+    },
+    {
+      "id": "OI-T4-16",
+      "severity": "low",
+      "kind": "定点补证",
+      "topic": "frozen Setup tmDeltas TM108 declares KLV1/KLV2 scope pins and a relaySet this contract does not fully use",
+      "fact": "team/artifacts/acceptance-20260916-dali10/setup-contract.json:5319-5345 lists scopePins VAC1/KLV1/KLV2/AGND/VBAT and relaySet including 35/37/73 (KLV relays) and 90/143-146 (FPVIe/DCM relays).",
+      "notResolvedBy": "Setup is a read-only baseline here; this contract does not write it and does not delegate the per-TM source decision back to it. The delta is recorded so Setup's owner can reconcile its candidate pool with the per-endpoint allocation above.",
+      "exactSourceThatWouldCloseIt": "a setup-architect reconciliation task (baseline refresh), not a strategy decision",
+      "owner": "setup-architect (baseline owner) + captain"
+    },
+    {
+      "id": "OI-T4-17",
+      "severity": "low",
+      "kind": "定点补证",
+      "topic": "relay state publication semantics (OI-1/C-1)",
+      "fact": "two coexisting conventions: connect-map Relay-NC = default-conducting/not-actuated, versus schematic-ir relays[].state = a single default/comparison value. 41 relay numbers carry both an ON and an NC occurrence.",
+      "notResolvedBy": "this contract fixes the convention for its own output: closure sets are the proof required_on plus the full proof chain, and every relay is given an explicit state. It does not read relays[].state and does not read pins[].requiredRelays.",
+      "exactSourceThatWouldCloseIt": "a strategy-side convention statement (this contract) plus an IR-side change to express path-level state by reference to the proof",
+      "owner": "test-strategy-architect (convention) + schematic-expert (IR representation)",
+      "upstreamReference": "team/artifacts/tm108-v2-trial/schematic/schematic-fact-audit.md:89 (I-1), :265 (C-1), :305 (OI-1)"
+    }
+  ],
+
+  "notDecidedHere": [
+    "power sequence and ordered setpoints (test-method expert)",
+    "measurement plan, ranges, trigger constants, sampling and computation (test-method expert)",
+    "power-down plan and safe end state (test-method expert)",
+    "log plan, units, precision and failure context (test-method expert)",
+    "chip mechanism, golden applicability (test-method expert)",
+    "C++/SDK/API names, range enums, cbite.SetOn call form (ate-implementer)",
+    "independent review (rule-reviewer) and gates/compilation (compile-diagnostician)"
+  ],
+
+  "handoffToTestMethodExpert": {
+    "settled": [
+      "project/parameter/function classification (normal + toggle AWG + grouped; UVLO family)",
+      "endpoint list: VBAT (power), VAC1 (dynamic), observation candidate (DTEST0/nQON), AGND as board reference only",
+      "one source table per endpoint with channel and selected path",
+      "closure sets G1/G2/G3 (and the alternate G4) with force/sense/functional/isolation separated",
+      "register delta (entertestmode + DMUX_EN=1 + DMUX_SEL=22) with source, scope and the registered CSV counterpart",
+      "keep-open set and the shared-resource exclusions"
+    ],
+    "carriedAsConstraintsNotChoices": [
+      "OI-T4-01/02 (observation endpoint) - the method may not assume DTEST0 == nQON",
+      "OI-T4-09..OI-T4-14 (F1-F6) - no side of any conflict may be used as if settled",
+      "OI-T4-03 (channel concurrency) - serial schedule implied",
+      "all schematic open items OI-1..OI-11 as constraints"
+    ],
+    "mustReturnToStrategyIf": [
+      "the method needs a relay state not in G1-G4",
+      "the method needs a different source table or channel",
+      "the method needs a register field outside the delta",
+      "the method needs the DTEST0<->nQON relation to be true"
+    ]
+  }
+}

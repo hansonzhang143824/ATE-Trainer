@@ -1,0 +1,12 @@
+	2026-02-28 00:00:00
+	No	Desription	Owner	State	Comment
+	1	TM609 测试电流过大，是否可以通过调整，降低测试电流	Zhouning	Done
+	2	IBUS sense 随封装敏感，不建议CP做trim 			Info
+	3	IAC sense 需要高精度的输入源，建议用电流走到外挂电阻的方案产生压差，补充说明图	Chenxi	Done	已补充说明图
+	4	IBUS termination accuracy	Tongbei	Done
+	5	TM800 IAC sense for termination accuracy 	Chenxi	Done	精度为+/-25%，已更新到对应测试项
+	6	TM1206 BST RON test, clock 100khz问题	Tom
+	7	BUBO需要cover min-on/min-off test.	Zhouning
+	8	TM706	Tongbei	Done	测试方法已添加
+	9	TM1104 T2V 测试方案	Chenxi	Done	电路增加对应测试模式，文档已更新测试方法
+	10	TM1105-1112 细节确定，原因是什么，夏磊/罗晓	Chenxi	Done	已和夏磊、罗晓沟通好测试条件设置缘由

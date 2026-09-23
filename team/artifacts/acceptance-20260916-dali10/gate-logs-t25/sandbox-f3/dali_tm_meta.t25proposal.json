@@ -1,0 +1,6564 @@
+{
+  "_comment": "TestItemMeta — gen_testitems_meta.py 从 OVERVIEW(DFT意图层)权威生成, 寄存器补充自 reg_config/<tm>.sv, 项目/参数类型解析时判定; capAuthority 供 check_testitems_meta / verify_relay_trace 检查E",
+  "source": "OVERVIEW 表 (DFT意图层)",
+  "_syncStamp": {
+    "dftSha256": "d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e"
+  },
+  "capFamilies": {
+    "VCC": "K0_VCC_Cap",
+    "VBUS": "K5_VBUS_Cap",
+    "VBAT": "K13_VBAT_Cap",
+    "VAC": "K21_VAC_Cap"
+  },
+  "merged": {},
+  "functions": [
+    {
+      "functionName": "TM000_IQ_STANDBY",
+      "testType": "normal",
+      "dftItem": "TM000",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "Top",
+        "name": "Iq_Standby",
+        "desc": "Sleep Quiescent current\nw/o VAC_PLUG module on",
+        "expectValue": "23 w/o digital iq.",
+        "unit": "uA",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "VBAT",
+          "dftItem": "TM000"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.4,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [
+          "VBAT"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM001_IIN_SUSPEND",
+      "testType": "normal",
+      "dftItem": "TM001",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "Top",
+        "name": "Iin_Suspend",
+        "desc": "Operation Quiescent current",
+        "expectValue": "",
+        "unit": "uA",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "VBAT",
+          "dftItem": "TM001"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.7,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [
+          "VBAT"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM001_2_IQ_SHIPMODE",
+      "testType": "normal",
+      "dftItem": "TM001_2",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "Top",
+        "name": "Iq_Shipmode",
+        "desc": "Shipmode iq.",
+        "expectValue": "",
+        "unit": "uA",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "VBAT",
+          "dftItem": "TM001_2"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.7,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 0.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [
+          "VBAT"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM001_3_IQ_OPERATION",
+      "testType": "normal",
+      "dftItem": "TM001_3",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "Top",
+        "name": "Iq_Operation",
+        "desc": "",
+        "expectValue": "",
+        "unit": "uA",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "VBAT",
+          "dftItem": "TM001_3"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.7,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [
+          "VBAT"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM100_HSKP_ATEST0",
+      "testType": "normal",
+      "dftItem": "TM100",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "HSKP",
+        "name": "VS_PRE",
+        "desc": "0.5*VS_PRE",
+        "expectValue": 2,
+        "unit": "V",
+        "test": "Indirect",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "ATEST0",
+          "dftItem": "TM100"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM101_HSKP_LP_ATEST0",
+      "testType": "normal",
+      "dftItem": "TM101",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "HSKP",
+        "name": "LP_VBG",
+        "desc": "low power bg",
+        "expectValue": 1.27,
+        "unit": "V",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "ATEST0",
+          "dftItem": "TM101"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vdm",
+          "value": 1.2,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VDM"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": [
+          "VDM"
+        ]
+      }
+    },
+    {
+      "functionName": "TM102_HSKP_LP_ATEST0",
+      "testType": "normal",
+      "dftItem": "TM102",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "HSKP",
+        "name": "LP_VBG_BF",
+        "desc": "low power bg_buf",
+        "expectValue": 1.27,
+        "unit": "V",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "ATEST0",
+          "dftItem": "TM102"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vdm",
+          "value": 1.2,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VDM"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": [
+          "VDM"
+        ]
+      }
+    },
+    {
+      "functionName": "TM103_HSKP_LP_HR_0P5U",
+      "testType": "normal",
+      "dftItem": "TM103",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "HSKP",
+        "name": "LP_HR_0P5U",
+        "desc": "IBP 0.5UA HR ",
+        "expectValue": 0.5,
+        "unit": "uA",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "ATEST0",
+          "dftItem": "TM103"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vdm",
+          "value": 1.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VDM"
+        ],
+        "mi_pins": [
+          "ATEST0"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": [
+          "VDM"
+        ]
+      }
+    },
+    {
+      "functionName": "TM104_HSKP_LP_PTAT_0P5U",
+      "testType": "normal",
+      "dftItem": "TM104",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "HSKP",
+        "name": "LP_PTAT_0P5U",
+        "desc": "IBP 0.5UA PTAT ",
+        "expectValue": 0.5,
+        "unit": "uA",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "ATEST0",
+          "dftItem": "TM104"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vdm",
+          "value": 1.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VDM"
+        ],
+        "mi_pins": [
+          "ATEST0"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": [
+          "VDM"
+        ]
+      }
+    },
+    {
+      "functionName": "TM105_HSKP_VSPRE_MAX_CMP",
+      "testType": "toggle",
+      "dftItem": "TM105",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "HSKP",
+        "name": "VSPRE_MAX_CMP",
+        "desc": "VSPRE power rail  max comp\n电路内部取VAC-VDIO(模块内名字为VS_MAX)和VBAT进行比较，建议测试比较器功能\nVS_MAX-VBAT  rising vth=~0.3V falling vth=0V@VBAT=4V",
+        "expectValue": "VAC-VBAT=~1V",
+        "unit": "V",
+        "test": "",
+        "helper": "ramp VAC：0->10, INT fall:5->0"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM105"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 10.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 0.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VAC1"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM106_HSKP_VBUS_PRST",
+      "testType": "toggle",
+      "dftItem": "TM106",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "UVLO",
+      "overview": {
+        "level": "HSKP",
+        "name": "VBUS_PRST",
+        "desc": "VBUS PRST COMP threshold",
+        "expectValue": "rising vth 3.9V, hys 0.2V",
+        "unit": "V",
+        "test": "",
+        "helper": "ramp VBUS, INT toggle"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM106"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 3.0,
+          "time": "100e-6",
+          "ignore": 1
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 3.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VBUS"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VBUS"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM107_HSKP_VBUS_HT_VBAT",
+      "testType": "toggle",
+      "dftItem": "TM107",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "HSKP",
+        "name": "VBUS_HT_VBAT",
+        "desc": "VBUS HT_VBAT CMOP threshold\n通过mux vcc的 vbus_path_on来判断",
+        "expectValue": "rising vth 0.126V, hys 0.18V",
+        "unit": "V",
+        "test": "Indirect",
+        "helper": "ramp VBUS, INT toggle"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM107"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 2.0,
+          "time": "100e-6",
+          "ignore": 1
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 2.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VBUS"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VBUS"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM108_HSKP_VAC1_PRST",
+      "testType": "toggle",
+      "dftItem": "TM108",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "UVLO",
+      "overview": {
+        "level": "HSKP",
+        "name": "VAC1_PRST",
+        "desc": "VAC1 PRST CMOP threshold",
+        "expectValue": "rising vth 4.4V, hys 0.35V",
+        "unit": "V",
+        "test": "",
+        "helper": "ramp VAC , INT toggle"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM108"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 10.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 0.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VAC1"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM109_HSKP_VAC2_PRST",
+      "testType": "toggle",
+      "dftItem": "TM109",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "UVLO",
+      "overview": {
+        "level": "HSKP",
+        "name": "VAC2_PRST",
+        "desc": "VAC2 PRST CMOP threshold",
+        "expectValue": "rising vth 4.4V, hys 0.35V",
+        "unit": "V",
+        "test": "",
+        "helper": "ramp VAC , INT toggle"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM109"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac2",
+          "value": 10.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac2",
+          "value": 0.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC2",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VAC2"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM110_HSKP_VAC3_PRST",
+      "testType": "toggle",
+      "dftItem": "TM110",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "UVLO",
+      "overview": {
+        "level": "HSKP",
+        "name": "VAC3_PRST",
+        "desc": "VAC3 PRST CMOP threshold",
+        "expectValue": "rising vth 4.4V, hys 0.35V",
+        "unit": "V",
+        "test": "",
+        "helper": "ramp VAC , INT toggle"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM110"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac3",
+          "value": 10.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac3",
+          "value": 0.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC3",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VAC3"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM111_HSKP_VBAT_UV",
+      "testType": "toggle",
+      "dftItem": "TM111",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "HSKP",
+        "name": "VBAT_UV",
+        "desc": "VBAT_UV CMOP threshold",
+        "expectValue": "rising vth 2.2V, hys 0.1V",
+        "unit": "V",
+        "test": "",
+        "helper": "ramp VBAT, INT toggle"
+      },
+      "params": [],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 0.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VBAT"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM112_HSKP_VBAT_HT_3P1V",
+      "testType": "toggle",
+      "dftItem": "TM112",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "HSKP",
+        "name": "VBAT_HT_3P1V",
+        "desc": "VBAT_HT_3P1V CMOP threshold\n通过mux vcc的 vbat_path_on来判断",
+        "expectValue": "rising vth 3.1V, hys 0.1V",
+        "unit": "V",
+        "test": "Indirect",
+        "helper": "ramp VBAT, INT toggle"
+      },
+      "params": [],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 2.5,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "10e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 0.0,
+          "time": "10e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VBAT"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM113_VCC_UV",
+      "testType": "toggle",
+      "dftItem": "TM113",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "VCC",
+        "name": "VCC_UV",
+        "desc": "VCC_UV CMOP threshold\nVBAT供电VCC时，限流有一级电流折返是拿VCC_UV判断的。\nramp VCC，观察VBAT电流出现折返",
+        "expectValue": "rising vth 2.1V, hys 0.1V",
+        "unit": "V",
+        "test": "",
+        "helper": "check Vcc current toggle or check INT toggle or VBAT current toggle"
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "VBAT",
+          "dftItem": "TM113"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vcc",
+          "value": 2.5,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vcc",
+          "value": 0.0,
+          "time": "1e-3",
+          "ignore": 0
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VCC"
+        ],
+        "mi_pins": [
+          "VBAT"
+        ],
+        "ramp_pins": [
+          "VCC"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM114_VCC_VBUS_PATH_ACC",
+      "testType": "normal",
+      "dftItem": "TM114",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "VCC",
+        "name": "VCC_VBUS_PATH_ACC",
+        "desc": "VCC VOUT ACC from VBUS",
+        "expectValue": "4.2~4.5",
+        "unit": "V",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "VCC",
+          "dftItem": "TM114"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.7,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 5.2,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "iset",
+          "pin": "vcc",
+          "value": 0.05,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC1",
+          "VBAT",
+          "VBUS"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM115_VCC_VAC_PATH_ACC",
+      "testType": "normal",
+      "dftItem": "TM115",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "VCC",
+        "name": "VCC_VAC_PATH_ACC",
+        "desc": "VCC VOUT ACC from VAC",
+        "expectValue": "3.3~3.7",
+        "unit": "V",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "VCC",
+          "dftItem": "TM115"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 2.5,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "iset",
+          "pin": "vcc",
+          "value": 0.03,
+          "time": "1e-3",
+          "ignore": 0
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC",
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM116_VCC_VBAT_PATH_ACC",
+      "testType": "normal",
+      "dftItem": "TM116",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "VCC",
+        "name": "VCC_VBAT_PATH_ACC",
+        "desc": "VCC VOUT ACC from VBAT",
+        "expectValue": "3.4~3.7",
+        "unit": "V",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "VCC",
+          "dftItem": "TM116"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.7,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "iset",
+          "pin": "vcc",
+          "value": 0.05,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "wait_warmup"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM117_VCC_CUR_LIMIT_VBAT_PATH",
+      "testType": "normal",
+      "dftItem": "TM117",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "VCC",
+        "name": "VCC_CUR_LIMIT_VBAT_PATH",
+        "desc": "VBAT PATH VCC CURRENT LIMIT\n补充scm",
+        "expectValue": "20~70",
+        "unit": "mA",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "VCC",
+          "dftItem": "TM117"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vcc",
+          "value": 1.0,
+          "time": "1e-3",
+          "ignore": 1
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VCC"
+        ],
+        "mi_pins": [
+          "VCC"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM118_VCC_CUR_LIMIT_VBUS_PATH",
+      "testType": "normal",
+      "dftItem": "TM118",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "VCC",
+        "name": "VCC_CUR_LIMIT_VBUS_PATH",
+        "desc": "VBUS PATH VCC CURRENT LIMIT\n补充scm",
+        "expectValue": "30~70",
+        "unit": "mA",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "VCC",
+          "dftItem": "TM118"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vcc",
+          "value": 1.0,
+          "time": "1e-3",
+          "ignore": 1
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VBUS",
+          "VCC"
+        ],
+        "mi_pins": [
+          "VCC"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM121_VAC_PATH_ON",
+      "testType": "toggle",
+      "dftItem": "TM121",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "VCC",
+        "name": "VAC_PATH_ON",
+        "desc": "VBAT<3.1V，当VAC1>4.4V时，VCC切换至VAC1供电\nMUX A2D_VAC_PATH_ON信号到dtest0",
+        "expectValue": "",
+        "unit": "",
+        "test": "",
+        "helper": "VAC1 ramp, INT toggle"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM121"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 0.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VAC1"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM122_VMCU_VBAT_PATH_ACC1",
+      "testType": "normal",
+      "dftItem": "TM122",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "VMCU",
+        "name": "VMCU_VBAT_PATH_ACC1",
+        "desc": "VBAT供电VCMU，并且在LDO模式下，测试VMCU带载50mA电压",
+        "expectValue": "3.2~3.7",
+        "unit": "V",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "VMCU",
+          "dftItem": "TM122"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.7,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "iset",
+          "pin": "vmcu",
+          "value": 0.05,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [
+          "VMCU"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM123_VMCU_VBAT_PATH_ACC2",
+      "testType": "normal",
+      "dftItem": "TM123",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "VMCU",
+        "name": "VMCU_VBAT_PATH_ACC2",
+        "desc": "VBAT供电VCMU，并且在LDR模式下，测试VMCU带载50mA电压",
+        "expectValue": "3.2~3.7",
+        "unit": "V",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "VMCU",
+          "dftItem": "TM123"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.7,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "iset",
+          "pin": "vmcu",
+          "value": 0.05,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [
+          "VMCU"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM124_VMCU_VCC_PATH_ACC",
+      "testType": "normal",
+      "dftItem": "TM124",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "VMCU",
+        "name": "VMCU_VCC_PATH_ACC",
+        "desc": "VCC供电VCMU，测试VMCU带载50mA电压",
+        "expectValue": "3.8~4.5",
+        "unit": "V",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "VMCU",
+          "dftItem": "TM124"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.7,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "iset",
+          "pin": "vmcu",
+          "value": 0.05,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VBUS"
+        ],
+        "mi_pins": [
+          "VMCU"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM125_VMCU_CUR_LIMIT_VBAT_PATH",
+      "testType": "normal",
+      "dftItem": "TM125",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "VMCU",
+        "name": "VMCU_CUR_LIMIT_VBAT_PATH",
+        "desc": "VBAT PATH VMCU CURRENT LIMIT\n补充scm",
+        "expectValue": "10~40",
+        "unit": "mA",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "VMCU",
+          "dftItem": "TM125"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.7,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vmcu",
+          "value": 0.5,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VMCU"
+        ],
+        "mi_pins": [
+          "VMCU"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM126_VMCU_CUR_LIMIT_VCC_PATH",
+      "testType": "normal",
+      "dftItem": "TM126",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "VMCU",
+        "name": "VMCU_CUR_LIMIT_VCC_PATH",
+        "desc": "VCC PATH VMCU CURRENT LIMIT\n补充scm",
+        "expectValue": "20~70",
+        "unit": "mA",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "VMCU",
+          "dftItem": "TM126"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.7,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vmcu",
+          "value": 0.5,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "wait_warmup"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VBUS",
+          "VMCU"
+        ],
+        "mi_pins": [
+          "VMCU"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM127_VBAT_PATH_ON_VMCU",
+      "testType": "toggle",
+      "dftItem": "TM127",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "VMCU",
+        "name": "VBAT_PATH_ON_VMCU",
+        "desc": "测试VMCU选择VBAT通路功能\nreg VMCU_FAVOR_VBAT!=0 && VBAT>2.8V\nVCC由VBUS供电切换到VBAT供电",
+        "expectValue": "",
+        "unit": "",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM127"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 2.5,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 0.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VBUS"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VBAT"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM128_VBAT_PATH_ON_VCC",
+      "testType": "toggle",
+      "dftItem": "TM128",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "VMCU",
+        "name": "VBAT_PATH_ON_VCC",
+        "desc": "测试VCC选择VBAT通路功能\nreg VCC_FAVOR_VBAT!=0 && VBAT>3.7V\nVCC由VBUS供电切换到VBAT供电",
+        "expectValue": "",
+        "unit": "",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM128"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.4,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "10e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 0.0,
+          "time": "10e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC1",
+          "VBAT",
+          "VBUS"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VBAT"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM129_VCC_VBAT_HT_2P8",
+      "testType": "toggle",
+      "dftItem": "TM129",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "VBAT_MNT",
+        "name": "VCC_VBAT_HT_2P8",
+        "desc": "测试VBAT_HT_2P8比较器精度",
+        "expectValue": "rising vth 2.8V, hys 0.2V",
+        "unit": "V",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM129"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 0.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VBAT"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM130_VCC_VBAT_HT_3P7",
+      "testType": "toggle",
+      "dftItem": "TM130",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "VBAT_MNT",
+        "name": "VCC_VBAT_HT_3P7",
+        "desc": "测试VBAT_HT_3P7比较器精度",
+        "expectValue": "rising vth 3.7/3.9/4.1V, hys 0.2V",
+        "unit": "V",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM130"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.5,
+          "time": "10e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 0.0,
+          "time": "10e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.5,
+          "time": "10e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 0.0,
+          "time": "10e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.5,
+          "time": "10e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 0.0,
+          "time": "10e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VBAT"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM131_IRPPO_EA_FB",
+      "testType": "normal",
+      "dftItem": "TM131",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "BG",
+        "name": "IRPPO_EA_FB",
+        "desc": "",
+        "expectValue": 0.8,
+        "unit": "V",
+        "test": "",
+        "helper": "measure AMUX voltage"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "ATEST0",
+          "dftItem": "TM131"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM132_IHR_P_1UA",
+      "testType": "normal",
+      "dftItem": "TM132",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "BG",
+        "name": "IHR_P_1UA",
+        "desc": "",
+        "expectValue": 1,
+        "unit": "uA",
+        "test": "",
+        "helper": "AMUX=1V, measure AMUX current"
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "ATEST0",
+          "dftItem": "TM132"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "amux",
+          "value": 1.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vdm",
+          "value": 1.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "AMUX",
+          "VBAT",
+          "VDM"
+        ],
+        "mi_pins": [
+          "ATEST0"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": [
+          "AMUX",
+          "VDM"
+        ]
+      }
+    },
+    {
+      "functionName": "Trim_IZTC_RES",
+      "testType": "trim",
+      "dftItem": "TM133",
+      "projectType": "trim",
+      "paramType": "一般",
+      "overview": {
+        "level": "BG",
+        "name": "IZTC_1UA",
+        "desc": "",
+        "expectValue": 1,
+        "unit": "uA",
+        "test": "",
+        "helper": "AMUX=1V, measure AMUX current"
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "ATEST0",
+          "dftItem": "TM133"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "amux",
+          "value": 1.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vdm",
+          "value": 1.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "AMUX",
+          "VBAT",
+          "VDM"
+        ],
+        "mi_pins": [
+          "ATEST0"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": [
+          "AMUX",
+          "VDM"
+        ]
+      }
+    },
+    {
+      "functionName": "TM134_IPTAT_1UA",
+      "testType": "normal",
+      "dftItem": "TM134",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "BG",
+        "name": "IPTAT_1UA",
+        "desc": "",
+        "expectValue": 1,
+        "unit": "uA",
+        "test": "",
+        "helper": "AMUX=1V, measure AMUX current"
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "ATEST0",
+          "dftItem": "TM134"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "amux",
+          "value": 1.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vdm",
+          "value": 1.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "AMUX",
+          "VBAT",
+          "VDM"
+        ],
+        "mi_pins": [
+          "ATEST0"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": [
+          "AMUX",
+          "VDM"
+        ]
+      }
+    },
+    {
+      "functionName": "Trim_BG_RES_DIV",
+      "testType": "trim",
+      "dftItem": "TM135",
+      "projectType": "trim",
+      "paramType": "一般",
+      "overview": {
+        "level": "BG",
+        "name": "VREF_1P0",
+        "desc": "VREF_1P0 ACC",
+        "expectValue": 1,
+        "unit": "V",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "ATEST0",
+          "dftItem": "TM135"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM136_AVSS_BG",
+      "testType": "normal",
+      "dftItem": "TM136",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "BG",
+        "name": "AVSS_BG",
+        "desc": "",
+        "expectValue": 0,
+        "unit": "V",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "ATEST0",
+          "dftItem": "TM136"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM137_TSD_TM",
+      "testType": "toggle",
+      "dftItem": "TM137",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "BG",
+        "name": "TSD_TM",
+        "desc": "检查TSD比较器功能\n配置测试模式后阈值会折返：\nTSD:  rising 0C falling -20C",
+        "expectValue": "",
+        "unit": "",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM137"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM138_TDIE_WARM_TM",
+      "testType": "toggle",
+      "dftItem": "TM138",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "BG",
+        "name": "TDIE_WARM_TM",
+        "desc": "检查TDIE_WARM比较器功能\n配置测试模式后阈值会折返：\nTDIE_WARM:  rising -30C falling 0C",
+        "expectValue": "",
+        "unit": "",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM138"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "Trim_VBG",
+      "testType": "trim",
+      "dftItem": "TM139",
+      "projectType": "trim",
+      "paramType": "一般",
+      "overview": {
+        "level": "BG",
+        "name": "HP_VBG",
+        "desc": "VBG ACC",
+        "expectValue": 1.275,
+        "unit": "V",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "ATEST0",
+          "dftItem": "TM139"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM200_VTH_SCL_IN",
+      "testType": "toggle",
+      "dftItem": "TM200",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "IO",
+        "name": "VTH_SCL_IN",
+        "desc": "SCL input rise/fall threshold.",
+        "expectValue": "rising 小于1.4\nfalling 大于0.6",
+        "unit": "V",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM200"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "scl",
+          "value": 3.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "scl",
+          "value": 0.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "SCL",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "SCL"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM201_VTH_SDA_IN",
+      "testType": "toggle",
+      "dftItem": "TM201",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "IO",
+        "name": "VTH_SDA_IN",
+        "desc": "SCL input rise/fall threshold.",
+        "expectValue": "rising 小于1.4\nfalling 大于0.6",
+        "unit": "V",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM201"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "sda",
+          "value": 3.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "sda",
+          "value": 0.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "SDA",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "SDA"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM202_R_INT",
+      "testType": "normal",
+      "dftItem": "TM202",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "IO",
+        "name": "R_INT",
+        "desc": "pulldown resistor at INT",
+        "expectValue": "",
+        "unit": "ohm",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "INT",
+          "dftItem": "TM202"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [
+          "INT"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM203_R_SDA",
+      "testType": "normal",
+      "dftItem": "TM203",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "IO",
+        "name": "R_SDA",
+        "desc": "pulldown resistor at SDA",
+        "expectValue": "",
+        "unit": "ohm",
+        "test": "Direct",
+        "helper": "SDA=1V, measure current"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "SDA",
+          "dftItem": "TM203"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [
+          "SDA"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM204_IPD_VBUS",
+      "testType": "normal",
+      "dftItem": "TM204",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "IO",
+        "name": "IPD_VBUS",
+        "desc": "pulldown current at vbus",
+        "expectValue": 20,
+        "unit": "mA",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "VBUS",
+          "dftItem": "TM204"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 1
+        },
+        {
+          "cmd": "wait_warmup"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VBUS"
+        ],
+        "mi_pins": [
+          "VBUS"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM207_IPD_VAC3",
+      "testType": "normal",
+      "dftItem": "TM207",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "IO",
+        "name": "IPD_VAC3",
+        "desc": "pulldown current at vac3",
+        "expectValue": "2mA VAC=4V\n<1mA VAC=0.8V",
+        "unit": "mA",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "VAC3",
+          "dftItem": "TM207"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac3",
+          "value": 1.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac3",
+          "value": 4.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "wait_warmup"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC3",
+          "VBAT"
+        ],
+        "mi_pins": [
+          "VAC3"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM210_VAC1_SNK_DET_VTH_RELMODE",
+      "testType": "toggle",
+      "dftItem": "TM210",
+      "projectType": "trim",
+      "paramType": "一般",
+      "overview": {
+        "level": "IO",
+        "name": "VAC1_SNK_DET_VTH_RELMODE",
+        "desc": "Slew rate detection\ngenerate VPP=0.6, 5Khz, 100us rise, 100us fall at VAC1.",
+        "expectValue": "0.2V/32us",
+        "unit": "V/us",
+        "test": "Direct",
+        "helper": "ramp VAC1 , check INT"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM210"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 3.0,
+          "time": "2e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 0.0,
+          "time": "2e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 3.0,
+          "time": "0.1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 0.0,
+          "time": "0.1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VAC1"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM211_VAC2_SNK_DET_VTH_RELMODE",
+      "testType": "toggle",
+      "dftItem": "TM211",
+      "projectType": "trim",
+      "paramType": "一般",
+      "overview": {
+        "level": "IO",
+        "name": "VAC2_SNK_DET_VTH_RELMODE",
+        "desc": "Slew rate detection\ngenerate VPP=0.6, 5Khz, 100us rise, 100us fall at VAC2.",
+        "expectValue": "0.2V/32us",
+        "unit": "V/us",
+        "test": "Direct",
+        "helper": "ramp VAC2 , check INT"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM211"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac2",
+          "value": 3.0,
+          "time": "2e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac2",
+          "value": 0.0,
+          "time": "2e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac2",
+          "value": 3.0,
+          "time": "0.1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac2",
+          "value": 0.0,
+          "time": "0.1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC2",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VAC2"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM212_VAC1_SNK_DET_VTH_ABSMODE",
+      "testType": "toggle",
+      "dftItem": "TM212",
+      "projectType": "trim",
+      "paramType": "一般",
+      "overview": {
+        "level": "IO",
+        "name": "VAC1_SNK_DET_VTH_ABSMODE",
+        "desc": "Vth",
+        "expectValue": "R:1.9/F:1.7",
+        "unit": "V",
+        "test": "Direct",
+        "helper": "ramp VAC1,直接使用,不用AWG"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "VAC1",
+          "dftItem": "TM212"
+        },
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM212"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 3.0,
+          "time": "10e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 0.0,
+          "time": "10e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VAC1"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM213_VAC2_SNK_DET_VTH_ABSMODE",
+      "testType": "toggle",
+      "dftItem": "TM213",
+      "projectType": "trim",
+      "paramType": "一般",
+      "overview": {
+        "level": "IO",
+        "name": "VAC2_SNK_DET_VTH_ABSMODE",
+        "desc": "Vth",
+        "expectValue": "R:1.9/F:1.7",
+        "unit": "V",
+        "test": "Direct",
+        "helper": "ramp VAC2,直接使用,不用AWG"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "VAC2",
+          "dftItem": "TM213"
+        },
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM213"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac2",
+          "value": 3.0,
+          "time": "10e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac2",
+          "value": 0.0,
+          "time": "10e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC2",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VAC2"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM214_PWM1_Vth",
+      "testType": "toggle",
+      "dftItem": "TM214",
+      "projectType": "trim",
+      "paramType": "一般",
+      "overview": {
+        "level": "IO",
+        "name": "PWM1_Vth",
+        "desc": "Vth",
+        "expectValue": "1.4/0.6",
+        "unit": "V",
+        "test": "Direct",
+        "helper": "ramp VAC2,直接使用,不用AWG"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM214"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "pwm1",
+          "value": 4.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "pwm1",
+          "value": 0.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "PWM1",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "PWM1"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM215_PWM2_Vth",
+      "testType": "toggle",
+      "dftItem": "TM215",
+      "projectType": "trim",
+      "paramType": "一般",
+      "overview": {
+        "level": "IO",
+        "name": "PWM2_Vth",
+        "desc": "Vth",
+        "expectValue": "1.4/0.6",
+        "unit": "V",
+        "test": "Direct",
+        "helper": "ramp VAC2,直接使用,不用AWG"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM215"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "pwm2",
+          "value": 4.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "pwm2",
+          "value": 0.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "PWM2",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "PWM2"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM216_PWM1_Current",
+      "testType": "normal",
+      "dftItem": "TM216",
+      "projectType": "trim",
+      "paramType": "一般",
+      "overview": {
+        "level": "IO",
+        "name": "PWM1 Current",
+        "desc": "Current",
+        "expectValue": "10uA",
+        "unit": "V",
+        "test": "Direct",
+        "helper": "ramp VAC2,直接使用,不用AWG"
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "PWM1",
+          "dftItem": "TM216"
+        }
+      ],
+      "hardwareInit": [],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "PWM1",
+          "VBAT"
+        ],
+        "mi_pins": [
+          "PWM1"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM217_PWM2_Current",
+      "testType": "normal",
+      "dftItem": "TM217",
+      "projectType": "trim",
+      "paramType": "一般",
+      "overview": {
+        "level": "IO",
+        "name": "PWM2 Current",
+        "desc": "Current",
+        "expectValue": "10uA",
+        "unit": "V",
+        "test": "Direct",
+        "helper": "ramp VAC2,直接使用,不用AWG"
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "PWM2",
+          "dftItem": "TM217"
+        }
+      ],
+      "hardwareInit": [],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "PWM2",
+          "VBAT"
+        ],
+        "mi_pins": [
+          "PWM2"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM220_DMO_PD_R",
+      "testType": "normal",
+      "dftItem": "TM220",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "IO",
+        "name": "DMO pulldown resistor",
+        "desc": "DMO pushpull resistor test",
+        "expectValue": "",
+        "unit": "Ohm",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 0.0,
+          "time": "10e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM222_DMA_PD_R",
+      "testType": "normal",
+      "dftItem": "TM222",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "IO",
+        "name": "DMA pulldown resistor",
+        "desc": "DMA pushpull resistor test",
+        "expectValue": "",
+        "unit": "Ohm",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 0.0,
+          "time": "10e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM300_OSC_64K",
+      "testType": "trim",
+      "dftItem": "TM300",
+      "projectType": "trim",
+      "paramType": "Freq Related",
+      "overview": {
+        "level": "OSC",
+        "name": "OSC64K",
+        "desc": "OSC64K output",
+        "expectValue": 64,
+        "unit": "Khz",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM300"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM301_OSC_4P5M",
+      "testType": "trim",
+      "dftItem": "TM301",
+      "projectType": "trim",
+      "paramType": "Freq Related",
+      "overview": {
+        "level": "OSC",
+        "name": "OSC4P5M",
+        "desc": "Foldback to 35khz\nOSC4P5M output",
+        "expectValue": 35,
+        "unit": "Khz",
+        "test": "Indirect",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM301"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM400_VBUS_OVP_VTH1",
+      "testType": "toggle",
+      "dftItem": "TM400",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "UVLO",
+      "overview": {
+        "level": "MNT",
+        "name": "VBUS_OVP_VTH1",
+        "desc": "vbus ovp threshold",
+        "expectValue": "rising 6.5, hys 0.3",
+        "unit": "V",
+        "test": "Direct",
+        "helper": "Ramp VBUS and check INT toggle"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM400"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 1
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 7.0,
+          "time": "1e-3",
+          "ignore": 1
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 4.0,
+          "time": "1e-3",
+          "ignore": 1
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VBUS"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VBUS"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM401_VBUS_OVP_VTH2",
+      "testType": "toggle",
+      "dftItem": "TM401",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "UVLO",
+      "overview": {
+        "level": "MNT",
+        "name": "VBUS_OVP_VTH2",
+        "desc": "vbus ovp threshold",
+        "expectValue": "rising 12.8, hys 0.3",
+        "unit": "V",
+        "test": "Direct",
+        "helper": "Ramp VBUS and check INT toggle"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM401"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 1
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 15.0,
+          "time": "1e-3",
+          "ignore": 1
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 4.0,
+          "time": "1e-3",
+          "ignore": 1
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VBUS"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VBUS"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM402_VBUS_OVP_VTH3",
+      "testType": "toggle",
+      "dftItem": "TM402",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "UVLO",
+      "overview": {
+        "level": "MNT",
+        "name": "VBUS_OVP_VTH3",
+        "desc": "vbus ovp threshold",
+        "expectValue": "rising 18.8, hys 0.3",
+        "unit": "V",
+        "test": "Direct",
+        "helper": "Ramp VBUS and check INT toggle"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM402"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 1
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 20.0,
+          "time": "1e-3",
+          "ignore": 1
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 4.0,
+          "time": "1e-3",
+          "ignore": 1
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VBUS"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VBUS"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM403_VBUS_REVI_VTH",
+      "testType": "toggle",
+      "dftItem": "TM403",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "MNT",
+        "name": "VBUS_REVI_VTH",
+        "desc": "VBUS-VBAT falling",
+        "expectValue": "falling : -120mV, rising : 0V",
+        "unit": "V",
+        "test": "Direct",
+        "helper": "Ramp VBUS and check INT toggle"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM403"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 3.7,
+          "time": "100e-6",
+          "ignore": 1
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 4.5,
+          "time": "1e-3",
+          "ignore": 1
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 3.7,
+          "time": "1e-3",
+          "ignore": 1
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VBUS"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VBUS"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM406_VBAT_LOW_VTH",
+      "testType": "toggle",
+      "dftItem": "TM406",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "UVLO",
+      "overview": {
+        "level": "MNT",
+        "name": "VBAT_LOW_VTH",
+        "desc": "boost mode\nvbus_ht_low threshold",
+        "expectValue": "rising : 2.7V, falling : 2.5V",
+        "unit": "V",
+        "test": "Direct",
+        "helper": "Ramp VBAT and check INT toggle"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM406"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 0.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VBAT"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM408_VBAT_OVP",
+      "testType": "toggle",
+      "dftItem": "TM408",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "UVLO",
+      "overview": {
+        "level": "MNT",
+        "name": "VBAT_OVP",
+        "desc": "buck mode\nVBAT ovp threshold(relative to CV)",
+        "expectValue": "rising 104%*VBAT_CV \nhys 2%*VBAT_CV\nVBAT_CV=4.2",
+        "unit": "V",
+        "test": "Direct",
+        "helper": "Ramp VBAT and check INT toggle"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM408"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 0.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC",
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VBAT"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM409_VBUS_HT_4P8V",
+      "testType": "toggle",
+      "dftItem": "TM409",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "MNT",
+        "name": "VBUS_HT_4P8V",
+        "desc": "boost mode\nvbus comparator",
+        "expectValue": "rising : 4.8V",
+        "unit": "V",
+        "test": "Direct",
+        "helper": "Ramp VBUS and check INT toggle"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM409"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 1
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 7.0,
+          "time": "1e-3",
+          "ignore": 1
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 4.0,
+          "time": "1e-3",
+          "ignore": 1
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VBUS"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VBUS"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM410_VTRIKLE_VTH1",
+      "testType": "toggle",
+      "dftItem": "TM410",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "MNT",
+        "name": "VTRIKLE_VTH1",
+        "desc": "buck mode\nvbat trikle charge threshold",
+        "expectValue": "rising 2.7, hys 0.3",
+        "unit": "V",
+        "test": "Direct",
+        "helper": "Ramp VBAT and check INT toggle"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM410"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 0.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC",
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VBAT"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM411_VTRIKLE_VTH2",
+      "testType": "toggle",
+      "dftItem": "TM411",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "MNT",
+        "name": "VTRIKLE_VTH2",
+        "desc": "buck mode\nvbat trikle charge threshold",
+        "expectValue": "rising 3, hys 0.3",
+        "unit": "V",
+        "test": "Direct",
+        "helper": "Ramp VBAT and check INT toggle"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM411"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 0.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC",
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VBAT"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM412_VRE_CHG_VTH1",
+      "testType": "toggle",
+      "dftItem": "TM412",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "MNT",
+        "name": "VRE_CHG_VTH1",
+        "desc": "buck mode\nvbat recharge threshold",
+        "expectValue": "VBAT_CV - 0.1, hys 0.05\nVBAT_CV=4.1V",
+        "unit": "V",
+        "test": "Direct",
+        "helper": "Ramp VBAT and check INT toggle"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM412"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 0.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC",
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VBAT"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM413_VRE_CHG_VTH2",
+      "testType": "toggle",
+      "dftItem": "TM413",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "MNT",
+        "name": "VRE_CHG_VTH2",
+        "desc": "buck mode\nvbat recharge threshold",
+        "expectValue": "VBAT_CV - 0.2, hys 0.05\nVBAT_CV=4.1V",
+        "unit": "V",
+        "test": "Direct",
+        "helper": "Ramp VBAT and check INT toggle"
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM413"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 0.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC",
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VBAT"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM418_VAC1_FB",
+      "testType": "normal",
+      "dftItem": "TM418",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "MNT",
+        "name": "VAC1_FB",
+        "desc": "vac1 feedback voltage",
+        "expectValue": "VAC1/10",
+        "unit": "V",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "ATEST0",
+          "dftItem": "TM418"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac1",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC1",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM419_VAC2_FB",
+      "testType": "normal",
+      "dftItem": "TM419",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "MNT",
+        "name": "VAC2_FB",
+        "desc": "vac2 feedback voltage",
+        "expectValue": "VAC2/10",
+        "unit": "V",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "ATEST0",
+          "dftItem": "TM419"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac2",
+          "value": 10.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC2",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM420_VAC3_FB",
+      "testType": "normal",
+      "dftItem": "TM420",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "MNT",
+        "name": "VAC3_FB",
+        "desc": "vac3 feedback voltage",
+        "expectValue": "VAC3/10",
+        "unit": "V",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "ATEST0",
+          "dftItem": "TM420"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vac3",
+          "value": 15.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VAC3",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM421_VBUS_FB",
+      "testType": "normal",
+      "dftItem": "TM421",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "MNT",
+        "name": "VBUS_FB",
+        "desc": "vbus feedback voltage",
+        "expectValue": "VBUS/10",
+        "unit": "V",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "ATEST0",
+          "dftItem": "TM421"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 4.0,
+          "time": "1e-3",
+          "ignore": 1
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 10.0,
+          "time": "1e-3",
+          "ignore": 1
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VBUS"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM422_VBAT_FB",
+      "testType": "trim",
+      "dftItem": "TM422",
+      "projectType": "trim",
+      "paramType": "一般",
+      "overview": {
+        "level": "MNT",
+        "name": "VBAT_FB",
+        "desc": "vbat feedback voltage",
+        "expectValue": "VBAT*2/5",
+        "unit": "V",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "ATEST0",
+          "dftItem": "TM422"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM424_VREF_TRIM",
+      "testType": "trim",
+      "dftItem": "TM424",
+      "projectType": "trim",
+      "paramType": "一般",
+      "overview": {
+        "level": "MNT",
+        "name": "VREF_TRIM",
+        "desc": "monitor LDO reference voltage & its trim",
+        "expectValue": 1.68,
+        "unit": "V",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "ATEST0",
+          "dftItem": "TM424"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.4,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM425_VREF_1P2V_BUF",
+      "testType": "trim",
+      "dftItem": "TM425",
+      "projectType": "trim",
+      "paramType": "一般",
+      "overview": {
+        "level": "MNT",
+        "name": "VREF_1P2V_BUF",
+        "desc": "internal 1.2V voltage refernce",
+        "expectValue": 1.2,
+        "unit": "V",
+        "test": "Direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "ATEST1",
+          "dftItem": "TM425"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.4,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM600_HS_RDSON",
+      "testType": "normal",
+      "dftItem": "TM600",
+      "projectType": "一般测试项目",
+      "paramType": "RDSON",
+      "overview": {
+        "level": "BUBO",
+        "name": "HS_RDSON",
+        "desc": "high side powerfet rdson",
+        "expectValue": 11,
+        "unit": "mΩ",
+        "test": "direct",
+        "helper": ""
+      },
+      "params": [],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.5,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "pmid",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "bst_sw",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vdrv",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "iset",
+          "pin": "sw",
+          "value": 1.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "BST-SW",
+          "BST_SW",
+          "ISW",
+          "PMID",
+          "VBAT",
+          "VDRV"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM601_LS_RDSON",
+      "testType": "normal",
+      "dftItem": "TM601",
+      "projectType": "一般测试项目",
+      "paramType": "RDSON",
+      "overview": {
+        "level": "BUBO",
+        "name": "LS_RDSON",
+        "desc": "low side powerfet  rdson",
+        "expectValue": 7.5,
+        "unit": "mΩ",
+        "test": "direct",
+        "helper": ""
+      },
+      "params": [],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.5,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vdrv",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "iset",
+          "pin": "pmid_sw",
+          "value": 1.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "ISW",
+          "SW",
+          "VBAT",
+          "VDRV"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": [],
+        "_t25ProposalNote": "SANDBOX PROPOSAL ONLY (t25): VBUS removed from powered_pins because BD-08 makes vset vbus 5.0 a simulationDomainReference, not an ATE stimulus for this item (setup-contract.json tmDeltas.TM601.simulationDomainReference; DFT.csv TM601 row contains no vbus token). VBUS arrival on the schematic needs K3 (SCH-Connect-Map.txt:213/421), which this item does not close."
+      }
+    },
+    {
+      "functionName": "TM607_BUCK_LS_ZCD",
+      "testType": "toggle",
+      "dftItem": "TM607",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "Current Threshold",
+      "overview": {
+        "level": "BUBO",
+        "name": "BUCK_LS_ZCD",
+        "desc": "buck mode zero current detect(SW to PGND)",
+        "expectValue": 0.1,
+        "unit": "A",
+        "test": "direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM607"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.5,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "pmid",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vdrv",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "iset",
+          "pin": "pgnd_sw",
+          "value": -0.2,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "iset",
+          "pin": "pgnd_sw",
+          "value": 0.2,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "IPGND_PSW",
+          "PMID",
+          "VBAT",
+          "VDRV"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM608_BOOST_HS_ZCD",
+      "testType": "toggle",
+      "dftItem": "TM608",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "Current Threshold",
+      "overview": {
+        "level": "BUBO",
+        "name": "BOOST_HS_ZCD",
+        "desc": "boost mode zero current detect",
+        "expectValue": 0.1,
+        "unit": "A",
+        "test": "direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM608"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.5,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "pmid",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "bst_sw",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "iset",
+          "pin": "pmid_sw",
+          "value": -0.2,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "iset",
+          "pin": "sw",
+          "value": 0.2,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "BST-SW",
+          "BST_SW",
+          "ISW",
+          "PMID",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM609_BOOST_HS_NEG",
+      "testType": "toggle",
+      "dftItem": "TM609",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "BUBO",
+        "name": "BOOST_HS_NEG",
+        "desc": "boost mode PFWM negative current limit",
+        "expectValue": -3,
+        "unit": "A",
+        "test": "direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM609"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.5,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "pmid",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "bst_sw",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vdrv",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "iset",
+          "pin": "pmid_sw",
+          "value": -2.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "BST-SW",
+          "BST_SW",
+          "ISW",
+          "PMID",
+          "VBAT",
+          "VDRV"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM614_VC_CLAMP_LOW",
+      "testType": "normal",
+      "dftItem": "TM614",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "BUBO",
+        "name": "VC_CLAMP_LOW",
+        "desc": "VC clamp low voltage test",
+        "expectValue": 1.3,
+        "unit": "V",
+        "test": "direct",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "COMP",
+          "dftItem": "TM614"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "pmid",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "PMID",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM615_PSM_THREHOLD",
+      "testType": "toggle",
+      "dftItem": "TM615",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "BUBO",
+        "name": "PSM_THREHOLD",
+        "desc": "VC voltage threhold when enter and exit PSM mode",
+        "expectValue": "1.4/1.35",
+        "unit": "V",
+        "test": "direct",
+        "helper": "Ramp NTC , check INT toggle"
+      },
+      "params": [],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.5,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "pmid",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "amux",
+          "value": 1.3,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "amux",
+          "value": 1.5,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "amux",
+          "value": 1.3,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "AMUX",
+          "ATEST1(AMUX)",
+          "PMID",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "AMUX"
+        ],
+        "testpad_pins": [
+          "AMUX"
+        ]
+      }
+    },
+    {
+      "functionName": "TM616_VC_OFFSET",
+      "testType": "toggle",
+      "dftItem": "TM616",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "电压阈值",
+      "overview": {
+        "level": "BUBO",
+        "name": "VC_OFFSET",
+        "desc": "VC offset voltage",
+        "expectValue": "1.4(AMUX voltge when VDM current >0)",
+        "unit": "T",
+        "test": "direct",
+        "helper": "Ramp NTC， check AMUX current, 电流过小，测试不保证"
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "ATEST0",
+          "dftItem": "TM616"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.5,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "pmid",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vdm",
+          "value": 2.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "amux",
+          "value": 1.3,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "amux",
+          "value": 1.5,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "amux",
+          "value": 1.3,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "AMUX",
+          "ATEST1(AMUX)",
+          "PMID",
+          "VBAT",
+          "VDM"
+        ],
+        "mi_pins": [
+          "ATEST0"
+        ],
+        "ramp_pins": [
+          "AMUX"
+        ],
+        "testpad_pins": [
+          "AMUX",
+          "VDM"
+        ]
+      }
+    },
+    {
+      "functionName": "TM640_BOOST_HS_OCP",
+      "testType": "toggle",
+      "dftItem": "TM640",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "BUBO",
+        "name": "BOOST HS OCP",
+        "desc": "boost mode HS current limit\nfoldback 1/10\n15(Scale down to 1.5)",
+        "expectValue": 1.5,
+        "unit": "A",
+        "test": "Indirect",
+        "helper": "ramp current between PMID and SW and monitor INT toggle, measure I as Imeas1, measure AMUX-NTC as Refer1, Ratio = Imeas1/Refer1.  Config register, measure Refer2, Imeas= Refer2*Ratio"
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "ATEST0",
+          "dftItem": "TM640"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.5,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "pmid",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "bst_sw",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vdrv",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vdm",
+          "value": 1.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "iset",
+          "pin": "sw",
+          "value": -2.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "BST-SW",
+          "BST_SW",
+          "ISW",
+          "PMID",
+          "VBAT",
+          "VDM",
+          "VDRV"
+        ],
+        "mi_pins": [
+          "ATEST0"
+        ],
+        "ramp_pins": [
+          "PMID"
+        ],
+        "testpad_pins": [
+          "VDM"
+        ]
+      }
+    },
+    {
+      "functionName": "TM641_BST_UV",
+      "testType": "toggle",
+      "dftItem": "TM641",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "BUBO",
+        "name": "BST UV",
+        "desc": "BST UV threshold",
+        "expectValue": "3.25 falling/3.45rising",
+        "unit": "V",
+        "test": "Indirect",
+        "helper": "ramp voltage between BST-SW, and check INT toggle"
+      },
+      "params": [],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.5,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "pmid",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "bst_sw",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vdrv",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "sw",
+          "value": 3.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "bst_sw",
+          "value": 2.5,
+          "time": "10e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "bst_sw",
+          "value": 4.0,
+          "time": "10e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "BST-SW",
+          "BST_SW",
+          "PMID",
+          "SW",
+          "VBAT",
+          "VDRV"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "BST_SW",
+          "SW"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM643_VBAT_LOOP_INDICTOR",
+      "testType": "toggle",
+      "dftItem": "TM643",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "BUBO",
+        "name": "VBAT_LOOP_INDICTOR",
+        "desc": "monitor vbat indictor comparator flip",
+        "expectValue": "3.506 rising/3.43 falling(VBAT voltage）",
+        "unit": "V",
+        "test": "",
+        "helper": "VBAT REF set to 4.2V, Ramp VBAT voltage and monitor INT toggle"
+      },
+      "params": [],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "pmid",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "bst_sw",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vdrv",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 3.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 5.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "BST_SW",
+          "PMID",
+          "VBAT",
+          "VBUS",
+          "VDRV"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VBAT"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM700_IBUS_SNS_ACC_BU",
+      "testType": "normal",
+      "dftItem": "TM700",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "IBUS_SNS",
+        "name": "IBUS_SNS_ACC_BU",
+        "desc": "IBUS sense in buck mode\n(ATEST0-ATEST1)/0.2 VS I_input\nchop enable",
+        "expectValue": 3,
+        "unit": "%",
+        "test": "Direct",
+        "helper": "Buck mode,VBUS->PMID=2A current, and measure VDM-AMUX voltage, Ical=(AMUX-NTC)/0.2"
+      },
+      "params": [],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.4,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 1
+        },
+        {
+          "cmd": "iset",
+          "pin": "vbus_pmid",
+          "value": 1.0,
+          "time": "1e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "iset",
+          "pin": "vbus_pmid",
+          "value": 2.0,
+          "time": "1e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "iset",
+          "pin": "vbus_pmid",
+          "value": 0.5,
+          "time": "1e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "IPMID",
+          "VBAT",
+          "VBUS"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM701_IBUS_SNS_ACC_BO",
+      "testType": "normal",
+      "dftItem": "TM701",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "IBUS_SNS",
+        "name": "IBUS_SNS_ACC_BO",
+        "desc": "IBUS sense in boost mode\n(ATEST0-ATEST1)/0.2 VS I_input\nchop enable",
+        "expectValue": 3,
+        "unit": "%",
+        "test": "Direct",
+        "helper": "Boost mode,PMID->VBUS=2A current, and measure VDM-AMUX voltage, Ical=(AMUX-NTC)/0.2"
+      },
+      "params": [],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.4,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "pmid",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 1
+        },
+        {
+          "cmd": "iset",
+          "pin": "pimd_vbus",
+          "value": 1.0,
+          "time": "1e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "iset",
+          "pin": "pimd_vbus",
+          "value": 2.0,
+          "time": "1e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "iset",
+          "pin": "pimd_vbus",
+          "value": 0.5,
+          "time": "1e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "IBUS",
+          "PMID",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM702_IBUS_SNS_GAIN_TRIM",
+      "testType": "trim",
+      "dftItem": "TM702",
+      "projectType": "trim",
+      "paramType": "电压阈值",
+      "overview": {
+        "level": "IBUS_SNS",
+        "name": "IBUS_SNS_GAIN_TRIM",
+        "desc": "IBUS sense gain trim\nchop disable\n\nboost:Trim in BOOST mode\n1. force PMID2VBUS 1A, 3A.\n2. measure ATEST0. calculate gain.",
+        "expectValue": 0.2,
+        "unit": "V/A",
+        "test": "Direct",
+        "helper": "Boost mode, PMID->VBUS=1A/3A current, and measure VDM-AMUX voltage, gain=(deltaV@3A-deltaV@1A)/2, sweep trim code until Gain≈200mohm, and trim step = 1.25%"
+      },
+      "params": [],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.4,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "pmid",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 1
+        },
+        {
+          "cmd": "iset",
+          "pin": "vbus_pmid",
+          "value": 1.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "iset",
+          "pin": "vbus_pmid",
+          "value": 3.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "IBUS",
+          "PMID",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM702_1_IBUS_SNS_GAIN_TEST_BUCK",
+      "testType": "normal",
+      "dftItem": "TM702_1",
+      "projectType": "一般测试项目",
+      "paramType": "电压阈值",
+      "overview": {
+        "level": "",
+        "name": "IBUS_SNS_GAIN_test_BUCK",
+        "desc": "BUCK mode\n1. force VBUS2PMID 1A, 3A.\n2. measure ATEST0. calculate gain.",
+        "expectValue": 0.2,
+        "unit": "V/A",
+        "test": "Direct",
+        "helper": "gain=(deltaV@3A-deltaV@1A)/2"
+      },
+      "params": [],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.4,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vbus",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 1
+        },
+        {
+          "cmd": "iset",
+          "pin": "vbus_pmid",
+          "value": 1.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "iset",
+          "pin": "vbus_pmid",
+          "value": 3.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "IBUS",
+          "VBAT",
+          "VBUS"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM703_IBUS_SNS_VOS_TRIM",
+      "testType": "trim",
+      "dftItem": "TM703",
+      "projectType": "trim",
+      "paramType": "电压阈值",
+      "overview": {
+        "level": "IBUS_SNS",
+        "name": "IBUS_SNS_VOS&TRIM",
+        "desc": "IBUS sense vos\ntrim while chopper off=1\nmeasure while chopper off=0",
+        "expectValue": 0,
+        "unit": "mV",
+        "test": "Direct",
+        "helper": "1. finish trim of TM 702\n2. offset = (ATEST0-ATEST1) - 2*0.2"
+      },
+      "params": [],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.4,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "pmid",
+          "value": 5.0,
+          "time": "100e-6",
+          "ignore": 1
+        },
+        {
+          "cmd": "iset",
+          "pin": "vbus_pmid",
+          "value": 2.0,
+          "time": "1e-3",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "IBUS",
+          "PMID",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM1004_QDT_VTH_COMP",
+      "testType": "toggle",
+      "dftItem": "TM1004",
+      "projectType": "trim",
+      "paramType": "一般",
+      "overview": {
+        "level": "QDT",
+        "name": "QDT_VTH_COMP",
+        "desc": "TRIM阈值比较器的OFFSET:\n1. 通过TM1008得到比较器的参考电压\n2.通过trim来让比较器阈值逼近参考电压，使得offset最小化\n",
+        "expectValue": "VPRECHARGE/RATIO\n对上阈值进行trim，下阈值在测试模式下加入0.1V迟滞",
+        "unit": "V",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "VCP",
+          "dftItem": "TM1004"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vcp",
+          "value": 2.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vcp",
+          "value": 0.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vcp",
+          "value": 2.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vcp",
+          "value": 0.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VCP"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VCP"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM1006_QDT_ZCD_COMP",
+      "testType": "toggle",
+      "dftItem": "TM1006",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "Current Threshold",
+      "overview": {
+        "level": "QDT",
+        "name": "QDT_ZCD_COMP",
+        "desc": "测试过零比较器的精度",
+        "expectValue": "rising 0V\nfalling ~25mV",
+        "unit": "V",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "DTEST0",
+          "dftItem": "TM1006"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vcp",
+          "value": -0.5,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vcp",
+          "value": 0.5,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vcp",
+          "value": -0.5,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VCP"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "VCP"
+        ],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM1007_QDT_IBP_ZTC_1UA_TEST",
+      "testType": "normal",
+      "dftItem": "TM1007",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "QDT",
+        "name": "QDT_IBP_ZTC_1UA_TEST",
+        "desc": "电流ibias测试模式",
+        "expectValue": 1,
+        "unit": "uA",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "ATEST0",
+          "dftItem": "TM1007"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "vdm",
+          "value": 1.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT",
+          "VDM"
+        ],
+        "mi_pins": [
+          "ATEST0"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": [
+          "VDM"
+        ]
+      }
+    },
+    {
+      "functionName": "TM1008_QDT_VREF_VTH_CMP",
+      "testType": "normal",
+      "dftItem": "TM1008",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "QDT",
+        "name": "QDT_VREF_VTH_CMP",
+        "desc": "vth cmp的vref",
+        "expectValue": "1.2/16=0.075",
+        "unit": "V",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "ATEST0",
+          "dftItem": "TM1008"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM1009_QDT_VPCHG_SHORT_CURRENT",
+      "testType": "normal",
+      "dftItem": "TM1009",
+      "projectType": "一般测试项目",
+      "paramType": "一般",
+      "overview": {
+        "level": "QDT",
+        "name": "QDT VPCHG SHORT CURRENT",
+        "desc": "VPRECHG的最大输出能力",
+        "expectValue": "~2",
+        "unit": "mA",
+        "test": "",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MI",
+          "checkPin": "SW1",
+          "dftItem": "TM1009"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "sw1",
+          "value": 1.2,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "sw1",
+          "value": 0.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "SW1",
+          "VBAT"
+        ],
+        "mi_pins": [
+          "SW1"
+        ],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM1100_DEMO_VREF_1P65",
+      "testType": "normal",
+      "dftItem": "TM1100",
+      "projectType": "trim",
+      "paramType": "一般",
+      "overview": {
+        "level": "DEMO",
+        "name": "DEMO_VREF_1P65",
+        "desc": "测试DEMO的参考电压\n1.65V",
+        "expectValue": 1.65,
+        "unit": "V",
+        "test": " ",
+        "helper": ""
+      },
+      "params": [
+        {
+          "check": "MV",
+          "checkPin": "ATEST0",
+          "dftItem": "TM1100"
+        }
+      ],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [],
+        "testpad_pins": []
+      }
+    },
+    {
+      "functionName": "TM1205_TRX_BST_UV_GD",
+      "testType": "toggle",
+      "dftItem": "TM1205",
+      "projectType": "一般测试项目(AWG)",
+      "paramType": "一般",
+      "overview": {
+        "level": "TRX",
+        "name": "TRX_BST_UV_GD",
+        "desc": "Test BST1-SW1, BST2-SW2的 UVLO阈值",
+        "expectValue": "",
+        "unit": "V",
+        "test": "",
+        "helper": ""
+      },
+      "params": [],
+      "hardwareInit": [
+        {
+          "cmd": "vset",
+          "pin": "vbat",
+          "value": 4.0,
+          "time": "100e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "bst1_sw1",
+          "value": 4.0,
+          "time": "1000e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "bst1_sw1",
+          "value": 0.0,
+          "time": "1000e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "bst2_sw2",
+          "value": 4.0,
+          "time": "1000e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "vset",
+          "pin": "bst2_sw2",
+          "value": 0.0,
+          "time": "1000e-6",
+          "ignore": 0
+        },
+        {
+          "cmd": "en_tm"
+        },
+        {
+          "cmd": "field"
+        },
+        {
+          "cmd": "field"
+        }
+      ],
+      "registers": [],
+      "capAuthority": {
+        "powered_pins": [
+          "BST1_SW1",
+          "BST2_SW2",
+          "VBAT"
+        ],
+        "mi_pins": [],
+        "ramp_pins": [
+          "BST1_SW1",
+          "BST2_SW2"
+        ],
+        "testpad_pins": []
+      }
+    }
+  ]
+}

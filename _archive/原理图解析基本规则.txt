@@ -1,0 +1,75 @@
+原理图解析规则的作用描述：用于解析原理图文件，根据net文件，提取出PIN,继电器其他器件和源表POGO。
+原理图解析规则的输入：原理图Net文件。
+原理图解析规则的输出：所有DUT PIN，所有继电器，所有其他器件（电容，电阻，运放等），所有源表POGO。
+原理图解析规则的工作流：
+1. 任务一：解析所有DUT PIN，必须按照PIN解析流程先执行完Step1-5,只有判定正常才能继续执行任务二。
+  1. Step1:首先遍历所有port ，找出所有port类型是OUTPUT的port, port 的名字就是DUT PIN 的名字。
+  2. Step2:忽略掉所有尾缀”_Sx“，这部分表示的是具体的工位信息。
+  3. Step3:遍历所有的PIN，统计分类不含_F和_S的PIN是Non-Kelvin PIN,同时含有_S和_F 的PIN是Kelvin PIN。
+  4. Step4:输出COMPONENT-STATISTIC 文件，保存所有PIN的信息按照：PIN（type)输出，type 是Kelvin或Non-Kelvin，禁止写入PIN_F(kelvin),PIN_S(kelvin).
+  5. Step5: 执行PIN输出检查工作流，遍历所有PIN，如果某个PIN只有PIN_F 或者只有PIN_S,向用户报错，分别输出”Kelvin PIN 缺少Sense PIN“或者”Kelvin PIN 缺少Force PIN“。同时含有PIN_F和PIN_S,或者只有PIN，判定正常。
+2. 任务二：解析所有源表，必须按照源表解析流程先执行完Step1-5,只有判定正常才能继续执行任务三。
+  Step1：遍历所有port，找出所有port类型是INOUT的port, port 的名字就是源表的名字。
+  Step2: 根据类型进行判断：ACM，ACM200，FXVIe,FXVIe_PLUS,FPVIe,QTMU,QVM,DCM。按照下面的a~g顺序执行。
+    1. 源表含有ACM200字符的就是ACM200源表
+    2. 只有ACM同时不含有200字符时候就是ACM源表
+    3. 含有FXVIe_PLUS字符的是FXVIe_PLUS源表，只有FXVIe同时不含有PLUS的是FXVIe
+    4. 含有FPVIe字符的源表为FPVIe源表
+    5. 含有QVM字符的源表为QVM源表
+    6. 含有QTMU字符的源表为QTMU源表
+    7. 含有S24_Px字符或者S9_Px的源表为DCM源表
+  说明: 源表类型最终以 Pin_Channel_define.h 声明为准。netlist 端口名可能与实际类型不一致（按 .h 为准）：
+    - S3 槽为 FXVIe_PLUS（STS PinPlanner 声明 extern FXVIe_PLUS；2026-08-05 22:11 起 netlist 直接标 S3_FXVIe_PLUS_*，旧网表误标 "FOVIe"）
+    - netlist 短名 "QVM"/"QTMU" 即官方 "QVMe"/"QTMUe"（'e'增强系列）
+  Step3: 输出COMPONENT-STATISTIC 文件，按照：源表类型， 列举所有同类型的源表通道名字。
+  Step4:遍历所有源表的通道，按照类型分类,顺序执行a和b:
+    1. 对于FPVIe,ACM,ACM200,FXVIe,FXVIe_PLUS,检测FH和SH，FL和SL必须同时存在，如不满足，向用户报错提醒缺失FH/FL/SL/SH 等信息。
+    2. 对于QVM需要确认QVMH和QVML同时存在，或者CHn+和CHn-同时存在，如不满足，向用户报错。
+  Step5: 任务二b: 读取 Pin_Channel_define.h 建立源表名映射（STS PinPlanner 生成，与原理图同目录）。
+    1. extern <类型> <源表名>; 声明每个源表名的权威类型（如 extern ACM200 ACDRV123_VCC_ACM;）
+    2. #define _PIN_CHANNEL_DEFINE_<源表名>_ "<Sx_y,...>" 给出该源表名对应的多工位通道串，
+       所有工位的对应通道共享同一名字，可同时操作。
+    3. 由 netlist 源表端口（如 S5_ACM200_FH1）推导通道键（S5_1），映射到语义源表名
+       （ACDRV123_VCC_ACM）和权威类型（ACM200），输出到 COMPONENT-STATISTIC 的
+       "任务二b: 源表名映射"段。
+    4. 类型交叉验证：netlist 端口名类型与 .h 声明不一致时提示（已知别名除外），以 .h 声明为准。
+3. 任务三：解析所有继电器，必须按照继电器解析流程先执行完Step1-4,只有判定正常才能继续执行任务四。
+  Step1：遍历所有(Instance，找出所有继电器,判断标准是Kx_,用大写K开头，加上数字+”_“ 和后面内容，继电器有两种，机械继电器和光耦继电器。
+  Step2: 根据类型进行判断, 含有”SW_SPST“ 就是光耦继电器，其余的继电器类型就是机械继电器，常见类型是：G6K_2G_Y_DC12_3part
+  Step3:对于机械继电器，需要找到PortRef &6/5/7 其中之一，认定为B part和PortRef &2/3/4其中之一为A part，针对同时还有A和B part，认定为一个机械继电器。如果只有含有A或B part也是正常的。
+  Step3: 对于继电器进行功能分类，参考《继电器功能分类》，确定继电器功能分类，BUS型，Share型，Connect型。
+  Step3: 输出COMPONENT-STATISTIC 文件，按照：继电器类型， 列举所有同类型的继电器名字。
+  Step4: 遍历所有继电器浮空检查，浮空指继电器的脚没有任何连接点（器件，节点等），确保机械继电器不会出现A part中3个脚有多余1个脚浮空，没有连接。光耦继电器两个脚都没有浮空， 一旦发现机械继电器A或B part出现3脚或者2脚浮空，或者光耦继电器有任何一个脚浮空给，则向用户报错。
+4. 任务四：解析所有元器件（排除源表，PIN，继电器），必须按照元器件解析流程先执行完Step1-2,只有判定正常才能继续执行任务五。
+  Step1：根据元器件的类型，列出所有的元器件输出COMPONENT-STATISTIC 文件。
+  Step2: 元器件连接性检查，确保所有的元器件的都没有浮空。否则向用户报错。
+5. 任务五：解析所有net，必须按照元器件解析流程先执行完Step1-2,只有判定正常才能继续执行任务五。
+  Step1：根据net的类型，分成以下几类：与FPVI相关的BUS net，与QVM相关的BUS net,与QTMU相关的BUS net,以及其他net，列出所有的net输出COMPONENT-STATISTIC 文件。
+  Step2: net连接性检查，确保所有的net的都没有浮空。否则向用户报错。
+6. 任务六:生成SCH-Connect-Map.txt， 按照如下步骤进行：
+  1. 第一列是节点继电器，标准是否需要通电，按照《通路有效性》的输出方式，从FPVIe到FPVIe的BUS节点(必须是FH和SH组合或者FL和SL组合)的到需要闭合继电器。
+  2. 第二列是BUS通路继电器，按照《通路有效性》的输出方式，从FPVIe到PIN需要闭合的继电器,满足BUS继电器要求。
+  3. 第二列是BUS通路继电器，按照《通路有效性》的输出方式，从QTMUe到PIN需要闭合的继电器,满足BUS继电器要求。
+  4. 第四列是BUS通路继电器，按照《通路有效性》的输出方式，从QVMe到PIN需要闭合的继电器,满足BUS继电器要求。
+  5. 第五列是Share继电器：按照《通路有效性》的输出方式，从ACM到PIN需要闭合的继电器,满足share继电器要求。
+  6. 第六列是Share继电器：按照《通路有效性》的输出方式，从ACM200到PIN需要闭合的继电器,满足share继电器要求。
+  7. 第七列是Share继电器：按照《通路有效性》的输出方式，从FXVIe_PLUS到PIN需要闭合的继电器,满足share继电器要求。
+  8. 第八列是Share继电器：按照《通路有效性》的输出方式，从QTMUe到PIN需要闭合的继电器，满足share继电器要求。
+  9. 第九列是Share继电器：按照《通路有效性》的输出方式，从QVMe到PIN需要闭合的继电器，满足share继电器要求。
+  10. 第10列是Share继电器：按照《通路有效性》的输出方式，从DCM到PIN需要闭合的继电器，满足share继电器要求。
+  11. 上述列，如果其中某一列，全部继电器都不满足，就需要输出。
+  
+  《继电器功能分类》
+  1. 从源表（ACM/ACM200/FXVIe/FXVIe_PLUS/DCM）出发到DUT PIN，需要经过的继电器，包括不用上电就直接连通PIN和需要上电闭合的才能连接到PIN的继电器，必须满足以下2个share条件，统称为share 继电器。
+  share条件1: 通过默认或者导通可以实现源表（ACM/ACM200/FXVIe/FXVIe_PLUS/DCM）到PIN的连通。
+  share条件2:同一个源表源表（ACM/ACM200/FXVIe/FXVIe_PLUS/DCM）通道，同时连接到超过1个PIN。
+  2. 从源表（ACM/ACM200/FXVIe/FXVIe_PLUS/DCM）出发到DUT PIN，需要经过的继电器，包括不用上电就直接连通PIN和需要上电闭合的才能连接到PIN的继电器，必须满足以下2个connect条件，统称为connect 继电器。
+  connect条件1. 通过默认或者导通可以实现源表（ACM/ACM200/FXVIe/FXVIe_PLUS/DCM）到PIN的连通。
+  connect条件2. 同一个源表源表（ACM/ACM200/FXVIe/FXVIe_PLUS/DCM）通道，同时1个通道只对应一个PIN。
+  3. 从稀缺源表（FPVIe,QTMU,QVM）出发到BUS节点，需要经过的继电器，包括不用上电就直接连通PIN和需要上电闭合的才能连接到BUS节点的继电器，必须满足以下3个BUS条件，统称为BUS节点。
+  BUS条件1：BUS节点的必须是节点，同时数量超过1个。
+  BUS条件2：含有“BUS”字符的节点必须是Force和sense分开封Kelvin结构，同时必须满足FH和SH成组，FL和SL成组。
+  BUS条件2：不含有“BUS”字符的节点必须是可以在节点处短接Force和Sense，更常见是在节点后短路，同时必须满足FH和SH成组，FL和SL成组，一旦检测到向用户确认。
+  
+  《通路有效性》
+  1. 从源表的force端和sense端同时出发到目的位置，沿途需要经历的继电器，包括默认可以连通和上电才能连通的继电器，算一条通路，通路需要满足最短路径原则，同时force端和sense务必同时连通。

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm108-implementation-review",
+  "taskId": "TM108-PTC-RULE_REVIEW_IMPLEMENTATION",
+  "trial": "tm108-ptc",
+  "tm": "TM108",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_IMPLEMENTATION",
+  "verdict": "pass",
+  "signedInputs": {
+    "implementationManifestPath": "implementation/implementation-manifest.json",
+    "implementationManifestSha256": "f7e6967a0cad59688811a98e64efe2952d9b2bd030fc1307c05128bcf5e51003"
+  },
+  "checks": [
+    {
+      "id": "IR-1",
+      "result": "PASS",
+      "detail": "Current implementation manifest hash is signed above."
+    },
+    {
+      "id": "IR-2",
+      "result": "PASS",
+      "detail": "scripts/verify_implementation_batch.py passed for the complete four-TM batch."
+    },
+    {
+      "id": "IR-3",
+      "result": "PASS",
+      "detail": "Verifier confirms current test.cpp hash, one TM108_HSKP_VAC1_PRST implementation, signed relay closure [13,65], verified register source lines, 3-to-5-to-3 V scan, TRIG_FALLING rise, TRIG_RISING fall, and required result records."
+    }
+  ],
+  "blockingDefects": [],
+  "summary": {
+    "checksPassed": 3,
+    "blockingDefects": 0,
+    "nextRole": "compile-diagnostician"
+  }
+}

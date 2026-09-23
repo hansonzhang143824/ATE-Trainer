@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "kind": "preflight_blocked",
+  "stage": "IMPLEMENTATION",
+  "role": "ate-implementer",
+  "batchId": "dali-20260921-080849-tm106-tm108-tm425",
+  "tm": "TM106",
+  "methodContract": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm106/method/tm106-test-method-contract.json",
+  "blockedAt": "test.cpp source modification step (before manifest/comments/verify/deliverable)",
+  "findings": [
+    {
+      "id": "F1",
+      "kind": "source_write_channel_unavailable",
+      "detail": "No sanctioned channel in this session can modify D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp. (a) tools.write denied by DSH file sandbox: '[sandbox: file access denied under workspace-write mode]' - the project source tree lies outside the session workspace D:/Newtest/DSH/ATE-Coding-Flow; (b) sandbox_permissions escalation is disabled in this session (approval prompts disabled); (c) tools.edit on test.cpp was rejected twice by the PTC Hook ('PTC implementation contract: old trials, status files, directory enumeration, and delegation are forbidden'); (d) require('fs') is unavailable inside run_code ('require is not defined'); (e) pwsh is locked to the 3 allowlisted commands, none of which performs code edits (apply_ptc_source_comments.py only derives comments; it exited 1 because implementation/implementation-manifest.json does not exist yet)."
+    },
+    {
+      "id": "F2",
+      "kind": "preseeded_source_vs_signed_contract_contradiction",
+      "detail": "test.cpp already contains a pre-seeded TM106 function 'TM106_HSKP_VBUS_PRST' at lines 8875-8919 (marker comment 'TM106 current fast contract implementation'), seeded from this batch (TM108 pre-seed at 8925-8969 likewise matches this batch's DMUX_SEL=22). Its FALLING/RISING routing contradicts the signed contract: measurementPlan.sweeps + logPlan.logParamMapping + calculation require rising sweep (VBUS 3->5V, TRIG_FALLING) capture -> result FALLING -> param VBUS_PRST_Rise, and falling sweep (5->3V, TRIG_RISING) -> RISING -> VBUS_PRST_Fall; the pre-seed routes the rising-sweep capture into VBUS_PRST_Fall and the falling-sweep capture into VBUS_PRST_Rise (test.cpp:8896-8907). Further deviations from the contract: Hys is computed as (Rise-Fall)*1e3 in mV at test.cpp:8905 while logPlan.derivedResults specifies formula 'VBUS_PRST_Rise - VBUS_PRST_Fall' with unit 'V'; contract phase P3 requires delay_ms(1) after the register writes (Code3 delay[1e-3]) which the pre-seed omits (test.cpp:8891-8893). The three hard rules ARE present in the pre-seed: SetOn(K13,K65) followed by delay_ms(3) (8884-8885), zero-before-relay-off for all three source tables (8911-8917), verbatim register writes 0x56=0x13 / 0x57=0x08 (8892-8893)."
+    },
+    {
+      "id": "F3",
+      "kind": "gates_not_run",
+      "detail": "Per the report-before-resolving rule the run stopped before writing implementation-manifest.json, before apply_ptc_source_comments.py could run (it exited 1: manifest missing), and before verify_implementation_batch.py / write_implementation_deliverable.py. No source file was modified by this run."
+    }
+  ],
+  "hardRulesStatus": {
+    "functionalRelayDelay3ms": "present in pre-seed",
+    "zeroBeforeRelayOff": "present in pre-seed",
+    "registerWritesVerbatim": "present in pre-seed (0x56=0x13, 0x57=0x08)"
+  },
+  "options": [
+    {
+      "id": "A",
+      "option": "Re-dispatch TM106 implementation from a session whose file scope covers D:/PROJECT6-DALI (session workspace = project root, or sandbox write grant for the source tree)",
+      "pros": "Fully contract-conformant delivery: fix routing (rising->VBUS_PRST_Rise, falling->VBUS_PRST_Fall), Hys in V, add delay_ms(1) after registers, then manifest -> comments -> verify -> deliverable in the standard chain; fixes are small, deterministic and already prepared",
+      "cons": "Needs one re-dispatch with wider file scope",
+      "recommended": true
+    },
+    {
+      "id": "B",
+      "option": "Accept the pre-seeded implementation as-is and run the gate chain on it",
+      "pros": "No file write needed beyond manifest/comments; three hard rules already present",
+      "cons": "Delivers code that contradicts the signed contract on result routing and Hys unit and misses the P3 delay; risks failing verify if it checks routing, and ships a silent Rise/Fall swap if it does not"
+    },
+    {
+      "id": "C",
+      "option": "Grant the implementer a sanctioned code-edit channel for test.cpp (e.g. allow tools.edit, or a review-approved patch script) in this same scope",
+      "pros": "Same conformant result as A without moving the workspace",
+      "cons": "Requires a Hook/policy change; current session forbids escalation"
+    }
+  ],
+  "decisionNeeded": "Choose A (recommended), B, or C for TM106; TM108/TM425 are outside this task but the same F1 channel gap applies to them."
+}

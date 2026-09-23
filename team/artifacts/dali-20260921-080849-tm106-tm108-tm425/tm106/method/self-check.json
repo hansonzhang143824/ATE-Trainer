@@ -1,0 +1,76 @@
+{
+  "status": "PASS",
+  "tm": "TM106",
+  "stage": "METHOD",
+  "role": "test-method-expert",
+  "checks": [
+    {
+      "id": "MSC-01",
+      "item": "Project_Info.json 前置读取, 材料根/输入位置均存在且在授权根内",
+      "result": "PASS",
+      "evidence": "Project_Info.json (approvedBy NVT10241, 2026-09-18)"
+    },
+    {
+      "id": "MSC-02",
+      "item": "策略 deliverable-ready 有效且策略合同字节 SHA-256 实测绑定",
+      "result": "PASS",
+      "evidence": "signedInputs.strategyContractSha256=3aaded63ed2f6300db978785b63cd4335e47de499e8e914d22fd027ff32a2b4e (run_code 实测, 非照抄)"
+    },
+    {
+      "id": "MSC-03",
+      "item": "已签 DFT 输出读取 (dft-meta.json/dft-conditions.yaml) 且 methodFamily 与 DFT 推断一致 (hasRamp=true → scan)",
+      "result": "PASS",
+      "evidence": "project/DALI/Output_Global_Material/dft/TM106/dft-meta.json"
+    },
+    {
+      "id": "MSC-04",
+      "item": "扫描范围固定判定 (用户裁决) 完整记录: 预测值/vset 候选/Notes 候选/选中范围/确定性理由",
+      "result": "PASS",
+      "evidence": "measurementPlan.scanRangeResolution: 预测 3.9V; vset[3,5] 与 Notes[3,5] 均包含且中点距离/宽度相同 → 按裁决链选 vset [3,5]V"
+    },
+    {
+      "id": "MSC-05",
+      "item": "触发边沿全局裁决套用: 升扫 TRIG_FALLING, 降扫 TRIG_RISING; 相反黄金案例 (UVLO.cpp) 仅作历史参考并记录于 goldenApplicability",
+      "result": "PASS",
+      "evidence": "knowledge/standards/toggle-awg-rules.md (2026-09-18 裁决)"
+    },
+    {
+      "id": "MSC-06",
+      "item": "ExpectValue/de-test 未转化为验收上下限、容差或数值 PASS/FAIL",
+      "result": "PASS",
+      "evidence": "measurementPlan.limits.acceptanceLimits=none"
+    },
+    {
+      "id": "MSC-07",
+      "item": "供电时序/阶段状态/测量与计算/限值/断电/Log/Golden 适用性/证据 齐备",
+      "result": "PASS",
+      "evidence": "powerSequence/methodPhases(6 states)/measurementPlan/powerDownPlan/logPlan/goldenApplicability/evidence"
+    },
+    {
+      "id": "MSC-08",
+      "item": "寄存器配置与 strategy/register-config-evidence.json 完全一致 (orderedWrites 逐字复制, 哈希实测)",
+      "result": "PASS",
+      "evidence": "register-config-evidence sha256=1573fed3284781e71731aa42f06cfabe640f24b1f54cc050e90f134548d52c6a"
+    },
+    {
+      "id": "MSC-09",
+      "item": "门禁 validate_method_contract.py 输出 PASS 且退出码 0",
+      "result": "PASS",
+      "evidence": "exit=0, stdout=PASS (74f2f33459954fcc65fc4f370aa330739f35009c07e5dd3c7b74b456fbfcde2b)"
+    },
+    {
+      "id": "MSC-10",
+      "item": "规则审查确定性预检 review_method_batch.py (无 --write-pass, 只读) 全部 PASS",
+      "result": "PASS",
+      "evidence": "MR-01..MR-04 PASS (tm106+tm108)"
+    }
+  ],
+  "writeScope": {
+    "allowedDirectories": [
+      "trial method/",
+      "project/DALI/ErrorLog/method-expert.log"
+    ],
+    "note": "所有产物仅写入本 trial method/ 目录; 文件写入经 run_code fs 在授权目录内完成 (本会话非 run_code 工具通道不可用), 未写任何其它路径"
+  },
+  "blocker": null
+}

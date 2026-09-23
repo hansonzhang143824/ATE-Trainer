@@ -1,0 +1,17 @@
+=== ① t28-red-proof.json ===
+  文件 5351 B
+  ACTUAL = b97441a457119ca0ca11dca2b55a69e302c06cc6cc0b378f663bc77d4d78c529  (len=64, pos42='c')
+  候选 A：pos42='c'（我最初给的）      ⇒ 正确 ; 与 ACTUAL 的差异位=[]
+  候选 B：pos42='b'（我'自纠'给的）    ⇒ 错误 ; 与 ACTUAL 的差异位=[42]
+
+  ⇒ 结论：ACTUAL 的 pos42 = 'c' ⇒ **我最初给的值正确；我的"自纠"把它改错了一位**。
+
+=== ② 单一真源 t28-anchors.json 里该条 ===
+  文件 11142 B / 6c612d066edfa666aa7fce634367433e5250a33f34fdfa07a98f3cac6f281cfd / 32 条（对方测得 9,857 B / 29 条 = 更早版本）
+  登记值 = b97441a457119ca0ca11dca2b55a69e302c06cc6cc0b378f663bc77d4d78c529
+  与 ACTUAL 全 64 位一致 = True ; 等于 b 变体 = False
+
+=== ③ check_input_sync.py 位数 ===
+  ACTUAL = e804c459b2d3088e72d455eb9e1b7893119cea47ad0a640735b6f5db42d784d1 (len=64)
+  我消息里的串 len=64 ⇒ 长度异常=False（确系多打一个字符）
+  与 ACTUAL 前 16 位比较: e804c459b2d3088e vs e804c459b2d3088e

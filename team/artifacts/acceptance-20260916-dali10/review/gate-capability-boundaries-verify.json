@@ -1,0 +1,34 @@
+{
+  "_note": "read-only verification for the gate-capability-boundaries deliverable (rule-reviewer)",
+  "deliverable": {
+    "path": "team/artifacts/acceptance-20260916-dali10/review/gate-capability-boundaries.md",
+    "sizeBytes": 10616,
+    "sha256_plaintext": "840ff8578166d87439caf80631fb5c46d43cebd31be6334912e3cf8c61762b46",
+    "mtime": "2026-09-16 19:23:46",
+    "purposes": "cited by t34 as the mandatory 'gate green != electrically correct' limitation evidence"
+  },
+  "structure": {
+    "entries": ["B-1 DLP reader asymmetry", "B-2 bst-sw does not compare closed sets", "B-3 input-sync compares stamps only", "B-4 relay-trace FR-001 findings are warnings and --warn-as-error is not enabled", "B-5 run_gates NEW-RED classification depends on one baseline read"],
+    "perEntryFields": ["what it CAN prove", "what it CANNOT prove", "what additional assertion is needed"],
+    "appendix": "three headline conclusions + reproducible commands"
+  },
+  "readOnlyProof": {
+    "method": "python-plaintext sha256 recomputation of every object inspected while producing the deliverable",
+    "objects": {
+      "team/artifacts/acceptance-20260916-dali10/test-plan.json": { "expected": "fabdd24f220d3b3e1eaf2bc782bf896adceb38074a72bffa7ba0d2d181ec8ed4", "match": true },
+      "team/artifacts/acceptance-20260916-dali10/meta-excitation-override.json": { "expected": "62f2da6f0996ee5afd4e828d59da5a80f7da8fe89e1302632f2e1411380ae5ec", "match": true },
+      "team/artifacts/acceptance-20260916-dali10/setup-contract.json": { "expected": "fd00a5082170293fcea29446c009fc432977d61a8f624ef17ac1c82f41515a18", "match": true },
+      "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp": { "expected": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a", "match": true },
+      "D:/PROJECT6-DALI/devel/source/test.cpp": { "expected": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317", "match": true }
+    },
+    "allMatch": true,
+    "reviewerWritesOutsideReviewDir": 0,
+    "develUntouched": true,
+    "targetTreeUntouched": true
+  },
+  "keyEvidenceHashes": {
+    "scripts/verify_bst_sw_sequence.py": "92250484d0dde498af620ff8847b79e352fd69c822b888188dc14414752e148c",
+    "note": "bst-sw gate contains 0 occurrences of K110 / 110 / needsClosed / relaySet; its only SetOn-content check is that K57_CAP_BST_SW appears when BST_SRC is present (lines 270-276)"
+  },
+  "selfCorrectionNoted": "In my own machine check the substring 'gate-capability' was reported MISSING; that was a false negative in my probe because the token exists only in the filename, not in the document body. Recorded here so it is not misread as a defect in the deliverable."
+}

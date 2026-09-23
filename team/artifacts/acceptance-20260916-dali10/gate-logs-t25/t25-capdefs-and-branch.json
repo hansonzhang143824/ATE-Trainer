@@ -1,0 +1,82 @@
+{
+  "cap_defs_ch57": {
+    "BST_SW": "K57_CAP_BST_SW",
+    "SW_BST": "K57_CAP_BST_SW"
+  },
+  "cap_defs_count": 13,
+  "TM601_relays": [
+    "K154_BUSH0_AMUX",
+    "K155_FOVI3_PGND",
+    "K60_BUSL0_VCP",
+    "K61_ACM8_SW",
+    "K13_VBAT_Cap",
+    "K85_CAP_PMID",
+    "126"
+  ],
+  "TM601_powered": [
+    "ISW",
+    "SW",
+    "VBAT",
+    "VBUS",
+    "VDRV"
+  ],
+  "per_token": [
+    {
+      "token": "SW_BST",
+      "cap_relay": "K57_CAP_BST_SW",
+      "fam_powered": [
+        "SW"
+      ],
+      "skip_testpad": false,
+      "closed": false,
+      "skip_mi_ramp": false,
+      "WARNS": true
+    },
+    {
+      "token": "VBAT",
+      "cap_relay": "K13_VBAT_Cap",
+      "fam_powered": [
+        "VBAT"
+      ],
+      "skip_testpad": false,
+      "closed": true,
+      "skip_mi_ramp": false,
+      "WARNS": false
+    },
+    {
+      "token": "VBUS",
+      "cap_relay": "K5_VBUS_Cap",
+      "fam_powered": [
+        "VBUS"
+      ],
+      "skip_testpad": false,
+      "closed": false,
+      "skip_mi_ramp": false,
+      "WARNS": true
+    }
+  ],
+  "warn_tokens_now": [
+    "SW_BST",
+    "VBUS"
+  ],
+  "warn_old": [
+    [
+      "SW1_BST1",
+      "K45_Cap_SW1_BST1"
+    ],
+    [
+      "SW2_BST2",
+      "K44_Cap_SW2_BST2"
+    ],
+    [
+      "SW_BST",
+      "K57_CAP_BST_SW"
+    ],
+    [
+      "VBUS",
+      "K5_VBUS_Cap"
+    ]
+  ],
+  "SW_BST_warns_old": true,
+  "SW_BST_warns_now": true
+}

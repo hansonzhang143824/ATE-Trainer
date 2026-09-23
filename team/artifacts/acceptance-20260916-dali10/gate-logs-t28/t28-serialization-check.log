@@ -1,0 +1,30 @@
+=== 现盘 anchors 特征 ===
+  路径 = acceptance-20260916-dali10/gate-logs-t28/t28-anchors.json
+  size = 11931 B
+  BOM = False
+  CRLF = 247 ; 孤立 LF = 0
+  条目数 = 32
+
+=== 同一逻辑内容的两种序列化 size ===
+  LF  版 = 11684 B
+  CRLF版 = 11931 B
+  差   = 247 B（纯换行差异）
+  现盘实际 = 11931 B ⇒ 换行口径 = CRLF
+
+=== 我此前提过的几个 size 与本文件的对应 ===
+  报过的 size 11854  → 需按换行/版本另行解释
+  报过的 size 11609  → 需按换行/版本另行解释
+  报过的 size 13276  → 需按换行/版本另行解释
+  报过的 size 14567  → 需按换行/版本另行解释
+  报过的 size 13388  → 需按换行/版本另行解释
+  报过的 size 12294  → 需按换行/版本另行解释
+  报过的 size 11931  → 与现盘吻合
+  报过的 size 11142  → 需按换行/版本另行解释
+
+  ⇒ 采纳其结论：**size 不能作身份**；引用一律「全路径 + sha256 + 条目数」。
+  ⇒ 我方补充：本生成器当前输出换行已可判定（见上），若其测得 CRLF 而本脚本写 LF，
+     则两处副本可能各自被不同工具重排过 ⇒ 引用时**必须带全路径 + 现算哈希**。
+
+=== 另存"现盘 payload 版"期望日志的对象信息（供后续生成）===
+  payload 全路径 = team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp
+  payload size = 43806 B ; sha256 = 66abc088ae6bd5f9b9d7201673003fc0be2450fd6f1f222c6a4a902cbe4f0cc4

@@ -1,0 +1,140 @@
+{
+  "_note": "read-only path snapshot AFTER t22 review",
+  "checkedAt": "2026-09-16 18:37:56",
+  "objectsChecked": 11,
+  "unchanged": 11,
+  "changed": 0,
+  "changedDetail": [],
+  "concurrentWriteByAnotherMember": {
+    "path": "artifacts/.../implementation-payload-TM600-TM601.cpp",
+    "before": "620d99eaa87b6971cddb16a2dbb1f4af4c950f9fc0b0edcf9b266eb824b53ebf",
+    "after": "7399598332fac6c342ec44f2e0217e5f43cebc499e17974e4b8c431aded1885b",
+    "mtime": "2026-09-16 18:36:18",
+    "who": "another team member (implementer's concurrent revision); NOT rule-reviewer",
+    "verifiedInSnapshotAfter": true
+  },
+  "reviewerWritesOutsideReviewDir": 0,
+  "develUntouched": true,
+  "targetTreeUnchangedByReviewer": true,
+  "rows": {
+    "scripts/verify_relay_trace.py": {
+      "size": 19507,
+      "sha256_plaintext": "18654b3ccddad9a929fa277a9ba9876091f5741126304c29df8bc1310be0061d",
+      "mtime": "2026-09-13 19:10:49"
+    },
+    "project/DALI/meta/dali_tm_meta.json": {
+      "size": 146180,
+      "sha256_plaintext": "1c8496645492f7b75abf3a89f95679291490399d62f4a1a34d6cc5d8b1aa2693",
+      "mtime": "2026-09-16 18:26:37"
+    },
+    "project/DALI/SCH-Connect-Map.txt": {
+      "size": 66403,
+      "sha256_plaintext": "cc8009fbb27eef0cf29b45e4e50b05e1b5d7b5d49095a32005261a79d83cb427",
+      "mtime": "2026-09-16 13:45:02"
+    },
+    "project/DALI/Dali-SCH.csv": {
+      "size": 307157,
+      "sha256_plaintext": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a",
+      "mtime": "2026-09-02 16:41:23"
+    },
+    "artifacts/.../test-plan.json": {
+      "size": 166099,
+      "sha256_plaintext": "1925250df53f8b52126fdda9efa84ae84fe2bc8e529867e0965fc0ffe9a08016",
+      "mtime": "2026-09-16 18:17:42"
+    },
+    "artifacts/.../setup-contract.json": {
+      "size": 329115,
+      "sha256_plaintext": "295d483a6d689e04d86744a7cfe55cb7936dd9b6ecb87ab5cc66b611b57b3d5c",
+      "mtime": "2026-09-16 18:18:00"
+    },
+    "artifacts/.../gate-logs-t20/relay-trace.log": {
+      "size": 1035,
+      "sha256_plaintext": "53c3c0cfcc8cd90463286134bd7fee9160e7e6753b29b808b6815cadc2151833",
+      "mtime": "2026-09-16 18:27:08"
+    },
+    "ForCodexDebug/source/test.cpp": {
+      "size": 462848,
+      "sha256_plaintext": "3dbceb496d79d7d08631713b98e46c0c2ba6163eaf5356a87dded677e35ba479",
+      "mtime": "2026-09-16 18:23:31"
+    },
+    "ForCodexDebug/source/StdAfx.h": {
+      "size": 56968,
+      "sha256_plaintext": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+      "mtime": "2026-08-30 11:20:05"
+    },
+    "devel/source/test.cpp": {
+      "size": 434629,
+      "sha256_plaintext": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+      "mtime": "2026-09-13 22:40:01"
+    },
+    "devel/source/StdAfx.h": {
+      "size": 56968,
+      "sha256_plaintext": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+      "mtime": "2026-08-30 11:20:05"
+    }
+  },
+  "deliverables": [
+    "review/t22-fr001-applicability-review.md",
+    "review/t22-fr001-findings.json",
+    "review/t22-readonly-snapshot-BEFORE.json",
+    "review/t22-readonly-snapshot-AFTER.json",
+    "review/t22-readonly-verify.json"
+  ],
+  "files": {
+    "scripts/verify_relay_trace.py": {
+      "size": 19507,
+      "sha256_plaintext": "18654b3ccddad9a929fa277a9ba9876091f5741126304c29df8bc1310be0061d",
+      "mtime": "2026-09-13 19:10:49"
+    },
+    "project/DALI/meta/dali_tm_meta.json": {
+      "size": 146180,
+      "sha256_plaintext": "1c8496645492f7b75abf3a89f95679291490399d62f4a1a34d6cc5d8b1aa2693",
+      "mtime": "2026-09-16 18:26:37"
+    },
+    "project/DALI/SCH-Connect-Map.txt": {
+      "size": 66403,
+      "sha256_plaintext": "cc8009fbb27eef0cf29b45e4e50b05e1b5d7b5d49095a32005261a79d83cb427",
+      "mtime": "2026-09-16 13:45:02"
+    },
+    "project/DALI/Dali-SCH.csv": {
+      "size": 307157,
+      "sha256_plaintext": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a",
+      "mtime": "2026-09-02 16:41:23"
+    },
+    "artifacts/.../test-plan.json": {
+      "size": 166099,
+      "sha256_plaintext": "1925250df53f8b52126fdda9efa84ae84fe2bc8e529867e0965fc0ffe9a08016",
+      "mtime": "2026-09-16 18:17:42"
+    },
+    "artifacts/.../setup-contract.json": {
+      "size": 329115,
+      "sha256_plaintext": "295d483a6d689e04d86744a7cfe55cb7936dd9b6ecb87ab5cc66b611b57b3d5c",
+      "mtime": "2026-09-16 18:18:00"
+    },
+    "artifacts/.../gate-logs-t20/relay-trace.log": {
+      "size": 1035,
+      "sha256_plaintext": "53c3c0cfcc8cd90463286134bd7fee9160e7e6753b29b808b6815cadc2151833",
+      "mtime": "2026-09-16 18:27:08"
+    },
+    "ForCodexDebug/source/test.cpp": {
+      "size": 462848,
+      "sha256_plaintext": "3dbceb496d79d7d08631713b98e46c0c2ba6163eaf5356a87dded677e35ba479",
+      "mtime": "2026-09-16 18:23:31"
+    },
+    "ForCodexDebug/source/StdAfx.h": {
+      "size": 56968,
+      "sha256_plaintext": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+      "mtime": "2026-08-30 11:20:05"
+    },
+    "devel/source/test.cpp": {
+      "size": 434629,
+      "sha256_plaintext": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+      "mtime": "2026-09-13 22:40:01"
+    },
+    "devel/source/StdAfx.h": {
+      "size": 56968,
+      "sha256_plaintext": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+      "mtime": "2026-08-30 11:20:05"
+    }
+  }
+}

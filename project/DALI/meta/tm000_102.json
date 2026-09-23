@@ -1,0 +1,142 @@
+{
+  "_comment": "DALI TM000~TM102 TestItemMeta (B路径 dual-parse --B, 基于 Dali_testmode.xlsx OVERVIEW + AI.cpp 工厂参考提取)",
+  "path": "B",
+  "merged": [
+    {
+      "into": "TM000_IQ_STANDBY",
+      "from": ["TM000", "TM000_1"],
+      "reason": "用户拍板: 1函数2参数 (AskUserQuestion, 2026-08-09)"
+    }
+  ],
+  "functions": [
+    {
+      "functionName": "TM000_IQ_STANDBY",
+      "testType": "normal",
+      "dftItems": ["TM000", "TM000_1"],
+      "params": [
+        {"shortName": "Iq_Standby", "check": "MI", "checkPin": "VBAT", "dftItem": "TM000", "desc": "w/o VAC_PLUG, ~22uA"},
+        {"shortName": "Iq_Standby_PLUG", "check": "MI", "checkPin": "VBAT", "dftItem": "TM000_1", "desc": "w/i VAC_PLUG, ~31.5uA"}
+      ],
+      "hardwareInit": [
+        {"cmd": "vset", "pin": "vbat", "value": 4.4, "time": "100e-6", "ignore": 0}
+      ],
+      "softwareInit": "field[(VAC1_APORT_DET_ENABLE,0/1),(VAC2_APORT_DET_ENABLE,0/1),(VAC_SNK_DET_SEL,0)] -- TODO reg map (AI.cpp 无 reg_config, 待寄存器地图确认)",
+      "measure": "VBAT_PD3_FXVI.MeasureVI(50,5) -> MIRET, 每变体配field后 delay 10ms 再测",
+      "sources": {"VBAT": {"object": "VBAT_PD3_FXVI", "type": "FXVIe_PLUS", "connect": "K8默认NC直连"}},
+      "relaySetOn": "-1",
+      "powerOn": {"vbat": {"mode": "FV", "value": 4.4, "iRange": "FXVIe_PLUS_100UA", "vRange": "FXVIe_PLUS_10V"}}
+    },
+    {
+      "functionName": "TM001_IIN_SUSPEND",
+      "testType": "normal",
+      "dftItems": ["TM001"],
+      "params": [
+        {"shortName": "Iin_Suspend", "check": "MI", "checkPin": "VBAT", "dftItem": "TM001", "desc": "~1.118mA"}
+      ],
+      "hardwareInit": [
+        {"cmd": "vset", "pin": "vbat", "value": 3.7, "time": "100e-6", "ignore": 0},
+        {"cmd": "en_tm"}
+      ],
+      "softwareInit": "field[(WAKE_UP,1),(AC1_GATE_ON,1)] -- TODO reg map (WAKE_UP~0x10 bit0 AI.cpp参考, AC1_GATE_ON 无映射)",
+      "measure": "VBAT_PD3_FXVI.MeasureVI(50,5) -> MIRET",
+      "sources": {"VBAT": {"object": "VBAT_PD3_FXVI", "type": "FXVIe_PLUS", "connect": "K8默认NC直连"}},
+      "relaySetOn": "-1",
+      "powerOn": {"vbat": {"mode": "FV", "value": 3.7, "iRange": "FXVIe_PLUS_10MA", "vRange": "FXVIe_PLUS_10V"}}
+    },
+    {
+      "functionName": "TM001_2_IQ_SHIPMODE",
+      "testType": "normal",
+      "dftItems": ["TM001_2"],
+      "params": [
+        {"shortName": "Iq_Shipmode", "check": "MI", "checkPin": "VBAT", "dftItem": "TM001_2"}
+      ],
+      "hardwareInit": [
+        {"cmd": "vset", "pin": "vbat", "value": 3.7, "time": "100e-6", "ignore": 0},
+        {"cmd": "vset", "pin": "vac1", "value": 5, "time": "100e-6", "ignore": 0},
+        {"cmd": "en_tm"},
+        {"cmd": "field", "value": "SHIPMODE_EN=1"},
+        {"cmd": "vset", "pin": "vac1", "value": 0, "time": "100e-6", "ignore": 0},
+        {"cmd": "delay", "value": 0.06}
+      ],
+      "softwareInit": "I2CWriteSameData(DEV_ADDR, 0x29, 0x01) // SHIPMODE_EN",
+      "measure": "VAC1掉电后 delay 60ms, VBAT_PD3_FXVI.MeasureVI -> MIRET",
+      "sources": {"VBAT": {"object": "VBAT_PD3_FXVI", "type": "FXVIe_PLUS"}, "VAC1": {"object": "VAC123_AMUX_ACM", "type": "ACM200"}},
+      "relaySetOn": "K21_VAC_Cap",
+      "powerOn": {"vbat": {"mode": "FV", "value": 3.7, "iRange": "FXVIe_PLUS_100UA"}, "vac1": {"mode": "FV", "value": 5, "iRange": "ACM200_100MA"}}
+    },
+    {
+      "functionName": "TM001_3_IQ_OPERATION",
+      "testType": "normal",
+      "dftItems": ["TM001_3"],
+      "params": [
+        {"shortName": "Iq_Operation", "check": "MI", "checkPin": "VBAT", "dftItem": "TM001_3"}
+      ],
+      "hardwareInit": [
+        {"cmd": "vset", "pin": "vbat", "value": 3.7, "time": "100e-6", "ignore": 0},
+        {"cmd": "vset", "pin": "vac1", "value": 5, "time": "100e-6", "ignore": 0}
+      ],
+      "softwareInit": "无 en_tm/field",
+      "measure": "VBAT_PD3_FXVI.MeasureVI -> MIRET",
+      "sources": {"VBAT": {"object": "VBAT_PD3_FXVI", "type": "FXVIe_PLUS"}, "VAC1": {"object": "VAC123_AMUX_ACM", "type": "ACM200"}},
+      "relaySetOn": "K21_VAC_Cap",
+      "powerOn": {"vbat": {"mode": "FV", "value": 3.7, "iRange": "FXVIe_PLUS_100UA"}, "vac1": {"mode": "FV", "value": 5, "iRange": "ACM200_100MA"}}
+    },
+    {
+      "functionName": "TM100_HSKP_ATEST0",
+      "testType": "normal",
+      "dftItems": ["TM100"],
+      "params": [
+        {"shortName": "VS_PRE", "check": "MV", "checkPin": "ATEST0", "dftItem": "TM100", "desc": "0.5*VS_PRE~2V"}
+      ],
+      "hardwareInit": [
+        {"cmd": "vset", "pin": "vbat", "value": 4, "time": "100e-6", "ignore": 0},
+        {"cmd": "en_tm"}
+      ],
+      "softwareInit": "I2CWriteSameData: 0x57=0x02,0x5E=0x03,0x57=0x06,0x5B=0x50,0x61=0x4B // ATEST0_MUX=3 (VS_PRE)",
+      "measure": "VDM_SDA_ACM.Set(FI,0,10V,10UA) -> MeasureVI -> MVRET (V(ATEST0))",
+      "sources": {"VBAT": {"object": "VBAT_PD3_FXVI", "type": "FXVIe_PLUS"}, "VDM/ATEST0": {"object": "VDM_SDA_ACM", "type": "ACM200", "connect": "K59默认NC=VDM"}},
+      "relaySetOn": "K13_VBAT_Cap",
+      "powerOn": {"vbat": {"mode": "FV", "value": 4, "iRange": "FXVIe_PLUS_100MA"}}
+    },
+    {
+      "functionName": "TM101_HSKP_LP_ATEST0",
+      "testType": "normal",
+      "dftItems": ["TM101"],
+      "params": [
+        {"shortName": "LP_VBG", "check": "MV", "checkPin": "ATEST0", "dftItem": "TM101", "desc": "~1.178V"}
+      ],
+      "hardwareInit": [
+        {"cmd": "vset", "pin": "vbat", "value": 4, "time": "100e-6", "ignore": 0},
+        {"cmd": "en_tm"},
+        {"cmd": "vset", "pin": "vdm", "value": 1.2, "time": "100e-6", "ignore": 0},
+        {"cmd": "field", "value": "EN_ATEST0=1,ATEST0_MUX=1"},
+        {"cmd": "vset_off", "pin": "vdm"}
+      ],
+      "softwareInit": "I2CWriteSameData: 0x57=0x02, 0x5E=0x01 // ATEST0_MUX=1 (LP_VBG)",
+      "measure": "VDM先FV 1.2带载 -> 配寄存器 -> vset_off=VDM_SDA_ACM.Set(FI,0) 高阻 -> MeasureVI -> MVRET",
+      "sources": {"VBAT": {"object": "VBAT_PD3_FXVI", "type": "FXVIe_PLUS"}, "VDM/ATEST0": {"object": "VDM_SDA_ACM", "type": "ACM200", "connect": "K59默认NC=VDM"}},
+      "relaySetOn": "K13_VBAT_Cap",
+      "powerOn": {"vbat": {"mode": "FV", "value": 4, "iRange": "FXVIe_PLUS_100MA"}, "vdm": {"mode": "FV", "value": 1.2, "iRange": "ACM200_100MA"}}
+    },
+    {
+      "functionName": "TM102_HSKP_LP_ATEST0",
+      "testType": "normal",
+      "dftItems": ["TM102"],
+      "params": [
+        {"shortName": "LP_VBG_BF", "check": "MV", "checkPin": "ATEST0", "dftItem": "TM102", "desc": "~1.178V"}
+      ],
+      "hardwareInit": [
+        {"cmd": "vset", "pin": "vbat", "value": 4, "time": "100e-6", "ignore": 0},
+        {"cmd": "en_tm"},
+        {"cmd": "vset", "pin": "vdm", "value": 1.2, "time": "100e-6", "ignore": 0},
+        {"cmd": "field", "value": "EN_ATEST0=1,ATEST0_MUX=2"},
+        {"cmd": "vset_off", "pin": "vdm"}
+      ],
+      "softwareInit": "I2CWriteSameData: 0x57=0x02, 0x5E=0x02 // ATEST0_MUX=2 (LP_VBG_BF)",
+      "measure": "VDM先FV 1.2带载 -> 配寄存器 -> vset_off=VDM_SDA_ACM.Set(FI,0) 高阻 -> MeasureVI -> MVRET",
+      "sources": {"VBAT": {"object": "VBAT_PD3_FXVI", "type": "FXVIe_PLUS"}, "VDM/ATEST0": {"object": "VDM_SDA_ACM", "type": "ACM200", "connect": "K59默认NC=VDM"}},
+      "relaySetOn": "K13_VBAT_Cap",
+      "powerOn": {"vbat": {"mode": "FV", "value": 4, "iRange": "FXVIe_PLUS_100MA"}, "vdm": {"mode": "FV", "value": 1.2, "iRange": "ACM200_100MA"}}
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "_说明": "项目输入清单（唯一入口）。换项目/换文件位置只改本文件，脚本默认读本文件（--config 可覆盖）。相对路径 = 相对 workspace 根目录；绝对路径 = 直接写。机台手册/经验/Library-Functions跨项目共享，不进本清单。inputs 为必填；csv_schematic 为唯一权威 CSV 源（脚本按文件名含 'SCH' 且 .csv 自动发现，本路径供哈希冻结/文档引用）；电容值/电阻值已并入 csv_schematic 的 ComponentValue 列（稳压电容分类由 adapter 嵌入合成 EDIF，sch_parse.py 读取），不再需要独立 .NET；relay_definitions 为 StdAfx.h（--publish-definitions 发布通路定义时备份用）。optional_inputs 仅特定路径需要（resource_table 仅 A 路径用，当前走 B 路径不用）。derived 由 proj_config.py 从 vs_src_dir 派生（test.cpp/sub.cpp/StdAfx.h），不必手填；intermediates 为中间产物/工作文件（sch_parse 输出 + bench 等）。",
+  "project": "DALI",
+  "project_dir": "project/DALI",
+  "inputs": {
+    "dft": "project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx",
+    "csv_schematic": "project/DALI/Input_GlobalMaterial/Dali-SCH.csv",
+    "cbit": "project/DALI/Input_GlobalMaterial/CBIT表-DALI.xlsx",
+    "channelmap": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h",
+    "relay_definitions": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h",
+    "vs_src_dir": "D:/PROJECT6-DALI/ForCodexDebug/source",
+    "treg": "D:/PROJECT6-DALI/ForCodexDebug/NU1201.treg"
+  },
+  "optional_inputs": {
+    "resource_table": "project/DALI/input/资源分配表.csv"
+  },
+  "intermediates": {
+    "synthetic_edif": "project/DALI/CSV_CONNECTIVITY.NET",
+    "sch_connect_map": "project/DALI/Output_Global_Material/schematic/SCH-Connect-Map.txt",
+    "component_statistic": "project/DALI/Output_Global_Material/schematic/Component-Statistic.txt",
+    "sch_validation_manifest": "project/DALI/Output_Global_Material/schematic/validation_manifest.json.txt",
+    "paths_txt": "project/DALI/paths.txt",
+    "singlepoint_bench": "project/DALI/phase2_singlepoint_output.txt",
+    "sch_connect_map_text": "project/DALI/Output_Global_Material/schematic/SCH-Connect-Map.txt",
+    "component_statistic_text": "project/DALI/Output_Global_Material/schematic/Component-Statistic.txt"
+  },
+  "outputs": {
+    "meta": "project/DALI/meta/dali_tm_meta.json",
+    "test_conditions": "project/DALI/meta/test_conditions.yaml"
+  }
+}

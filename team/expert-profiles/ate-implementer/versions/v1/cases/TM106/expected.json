@@ -1,0 +1,15 @@
+{
+  "caseId": "TM106",
+  "canonicalInput": "<run>/method/TM106-test-method-contract.json",
+  "expectedReadSources": [
+    "<run>/method/TM106-test-method-contract.json",
+    "<run>/strategy/register-config-evidence.json",
+    "knowledge/standards/treg.md"
+  ],
+  "expectedOutputs": [
+    "<run>/implementation/implementation-manifest.json",
+    "<run>/implementation/deliverable-ready.json"
+  ],
+  "semanticTruthStatus": "PENDING_DOMAIN_INPUT",
+  "semanticTruthNote": "TM106 implementation truth (source comments, power-down order, trim callbacks and sweep triggers in the approved target source) is asserted only through the mechanical checks of verify_implementation_batch.py today; full semantic confirmation awaits domain-owner review."
+}

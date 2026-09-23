@@ -1,0 +1,55 @@
+{
+  "at": "2026-09-19T11:42:11.276Z",
+  "mode": "dispatch-profile",
+  "parentAgentId": "session-f2074ee9-cf9b-4f61-a0df-e38f89542685",
+  "ok": true,
+  "dispatched": true,
+  "refusalReason": null,
+  "receiptPath": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dispatch-receipts\\ptc-schematic-expert-probe-schematic-ir-1-TM106.json",
+  "receipt": {
+    "profileId": "ptc-schematic-expert",
+    "profileVersion": "v1",
+    "executionClass": "input-schematic",
+    "targetTms": [
+      "TM106"
+    ],
+    "label": "PTC schematic expert",
+    "digest": "772ecadec0dcdf62c17d63b2ca333a5cd8921f6a1e54ef7833a7f939ab907a0c",
+    "childSessionId": "afdf7874-a7fb-4e30-8a4b-181c2754e6e8"
+  },
+  "ownership": {
+    "ok": true,
+    "stage": "INPUT_SYNC",
+    "registryOwner": "captain",
+    "ownershipNote": "registry owner for INPUT_SYNC is captain; the profile's ownerRole is dispatched as a source role of that stage"
+  },
+  "runKeys": [
+    "dispose",
+    "id",
+    "localAgent",
+    "result"
+  ],
+  "runIdentity": {
+    "id": "afdf7874-a7fb-4e30-8a4b-181c2754e6e8",
+    "agentId": null,
+    "subagentId": null,
+    "sessionId": null,
+    "status": null,
+    "stopReason": null
+  },
+  "settled": {
+    "keys": [
+      "output",
+      "stopReason",
+      "structured"
+    ],
+    "stopReason": "completed",
+    "output": "[{\"type\":\"reasoning\",\"text\":\"I need to call structured_output from within run_code.\"},{\"type\":\"tool-call\",\"id\":\"call_00_a3tn5XltLfmasCzLAtk04426\",\"name\":\"run_code\",\"arguments\":\"{\\\"code\\\": \\\"\\\\nconst r = await tools.structured_output({\\\\n  status: \\\\\\\"done\\\\\\\",\\\\n  outputs: [\\\\n    \\\\\\\"REFUSED: run_code -> read project/DALI/Output_Global_Material/schematic/schematic-ir.json -> ToolCallError(toolName=read): \\\\\\\\\\\\\\\"PTC material boundary: schematic-ir.json is a retired artifact and is never a PTC input.\\\\\\\\\\\\\\\" (attempted exactly once; no retry, no alternate route; no bytes printed)\\\\\\\"\\\\n  ],\\\\n"
+  },
+  "finalIdentity": {
+    "id": "afdf7874-a7fb-4e30-8a4b-181c2754e6e8",
+    "agentId": null,
+    "subagentId": null,
+    "sessionId": null
+  }
+}

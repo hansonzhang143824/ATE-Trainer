@@ -1,0 +1,43 @@
+=== ① 现盘活档中的他方命名空间 ===
+  活档 = 11931 B / 32 条
+  preservedPeerNamespaces 键 = ['setupArchitectFreezeAnchors']
+  setupArchitectFreezeAnchors 子键 = ['anchors', 'ledgerNote', 'mirrorOf', 'mirrorSize']
+  **anchors 条数 = 1**
+  anchors 子键名 = ['acceptance-report.json']
+  mirrorOf = setupArchitect-anchors.json | mirrorSize = 3579
+
+=== ② 是否存在可复原"8 条"的历史副本 ===
+  backups/t78_snapshot_log.py                                  3479 B  (非 anchors JSON；链式字段=0)
+  backups/t88_schema_snapshot.py                               4679 B  (非 anchors JSON；链式字段=0)
+  gate-logs-t28/setupArchitect-anchors.json                    6902 B  他方条数=0
+  gate-logs-t28/setupArchitect-freeze-snapshots.json          22450 B  他方条数=0
+  gate-logs-t28/t28-anchors.json                              11931 B  他方条数=1
+  gate-logs-t28/t28-anchors.snapshots.jsonl                     662 B  (非 anchors JSON；链式字段=0)
+  gate-logs-t28/t28-recheck-anchors.log                        1987 B  (非 anchors JSON；链式字段=0)
+  gate-logs-t28/t28-snapshot-journal.log                        706 B  (非 anchors JSON；链式字段=0)
+  gate-logs-t28/t28_anchors_check.py                           2377 B  (非 anchors JSON；链式字段=0)
+  gate-logs-t28/t28_make_anchors.py                           10913 B  (非 anchors JSON；链式字段=0)
+  gate-logs-t28/t28_recheck_anchors.py                         2992 B  (非 anchors JSON；链式字段=0)
+  gate-logs-t28/t28_snapshot_journal.py                        2780 B  (非 anchors JSON；链式字段=0)
+  gate-logs-t33/t33-blocked-after-anchors.json                 1479 B  他方条数=0
+  gate-logs-t33/t33-blocked-before-anchors.json                1311 B  他方条数=0
+  gate-logs-t54/t54-byte-snapshot-check.log                    1480 B  (非 anchors JSON；链式字段=0)
+  gate-logs-t54/t54-surviving-snapshot-verify.log              1079 B  (非 anchors JSON；链式字段=0)
+  gate-logs-t54/t54_check_byte_snapshots.py                    2102 B  (非 anchors JSON；链式字段=0)
+  gate-logs-t54/t54_verify_surviving_snapshot.py               2288 B  (非 anchors JSON；链式字段=0)
+  meta-excitation-override-revision-history.snapshot-1.json     4349 B  他方条数=0
+  meta-excitation-override-revision-history.snapshot-2.json     6483 B  他方条数=0
+  meta-excitation-override-revision-history.snapshot-3.json     9855 B  他方条数=0
+  meta-excitation-override-revision-history.snapshot-4.json    11785 B  他方条数=0
+  meta-excitation-override-revision-history.snapshot-5.json    12997 B  他方条数=0
+  meta-excitation-override-revision-history.snapshot-6.json    14835 B  他方条数=0
+  review/t22-readonly-snapshot-AFTER.json                      5512 B  他方条数=0
+  review/t22-readonly-snapshot-BEFORE.json                     2624 B  他方条数=0
+
+=== ③ 账本自完整性检查（rule-reviewer ②）===
+  账本 = 2 行 / 662 B
+  行内键 = ['at', 'reason', 'live_size', 'live_sha256', 'live_body_sha256', 'entries', 'preservedPeerKeys']
+  含 lineCount        = False
+  含 prevLineSha256   = False
+  含 ledger_self_sha256 = False
+  头部含 appendOnly   = False

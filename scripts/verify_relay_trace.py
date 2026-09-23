@@ -1,0 +1,459 @@
+# -*- coding: utf-8 -*-
+# 继电器轨迹核对 — 闭环规则 + 功能应用规则 + 结构规则 三层校验
+# 数据源: test.cpp (#define Kxx + cbite.SetOn) vs DALI/SCH-Connect-Map.txt (Relay-ON/NC)
+# 规则源:
+#   结构规则: Step 1 必须始终有 cbite.SetOn(...) — 无继电器需闭合时显式 cbite.SetOn(-1) (STS8300 手册公共规范)
+#   闭环规则: relay-agent.md (P002 名真实性 / Step8 闭环 / Step11 反短接)
+#   功能规则: knowledge/hardware/relays.md §功能应用规则 (Cap/PU/P2P 从功能角度判定闭合)
+#   反向检查: 静态供电未闭稳压电容 (FR-001 反向: 供电→闭)
+# 检查 E 权威源 (2026-08-10 改造): TestItemMeta capAuthority (DFT 意图层, OVERVIEW 派生)
+#   powered_pins 供电轨 / mi_pins 测电流豁免 / ramp_pins ramp源豁免 / testpad_pins 测试垫不查
+#   无 meta 函数降级对象名反推 (旧逻辑), 51 函数全有 meta
+# 用法: python verify_relay_trace.py [--src <test.cpp>] [--meta <dali_tm_meta.json>] [--warn-as-error]
+#   --src: 默认 project_config.json (vs_src_dir/test.cpp; AI.cpp 已弃用, 2026-08-10)
+
+import io, json, re, os, sys
+
+import proj_config
+
+_CFG = proj_config.load(proj_config.config_from_argv(sys.argv))
+PROJ = _CFG['_root']
+SRC  = _CFG['derived']['test_cpp']
+DEFS = _CFG['derived']['stdafx_h']                 # #define Kxx 继电器定义 (DLP 加密, 须用 read_enc)
+MAP  = _CFG['intermediates']['sch_connect_map']
+META = _CFG['outputs']['meta']                     # TestItemMeta 权威 (DFT 意图层)
+
+
+def read_enc(path):
+    """DLP 透明加密回退"""
+    with open(path, 'rb') as f:
+        raw = f.read()
+    for enc in ('utf-8-sig', 'utf-8', 'gbk', 'latin-1'):
+        try:
+            return raw.decode(enc)
+        except (UnicodeDecodeError, ValueError):
+            continue
+    return raw.decode('utf-8', errors='replace')
+
+
+def parse_defines(src):
+    """#define Kxx_Name number → {name: num}"""
+    d = {}
+    for m in re.finditer(r'#define\s+(K\d*_\w+)\s+(\d+)', src):
+        d[m.group(1)] = int(m.group(2))
+    return d
+
+
+def load_meta(path):
+    """TestItemMeta → {functionName: fn} (capAuthority 权威集)"""
+    if not path or not os.path.exists(path):
+        return {}
+    with open(path, encoding='utf-8') as f:
+        data = json.load(f)
+    return {fn['functionName']: fn for fn in data.get('functions', [])}
+
+
+def fam_intersect(pins, fam):
+    """pins 与 Cap 家族 fam (VCC/VBAT/VAC/VBUS/SW...) 的按 PIN 成员匹配。
+
+    t25 修复 F2 (前缀碰撞): 原实现 `p.startswith(fam) or fam.startswith(p)` 是**纯字符串前缀**,
+    把不同轨折成同一家族:
+      'SW1_BST1'.startswith('SW')   → 供电轨 'SW' 误命中 SW1_BST1/SW2_BST2 的 Cap
+                                      (K45_Cap_SW1_BST1 / K44_Cap_SW2_BST2, 见 cap_pin())
+      fam == 'VBUS' 与 'VBUS_F' 之类子串同理。
+    判据: SCH-Connect-Map.txt:177 `CH0 High -> SW1 ... K46` / :183 `SW2 ... K46,K49` 与
+          :174 `CH0 Low -> SW ... K60,K61` 是**不同节点**, 供电 SW 不得对 SW1/SW2 提出 Cap 要求。
+    修法: 家族相等, 或**token 边界**相同 (下划线/连字符/空白/串尾) —— 即 'BST_SW' 仍命中家族
+          'SW'(尾界), 'SW1_BST1' 不再命中 'SW'(下一字符是数字)。
+    注意: 本函数用于 powered/mi/ramp/testpad 四个集合 (L318/L321/L325) 与降级分支; 判据仅"是否
+          同一 token", 不改变任何集合的内容或规则强度。
+    """
+    if not fam:
+        return set()
+    hit = set()
+    for p in pins:
+        if p == fam:
+            hit.add(p)
+            continue
+        # fam 作为 p 的 token 前缀: 其后必须是非字母数字的家族边界
+        if p.startswith(fam):
+            nxt = p[len(fam):len(fam) + 1]
+            if nxt and not (nxt.isalnum()):
+                hit.add(p)
+                continue
+        # p 作为 fam 的 token 前缀: fam 中 p 之后必须是非字母数字的家族边界
+        if fam.startswith(p):
+            nxt = fam[len(p):len(p) + 1]
+            if nxt and not (nxt.isalnum()):
+                hit.add(p)
+    return hit
+
+
+def parse_setons(fn_block):
+    """函数内所有 cbite.SetOn(...) 的继电器名列表 (排除 -1)"""
+    relays = []
+    for m in re.finditer(r'cbite\.SetOn\(([^)]*)\)', fn_block):
+        args = [a.strip() for a in m.group(1).split(',')]
+        relays.extend(a for a in args if a and a != '-1')
+    return relays
+
+
+def parse_map_rels(map_txt):
+    """解析 SCH-Connect-Map: (on_set, nc_set)"""
+    on_set, nc_set = set(), set()
+    for m in re.finditer(r'K(\d+)\(Relay-(ON|NC)\)', map_txt):
+        n = int(m.group(1))
+        (on_set if m.group(2) == 'ON' else nc_set).add(n)
+    return on_set, nc_set
+
+
+def fn_blocks(src):
+    """切 test.cpp 函数块。支持 TM数字前缀 与 Trim_ 命名 (Trim_IZTC_RES 等, 2026-08-10)。
+    块结束 = 下一个 DUT_API int 函数起点; Trim_ 函数必须独立成块才不会被并入相邻 TM 块漏检。"""
+    blocks = []
+    fn_re = re.compile(r'DUT_API int ((?:TM\d+_\w+|Trim_\w+))\(short funcindex')
+    starts = [(m.start(), m.group(1)) for m in fn_re.finditer(src)]
+    for idx, (start, name) in enumerate(starts):
+        end = starts[idx + 1][0] if idx + 1 < len(starts) else len(src)
+        blocks.append((name, src[start:end]))
+    return blocks
+
+
+# ================= 功能应用规则 =================
+# Cap: 稳压电容 (>200nF)。命名认定规则 (2026-08-26 用户拍板): 含 Cap 标记(不区分大小写),
+#   符合 Kx_Pin_Cap_x / Kx_Cap_Pin_Cap_x / K_Pin_Cap / K_Cap_Pin 任一格式即认定为稳压电容
+#   (如 K13_VBAT_Cap, K126_V1P5_CAP, K85_CAP_PMID, K45_Cap_SW1_BST1, K57_CAP_BST_SW)
+# PU: Kxx_*_PU 开漏上拉; P2P: Kxx_*_P2P PIN到地短路
+PU_RE  = re.compile(r'K\d+_\w*_PU$')
+P2P_RE = re.compile(r'K\d+_\w*_P2P$')
+
+
+def cap_pin(name):
+    """稳压电容 → PIN token (Cap 标记不区分大小写, 2026-08-26 用户规则)。
+    K13_VBAT_Cap→VBAT; K126_V1P5_CAP→V1P5; K85_CAP_PMID→PMID; K57_CAP_BST_SW→BST_SW;
+    K45_Cap_SW1_BST1→SW1_BST1; K44_Cap_SW2_BST2→SW2_BST2"""
+    m = re.match(r'^K\d*_(.+)$', name, re.I)
+    if not m:
+        return None
+    parts = m.group(1).split('_')
+    cap_idx = [i for i, p in enumerate(parts) if p.lower() == 'cap']
+    if not cap_idx:
+        return None
+    ci = cap_idx[0]
+    if ci > 0:
+        return '_'.join(parts[:ci])                    # Pin_Cap[_x]: PIN 在 Cap 前
+    if len(cap_idx) > 1:
+        return '_'.join(parts[ci+1:cap_idx[1]])        # Cap_Pin_Cap_x: 两 Cap 之间是 PIN
+    return '_'.join(parts[ci+1:]) if ci + 1 < len(parts) else None  # Cap_Pin: Cap 后是 PIN
+
+
+def is_pu(name):
+    return bool(PU_RE.match(name))
+
+
+def is_p2p(name):
+    return bool(P2P_RE.match(name))
+
+
+def mi_current_pins(fn_block):
+    """测 MI 电流的 PIN 列表: 从 GetMeasResult(site, MIRET) 的源表对象反推 PIN
+    源表对象名含 PIN 名 (如 VBAT_PD3_FXVI → VBAT)。返回大写 PIN 集合。
+    排除集复用 NON_SUPPLY_TOKENS (含 DRVH1: VBUS_DRVH1_ACM → VBUS, 否则豁免错配)。"""
+    pins = set()
+    for obj in re.findall(r'(\w+)\.GetMeasResult\(site,\s*MIRET', fn_block):
+        # 从源表对象名提取 PIN: 去掉源表类型后缀 (_ACM/_FXVI/_FXVIe_PLUS/_PD3...)
+        up = obj.upper()
+        for pin in re.findall(r'[A-Z]+[0-9]*', up):
+            if pin in NON_SUPPLY_TOKENS:
+                continue
+            pins.add(pin)
+    return pins
+
+
+# ===== 反向检查: 静态供电未闭稳压电容 (FR-001 反向) =====
+# Cap 稳压电容: 测该 PIN 电压/供电 → 应闭合; 测该 PIN 电流(MIRET) → 不闭合
+# 反向检查: PIN 被 FV 静态供电(非被测电流 / 非 ramp/扫描源)却未闭其 Cap → WARN
+NON_SUPPLY_TOKENS = frozenset([
+    'ACM', 'AMUX', 'FXVI', 'FXVIE', 'PLUS', 'PD', 'PD3', 'HG', 'CH', 'S',
+    'SDA', 'SCL', 'NQON', 'VACWL', 'DRVH', 'DRVH1', 'GND', 'AGND',
+    # 注: VAC123 保留 (VAC 轨供电对象 VAC123_AMUX_ACM → VAC 家族)
+    # 注: DRVH1 是通道名非供电轨 (VBUS_DRVH1_ACM → VBUS), 2026-08-10 加
+])
+
+
+def obj_pins(obj):
+    """从源表对象名提取驱动 PIN: 取最后一个电源 rail token (排除源表类型/后缀)。
+    VCC_VMCU_FXVI → VMCU (驱动 VMCU, 非 VCC); ACDRV123_VCC_ACM → VCC;
+    VAC123_AMUX_ACM → VAC123 (VAC 轨家族); VBAT_PD3_FXVI → VBAT"""
+    tokens = [p for p in re.findall(r'[A-Z]+[0-9]*', obj.upper())
+              if p not in NON_SUPPLY_TOKENS]
+    return {tokens[-1]} if tokens else set()
+
+
+def pre_poweroff(block):
+    """截断到 Step 5 之前 (下电段 Set(FV,0,...) 是归零, 不是静态供电)"""
+    idx = block.find('Step 5')
+    return strip_comments(block[:idx] if idx != -1 else block)
+
+
+def fv_supply_objs(block):
+    """上电+测量段 FV 静态供电对象 → {obj: {pins}}"""
+    out = {}
+    for obj in re.findall(r'(\w+)\.Set\(FV,', pre_poweroff(block)):
+        out.setdefault(obj, set()).update(obj_pins(obj))
+    return out
+
+
+def ramp_sources(block):
+    """ramp 扫描源对象: test_method.rampv_capv(OBJ, ...) 首参 (DALI 全部为此形式)"""
+    return set(re.findall(r'ramp[vi]_cap[vi]\(\s*(\w+)', pre_poweroff(block)))
+
+
+def capi_monitor_sources(block):
+    """rampv_capi/rampi_capi 的电流捕获源 (第4参: ramp源+2量程 后):
+    该源测电流, 不闭其 Cap (同 MI 惯例)"""
+    return set(re.findall(r'ramp[vi]_capi\(\s*\w+,\s*\w+,\s*\w+,\s*(\w+)',
+                          pre_poweroff(block)))
+
+
+def is_ramp_or_scan(block, obj):
+    """该对象是 ramp/扫描源 → 不应闭 Cap (电容拖慢/扭曲 ramp):
+    - ramp API 首参 (test_method.rampv_capv(OBJ,...))
+    - 同一对象 Set(FV, ...) 值不是字面量或 ≥2 个不同值 (扫描循环/变量)"""
+    seg = pre_poweroff(block)
+    if obj in ramp_sources(block):
+        return True
+    vals = []
+    for m in re.finditer(re.escape(obj) + r'\.Set\(FV,\s*([^,\)]+)', seg):
+        vals.append(m.group(1).strip())
+    for v in vals:
+        if not re.fullmatch(r'-?[\d\.]+(?:[eE][-+]?\d+)?', v):
+            return True  # 循环变量 → 扫描源
+    return len(set(vals)) >= 2
+
+
+TESTPAD_TOKENS = ('AMUX', 'VDM', 'NTC', 'ATEST')
+
+
+def is_testpad_bias(obj, relays):
+    """对象名与闭合的 Share 继电器名都含测试垫 token (AMUX/VDM/NTC/ATEST)
+    → 该对象驱动的是测试垫偏置 (非供电轨), 不参与 Cap 反向检查。
+    例: VAC123_AMUX_ACM 偏置 AMUX 测试垫(闭 K20_ACM0_AMUX) 非 VAC 轨 → 不查 K21_VAC_Cap;
+        同对象经 K18_ACM0_VAC3 驱动 VAC3 轨时继电器名无测试垫 token → 正常查 Cap。"""
+    obj_up = obj.upper()
+    if not any(t in obj_up for t in TESTPAD_TOKENS):
+        return False
+    return any(t in r.upper() for r in relays for t in TESTPAD_TOKENS)
+
+
+def strip_comments(blk):
+    """去掉 // 行注释, 返回仅代码 (注释含方案说明/下个函数预告, 会污染功能判定)"""
+    return '\n'.join(line.split('//')[0] for line in blk.splitlines())
+
+
+def observes_open_drain(fn_block):
+    """是否实际观测开漏输出(nQON/DTEST0/SDA_INT), 需要 PU 上拉。
+    判定只基于去注释后的代码 (注释里的方案说明/下个函数预告会误报):
+    - NQON_HG1_ACM 作为源表对象 (MeasureVI 直读 / rampv_capv 监视源)
+    - QTMU_GP 频率测量 (DTEST0/OSC); K66_TMU_nQON = QTMU->nQON 输入继电器
+      (QTMU 调用在 sub.cpp measure 函数时, test.cpp 函数体只见此继电器, 视为观测 nQON)
+    - SDA_INT 通用开漏观测
+    """
+    code = strip_comments(fn_block)
+    return ('NQON_HG1_ACM' in code or 'QTMU_GP' in code or 'SDA_INT' in code
+            or 'K66_TMU_nQON' in code)
+
+
+def main():
+    warn_as_err = '--warn-as-error' in sys.argv
+    src_path = SRC
+    if '--src' in sys.argv:
+        i = sys.argv.index('--src')
+        if i + 1 < len(sys.argv) and not sys.argv[i + 1].startswith('--'):
+            src_path = sys.argv[i + 1]
+    meta_path = META
+    if '--meta' in sys.argv:
+        i = sys.argv.index('--meta')
+        # 守卫: 下一参数不是 flag 才当路径 (否则 `--meta --warn-as-error` 会把
+        # --warn-as-error 吞成 meta 路径 → meta 加载为空 → 静默降级对象名反推 + 假 FR-001 告警)
+        if i + 1 < len(sys.argv) and not sys.argv[i + 1].startswith('--'):
+            meta_path = sys.argv[i + 1]
+    defs_path = DEFS
+    if '--defines' in sys.argv:
+        i = sys.argv.index('--defines')
+        if i + 1 < len(sys.argv) and not sys.argv[i + 1].startswith('--'):
+            defs_path = sys.argv[i + 1]
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except AttributeError:
+        pass
+
+    src = read_enc(src_path)
+    map_txt = read_enc(MAP)
+    # #define Kxx 在 StdAfx.h (DLP 加密, read_enc 读取), 不在 test.cpp 本身
+    defines = parse_defines(read_enc(defs_path))
+    on_set, nc_set = parse_map_rels(map_txt)
+    # TestItemMeta 权威 (DFT 意图层): capAuthority 供检查 E 判定供电/豁免
+    meta_by_name = load_meta(meta_path)
+    # Cap 稳压电容家族: {PIN token: relay_name}, 供 FR-001 反向检查
+    # 2026-08-30 通道归并 (别名 bug 修复): 同一物理继电器的两个 define 名 (如
+    #   K_VAC1_Cap=21 ≡ K21_VAC_Cap=21, K_SW_BST_Cap=57 ≡ K57_CAP_BST_SW=57,
+    #   K_V1P5_VDRV_Cap=126 ≡ K126_V1P5_CAP=126) 会解析成不同 PIN token → 双家族
+    #   重复检查 → 代码闭了权威名却报"未闭别名"误报。修复: 每个 token 的 cap_relay
+    #   统一指向同通道的工程权威名 (K\d+ 带通道号者优先), 不丢 token 不漏检。
+    cap_defs = {}
+    canon_by_ch = {}  # channel -> K\d+ 权威名
+    for r, ch in defines.items():
+        pt = cap_pin(r)
+        if pt is None:
+            continue
+        if re.match(r'^K\d+_', r):
+            canon_by_ch.setdefault(ch, r)
+        if pt not in cap_defs or (re.match(r'^K\d+_', r) and not re.match(r'^K\d+_', cap_defs[pt])):
+            cap_defs[pt] = r
+    # 无通道号别名 (K_<Pin>_Cap) → 若同通道存在 K\d+ 权威名则指向它
+    for pt, name in list(cap_defs.items()):
+        if not re.match(r'^K\d+_', name) and defines[name] in canon_by_ch:
+            cap_defs[pt] = canon_by_ch[defines[name]]
+
+    errors, warns = [], []
+    checked = 0
+    funcional_checked = 0
+    structural_checked = 0
+    cap_rev_checked = 0
+
+    for name, block in fn_blocks(src):
+        # ===== S. 结构规则: Step 1 (Connect) 必须始终有 cbite.SetOn =====
+        # 即使所有继电器默认NC直连、无需闭合任何继电器, 也必须显式 cbite.SetOn(-1)
+        # (STS8300 手册公共规范), 禁止只写 delay_ms(3) 空区块
+        if 'Step 1' in block and 'cbite.SetOn' not in block:
+            structural_checked += 1
+            errors.append(f'{name}: Step 1 无 cbite.SetOn — 无继电器需闭合时也必须显式 cbite.SetOn(-1) 空操作 (STS8300 手册规范)')
+            continue
+
+        relays = parse_setons(block)
+
+        # ===== E1. 反向检查 meta 权威分支 (独立于 relays 是否为空, 2026-08-10) =====
+        # capAuthority 来自 DFT 意图层 (OVERVIEW), 不依赖代码是否有 SetOn。
+        # 纯 NC 通路供电 + 唯一 Cap 继电器函数 (如 Trim_VBG 只 SetOn K13, K8 默认NC):
+        # 若 Cap 被删则 relays 为空, 旧结构 `if not relays: continue` 会整函数跳过 → 静默漏检。
+        # 故 meta 权威检查必须在 relays 空判断之前执行; 降级分支 (无 meta) 仍在原位。
+        meta_fn = meta_by_name.get(name)
+        if meta_fn is not None:
+            ca = meta_fn.get('capAuthority') or {}
+            powered = {p.upper() for p in ca.get('powered_pins', [])}
+            mi = {p.upper() for p in ca.get('mi_pins', [])}
+            ramp = {p.upper() for p in ca.get('ramp_pins', [])}
+            testpad = {p.upper() for p in ca.get('testpad_pins', [])}
+            for ptok, cap_relay in sorted(cap_defs.items()):
+                fam_powered = fam_intersect(powered, ptok)
+                if not fam_powered:
+                    continue
+                if fam_intersect(testpad, ptok):
+                    continue  # 该家族只作测试垫偏置, 非供电轨
+                if cap_relay in relays:
+                    continue  # 已闭其 Cap
+                if fam_intersect(mi, ptok) or fam_intersect(ramp, ptok):
+                    continue  # 该 PIN 被测电流 / 是 ramp 扫描源 (按 PIN 豁免, 非按函数)
+                cap_rev_checked += 1
+                warns.append(f'{name}: 静态供电 {"/".join(sorted(fam_powered))} 但未闭稳压电容 {cap_relay} (FR-001 反向: 供电→闭; meta权威)')
+
+        if not relays:
+            continue
+        checked += 1
+
+        # —— 功能规则预提取 ——
+        mi_pins = mi_current_pins(block)
+        od_observed = observes_open_drain(block)
+        has_pu = any(is_pu(r) for r in relays)
+        has_p2p = any(is_p2p(r) for r in relays)
+
+        for r in relays:
+            # ===== A. 名真实性 =====
+            if r not in defines:
+                errors.append(f'{name}: 虚构继电器名 {r} (无 #define)')
+                continue
+            n = defines[r]
+
+            # ===== B. 功能规则 (Cap/PU/P2P 优先判定) =====
+            pin = cap_pin(r)
+            if pin is not None:
+                # Cap 稳压电容: 测该 PIN 电流时必须断开 (电容吃电流, 掩盖真实 Iq)
+                funcional_checked += 1
+                if mi_pins and pin in mi_pins:
+                    errors.append(f'{name}: 功能规则违反 — 测 {pin} 电流(MIRET)却闭合稳压电容 {r} (会掩盖真实电流)')
+                continue  # Cap 不参与闭环可达检查 (不在通路段)
+
+            if is_pu(r):
+                # 开漏上拉: 观测开漏输出时必须有, 否则闭合冗余
+                funcional_checked += 1
+                if not od_observed:
+                    warns.append(f'{name}: 闭合上拉 {r} 但函数未观测开漏输出(nQON/DTEST0/Toggle), 确认是否必要')
+                continue
+
+            if is_p2p(r):
+                # PIN 到地短路: 需确认场景 (当前 DALI 无 P2P, 占位规则)
+                funcional_checked += 1
+                warns.append(f'{name}: P2P 继电器 {r} 闭合 — 需人工确认是否需 PIN 到地短路')
+                continue
+
+            # ===== C. 闭环规则 (通路继电器) =====
+            if n in on_set:
+                continue
+            if n in nc_set:
+                warns.append(f'{name}: {r} 仅出现 Relay-NC (默认导通), 闭合冗余?')
+                continue
+            errors.append(f'{name}: {r}(K{n}) 在 SCH-Connect-Map 中不存在 (虚构通路)')
+
+        # ===== D. 功能规则反向检查 =====
+        if od_observed and not has_pu:
+            warns.append(f'{name}: 观测开漏输出(nQON/DTEST0/Toggle)但未闭合任何上拉继电器 — 开漏无上拉读不到电平')
+
+        # ===== E2. 反向检查降级分支 (无 meta 函数 → 对象名反推, 仅健壮性) =====
+        # meta 权威分支已在上方 E1 独立于 relays 执行; 此处只处理 meta 缺失函数
+        if meta_fn is None:
+            fv_map = fv_supply_objs(block)
+            for ptok, cap_relay in sorted(cap_defs.items()):
+                hit_objs, fam = [], set()
+                for obj, pins in fv_map.items():
+                    if is_testpad_bias(obj, relays):
+                        continue
+                    m = {p for p in pins if p == ptok or p.startswith(ptok) or ptok.startswith(p)}
+                    if m:
+                        fam.update(m)
+                        hit_objs.append(obj)
+                if not fam:
+                    continue
+                if cap_relay in relays or (fam & mi_pins):
+                    continue
+                if any(o in capi_monitor_sources(block) for o in hit_objs):
+                    continue
+                if any(is_ramp_or_scan(block, o) for o in hit_objs):
+                    continue
+                cap_rev_checked += 1
+                warns.append(f'{name}: 静态供电 {"/".join(sorted(fam))} 但未闭稳压电容 {cap_relay} (FR-001 反向, [meta缺失]降级对象名反推)')
+
+    meta_cov = sum(1 for n, _ in fn_blocks(src) if n in meta_by_name)
+    nblocks = sum(1 for _ in fn_blocks(src))
+    print(f'[relay] 检查 {os.path.basename(src_path)}: {checked} 个函数有继电器 '
+          f'(结构规则 {structural_checked} 处, 功能规则 {funcional_checked} 处, '
+          f'FR-001 反向 {cap_rev_checked} 处), '
+          f'map Relay-ON={len(on_set)} Relay-NC-only={len(nc_set)}, '
+          f'meta 覆盖 {meta_cov}/{nblocks}')
+    if warns:
+        print('WARNINGS:')
+        for w in warns:
+            print('  -', w)
+    if errors:
+        print('*** FAIL ***')
+        for e in errors:
+            print('  -', e)
+        sys.exit(1)
+    if warns and warn_as_err:
+        print('*** FAIL (warn-as-error) ***')
+        sys.exit(1)
+    print('RELAY TRACE PASSED')
+
+
+if __name__ == '__main__':
+    main()

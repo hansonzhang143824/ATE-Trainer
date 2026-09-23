@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ATE Offline Coding 知识库体系</title>
+  <style>
+    :root{--bg:#f8fafc;--card:#fff;--ink:#111827;--muted:#64748b;--line:#d9e2ec;--blue:#2563eb;--green:#059669;--amber:#d97706;--red:#dc2626;--purple:#7c3aed;--gray:#475569}
+    body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.65 "Microsoft YaHei",Segoe UI,Arial,sans-serif}
+    .wrap{max-width:1240px;margin:auto;padding:28px 22px 72px}
+    h1{margin:0 0 6px;font-size:28px} h2{margin:34px 0 14px;font-size:20px;border-left:5px solid var(--blue);padding-left:10px} h3{margin:16px 0 8px;font-size:16px}
+    .sub{color:var(--muted);margin:0 0 18px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:14px 0}
+    .grid{display:grid;gap:14px}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    @media(max-width:980px){.g2,.g3{grid-template-columns:1fr}}
+    .layer{border-top:6px solid var(--blue)}.l0{border-top-color:var(--green)}.l1{border-top-color:var(--blue)}.l2{border-top-color:var(--amber)}.ref{border-top-color:var(--purple)}.lib{border-top-color:var(--red)}.legacy{border-top-color:var(--gray)}
+    .badge{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:800;color:#fff}.B0{background:var(--green)}.B1{background:var(--blue)}.B2{background:var(--amber)}.BR{background:var(--purple)}.BL{background:var(--red)}.BG{background:var(--gray)}
+    code,.path{font-family:Consolas,"Courier New",monospace;font-size:12.5px}.path{background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;padding:1px 6px;white-space:nowrap}
+    table{border-collapse:collapse;width:100%;font-size:13px;background:#fff}th,td{border:1px solid var(--line);padding:9px 10px;vertical-align:top;text-align:left}th{background:#f8fafc;white-space:nowrap}.scroll{overflow:auto;border-radius:10px;border:1px solid var(--line)}
+    ul{margin:6px 0 0 20px;padding:0}li{margin:4px 0}.ok{color:var(--green);font-weight:800}.warn{color:var(--amber);font-weight:800}.bad{color:var(--red);font-weight:800}
+    .tree{font-family:Consolas,"Courier New",monospace;background:#0f172a;color:#e5e7eb;border-radius:12px;padding:14px;overflow:auto;white-space:pre}
+    .rule{border-left:4px solid var(--blue);padding:10px 12px;background:#eff6ff;border-radius:8px;margin:8px 0}
+    .footer{margin-top:34px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:14px}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ATE Offline Coding 知识库体系</h1>
+  <p class="sub">基于 <span class="path">D:\Newtest\CODEX\_PROCESS\.claude</span>、<span class="path">库函数</span>、<span class="path">Project/DALI</span> 和归档资料整理。日期：2026-08-23。</p>
+
+  <div class="card">
+    <h3>核心原则</h3>
+    <div class="rule">一条规则 = 一个 ID = 一个正文位置；agent、脚本、记忆、报告只引用，不复制正文。</div>
+    <div class="rule">机台手册/API 是 L0 只读事实；只有被工程师确认并能约束生成行为的内容，才进入 L1 规则层。</div>
+    <div class="rule">经验、案例、库函数候选先进入 L2/reference/draft；不能直接污染 active rule。</div>
+  </div>
+
+  <h2>一、知识分层全景</h2>
+  <div class="grid g3">
+    <div class="card layer l0">
+      <h3><span class="badge B0">L0</span> 规范层 Sources</h3>
+      <p>不可改事实：机台手册、API、源表说明、TREG 文档、原始 PDF/TXT。</p>
+      <p><span class="path">.claude/knowledge/sources/</span></p>
+      <p><b>用法：</b>只读引用，提炼出的规则另进 L1。</p>
+    </div>
+    <div class="card layer l1">
+      <h3><span class="badge B1">L1</span> 规则层 Standards</h3>
+      <p>约束生成和验证的 active/draft/retired 规则。</p>
+      <p><span class="path">.claude/knowledge/standards/</span></p>
+      <p><b>用法：</b>生产链路默认检索；可机器判定则同步 verify 脚本。</p>
+    </div>
+    <div class="card layer l2">
+      <h3><span class="badge B2">L2</span> 经验层 Experience</h3>
+      <p>非强制绕法、调试经验、项目经验、继电器检查清单。</p>
+      <p><span class="path">.claude/knowledge/experience/</span></p>
+      <p><b>用法：</b>辅助设计和 review；需人工批准才上升为 L1。</p>
+    </div>
+    <div class="card layer ref">
+      <h3><span class="badge BR">REF</span> 参考材料 References</h3>
+      <p>代码案例、芯片 block、典型方法、debug 排查方法论。</p>
+      <p><span class="path">.claude/references/</span></p>
+      <p><b>用法：</b>按参数索引查四件套，不靠目录猜。</p>
+    </div>
+    <div class="card layer lib">
+      <h3><span class="badge BL">LIB</span> 库函数</h3>
+      <p>test_method、treg、shared_functions、sub_func。</p>
+      <p><span class="path">库函数/</span></p>
+      <p><b>用法：</b>函数注册表登记语义；含 TODO/stub 不得发布。</p>
+    </div>
+    <div class="card layer legacy">
+      <h3><span class="badge BG">LEGACY</span> 历史规格/记忆</h3>
+      <p>旧 18 agents / 2 skills、历史 PROGRESS、DeepSeek 规则。</p>
+      <p><span class="path">legacy-agent-specs/</span> · <span class="path">_archive/</span></p>
+      <p><b>用法：</b>只做溯源，不作为生产入口。</p>
+    </div>
+  </div>
+
+  <h2>二、目录结构地图</h2>
+  <div class="tree">D:\Newtest\CODEX\_PROCESS
+├─ CLAUDE.md                         # 入口 + 指针
+├─ 工作流全景.md                      # 当前 2.0 工作流权威
+├─ project_config.json                # 项目输入唯一入口
+├─ .claude
+│  ├─ AGENT_MAP.md                    # 4+1 agent 权威
+│  ├─ agents/                         # 现役 agent 说明
+│  ├─ skills/nuvolta-codegen.md       # 唯一生产 skill
+│  ├─ knowledge/
+│  │  ├─ sources/                     # L0 机台/API/源表事实
+│  │  ├─ standards/                   # L1 规则/框架/单位/TREG/验证
+│  │  ├─ hardware/                    # 硬件拓扑、CBIT、继电器、闭环模型
+│  │  └─ experience/                  # L2 经验、测量、上下电、relay-check
+│  └─ references/
+│     ├─ code/                        # 黄金案例/工程案例
+│     ├─ chip/                        # 参数/Block 是什么
+│     ├─ method/                      # 参数怎么测
+│     └─ debug/                       # 怎么排查
+├─ 库函数/
+│  ├─ test_method/                    # rampv_capv/rampi_capv 等
+│  ├─ treg/                           # Trim/TREG 库
+│  ├─ shared_functions/               # 跨项目函数候选
+│  └─ sub_func/
+├─ Project/DALI/
+│  ├─ Dali_testmode.xlsx              # DFT
+│  ├─ DALI_Net.NET                    # DALI 网表
+│  ├─ CBIT表-DALI.xlsx                # CBIT
+│  ├─ SCH-Connect-Map.txt             # 原理图连接图
+│  ├─ COMPONENT-STATISTIC.txt         # 元件统计
+│  ├─ reg_config/*.sv                 # 寄存器配置源
+│  ├─ meta/dali_tm_meta.json          # TestItemMeta
+│  └─ waivers.json                    # 项目例外
+└─ _archive/                          # 历史材料，只用于追溯</div>
+
+  <h2>三、三注册表：规则 / 材料 / 函数</h2>
+  <div class="scroll">
+    <table>
+      <tr><th>注册表</th><th>路径</th><th>定位</th><th>当前状态</th></tr>
+      <tr><td>规则注册表</td><td><span class="path">.claude/knowledge/standards/rules-registry.md</span></td><td>所有 active/draft/retired 规则的唯一正文。</td><td>已登记 MR-000、FR-001~003、R-PON/R-POFF、C-CBIT、P-FINDER、P-DEF、R-LOG、R-HYS、R-SETON、R-VIR、B-001、R-TRIM、R-REF 等。</td></tr>
+      <tr><td>材料索引</td><td><span class="path">.claude/references/param_type_index.md</span></td><td>按具体参数查 chip/method/code/debug 四件套。</td><td>已有 RDSON、VBG、BUCK HS Gain、VAC GD present、UVLO、Current Threshold、CurrentSense、VBAT OVP。</td></tr>
+      <tr><td>功能类型索引</td><td><span class="path">.claude/references/func_type_index.md</span></td><td>按 7 类功能类型查框架/方法/示例参数。</td><td>普通与 Trim 框架较明确；Contact/OTP/P2P/Leakage 模板待案例。</td></tr>
+      <tr><td>函数注册表</td><td><span class="path">.claude/knowledge/standards/functions-registry.md</span></td><td>生成前先查，命中复用；记录函数签名/语义/调用点。</td><td>test_method ramp 家族已登记共用语义；shared_functions 仍待 active 发布。</td></tr>
+    </table>
+  </div>
+
+  <h2>四、L0 Sources：事实层</h2>
+  <div class="grid g2">
+    <div class="card">
+      <h3>已整理摘要</h3>
+      <ul>
+        <li><span class="path">accotest-api.md</span></li>
+        <li><span class="path">system-functions.md</span></li>
+        <li><span class="path">acm.md</span> / <span class="path">acm200.md</span></li>
+        <li><span class="path">fovie.md</span> / <span class="path">fpvie.md</span> / <span class="path">fxvie.md</span></li>
+        <li><span class="path">hpvie.md</span> / <span class="path">hvie.md</span> / <span class="path">qvme.md</span></li>
+        <li><span class="path">cbite-qtmue.md</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>原始资料</h3>
+      <ul>
+        <li><span class="path">sources/raw/STS8300 编程手册-2.1.15.pdf</span></li>
+        <li><span class="path">sources/raw/AccoTEST 自动化接口编程手册_Rev 1.0.0.pdf</span></li>
+        <li><span class="path">sources/treg/TREG_execute()_&_trim_groups.pdf</span></li>
+        <li><span class="path">sources/treg/TREG_presentation.pdf</span></li>
+      </ul>
+      <p class="warn">本次只做目录级识别，没有读取机台手册正文。</p>
+    </div>
+  </div>
+
+  <h2>五、L1 Standards：规则层</h2>
+  <div class="scroll">
+    <table>
+      <tr><th>文件</th><th>内容</th><th>使用方</th><th>状态</th></tr>
+      <tr><td><span class="path">rules-registry.md</span></td><td>统一规则生命周期：draft → active → retired。</td><td>所有 reviewer 与 verify 脚本。</td><td><span class="ok">active 规则已集中</span></td></tr>
+      <tr><td><span class="path">test-types.md</span></td><td>两级分类：项目结构类型 7 类 + 具体参数类型。</td><td>test-design-reviewer。</td><td><span class="ok">核心完成</span>，部分框架待案例。</td></tr>
+      <tr><td><span class="path">framework.md</span></td><td>测试函数框架、Step 结构、普通/Trim 框架。</td><td>生成器、single fn 检查。</td><td>作为框架权威。</td></tr>
+      <tr><td><span class="path">merge_rules.md</span></td><td>合并纪律，默认一个 TM 一个函数。</td><td>verify_merge_rules.py。</td><td>MR-000 生效。</td></tr>
+      <tr><td><span class="path">register-config.md</span></td><td>寄存器配置原则。</td><td>register plan / codegen。</td><td><span class="warn">骨架待补</span>。</td></tr>
+      <tr><td><span class="path">units.md</span></td><td>LogData 单位、Hys 单位、V/I/R 换算。</td><td>验证、代码生成。</td><td>R-LOG/R-HYS/R-VIR 已落规则。</td></tr>
+      <tr><td><span class="path">treg.md</span></td><td>Trim/TREG 框架。</td><td>Trim 项生成。</td><td>与外部 TREG 资产绑定。</td></tr>
+      <tr><td><span class="path">verification.md</span></td><td>两层检验：每个 TM 生成后立即 L1 单函数冒烟；全部完成后统一执行 L2 跨项目门禁。</td><td>L1：workflow-orchestrator；L2：verification-build-reviewer。</td><td><code>verify_single_fn.py --fn</code> 已实现；两层顺序已固化到生产入口。</td></tr>
+    </table>
+  </div>
+
+  <h2>六、Hardware 知识：硬件闭环层</h2>
+  <div class="scroll">
+    <table>
+      <tr><th>文件</th><th>主题</th><th>生成/验证关联</th></tr>
+      <tr><td><span class="path">hardware/schematic-parsing.md</span></td><td>原理图解析规则、门控、F/S 状态一致性。</td><td><span class="path">Project/DALI/sch_parse.py</span></td></tr>
+      <tr><td><span class="path">hardware/cbit-mapping.md</span></td><td>CBIT 映射和继电器定义。</td><td><span class="path">gen_cbit_defines.py</span></td></tr>
+      <tr><td><span class="path">hardware/cbit-principles.md</span></td><td>CBIT 原理与命名/合并策略。</td><td>CBIT 规则审计。</td></tr>
+      <tr><td><span class="path">hardware/relays.md</span></td><td>继电器功能规则、Cap/PU/P2P。</td><td><span class="path">verify_relay_trace.py</span></td></tr>
+      <tr><td><span class="path">hardware/bus-topology.md</span></td><td>BUS、Share、默认 NC/ON 拓扑。</td><td>PathProof 与短接风险分析。</td></tr>
+      <tr><td><span class="path">hardware/closed-loop-model.md</span></td><td>Source→DUT PIN 闭环模型。</td><td>PathProof 的理论层。</td></tr>
+      <tr><td><span class="path">hardware/pin-resource-map.md</span></td><td>PIN 与源表映射。</td><td>ChannelMap/Pin_Channel_define 读取。</td></tr>
+      <tr><td><span class="path">hardware/test-strategy.md</span></td><td>硬件策略。</td><td>TestItemPlan 输入。</td></tr>
+      <tr><td><span class="path">hardware/voltage-inference.md</span></td><td>电压推断。</td><td>range/power plan 辅助。</td></tr>
+    </table>
+  </div>
+
+  <h2>七、L2 Experience：经验层</h2>
+  <div class="grid g2">
+    <div class="card">
+      <h3>已建文件</h3>
+      <ul>
+        <li><span class="path">experience/index.md</span></li>
+        <li><span class="path">experience/measurement.md</span> <span class="warn">待补细节</span></li>
+        <li><span class="path">experience/power-sequence.md</span> <span class="warn">待补细节</span></li>
+        <li><span class="path">experience/project-notes.md</span></li>
+        <li><span class="path">experience/relay-check.md</span> <span class="warn">待回灌正文</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>使用规则</h3>
+      <ul>
+        <li>经验默认不强制，除非转为 L1 active rule。</li>
+        <li>经验可以指导 test-design-reviewer，但不能替代证据。</li>
+        <li>涉及项目例外时写入 <span class="path">Project/DALI/waivers.json</span>。</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>八、References：案例四件套</h2>
+  <div class="scroll">
+    <table>
+      <tr><th>目录</th><th>定位</th><th>现有代表</th><th>规则</th></tr>
+      <tr><td><span class="path">references/code/</span></td><td>优秀代码案例，长什么样。</td><td><code>Rdson.cpp</code>、<code>UVLO.cpp</code>、<code>OVP.cpp</code>、<code>toggle-template.cpp</code>、<code>TM130_Trim_VBG.cpp</code>、<code>TM623_Trim_BUCK_HS_Gain.cpp</code></td><td>案例文件位置/名字/内容不随意改，靠索引关联。</td></tr>
+      <tr><td><span class="path">references/chip/</span></td><td>芯片 block/参数是什么。</td><td><code>RDSON.md</code>、<code>UVLO.md</code>、<code>CurrentSense.md</code>、<code>Current-Threshold.md</code></td><td>服务“为什么这样测”。</td></tr>
+      <tr><td><span class="path">references/method/</span></td><td>典型参数测试方法。</td><td><code>RDSON.md</code>、<code>UVLO.md</code>、<code>CurrentSense.md</code>、<code>Current-Threshold.md</code></td><td>服务“怎么测”。</td></tr>
+      <tr><td><span class="path">references/debug/</span></td><td>调试/排查方法论。</td><td><code>RDSON.md</code></td><td>按需补，不是每个参数必须有。</td></tr>
+    </table>
+  </div>
+
+  <h2>九、库函数体系</h2>
+  <div class="scroll">
+    <table>
+      <tr><th>库</th><th>路径</th><th>定位</th><th>注意事项</th></tr>
+      <tr><td>test_method</td><td><span class="path">库函数/test_method/Test_Method.h/.cpp</span></td><td>rampv_capv、rampi_capv、ramp64、OS/量程捕获等。</td><td>DLP/工程副本敏感；语义必须登记到 functions-registry。</td></tr>
+      <tr><td>treg</td><td><span class="path">库函数/treg/treg.h/.cpp</span></td><td>Trim 相关库函数。</td><td>与 VS 工程 TREG 文件绑定。</td></tr>
+      <tr><td>shared_functions</td><td><span class="path">库函数/shared_functions/</span></td><td>跨项目通用子函数候选。</td><td>draft → 最小测试 → 两个确认案例 → 人工批准 → active。</td></tr>
+      <tr><td>sub_func</td><td><span class="path">库函数/sub_func/</span></td><td>sub.cpp 辅助函数。</td><td>含 TODO/stub 不得进入生产调用链。</td></tr>
+    </table>
+  </div>
+
+  <h2>十、Legacy 与记忆边界</h2>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Legacy</h3>
+      <ul>
+        <li><span class="path">.claude/knowledge/standards/legacy-agent-specs/</span></li>
+        <li>旧 18 agents / 2 skills：只做规则溯源，禁止作为生产入口。</li>
+        <li><span class="path">_archive/</span>：DeepSeek 规则、历史代码、过程稿、旧 PROGRESS。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>记忆 / daylog</h3>
+      <ul>
+        <li><span class="path">PROGRESS.md</span>：长期进度和重要历史决策。</li>
+        <li><span class="path">daylog/</span>：每日变更记录。</li>
+        <li>未来目标：记忆只留指针，正文回灌到 knowledge 唯一家。</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>十一、知识更新协议</h2>
+  <div class="scroll">
+    <table>
+      <tr><th>用户给我的材料类型</th><th>落点</th><th>是否强制</th><th>需要人工批准</th></tr>
+      <tr><td>机台手册/API/datasheet</td><td>L0 <span class="path">sources/</span></td><td>不直接强制</td><td>提炼成 L1 规则时需要</td></tr>
+      <tr><td>强制铁律</td><td>L1 <span class="path">rules-registry.md</span></td><td>是，若可判定则写 verify</td><td>需要</td></tr>
+      <tr><td>工程经验/绕法</td><td>L2 <span class="path">experience/</span></td><td>否</td><td>上升为 L1 时需要</td></tr>
+      <tr><td>代码案例</td><td>REF <span class="path">references/code/</span> + 索引</td><td>否</td><td>标为黄金案例时需要</td></tr>
+      <tr><td>函数/子函数</td><td>LIB + <span class="path">functions-registry.md</span></td><td>命中复用</td><td>发布 active 需要</td></tr>
+      <tr><td>项目例外</td><td><span class="path">Project/DALI/waivers.json</span></td><td>限定 scope 强制</td><td>需要 item-level 说明</td></tr>
+    </table>
+  </div>
+
+  <div class="footer">
+    来源摘要：<code>.claude/knowledge/panorama.md</code>、<code>讨论记录-知识分层方案.md</code>、<code>rules-registry.md</code>、<code>param_type_index.md</code>、<code>functions-registry.md</code>、目录扫描结果。机台手册原文未展开读取。
+  </div>
+</div>
+</body>
+</html>

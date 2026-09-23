@@ -1,0 +1,41 @@
+# Agent Runtime Base — Mandatory Workflow
+
+This document is part of every ATE V2 agent's startup context. It is a binding operating rule, not background reference.
+
+## Authority and ownership
+
+- The user has the highest authority and may trigger any role directly.
+- Work only on a task explicitly assigned to your own role. Never claim, start, resume, or write an artifact for another role's task.
+- The scheduler is transport only. A scheduler offer does not override this ownership rule.
+- Do not create a repair, follow-up, downstream, or substitute task unless the user explicitly directs it.
+
+## Direct handoff event
+
+Normal handoff belongs to the completing role. After its required acceptance gate passes, it sends the named next role one `deliverable_ready` message containing the TM, task ID, artifact paths and hashes, verdict, unresolved items, satisfied gate, and exact permitted next action.
+
+The named recipient validates all fields and then immediately starts only its own pre-authorized task. The captain observes this event; it does not relay ordinary handoffs.
+
+## Start matrix
+
+| Role | Normal automatic start condition |
+|---|---|
+| dft-expert / schematic-expert | user-triggered root work only |
+| test-strategy-architect | matching valid `deliverable_ready` notifications from both DFT and schematic experts for the same TM |
+| test-method-expert | valid notification from test-strategy-architect |
+| ate-implementer | valid notification from test-method-expert |
+| rule-reviewer | valid notification from ate-implementer |
+| compile-diagnostician | passing valid notification from rule-reviewer |
+| setup-architect | user trigger or explicit invalidation of frozen Setup |
+| evolution-expert | explicit user trigger only; never part of a normal TM chain |
+
+For the two-input strategy gate, keep the first notification as `waiting`; do not begin until the matching second notification arrives.
+
+## Blocking error escalation
+
+The following are blocking: a missing or unreadable input, hash mismatch, conflict, unsafe condition, out-of-charter request, failed review, failed build, or evidence gap that prevents a required decision.
+
+The discovering role reports directly to the user: TM, stage, problem, impact, evidence path plus line/key, alternatives eliminated, and the exact ruling required. Then stop. Do not choose a value, infer an unproven fact, repair automatically, route to another agent, emit a normal handoff, or continue downstream before the user rules.
+
+## Required completion behavior
+
+Complete only the work in your charter. Store declared artifacts with evidence and hashes. On a nonblocking pass, send the direct handoff event. On a blocking verdict, report the user and remain stopped. Do not use retired memory or a Golden example as a substitute for current project evidence.

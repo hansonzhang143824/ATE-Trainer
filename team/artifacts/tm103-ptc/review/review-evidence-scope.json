@@ -1,0 +1,261 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm103-method-contract-review-evidence-scope",
+  "trial": "tm103-ptc",
+  "tm": "TM103",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_METHOD",
+  "snapshotPath": "team/artifacts/tm103-ptc/review/immutable-review-snapshot.json",
+  "note": "Every executable claim of this review names the files searched, the query, the candidate count and the evidence location. Absence assertions state an explicit pass/fail conclusion.",
+  "checks": [
+    {
+      "id": "EV-01",
+      "assertionKind": "presence",
+      "status": "pass",
+      "claim": "The strategy contract declares exactly one resourceAllocation row per endpoint of the binding decision, each SELECTED with a nonempty sourceTable.",
+      "scope": {
+        "files": [
+          "team/artifacts/tm103-ptc/review/copy/01-tm103-resource-config-contract.json",
+          "team/artifacts/tm103-ptc/input-manifest.json"
+        ],
+        "query": "resourceAllocation rows with selectionState=SELECTED and a sourceTable, compared to {staticSupplies[].pin} U {sweptPin} U {monitorDutPin}"
+      },
+      "candidateCount": 2,
+      "evidence": [
+        "01-tm103-resource-config-contract.json:78-174 (RA-1 VBAT, sourceTable VBAT_PD3_FXVI, SELECTED)",
+        "01-tm103-resource-config-contract.json:175-309 (RA-2 VDM, sourceTable VDM_SDA_ACM, SELECTED)",
+        "01-tm103-resource-config-contract.json:58-77 (endpointDerivation.requiredEndpointSet = [VBAT, VDM])",
+        "01-tm103-resource-config-contract.json:536-550 (resourceSummary.sourceTablesUnresolved = false)"
+      ]
+    },
+    {
+      "id": "EV-02",
+      "assertionKind": "presence",
+      "status": "pass",
+      "claim": "Every relay claimed by the strategy resolves to a named project artifact (path line or relay identity line).",
+      "scope": {
+        "files": [
+          "project/DALI/SCH-Connect-Map.txt",
+          "project/DALI/Pin_Channel_define.h",
+          "team/artifacts/tm103-ptc/review/copy/01-tm103-resource-config-contract.json"
+        ],
+        "query": "relay identities K8_PD3, K7_BUSH_VBAT, K13_VBAT_Cap, K59_SDA, K58_BUSH_VDM, K152_VDM_TMU and their source-table macros in project evidence"
+      },
+      "candidateCount": 6,
+      "evidence": [
+        "project/DALI/SCH-Connect-Map.txt:832-834 VBAT via K8 (Relay-NC), 需闭合: 无",
+        "project/DALI/SCH-Connect-Map.txt:814-816 PD3 branch 需闭合: K8 (Relay-ON)",
+        "project/DALI/SCH-Connect-Map.txt:795-797 VDM via K59 (Relay-NC), 需闭合: 无",
+        "project/DALI/SCH-Connect-Map.txt:914 VBAT 稳压 Cap2_VBAT_S1 需闭合: K13",
+        "project/DALI/Pin_Channel_define.h:12 VBAT_PD3_FXVI = S3_5,... and :22 VDM_SDA_ACM = S5_7,..."
+      ]
+    },
+    {
+      "id": "EV-03",
+      "assertionKind": "absence",
+      "status": "pass",
+      "claim": "No project metadata bound or tolerance exists for TM103, so the method's UNRESOLVED_NO_PROJECT_AUTHORITY state cannot be an omission.",
+      "scope": {
+        "files": [
+          "project/DALI/meta/dali_tm_meta.json",
+          "team/artifacts/tm103-ptc/review/copy/01-tm103-resource-config-contract.json"
+        ],
+        "query": "(?i)\"?(limit|lsl|usl|min|max|tol)[a-z]*\"?\\s*:"
+      },
+      "candidateCount": 0,
+      "evidence": [
+        "query returned 0 matches over the whole file (conclusion: explicit absence PASS)",
+        "expected value + unit are present instead: ExpectValue 0.5, Unit uA recorded in team/artifacts/tm103-ptc/input-manifest.json canonicalInputs.dft.rawRows[0]"
+      ]
+    },
+    {
+      "id": "EV-04",
+      "assertionKind": "absence",
+      "status": "needs-revision",
+      "claim": "The method contract asserts that a grep over knowledge/standards for limit/tolerance/LSL/USL returns 0 matches.",
+      "scope": {
+        "files": [
+          "knowledge/standards/treg.md",
+          "knowledge/standards/units.md",
+          "knowledge/standards/framework.md",
+          "team/artifacts/tm103-ptc/review/copy/03-tm103-test-method-contract.json"
+        ],
+        "query": "(?i)limit|tolerance|LSL|USL over knowledge/standards"
+      },
+      "candidateCount": 2,
+      "evidence": [
+        "the reproduced query returns 2 matches, not 0: knowledge/standards/treg.md:124 'spec, // SPEC 对象 (用于获取 limits)' and knowledge/standards/treg.md:164 'check_need_retry(limits, results)'",
+        "the claim as written appears at 03-tm103-test-method-contract.json:771 and :1038 - recorded as finding F-1 (non-blocking; both candidates are SPEC-object limit handling that confirm, not refute, the absence of a default MI tolerance)"
+      ]
+    },
+    {
+      "id": "EV-05",
+      "assertionKind": "absence",
+      "status": "pass",
+      "claim": "AMUX is never driven or measured by the method.",
+      "scope": {
+        "files": [
+          "team/artifacts/tm103-ptc/review/copy/03-tm103-test-method-contract.json",
+          "team/artifacts/tm103-ptc/review/copy/01-tm103-resource-config-contract.json"
+        ],
+        "query": "AMUX|amux"
+      },
+      "candidateCount": 2,
+      "evidence": [
+        "03-tm103-test-method-contract.json:145 - a quoted rule citation only (relay-checklist.md:42)",
+        "03-tm103-test-method-contract.json:315 - nonEndpoint: 'declared non-endpoint, not allocated, not driven, not measured'",
+        "01-tm103-resource-config-contract.json:70-76 - declaredNonEndpoints records AMUX as NOT an endpoint; no AMUX row exists (conclusion: explicit absence PASS)"
+      ]
+    },
+    {
+      "id": "EV-06",
+      "assertionKind": "presence",
+      "status": "pass",
+      "claim": "The method issues exactly one SetOn-family command, so the exclusive closure cannot release a required relay or close a forbidden one.",
+      "scope": {
+        "files": [
+          "team/artifacts/tm103-ptc/review/copy/03-tm103-test-method-contract.json"
+        ],
+        "query": "SetOn|SetOff|SetCbiteOn"
+      },
+      "candidateCount": 1,
+      "evidence": [
+        "03-tm103-test-method-contract.json:376 - 'cbite.SetOn(K13_VBAT_Cap, -1);' in PH-02 is the only commanded SetOn in the file",
+        "03-tm103-test-method-contract.json:880 - relayClosureEndState states no additional SetOn/SetOff is issued"
+      ]
+    },
+    {
+      "id": "EV-07",
+      "assertionKind": "presence",
+      "status": "pass",
+      "claim": "Every power phase carries a bounded differential-voltage constraint or an explicit not-applicable ruling with evidence.",
+      "scope": {
+        "files": [
+          "team/artifacts/tm103-ptc/review/copy/03-tm103-test-method-contract.json"
+        ],
+        "query": "differentialChecks per phase + notApplicable[] entries"
+      },
+      "candidateCount": 8,
+      "evidence": [
+        "PH-01..PH-08 each carry differentialChecks{applicable, reason, calculation} (03-tm103-test-method-contract.json:357, :397, :445, :505, :564, :603, :640, :680)",
+        "03-tm103-test-method-contract.json:946-1000 - notApplicable[] proves BST-SW (endpoint proof) and the floating-source step rules (resource proof)"
+      ]
+    },
+    {
+      "id": "EV-08",
+      "assertionKind": "presence",
+      "status": "pass",
+      "claim": "The method contract contains power phases, a measurement path, a limit block, a power-down plan and a Log plan.",
+      "scope": {
+        "files": [
+          "team/artifacts/tm103-ptc/review/copy/03-tm103-test-method-contract.json"
+        ],
+        "query": "phaseStateTable.phases | measurementPlan | measurementPlan.limit | powerDownPlan | logPlan"
+      },
+      "candidateCount": 5,
+      "evidence": [
+        "03-tm103-test-method-contract.json:320-694 phaseStateTable.phases",
+        ":696-775 measurementPlan (FV-MI on VDM)",
+        ":763-774 the limit block",
+        ":813-882 powerDownPlan V1..V5",
+        ":907-945 logPlan with parameter name, unit basis and one write point"
+      ]
+    },
+    {
+      "id": "EV-09",
+      "assertionKind": "presence",
+      "status": "pass",
+      "claim": "The method quotes the signed register delta verbatim and re-decides no register value.",
+      "scope": {
+        "files": [
+          "team/artifacts/tm103-ptc/review/copy/03-tm103-test-method-contract.json",
+          "team/artifacts/tm103-ptc/review/copy/01-tm103-resource-config-contract.json",
+          "team/artifacts/tm103-ptc/input-manifest.json"
+        ],
+        "query": "0x57|0x5E|entertestmode"
+      },
+      "candidateCount": 3,
+      "evidence": [
+        "03-tm103-test-method-contract.json:279-300 registerDelta = entertestmode(), 0x57=0x02, 0x5E=0x04",
+        "01-tm103-resource-config-contract.json:450-481 the same three entries",
+        "team/artifacts/tm103-ptc/input-manifest.json decision.registerWrites[0..1] = 0x57=0x02, 0x5E=0x04"
+      ]
+    },
+    {
+      "id": "EV-10",
+      "assertionKind": "presence",
+      "status": "pass",
+      "claim": "The R- rules and standards cited by both contracts exist at their cited locations and say what the contracts say they say.",
+      "scope": {
+        "files": [
+          "knowledge/standards/rules-registry.md",
+          "knowledge/standards/relay-checklist.md",
+          "knowledge/standards/units.md",
+          "knowledge/standards/error-checklist.md",
+          "knowledge/standards/framework.md",
+          "knowledge/standards/test-types.md",
+          "knowledge/sources/cbite-qtmue.md",
+          "knowledge/sources/hardware-specs.md",
+          "knowledge/sources/acm200.md",
+          "knowledge/sources/fxvie.md",
+          "Library-Functions/Test_Method/Test_Method.cpp",
+          "scripts/gen_power_sequence.py"
+        ],
+        "query": "each cited line range read directly and compared with the contract's statement"
+      },
+      "candidateCount": 14,
+      "evidence": [
+        "knowledge/standards/relay-checklist.md:25-38 and :44-50 reproduce the Cap2 rule, the TM103 line and the anti-short rule",
+        "knowledge/standards/rules-registry.md:32-33 and :53 reproduce the R-PON/R-POFF set and the R-PON-09 pin-type correction naming VDM",
+        "knowledge/sources/cbite-qtmue.md:92-94 reproduces exclusive SetOn semantics",
+        "knowledge/standards/units.md:3-5, :18-39, :86-95, :97-101 reproduce range, log-unit and SetOn/step rules",
+        "knowledge/standards/error-checklist.md:20-25 reproduces H011/E025/R034/E011",
+        "knowledge/standards/test-types.md:60, :70-74, :85 reproduce the method classification and ATEST guard",
+        "knowledge/standards/framework.md:18-38 reproduces the six-step template",
+        "knowledge/sources/hardware-specs.md:16, :36, :46, :47, :67 reproduce every metrology number quoted",
+        "knowledge/sources/acm200.md:148-151 and knowledge/sources/fxvie.md:137,144 reproduce the risingTime defaults",
+        "Library-Functions/Test_Method/Test_Method.cpp:95-108 returns FXVIe_PLUS_10V for 4 V",
+        "scripts/gen_power_sequence.py:36-37, :41-44, :90, :102, :106, :264-266, :269-277, :343-345, :522-534, :62-66 reproduce the range, mode, pin-category and power-off rules"
+      ]
+    },
+    {
+      "id": "EV-11",
+      "assertionKind": "presence",
+      "status": "pass",
+      "claim": "The method re-uses exactly the two signed source tables and allocates no additional instrument.",
+      "scope": {
+        "files": [
+          "team/artifacts/tm103-ptc/review/copy/03-tm103-test-method-contract.json",
+          "team/artifacts/tm103-ptc/review/copy/01-tm103-resource-config-contract.json"
+        ],
+        "query": "sourceTable / object names in both contracts"
+      },
+      "candidateCount": 2,
+      "evidence": [
+        "03-tm103-test-method-contract.json:184-235 repeats RA-1 VBAT_PD3_FXVI (FXVIe_PLUS, S3_5) and RA-2 VDM_SDA_ACM (ACM200, S5_7)",
+        "01-tm103-resource-config-contract.json:78-309 declares the same two tables; no third table appears in either file"
+      ]
+    },
+    {
+      "id": "EV-12",
+      "assertionKind": "presence",
+      "status": "pass",
+      "claim": "Both gate-critical hashes bind: each handoff sha256 equals the byte hash of its contract, and the method binds the frozen strategy hash.",
+      "scope": {
+        "files": [
+          "team/artifacts/tm103-ptc/review/copy/02-deliverable-ready.json",
+          "team/artifacts/tm103-ptc/review/copy/04-deliverable-ready.json",
+          "team/artifacts/tm103-ptc/review/copy/03-tm103-test-method-contract.json",
+          "team/artifacts/tm103-ptc/review/contract-manifest.json"
+        ],
+        "query": "sha256 equality against the snapshot manifest"
+      },
+      "candidateCount": 3,
+      "evidence": [
+        "strategy handoff sha256 = 92eb967d...954a = the frozen strategy contract hash",
+        "method handoff sha256 = 210d6058...a79a = the frozen method contract hash",
+        "03-tm103-test-method-contract.json:36 bindingInputs[0].sha256 = 92eb967d...954a (sha256Verified true)"
+      ]
+    }
+  ]
+}

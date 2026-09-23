@@ -1,0 +1,75 @@
+{
+  "batchId": "dali-20260921-080849-tm106-tm108-tm425",
+  "captainEntry": {
+    "kind": "conversation",
+    "openedAt": "2026-09-21T08:08:49",
+    "scope": {
+      "kind": "explicit",
+      "tms": [
+        "TM106",
+        "TM108"
+      ]
+    }
+  },
+  "captainFastDeliveryPolicy": {
+    "defaultEnabled": false,
+    "overrideNote": "user ordered skeleton-mode full chain 2026-09-21T03:41:04.877Z; fast delivery not activated so RULE_REVIEW_IMPLEMENTATION is dispatched normally",
+    "strictAuditResume": "user_explicit_instruction_required"
+  },
+  "deliveryMode": {
+    "mode": "skeleton",
+    "purpose": "validate stage transitions and artifact contract handover; deterministic gate scripts must still pass",
+    "scope": "stages after METHOD",
+    "setAt": "2026-09-21T03:41:04.877Z",
+    "setBy": "user"
+  },
+  "gateHold": {
+    "at": "2026-09-21T05:59:18.828Z",
+    "cause": "pre-seeded TM108 function sweeps 0->10V/10->0V but the signed method contract requires 3->5V (TRIG_FALLING) and 5->3V (TRIG_RISING); the two-endpoint fix needs a write to D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp which is outside the session workspace; danger-full-access approval prompts timed out unanswered three times (TM106 x2, TM108 x1), so no source write channel is available",
+    "evidence": [
+      "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108/implementation/self-check.json",
+      "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108/implementation/implementation-manifest.json",
+      "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp lines 8925-8969"
+    ],
+    "options": {
+      "A": "user approves the danger-full-access write prompt when re-raised; captain applies the two-endpoint+pre-voltage edit and the implementer reruns verify/deliverable (recommended)",
+      "B": "re-adjudicate the signed scan range to 0->10V and rerun method/review chain (heavy, not recommended)",
+      "C": "hold the batch at IMPLEMENTATION"
+    },
+    "stage": "IMPLEMENTATION",
+    "tm": "TM108"
+  },
+  "projectBinding": {
+    "inputRoot": "project/DALI/Input_GlobalMaterial",
+    "inputsDigest": "4d5f3acbdcd35acf52997f8c6899773efe2102f18f5f4f10fab663db39dcde56",
+    "project": "DALI",
+    "projectDir": "project/DALI",
+    "projectInfoSha256": "78f2c4d36aab6725d794575c15707f5ed986fbd6d3fc9cce1aca3ba1ef5dfa0e"
+  },
+  "schemaVersion": 4,
+  "scopeChanges": [
+    {
+      "at": "2026-09-21T03:54:41.608Z",
+      "decidedBy": "captain per user skeleton-mode directive and repeated continue instruction after options 1/2/3 presented; reversible by re-adding TM425 to tms",
+      "evidence": "project/DALI/ErrorLog/method-expert.log BLOCKED entry 2026-09-21T03:49:37Z",
+      "reason": "real trim evidence gap: no active trim callback in sub.cpp and no TRIM_NODE.execute binding in test.cpp; deterministic trim gate cannot pass even with a skeleton contract (ptc_trim_validation strips comments and checks real files)",
+      "removedTm": "TM425"
+    }
+  ],
+  "selection": {
+    "kind": "explicit",
+    "tms": [
+      "TM106",
+      "TM108"
+    ]
+  },
+  "tms": [
+    "TM106",
+    "TM108"
+  ],
+  "trialDirs": {
+    "TM106": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm106",
+    "TM108": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm108",
+    "TM425": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260921-080849-tm106-tm108-tm425\\tm425"
+  }
+}

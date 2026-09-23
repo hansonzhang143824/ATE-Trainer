@@ -1,0 +1,41 @@
+{
+ "TM641": {
+  "param_type": "UVLO",
+  "materials": [
+   "L1-chip/UVLO.md",
+   "L3-method/UVLO.md",
+   "L4-Golden-code/UVLO.cpp"
+  ],
+  "goldenSha256": {
+   "L4-Golden-code/UVLO.cpp": "2c5224890be330a21407c9c34c581fecd8c9054f88c3414417e0c330c9eb79a4"
+  },
+  "structures": {
+   "dut_body": "被测=BST-SW 差分对(自举对); FPVI0 High→BST / Low→SW ⇒ 输出正域直接=压差",
+   "fpvi_short": "FPVI0 单通道浮动跨 BST-SW 两点(大电流/差分走稀缺浮动源)",
+   "paired_staircase": "BST−SW 配对; SW 用 ACM200 钉死 3V 绝对 + BST 台阶 5V→8V, 全程 BST≥SW 且 BST−SW≤5V",
+   "measure_essence": "rampv_capv(FPVI0→NQON_HG1_ACM) 双扫 2.5→4.0 正域; 升扫 TRIG_FALLING 捕 rise / 降扫 TRIG_RISING 捕 fall; Hys=(rise−fall)×1e3"
+  },
+  "readProofWaived": "2026-09-13 补录: TM641 生成于 2026-08-30, 当时材料门无读证机制; 原收据三路径为旧前缀(chip//method//code/)已全部失效, 本次仅修路径至 L1-chip//L3-method//L4-Golden-code/, 不追溯伪造读证。",
+  "note": "BST UV 阈值 AWG(Toggle); BUBO 台阶/继电器结构实际取自 test.cpp TM640 同构(见 relay-design-flow), 非本 golden。"
+ },
+ "TM1205_TRX_BST_UV_GD": {
+  "param_type": "Diff Pair",
+  "materials": [
+   "L1-chip/UVLO.md",
+   "L1-chip/01-bootstrap-hs-drive.md",
+   "L3-method/diff-pair-spec.md",
+   "L4-Golden-code/TM1205_TRX_BST_UV_GD.cpp"
+  ],
+  "goldenSha256": {
+   "L4-Golden-code/TM1205_TRX_BST_UV_GD.cpp": "67d0c3f1c4e5c907fcf2b41fdaa058dc9655142e5ed64438f06c215529c4b01d"
+  },
+  "structures": {
+   "dut_body": "差分对 BST1-SW1 / BST2-SW2 的压差 ΔV(非对地绝对电压); FPVI0 High→SW + Low→BST ⇒ 输出负域 [0,−4]V, 结果 fabs 还原",
+   "fpvi_short": "FPVI0 单通道浮动跨两点(差分必须浮动源; 禁拆两独立单端源再软件相减)",
+   "paired_staircase": "BST−SW 配对; 自举电容 K45_Cap_SW1_BST1 / K44_Cap_SW2_BST2 并在此压差两端 ⇒ ramp 源 Cap 豁免不闭(FR-001 反向, 闭了拖慢 ramp)",
+   "measure_essence": "rampv_capv(FPVI0→NQON_HG1_ACM) 负域双扫 0↔−4V + fabs 还原压差 + rise/fall/Hys; 两路分时复用(DMUX_SEL 57→58, 每路独立 cbite.SetOn)"
+  },
+  "readProofWaived": "2026-09-13 补录: 本 TM 是该 Diff Pair golden 的**来源**(先有 TM1205, 后提炼登记进 L4), 生成时不存在此 golden 可读 ⇒ 读证不适用。实际依据=_awg_verify/TM1205_draft.cpp 草稿 + test.cpp TM641 同构 + L3 方法文档(relay-design-flow §五 / diff-pair-spec)。**如实记录流程偏离: 真实生成时未跑材料门, 且未走索引读 golden。**",
+  "note": "TRX BST1-SW1/BST2-SW2 UVLO 阈值; 6 参数(BST1_UV_* + BST2_UV_* 各 Rise/Fall/Hys); 2026-09-13 写入 test.cpp 尾部并编译 0 err/0 warn。"
+ }
+}

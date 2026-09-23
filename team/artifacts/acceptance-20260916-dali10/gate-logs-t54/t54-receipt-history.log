@@ -1,0 +1,11 @@
+生成器 40619 B ; 已含历史账本 = False
+  已追加历史账本逻辑 → 41646 B
+  run1 末行: RECEIPT-HISTORY D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10\g
+  run2 末行: RECEIPT-HISTORY D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10\g
+
+=== 历史账本自证 ===
+  build-report.receipts.jsonl = 2 行 / 1638 B
+  末行键 = ['subject', 'at', 'size', 'sha256', 'sha256_lf_normalized', 'topLevelEntries', 'reproducibleBodySha256', 'reproducibleNote', 'isFrozen', 'note', 'lineCount', 'prevLineSha256', 'ledger_self_sha256']
+  lineCount = 2
+  链式自证 prevLineSha256 正确 = True
+  含 reproducibleBodySha256 = True

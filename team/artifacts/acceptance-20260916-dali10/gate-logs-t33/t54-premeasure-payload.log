@@ -1,0 +1,20 @@
+  payload (候选落盘件)               42998 B  c03632d93e0d4cc594ed4045bf6d52e6d3f897e61ed183e0475d556c45db26e0
+  部署态（当前门禁输入）                  469714 B  15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a
+  契约                           346181 B  93c04854843b7fd30062d352e726b345e5b47cf50ad03b70e1a891d77cc7de68
+
+=== 契约里 bst2sw 的"声明必需"（我的断言即按此派生）===
+  resolvedClosed = [110, 61]
+  usedByTm = ['TM600 (BST must lead PMID)', 'TM1205 (BST1-SW1 / BST2-SW2 ramps)']
+
+=== 两态的实际闭合（TM600）===
+  部署态      = [13, 57, 60, 61, 83, 85, 126]
+     相对 out 契约[110,61] 缺失 = [110]
+  payload  = [13, 48, 57, 60, 61, 76, 83, 85, 126]
+     相对 out 契约[110,61] 缺失 = [110]
+
+=== t54 的两条路径（取决于 t53 是否已把 ch5 读法落为权威）===
+  路径 1：t53 已把 bst2sw 改为 ch5 路线（期望含 48,76）⇒ payload 已闭 {48,60,61,76} ⇒ 预期 bst-sw GREEN ✓
+  路径 2：t53 仅"只增不翻"、resolvedClosed 仍 [110,61] ⇒ payload 未闭 110 ⇒ **bst-sw 仍 NEW-RED**
+          （注意：payload 现闭 {48,76,60,61}，**不含 110**）
+  ⇒ 故 t54 的判据必须**先现算契约 rev 与 resolvedClosed**，再据此解释 bst-sw 的红/绿；
+     不能假定"落盘即绿"。

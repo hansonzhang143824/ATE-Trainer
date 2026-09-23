@@ -1,0 +1,16 @@
+=== ① 早退点（if not targets）===
+  verify_bst_sw_sequence.py          L497  if not targets:
+
+=== ② 强制点搜索：emptyPassGuard / targets==0 / targets=N 断言 ===
+  命中 = 0
+
+=== ③ 编排器 run_gates.ps1 是否感知 targets ===
+  run_gates.ps1 = 9763 B
+    含 targets          = 0 次
+    含 scan             = 0 次
+    含 emptyPassGuard   = 0 次
+
+=== 结论 ===
+  (a) 早退点存在（见 ①）；(b) scripts/** 内无任何"空 targets ⇒ 非 PASS"的强制；
+  (c) 编排器 run_gates.ps1 对 targets/scan/emptyPassGuard 命中均为 0 ⇒ **不知道 targets 空否**。
+  ⇒ 确认：`emptyPassGuard` 目前**只是记录**（在我的报告里），**没有消费者、没有强制**。

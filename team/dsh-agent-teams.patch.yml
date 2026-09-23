@@ -1,0 +1,47 @@
+# Project-local overlay for @nanmicoder/dsh-agent-teams.
+- id: agent-teams
+  disabled: false
+  config:
+    stateDir: .agent-teams
+    memberProvider: spawn
+    memberMaxDepth: 1
+    maxMembers: 9
+    profiles:
+      ate-delivery-v2:
+        description: DALI ATE V2 with separated resource architecture and test method ownership
+        taskPlanning: captain
+        lazyMembers: true
+        protocol: >-
+          ATE Captain is the only user entry. When the user opens a new Captain conversation and names TM items or one range, read AGENTS.md and team/ptc/CAPTAIN_ENTRY_FLOW.md, then call the internal Captain entry. It creates a unique project-bound batch and runs INPUT_SYNC. Never ask the user for a batch id, trial directory or Python command. Read only the returned JSON and dispatch only its named role or source-role list for the complete TM set. After a member gives a terminal report, Captain internally advances the same batch and follows the next returned JSON. New Captain batches use default fast delivery only after every TM reaches implementation review; input boundary, hashes, minimum implementation verification and compile remain mandatory. Never resume independent audit unless the user explicitly asks later. Any real failure blocks downstream work and is reported in short Chinese.
+        executionPrompt: >-
+          Work in D:/Newtest/DSH/ATE-Coding-Plat. Read team/ptc/ATE_PTC_RUNTIME.md and team/LAZY_AGENT_TEAM_RUNTIME.md first, then your role charter. Use current project facts and active rules only. Do not use retired-context as default input. Store outputs in team/artifacts/<run-id>/ with hashes and a terminal report. Never modify D:/PROJECT6-DALI/devel.
+        members:
+          - name: dft-expert
+            role: Extract DFT source facts into project meta, YAML and manifest.
+            executionPrompt: Read team/roles/dft-expert.md completely and obey its contract.
+          - name: schematic-expert
+            role: Produce the three project schematic artifacts and physical path facts.
+            executionPrompt: Read team/roles/schematic-expert.md completely and obey its contract.
+          - name: setup-architect
+            role: Maintain only the frozen global resource and safety baseline.
+            executionPrompt: Read team/roles/setup-architect.md completely and obey its contract.
+          - name: test-strategy-architect
+            role: Select per-TM resources, routes, relay groups and register configuration.
+            executionPrompt: Read team/roles/test-strategy-architect.md completely and obey its contract.
+          - name: test-method-expert
+            role: Derive phases, actual nodes, measurement, power-down and log within signed resource boundary.
+            executionPrompt: Read team/roles/test-method-expert.md completely and obey its contract.
+          - name: ate-implementer
+            role: Create correctly located VS C++ code using signed contracts, APIs and library functions.
+            executionPrompt: Read team/roles/ate-implementer.md completely and obey its contract.
+          - name: rule-reviewer
+            role: Independently review contracts, code and applicable active rules.
+            executionPrompt: Read team/roles/rule-reviewer.md completely and obey its contract.
+          - name: compile-diagnostician
+            role: Run applicable gates and real VS builds, then classify diagnostics.
+            executionPrompt: Read team/roles/compile-diagnostician.md completely and obey its contract.
+          - name: evolution-expert
+            role: User-triggered closed-run knowledge evolution only; never auto-start in TM delivery.
+            executionPrompt: Read team/roles/evolution-expert.md completely. Start only when the user explicitly requests it.
+
+

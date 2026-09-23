@@ -1,0 +1,536 @@
+# test_conditions.yaml - parsed from the CURRENT user-filtered DFT workbook
+# source: Dali_testmode.xlsx
+# sourceSha256: 0b0480a290581fd3d10ec9db7aef45664949174bb8f1a94e926f24cfa582abbd
+# sourceBytes: 10677032
+# sourceMtime: 2026-09-16 22:13:39
+# generatedAt: 2026-09-16 22:22:09 +0800
+# NOTE: generated only from the workbook; no earlier YAML/meta was read or inherited.
+# backtick marker: ` (kept so downstream regexes stay byte-identical)
+# fields: power / rail / ramp / current / dynamic / measure / register / delay / expect / check / state
+source: "Dali_testmode.xlsx"
+sourceSha256: "0b0480a290581fd3d10ec9db7aef45664949174bb8f1a94e926f24cfa582abbd"
+sourceBytes: 10677032
+generatedAt: "2026-09-16 22:22:09 +0800"
+itemCount: 20
+tms:
+  TM000:
+    row: 2
+    level: "Top"
+    name: "Iq_Standby"
+    power: "VBAT"
+    rail: "vbat=4.4"
+    railRamp: "vbat=4.4"
+    current: null
+    dynamic: null
+    measure: "I(VBAT)"
+    register: "VAC1_APORT_DET_ENABLE=0, VAC2_APORT_DET_ENABLE=0, VAC_SNK_DET_SEL=0"
+    delay: "10e-3"
+    expect: "23 w/o digital iq."
+    unit: "uA"
+    test: "Direct"
+    special: null
+    check: "I(VBAT)"
+    trim: null
+    enTm: false
+    notes: "Quiescent current in sleep mode."
+    deTest: "22uA"
+    aeTest: null
+    state: "checked"
+    code1: "vset[vbat,4.4,100e-6,0]"
+    code2: "field[(VAC1_APORT_DET_ENABLE,0),(VAC2_APORT_DET_ENABLE,0),(VAC_SNK_DET_SEL,0)]"
+    code3: "delay[10e-3]\nfinish[]"
+  TM000_1:
+    row: 3
+    level: "Top"
+    name: "Iq_Standby"
+    variantOf: "TM000"
+    power: "VBAT"
+    rail: "vbat=4.4"
+    railRamp: "vbat=4.4"
+    current: null
+    dynamic: null
+    measure: "I(VBAT)"
+    register: "VAC1_APORT_DET_ENABLE=1, VAC2_APORT_DET_ENABLE=1, VAC_SNK_DET_SEL=0"
+    delay: null
+    expect: null
+    unit: "uA"
+    test: "Direct"
+    special: null
+    check: "I(VBAT)"
+    trim: null
+    enTm: false
+    notes: "Quiescent current in sleep mode."
+    deTest: "31.5u"
+    aeTest: null
+    state: "checked"
+    code1: "vset[vbat,4.4,100e-6,0]"
+    code2: "field[(VAC1_APORT_DET_ENABLE,1),(VAC2_APORT_DET_ENABLE,1),(VAC_SNK_DET_SEL,0)]"
+    code3: "finish[]"
+  TM001:
+    row: 4
+    level: "Top"
+    name: "Iin_Suspend"
+    power: "VBAT"
+    rail: "vbat=3.7"
+    railRamp: "vbat=3.7"
+    current: null
+    dynamic: null
+    measure: "I(VBAT)"
+    register: "WAKE_UP=1, AC1_GATE_ON=1"
+    delay: "10e-3"
+    expect: null
+    unit: "uA"
+    test: "Direct"
+    special: null
+    check: "I(VBAT)"
+    trim: null
+    enTm: true
+    notes: "Quiescent current in operation mode."
+    deTest: "1.118mA"
+    aeTest: null
+    state: "checked"
+    code1: "vset[vbat,3.7,100e-6,0]"
+    code2: "en_tm[]\nfield[(WAKE_UP,1),(AC1_GATE_ON,1)]"
+    code3: "delay[10e-3]\n// Check IQ from VBAT\nfinish[]"
+  TM101:
+    row: 5
+    level: "HSKP"
+    name: "LP_VBG"
+    power: "VBAT"
+    rail: "vbat=4"
+    railRamp: "vbat=4"
+    current: null
+    dynamic: null
+    measure: "V(ATEST0)"
+    register: "EN_ATEST0=1, ATEST0_MUX=1"
+    delay: "1e-3"
+    expect: 1.27
+    unit: "V"
+    test: "Direct"
+    special: null
+    check: "V(ATEST0)"
+    trim: null
+    enTm: true
+    notes: "注意带载能力弱，需要先对外部pin先上电；"
+    deTest: 1.178
+    aeTest: null
+    state: "checked"
+    code1: "vset[vbat,4,100e-6,0]"
+    code2: "en_tm[]\nvset[vdm,1.2,100e-6,0]\nfield[(EN_ATEST0,1),(ATEST0_MUX,1)]\nvset_off[vdm]"
+    code3: "delay[1e-3]\nfinish[]"
+  TM102:
+    row: 6
+    level: "HSKP"
+    name: "LP_VBG_BF"
+    power: "VBAT"
+    rail: "vbat=4"
+    railRamp: "vbat=4"
+    current: null
+    dynamic: null
+    measure: "V(ATEST0)"
+    register: "EN_ATEST0=1, ATEST0_MUX=2"
+    delay: "1e-3"
+    expect: 1.27
+    unit: "V"
+    test: "Direct"
+    special: null
+    check: "V(ATEST0)"
+    trim: null
+    enTm: true
+    notes: "注意带载能力弱，需要先对外部pin先上电；"
+    deTest: 1.178
+    aeTest: null
+    state: "checked"
+    code1: "vset[vbat,4,100e-6,0]"
+    code2: "en_tm[]\nvset[vdm,1.2,100e-6,0]\nfield[(EN_ATEST0,1),(ATEST0_MUX,2)]\nvset_off[vdm]"
+    code3: "delay[1e-3]\nfinish[]"
+  TM103:
+    row: 7
+    level: "HSKP"
+    name: "LP_HR_0P5U"
+    power: "VBAT"
+    rail: "vbat=4"
+    railRamp: "vbat=4"
+    current: null
+    dynamic: null
+    measure: "I(ATEST0)"
+    register: "EN_ATEST0=1, ATEST0_MUX=4"
+    delay: "1e-3"
+    expect: 0.5
+    unit: "uA"
+    test: "Direct"
+    special: null
+    check: "I(ATEST0)"
+    trim: null
+    enTm: true
+    notes: null
+    deTest: "0.5uA"
+    aeTest: null
+    state: "checked"
+    code1: "vset[vbat,4,100e-6,0]"
+    code2: "en_tm[]\nfield[(EN_ATEST0,1),(ATEST0_MUX,4)]\nvset[vdm,1,100e-6,0]"
+    code3: "delay[1e-3]\nfinish[]"
+  TM104:
+    row: 8
+    level: "HSKP"
+    name: "LP_PTAT_0P5U"
+    power: "VBAT"
+    rail: "vbat=4"
+    railRamp: "vbat=4"
+    current: null
+    dynamic: null
+    measure: "I(ATEST0)"
+    register: "EN_ATEST0=1, ATEST0_MUX=5"
+    delay: "1e-3"
+    expect: 0.5
+    unit: "uA"
+    test: "Direct"
+    special: null
+    check: "I(ATEST0)"
+    trim: null
+    enTm: true
+    notes: null
+    deTest: "0.48uA"
+    aeTest: null
+    state: "checked"
+    code1: "vset[vbat,4,100e-6,0]"
+    code2: "en_tm[]\nfield[(EN_ATEST0,1),(ATEST0_MUX,5)]\nvset[vdm,1,100e-6,0]"
+    code3: "delay[1e-3]\nfinish[]"
+  TM105:
+    row: 9
+    level: "HSKP"
+    name: "VSPRE_MAX_CMP"
+    power: "VBAT"
+    rail: "vbat=4"
+    railRamp: "vbat=4"
+    current: null
+    dynamic: "VAC1"
+    measure: "V(DTEST0)"
+    register: "DMUX_EN=1, DMUX_SEL=0"
+    delay: "1e-3"
+    expect: "VAC-VBAT=~1V"
+    unit: "V"
+    test: null
+    special: null
+    check: "V(DTEST0)"
+    trim: null
+    enTm: true
+    notes: null
+    deTest: "PASS"
+    aeTest: null
+    state: "checked"
+    code1: "vset[vbat,4,100e-6,0]"
+    code2: "en_tm[]\nfield[(DMUX_EN,1),(DMUX_SEL,0)]\nvset[vac1,10,1e-3,0]\nvset[vac1,0,1e-3,0]"
+    code3: "delay[1e-3]\nfinish[]"
+  TM106:
+    row: 10
+    level: "HSKP"
+    name: "VBUS_PRST"
+    power: "VBAT"
+    rail: "vbat=3"
+    railRamp: "vbat=3"
+    current: null
+    dynamic: "VBUS"
+    measure: "V(DTEST0)"
+    register: "DMUX_EN=1, DMUX_SEL=19"
+    delay: "1e-3"
+    expect: "rising vth 3.9V, hys 0.2V"
+    unit: "V"
+    test: null
+    special: null
+    check: "V(DTEST0)"
+    trim: null
+    enTm: true
+    notes: "ramp up/down vbus from 3~5V,\nmux A2D_VBUS_PRST to dtest0\ncheck int pin toggle"
+    deTest: "r 3.798\nf 3.613"
+    aeTest: null
+    state: "checked"
+    code1: "vset[vbat,3,100e-6,0]"
+    code2: "en_tm[]\nfield[(DMUX_EN,1),(DMUX_SEL,19)]\nvset[vbus,3,100e-6,1]\nvset[vbus,5,1e-3,0]\nvset[vbus,3,1e-3,0]"
+    code3: "delay[1e-3]\nfinish[]"
+  TM108:
+    row: 11
+    level: "HSKP"
+    name: "VAC1_PRST"
+    power: "VBAT"
+    rail: "vbat=3"
+    railRamp: "vbat=3"
+    current: null
+    dynamic: "VAC1"
+    measure: "V(DTEST0)"
+    register: "DMUX_EN=1, DMUX_SEL=22"
+    delay: "1e-3"
+    expect: "rising vth 4.4V, hys 0.35V"
+    unit: "V"
+    test: null
+    special: null
+    check: "V(DTEST0)"
+    trim: null
+    enTm: true
+    notes: "ramp up/down vac1 from 3~5V, 1V/ms\nmux A2D_VAC1_PRST to dtest0\ncheck int pin toggle"
+    deTest: "r 4.059\nf 3.738"
+    aeTest: null
+    state: "checked"
+    code1: "vset[vbat,3,100e-6,0]"
+    code2: "en_tm[]\nfield[(DMUX_EN,1),(DMUX_SEL,22)]\nvset[vac1,10,1e-3,0]\nvset[vac1,0,1e-3,0]"
+    code3: "delay[1e-3]\nfinish[]"
+  TM109:
+    row: 12
+    level: "HSKP"
+    name: "VAC2_PRST"
+    power: "VBAT"
+    rail: "vbat=3"
+    railRamp: "vbat=3"
+    current: null
+    dynamic: "VAC2"
+    measure: "V(DTEST0)"
+    register: "DMUX_EN=1, DMUX_SEL=21"
+    delay: "1e-3"
+    expect: "rising vth 4.4V, hys 0.35V"
+    unit: "V"
+    test: null
+    special: null
+    check: "V(DTEST0)"
+    trim: null
+    enTm: true
+    notes: "ramp up/down vac1 from 3~5V, 1V/ms\nmux A2D_VAC2_PRST to dtest0\ncheck int pin toggle"
+    deTest: "r 4.079\nf 3.748"
+    aeTest: null
+    state: "checked"
+    code1: "vset[vbat,3,100e-6,0]"
+    code2: "en_tm[]\nfield[(DMUX_EN,1),(DMUX_SEL,21)]\nvset[vac2,10,1e-3,0]\nvset[vac2,0,1e-3,0]"
+    code3: "delay[1e-3]\nfinish[]"
+  TM110:
+    row: 13
+    level: "HSKP"
+    name: "VAC3_PRST"
+    power: "VBAT"
+    rail: "vbat=3"
+    railRamp: "vbat=3"
+    current: null
+    dynamic: "VAC3"
+    measure: "V(DTEST0)"
+    register: "DMUX_EN=1, DMUX_SEL=20"
+    delay: "1e-3"
+    expect: "rising vth 4.4V, hys 0.35V"
+    unit: "V"
+    test: null
+    special: null
+    check: "V(DTEST0)"
+    trim: null
+    enTm: true
+    notes: "ramp up/down vac1 from 3~5V, 1V/ms\nmux A2D_VAC3_PRST to dtest0\ncheck int pin toggle"
+    deTest: "r 4.085\nf 3.758"
+    aeTest: null
+    state: "checked"
+    code1: "vset[vbat,3,100e-6,0]"
+    code2: "en_tm[]\nfield[(DMUX_EN,1),(DMUX_SEL,20)]\nvset[vac3,10,1e-3,0]\nvset[vac3,0,1e-3,0]"
+    code3: "delay[1e-3]\nfinish[]"
+  TM133:
+    row: 14
+    level: "BG"
+    name: "IZTC_1UA"
+    power: "VBAT"
+    rail: "vbat=5, amux=1"
+    railRamp: "vbat=5, amux=1"
+    current: null
+    dynamic: null
+    measure: "I(ATEST0)"
+    register: "WAKE_UP=1, EN_ATEST0=1, ATEST0_MUX=8"
+    delay: "1e-3"
+    expect: 1
+    unit: "uA"
+    test: null
+    special: null
+    check: "I(ATEST0)"
+    trim: "Y"
+    enTm: true
+    notes: "TRIM_ZTC_RES"
+    deTest: "1.01uA"
+    aeTest: "Bench Passed，0.972uA，able to trim"
+    state: "checked"
+    code1: "vset[vbat,5,100e-6,0]\nvset[amux,1,100e-6,0]\nen_tm[]"
+    code2: "field[(WAKE_UP,1)]\nfield[(EN_ATEST0,1),(ATEST0_MUX,8)]\nvset[vdm,1,100e-6,0]"
+    code3: "delay[1e-3]\nfinish[]"
+  TM134:
+    row: 15
+    level: "BG"
+    name: "IPTAT_1UA"
+    power: "VBAT"
+    rail: "vbat=5, amux=1"
+    railRamp: "vbat=5, amux=1"
+    current: null
+    dynamic: null
+    measure: "I(ATEST0)"
+    register: "WAKE_UP=1, EN_ATEST0=1, ATEST0_MUX=9"
+    delay: "1e-3"
+    expect: 1
+    unit: "uA"
+    test: null
+    special: null
+    check: "I(ATEST0)"
+    trim: null
+    enTm: true
+    notes: null
+    deTest: "0.995uA"
+    aeTest: null
+    state: "checked"
+    code1: "vset[vbat,5,100e-6,0]\nvset[amux,1,100e-6,0]\nen_tm[]"
+    code2: "field[(WAKE_UP,1)]\nfield[(EN_ATEST0,1),(ATEST0_MUX,9)]\nvset[vdm,1,100e-6,0]"
+    code3: "delay[1e-3]\nfinish[]"
+  TM135:
+    row: 16
+    level: "BG"
+    name: "VREF_1P0"
+    power: "VBAT"
+    rail: "vbat=5"
+    railRamp: "vbat=5"
+    current: null
+    dynamic: null
+    measure: "V(ATEST0)"
+    register: "WAKE_UP=1, EN_ATEST0=1, ATEST0_MUX=10"
+    delay: "1e-3"
+    expect: 1
+    unit: "V"
+    test: null
+    special: null
+    check: "V(ATEST0)"
+    trim: "Y"
+    enTm: true
+    notes: "TRIM_BG_RES_DIV"
+    deTest: 0.9853
+    aeTest: "Bench Passed，0.998V，able to trim"
+    state: "checked"
+    code1: "vset[vbat,5,100e-6,0]\nen_tm[]"
+    code2: "field[(WAKE_UP,1)]\nfield[(EN_ATEST0,1),(ATEST0_MUX,10)]"
+    code3: "delay[1e-3]\nfinish[]"
+  TM422:
+    row: 17
+    level: "MNT"
+    name: "VBAT_FB"
+    power: "VBAT"
+    rail: "vbat=4"
+    railRamp: "vbat=4"
+    current: null
+    dynamic: "VBAT"
+    measure: "V(ATEST0)"
+    register: "WAKE_UP=1, EN_ATEST0=1, ATEST0_MUX=23"
+    delay: "1e-3"
+    expect: "VBAT*2/5"
+    unit: "V"
+    test: "Direct"
+    special: null
+    check: "V(ATEST0)"
+    trim: "Y"
+    enTm: true
+    notes: "TRIM_MNT_VBAT_RSNS_LOOP"
+    deTest: "1.597/3.998"
+    aeTest: "Bench pass, 测试值1.597V, able to trim"
+    state: "checked"
+    code1: "vset[vbat,4,100e-6,0]"
+    code2: "en_tm[]\nfield[(WAKE_UP,1),(EN_ATEST0,1),(ATEST0_MUX,23)]"
+    code3: "vset[vbat,5,100e-6,0]\ndelay[1e-3]\nfinish[0]"
+  TM424:
+    row: 18
+    level: "MNT"
+    name: "VREF_TRIM"
+    power: "VBAT"
+    rail: "vbat=4.4"
+    railRamp: "vbat=4.4"
+    current: null
+    dynamic: null
+    measure: "V(ATEST0)"
+    register: "WAKE_UP=1, EN_ATEST0=1, ATEST0_MUX=19"
+    delay: "2e-3"
+    expect: 1.68
+    unit: "V"
+    test: "Direct"
+    special: null
+    check: "V(ATEST0)"
+    trim: "Y"
+    enTm: true
+    notes: "TRIM_MNT_DAC_BUF_OS"
+    deTest: 1.669
+    aeTest: "Bench pass, 测试值1.669V, able to trim"
+    state: "checked"
+    code1: "vset[vbat,4.4,100e-6,0]"
+    code2: "en_tm[]\nfield[(WAKE_UP,1),(EN_ATEST0,1),(ATEST0_MUX,19)]"
+    code3: "delay[2e-3]\nfinish[0]"
+  TM425:
+    row: 19
+    level: "MNT"
+    name: "VREF_1P2V_BUF"
+    power: "VBAT"
+    rail: "vbat=4.4"
+    railRamp: "vbat=4.4"
+    current: null
+    dynamic: null
+    measure: "V(ATEST1)"
+    register: "WAKE_UP=1, EN_ATEST1=1, ATEST1_MUX=2, DIS_NTC_DETECTION_ANALOG=1"
+    delay: "2e-3"
+    expect: 1.2
+    unit: "V"
+    test: "Direct"
+    special: null
+    check: "V(ATEST1)"
+    trim: "Y"
+    enTm: true
+    notes: "TRIM_MNT_V1P2_BUF"
+    deTest: 1.197
+    aeTest: "Bench Pass, 测试值1.197V, able to trim"
+    state: "checked"
+    code1: "vset[vbat,4.4,100e-6,0]"
+    code2: "en_tm[]\nfield[(WAKE_UP,1),(EN_ATEST1,1),(ATEST1_MUX,2),(DIS_NTC_DETECTION_ANALOG,1)]"
+    code3: "delay[2e-3]\nfinish[0]"
+  TM600:
+    row: 20
+    level: "BUBO"
+    name: "HS_RDSON"
+    power: "VBAT, BST-SW"
+    rail: "vbat=3.5, pmid=5, bst_sw=5, vdrv=5"
+    railRamp: "vbat=3.5, pmid=5, bst_sw=5, vdrv=5"
+    current: "sw=1@1e-3"
+    dynamic: "ISW"
+    measure: "PMID-SW, floating source：V(BST_SW)"
+    register: "WAKE_UP=1, D2A_BUBO_EN_FORCE_ON=1, D2A_BUBO_TM_DIS_CLK=1, D2A_BUBO_TM_HSON=1"
+    delay: "1e-3, 2e-3"
+    expect: 11
+    unit: "mΩ"
+    test: "direct"
+    special: "Y\n2 FLOAT"
+    check: "PMID-SW | floating source：V(BST_SW)"
+    trim: null
+    enTm: true
+    notes: "Rds,on=(PMID-SW)/ISW"
+    deTest: "I=0.2A\npmid-sw=46mV"
+    aeTest: null
+    state: "checked"
+    code1: "vset[vbat,3.5,100e-6,0]\nvset[pmid,5,100e-6,0]\nvset[bst_sw,5,1e-3,0]\nvset[vdrv,5,100e-6,0]"
+    code2: "en_tm[]\nfield[(WAKE_UP,1)]\nfield[(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(D2A_BUBO_TM_HSON,1)]"
+    code3: "delay[1e-3]\niset[sw,1,1e-3,0]\ndelay[2e-3]\nfinish[]"
+  TM601:
+    row: 21
+    level: "BUBO"
+    name: "LS_RDSON"
+    power: "VBAT"
+    rail: "vbat=3.5, vdrv=5, vbus=5, bst=5"
+    railRamp: "vbat=3.5, vdrv=5, vbus=5, bst=5"
+    current: "pmid_sw=1@1e-3"
+    dynamic: "SW, ISW"
+    measure: "SW-PGND, floating source：I(PMID_SW)"
+    register: "WAKE_UP=1, D2A_BUBO_EN_FORCE_ON=1, D2A_BUBO_TM_DIS_CLK=1, D2A_BUBO_TM_LSON=1"
+    delay: "5e-3, 2e-3"
+    expect: 7.5
+    unit: "mΩ"
+    test: "direct"
+    special: null
+    check: "SW-PGND | floating source：I(PMID_SW)"
+    trim: null
+    enTm: true
+    notes: "Rds,on=(SW-PGND)/IPMID2SW"
+    deTest: "I=1A\nSW-PGND=0.3"
+    aeTest: null
+    state: "checked"
+    code1: "vset[vbat,3.5,100e-6,0]\nvset[vdrv,5,100e-6,0]\nvset[vbus,5,100e-6,0]\nvset[bst,5,100e-6,0]"
+    code2: "en_tm[]\nfield[(WAKE_UP,1)]\nfield[(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(D2A_BUBO_TM_LSON,1)]"
+    code3: "delay[5e-3]\niset[pmid_sw,1,1e-3,0]\ndelay[2e-3]\nfinish[]"

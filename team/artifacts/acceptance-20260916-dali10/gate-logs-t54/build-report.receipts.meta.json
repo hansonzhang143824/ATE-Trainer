@@ -1,0 +1,30 @@
+{
+  "ledger": "build-report.receipts.jsonl",
+  "fieldDefinitions": {
+    "prevLineSha256": "sha256( 上一行的字节，去掉其行终止符 )；本文件为 CRLF ⇒ CR 一并去掉。等价实现（带成立条件）：hashlib.sha256(prev_line_bytes.rstrip(b\"\\r\\n\"))；另一式 rstrip(b\"\\r\") 同解 —— **其成立条件是\"去掉行终止符后内容仍以 CR 结尾（即双 CR）的行 = 空\"**（本 run 实测：双 CR 行 = 空 ⇒ 两式今日等价 ✓）；⚠️ 若出现双 CR 行，则 rstrip(CR) 会多剥一格 ⇒ 两式分歧 ⇒ 『等价』是带域的主张。",
+    "ledger_self_sha256": "sha256( 之前全部行（**原样，含行尾**）与**本行语义摘要**的拼接 ) —— **不是链用的那个**",
+    "live_sha256": "当次生成时刻、报告文件的**整文件**字节哈希",
+    "live_lf_sha256": "同上，但**行尾归一化**（LF）后",
+    "reproducibleBodySha256": "剔除 `generatedAt` 后的 **body** 哈希（幂等/内容判定用）"
+  },
+  "warning": "prevLineSha256（链）与 ledger_self_sha256（语义摘要）不是同一个东西；用错定义会得到看起来可信的错结论（本 run 实测）",
+  "appendOnly": true,
+  "updatedAt": "2026-09-17T01:14:41+08:00",
+  "metaVersion": 1,
+  "metaIdentity": {
+    "note": "本档自身也会漂 ⇒ 带版本 + 定义按版本引用；身份字段为上一次生成时现算；引用请按版本号 + 当次现算身份",
+    "metaAt": "2026-09-17T07:01:41+08:00",
+    "metaSha256_atWrite": "a66fd7ba9505f3a3bca9813fe1e702dcfc7c124a7e599f1665041f3b7551f2db",
+    "metaSize_atWrite": 3045
+  },
+  "executableDefinitionRule": "定义必须写成**可执行形式**（procedure），不是**可解释描述**（description）——描述会被二次解释，而二次解释在执行前不会被发现。（本 run 实测：schematic-expert 读过本档警告后，仍按『只去 \\n』实现 ⇒ 得到 53/53 假 mismatch）",
+  "equivalenceIsDomainBound": "『等价实现』必须连同其成立条件（域）声明；本 run 中该条件为\"双 CR 行 = 空\"。⚠️ 自纠留痕：我方曾错误地以\"行是否以 CR 结尾\"为条件（在 CRLF 文件上恒真 ⇒ 无关条件），已更正。",
+  "prePolicyCountsAtPolicyWrite": {
+    "note": "**预策略段（每次运行都追加的那一段）的规模 —— 取值为本字段首次写入时的测量**。⚠️ 名字自带限定：这是写入时刻的历史读数，不是账本当前总量。",
+    "lines": 54,
+    "distinctBodyIdentities": 5,
+    "asOf": "2026-09-17T06:29:06+08:00",
+    "frozen": true
+  },
+  "metaVersionBumpRule": "**凡 `fieldDefinitions` / `executableDefinitionRule` / `warning` / `equivalenceIsDomainBound` / `prePolicyCountsAtPolicyWrite` 的**语义**任一变化 ⇒ **必须升 `metaVersion`，且不得沿用同名**。**⚠️ 本条的由来＝schematic-expert 实测指出：此前该档**是全 run 里唯一没有版本纪律的地方**（锚的完整性会依赖一条未声明的纪律）。⇒ **递归在此终止**：**换代这个机制本身就是终止条件**（不需要更高一层版本）。"
+}

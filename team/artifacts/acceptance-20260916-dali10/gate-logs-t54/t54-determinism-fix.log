@@ -1,0 +1,18 @@
+=== ① 收据加 reproducibleBodySha256（生成器侧）===
+  已加入 → 38252 B
+
+=== ② 自证：跨秒 generation ⇒ 整文件不同、body 相同 ===
+  run1: 31821 B  file=d4560f4e8169ac540886  body=8f95fa2b4c35064da51b
+  run2: 31821 B  file=d4560f4e8169ac540886  body=8f95fa2b4c35064da51b
+  size 相同 = True
+  整文件哈希相同 = True
+  **body 哈希相同** = True ⇒ 这才是正确的可复现判据
+
+=== ③ 改验证脚本 C 组为 body 哈希 ===
+  已改 → 5512 B
+
+=== ④ 复验 ===
+  [OK ] 连跑两次 size 一致                                         31821
+  [OK ] 连跑两次 **body** 哈希一致（跨秒可复现）                            file=8f95fa2b4c35 body=8f95fa2b4c35
+  FAIL 项 = ['生成器 run1 成功', '生成器 run2 成功']
+  总判定 = FAIL

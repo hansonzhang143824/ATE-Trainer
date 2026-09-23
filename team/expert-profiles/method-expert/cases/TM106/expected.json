@@ -1,0 +1,13 @@
+{
+  "caseId": "TM106",
+  "canonicalInput": "<run>/strategy/TM106-resource-config-contract.json",
+  "expectedReadSources": [
+    "<run>/strategy/TM106-resource-config-contract.json"
+  ],
+  "expectedOutputs": [
+    "<run>/method/TM106-test-method-contract.json",
+    "<run>/method/deliverable-ready.json"
+  ],
+  "semanticTruthStatus": "PENDING_DOMAIN_INPUT",
+  "semanticTruthNote": "TM106 method contract semantic truth (measurement plan, test conditions and fixed scan/trim scope derived from the signed DFT interpretation) awaits domain-owner confirmation; only the mechanical checks of validate_method_contract.py are asserted today."
+}

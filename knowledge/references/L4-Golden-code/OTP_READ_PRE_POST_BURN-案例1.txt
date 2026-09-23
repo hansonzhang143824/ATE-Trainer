@@ -1,0 +1,1576 @@
+DUT_API int OTP_PRE_READ(short funcindex, LPCTSTR funclabel)
+{
+//{{AFX_STS_PARAM_PROTOTYPES
+    CParam *BG_PRE_CD = StsGetParam(funcindex, "BG_PRE_CD");
+    CParam *BG_RES_DIV_PRE_CD = StsGetParam(funcindex, "BG_RES_DIV_PRE_CD");
+    CParam *IZTC_PRE_CD = StsGetParam(funcindex, "IZTC_PRE_CD");
+    CParam *OSC_19P75M_PRE_CD = StsGetParam(funcindex, "OSC_19P75M_PRE_CD");
+    CParam *OSC_64K_PRE_CD = StsGetParam(funcindex, "OSC_64K_PRE_CD");
+    CParam *DAC_BUF_OS_PRE_CD = StsGetParam(funcindex, "DAC_BUF_OS_PRE_CD");
+    CParam *LED2_SNS_PRE_CD = StsGetParam(funcindex, "LED2_SNS_PRE_CD");
+    CParam *V1P2_BUF_OS_PRE_CD = StsGetParam(funcindex, "V1P2_BUF_OS_PRE_CD");
+    CParam *BATCELL_PRE_CD = StsGetParam(funcindex, "BATCELL_PRE_CD");
+    CParam *LED1_SNS_PRE_CD = StsGetParam(funcindex, "LED1_SNS_PRE_CD");
+    CParam *PMID_SNS_PRE_CD = StsGetParam(funcindex, "PMID_SNS_PRE_CD");
+    CParam *TJ_PRE_CD = StsGetParam(funcindex, "TJ_PRE_CD");
+    CParam *VBAT_SNS_MNT_PRE_CD = StsGetParam(funcindex, "VBAT_SNS_MNT_PRE_CD");
+    CParam *VAC_SNS_PRE_CD = StsGetParam(funcindex, "VAC_SNS_PRE_CD");
+    CParam *VBUS_SNS_PRE_CD = StsGetParam(funcindex, "VBUS_SNS_PRE_CD");
+    CParam *VSYS_SNS_MNT_PRE_CD = StsGetParam(funcindex, "VSYS_SNS_MNT_PRE_CD");
+    CParam *VSYS_SNS_LOOP_PRE_CD = StsGetParam(funcindex, "VSYS_SNS_LOOP_PRE_CD");
+    CParam *VBAT_SNS_LOOP_PRE_CD = StsGetParam(funcindex, "VBAT_SNS_LOOP_PRE_CD");
+    CParam *ADC_REF_PRE_CD = StsGetParam(funcindex, "ADC_REF_PRE_CD");
+    CParam *VBAT_HT_VSYSMIN_CMP_PRE_CD = StsGetParam(funcindex, "VBAT_HT_VSYSMIN_CMP_PRE_CD");
+    CParam *VBAT_RECHG_CMP_PRE_CD = StsGetParam(funcindex, "VBAT_RECHG_CMP_PRE_CD");
+    CParam *VINDPM_OS_PRE_CD = StsGetParam(funcindex, "VINDPM_OS_PRE_CD");
+    CParam *CC_BUF_OS_PRE_CD = StsGetParam(funcindex, "CC_BUF_OS_PRE_CD");
+    CParam *CVBUF_OS_PRE_CD = StsGetParam(funcindex, "CVBUF_OS_PRE_CD");
+    CParam *CC_ISNS_PRE_CD = StsGetParam(funcindex, "CC_ISNS_PRE_CD");
+    CParam *CC_DETECT_IP_PRE_CD = StsGetParam(funcindex, "CC_DETECT_IP_PRE_CD");
+    CParam *CC_DETECT_RD_PRE_CD = StsGetParam(funcindex, "CC_DETECT_RD_PRE_CD");
+    CParam *LED1_GAIN_PRE_CD = StsGetParam(funcindex, "LED1_GAIN_PRE_CD");
+    CParam *LED2_GAIN_PRE_CD = StsGetParam(funcindex, "LED2_GAIN_PRE_CD");
+    CParam *LED1_VOS_PRE_CD = StsGetParam(funcindex, "LED1_VOS_PRE_CD");
+    CParam *LED2_VOS_PRE_CD = StsGetParam(funcindex, "LED2_VOS_PRE_CD");
+    CParam *QRB_RATIO_BUCK_PRE_CD = StsGetParam(funcindex, "QRB_RATIO_BUCK_PRE_CD");
+    CParam *QRB_VOS_BUCK_PRE_CD = StsGetParam(funcindex, "QRB_VOS_BUCK_PRE_CD");
+    CParam *QRB_RATIO_BOOST_PRE_CD = StsGetParam(funcindex, "QRB_RATIO_BOOST_PRE_CD");
+    CParam *QRB_VOS_BOOST_PRE_CD = StsGetParam(funcindex, "QRB_VOS_BOOST_PRE_CD");
+    CParam *OCP_GAIN_PRE_CD = StsGetParam(funcindex, "OCP_GAIN_PRE_CD");
+    CParam *OCP_OS_PRE_CD = StsGetParam(funcindex, "OCP_OS_PRE_CD");
+    CParam *ISNS_GAIN_PRE_CD = StsGetParam(funcindex, "ISNS_GAIN_PRE_CD");
+    CParam *ISNS_OS_PRE_CD = StsGetParam(funcindex, "ISNS_OS_PRE_CD");
+    CParam *TRKL_PRE_CD = StsGetParam(funcindex, "TRKL_PRE_CD");
+    CParam *IREG_PRE_CD = StsGetParam(funcindex, "IREG_PRE_CD");
+    CParam *ITERM_PRE_CD = StsGetParam(funcindex, "ITERM_PRE_CD");
+    CParam *MAX_GCALMP_PRE_CD = StsGetParam(funcindex, "MAX_GCALMP_PRE_CD");
+    CParam *BSM_REG_PRE_CD = StsGetParam(funcindex, "BSM_REG_PRE_CD");
+    CParam *DPM_PRE_CD = StsGetParam(funcindex, "DPM_PRE_CD");
+    CParam *BSM_FASTON_PRE_CD = StsGetParam(funcindex, "BSM_FASTON_PRE_CD");
+    CParam *BSM_FASTOFF_PRE_CD = StsGetParam(funcindex, "BSM_FASTOFF_PRE_CD");
+    CParam *BSM_SLOWOFF_PRE_CD = StsGetParam(funcindex, "BSM_SLOWOFF_PRE_CD");
+    CParam *VREFBUF_OS_PRE_CD = StsGetParam(funcindex, "VREFBUF_OS_PRE_CD");
+    CParam *VINBUF_OS_PRE_CD = StsGetParam(funcindex, "VINBUF_OS_PRE_CD");
+    CParam *ADC_OS_PRE_CD = StsGetParam(funcindex, "ADC_OS_PRE_CD");
+    CParam *ADC_REGN_REF_PRE = StsGetParam(funcindex, "ADC_REGN_REF_PRE");
+    CParam *BUBO_LS_ZCD_PRE_CD = StsGetParam(funcindex, "BUBO_LS_ZCD_PRE_CD");
+    CParam *BUBO_HS_ZCD_PRE_CD = StsGetParam(funcindex, "BUBO_HS_ZCD_PRE_CD");
+    CParam *BUBO_VIN_EA_PRE_CD = StsGetParam(funcindex, "BUBO_VIN_EA_PRE_CD");
+    CParam *BUBO_IIN_EA_PRE_CD = StsGetParam(funcindex, "BUBO_IIN_EA_PRE_CD");
+    CParam *BUBO_CC_EA_PRE_CD = StsGetParam(funcindex, "BUBO_CC_EA_PRE_CD");
+    CParam *BUBO_CV_EA_PRE_CD = StsGetParam(funcindex, "BUBO_CV_EA_PRE_CD");
+    CParam *BUBO_TJ_EA_PRE_CD = StsGetParam(funcindex, "BUBO_TJ_EA_PRE_CD");
+    CParam *BATID_PU_RES_PRE_CD = StsGetParam(funcindex, "BATID_PU_RES_PRE_CD");
+    CParam *BG_RESERVED_PRE_CD = StsGetParam(funcindex, "BG_RESERVED_PRE_CD");
+    CParam *HSKP_RESERVED_PRE_CD = StsGetParam(funcindex, "HSKP_RESERVED_PRE_CD");
+    CParam *CVBUF_CLP_PRE_CD = StsGetParam(funcindex, "CVBUF_CLP_PRE_CD");
+    CParam *OPT_ADC_EN_INPUT_BUF_PRE = StsGetParam(funcindex, "OPT_ADC_EN_INPUT_BUF_PRE");
+    CParam *OPT_FORCE_VDD_FROM_VBAT_PRE = StsGetParam(funcindex, "OPT_FORCE_VDD_FROM_VBAT_PRE");
+    CParam *OPT_I2C_CTRL_PRE = StsGetParam(funcindex, "OPT_I2C_CTRL_PRE");
+    CParam *OPT_DIS_PORB5_TRIG_PORB1P8_PRE = StsGetParam(funcindex, "OPT_DIS_PORB5_TRIG_PORB1P8_PRE");
+    CParam *OPT_QON_TH_PRE = StsGetParam(funcindex, "OPT_QON_TH_PRE");
+    CParam *OPT_LED1_OCP_PRE = StsGetParam(funcindex, "OPT_LED1_OCP_PRE");
+    CParam *OPT_LED2_OCP_PRE = StsGetParam(funcindex, "OPT_LED2_OCP_PRE");
+    CParam *OPT_QRB_OK_PRE = StsGetParam(funcindex, "OPT_QRB_OK_PRE");
+    CParam *OPT_IO_RESERVERD_PRE = StsGetParam(funcindex, "OPT_IO_RESERVERD_PRE");
+    CParam *OPT_DIS_REGN_OVP_PRE = StsGetParam(funcindex, "OPT_DIS_REGN_OVP_PRE");
+    CParam *OPT_BFET_CP_PRE = StsGetParam(funcindex, "OPT_BFET_CP_PRE");
+    CParam *OPT_VBUS_OK_CFG_PRE = StsGetParam(funcindex, "OPT_VBUS_OK_CFG_PRE");
+    CParam *OPT_I2C_SLV_ADDR_OFFSET_PRE = StsGetParam(funcindex, "OPT_I2C_SLV_ADDR_OFFSET_PRE");
+    CParam *OPT_OTP_REV_ID_PRE = StsGetParam(funcindex, "OPT_OTP_REV_ID_PRE");
+    CParam *OPT_OCP_GN_EN_HBIT_PRE = StsGetParam(funcindex, "OPT_OCP_GN_EN_HBIT_PRE");
+    CParam *OPT_E6_undefine_PRE = StsGetParam(funcindex, "OPT_E6_undefine_PRE");
+    CParam *OPT_E7_undefine_PRE = StsGetParam(funcindex, "OPT_E7_undefine_PRE");
+    CParam *OPT_EA_undefine_PRE = StsGetParam(funcindex, "OPT_EA_undefine_PRE");
+    CParam *OPT_ADC_TRIM_EN_PRE = StsGetParam(funcindex, "OPT_ADC_TRIM_EN_PRE");
+    CParam *SN_REG_EC_PRE = StsGetParam(funcindex, "SN_REG_EC_PRE");
+    CParam *SN_REG_ED_PRE = StsGetParam(funcindex, "SN_REG_ED_PRE");
+    CParam *SN_REG_EE_PRE = StsGetParam(funcindex, "SN_REG_EE_PRE");
+    CParam *SN_REG_EF_PRE = StsGetParam(funcindex, "SN_REG_EF_PRE");
+//}}AFX_STS_PARAM_PROTOTYPES
+	// TODO: Add your function code here
+
+
+	DOUBLE BG_PRE_CODE[STS_SITE_NUM] = { 0 }; //1
+	DOUBLE BG_RES_DIV_PRE_CODE[STS_SITE_NUM] = { 0 };//2
+	DOUBLE IZTC_PRE_CODE[STS_SITE_NUM] = { 0 };// 3	
+	DOUBLE OSC_19P75M_PRE_CODE[STS_SITE_NUM] = { 0 };//4
+	DOUBLE OSC_64K_PRE_CODE[STS_SITE_NUM] = { 0 };//5
+	DOUBLE DAC_BUF_OS_PRE_CODE[STS_SITE_NUM] = { 0 };// 6
+	DOUBLE LED2_SNS_PRE_CODE[STS_SITE_NUM] = { 0 };// 7
+	DOUBLE V1P2_BUF_OS_PRE_CODE[STS_SITE_NUM] = { 0 };//8
+	DOUBLE BATCELL_PRE_CODE[STS_SITE_NUM] = { 0 };// 9
+	DOUBLE LED1_SNS_PRE_CODE[STS_SITE_NUM] = { 0 };// 10
+	DOUBLE PMID_SNS_PRE_CODE[STS_SITE_NUM] = { 0 };// 11
+	DOUBLE TJ_PRE_CODE[STS_SITE_NUM] = { 0 };// 12
+	DOUBLE VBAT_SNS_MNT_PRE_CODE[STS_SITE_NUM] = { 0 };// 13
+	DOUBLE VAC_SNS_PRE_CODE[STS_SITE_NUM] = { 0 };// 14
+	DOUBLE VBUS_SNS_PRE_CODE[STS_SITE_NUM] = { 0 };// 15
+	DOUBLE VSYS_SNS_MNT_PRE_CODE[STS_SITE_NUM] = { 0 };// 16
+	DOUBLE VSYS_SNS_LOOP_PRE_CODE[STS_SITE_NUM] = { 0 };// 17
+	DOUBLE VBAT_SNS_LOOP_PRE_CODE[STS_SITE_NUM] = { 0 };//18
+	DOUBLE ADC_REF_PRE_CODE[STS_SITE_NUM] = { 0 };//19
+	DOUBLE VBAT_HT_VSYSMIN_CMP_PRE_CODE[STS_SITE_NUM] = { 0 };//20
+	DOUBLE VBAT_RECHG_CMP_PRE_CODE[STS_SITE_NUM] = { 0 };// 21
+	DOUBLE VINDPM_OS_PRE_CODE[STS_SITE_NUM] = { 0 };// 22
+	DOUBLE CC_BUF_OS_PRE_CODE[STS_SITE_NUM] = { 0 };// 23
+	DOUBLE CVBUF_OS_PRE_CODE[STS_SITE_NUM] = { 0 };// 24
+	DOUBLE CC_ISNS_PRE_CODE[STS_SITE_NUM] = { 0 };//25
+	DOUBLE CC_DETECT_IP_PRE_CODE[STS_SITE_NUM] = { 0 };// 26
+	DOUBLE CC_DETECT_RD_PRE_CODE[STS_SITE_NUM] = { 0 };// 27
+	DOUBLE QRB_RATIO_BUCK_PRE_CODE[STS_SITE_NUM] = { 0 };// 28
+	DOUBLE QRB_VOS_BUCK_PRE_CODE[STS_SITE_NUM] = { 0 };// 29
+	DOUBLE QRB_RATIO_BOOST_PRE_CODE[STS_SITE_NUM] = { 0 };// 30
+	DOUBLE QRB_VOS_BOOST_PRE_CODE[STS_SITE_NUM] = { 0 };// 31
+	DOUBLE LED1_GAIN_PRE_CODE[STS_SITE_NUM] = { 0 };// 32
+	DOUBLE LED2_GAIN_PRE_CODE[STS_SITE_NUM] = { 0 };//33
+	DOUBLE LED1_VOS_PRE_CODE[STS_SITE_NUM] = { 0 };// 34
+	DOUBLE LED2_VOS_PRE_CODE[STS_SITE_NUM] = { 0 };//35
+	DOUBLE ITERM_PRE_CODE[STS_SITE_NUM] = { 0 };// 36
+	DOUBLE BSM_SLOWOFF_PRE_CODE[STS_SITE_NUM] = { 0 };// 37
+	DOUBLE OCP_GAIN_PRE_CODE[STS_SITE_NUM] = { 0 };// 38
+	DOUBLE OCP_OS_PRE_CODE[STS_SITE_NUM] = { 0 };// 39
+	DOUBLE ISNS_GAIN_PRE_CODE[STS_SITE_NUM] = { 0 };// 43
+	DOUBLE ISNS_OS_PRE_CODE[STS_SITE_NUM] = { 0 };//41
+	DOUBLE IREG_PRE_CODE[STS_SITE_NUM] = { 0 };// 42
+	DOUBLE MAX_GCALMP_PRE_CODE[STS_SITE_NUM] = { 0 };//43
+	DOUBLE TRKL_PRE_CODE[STS_SITE_NUM] = { 0 };// 44
+	DOUBLE DPM_PRE_CODE[STS_SITE_NUM] = { 0 };//45
+	DOUBLE BSM_FASTON_PRE_CODE[STS_SITE_NUM] = { 0 };// 46
+	DOUBLE BSM_FASTOFF_PRE_CODE[STS_SITE_NUM] = { 0 };// 47
+	DOUBLE BSM_REG_PRE_CODE[STS_SITE_NUM] = { 0 };// 48
+	DOUBLE VINBUF_OS_PRE_CODE[STS_SITE_NUM] = { 0 };//49
+	DOUBLE VREFBUF_OS_PRE_CODE[STS_SITE_NUM] = { 0 };// 50
+	DOUBLE BUBO_HS_ZCD_PRE_CODE[STS_SITE_NUM] = { 0 };//51
+	DOUBLE BUBO_LS_ZCD_PRE_CODE[STS_SITE_NUM] = { 0 };//52
+	DOUBLE BUBO_VIN_EA_PRE_CODE[STS_SITE_NUM] = { 0 };// 53
+	DOUBLE BUBO_IIN_EA_PRE_CODE[STS_SITE_NUM] = { 0 };// 54
+	DOUBLE BUBO_CV_EA_PRE_CODE[STS_SITE_NUM] = { 0 };// 55
+	DOUBLE BUBO_CC_EA_PRE_CODE[STS_SITE_NUM] = { 0 };// 56
+	DOUBLE BUBO_TJ_EA_PRE_CODE[STS_SITE_NUM] = { 0 };// 57
+	DOUBLE BATID_PU_RES_PRE_CODE[STS_SITE_NUM] = { 0 }; //58
+	DOUBLE ADC_OS_PRE_CODE[STS_SITE_NUM] = { 0 }; //60
+	DOUBLE BG_RESERVED_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE HSKP_RESERVED_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE CVBUF_CLP_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE ADC_REGN_REF_PRE_CODE[STS_SITE_NUM] = { 0 };
+	//--------OPT_CODE
+	DOUBLE OPT_ADC_EN_INPUT_BUF_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_FORCE_VDD_FROM_VBAT_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_I2C_CTRL_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_DIS_PORB5_TRIG_PORB1P8_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_QON_TH_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_LED1_OCP_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_LED2_OCP_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_QRB_OK_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_IO_RESERVERD_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_DIS_REGN_OVP_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_BFET_CP_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_VBUS_OK_CFG_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_I2C_SLV_ADDR_OFFSET_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_OTP_REV_ID_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_OCP_GN_EN_HBIT_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_E6_undefine_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_E7_undefine_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_ADC_TRIM_EN_PRE_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_EA_undefine_PRE_CODE[STS_SITE_NUM] = { 0 };
+
+
+
+	ULONG REG_C0_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_C1_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_C2_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_C3_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_C4_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_C5_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_C6_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_C7_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_C8_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_C9_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_CA_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_CB_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_CC_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_CD_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_CE_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_CF_PRE_READ[STS_SITE_NUM] = { 0 };
+
+	ULONG REG_D0_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_D1_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_D2_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_D3_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_D4_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_D5_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_D6_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_D7_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_D8_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_D9_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_DA_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_DB_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_DC_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_DD_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_DE_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_DF_PRE_READ[STS_SITE_NUM] = { 0 };
+
+	ULONG REG_E0_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_E1_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_E2_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_E3_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_E4_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_E5_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_E6_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_E7_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_E8_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_E9_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_EA_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_EB_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_EC_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_ED_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_EE_PRE_READ[STS_SITE_NUM] = { 0 };
+	ULONG REG_EF_PRE_READ[STS_SITE_NUM] = { 0 };
+	//-------------------------------OTP READ FUNCTION--------------------------//
+	dcm.I2CConnect();
+	cbite.SetOn(K1_PGND2AGND, K26_BAT_Cap, K4_REGN_Cap, K23_SDA_PU, K24_SCL_PU, -1);
+	delay_ms(3);
+	BAT_PMID_BTST_FOVI.Set(FV, 0, FOVIe_10V, FOVIe_100MA, FOVIe_RELAY_ON);//BAT
+	REGN_ACM.Set(FV, 0, ACM_N2P18V, ACM_200MA, ACM_RELAY_ON);//REGN
+	BAT_PMID_BTST_FOVI.Set(FV, 5, FOVIe_10V, FOVIe_100MA, FOVIe_RELAY_ON);//BAT=4V
+	REGN_ACM.Set(FV, 5, ACM_N2P18V, ACM_200MA, ACM_RELAY_ON);//REGN=4V
+	delay_ms(12);
+	entertestmode();
+	keyopen();
+	I2C_READ_BYTE(0x60, 0xBA, data_read);
+
+	I2C_READ_BYTE(0x60, 0xC0, REG_C0_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xC1, REG_C1_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xC2, REG_C2_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xC3, REG_C3_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xC4, REG_C4_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xC5, REG_C5_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xC6, REG_C6_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xC7, REG_C7_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xC8, REG_C8_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xC9, REG_C9_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xCA, REG_CA_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xCB, REG_CB_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xCC, REG_CC_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xCD, REG_CD_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xCE, REG_CE_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xCF, REG_CF_PRE_READ);
+	
+	I2C_READ_BYTE(0x60, 0xD0, REG_D0_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xD1, REG_D1_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xD2, REG_D2_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xD3, REG_D3_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xD4, REG_D4_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xD5, REG_D5_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xD6, REG_D6_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xD7, REG_D7_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xD8, REG_D8_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xD9, REG_D9_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xDA, REG_DA_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xDB, REG_DB_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xDC, REG_DC_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xDD, REG_DD_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xDE, REG_DE_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xDF, REG_DF_PRE_READ);
+
+	I2C_READ_BYTE(0x60, 0xE0, REG_E0_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xE1, REG_E1_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xE2, REG_E2_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xE3, REG_E3_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xE4, REG_E4_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xE5, REG_E5_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xE6, REG_E6_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xE7, REG_E7_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xE8, REG_E8_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xE9, REG_E9_PRE_READ);
+	I2C_READ_BYTE(0x60, 0xEA, REG_EA_PRE_READ);// ADC OS and ADC POLE
+	I2C_READ_BYTE(0x60, 0xEB, REG_EB_PRE_READ);// PROGRAM VERSION WRITE in DEVICE
+	I2C_READ_BYTE(0x60, 0xEC, REG_EC_PRE_READ);// DEVICE SN IN REG_0XEC
+	I2C_READ_BYTE(0x60, 0xED, REG_ED_PRE_READ);// DEVICE SN IN REG_0XED
+	I2C_READ_BYTE(0x60, 0xEE, REG_EE_PRE_READ);// DEVICE SN IN REG_0XEE
+	I2C_READ_BYTE(0x60, 0xEF, REG_EF_PRE_READ);// DEVICE SN IN REG_0XEF
+
+
+	BAT_PMID_BTST_FOVI.Set(FV, 0, FOVIe_10V, FOVIe_100MA, FOVIe_RELAY_ON);//BAT
+	REGN_ACM.Set(FV, 0, ACM_N2P18V, ACM_200MA, ACM_RELAY_ON);//REGN=4V
+	delay_ms(1);
+	REGN_ACM.Set(FV, 0, ACM_N2P18V, ACM_200MA, ACM_RELAY_OFF);//REGN=4V
+	BAT_PMID_BTST_FOVI.Set(FV, 0, FOVIe_10V, FOVIe_100MA, FOVIe_RELAY_OFF);//BAT
+
+	cbite.SetOn(K1_PGND2AGND, -1);
+	dcm.I2CDisconnect();
+
+	//TRIM_NODE ISNS_OS = trim_reg.trim("isns_os");
+	//TRIM_NODE TRKL = trim_reg.trim("trkl");
+
+	//-------------Read all register and set into readback
+	FOR_EACH_VALID_SITE(site)
+	{
+
+		trim_reg.assy("EFUSE_REG_C0").set_read_back((INT)REG_C0_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_C1").set_read_back((INT)REG_C1_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_C2").set_read_back((INT)REG_C2_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_C3").set_read_back((INT)REG_C3_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_C4").set_read_back((INT)REG_C4_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_C5").set_read_back((INT)REG_C5_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_C6").set_read_back((INT)REG_C6_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_C7").set_read_back((INT)REG_C7_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_C8").set_read_back((INT)REG_C8_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_C9").set_read_back((INT)REG_C9_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_CA").set_read_back((INT)REG_CA_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_CB").set_read_back((INT)REG_CB_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_CC").set_read_back((INT)REG_CC_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_CD").set_read_back((INT)REG_CD_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_CE").set_read_back((INT)REG_CE_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_CF").set_read_back((INT)REG_CF_PRE_READ[site], site);
+
+		trim_reg.assy("EFUSE_REG_D0").set_read_back((INT)REG_D0_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_D1").set_read_back((INT)REG_D1_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_D2").set_read_back((INT)REG_D2_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_D3").set_read_back((INT)REG_D3_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_D4").set_read_back((INT)REG_D4_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_D5").set_read_back((INT)REG_D5_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_D6").set_read_back((INT)REG_D6_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_D7").set_read_back((INT)REG_D7_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_D8").set_read_back((INT)REG_D8_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_D9").set_read_back((INT)REG_D9_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_DA").set_read_back((INT)REG_DA_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_DB").set_read_back((INT)REG_DB_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_DC").set_read_back((INT)REG_DC_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_DD").set_read_back((INT)REG_DD_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_DE").set_read_back((INT)REG_DE_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_DF").set_read_back((INT)REG_DF_PRE_READ[site], site);
+
+		trim_reg.assy("EFUSE_REG_E0").set_read_back((INT)REG_E0_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_E1").set_read_back((INT)REG_E1_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_E2").set_read_back((INT)REG_E2_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_E3").set_read_back((INT)REG_E3_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_E4").set_read_back((INT)REG_E4_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_E5").set_read_back((INT)REG_E5_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_E6").set_read_back((INT)REG_E6_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_E7").set_read_back((INT)REG_E7_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_E8").set_read_back((INT)REG_E8_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_E9").set_read_back((INT)REG_E9_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_EA").set_read_back((INT)REG_EA_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_EB").set_read_back((INT)REG_EB_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_EC").set_read_back((INT)REG_EC_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_ED").set_read_back((INT)REG_ED_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_EE").set_read_back((INT)REG_EE_PRE_READ[site], site);
+		trim_reg.assy("EFUSE_REG_EF").set_read_back((INT)REG_EF_PRE_READ[site], site);
+
+
+
+		//ISNS_OS.set_working(0, site);
+		//TRKL.set_working(0, site);
+	}
+
+	INT64 a = 0;
+
+	FOR_EACH_VALID_SITE(site)
+	{
+		if (trim_reg.assy("EFUSE_REGISTER").comp_read(a, site))
+		{
+			BURN_FLAG[site] = FRESH;
+		}
+		else
+		{
+			BURN_FLAG[site] = BURNNED;
+		}
+	}
+
+
+
+	FOR_EACH_VALID_SITE(site)
+	{
+		if (BURN_FLAG[site] == BURNNED)// only when FT mode and device is fresh can execute burn
+		{
+			trim_reg.assy("EFUSE_REG_C0").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_C1").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_C2").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_C3").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_C4").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_C5").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_C6").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_C7").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_C8").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_C9").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_CA").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_CB").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_CC").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_CD").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_CE").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_CF").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_D0").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_D1").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_D2").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_D3").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_D4").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_D5").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_D6").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_D7").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_D8").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_D9").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_DA").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_DB").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_DC").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_DD").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_DE").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_DF").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_E0").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_E1").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_E2").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_E3").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_E4").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_E5").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_E6").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_E7").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_E8").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_E9").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_EA").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_EB").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_EC").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_ED").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_EE").copy_read_to_work(site);
+			trim_reg.assy("EFUSE_REG_EF").copy_read_to_work(site);
+
+		}
+	}
+
+
+	FOR_EACH_VALID_SITE(site)
+	{
+		BG_PRE_CODE[site] = trim_reg.trim("bandgap").get_read_back(site);//check,1
+		BG_RES_DIV_PRE_CODE[site] = trim_reg.trim("bg_res_div").get_read_back(site);//check,2
+		IZTC_PRE_CODE[site] = trim_reg.trim("iztc_res").get_read_back(site);//check,3
+		OSC_19P75M_PRE_CODE[site] = trim_reg.trim("osc_19p75m").get_read_back(site);//check,4
+		OSC_64K_PRE_CODE[site] = trim_reg.trim("osc_64k").get_read_back(site);//check,5
+		DAC_BUF_OS_PRE_CODE[site] = trim_reg.trim("dac_buf_os").get_read_back(site);//check,6	
+		LED2_SNS_PRE_CODE[site] = trim_reg.trim("led2_rsns").get_read_back(site);//check,7
+		V1P2_BUF_OS_PRE_CODE[site] = trim_reg.trim("v1p2_buf_os").get_read_back(site);//check,8
+		BATCELL_PRE_CODE[site] = trim_reg.trim("batcell_sns").get_read_back(site);//check,9
+		LED1_SNS_PRE_CODE[site] = trim_reg.trim("led1_rsns").get_read_back(site);//check,10
+		PMID_SNS_PRE_CODE[site] = trim_reg.trim("pmid_rsns").get_read_back(site);//check,11
+		TJ_PRE_CODE[site] = trim_reg.trim("tj").get_read_back(site);//check,12
+		VBAT_SNS_MNT_PRE_CODE[site] = trim_reg.trim("vbat_rsns_mnt").get_read_back(site);//check,13
+		VBUS_SNS_PRE_CODE[site] = trim_reg.trim("vbus_sns").get_read_back(site);//check,14
+		VAC_SNS_PRE_CODE[site] = trim_reg.trim("vac_sns").get_read_back(site);//check,15	
+		VSYS_SNS_MNT_PRE_CODE[site] = trim_reg.trim("vsys_rsns_mnt").get_read_back(site);//check,16
+		VSYS_SNS_LOOP_PRE_CODE[site] = trim_reg.trim("vsys_rsns_loop").get_read_back(site);//check,17
+		VBAT_SNS_LOOP_PRE_CODE[site] = trim_reg.trim("vbat_rsns_loop").get_read_back(site);//check,18
+		ADC_REF_PRE_CODE[site] = trim_reg.trim("adc_ref").get_read_back(site);//check,19
+		VBAT_HT_VSYSMIN_CMP_PRE_CODE[site] = trim_reg.trim("vbat_ht_vsysmin_cmp").get_read_back(site);//check,20
+		VBAT_RECHG_CMP_PRE_CODE[site] = trim_reg.trim("vbat_rechg_cmp").get_read_back(site);//check,21
+		VINDPM_OS_PRE_CODE[site] = trim_reg.trim("vindpm_abs_os").get_read_back(site);//check,22
+		CC_BUF_OS_PRE_CODE[site] = trim_reg.trim("vindpm_rel_os").get_read_back(site);//check,23
+		CVBUF_OS_PRE_CODE[site] = trim_reg.trim("cvbuf_os").get_read_back(site);//check,24
+		CC_ISNS_PRE_CODE[site] = trim_reg.trim("vconn_isns").get_read_back(site);//check,25
+		CC_DETECT_IP_PRE_CODE[site] = trim_reg.trim("cc_detect_lp").get_read_back(site);//check,26
+		CC_DETECT_RD_PRE_CODE[site] = trim_reg.trim("cc_detect_rd").get_read_back(site);//check,27
+		QRB_RATIO_BUCK_PRE_CODE[site] = trim_reg.trim("qrb_ratio_buck").get_read_back(site);//check,28
+		QRB_VOS_BUCK_PRE_CODE[site] = trim_reg.trim("qrb_vos_buck").get_read_back(site);//check,29
+		QRB_RATIO_BOOST_PRE_CODE[site] = trim_reg.trim("qrb_ratio_boost").get_read_back(site);//check,30
+		QRB_VOS_BOOST_PRE_CODE[site] = trim_reg.trim("qrb_vos_boost").get_read_back(site);//check,31
+		LED1_GAIN_PRE_CODE[site] = trim_reg.trim("led1_gain").get_read_back(site);//check,32
+		LED2_GAIN_PRE_CODE[site] = trim_reg.trim("led2_gain").get_read_back(site);//check,33
+		LED1_VOS_PRE_CODE[site] = trim_reg.trim("led1_vos").get_read_back(site);//check,34
+		LED2_VOS_PRE_CODE[site] = trim_reg.trim("led2_vos").get_read_back(site);//check,35
+		ITERM_PRE_CODE[site] = trim_reg.trim("bfet_iterm").get_read_back(site);//check,36
+		BSM_SLOWOFF_PRE_CODE[site] = trim_reg.trim("bsm_slowoff").get_read_back(site);//check,37
+		OCP_GAIN_PRE_CODE[site] = trim_reg.trim("bfet_ocp_gn").get_read_back(site);//check,38
+		OCP_OS_PRE_CODE[site] = trim_reg.trim("bfet_ocp_os").get_read_back(site);//check,39
+		ISNS_GAIN_PRE_CODE[site] = trim_reg.trim("bfet_isns_gn").get_read_back(site);//check,43
+		ISNS_OS_PRE_CODE[site] = trim_reg.trim("bfet_isns_os").get_read_back(site);//check,41
+		IREG_PRE_CODE[site] = trim_reg.trim("bfet_ireg").get_read_back(site);//check,42
+		MAX_GCALMP_PRE_CODE[site] = trim_reg.trim("bfet_max_gclamp").get_read_back(site);//check,43
+		TRKL_PRE_CODE[site] = trim_reg.trim("bfet_trkl").get_read_back(site);//check,44
+		DPM_PRE_CODE[site] = trim_reg.trim("vsys_dpm").get_read_back(site);//check,45
+		BSM_FASTON_PRE_CODE[site] = trim_reg.trim("bsm_faston").get_read_back(site);//check,46
+		BSM_FASTOFF_PRE_CODE[site] = trim_reg.trim("bsm_fastoff").get_read_back(site);//check,47
+		BSM_REG_PRE_CODE[site] = trim_reg.trim("bsm_reg").get_read_back(site);//check,48
+		VINBUF_OS_PRE_CODE[site] = trim_reg.trim("vinbuf_os").get_read_back(site);//check,49
+		VREFBUF_OS_PRE_CODE[site] = trim_reg.trim("vrefbuf_os").get_read_back(site);//check,50
+		BUBO_HS_ZCD_PRE_CODE[site] = trim_reg.trim("bubo_hs_zcd_dvdd").get_read_back(site);//check,51
+		BUBO_LS_ZCD_PRE_CODE[site] = trim_reg.trim("bubo_ls_zcd_dvdd").get_read_back(site);//check,52
+		BUBO_VIN_EA_PRE_CODE[site] = trim_reg.trim("bubo_vin_ea_dvdd").get_read_back(site);//check,53
+		BUBO_IIN_EA_PRE_CODE[site] = trim_reg.trim("bubo_iin_ea_dvdd").get_read_back(site);//check,54
+		BUBO_CV_EA_PRE_CODE[site] = trim_reg.trim("bubo_cv_ea_dvdd").get_read_back(site);//check,55
+		BUBO_CC_EA_PRE_CODE[site] = trim_reg.trim("bubo_cc_ea_dvdd").get_read_back(site);//check,56
+		BUBO_TJ_EA_PRE_CODE[site] = trim_reg.trim("bubo_tj_ea_dvdd").get_read_back(site);//check,57
+		BATID_PU_RES_PRE_CODE[site] = trim_reg.trim("batid_pu_res").get_read_back(site);//check,58
+		ADC_OS_PRE_CODE[site] = trim_reg.trim("adc_os").get_read_back(site);//check,59
+		BG_RESERVED_PRE_CODE[site] = trim_reg.trim("bg_reserved").get_read_back(site);
+		HSKP_RESERVED_PRE_CODE[site] = trim_reg.trim("hskp_reserved").get_read_back(site);
+		CVBUF_CLP_PRE_CODE[site] = trim_reg.trim("cvbuf_clp").get_read_back(site);
+		ADC_REGN_REF_PRE_CODE[site] = trim_reg.trim("adc_regn_ref").get_read_back(site);
+
+		OPT_ADC_EN_INPUT_BUF_PRE_CODE[site] = trim_reg.sel("opt_adc_en_input_buf").get_read_back(site);
+		OPT_FORCE_VDD_FROM_VBAT_PRE_CODE[site] = trim_reg.sel("opt_force_vdd_from_vbat").get_read_back(site);
+		OPT_I2C_CTRL_PRE_CODE[site] = trim_reg.sel("opt_i2c_control").get_read_back(site);
+		OPT_DIS_PORB5_TRIG_PORB1P8_PRE_CODE[site] = trim_reg.sel("opt_dis_porb5_trig_porb1p8").get_read_back(site);
+		OPT_QON_TH_PRE_CODE[site] = trim_reg.sel("opt_qon_th").get_read_back(site);
+		OPT_LED1_OCP_PRE_CODE[site] = trim_reg.sel("opt_led1_ocp").get_read_back(site);
+		OPT_LED2_OCP_PRE_CODE[site] = trim_reg.sel("opt_led2_ocp").get_read_back(site);
+		OPT_QRB_OK_PRE_CODE[site] = trim_reg.sel("opt_qrb_ok").get_read_back(site);
+		OPT_IO_RESERVERD_PRE_CODE[site] = trim_reg.sel("io_reserved").get_read_back(site);
+		OPT_DIS_REGN_OVP_PRE_CODE[site] = trim_reg.sel("opt_dis_regnovp").get_read_back(site);
+		OPT_BFET_CP_PRE_CODE[site] = trim_reg.sel("opt_bfet_cp").get_read_back(site);
+		OPT_VBUS_OK_CFG_PRE_CODE[site] = trim_reg.sel("VBUS_OK_CFG").get_read_back(site);
+		OPT_I2C_SLV_ADDR_OFFSET_PRE_CODE[site] = trim_reg.sel("I2C_SLV_ADDR_OFFSET").get_read_back(site);
+		OPT_OTP_REV_ID_PRE_CODE[site] = trim_reg.sel("OTP_REV_ID").get_read_back(site);
+		OPT_OCP_GN_EN_HBIT_PRE_CODE[site] = trim_reg.sel("OCP_GN_EN_HBIT").get_read_back(site);
+		OPT_E6_undefine_PRE_CODE[site] = trim_reg.sel("E6_undefine").get_read_back(site);
+		OPT_E7_undefine_PRE_CODE[site] = trim_reg.sel("E7_undefine").get_read_back(site);
+		OPT_ADC_TRIM_EN_PRE_CODE[site] = trim_reg.sel("ADC_TRIM_EN").get_read_back(site);
+		OPT_EA_undefine_PRE_CODE[site] = trim_reg.sel("EA_undefine").get_read_back(site);
+
+	}
+
+	FOR_EACH_VALID_SITE(site)
+	{
+		BG_PRE_CD->SetTestResult(site, 0, BG_PRE_CODE[site]);//,1
+		BG_RES_DIV_PRE_CD->SetTestResult(site, 0, BG_RES_DIV_PRE_CODE[site]);//2
+		IZTC_PRE_CD->SetTestResult(site, 0, IZTC_PRE_CODE[site]);//3
+		OSC_19P75M_PRE_CD->SetTestResult(site, 0, OSC_19P75M_PRE_CODE[site]);//4
+		OSC_64K_PRE_CD->SetTestResult(site, 0, OSC_64K_PRE_CODE[site]);//5
+		DAC_BUF_OS_PRE_CD->SetTestResult(site, 0, DAC_BUF_OS_PRE_CODE[site]);//6
+		LED2_SNS_PRE_CD->SetTestResult(site, 0, LED2_SNS_PRE_CODE[site]);//7
+		V1P2_BUF_OS_PRE_CD->SetTestResult(site, 0, V1P2_BUF_OS_PRE_CODE[site]);//8
+		BATCELL_PRE_CD->SetTestResult(site, 0, BATCELL_PRE_CODE[site]);//9
+		LED1_SNS_PRE_CD->SetTestResult(site, 0, LED1_SNS_PRE_CODE[site]);//10
+		PMID_SNS_PRE_CD->SetTestResult(site, 0, PMID_SNS_PRE_CODE[site]);//11
+		TJ_PRE_CD->SetTestResult(site, 0, TJ_PRE_CODE[site]);//12
+		VBAT_SNS_MNT_PRE_CD->SetTestResult(site, 0, VBAT_SNS_MNT_PRE_CODE[site]);//13
+		VAC_SNS_PRE_CD->SetTestResult(site, 0, VAC_SNS_PRE_CODE[site]);//14
+		VBUS_SNS_PRE_CD->SetTestResult(site, 0, VBUS_SNS_PRE_CODE[site]);//15
+		VSYS_SNS_MNT_PRE_CD->SetTestResult(site, 0, VSYS_SNS_MNT_PRE_CODE[site]);//16
+		VSYS_SNS_LOOP_PRE_CD->SetTestResult(site, 0, VSYS_SNS_LOOP_PRE_CODE[site]);//17
+		VBAT_SNS_LOOP_PRE_CD->SetTestResult(site, 0, VBAT_SNS_LOOP_PRE_CODE[site]);//18
+		ADC_REF_PRE_CD->SetTestResult(site, 0, ADC_REF_PRE_CODE[site]);//19
+		VBAT_HT_VSYSMIN_CMP_PRE_CD->SetTestResult(site, 0, VBAT_HT_VSYSMIN_CMP_PRE_CODE[site]);//20
+		VBAT_RECHG_CMP_PRE_CD->SetTestResult(site, 0, VBAT_RECHG_CMP_PRE_CODE[site]);//21
+		VINDPM_OS_PRE_CD->SetTestResult(site, 0, VINDPM_OS_PRE_CODE[site]);//22
+		CC_BUF_OS_PRE_CD->SetTestResult(site, 0, CC_BUF_OS_PRE_CODE[site]);//23
+		CVBUF_OS_PRE_CD->SetTestResult(site, 0, CVBUF_OS_PRE_CODE[site]);//24
+		CC_ISNS_PRE_CD->SetTestResult(site, 0, CC_ISNS_PRE_CODE[site]);//25
+		CC_DETECT_IP_PRE_CD->SetTestResult(site, 0, CC_DETECT_IP_PRE_CODE[site]);//26
+		CC_DETECT_RD_PRE_CD->SetTestResult(site, 0, CC_DETECT_RD_PRE_CODE[site]);//27
+		QRB_RATIO_BUCK_PRE_CD->SetTestResult(site, 0, QRB_RATIO_BUCK_PRE_CODE[site]);//28
+		QRB_VOS_BUCK_PRE_CD->SetTestResult(site, 0, QRB_VOS_BUCK_PRE_CODE[site]);//29
+		QRB_RATIO_BOOST_PRE_CD->SetTestResult(site, 0, QRB_RATIO_BOOST_PRE_CODE[site]);//30
+		QRB_VOS_BOOST_PRE_CD->SetTestResult(site, 0, QRB_VOS_BOOST_PRE_CODE[site]);//31
+		LED1_GAIN_PRE_CD->SetTestResult(site, 0, LED1_GAIN_PRE_CODE[site]);//32
+		LED2_GAIN_PRE_CD->SetTestResult(site, 0, LED2_GAIN_PRE_CODE[site]);//33
+		LED1_VOS_PRE_CD->SetTestResult(site, 0, LED1_VOS_PRE_CODE[site]);//34
+		LED2_VOS_PRE_CD->SetTestResult(site, 0, LED2_VOS_PRE_CODE[site]);//35
+		ITERM_PRE_CD->SetTestResult(site, 0, ITERM_PRE_CODE[site]);//36
+		BSM_SLOWOFF_PRE_CD->SetTestResult(site, 0, BSM_SLOWOFF_PRE_CODE[site]);//37
+		OCP_GAIN_PRE_CD->SetTestResult(site, 0, OCP_GAIN_PRE_CODE[site]);//38
+		OCP_OS_PRE_CD->SetTestResult(site, 0, OCP_OS_PRE_CODE[site]);//39
+		ISNS_GAIN_PRE_CD->SetTestResult(site, 0, ISNS_GAIN_PRE_CODE[site]);//40
+		ISNS_OS_PRE_CD->SetTestResult(site, 0, ISNS_OS_PRE_CODE[site]);//41
+		IREG_PRE_CD->SetTestResult(site, 0, IREG_PRE_CODE[site]);//42
+		MAX_GCALMP_PRE_CD->SetTestResult(site, 0, MAX_GCALMP_PRE_CODE[site]);//43
+		TRKL_PRE_CD->SetTestResult(site, 0, TRKL_PRE_CODE[site]);//44
+		DPM_PRE_CD->SetTestResult(site, 0, DPM_PRE_CODE[site]);//45
+		BSM_FASTON_PRE_CD->SetTestResult(site, 0, BSM_FASTON_PRE_CODE[site]);//46
+		BSM_FASTOFF_PRE_CD->SetTestResult(site, 0, BSM_FASTOFF_PRE_CODE[site]);//47
+		BSM_REG_PRE_CD->SetTestResult(site, 0, BSM_REG_PRE_CODE[site]);//48
+		VINBUF_OS_PRE_CD->SetTestResult(site, 0, VINBUF_OS_PRE_CODE[site]);//49
+		VREFBUF_OS_PRE_CD->SetTestResult(site, 0, VREFBUF_OS_PRE_CODE[site]);//50
+		BUBO_HS_ZCD_PRE_CD->SetTestResult(site, 0, BUBO_HS_ZCD_PRE_CODE[site]);//51
+		BUBO_LS_ZCD_PRE_CD->SetTestResult(site, 0, BUBO_LS_ZCD_PRE_CODE[site]);//52
+		BUBO_VIN_EA_PRE_CD->SetTestResult(site, 0, BUBO_VIN_EA_PRE_CODE[site]);//53
+		BUBO_IIN_EA_PRE_CD->SetTestResult(site, 0, BUBO_IIN_EA_PRE_CODE[site]);//54
+		BUBO_CV_EA_PRE_CD->SetTestResult(site, 0, BUBO_CV_EA_PRE_CODE[site]);//55
+		BUBO_CC_EA_PRE_CD->SetTestResult(site, 0, BUBO_CC_EA_PRE_CODE[site]);//56
+		BUBO_TJ_EA_PRE_CD->SetTestResult(site, 0, BUBO_TJ_EA_PRE_CODE[site]);//57
+		BATID_PU_RES_PRE_CD->SetTestResult(site, 0, BATID_PU_RES_PRE_CODE[site]);//58
+		ADC_OS_PRE_CD->SetTestResult(site, 0, ADC_OS_PRE_CODE[site]);//
+		BG_RESERVED_PRE_CD->SetTestResult(site, 0, BG_RESERVED_PRE_CODE[site]);
+		HSKP_RESERVED_PRE_CD->SetTestResult(site, 0, HSKP_RESERVED_PRE_CODE[site]);
+		CVBUF_CLP_PRE_CD->SetTestResult(site, 0, CVBUF_CLP_PRE_CODE[site]);
+		ADC_REGN_REF_PRE->SetTestResult(site, 0, ADC_REGN_REF_PRE_CODE[site]);
+
+		OPT_ADC_EN_INPUT_BUF_PRE->SetTestResult(site, 0, OPT_ADC_EN_INPUT_BUF_PRE_CODE[site]);
+		OPT_FORCE_VDD_FROM_VBAT_PRE->SetTestResult(site, 0, OPT_FORCE_VDD_FROM_VBAT_PRE_CODE[site]);
+		OPT_I2C_CTRL_PRE->SetTestResult(site, 0, OPT_I2C_CTRL_PRE_CODE[site]);
+		OPT_DIS_PORB5_TRIG_PORB1P8_PRE->SetTestResult(site, 0, OPT_DIS_PORB5_TRIG_PORB1P8_PRE_CODE[site]);
+		OPT_QON_TH_PRE->SetTestResult(site, 0, OPT_QON_TH_PRE_CODE[site]);
+		OPT_LED1_OCP_PRE->SetTestResult(site, 0, OPT_LED1_OCP_PRE_CODE[site]);
+		OPT_LED2_OCP_PRE->SetTestResult(site, 0, OPT_LED2_OCP_PRE_CODE[site]);
+		OPT_QRB_OK_PRE->SetTestResult(site, 0, OPT_QRB_OK_PRE_CODE[site]);
+		OPT_IO_RESERVERD_PRE->SetTestResult(site, 0, OPT_IO_RESERVERD_PRE_CODE[site]);	
+		OPT_DIS_REGN_OVP_PRE->SetTestResult(site, 0, OPT_DIS_REGN_OVP_PRE_CODE[site]);
+		OPT_BFET_CP_PRE->SetTestResult(site, 0, OPT_BFET_CP_PRE_CODE[site]);
+		OPT_VBUS_OK_CFG_PRE->SetTestResult(site, 0, OPT_VBUS_OK_CFG_PRE_CODE[site]);
+		OPT_I2C_SLV_ADDR_OFFSET_PRE->SetTestResult(site, 0, OPT_I2C_SLV_ADDR_OFFSET_PRE_CODE[site]);
+		OPT_OTP_REV_ID_PRE->SetTestResult(site, 0, OPT_OTP_REV_ID_PRE_CODE[site]);
+		OPT_OCP_GN_EN_HBIT_PRE->SetTestResult(site, 0, OPT_OCP_GN_EN_HBIT_PRE_CODE[site]);
+		OPT_E6_undefine_PRE->SetTestResult(site, 0, OPT_E6_undefine_PRE_CODE[site]);
+		OPT_E7_undefine_PRE->SetTestResult(site, 0, OPT_E7_undefine_PRE_CODE[site]);
+		OPT_ADC_TRIM_EN_PRE->SetTestResult(site, 0, OPT_ADC_TRIM_EN_PRE_CODE[site]);
+		OPT_EA_undefine_PRE->SetTestResult(site, 0, OPT_EA_undefine_PRE_CODE[site]);
+
+		SN_REG_EC_PRE->SetTestResult(site, 0, REG_EC_PRE_READ[site]);//device serial number in register 0xEC
+		SN_REG_ED_PRE->SetTestResult(site, 0, REG_ED_PRE_READ[site]);//device serial number in register 0xEB
+		SN_REG_EE_PRE->SetTestResult(site, 0, REG_EE_PRE_READ[site]);//device serial number in register 0xEE
+		SN_REG_EF_PRE->SetTestResult(site, 0, REG_EF_PRE_READ[site]);//device serial number in register 0xEF
+
+	}
+
+	return 0;
+}
+
+
+DUT_API int OTP_BURN(short funcindex, LPCTSTR funclabel)
+{
+//{{AFX_STS_PARAM_PROTOTYPES
+    CParam *MTP_BURN = StsGetParam(funcindex, "MTP_BURN");
+//}}AFX_STS_PARAM_PROTOTYPES
+	// TODO: Add your function code here
+
+	SEL_NODE &OPT_ADC_EN_INPUT_BUF = trim_reg.sel("opt_adc_en_input_buf");
+	SEL_NODE &OPT_FORCE_VDD_FROM_VBAT = trim_reg.sel("opt_force_vdd_from_vbat");
+	SEL_NODE &OPT_I2C_CTRL = trim_reg.sel("opt_i2c_control");
+	SEL_NODE &OPT_DIS_PORB5_TRIG_PORB1P8 = trim_reg.sel("opt_dis_porb5_trig_porb1p8");
+	SEL_NODE &OPT_QON_TH = trim_reg.sel("opt_qon_th");
+	SEL_NODE &OPT_LED1_OCP = trim_reg.sel("opt_led1_ocp");
+	SEL_NODE &OPT_LED2_OCP = trim_reg.sel("opt_led2_ocp");
+	SEL_NODE &OPT_QRB_OK = trim_reg.sel("opt_qrb_ok");
+	SEL_NODE &OPT_IO_RESERVERD = trim_reg.sel("io_reserved");
+	SEL_NODE &OPT_DIS_REGN_OVP = trim_reg.sel("opt_dis_regnovp");
+	SEL_NODE &OPT_BFET_CP = trim_reg.sel("opt_bfet_cp");
+	SEL_NODE &OPT_VBUS_OK_CFG = trim_reg.sel("VBUS_OK_CFG");
+	SEL_NODE &OPT_I2C_SLV_ADDR_OFFSET = trim_reg.sel("I2C_SLV_ADDR_OFFSET");
+	SEL_NODE &OPT_OTP_REV_ID = trim_reg.sel("OTP_REV_ID");
+	SEL_NODE &OPT_OCP_GN_EN_HBIT = trim_reg.sel("OCP_GN_EN_HBIT");
+	SEL_NODE &OPT_E6_undefine = trim_reg.sel("E6_undefine");
+	SEL_NODE &OPT_E7_undefine = trim_reg.sel("E7_undefine");
+	SEL_NODE &OPT_ADC_TRIM_EN = trim_reg.sel("ADC_TRIM_EN");
+	SEL_NODE &OPT_EA_undefine = trim_reg.sel("EA_undefine");
+	SEL_NODE &OPT_SN_EC = trim_reg.sel("SN_EC");
+	SEL_NODE &OPT_SN_ED = trim_reg.sel("SN_ED");
+	SEL_NODE &OPT_SN_EE = trim_reg.sel("SN_EE");
+	SEL_NODE &OPT_SN_EF = trim_reg.sel("SN_EF");
+
+
+
+	DWORD REG_C0_BestCode[STS_SITE_NUM];
+	DWORD REG_C1_BestCode[STS_SITE_NUM];
+	DWORD REG_C2_BestCode[STS_SITE_NUM];
+	DWORD REG_C3_BestCode[STS_SITE_NUM];
+	DWORD REG_C4_BestCode[STS_SITE_NUM];
+	DWORD REG_C5_BestCode[STS_SITE_NUM];
+	DWORD REG_C6_BestCode[STS_SITE_NUM];
+	DWORD REG_C7_BestCode[STS_SITE_NUM];
+	DWORD REG_C8_BestCode[STS_SITE_NUM];
+	DWORD REG_C9_BestCode[STS_SITE_NUM];
+	DWORD REG_CA_BestCode[STS_SITE_NUM];
+	DWORD REG_CB_BestCode[STS_SITE_NUM];
+	DWORD REG_CC_BestCode[STS_SITE_NUM];
+	DWORD REG_CD_BestCode[STS_SITE_NUM];
+	DWORD REG_CE_BestCode[STS_SITE_NUM];
+	DWORD REG_CF_BestCode[STS_SITE_NUM];
+
+	DWORD REG_D0_BestCode[STS_SITE_NUM];
+	DWORD REG_D1_BestCode[STS_SITE_NUM];
+	DWORD REG_D2_BestCode[STS_SITE_NUM];
+	DWORD REG_D3_BestCode[STS_SITE_NUM];
+	DWORD REG_D4_BestCode[STS_SITE_NUM];
+	DWORD REG_D5_BestCode[STS_SITE_NUM];
+	DWORD REG_D6_BestCode[STS_SITE_NUM];
+	DWORD REG_D7_BestCode[STS_SITE_NUM];
+	DWORD REG_D8_BestCode[STS_SITE_NUM];
+	DWORD REG_D9_BestCode[STS_SITE_NUM];
+	DWORD REG_DA_BestCode[STS_SITE_NUM];
+	DWORD REG_DB_BestCode[STS_SITE_NUM];
+	DWORD REG_DC_BestCode[STS_SITE_NUM];
+	DWORD REG_DD_BestCode[STS_SITE_NUM];
+	DWORD REG_DE_BestCode[STS_SITE_NUM];
+	DWORD REG_DF_BestCode[STS_SITE_NUM];
+
+	DWORD REG_E0_BestCode[STS_SITE_NUM];
+	DWORD REG_E1_BestCode[STS_SITE_NUM];
+	DWORD REG_E2_BestCode[STS_SITE_NUM];
+	DWORD REG_E3_BestCode[STS_SITE_NUM];
+	DWORD REG_E4_BestCode[STS_SITE_NUM];
+	DWORD REG_E5_BestCode[STS_SITE_NUM];
+	DWORD REG_E6_BestCode[STS_SITE_NUM];
+	DWORD REG_E7_BestCode[STS_SITE_NUM];
+	DWORD REG_E8_BestCode[STS_SITE_NUM];
+	DWORD REG_E9_BestCode[STS_SITE_NUM];
+	DWORD REG_EA_BestCode[STS_SITE_NUM];
+	DWORD REG_EB_BestCode[STS_SITE_NUM];
+	DWORD REG_EC_BestCode[STS_SITE_NUM];
+	DWORD REG_ED_BestCode[STS_SITE_NUM];
+	DWORD REG_EE_BestCode[STS_SITE_NUM];
+	DWORD REG_EF_BestCode[STS_SITE_NUM];
+
+	//-----------------------------Program Version save here then write in OTP-------------------------//
+	int DATA[60] = { 0 };
+	//-------------------------Device serial number created randomly and then write in OTP-------------//
+	DWORD SN_EFUSE_REG_EC[STS_SITE_NUM]; // Register 0XEC
+	DWORD SN_EFUSE_REG_ED[STS_SITE_NUM]; // Register 0XED
+	DWORD SN_EFUSE_REG_EE[STS_SITE_NUM]; // Register 0XEE
+	DWORD SN_EFUSE_REG_EF[STS_SITE_NUM]; // Register 0XEF
+	device_sn_assign_random(SN_EFUSE_REG_EC, SN_EFUSE_REG_ED, SN_EFUSE_REG_EE, SN_EFUSE_REG_EF);
+
+
+	//----------Serial number save in working
+	if (TRIM_FLOW == FT)
+	{
+		FOR_EACH_VALID_SITE(site)
+		{
+			if (BURN_FLAG[site] == FRESH)// only when FT mode and device is fresh can execute burn
+			{
+				trim_reg.assy("EFUSE_REG_EB").set_working(PROG_VERSION, site);// program version
+				trim_reg.assy("EFUSE_REG_EC").set_working(SN_EFUSE_REG_EC[site], site); // serial number 1
+				trim_reg.assy("EFUSE_REG_ED").set_working(SN_EFUSE_REG_ED[site], site);// serial number 2
+				trim_reg.assy("EFUSE_REG_EE").set_working(SN_EFUSE_REG_EE[site], site);// serial number 3
+				trim_reg.assy("EFUSE_REG_EF").set_working(SN_EFUSE_REG_EF[site], site);// serial number 4
+			}
+			else
+			{
+				trim_reg.assy("EFUSE_REG_EB").copy_read_to_work(site);
+				trim_reg.assy("EFUSE_REG_EC").copy_read_to_work(site);
+				trim_reg.assy("EFUSE_REG_ED").copy_read_to_work(site);
+				trim_reg.assy("EFUSE_REG_EE").copy_read_to_work(site);
+				trim_reg.assy("EFUSE_REG_EF").copy_read_to_work(site);
+			}
+		}
+	}
+
+
+	//---------------------------Transfer Best code of trim item and required setting of option items
+	FOR_EACH_VALID_SITE(site)
+	{
+		REG_C0_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_C0").get_working(site);
+		REG_C1_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_C1").get_working(site);
+		REG_C2_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_C2").get_working(site);
+		REG_C3_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_C3").get_working(site);
+		REG_C4_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_C4").get_working(site);
+		REG_C5_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_C5").get_working(site);
+		REG_C6_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_C6").get_working(site);
+		REG_C7_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_C7").get_working(site);
+		REG_C8_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_C8").get_working(site);
+		REG_C9_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_C9").get_working(site);
+		REG_CA_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_CA").get_working(site);
+		REG_CB_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_CB").get_working(site);
+		REG_CC_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_CC").get_working(site);
+		REG_CD_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_CD").get_working(site);
+		REG_CE_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_CE").get_working(site);
+		REG_CF_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_CF").get_working(site);
+
+		REG_D0_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_D0").get_working(site);
+		REG_D1_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_D1").get_working(site);
+		REG_D2_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_D2").get_working(site);
+		REG_D3_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_D3").get_working(site);
+		REG_D4_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_D4").get_working(site);
+		REG_D5_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_D5").get_working(site);
+		REG_D6_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_D6").get_working(site);
+		REG_D7_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_D7").get_working(site);
+		REG_D8_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_D8").get_working(site);
+		REG_D9_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_D9").get_working(site);
+		REG_DA_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_DA").get_working(site);
+		REG_DB_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_DB").get_working(site);
+		REG_DC_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_DC").get_working(site);
+		REG_DD_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_DD").get_working(site);
+		REG_DE_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_DE").get_working(site);
+		REG_DF_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_DF").get_working(site);
+
+		REG_E0_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_E0").get_working(site);
+		REG_E1_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_E1").get_working(site);
+		REG_E2_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_E2").get_working(site);
+		REG_E3_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_E3").get_working(site);
+		REG_E4_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_E4").get_working(site);
+		REG_E5_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_E5").get_working(site);
+		REG_E6_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_E6").get_working(site);
+		REG_E7_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_E7").get_working(site);
+		REG_E8_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_E8").get_working(site);
+		REG_E9_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_E9").get_working(site);
+		REG_EA_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_EA").get_working(site);
+		REG_EB_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_EB").get_working(site);
+		REG_EC_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_EC").get_working(site);
+		REG_ED_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_ED").get_working(site);
+		REG_EE_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_EE").get_working(site);
+		REG_EF_BestCode[site] = (DWORD)trim_reg.assy("EFUSE_REG_EF").get_working(site);
+	}
+
+
+	dcm.I2CConnect();
+
+	if (TRIM_FLOW == FT )// only when FT mode and device is fresh can execute burn
+	{
+		cbite.SetOn(K1_PGND2AGND, KGRP_ACM_7D_19D, K7_VBUS_Cap, K23_SDA_PU, K24_SCL_PU, -1);
+		delay_ms(3);
+		REGN_ACM.Set(FV, 5, ACM_N2P18V, ACM_200MA, ACM_RELAY_ON);//REGN
+		LED1_QON_EDL_VBUS_ACM.Set(FV, 0, ACM_N2P18V, ACM_200MA, ACM_RELAY_ON);
+		LED1_QON_EDL_VBUS_ACM.Set(FV, 9, ACM_N2P18V, ACM_200MA, ACM_RELAY_ON);
+		delay_ms(10);
+		entertestmode();
+		keyopen();
+
+		DWORD Key1[STS_SITE_NUM] = { 0 };
+		DWORD Key2[STS_SITE_NUM] = { 0 };
+		//DWORD Key1[STS_SITE_NUM] = { 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80 };
+		//DWORD Key2[STS_SITE_NUM] = { 0x83, 0x83, 0x83, 0x83, 0x83, 0x83, 0x83, 0x83, 0x83, 0x83, 0x83, 0x83, 0x83, 0x83, 0x83, 0x83 };
+		FOR_EACH_VALID_SITE(site)
+		{
+			if (BURN_FLAG[site] == FRESH)
+			{
+				Key1[site] = 0x80;
+				Key2[site] = 0x83;
+			}
+			else
+			{
+				Key1[site] = 0x00;
+				Key2[site] = 0x00;
+			}
+			//if (BURN_FLAG[site] == FRESH)
+			//{
+			//	dcm.I2CWriteData(0x60, 0xA0, 1, Key1);
+			//	dcm.I2CWriteData(0x60, 0xAA, 1, Key2);
+			//}
+			//else
+			//{
+			//	dcm.I2CWriteData(0x60, 0xA0, 1, Key3);
+			//	dcm.I2CWriteData(0x60, 0xAA, 1, Key4);
+			//}
+		}
+
+		dcm.I2CWriteData(0x60, 0xA0, 1, Key1);
+		dcm.I2CWriteData(0x60, 0xAA, 1, Key2);
+
+		I2C_READ_BYTE(0x60, 0xAA, data_read);
+		dcm.I2CWriteData(0x60, 0xC0, 1, REG_C0_BestCode);
+		dcm.I2CWriteData(0x60, 0xC1, 1, REG_C1_BestCode);
+		dcm.I2CWriteData(0x60, 0xC2, 1, REG_C2_BestCode);
+		dcm.I2CWriteData(0x60, 0xC3, 1, REG_C3_BestCode);
+		dcm.I2CWriteData(0x60, 0xC4, 1, REG_C4_BestCode);
+		dcm.I2CWriteData(0x60, 0xC5, 1, REG_C5_BestCode);
+		dcm.I2CWriteData(0x60, 0xC6, 1, REG_C6_BestCode);
+		dcm.I2CWriteData(0x60, 0xC7, 1, REG_C7_BestCode);
+		dcm.I2CWriteData(0x60, 0xC8, 1, REG_C8_BestCode);
+		dcm.I2CWriteData(0x60, 0xC9, 1, REG_C9_BestCode);
+		dcm.I2CWriteData(0x60, 0xCA, 1, REG_CA_BestCode);
+		dcm.I2CWriteData(0x60, 0xCB, 1, REG_CB_BestCode);
+		dcm.I2CWriteData(0x60, 0xCC, 1, REG_CC_BestCode);
+		dcm.I2CWriteData(0x60, 0xCD, 1, REG_CD_BestCode);
+		dcm.I2CWriteData(0x60, 0xCE, 1, REG_CE_BestCode);
+		dcm.I2CWriteData(0x60, 0xCF, 1, REG_CF_BestCode);
+
+		dcm.I2CWriteData(0x60, 0xD0, 1, REG_D0_BestCode);
+		dcm.I2CWriteData(0x60, 0xD1, 1, REG_D1_BestCode);
+		dcm.I2CWriteData(0x60, 0xD2, 1, REG_D2_BestCode);
+		dcm.I2CWriteData(0x60, 0xD3, 1, REG_D3_BestCode);
+		dcm.I2CWriteData(0x60, 0xD4, 1, REG_D4_BestCode);
+		dcm.I2CWriteData(0x60, 0xD5, 1, REG_D5_BestCode);
+		dcm.I2CWriteData(0x60, 0xD6, 1, REG_D6_BestCode);
+		dcm.I2CWriteData(0x60, 0xD7, 1, REG_D7_BestCode);
+		dcm.I2CWriteData(0x60, 0xD8, 1, REG_D8_BestCode);
+		dcm.I2CWriteData(0x60, 0xD9, 1, REG_D9_BestCode);
+		dcm.I2CWriteData(0x60, 0xDA, 1, REG_DA_BestCode);
+		dcm.I2CWriteData(0x60, 0xDB, 1, REG_DB_BestCode);
+		dcm.I2CWriteData(0x60, 0xDC, 1, REG_DC_BestCode);
+		dcm.I2CWriteData(0x60, 0xDD, 1, REG_DD_BestCode);
+		dcm.I2CWriteData(0x60, 0xDE, 1, REG_DE_BestCode);
+		dcm.I2CWriteData(0x60, 0xDF, 1, REG_DF_BestCode);
+
+		dcm.I2CWriteData(0x60, 0xE0, 1, REG_E0_BestCode);
+		dcm.I2CWriteData(0x60, 0xE1, 1, REG_E1_BestCode);
+		dcm.I2CWriteData(0x60, 0xE2, 1, REG_E2_BestCode);
+		dcm.I2CWriteData(0x60, 0xE3, 1, REG_E3_BestCode);
+		dcm.I2CWriteData(0x60, 0xE4, 1, REG_E4_BestCode);
+		dcm.I2CWriteData(0x60, 0xE5, 1, REG_E5_BestCode);
+		dcm.I2CWriteData(0x60, 0xE6, 1, REG_E6_BestCode);
+		dcm.I2CWriteData(0x60, 0xE7, 1, REG_E7_BestCode);
+		dcm.I2CWriteData(0x60, 0xE8, 1, REG_E8_BestCode);//E8 =0x34, 250ms delay
+		dcm.I2CWriteData(0x60, 0xE9, 1, REG_E9_BestCode);
+		dcm.I2CWriteData(0x60, 0xEA, 1, REG_EA_BestCode);//ADC_OS
+		dcm.I2CWriteData(0x60, 0xEB, 1, REG_EB_BestCode);//program version
+		dcm.I2CWriteData(0x60, 0xEC, 1, REG_EC_BestCode); //  device id write in register 0xEC
+		dcm.I2CWriteData(0x60, 0xED, 1, REG_ED_BestCode); //  device id write in register 0xED
+		dcm.I2CWriteData(0x60, 0xEE, 1, REG_EE_BestCode); //  device id write in register 0xEE
+		dcm.I2CWriteData(0x60, 0xEF, 1, REG_EF_BestCode); //  device id write in register 0xEF
+
+		I2CWriteSameData(0x60, 0xBE, 1, 0x01);// OTP Write end command
+		delay_ms(50);
+
+		LED1_QON_EDL_VBUS_ACM.Set(FV, 0, ACM_N2P18V, ACM_200MA, ACM_RELAY_ON,0.5);
+		REGN_ACM.Set(FV, 0, ACM_N2P18V, ACM_200MA, ACM_RELAY_ON);//REGN
+		delay_ms(5);
+		LED1_QON_EDL_VBUS_ACM.Set(FV, 0, ACM_N2P18V, ACM_200MA, ACM_RELAY_OFF);
+		REGN_ACM.Set(FV, 0, ACM_N2P18V, ACM_200MA, ACM_RELAY_OFF);//REGN
+		cbite.SetOn(K1_PGND2AGND, -1);
+	}
+
+	dcm.I2CDisconnect();
+	//---------------------------Transfer Best code of trim item to programmed
+	FOR_EACH_VALID_SITE(site)
+	{
+		trim_reg.assy("EFUSE_REG_C0").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_C1").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_C2").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_C3").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_C4").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_C5").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_C6").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_C7").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_C8").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_C9").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_CA").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_CB").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_CC").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_CD").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_CE").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_CF").copy_work_to_prog(site);
+
+		trim_reg.assy("EFUSE_REG_D0").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_D1").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_D2").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_D3").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_D4").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_D5").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_D6").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_D7").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_D8").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_D9").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_DA").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_DB").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_DC").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_DD").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_DE").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_DF").copy_work_to_prog(site);
+
+		trim_reg.assy("EFUSE_REG_E0").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_E1").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_E2").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_E3").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_E4").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_E5").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_E6").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_E7").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_E8").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_E9").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_EA").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_EB").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_EC").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_ED").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_EE").copy_work_to_prog(site);
+		trim_reg.assy("EFUSE_REG_EF").copy_work_to_prog(site);
+	}
+
+
+	FOR_EACH_VALID_SITE(site)
+	{
+		MTP_BURN->SetTestResult(site, 0, TRIM_FLOW);
+	}
+
+
+	return 0;
+}
+
+DUT_API int OTP_POST_READ(short funcindex, LPCTSTR funclabel)
+{
+//{{AFX_STS_PARAM_PROTOTYPES
+    CParam *BG_POST_CD = StsGetParam(funcindex, "BG_POST_CD");
+    CParam *BG_RES_DIV_POST_CD = StsGetParam(funcindex, "BG_RES_DIV_POST_CD");
+    CParam *IZTC_POST_CD = StsGetParam(funcindex, "IZTC_POST_CD");
+    CParam *OSC_19P75M_POST_CD = StsGetParam(funcindex, "OSC_19P75M_POST_CD");
+    CParam *OSC_64K_POST_CD = StsGetParam(funcindex, "OSC_64K_POST_CD");
+    CParam *DAC_BUF_OS_POST_CD = StsGetParam(funcindex, "DAC_BUF_OS_POST_CD");
+    CParam *LED2_SNS_POST_CD = StsGetParam(funcindex, "LED2_SNS_POST_CD");
+    CParam *V1P2_BUF_OS_POST_CD = StsGetParam(funcindex, "V1P2_BUF_OS_POST_CD");
+    CParam *BATCELL_POST_CD = StsGetParam(funcindex, "BATCELL_POST_CD");
+    CParam *LED1_SNS_POST_CD = StsGetParam(funcindex, "LED1_SNS_POST_CD");
+    CParam *PMID_SNS_POST_CD = StsGetParam(funcindex, "PMID_SNS_POST_CD");
+    CParam *TJ_POST_CD = StsGetParam(funcindex, "TJ_POST_CD");
+    CParam *VBAT_SNS_MNT_POST_CD = StsGetParam(funcindex, "VBAT_SNS_MNT_POST_CD");
+    CParam *VAC_SNS_POST_CD = StsGetParam(funcindex, "VAC_SNS_POST_CD");
+    CParam *VBUS_SNS_POST_CD = StsGetParam(funcindex, "VBUS_SNS_POST_CD");
+    CParam *VSYS_SNS_MNT_POST_CD = StsGetParam(funcindex, "VSYS_SNS_MNT_POST_CD");
+    CParam *VSYS_SNS_LOOP_POST_CD = StsGetParam(funcindex, "VSYS_SNS_LOOP_POST_CD");
+    CParam *VBAT_SNS_LOOP_POST_CD = StsGetParam(funcindex, "VBAT_SNS_LOOP_POST_CD");
+    CParam *ADC_REF_POST_CD = StsGetParam(funcindex, "ADC_REF_POST_CD");
+    CParam *VBAT_HT_VSYSMIN_CMP_POST_CD = StsGetParam(funcindex, "VBAT_HT_VSYSMIN_CMP_POST_CD");
+    CParam *VBAT_RECHG_CMP_POST_CD = StsGetParam(funcindex, "VBAT_RECHG_CMP_POST_CD");
+    CParam *VINDPM_OS_POST_CD = StsGetParam(funcindex, "VINDPM_OS_POST_CD");
+    CParam *CC_BUF_OS_POST_CD = StsGetParam(funcindex, "CC_BUF_OS_POST_CD");
+    CParam *CVBUF_OS_POST_CD = StsGetParam(funcindex, "CVBUF_OS_POST_CD");
+    CParam *CC_ISNS_POST_CD = StsGetParam(funcindex, "CC_ISNS_POST_CD");
+    CParam *CC_DETECT_IP_POST_CD = StsGetParam(funcindex, "CC_DETECT_IP_POST_CD");
+    CParam *CC_DETECT_RD_POST_CD = StsGetParam(funcindex, "CC_DETECT_RD_POST_CD");
+    CParam *LED1_GAIN_POST_CD = StsGetParam(funcindex, "LED1_GAIN_POST_CD");
+    CParam *LED2_GAIN_POST_CD = StsGetParam(funcindex, "LED2_GAIN_POST_CD");
+    CParam *LED1_VOS_POST_CD = StsGetParam(funcindex, "LED1_VOS_POST_CD");
+    CParam *LED2_VOS_POST_CD = StsGetParam(funcindex, "LED2_VOS_POST_CD");
+    CParam *QRB_RATIO_BUCK_POST_CD = StsGetParam(funcindex, "QRB_RATIO_BUCK_POST_CD");
+    CParam *QRB_VOS_BUCK_POST_CD = StsGetParam(funcindex, "QRB_VOS_BUCK_POST_CD");
+    CParam *QRB_RATIO_BOOST_POST_CD = StsGetParam(funcindex, "QRB_RATIO_BOOST_POST_CD");
+    CParam *QRB_VOS_BOOST_POST_CD = StsGetParam(funcindex, "QRB_VOS_BOOST_POST_CD");
+    CParam *OCP_GAIN_POST_CD = StsGetParam(funcindex, "OCP_GAIN_POST_CD");
+    CParam *OCP_OS_POST_CD = StsGetParam(funcindex, "OCP_OS_POST_CD");
+    CParam *ISNS_GAIN_POST_CD = StsGetParam(funcindex, "ISNS_GAIN_POST_CD");
+    CParam *ISNS_OS_POST_CD = StsGetParam(funcindex, "ISNS_OS_POST_CD");
+    CParam *TRKL_POST_CD = StsGetParam(funcindex, "TRKL_POST_CD");
+    CParam *IREG_POST_CD = StsGetParam(funcindex, "IREG_POST_CD");
+    CParam *ITERM_POST_CD = StsGetParam(funcindex, "ITERM_POST_CD");
+    CParam *MAX_GCALMP_POST_CD = StsGetParam(funcindex, "MAX_GCALMP_POST_CD");
+    CParam *BSM_REG_POST_CD = StsGetParam(funcindex, "BSM_REG_POST_CD");
+    CParam *DPM_POST_CD = StsGetParam(funcindex, "DPM_POST_CD");
+    CParam *BSM_FASTON_POST_CD = StsGetParam(funcindex, "BSM_FASTON_POST_CD");
+    CParam *BSM_FASTOFF_POST_CD = StsGetParam(funcindex, "BSM_FASTOFF_POST_CD");
+    CParam *BSM_SLOWOFF_POST_CD = StsGetParam(funcindex, "BSM_SLOWOFF_POST_CD");
+    CParam *VREFBUF_OS_POST_CD = StsGetParam(funcindex, "VREFBUF_OS_POST_CD");
+    CParam *VINBUF_OS_POST_CD = StsGetParam(funcindex, "VINBUF_OS_POST_CD");
+    CParam *ADC_OS_POST_CD = StsGetParam(funcindex, "ADC_OS_POST_CD");
+    CParam *ADC_REGN_REF_POST = StsGetParam(funcindex, "ADC_REGN_REF_POST");
+    CParam *BUBO_LS_ZCD_POST_CD = StsGetParam(funcindex, "BUBO_LS_ZCD_POST_CD");
+    CParam *BUBO_HS_ZCD_POST_CD = StsGetParam(funcindex, "BUBO_HS_ZCD_POST_CD");
+    CParam *BUBO_VIN_EA_POST_CD = StsGetParam(funcindex, "BUBO_VIN_EA_POST_CD");
+    CParam *BUBO_IIN_EA_POST_CD = StsGetParam(funcindex, "BUBO_IIN_EA_POST_CD");
+    CParam *BUBO_CC_EA_POST_CD = StsGetParam(funcindex, "BUBO_CC_EA_POST_CD");
+    CParam *BUBO_CV_EA_POST_CD = StsGetParam(funcindex, "BUBO_CV_EA_POST_CD");
+    CParam *BUBO_TJ_EA_POST_CD = StsGetParam(funcindex, "BUBO_TJ_EA_POST_CD");
+    CParam *BATID_PU_RES_POST_CD = StsGetParam(funcindex, "BATID_PU_RES_POST_CD");
+    CParam *BG_RESERVED_POST_CD = StsGetParam(funcindex, "BG_RESERVED_POST_CD");
+    CParam *HSKP_RESERVED_POST_CD = StsGetParam(funcindex, "HSKP_RESERVED_POST_CD");
+    CParam *CVBUF_CLP_POST_CD = StsGetParam(funcindex, "CVBUF_CLP_POST_CD");
+    CParam *OPT_ADC_EN_INPUT_BUF_POST = StsGetParam(funcindex, "OPT_ADC_EN_INPUT_BUF_POST");
+    CParam *OPT_FORCE_VDD_FROM_VBAT_POST = StsGetParam(funcindex, "OPT_FORCE_VDD_FROM_VBAT_POST");
+    CParam *OPT_I2C_CTRL_POST = StsGetParam(funcindex, "OPT_I2C_CTRL_POST");
+    CParam *OPT_DIS_PORB5_TRIG_PORB1P8_POST = StsGetParam(funcindex, "OPT_DIS_PORB5_TRIG_PORB1P8_POST");
+    CParam *OPT_QON_TH_POST = StsGetParam(funcindex, "OPT_QON_TH_POST");
+    CParam *OPT_LED1_OCP_POST = StsGetParam(funcindex, "OPT_LED1_OCP_POST");
+    CParam *OPT_LED2_OCP_POST = StsGetParam(funcindex, "OPT_LED2_OCP_POST");
+    CParam *OPT_QRB_OK_POST = StsGetParam(funcindex, "OPT_QRB_OK_POST");
+    CParam *OPT_IO_RESERVERD_POST = StsGetParam(funcindex, "OPT_IO_RESERVERD_POST");
+    CParam *OPT_DIS_REGN_OVP_POST = StsGetParam(funcindex, "OPT_DIS_REGN_OVP_POST");
+    CParam *OPT_BFET_CP_POST = StsGetParam(funcindex, "OPT_BFET_CP_POST");
+    CParam *OPT_VBUS_OK_CFG_POST = StsGetParam(funcindex, "OPT_VBUS_OK_CFG_POST");
+    CParam *OPT_I2C_SLV_ADDR_OFFSET_POST = StsGetParam(funcindex, "OPT_I2C_SLV_ADDR_OFFSET_POST");
+    CParam *OPT_OTP_REV_ID_POST = StsGetParam(funcindex, "OPT_OTP_REV_ID_POST");
+    CParam *OPT_OCP_GN_EN_HBIT_POST = StsGetParam(funcindex, "OPT_OCP_GN_EN_HBIT_POST");
+    CParam *OPT_E6_undefine_POST = StsGetParam(funcindex, "OPT_E6_undefine_POST");
+    CParam *OPT_E7_undefine_POST = StsGetParam(funcindex, "OPT_E7_undefine_POST");
+    CParam *OPT_EA_undefine_POST = StsGetParam(funcindex, "OPT_EA_undefine_POST");
+    CParam *OPT_ADC_TRIM_EN_POST = StsGetParam(funcindex, "OPT_ADC_TRIM_EN_POST");
+    CParam *SN_REG_EC = StsGetParam(funcindex, "SN_REG_EC");
+    CParam *SN_REG_ED = StsGetParam(funcindex, "SN_REG_ED");
+    CParam *SN_REG_EE = StsGetParam(funcindex, "SN_REG_EE");
+    CParam *SN_REG_EF = StsGetParam(funcindex, "SN_REG_EF");
+    CParam *OTP_BURNOK_CHK = StsGetParam(funcindex, "OTP_BURNOK_CHK");
+    CParam *PROG_VSN_CHK = StsGetParam(funcindex, "PROG_VSN_CHK");
+//}}AFX_STS_PARAM_PROTOTYPES
+	// TODO: Add your function code here
+
+
+	//----------Define Best code save in array :Programmed
+	DOUBLE BG_POST_CODE[STS_SITE_NUM]                  = { 0 };  
+	DOUBLE BG_RES_DIV_POST_CODE[STS_SITE_NUM]          = { 0 }; 
+	DOUBLE IZTC_POST_CODE[STS_SITE_NUM]                = { 0 }; 
+	DOUBLE OSC_19P75M_POST_CODE[STS_SITE_NUM]          = { 0 };
+	DOUBLE OSC_64K_POST_CODE[STS_SITE_NUM]             = { 0 };
+	DOUBLE DAC_BUF_OS_POST_CODE[STS_SITE_NUM]          = { 0 }; 
+	DOUBLE LED2_SNS_POST_CODE[STS_SITE_NUM]            = { 0 }; 
+	DOUBLE V1P2_BUF_OS_POST_CODE[STS_SITE_NUM]         = { 0 }; 
+	DOUBLE BATCELL_POST_CODE[STS_SITE_NUM]             = { 0 }; 
+	DOUBLE LED1_SNS_POST_CODE[STS_SITE_NUM]            = { 0 };
+	DOUBLE PMID_SNS_POST_CODE[STS_SITE_NUM]            = { 0 };
+	DOUBLE TJ_POST_CODE[STS_SITE_NUM]                  = { 0 };
+	DOUBLE VBAT_SNS_MNT_POST_CODE[STS_SITE_NUM]        = { 0 };
+	DOUBLE VAC_SNS_POST_CODE[STS_SITE_NUM]             = { 0 };
+	DOUBLE VBUS_SNS_POST_CODE[STS_SITE_NUM]            = { 0 };
+	DOUBLE VSYS_SNS_MNT_POST_CODE[STS_SITE_NUM]        = { 0 };
+	DOUBLE VSYS_SNS_LOOP_POST_CODE[STS_SITE_NUM]       = { 0 };
+	DOUBLE VBAT_SNS_LOOP_POST_CODE[STS_SITE_NUM]       = { 0 };
+	DOUBLE ADC_REF_POST_CODE[STS_SITE_NUM]             = { 0 };
+	DOUBLE VBAT_HT_VSYSMIN_CMP_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE VBAT_RECHG_CMP_POST_CODE[STS_SITE_NUM]      = { 0 };
+	DOUBLE VINDPM_OS_POST_CODE[STS_SITE_NUM]           = { 0 }; 
+	DOUBLE CC_BUF_OS_POST_CODE[STS_SITE_NUM]           = { 0 }; 
+	DOUBLE CVBUF_OS_POST_CODE[STS_SITE_NUM]            = { 0 }; 
+	DOUBLE CC_ISNS_POST_CODE[STS_SITE_NUM]             = { 0 }; 
+	DOUBLE CC_DETECT_IP_POST_CODE[STS_SITE_NUM]        = { 0 }; 
+	DOUBLE CC_DETECT_RD_POST_CODE[STS_SITE_NUM]        = { 0 }; 
+	DOUBLE QRB_RATIO_BUCK_POST_CODE[STS_SITE_NUM]      = { 0 }; 
+	DOUBLE QRB_VOS_BUCK_POST_CODE[STS_SITE_NUM]        = { 0 };
+	DOUBLE QRB_RATIO_BOOST_POST_CODE[STS_SITE_NUM]     = { 0 }; 
+	DOUBLE QRB_VOS_BOOST_POST_CODE[STS_SITE_NUM]       = { 0 }; 
+	DOUBLE LED1_GAIN_POST_CODE[STS_SITE_NUM]           = { 0 };
+	DOUBLE LED2_GAIN_POST_CODE[STS_SITE_NUM]           = { 0 };
+	DOUBLE LED1_VOS_POST_CODE[STS_SITE_NUM]            = { 0 };
+	DOUBLE LED2_VOS_POST_CODE[STS_SITE_NUM]            = { 0 };
+	DOUBLE ITERM_POST_CODE[STS_SITE_NUM]               = { 0 };
+	DOUBLE BSM_SLOWOFF_POST_CODE[STS_SITE_NUM]         = { 0 };
+	DOUBLE OCP_GAIN_POST_CODE[STS_SITE_NUM]            = { 0 };
+	DOUBLE OCP_OS_POST_CODE[STS_SITE_NUM]              = { 0 };
+	DOUBLE ISNS_GAIN_POST_CODE[STS_SITE_NUM]           = { 0 };
+	DOUBLE ISNS_OS_POST_CODE[STS_SITE_NUM]             = { 0 };
+	DOUBLE IREG_POST_CODE[STS_SITE_NUM]                = { 0 };
+	DOUBLE MAX_GCALMP_POST_CODE[STS_SITE_NUM]          = { 0 };
+	DOUBLE TRKL_POST_CODE[STS_SITE_NUM]                = { 0 };
+	DOUBLE DPM_POST_CODE[STS_SITE_NUM]                 = { 0 };
+	DOUBLE BSM_FASTON_POST_CODE[STS_SITE_NUM]          = { 0 };
+	DOUBLE BSM_FASTOFF_POST_CODE[STS_SITE_NUM]         = { 0 };
+	DOUBLE BSM_REG_POST_CODE[STS_SITE_NUM]             = { 0 };
+	DOUBLE VINBUF_OS_POST_CODE[STS_SITE_NUM]           = { 0 };
+	DOUBLE VREFBUF_OS_POST_CODE[STS_SITE_NUM]          = { 0 };
+	DOUBLE BUBO_HS_ZCD_POST_CODE[STS_SITE_NUM]         = { 0 };
+	DOUBLE BUBO_LS_ZCD_POST_CODE[STS_SITE_NUM]         = { 0 };
+	DOUBLE BUBO_VIN_EA_POST_CODE[STS_SITE_NUM]         = { 0 }; 
+	DOUBLE BUBO_IIN_EA_POST_CODE[STS_SITE_NUM]         = { 0 }; 
+	DOUBLE BUBO_CV_EA_POST_CODE[STS_SITE_NUM]          = { 0 }; 
+	DOUBLE BUBO_CC_EA_POST_CODE[STS_SITE_NUM]          = { 0 }; 
+	DOUBLE BUBO_TJ_EA_POST_CODE[STS_SITE_NUM]          = { 0 }; 
+	DOUBLE BATID_PU_RES_POST_CODE[STS_SITE_NUM]        = { 0 };  
+	DOUBLE ADC_OS_POST_CODE[STS_SITE_NUM]              = { 0 };
+	DOUBLE ADC_POLE_CODE[STS_SITE_NUM]                 = { 0 };
+	DOUBLE BG_RESERVED_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE HSKP_RESERVED_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE CVBUF_CLP_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE ADC_REGN_REF_POST_CODE[STS_SITE_NUM] = { 0 };
+
+	//--------OPT_CODE
+	DOUBLE OPT_ADC_EN_INPUT_BUF_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_FORCE_VDD_FROM_VBAT_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_I2C_CTRL_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_DIS_PORB5_TRIG_PORB1P8_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_QON_TH_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_LED1_OCP_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_LED2_OCP_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_QRB_OK_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_IO_RESERVERD_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_DIS_REGN_OVP_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_BFET_CP_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_VBUS_OK_CFG_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_I2C_SLV_ADDR_OFFSET_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_OTP_REV_ID_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_OCP_GN_EN_HBIT_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_E6_undefine_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_E7_undefine_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_ADC_TRIM_EN_POST_CODE[STS_SITE_NUM] = { 0 };
+	DOUBLE OPT_EA_undefine_POST_CODE[STS_SITE_NUM] = { 0 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//----------Define all the OTP Data in byte
+	ULONG REG_C0_POST_READ[STS_SITE_NUM];
+	ULONG REG_C1_POST_READ[STS_SITE_NUM];
+	ULONG REG_C2_POST_READ[STS_SITE_NUM];
+	ULONG REG_C3_POST_READ[STS_SITE_NUM];
+	ULONG REG_C4_POST_READ[STS_SITE_NUM];
+	ULONG REG_C5_POST_READ[STS_SITE_NUM];
+	ULONG REG_C6_POST_READ[STS_SITE_NUM];
+	ULONG REG_C7_POST_READ[STS_SITE_NUM];
+	ULONG REG_C8_POST_READ[STS_SITE_NUM];
+	ULONG REG_C9_POST_READ[STS_SITE_NUM];
+	ULONG REG_CA_POST_READ[STS_SITE_NUM];
+	ULONG REG_CB_POST_READ[STS_SITE_NUM];
+	ULONG REG_CC_POST_READ[STS_SITE_NUM];
+	ULONG REG_CD_POST_READ[STS_SITE_NUM];
+	ULONG REG_CE_POST_READ[STS_SITE_NUM];
+	ULONG REG_CF_POST_READ[STS_SITE_NUM];
+
+	ULONG REG_D0_POST_READ[STS_SITE_NUM];
+	ULONG REG_D1_POST_READ[STS_SITE_NUM];
+	ULONG REG_D2_POST_READ[STS_SITE_NUM];
+	ULONG REG_D3_POST_READ[STS_SITE_NUM];
+	ULONG REG_D4_POST_READ[STS_SITE_NUM];
+	ULONG REG_D5_POST_READ[STS_SITE_NUM];
+	ULONG REG_D6_POST_READ[STS_SITE_NUM];
+	ULONG REG_D7_POST_READ[STS_SITE_NUM];
+	ULONG REG_D8_POST_READ[STS_SITE_NUM];
+	ULONG REG_D9_POST_READ[STS_SITE_NUM];
+	ULONG REG_DA_POST_READ[STS_SITE_NUM];
+	ULONG REG_DB_POST_READ[STS_SITE_NUM];
+	ULONG REG_DC_POST_READ[STS_SITE_NUM];
+	ULONG REG_DD_POST_READ[STS_SITE_NUM];
+	ULONG REG_DE_POST_READ[STS_SITE_NUM];
+	ULONG REG_DF_POST_READ[STS_SITE_NUM];
+
+	ULONG REG_E0_POST_READ[STS_SITE_NUM];
+	ULONG REG_E1_POST_READ[STS_SITE_NUM];
+	ULONG REG_E2_POST_READ[STS_SITE_NUM];
+	ULONG REG_E3_POST_READ[STS_SITE_NUM];
+	ULONG REG_E4_POST_READ[STS_SITE_NUM];
+	ULONG REG_E5_POST_READ[STS_SITE_NUM];
+	ULONG REG_E6_POST_READ[STS_SITE_NUM];
+	ULONG REG_E7_POST_READ[STS_SITE_NUM];
+	ULONG REG_E8_POST_READ[STS_SITE_NUM];
+	ULONG REG_E9_POST_READ[STS_SITE_NUM];
+	ULONG REG_EA_POST_READ[STS_SITE_NUM];
+	ULONG REG_EB_POST_READ[STS_SITE_NUM];
+	ULONG REG_EC_POST_READ[STS_SITE_NUM];
+	ULONG REG_ED_POST_READ[STS_SITE_NUM];
+	ULONG REG_EE_POST_READ[STS_SITE_NUM];
+	ULONG REG_EF_POST_READ[STS_SITE_NUM];
+
+
+	dcm.I2CConnect();
+	//-------------------------------OTP READ FUNCTION--------------------------//
+	cbite.SetOn(K1_PGND2AGND, K26_BAT_Cap,  K4_REGN_Cap, K23_SDA_PU, K24_SCL_PU, -1);
+	delay_ms(3);
+	BAT_PMID_BTST_FOVI.Set(FV, 0, FOVIe_10V, FOVIe_100MA, FOVIe_RELAY_ON);//BAT
+	REGN_ACM.Set(FV, 0, ACM_N2P18V, ACM_200MA, ACM_RELAY_ON);//REGN
+	BAT_PMID_BTST_FOVI.Set(FV, 5, FOVIe_10V, FOVIe_100MA, FOVIe_RELAY_ON);//BAT=4V
+	REGN_ACM.Set(FV, 5, ACM_N2P18V, ACM_200MA, ACM_RELAY_ON);//REGN=4V
+	delay_ms(12);
+	entertestmode();
+	keyopen();
+	//I2C_READ_BYTE(0x60, 0xE8, data_read);
+
+
+	I2C_READ_BYTE(0x60, 0xC0, REG_C0_POST_READ);
+	I2C_READ_BYTE(0x60, 0xC1, REG_C1_POST_READ);
+	I2C_READ_BYTE(0x60, 0xC2, REG_C2_POST_READ);
+	I2C_READ_BYTE(0x60, 0xC3, REG_C3_POST_READ);
+	I2C_READ_BYTE(0x60, 0xC4, REG_C4_POST_READ);
+	I2C_READ_BYTE(0x60, 0xC5, REG_C5_POST_READ);
+	I2C_READ_BYTE(0x60, 0xC6, REG_C6_POST_READ);
+	I2C_READ_BYTE(0x60, 0xC7, REG_C7_POST_READ);
+	I2C_READ_BYTE(0x60, 0xC8, REG_C8_POST_READ);
+	I2C_READ_BYTE(0x60, 0xC9, REG_C9_POST_READ);
+	I2C_READ_BYTE(0x60, 0xCA, REG_CA_POST_READ);
+	I2C_READ_BYTE(0x60, 0xCB, REG_CB_POST_READ);
+	I2C_READ_BYTE(0x60, 0xCC, REG_CC_POST_READ);
+	I2C_READ_BYTE(0x60, 0xCD, REG_CD_POST_READ);
+	I2C_READ_BYTE(0x60, 0xCE, REG_CE_POST_READ);
+	I2C_READ_BYTE(0x60, 0xCF, REG_CF_POST_READ);
+
+	I2C_READ_BYTE(0x60, 0xD0, REG_D0_POST_READ);
+	I2C_READ_BYTE(0x60, 0xD1, REG_D1_POST_READ);
+	I2C_READ_BYTE(0x60, 0xD2, REG_D2_POST_READ);
+	I2C_READ_BYTE(0x60, 0xD3, REG_D3_POST_READ);
+	I2C_READ_BYTE(0x60, 0xD4, REG_D4_POST_READ);
+	I2C_READ_BYTE(0x60, 0xD5, REG_D5_POST_READ);
+	I2C_READ_BYTE(0x60, 0xD6, REG_D6_POST_READ);
+	I2C_READ_BYTE(0x60, 0xD7, REG_D7_POST_READ);
+	I2C_READ_BYTE(0x60, 0xD8, REG_D8_POST_READ);
+	I2C_READ_BYTE(0x60, 0xD9, REG_D9_POST_READ);
+	I2C_READ_BYTE(0x60, 0xDA, REG_DA_POST_READ);
+	I2C_READ_BYTE(0x60, 0xDB, REG_DB_POST_READ);
+	I2C_READ_BYTE(0x60, 0xDC, REG_DC_POST_READ);
+	I2C_READ_BYTE(0x60, 0xDD, REG_DD_POST_READ);
+	I2C_READ_BYTE(0x60, 0xDE, REG_DE_POST_READ);
+	I2C_READ_BYTE(0x60, 0xDF, REG_DF_POST_READ);
+
+	I2C_READ_BYTE(0x60, 0xE0, REG_E0_POST_READ);
+	I2C_READ_BYTE(0x60, 0xE1, REG_E1_POST_READ);
+	I2C_READ_BYTE(0x60, 0xE2, REG_E2_POST_READ);
+	I2C_READ_BYTE(0x60, 0xE3, REG_E3_POST_READ);
+	I2C_READ_BYTE(0x60, 0xE4, REG_E4_POST_READ);
+	I2C_READ_BYTE(0x60, 0xE5, REG_E5_POST_READ);
+	I2C_READ_BYTE(0x60, 0xE6, REG_E6_POST_READ);
+	I2C_READ_BYTE(0x60, 0xE7, REG_E7_POST_READ);
+	I2C_READ_BYTE(0x60, 0xE8, REG_E8_POST_READ);
+	I2C_READ_BYTE(0x60, 0xE9, REG_E9_POST_READ);
+	I2C_READ_BYTE(0x60, 0xEA, REG_EA_POST_READ);// ADC OS and ADC POLE
+	I2C_READ_BYTE(0x60, 0xEB, REG_EB_POST_READ);// PROGRAM VERSION WRITE in DEVICE
+	I2C_READ_BYTE(0x60, 0xEC, REG_EC_POST_READ);// DEVICE SN IN REG_0XEC
+	I2C_READ_BYTE(0x60, 0xED, REG_ED_POST_READ);// DEVICE SN IN REG_0XED
+	I2C_READ_BYTE(0x60, 0xEE, REG_EE_POST_READ);// DEVICE SN IN REG_0XEE
+	I2C_READ_BYTE(0x60, 0xEF, REG_EF_POST_READ);// DEVICE SN IN REG_0XEF
+
+
+	BAT_PMID_BTST_FOVI.Set(FV, 0, FOVIe_10V, FOVIe_100MA, FOVIe_RELAY_ON);//BAT
+	REGN_ACM.Set(FV, 0, ACM_N2P18V, ACM_200MA, ACM_RELAY_ON);//REGN=4V
+	delay_ms(1);
+	REGN_ACM.Set(FV, 0, ACM_N2P18V, ACM_200MA, ACM_RELAY_OFF);//REGN=4V
+	BAT_PMID_BTST_FOVI.Set(FV, 0, FOVIe_10V, FOVIe_100MA, FOVIe_RELAY_OFF);//BAT
+
+	cbite.SetOn(K1_PGND2AGND,-1);
+	dcm.I2CDisconnect();
+
+	FOR_EACH_VALID_SITE(site)
+	{
+		trim_reg.assy("EFUSE_REG_C0").set_read_back((INT)REG_C0_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_C1").set_read_back((INT)REG_C1_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_C2").set_read_back((INT)REG_C2_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_C3").set_read_back((INT)REG_C3_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_C4").set_read_back((INT)REG_C4_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_C5").set_read_back((INT)REG_C5_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_C6").set_read_back((INT)REG_C6_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_C7").set_read_back((INT)REG_C7_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_C8").set_read_back((INT)REG_C8_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_C9").set_read_back((INT)REG_C9_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_CA").set_read_back((INT)REG_CA_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_CB").set_read_back((INT)REG_CB_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_CC").set_read_back((INT)REG_CC_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_CD").set_read_back((INT)REG_CD_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_CE").set_read_back((INT)REG_CE_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_CF").set_read_back((INT)REG_CF_POST_READ[site], site);
+
+		trim_reg.assy("EFUSE_REG_D0").set_read_back((INT)REG_D0_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_D1").set_read_back((INT)REG_D1_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_D2").set_read_back((INT)REG_D2_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_D3").set_read_back((INT)REG_D3_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_D4").set_read_back((INT)REG_D4_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_D5").set_read_back((INT)REG_D5_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_D6").set_read_back((INT)REG_D6_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_D7").set_read_back((INT)REG_D7_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_D8").set_read_back((INT)REG_D8_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_D9").set_read_back((INT)REG_D9_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_DA").set_read_back((INT)REG_DA_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_DB").set_read_back((INT)REG_DB_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_DC").set_read_back((INT)REG_DC_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_DD").set_read_back((INT)REG_DD_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_DE").set_read_back((INT)REG_DE_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_DF").set_read_back((INT)REG_DF_POST_READ[site], site);
+
+		trim_reg.assy("EFUSE_REG_E0").set_read_back((INT)REG_E0_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_E1").set_read_back((INT)REG_E1_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_E2").set_read_back((INT)REG_E2_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_E3").set_read_back((INT)REG_E3_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_E4").set_read_back((INT)REG_E4_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_E5").set_read_back((INT)REG_E5_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_E6").set_read_back((INT)REG_E6_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_E7").set_read_back((INT)REG_E7_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_E8").set_read_back((INT)REG_E8_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_E9").set_read_back((INT)REG_E9_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_EA").set_read_back((INT)REG_EA_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_EB").set_read_back((INT)REG_EB_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_EC").set_read_back((INT)REG_EC_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_ED").set_read_back((INT)REG_ED_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_EE").set_read_back((INT)REG_EE_POST_READ[site], site);
+		trim_reg.assy("EFUSE_REG_EF").set_read_back((INT)REG_EF_POST_READ[site], site);
+	
+	}
+
+
+	//--------------Check best code same as code burned in OTP
+	//--------------Check program version same as OTP value in device 
+	int Read_same_as_burned[STS_SITE_NUM];
+	int Program_version_check[STS_SITE_NUM];
+	FOR_EACH_VALID_SITE(site)
+	{
+		Read_same_as_burned[site] = trim_reg.assy("EFUSE_REGISTER").comp_prog_to_read(site);
+		if (BURN_FLAG[site] == BURNNED)
+		{
+			Program_version_check[site] = 1;
+		}
+		else
+		{
+			if ((DWORD)REG_EB_POST_READ[site] == PROG_VERSION)
+			{
+				Program_version_check[site] = 1;
+			}
+			else
+			{
+				Program_version_check[site] = 0;
+			}
+		}
+
+		
+	}
+	FOR_EACH_VALID_SITE(site)
+	{
+		if (TRIM_FLOW!= 1|| BURN_FLAG[site]==BURNNED)
+		{
+			Read_same_as_burned[site] = 1;
+		}
+	}
+
+	//------------------Assgin OTP read results to different trim and selection/option items
+	FOR_EACH_VALID_SITE(site)
+	{
+		BG_POST_CODE[site] = trim_reg.trim("bandgap").get_read_back(site);//check,1
+		BG_RES_DIV_POST_CODE[site] = trim_reg.trim("bg_res_div").get_read_back(site);//check,2
+		IZTC_POST_CODE[site] = trim_reg.trim("iztc_res").get_read_back(site);//check,3
+		OSC_19P75M_POST_CODE[site] = trim_reg.trim("osc_19p75m").get_read_back(site);//check,4
+		OSC_64K_POST_CODE[site] = trim_reg.trim("osc_64k").get_read_back(site);//check,5
+		DAC_BUF_OS_POST_CODE[site] = trim_reg.trim("dac_buf_os").get_read_back(site);//check,6	
+		LED2_SNS_POST_CODE[site] = trim_reg.trim("led2_rsns").get_read_back(site);//check,7
+		V1P2_BUF_OS_POST_CODE[site] = trim_reg.trim("v1p2_buf_os").get_read_back(site);//check,8
+		BATCELL_POST_CODE[site] = trim_reg.trim("batcell_sns").get_read_back(site);//check,9
+		LED1_SNS_POST_CODE[site] = trim_reg.trim("led1_rsns").get_read_back(site);//check,10
+		PMID_SNS_POST_CODE[site] = trim_reg.trim("pmid_rsns").get_read_back(site);//check,11
+		TJ_POST_CODE[site] = trim_reg.trim("tj").get_read_back(site);//check,12
+		VBAT_SNS_MNT_POST_CODE[site] = trim_reg.trim("vbat_rsns_mnt").get_read_back(site);//check,13
+		VBUS_SNS_POST_CODE[site] = trim_reg.trim("vbus_sns").get_read_back(site);//check,14
+		VAC_SNS_POST_CODE[site] = trim_reg.trim("vac_sns").get_read_back(site);//check,15	
+		VSYS_SNS_MNT_POST_CODE[site] = trim_reg.trim("vsys_rsns_mnt").get_read_back(site);//check,16
+		VSYS_SNS_LOOP_POST_CODE[site] = trim_reg.trim("vsys_rsns_loop").get_read_back(site);//check,17
+		VBAT_SNS_LOOP_POST_CODE[site] = trim_reg.trim("vbat_rsns_loop").get_read_back(site);//check,18
+		ADC_REF_POST_CODE[site] = trim_reg.trim("adc_ref").get_read_back(site);//check,19
+		VBAT_HT_VSYSMIN_CMP_POST_CODE[site] = trim_reg.trim("vbat_ht_vsysmin_cmp").get_read_back(site);//check,20
+		VBAT_RECHG_CMP_POST_CODE[site] = trim_reg.trim("vbat_rechg_cmp").get_read_back(site);//check,21
+		VINDPM_OS_POST_CODE[site] = trim_reg.trim("vindpm_abs_os").get_read_back(site);//check,22
+		CC_BUF_OS_POST_CODE[site] = trim_reg.trim("vindpm_rel_os").get_read_back(site);//check,23
+		CVBUF_OS_POST_CODE[site] = trim_reg.trim("cvbuf_os").get_read_back(site);//check,24
+		CC_ISNS_POST_CODE[site] = trim_reg.trim("vconn_isns").get_read_back(site);//check,25
+		CC_DETECT_IP_POST_CODE[site] = trim_reg.trim("cc_detect_lp").get_read_back(site);//check,26
+		CC_DETECT_RD_POST_CODE[site] = trim_reg.trim("cc_detect_rd").get_read_back(site);//check,27
+		QRB_RATIO_BUCK_POST_CODE[site] = trim_reg.trim("qrb_ratio_buck").get_read_back(site);//check,28
+		QRB_VOS_BUCK_POST_CODE[site] = trim_reg.trim("qrb_vos_buck").get_read_back(site);//check,29
+		QRB_RATIO_BOOST_POST_CODE[site] = trim_reg.trim("qrb_ratio_boost").get_read_back(site);//check,30
+		QRB_VOS_BOOST_POST_CODE[site] = trim_reg.trim("qrb_vos_boost").get_read_back(site);//check,31
+		LED1_GAIN_POST_CODE[site] = trim_reg.trim("led1_gain").get_read_back(site);//check,32
+		LED2_GAIN_POST_CODE[site] = trim_reg.trim("led2_gain").get_read_back(site);//check,33
+		LED1_VOS_POST_CODE[site] = trim_reg.trim("led1_vos").get_read_back(site);//check,34
+		LED2_VOS_POST_CODE[site] = trim_reg.trim("led2_vos").get_read_back(site);//check,35
+		ITERM_POST_CODE[site] = trim_reg.trim("bfet_iterm").get_read_back(site);//check,36
+		BSM_SLOWOFF_POST_CODE[site] = trim_reg.trim("bsm_slowoff").get_read_back(site);//check,37
+		OCP_GAIN_POST_CODE[site] = trim_reg.trim("bfet_ocp_gn").get_read_back(site);//check,38
+		OCP_OS_POST_CODE[site] = trim_reg.trim("bfet_ocp_os").get_read_back(site);//check,39
+		ISNS_GAIN_POST_CODE[site] = trim_reg.trim("bfet_isns_gn").get_read_back(site);//check,43
+		ISNS_OS_POST_CODE[site] = trim_reg.trim("bfet_isns_os").get_read_back(site);//check,41
+		IREG_POST_CODE[site] = trim_reg.trim("bfet_ireg").get_read_back(site);//check,42
+		MAX_GCALMP_POST_CODE[site] = trim_reg.trim("bfet_max_gclamp").get_read_back(site);//check,43
+		TRKL_POST_CODE[site] = trim_reg.trim("bfet_trkl").get_read_back(site);//check,44
+		DPM_POST_CODE[site] = trim_reg.trim("vsys_dpm").get_read_back(site);//check,45
+		BSM_FASTON_POST_CODE[site] = trim_reg.trim("bsm_faston").get_read_back(site);//check,46
+		BSM_FASTOFF_POST_CODE[site] = trim_reg.trim("bsm_fastoff").get_read_back(site);//check,47
+		BSM_REG_POST_CODE[site] = trim_reg.trim("bsm_reg").get_read_back(site);//check,48
+		VINBUF_OS_POST_CODE[site] = trim_reg.trim("vinbuf_os").get_read_back(site);//check,49
+		VREFBUF_OS_POST_CODE[site] = trim_reg.trim("vrefbuf_os").get_read_back(site);//check,50
+		BUBO_HS_ZCD_POST_CODE[site] = trim_reg.trim("bubo_hs_zcd_dvdd").get_read_back(site);//check,51
+		BUBO_LS_ZCD_POST_CODE[site] = trim_reg.trim("bubo_ls_zcd_dvdd").get_read_back(site);//check,52
+		BUBO_VIN_EA_POST_CODE[site] = trim_reg.trim("bubo_vin_ea_dvdd").get_read_back(site);//check,53
+		BUBO_IIN_EA_POST_CODE[site] = trim_reg.trim("bubo_iin_ea_dvdd").get_read_back(site);//check,54
+		BUBO_CV_EA_POST_CODE[site] = trim_reg.trim("bubo_cv_ea_dvdd").get_read_back(site);//check,55
+		BUBO_CC_EA_POST_CODE[site] = trim_reg.trim("bubo_cc_ea_dvdd").get_read_back(site);//check,56
+		BUBO_TJ_EA_POST_CODE[site] = trim_reg.trim("bubo_tj_ea_dvdd").get_read_back(site);//check,57
+		BATID_PU_RES_POST_CODE[site] = trim_reg.trim("batid_pu_res").get_read_back(site);//check,58
+		ADC_OS_POST_CODE[site] = trim_reg.trim("adc_os").get_read_back(site);//check,59
+		ADC_REGN_REF_POST_CODE[site] = trim_reg.trim("adc_regn_ref").get_read_back(site);
+		BG_RESERVED_POST_CODE[site] = trim_reg.trim("bg_reserved").get_read_back(site);
+		HSKP_RESERVED_POST_CODE[site] = trim_reg.trim("hskp_reserved").get_read_back(site);
+		CVBUF_CLP_POST_CODE[site] = trim_reg.trim("cvbuf_clp").get_read_back(site);
+
+		ADC_POLE_CODE[site] = trim_reg.sel("ADC_TRIM_EN").get_read_back(site);
+		OPT_ADC_EN_INPUT_BUF_POST_CODE[site] = trim_reg.sel("opt_adc_en_input_buf").get_read_back(site);
+		OPT_FORCE_VDD_FROM_VBAT_POST_CODE[site] = trim_reg.sel("opt_force_vdd_from_vbat").get_read_back(site);
+		OPT_I2C_CTRL_POST_CODE[site] = trim_reg.sel("opt_i2c_control").get_read_back(site);
+		OPT_DIS_PORB5_TRIG_PORB1P8_POST_CODE[site] = trim_reg.sel("opt_dis_porb5_trig_porb1p8").get_read_back(site);
+		OPT_QON_TH_POST_CODE[site] = trim_reg.sel("opt_qon_th").get_read_back(site);
+		OPT_LED1_OCP_POST_CODE[site] = trim_reg.sel("opt_led1_ocp").get_read_back(site);
+		OPT_LED2_OCP_POST_CODE[site] = trim_reg.sel("opt_led2_ocp").get_read_back(site);
+		OPT_QRB_OK_POST_CODE[site] = trim_reg.sel("opt_qrb_ok").get_read_back(site);
+		OPT_IO_RESERVERD_POST_CODE[site] = trim_reg.sel("io_reserved").get_read_back(site);
+		
+		OPT_DIS_REGN_OVP_POST_CODE[site] = trim_reg.sel("opt_dis_regnovp").get_read_back(site);
+		OPT_BFET_CP_POST_CODE[site] = trim_reg.sel("opt_bfet_cp").get_read_back(site);
+		OPT_VBUS_OK_CFG_POST_CODE[site] = trim_reg.sel("VBUS_OK_CFG").get_read_back(site);
+		OPT_I2C_SLV_ADDR_OFFSET_POST_CODE[site] = trim_reg.sel("I2C_SLV_ADDR_OFFSET").get_read_back(site);
+		OPT_OTP_REV_ID_POST_CODE[site] = trim_reg.sel("OTP_REV_ID").get_read_back(site);
+		OPT_OCP_GN_EN_HBIT_POST_CODE[site] = trim_reg.sel("OCP_GN_EN_HBIT").get_read_back(site);
+		OPT_E6_undefine_POST_CODE[site] = trim_reg.sel("E6_undefine").get_read_back(site);
+		OPT_E7_undefine_POST_CODE[site] = trim_reg.sel("E7_undefine").get_read_back(site);
+		OPT_ADC_TRIM_EN_POST_CODE[site] = trim_reg.sel("ADC_TRIM_EN").get_read_back(site);
+		OPT_EA_undefine_POST_CODE[site] = trim_reg.sel("EA_undefine").get_read_back(site);
+
+	}
+
+	FOR_EACH_VALID_SITE(site)
+	{
+		BG_POST_CD->SetTestResult(site, 0, BG_POST_CODE[site]);//,1
+		BG_RES_DIV_POST_CD->SetTestResult(site, 0, BG_RES_DIV_POST_CODE[site]);//2
+		IZTC_POST_CD->SetTestResult(site, 0, IZTC_POST_CODE[site]);//3
+		OSC_19P75M_POST_CD->SetTestResult(site, 0, OSC_19P75M_POST_CODE[site]);//4
+		OSC_64K_POST_CD->SetTestResult(site, 0, OSC_64K_POST_CODE[site]);//5
+		DAC_BUF_OS_POST_CD->SetTestResult(site, 0, DAC_BUF_OS_POST_CODE[site]);//6
+		LED2_SNS_POST_CD->SetTestResult(site, 0, LED2_SNS_POST_CODE[site]);//7
+		V1P2_BUF_OS_POST_CD->SetTestResult(site, 0, V1P2_BUF_OS_POST_CODE[site]);//8
+		BATCELL_POST_CD->SetTestResult(site, 0, BATCELL_POST_CODE[site]);//9
+		LED1_SNS_POST_CD->SetTestResult(site, 0, LED1_SNS_POST_CODE[site]);//10
+		PMID_SNS_POST_CD->SetTestResult(site, 0, PMID_SNS_POST_CODE[site]);//11
+		TJ_POST_CD->SetTestResult(site, 0, TJ_POST_CODE[site]);//12
+		VBAT_SNS_MNT_POST_CD->SetTestResult(site, 0, VBAT_SNS_MNT_POST_CODE[site]);//13
+		VAC_SNS_POST_CD->SetTestResult(site, 0, VAC_SNS_POST_CODE[site]);//14
+		VBUS_SNS_POST_CD->SetTestResult(site, 0, VBUS_SNS_POST_CODE[site]);//15
+		VSYS_SNS_MNT_POST_CD->SetTestResult(site, 0, VSYS_SNS_MNT_POST_CODE[site]);//16
+		VSYS_SNS_LOOP_POST_CD->SetTestResult(site, 0, VSYS_SNS_LOOP_POST_CODE[site]);//17
+		VBAT_SNS_LOOP_POST_CD->SetTestResult(site, 0, VBAT_SNS_LOOP_POST_CODE[site]);//18
+		ADC_REF_POST_CD->SetTestResult(site, 0, ADC_REF_POST_CODE[site]);//19
+		VBAT_HT_VSYSMIN_CMP_POST_CD->SetTestResult(site, 0, VBAT_HT_VSYSMIN_CMP_POST_CODE[site]);//20
+		VBAT_RECHG_CMP_POST_CD->SetTestResult(site, 0, VBAT_RECHG_CMP_POST_CODE[site]);//21
+		VINDPM_OS_POST_CD->SetTestResult(site, 0, VINDPM_OS_POST_CODE[site]);//22
+		CC_BUF_OS_POST_CD->SetTestResult(site, 0, CC_BUF_OS_POST_CODE[site]);//23
+		CVBUF_OS_POST_CD->SetTestResult(site, 0, CVBUF_OS_POST_CODE[site]);//24
+		CC_ISNS_POST_CD->SetTestResult(site, 0, CC_ISNS_POST_CODE[site]);//25
+		CC_DETECT_IP_POST_CD->SetTestResult(site, 0, CC_DETECT_IP_POST_CODE[site]);//26
+		CC_DETECT_RD_POST_CD->SetTestResult(site, 0, CC_DETECT_RD_POST_CODE[site]);//27
+		QRB_RATIO_BUCK_POST_CD->SetTestResult(site, 0, QRB_RATIO_BUCK_POST_CODE[site]);//28
+		QRB_VOS_BUCK_POST_CD->SetTestResult(site, 0, QRB_VOS_BUCK_POST_CODE[site]);//29
+		QRB_RATIO_BOOST_POST_CD->SetTestResult(site, 0, QRB_RATIO_BOOST_POST_CODE[site]);//30
+		QRB_VOS_BOOST_POST_CD->SetTestResult(site, 0, QRB_VOS_BOOST_POST_CODE[site]);//31
+		LED1_GAIN_POST_CD->SetTestResult(site, 0, LED1_GAIN_POST_CODE[site]);//32
+		LED2_GAIN_POST_CD->SetTestResult(site, 0, LED2_GAIN_POST_CODE[site]);//33
+		LED1_VOS_POST_CD->SetTestResult(site, 0, LED1_VOS_POST_CODE[site]);//34
+		LED2_VOS_POST_CD->SetTestResult(site, 0, LED2_VOS_POST_CODE[site]);//35
+		ITERM_POST_CD->SetTestResult(site, 0, ITERM_POST_CODE[site]);//36
+		BSM_SLOWOFF_POST_CD->SetTestResult(site, 0, BSM_SLOWOFF_POST_CODE[site]);//37
+		OCP_GAIN_POST_CD->SetTestResult(site, 0, OCP_GAIN_POST_CODE[site]);//38
+		OCP_OS_POST_CD->SetTestResult(site, 0, OCP_OS_POST_CODE[site]);//39
+		ISNS_GAIN_POST_CD->SetTestResult(site, 0, ISNS_GAIN_POST_CODE[site]);//40
+		ISNS_OS_POST_CD->SetTestResult(site, 0, ISNS_OS_POST_CODE[site]);//41
+		IREG_POST_CD->SetTestResult(site, 0, IREG_POST_CODE[site]);//42
+		MAX_GCALMP_POST_CD->SetTestResult(site, 0, MAX_GCALMP_POST_CODE[site]);//43
+		TRKL_POST_CD->SetTestResult(site, 0, TRKL_POST_CODE[site]);//44
+		DPM_POST_CD->SetTestResult(site, 0, DPM_POST_CODE[site]);//45
+		BSM_FASTON_POST_CD->SetTestResult(site, 0, BSM_FASTON_POST_CODE[site]);//46
+		BSM_FASTOFF_POST_CD->SetTestResult(site, 0, BSM_FASTOFF_POST_CODE[site]);//47
+		BSM_REG_POST_CD->SetTestResult(site, 0, BSM_REG_POST_CODE[site]);//48
+		VINBUF_OS_POST_CD->SetTestResult(site, 0, VINBUF_OS_POST_CODE[site]);//49
+		VREFBUF_OS_POST_CD->SetTestResult(site, 0, VREFBUF_OS_POST_CODE[site]);//50
+		BUBO_HS_ZCD_POST_CD->SetTestResult(site, 0, BUBO_HS_ZCD_POST_CODE[site]);//51
+		BUBO_LS_ZCD_POST_CD->SetTestResult(site, 0, BUBO_LS_ZCD_POST_CODE[site]);//52
+		BUBO_VIN_EA_POST_CD->SetTestResult(site, 0, BUBO_VIN_EA_POST_CODE[site]);//53
+		BUBO_IIN_EA_POST_CD->SetTestResult(site, 0, BUBO_IIN_EA_POST_CODE[site]);//54
+		BUBO_CV_EA_POST_CD->SetTestResult(site, 0, BUBO_CV_EA_POST_CODE[site]);//55
+		BUBO_CC_EA_POST_CD->SetTestResult(site, 0, BUBO_CC_EA_POST_CODE[site]);//56
+		BUBO_TJ_EA_POST_CD->SetTestResult(site, 0, BUBO_TJ_EA_POST_CODE[site]);//57
+		BATID_PU_RES_POST_CD->SetTestResult(site, 0, BATID_PU_RES_POST_CODE[site]);//58
+		ADC_OS_POST_CD->SetTestResult(site, 0, ADC_OS_POST_CODE[site]);//
+		BG_RESERVED_POST_CD->SetTestResult(site, 0, BG_RESERVED_POST_CODE[site]);
+		HSKP_RESERVED_POST_CD->SetTestResult(site, 0, HSKP_RESERVED_POST_CODE[site]);
+		CVBUF_CLP_POST_CD->SetTestResult(site, 0, CVBUF_CLP_POST_CODE[site]);
+
+
+		OPT_ADC_EN_INPUT_BUF_POST->SetTestResult(site, 0, OPT_ADC_EN_INPUT_BUF_POST_CODE[site]);
+		OPT_FORCE_VDD_FROM_VBAT_POST->SetTestResult(site, 0, OPT_FORCE_VDD_FROM_VBAT_POST_CODE[site]);
+		OPT_I2C_CTRL_POST->SetTestResult(site, 0, OPT_I2C_CTRL_POST_CODE[site]);
+		OPT_DIS_PORB5_TRIG_PORB1P8_POST->SetTestResult(site, 0, OPT_DIS_PORB5_TRIG_PORB1P8_POST_CODE[site]);
+		OPT_QON_TH_POST->SetTestResult(site, 0, OPT_QON_TH_POST_CODE[site]);
+		OPT_LED1_OCP_POST->SetTestResult(site, 0, OPT_LED1_OCP_POST_CODE[site]);
+		OPT_LED2_OCP_POST->SetTestResult(site, 0, OPT_LED2_OCP_POST_CODE[site]);
+		OPT_QRB_OK_POST->SetTestResult(site, 0, OPT_QRB_OK_POST_CODE[site]);
+		OPT_IO_RESERVERD_POST->SetTestResult(site, 0, OPT_IO_RESERVERD_POST_CODE[site]);
+		ADC_REGN_REF_POST->SetTestResult(site, 0, ADC_REGN_REF_POST_CODE[site]);
+		OPT_DIS_REGN_OVP_POST->SetTestResult(site, 0, OPT_DIS_REGN_OVP_POST_CODE[site]);
+		OPT_BFET_CP_POST->SetTestResult(site, 0, OPT_BFET_CP_POST_CODE[site]);
+		OPT_VBUS_OK_CFG_POST->SetTestResult(site, 0, OPT_VBUS_OK_CFG_POST_CODE[site]);
+		OPT_I2C_SLV_ADDR_OFFSET_POST->SetTestResult(site, 0, OPT_I2C_SLV_ADDR_OFFSET_POST_CODE[site]);
+		OPT_OTP_REV_ID_POST->SetTestResult(site, 0, OPT_OTP_REV_ID_POST_CODE[site]);
+		OPT_OCP_GN_EN_HBIT_POST->SetTestResult(site, 0, OPT_OCP_GN_EN_HBIT_POST_CODE[site]);
+		OPT_E6_undefine_POST->SetTestResult(site, 0, OPT_E6_undefine_POST_CODE[site]);
+		OPT_E7_undefine_POST->SetTestResult(site, 0, OPT_E7_undefine_POST_CODE[site]);
+		OPT_ADC_TRIM_EN_POST->SetTestResult(site, 0, OPT_ADC_TRIM_EN_POST_CODE[site]);
+		OPT_EA_undefine_POST->SetTestResult(site, 0, OPT_EA_undefine_POST_CODE[site]);
+
+		SN_REG_EC->SetTestResult(site, 0, REG_EC_POST_READ[site]);//device serial number in register 0xEC
+		SN_REG_ED->SetTestResult(site, 0, REG_ED_POST_READ[site]);//device serial number in register 0xEB
+		SN_REG_EE->SetTestResult(site, 0, REG_EE_POST_READ[site]);//device serial number in register 0xEE
+		SN_REG_EF->SetTestResult(site, 0, REG_EF_POST_READ[site]);//device serial number in register 0xEF
+		OTP_BURNOK_CHK->SetTestResult(site, 0, Read_same_as_burned[site]);//59
+		PROG_VSN_CHK->SetTestResult(site, 0, Program_version_check[site]);//program version check
+
+	}
+
+
+	return 0;
+}

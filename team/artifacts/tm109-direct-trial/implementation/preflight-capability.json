@@ -1,0 +1,224 @@
+{
+  "runId": "tm109-direct-trial-implementation",
+  "task": "TM109-IMPLEMENTATION",
+  "owner": "ate-implementer",
+  "tm": "TM109",
+  "projectId": "DALI",
+  "stage": "IMPLEMENTATION",
+  "generatedAt": "2026-09-18 00:32:03 +08:00",
+  "gate": "scripts/verify_t7_preflight.py",
+  "purpose": "Prove, before any source write, that every code side effect requested by the signed method contract maps to at least one symbol reachable in the frozen target sources (team/roles/ate-implementer-t7-preflight.md).",
+  "methodContract": {
+    "path": "team/artifacts/tm109-direct-trial/method/tm109-test-method-contract.json",
+    "sha256": "d9d7e10f9dc96730695a97a7e2b59b235987b3745689a3eaccc738a893000459",
+    "verifiedWith": "python -c hashlib.sha256(Path.read_bytes()) (same reader as the gate); reproduces method/deliverable-ready.json sha256"
+  },
+  "destinationProject": {
+    "projectRoot": "D:/PROJECT6-DALI/ForCodexDebug",
+    "sourceDir": "D:/PROJECT6-DALI/ForCodexDebug/source",
+    "evidence": [
+      "project_config.json inputs.vs_src_dir = D:/PROJECT6-DALI/ForCodexDebug/source (local project evidence)",
+      "team/artifacts/tm109-direct-trial/schematic/schematic-ir.json states the absolute path D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h and .../Pin_Channel_define.h for the frozen schematic sources",
+      "test.cpp already carries the registered item symbol TM109_HSKP_VAC2_PRST (test.cpp:2323, 1-based display lines)"
+    ],
+    "codeScope": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp :: TM109_HSKP_VAC2_PRST only (projectType normal, trim empty, no measure callback => sub.cpp is not in scope)"
+  },
+  "targetSources": [
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "sha256": "456fba2ce30aea904ed852175dad5724cea06347d989beff0b7af752dc486eaa",
+      "bytes": 477760,
+      "role": "designated VS project source; carries TM109_HSKP_VAC2_PRST"
+    },
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/sub.cpp",
+      "sha256": "e86d49bef7ae725106311d8205df6dbc11184c7a0920eeaed416a515ac391470",
+      "bytes": 121909,
+      "role": "declared scope; TM109 requires no callback here (0 'TM109' occurrences)"
+    },
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h",
+      "sha256": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+      "bytes": 56968,
+      "role": "declared header scope: relay number macros, channel objects, DEV_ADDR"
+    },
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h",
+      "sha256": "d5ce16a0ae79549424110755e99d9ae74cce79d18b8a1eaae3fd5588df285e35",
+      "bytes": 10934,
+      "role": "declared header scope: pin -> slot/channel binding strings"
+    }
+  ],
+  "symbolScopeDeclaration": {
+    "searchedFiles": "every *.cpp and *.h under D:/PROJECT6-DALI/ForCodexDebug/source (excluding *.bak / *.bak_* backups)",
+    "method": "ripgrep via the harness grep tool over the declared scope",
+    "caveat": "reachability is asserted only inside the declared target-source scope; the CBITe class body itself is not part of that scope, so a 0-hit result is reported as 'not reachable in the declared scope', never as 'the library does not provide it'"
+  },
+  "requirements": [
+    {
+      "id": "REQ-01-MP1-pre-state",
+      "contractEvidence": "methodPhases[MP-1].relayGroup: 'none actuated; the relay set is the safe empty set of relay-checklist.md:74'; exitCondition 'all three sources report off/0 V and the relay state reads back as un-actuated'",
+      "codeSideEffect": "enter the item with an explicitly empty relay closure set",
+      "requiredSymbols": [
+        "cbite.SetOn",
+        "SetOn(-1)"
+      ],
+      "reachableAt": [
+        "test.cpp:1024",
+        "test.cpp:1370-1371",
+        "test.cpp:1442"
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "REQ-02-MP2-RG2-closure",
+      "contractEvidence": "methodPhases[MP-2].relayGroup: 'RG-2 = {K19_VAC2_S1, K70_VAC_F_S1} actuated (strategy-owned, verbatim)'; strategy resourceAllocation[RA-2].requiredActuations = [19, 70]",
+      "codeSideEffect": "actuate exactly frozen relays 19 and 70 and nothing else",
+      "requiredSymbols": [
+        "cbite.SetOn",
+        "K19_ACM0_VAC2",
+        "K70_R5M_VAC_F"
+      ],
+      "reachableAt": [
+        "StdAfx.h:175 (#define K19_ACM0_VAC2 19)",
+        "StdAfx.h:233 (#define K70_R5M_VAC_F 70)"
+      ],
+      "namingNote": "the signed contract names K19_VAC2_S1 / K70_VAC_F_S1; the frozen macro names for the same numbers are K19_ACM0_VAC2 (19) and K70_R5M_VAC_F (70). Binding is by relay NUMBER, which is the frozen key.",
+      "verdict": "supported"
+    },
+    {
+      "id": "REQ-03-MP3-VBAT-rail",
+      "contractEvidence": "methodPhases[MP-3].setpoint 'VBAT = 4.2 V (DFT value, verbatim)'; strategy resourceAllocation[RA-1] FXVIe_PLUS S3 ch5 (force FH5 / sense SH5)",
+      "codeSideEffect": "force VBAT to 4.2 V on FXVIe_PLUS slot 3 channel 5 with the sense leg active",
+      "requiredSymbols": [
+        "VBAT_PD3_FXVI",
+        "FXVIe_PLUS_10V",
+        "FXVIe_PLUS_100MA",
+        "FXVIe_PLUS_RELAY_ON"
+      ],
+      "reachableAt": [
+        "StdAfx.h: extern FXVIe_PLUS VBAT_PD3_FXVI",
+        "Pin_Channel_define.h: _PIN_CHANNEL_DEFINE_VBAT_PD3_FXVI_ = S3_5,... (S3 ch5 matches RA-1)"
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "REQ-04-MP4-register-delta",
+      "contractEvidence": "methodPhases[MP-4].registerActivation.actions: order 1 entertestmode(); order 2 I2CWriteSameData(DEV_ADDR, 0x55, 0x96); 'verbatimFrom': strategy registerDelta[] orders 1-2",
+      "codeSideEffect": "unlock the test interface, then write register 0x55 = 0x96 at DEV_ADDR",
+      "requiredSymbols": [
+        "entertestmode",
+        "I2CWriteSameData",
+        "DEV_ADDR"
+      ],
+      "reachableAt": [
+        "test.cpp:96 entertestmode occurrences",
+        "test.cpp:353 I2CWriteSameData occurrences",
+        "StdAfx.h: #define DEV_ADDR 0xCC"
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "REQ-05-MP5-7-sweep-and-capture",
+      "contractEvidence": "methodPhases[MP-6]/[MP-7].ramp {startV 3.8, stopV 4.4, stepV 0.01, TRIG_RISING} and {startV 4.4, stopV 3.5, stepV 0.01, TRIG_FALLING}; measurementPlan.forceMeasureEndpoints VAC2 = ACM200 S5 ch0 and INT = ACM200 S5 ch15; measurementPlan.sweepOrStep.form 'two-segment ramp with latched edge capture'",
+      "codeSideEffect": "ramp VAC2 on ACM200 S5 ch0 with a 0.01 V step and latch the transition of the ACM200 S5 ch15 observation channel",
+      "requiredSymbols": [
+        "VAC123_AMUX_ACM",
+        "PA0_PC3_ACM",
+        "rampv_capv",
+        "TRIG_RISING",
+        "TRIG_FALLING"
+      ],
+      "reachableAt": [
+        "Pin_Channel_define.h: _PIN_CHANNEL_DEFINE_VAC123_AMUX_ACM_ = S5_0,... (ACM200 S5 ch0 matches RA-2)",
+        "Pin_Channel_define.h: _PIN_CHANNEL_DEFINE_PA0_PC3_ACM_ = S5_15,... (ACM200 S5 ch15 matches RA-3)",
+        "Test_Method.h:56 BOOL rampv_capv(ACM200 ramp_res, ..., ACM200 cap_res, ..., double start_point, double stop_point, double step, int interval, double trig_level, ...) - the ACM200-ramp/ACM200-capture overload exists and its 9th parameter is a VOLTAGE step, so the signed 0.01 V step is expressible",
+        "test.cpp:56 TRIG_RISING / test.cpp:51 TRIG_FALLING occurrences"
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "REQ-06-MP8-calculate-and-publish",
+      "contractEvidence": "methodPhases[MP-8].calculation {VAC2_PRST_Rise, VAC2_PRST_Fall, VAC2_PRST_Hys = (Rise - Fall) * 1e3}; measurementPlan.siteHandling {SITE_NUM arrays, FOR_EACH_VALID_SITE, SetTestResult(site, 0, value)}",
+      "codeSideEffect": "compute the three parameters per site and publish them once per parameter per site",
+      "requiredSymbols": [
+        "FOR_EACH_VALID_SITE",
+        "SITE_NUM",
+        "StsGetParam",
+        "SetTestResult"
+      ],
+      "reachableAt": [
+        "StdAfx.h FOR_EACH_VALID_SITE / SITE_NUM declarations",
+        "test.cpp TM107-TM110 sibling items use StsGetParam + SetTestResult"
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "REQ-07-MP9-10-power-down",
+      "contractEvidence": "methodPhases[MP-9].orderedActions 1-6 and powerDownPlan.actions 1-6: zero VAC2, zero VBAT, wait >= 200 us, 'open the RG-2 path relays K19_VAC2_S1 and K70_VAC_F_S1 (safe empty relay set)', instrument relays off, read back every source level and relay state",
+      "codeSideEffect": "zero both sources while holding their ranges, then set the relay closure to the safe empty set and switch the instrument relays off",
+      "requiredSymbols": [
+        "SetOn(-1)",
+        "ACM200_RELAY_OFF",
+        "FXVIe_PLUS_RELAY_OFF"
+      ],
+      "reachableAt": [
+        "test.cpp:1024/1371/1442 cbite.SetOn(-1) is the project's 'safe empty closure set' primitive",
+        "test.cpp:158 ACM200_RELAY_OFF occurrences",
+        "test.cpp:139 FXVIe_PLUS_RELAY_OFF occurrences"
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "REQ-08-phase-exit-state-readback",
+      "contractEvidence": "methodPhases[MP-1].sample 'read back and record the relay/source state'; [MP-2].exitCondition 'K19 and K70 read back actuated; K8_PD3, K102_PC3, K18, K20, K68 read back un-actuated'; [MP-9].orderedActions[5] 'read back every source level and relay state'; logPlan.rawValues 'relay state read-backs (K19, K70, K8_PD3, K102_PC3, K18, K20, K68)'",
+      "codeSideEffect": "read the actual actuation state of the relay set and of every source at the phase boundaries",
+      "requiredSymbols": [
+        "cbite.GetRelayState"
+      ],
+      "searchedFor": [
+        "cbite.GetState",
+        "cbite.GetOn",
+        "cbite.IsOn",
+        "cbite.GetRelay",
+        "RelayState",
+        "RelayStatus",
+        "GetRelayState",
+        "ReadRelay"
+      ],
+      "searchResult": "0 hits for every candidate in every *.cpp and *.h under the declared scope; the only cbite member reachable in that scope is SetOn (104 call sites in test.cpp, 142 file-wide)",
+      "verdict": "blocked",
+      "blockedReason": "the signed method contract requires an actuation-state read-back at MP-1, MP-2, MP-9 and in logPlan.rawValues, but no read-back primitive is reachable inside the declared target-source scope. Writing the item faithfully would require a call that the frozen sources do not demonstrate."
+    }
+  ],
+  "verdict": "blocked",
+  "blockedRequirementIds": [
+    "REQ-08-phase-exit-state-readback"
+  ],
+  "additionalScopeFindings": [
+    {
+      "id": "SF-01",
+      "severity": "medium",
+      "topic": "logPlan has no runtime publication primitive beyond per-parameter results",
+      "fact": "logPlan.rawValues / .context require the item to record applied levels, observation states, relay read-backs, I2C status, sweep step and dwell, and .judgement requires a PENDING_LIMIT_RULING marker. The only publication primitive reachable in the declared scope is CParam::SetTestResult(site, 0, value); 'LogData' occurs in test.cpp only as the 'Step 6: LogData' comment heading of sibling items and LOG() occurs only as TREG_LOG in treg.h (a Trim framework class, not an item log).",
+      "handling": "not raised as a separate preflight requirement because the sibling items TM107-TM110 satisfy the same logPlan section with trace comments plus SetTestResult and no reviewer has rejected that form; recorded here so the implementation review can rule on it explicitly.",
+      "class": "scope finding, not asserted as a hard blocker"
+    },
+    {
+      "id": "SF-02",
+      "severity": "high",
+      "topic": "the signed method contract's own blocking items are still open and were carried by the method review as conditions",
+      "fact": "method/deliverable-ready.json blockingItems = [MF-01, MF-02] with blockingForCodeWrite 'yes'; review/method-contract-review.json findings[RV-04].blocking = 'for code write faithfulness and INT observability, not for the electrical method', with permittedNextAction 'Proceed to the implementation stage inside the signed resource, method and review boundaries ... Carry RV-03 and RV-04 forward as explicit conditions'.",
+      "handling": "no relay was selected and no closure set was amended by this role; the empty RG-1 and RG-3 closures are implemented as signed (i.e. as an explicit empty set). MF-01/MF-02 stay with test-strategy-architect.",
+      "class": "carried condition"
+    },
+    {
+      "id": "SF-03",
+      "severity": "none",
+      "topic": "source drift check",
+      "fact": "test.cpp plaintext sha256 is 456fba2ce30aea904ed852175dad5724cea06347d989beff0b7af752dc486eaa (477760 B, BOM, 9440 CRLF), byte-identical to the revision recorded as delivered by the tm108-v2 trial's own manifest; no drift since that delivery.",
+      "class": "FACT"
+    }
+  ],
+  "preflightGateResult": "recorded in the run log and in preflight-blocked.json"
+}

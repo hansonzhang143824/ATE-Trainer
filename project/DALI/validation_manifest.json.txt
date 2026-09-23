@@ -1,0 +1,638 @@
+{
+  "schema_version": 1,
+  "input": {
+    "path": "D:\\Newtest\\DSH\\ATE-Coding-Platform\\project\\DALI\\Dali-SCH.csv",
+    "sha256": "04B540F83FA00268CB45D118E9229474CC393A87C8AF5CAF27A2A8AC8188120A",
+    "format": "Altium unified circuit connectivity CSV v3",
+    "rows": 1338,
+    "sheet_paths": [
+      "C:\\Users\\nvt10241\\Downloads\\Sheet1.SchDoc"
+    ]
+  },
+  "graph": {
+    "ports": 248,
+    "dut_ports": 136,
+    "source_ports": 112,
+    "instances": 454,
+    "component_values": 448,
+    "relays": 182,
+    "net_tie_groups": 0,
+    "net_short_groups": 2,
+    "normalized_singleton_relay_nets": 43,
+    "normalized_intentional_open_nets": 2,
+    "physical_nets": 296,
+    "renamed_nets": 197,
+    "terminals": 0,
+    "canonical_net_names": {
+      "AGND": "AGND",
+      "AGND_F_S1": "AGND_F_S1",
+      "AMPOUT_S1": "AMPOUT_S1",
+      "Backup_S1": "Backup_S1",
+      "DGND": "DGND",
+      "FPVIe0_FH_BUS_S1": "FPVIe0_FH_BUS_S1",
+      "FPVIe0_FH_PC_S1": "FPVIe0_FH_PC_S1",
+      "FPVIe0_FL_BUS_S1": "FPVIe0_FL_BUS_S1",
+      "FPVIe0_FL_PC_S1": "FPVIe0_FL_PC_S1",
+      "FPVIe0_SH_BUS_S1": "FPVIe0_SH_BUS_S1",
+      "FPVIe0_SL_BUS_S1": "FPVIe0_SL_BUS_S1",
+      "FPVIe1_FH_BUS_S1": "FPVIe1_FH_BUS_S1",
+      "FPVIe1_FL_BUS_S1": "FPVIe1_FL_BUS_S1",
+      "FPVIe1_SH_BUS_S1": "FPVIe1_SH_BUS_S1",
+      "FPVIe1_SL_BUS_S1": "FPVIe1_SL_BUS_S1",
+      "JGND": "JGND",
+      "KLV_FORCE_S1": "KLV_FORCE_S1",
+      "KLV_SENSE_S1": "KLV_SENSE_S1",
+      "NetC1_CS_S1_2": "NetC1_CS_S1_2",
+      "NetC1_OSC_S1_1": "NetC1_OSC_S1_1",
+      "NetC1_OSC_S1_2": "NetC1_OSC_S1_2",
+      "NetC1_Stable_S1_1": "NetC1_Stable_S1_1",
+      "NetC2_CS_S1_2": "NetC2_CS_S1_2",
+      "NetC2_OSC_S1_2": "NetC2_OSC_S1_2",
+      "NetC2_Stable_S1_1": "NetC2_Stable_S1_1",
+      "NetC4_SVLP_S1(NC)_1": "NetC4_SVLP_S1(NC)_1",
+      "NetC4_SVLP_S1(NC)_2": "NetC4_SVLP_S1(NC)_2",
+      "NetCap1_PMID_S1_1": "PMID_F_S1",
+      "NetCap1_V1P5_S1_1": "V1P5_F_S1",
+      "NetCap1_VAC1_S1_1": "VAC1_F_S1",
+      "NetCap1_VAC2_S1_1": "VAC2_F_S1",
+      "NetCap1_VAC3_S1_1": "VAC3_F_S1",
+      "NetCap1_VBAT_S1_1": "VBAT_F_S1",
+      "NetCap1_VBUS_S1_1": "VBUS_F_S1",
+      "NetCap1_VCC_S1_1": "VCC_F_S1",
+      "NetCap2_PMID_S1_2": "NetCap2_PMID_S1_2",
+      "NetCap2_V1P5_S1_2": "NetCap2_V1P5_S1_2",
+      "NetCap2_VAC_S1_2": "NetCap2_VAC_S1_2",
+      "NetCap2_VBAT_S1_2": "NetCap2_VBAT_S1_2",
+      "NetCap2_VBUS_S1_2": "NetCap2_VBUS_S1_2",
+      "NetCap2_VCC_S1_2": "NetCap2_VCC_S1_2",
+      "NetCap_SW1_BST1_S1_1": "NetCap_SW1_BST1_S1_1",
+      "NetCap_SW1_BST1_S1_2": "SW1_F_S1",
+      "NetCap_SW2_BST2_S1_1": "NetCap_SW2_BST2_S1_1",
+      "NetCap_SW2_BST2_S1_2": "SW2_F_S1",
+      "NetCap_SW_BST_S1_1": "NetCap_SW_BST_S1_1",
+      "NetCap_SW_BST_S1_2": "SW_F_S1",
+      "NetCap_nRST_S1_1": "nRST_S1",
+      "NetEEPROM_5": "S34_I2CSDA",
+      "NetEEPROM_6": "S34_I2CSCL",
+      "NetEEPROM_8": "S34_J+5V",
+      "NetK0_VCC_Cap_S1S2_2": "NetK0_VCC_Cap_S1S2_2",
+      "NetK100_PC4_S1_2": "PB5_S_S1",
+      "NetK100_PC4_S1_4": "PC4_S_S1",
+      "NetK100_PC4_S1_5": "PC4_F_S1",
+      "NetK100_PC4_S1_7": "PB5_F_S1",
+      "NetK101_BUS_FH_PA0_S1_2": "S5_ACM200_FH15",
+      "NetK101_BUS_SH_PA0_S1_2": "S5_ACM200_SH15",
+      "NetK102_PC3_S1_2": "INT_S_S1",
+      "NetK102_PC3_S1_4": "PC3_S_S1",
+      "NetK102_PC3_S1_5": "PC3_F_S1",
+      "NetK102_PC3_S1_7": "INT_F_S1",
+      "NetK103_PA0_PU_S1_1": "NetK103_PA0_PU_S1_1",
+      "NetK104_BUS_FL_PD5_S1_2": "S5_ACM200_FH16",
+      "NetK104_BUS_SL_PD5_S1_2": "S5_ACM200_SH16",
+      "NetK105_CC2_S1_2": "PD5_S_S1",
+      "NetK105_CC2_S1_4": "CC2_S_S1",
+      "NetK105_CC2_S1_5": "CC2_F_S1",
+      "NetK105_CC2_S1_7": "PD5_F_S1",
+      "NetK106_BUS_FH_PA1_S1_2": "S5_ACM200_FH17",
+      "NetK106_BUS_SH_PA1_S1_2": "S5_ACM200_SH17",
+      "NetK107_PB1_S1_2": "PA1_S_S1",
+      "NetK107_PB1_S1_4": "PB1_S_S1",
+      "NetK107_PB1_S1_5": "PB1_F_S1",
+      "NetK107_PB1_S1_7": "PA1_F_S1",
+      "NetK108_PA1_PU_S1_1": "NetK108_PA1_PU_S1_1",
+      "NetK109_BUSL_PB0_S1_4": "S5_ACM200_FH18",
+      "NetK109_BUSL_PB0_S1_5": "S5_ACM200_SH18",
+      "NetK110_BST_S1_2": "PB0_S_S1",
+      "NetK110_BST_S1_7": "PB0_F_S1",
+      "NetK111_BUS_FH_PA6_S1_2": "S5_ACM200_FH19",
+      "NetK111_BUS_SH_PA6_S1_2": "S5_ACM200_SH19",
+      "NetK112_PC5_S1_2": "PA6_S_S1",
+      "NetK112_PC5_S1_4": "PC5_S_S1",
+      "NetK112_PC5_S1_5": "PC5_F_S1",
+      "NetK112_PC5_S1_7": "PA6_F_S1",
+      "NetK113_PA6_PU_S1_1": "NetK113_PA6_PU_S1_1",
+      "NetK114_BUSL_PA5_S1_4": "S5_ACM200_FH20",
+      "NetK114_BUSL_PA5_S1_5": "S5_ACM200_SH20",
+      "NetK115_PB2_S1_2": "PA5_S_S1",
+      "NetK115_PB2_S1_4": "PB2_S_S1",
+      "NetK115_PB2_S1_5": "PB2_F_S1",
+      "NetK115_PB2_S1_7": "PA5_F_S1",
+      "NetK116_BUS_FH_PB7_S1_2": "S5_ACM200_FH21",
+      "NetK116_BUS_SH_PB7_S1_2": "S5_ACM200_SH21",
+      "NetK117_PB6_S1_2": "PB7_S_S1",
+      "NetK117_PB6_S1_4": "PB6_S_S1",
+      "NetK117_PB6_S1_5": "PB6_F_S1",
+      "NetK117_PB6_S1_7": "PB7_F_S1",
+      "NetK118_BUS_FL_PA4_S1_2": "S5_ACM200_FH22",
+      "NetK118_BUS_SL_PA4_S1_2": "S5_ACM200_SH22",
+      "NetK119_PB4_S1_2": "PA4_S_S1",
+      "NetK119_PB4_S1_4": "PB4_S_S1",
+      "NetK119_PB4_S1_5": "PB4_F_S1",
+      "NetK119_PB4_S1_7": "PA4_F_S1",
+      "NetK11_VBUS_SVLP_S1_1": "NetK11_VBUS_SVLP_S1_1",
+      "NetK120_BUS_FH_PA7_S1_2": "S5_ACM200_FH23",
+      "NetK120_BUS_SH_PA7_S1_2": "S5_ACM200_SH23",
+      "NetK121_PD2_S1_2": "DMA_S_S1",
+      "NetK121_PD2_S1_4": "PD2_S_S1",
+      "NetK121_PD2_S1_5": "PD2_F_S1",
+      "NetK121_PD2_S1_7": "DMA_F_S1",
+      "NetK122_PA7_PU_S1_1": "NetK122_PA7_PU_S1_1",
+      "NetK123_BUSL_PB5_S1_4": "S3_FXVIe_PLUS_FH4",
+      "NetK123_BUSL_PB5_S1_5": "S3_FXVIe_PLUS_SH4",
+      "NetK125_U34_PS_S1_3": "S3_FXVIe_PLUS_FH6",
+      "NetK125_U34_PS_S1_6": "S3_FXVIe_PLUS_SH6",
+      "NetK125_U34_PS_S1_7": "V1P5_S_S1",
+      "NetK126_V1P5_CAP_S1_2": "NetK126_V1P5_CAP_S1_2",
+      "NetK127_U2_PS_S1_1": "S3_FXVIe_PLUS_FH7",
+      "NetK130_KELVIN1_F_S1_1": "S1_FPVIe_SH1",
+      "NetK130_KELVIN1_F_S1_2": "S1_FPVIe_FH1",
+      "NetK130_KELVIN1_S_S1_1": "S1_FPVIe_SL1",
+      "NetK130_KELVIN1_S_S1_2": "S1_FPVIe_FL1",
+      "NetK131_KELVIN1_S1S2_4": "NetK131_KELVIN1_S1S2_4",
+      "NetK132_KELVIN1_S1_4": "NetK132_KELVIN1_S1_4",
+      "NetK132_KELVIN1_S1_5": "NetK132_KELVIN1_S1_5",
+      "NetK133_KELVIN1_S1S2_4": "NetK133_KELVIN1_S1S2_4",
+      "NetK138_QVML_BUS0_S1_1": "S8_QVM_CH0-",
+      "NetK13_VBAT_Cap_S1S2_2": "NetK13_VBAT_Cap_S1S2_2",
+      "NetK142_QTMU_BUSB_S1S2_3": "S10_CH0_B",
+      "NetK143_DCM_BUS0_H_S1_1": "S24_P5",
+      "NetK145_DCM_BUS0_L_S1_1": "S24_P4",
+      "NetK148_PC4_PD_S1_1": "NetK148_PC4_PD_S1_1",
+      "NetK149_PA1_PD_S1_1": "NetK149_PA1_PD_S1_1",
+      "NetK150_PA4_PD_S1_1": "NetK150_PA4_PD_S1_1",
+      "NetK151_NC_GND_S1S2_2": "NC_S1",
+      "NetK154_BUSH_AMUX_S1_4": "S3_FXVIe_PLUS_FH3",
+      "NetK154_BUSH_AMUX_S1_5": "S3_FXVIe_PLUS_SH3",
+      "NetK156_BUS_FH_VCN_S1_2": "S5_ACM200_FH11",
+      "NetK156_BUS_SH_VCN_S1_2": "S5_ACM200_SH11",
+      "NetK157_COMP_S1_2": "VCN_S_S1",
+      "NetK157_COMP_S1_4": "COMP_S_S1",
+      "NetK18_VAC3_S1_2": "NetK18_VAC3_S1_2",
+      "NetK18_VAC3_S1_4": "NetK18_VAC3_S1_4",
+      "NetK18_VAC3_S1_5": "NetK18_VAC3_S1_5",
+      "NetK18_VAC3_S1_7": "NetK18_VAC3_S1_7",
+      "NetK19_VAC2_S1_5": "VAC2_S_S1",
+      "NetK19_VAC2_S1_7": "VAC1_S_S1",
+      "NetK1_COMP_AMP_S1_1": "COMP_F_S1",
+      "NetK20_AMUX_S1_4": "AMUX_F_S1",
+      "NetK20_AMUX_S1_5": "AMUX_S_S1",
+      "NetK20_AMUX_S1_7": "VAC3_S_S1",
+      "NetK21_VAC_Cap_S1S2_2": "NetK21_VAC_Cap_S1S2_2",
+      "NetK22_ACDRV1_F_S1_1": "S5_ACM200_FH1",
+      "NetK22_ACDRV1_F_S1_2": "ACDRV1_F_S1",
+      "NetK22_ACDRV1_S_S1_1": "S5_ACM200_SH1",
+      "NetK22_ACDRV1_S_S1_2": "ACDRV1_S_S1",
+      "NetK23_ACDRV2_F_S1_2": "ACDRV2_F_S1",
+      "NetK23_ACDRV2_S_S1_2": "ACDRV2_S_S1",
+      "NetK24_ACDRV3_F_S1_2": "ACDRV3_F_S1",
+      "NetK24_ACDRV3_S_S1_2": "ACDRV3_S_S1",
+      "NetK25_VCC_S_S1_2": "VCC_S_S1",
+      "NetK29_BUSL_VCC_S1_4": "S3_FXVIe_PLUS_FH2",
+      "NetK29_BUSL_VCC_S1_5": "S3_FXVIe_PLUS_SH2",
+      "NetK2_BUF_S1S2_3": "NetK2_BUF_S1S2_3",
+      "NetK2_BUF_S1S2_4": "S8_QVM_CH0+",
+      "NetK31_VMCU_S1_4": "VMCU_F_S1",
+      "NetK31_VMCU_S1_5": "VMCU_S_S1",
+      "NetK32_BUSL_SCL_S1_4": "S5_ACM200_FH2",
+      "NetK32_BUSL_SCL_S1_5": "S5_ACM200_SH2",
+      "NetK33_VAC_WL_S1_2": "SCL_S_S1",
+      "NetK33_VAC_WL_S1_4": "VAC_WL_S_S1",
+      "NetK33_VAC_WL_S1_5": "VAC_WL_F_S1",
+      "NetK33_VAC_WL_S1_7": "S24_P1",
+      "NetK34_SCL_PU_S1_1": "NetK34_SCL_PU_S1_1",
+      "NetK36_PGND_WL_S1_2": "NetK36_PGND_WL_S1_2",
+      "NetK36_PGND_WL_S1_4": "PGND_WL_F_S1",
+      "NetK36_PGND_WL_S1_5": "PGND_WL_S_S1",
+      "NetK36_PGND_WL_S1_7": "NetK36_PGND_WL_S1_7",
+      "NetK37_KLV2_S1_2": "KLV1_F_S1",
+      "NetK37_KLV2_S1_4": "KLV2_F_S1",
+      "NetK37_KLV2_S1_5": "KLV2_S_S1",
+      "NetK37_KLV2_S1_7": "KLV1_S_S1",
+      "NetK3_BUSL_VBUS_S1_4": "S5_ACM200_FH10",
+      "NetK3_BUSL_VBUS_S1_5": "S5_ACM200_SH10",
+      "NetK41_BUS_FL_BST_S1_2": "S5_ACM200_FH4",
+      "NetK41_BUS_SL_BST_S1_2": "S5_ACM200_SH4",
+      "NetK42_AMP_PS_S1_2": "NetK42_AMP_PS_S1_2",
+      "NetK42_AMP_PS_S1_7": "NetK42_AMP_PS_S1_7",
+      "NetK43_BST2_S1_2": "BST1_S_S1",
+      "NetK43_BST2_S1_4": "BST2_S_S1",
+      "NetK43_BST2_S1_5": "BST2_F_S1",
+      "NetK43_BST2_S1_7": "BST1_F_S1",
+      "NetK46_BUS_FH_SW1_S1_2": "S5_ACM200_FH5",
+      "NetK46_BUS_SH_SW1_S1_2": "S5_ACM200_SH5",
+      "NetK47_BUS_FL_SW1_S1_2": "S3_FXVIe_PLUS_FH0",
+      "NetK47_BUS_SL_SW1_S1_2": "S3_FXVIe_PLUS_SH0",
+      "NetK48_AMP_REF_S1_2": "NetK48_AMP_REF_S1_2",
+      "NetK48_AMP_REF_S1_4": "NetK48_AMP_REF_S1_4",
+      "NetK48_AMP_REF_S1_5": "NetK48_AMP_REF_S1_5",
+      "NetK48_AMP_REF_S1_7": "NetK48_AMP_REF_S1_7",
+      "NetK49_ACM_SW2_S1_2": "SW1_S_S1",
+      "NetK49_ACM_SW2_S1_4": "SW2_S_S1",
+      "NetK4_DRVH1_S1_2": "VBUS_S_S1",
+      "NetK4_DRVH1_S1_4": "DRVH1_S_S1",
+      "NetK4_DRVH1_S1_5": "DRVH1_F_S1",
+      "NetK51_BUSL_LG_S1_4": "S5_ACM200_FH6",
+      "NetK51_BUSL_LG_S1_5": "S5_ACM200_SH6",
+      "NetK52_LG2_S1_2": "LG1_S_S1",
+      "NetK52_LG2_S1_4": "LG2_S_S1",
+      "NetK52_LG2_S1_5": "LG2_F_S1",
+      "NetK52_LG2_S1_7": "LG1_F_S1",
+      "NetK55_HG2_P2P_S1_1": "HG2_F_S1",
+      "NetK56_HG1_P2P_S1_1": "HG1_S_S1",
+      "NetK57_CAP_BST_SW_S1S2_3": "BST_F_S1",
+      "NetK58_BUSH_VDM_S1_4": "S5_ACM200_FH7",
+      "NetK58_BUSH_VDM_S1_5": "S5_ACM200_SH7",
+      "NetK59_SDA_S1_2": "VDM_S_S1",
+      "NetK59_SDA_S1_4": "SDA_S_S1",
+      "NetK59_SDA_S1_5": "S24_P2",
+      "NetK59_SDA_S1_7": "VDM_F_S1",
+      "NetK5_VBUS_Cap_S1S2_2": "NetK5_VBUS_Cap_S1S2_2",
+      "NetK60_BUSL_VCP_S1_4": "S5_ACM200_FH8",
+      "NetK60_BUSL_VCP_S1_5": "S5_ACM200_SH8",
+      "NetK61_SW_S1_2": "VCP_S_S1",
+      "NetK61_SW_S1_4": "SW_S_S1",
+      "NetK62_BUS_FH_QON_S1_2": "S5_ACM200_FH9",
+      "NetK62_BUS_SH_QON_S1_2": "S5_ACM200_SH9",
+      "NetK63_SDA_PU_S1_1": "NetK63_SDA_PU_S1_1",
+      "NetK64_HG1_S1_2": "nQON_S_S1",
+      "NetK64_HG1_S1_5": "HG1_F_S1",
+      "NetK64_HG1_S1_7": "nQON_F_S1",
+      "NetK65_nQON_PU_S1_2": "NetK65_nQON_PU_S1_2",
+      "NetK66_TMU_nQON_S1_2": "S10_CH0_A",
+      "NetK6_VBUS_LP_S1_1": "NetK6_VBUS_LP_S1_1",
+      "NetK74_GAIN1_SEL_S1S2_3": "NetK74_GAIN1_SEL_S1S2_3",
+      "NetK75_GAIN2_SEL_S1S2_3": "NetK75_GAIN2_SEL_S1S2_3",
+      "NetK76_ACM_BST_S1_4": "BST_S_S1",
+      "NetK77_VAC_S_S1_1": "NetK77_VAC_S_S1_1",
+      "NetK79_KLV_S_S1_1": "NetK79_KLV_S_S1_1",
+      "NetK7_BUSH_VBAT_S1_4": "S3_FXVIe_PLUS_FH5",
+      "NetK7_BUSH_VBAT_S1_5": "S3_FXVIe_PLUS_SH5",
+      "NetK83_BUSH_PMID_S1_4": "S3_FXVIe_PLUS_FH1",
+      "NetK83_BUSH_PMID_S1_5": "S3_FXVIe_PLUS_SH1",
+      "NetK84_HG2_S1_5": "HG2_S_S1",
+      "NetK84_HG2_S1_7": "PMID_S_S1",
+      "NetK85_CAP_PMID_S1S2_2": "NetK85_CAP_PMID_S1S2_2",
+      "NetK86_KELVIN0_F_S1_1": "S1_FPVIe_SH0",
+      "NetK86_KELVIN0_F_S1_2": "S1_FPVIe_FH0",
+      "NetK86_KELVIN0_S_S1_1": "S1_FPVIe_SL0",
+      "NetK86_KELVIN0_S_S1_2": "S1_FPVIe_FL0",
+      "NetK87_KELVIN0_S1S2_4": "NetK87_KELVIN0_S1S2_4",
+      "NetK88_KELVIN0_S1_4": "NetK88_KELVIN0_S1_4",
+      "NetK88_KELVIN0_S1_5": "NetK88_KELVIN0_S1_5",
+      "NetK89_KELVIN0_S1S2_4": "NetK89_KELVIN0_S1S2_4",
+      "NetK8_PD3_S1_2": "VBAT_S_S1",
+      "NetK8_PD3_S1_4": "PD3_S_S1",
+      "NetK8_PD3_S1_5": "PD3_F_S1",
+      "NetK92_AGND_F2S_S1_2": "AGND_S_S1",
+      "NetK93_AGND2PGND_S1_4": "PGND_F_S1",
+      "NetK93_AGND2PGND_S1_5": "PGND_S_S1",
+      "NetK94_BUS_FL_PC8_S1_2": "S5_ACM200_FH12",
+      "NetK94_BUS_SL_PC8_S1_2": "S5_ACM200_SH12",
+      "NetK95_PC6_S1_2": "PC8_S_S1",
+      "NetK95_PC6_S1_4": "DMO_S_S1",
+      "NetK95_PC6_S1_5": "DMO_F_S1",
+      "NetK95_PC6_S1_7": "PC8_F_S1",
+      "NetK96_BUS_FH_CC1_S1_2": "S5_ACM200_FH13",
+      "NetK96_BUS_SH_CC1_S1_2": "S5_ACM200_SH13",
+      "NetK97_Qpoint_S1_2": "NetK97_Qpoint_S1_2",
+      "NetK97_Qpoint_S1_7": "NetK97_Qpoint_S1_7",
+      "NetK98_PB3_S1_2": "CC1_S_S1",
+      "NetK98_PB3_S1_4": "PB3_S_S1",
+      "NetK98_PB3_S1_5": "PB3_F_S1",
+      "NetK98_PB3_S1_7": "CC1_F_S1",
+      "NetK99_BUSL_PB5_S1_4": "S5_ACM200_FH14",
+      "NetK99_BUSL_PB5_S1_5": "S5_ACM200_SH14",
+      "NetR2_S1_2": "NetR2_S1_2",
+      "NetR4_S1_1": "NetR4_S1_1",
+      "NetR5_S1_2": "NetR5_S1_2",
+      "PA5_FORCE_S1": "PA5_FORCE_S1",
+      "PA5_SENSE_S1": "PA5_SENSE_S1",
+      "PB5_FORCE_S1": "PB5_FORCE_S1",
+      "PB5_SENSE_S1": "PB5_SENSE_S1",
+      "PU_PS_S1": "PU_PS_S1",
+      "Qpoint_S1": "Qpoint_S1",
+      "S34_J+5V": "S34_J+5V",
+      "U1_AMP_PS_S1": "U1_AMP_PS_S1",
+      "U1_AMP_REF_S1": "U1_AMP_REF_S1",
+      "U2_PS_S1": "U2_PS_S1",
+      "U34_PS_S1": "U34_PS_S1",
+      "VAC_FORCE_S1": "VAC_FORCE_S1",
+      "VAC_SENSE_S1": "VAC_SENSE_S1",
+      "VCN_FORCE_S1": "VCN_FORCE_S1",
+      "VCP_FORCE_S1": "VCP_FORCE_S1"
+    },
+    "canonical_name_collisions": [],
+    "synthesized_tps": 6
+  },
+  "warnings": [
+    "extra columns retained but unused: ['ComponentValue', 'ComponentComment', 'PortIOType', 'ShortKind', 'ShortObject', 'ShortNetCount', 'ShortNets', 'ShortStatus']",
+    "ignored 2 unnamed/unsupported PORT rows with no addressable endpoint",
+    "normalized 2 explicit TP/NC open nets as design intent"
+  ],
+  "artifacts": {
+    "synthetic_edif": "D:\\Newtest\\DSH\\ATE-Coding-Platform\\Project\\DALI\\CSV_CONNECTIVITY.NET",
+    "component_statistic": "D:\\Newtest\\DSH\\ATE-Coding-Platform\\project\\DALI\\Component-Statistic.txt",
+    "sch_connect_map": "D:\\Newtest\\DSH\\ATE-Coding-Platform\\project\\DALI\\SCH-Connect-Map.txt",
+    "strict_gate_log": "D:\\Newtest\\DSH\\ATE-Coding-Platform\\project\\DALI\\strict_gate_run.log",
+    "component_statistic_sha256": "30A11536A3781BAC58F10CC400CF9F9C9F0C4B32469C81CFC583EB7D475BEB74",
+    "sch_connect_map_sha256": "CC8009FBB27EEF0CF29B45E4E50B05E1B5D7B5D49095A32005261A79D83CB427"
+  },
+  "ignored_ports": [
+    {
+      "record_key": "NET_MEMBER@N00023@PORT@@I/O",
+      "net": "N00023",
+      "electrical": "I/O"
+    },
+    {
+      "record_key": "NET_MEMBER@N00023@PORT@@Output",
+      "net": "N00023",
+      "electrical": "Output"
+    }
+  ],
+  "net_short_groups": [
+    {
+      "kind": "DIRECT_NET_ALIAS",
+      "object": "DIRECT_WIRE",
+      "status": "CONFIRMED",
+      "canonical": "FPVIe0_FH_PC_S1",
+      "nets": [
+        "FPVIe0_FH_PC_S1",
+        "FPVIe0_SH_PC_S1"
+      ]
+    },
+    {
+      "kind": "DIRECT_NET_ALIAS",
+      "object": "DIRECT_WIRE",
+      "status": "CONFIRMED",
+      "canonical": "FPVIe0_FL_PC_S1",
+      "nets": [
+        "FPVIe0_FL_PC_S1",
+        "FPVIe0_SL_PC_S1"
+      ]
+    }
+  ],
+  "singleton_relay_nets": [
+    {
+      "net": "NetK3_BUSL_VBUS_S1_2",
+      "relay": "K3_BUSL_VBUS_S1",
+      "pin": 2
+    },
+    {
+      "net": "NetK3_BUSL_VBUS_S1_7",
+      "relay": "K3_BUSL_VBUS_S1",
+      "pin": 7
+    },
+    {
+      "net": "NetK7_BUSH_VBAT_S1_2",
+      "relay": "K7_BUSH_VBAT_S1",
+      "pin": 2
+    },
+    {
+      "net": "NetK7_BUSH_VBAT_S1_7",
+      "relay": "K7_BUSH_VBAT_S1",
+      "pin": 7
+    },
+    {
+      "net": "NetK17_BUSL_VAC_S1_2",
+      "relay": "K17_BUSL_VAC_S1",
+      "pin": 2
+    },
+    {
+      "net": "NetK17_BUSL_VAC_S1_7",
+      "relay": "K17_BUSL_VAC_S1",
+      "pin": 7
+    },
+    {
+      "net": "NetK29_BUSL_VCC_S1_2",
+      "relay": "K29_BUSL_VCC_S1",
+      "pin": 2
+    },
+    {
+      "net": "NetK29_BUSL_VCC_S1_7",
+      "relay": "K29_BUSL_VCC_S1",
+      "pin": 7
+    },
+    {
+      "net": "NetK30_BUSH_ACDRV_S1_2",
+      "relay": "K30_BUSH_ACDRV_S1",
+      "pin": 2
+    },
+    {
+      "net": "NetK30_BUSH_ACDRV_S1_7",
+      "relay": "K30_BUSH_ACDRV_S1",
+      "pin": 7
+    },
+    {
+      "net": "NetK32_BUSL_SCL_S1_2",
+      "relay": "K32_BUSL_SCL_S1",
+      "pin": 2
+    },
+    {
+      "net": "NetK32_BUSL_SCL_S1_7",
+      "relay": "K32_BUSL_SCL_S1",
+      "pin": 7
+    },
+    {
+      "net": "NetK35_BUSH_KLV_S1_2",
+      "relay": "K35_BUSH_KLV_S1",
+      "pin": 2
+    },
+    {
+      "net": "NetK35_BUSH_KLV_S1_7",
+      "relay": "K35_BUSH_KLV_S1",
+      "pin": 7
+    },
+    {
+      "net": "NetK44_Cap_SW2_BST2_S1S2_4",
+      "relay": "K44_Cap_SW2_BST2_S1S2",
+      "pin": 4
+    },
+    {
+      "net": "NetK45_Cap_SW1_BST1_S1S2_4",
+      "relay": "K45_Cap_SW1_BST1_S1S2",
+      "pin": 4
+    },
+    {
+      "net": "NetK51_BUSL_LG_S1_2",
+      "relay": "K51_BUSL_LG_S1",
+      "pin": 2
+    },
+    {
+      "net": "NetK51_BUSL_LG_S1_7",
+      "relay": "K51_BUSL_LG_S1",
+      "pin": 7
+    },
+    {
+      "net": "NetK57_CAP_BST_SW_S1S2_4",
+      "relay": "K57_CAP_BST_SW_S1S2",
+      "pin": 4
+    },
+    {
+      "net": "NetK58_BUSH_VDM_S1_2",
+      "relay": "K58_BUSH_VDM_S1",
+      "pin": 2
+    },
+    {
+      "net": "NetK58_BUSH_VDM_S1_7",
+      "relay": "K58_BUSH_VDM_S1",
+      "pin": 7
+    },
+    {
+      "net": "NetK60_BUSL_VCP_S1_2",
+      "relay": "K60_BUSL_VCP_S1",
+      "pin": 2
+    },
+    {
+      "net": "NetK60_BUSL_VCP_S1_7",
+      "relay": "K60_BUSL_VCP_S1",
+      "pin": 7
+    },
+    {
+      "net": "NetK83_BUSH_PMID_S1_2",
+      "relay": "K83_BUSH_PMID_S1",
+      "pin": 2
+    },
+    {
+      "net": "NetK83_BUSH_PMID_S1_7",
+      "relay": "K83_BUSH_PMID_S1",
+      "pin": 7
+    },
+    {
+      "net": "NetK91_PC0_Sense_S1_2",
+      "relay": "K91_PC0_Sense_S1",
+      "pin": 2
+    },
+    {
+      "net": "NetK91_PC0_Sense_S1_7",
+      "relay": "K91_PC0_Sense_S1",
+      "pin": 7
+    },
+    {
+      "net": "NetK93_AGND2PGND_S1_2",
+      "relay": "K93_AGND2PGND_S1",
+      "pin": 2
+    },
+    {
+      "net": "NetK93_AGND2PGND_S1_7",
+      "relay": "K93_AGND2PGND_S1",
+      "pin": 7
+    },
+    {
+      "net": "NetK99_BUSL_PB5_S1_2",
+      "relay": "K99_BUSL_PB5_S1",
+      "pin": 2
+    },
+    {
+      "net": "NetK99_BUSL_PB5_S1_7",
+      "relay": "K99_BUSL_PB5_S1",
+      "pin": 7
+    },
+    {
+      "net": "NetK109_BUSL_PB0_S1_2",
+      "relay": "K109_BUSL_PB0_S1",
+      "pin": 2
+    },
+    {
+      "net": "NetK109_BUSL_PB0_S1_7",
+      "relay": "K109_BUSL_PB0_S1",
+      "pin": 7
+    },
+    {
+      "net": "NetK114_BUSL_PA5_S1_2",
+      "relay": "K114_BUSL_PA5_S1",
+      "pin": 2
+    },
+    {
+      "net": "NetK114_BUSL_PA5_S1_7",
+      "relay": "K114_BUSL_PA5_S1",
+      "pin": 7
+    },
+    {
+      "net": "NetK123_BUSL_PB5_S1_2",
+      "relay": "K123_BUSL_PB5_S1",
+      "pin": 2
+    },
+    {
+      "net": "NetK123_BUSL_PB5_S1_7",
+      "relay": "K123_BUSL_PB5_S1",
+      "pin": 7
+    },
+    {
+      "net": "NetK134_PC1_Force_S1_2",
+      "relay": "K134_PC1_Force_S1",
+      "pin": 2
+    },
+    {
+      "net": "NetK135_PC1_Sense_S1_2",
+      "relay": "K135_PC1_Sense_S1",
+      "pin": 2
+    },
+    {
+      "net": "NetK135_PC1_Sense_S1_7",
+      "relay": "K135_PC1_Sense_S1",
+      "pin": 7
+    },
+    {
+      "net": "NetK151_NC_GND_S1S2_4",
+      "relay": "K151_NC_GND_S1S2",
+      "pin": 4
+    },
+    {
+      "net": "NetK154_BUSH_AMUX_S1_2",
+      "relay": "K154_BUSH_AMUX_S1",
+      "pin": 2
+    },
+    {
+      "net": "NetK154_BUSH_AMUX_S1_7",
+      "relay": "K154_BUSH_AMUX_S1",
+      "pin": 7
+    }
+  ],
+  "intentional_open_nets": [
+    {
+      "net": "NetTP_HG1_S_S1_1",
+      "component": "TP_HG1_S_S1",
+      "pin": 1
+    },
+    {
+      "net": "NetU1_S1_NC",
+      "component": "U1_S1",
+      "pin": 3
+    }
+  ],
+  "synthesized_tps": [
+    {
+      "port": "DMA_F_S1",
+      "testpoint": "TP_DMA_F_S1",
+      "net": "NetK121_PD2_S1_7"
+    },
+    {
+      "port": "DMA_S_S1",
+      "testpoint": "TP_DMA_S_S1",
+      "net": "NetK121_PD2_S1_2"
+    },
+    {
+      "port": "DMO_F_S1",
+      "testpoint": "TP_DMO_F_S1",
+      "net": "NetK95_PC6_S1_5"
+    },
+    {
+      "port": "DMO_S_S1",
+      "testpoint": "TP_DMO_S_S1",
+      "net": "NetK95_PC6_S1_4"
+    },
+    {
+      "port": "INT_F_S1",
+      "testpoint": "TP_INT_F_S1",
+      "net": "NetK102_PC3_S1_7"
+    },
+    {
+      "port": "INT_S_S1",
+      "testpoint": "TP_INT_S_S1",
+      "net": "NetK102_PC3_S1_2"
+    }
+  ],
+  "gate_exit_code": 0,
+  "parser_gate_status": "PASS",
+  "status": "PASS"
+}

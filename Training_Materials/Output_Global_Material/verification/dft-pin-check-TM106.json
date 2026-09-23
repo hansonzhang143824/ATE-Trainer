@@ -1,0 +1,76 @@
+{
+  "tm": "TM106",
+  "artifactId": "dft-pin-check",
+  "requirement": "User_input/DFT解析规则.txt step 4: every pin must be checked against schematic evidence; missing pins are alarmed",
+  "evidenceSource": {
+    "path": "Input_GlobalMaterial/Dali-SCH.csv",
+    "sha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a",
+    "totalLines": 1339,
+    "note": "schematic raw input inside the reads address; the schematic parse product lies outside this task's address book and was not visited (round-2 discipline) - this substitution is reported in dft-semantic-review.json"
+  },
+  "mappingSource": {
+    "path": "Input_GlobalMaterial/DALI-special-information.json",
+    "sha256": "86d11d43f8602cba604605fc015ba75a2d04a079345a5084f7442053c796d188",
+    "usedFor": "DTEST0 logical label after 0 direct schematic hits; mapping DTEST0 -> nQON (authority: project user ruling)"
+  },
+  "pins": [
+    {
+      "label": "vbat",
+      "role": "vset power pin (Code1)",
+      "result": "resolved",
+      "evidenceLines": [
+        293,
+        294,
+        299,
+        390,
+        393
+      ],
+      "note": "board nets/ports VBAT_F_S1, VBAT_S_S1 plus test points TP_VBAT_F_S1/TP_VBAT_S_S1 (case-insensitive match); the DUT die is not on Sheet1.SchDoc, so DUT pin literals do not appear - board-level VBAT routing exists"
+    },
+    {
+      "label": "vbus",
+      "role": "vset power pin (Code2)",
+      "result": "resolved",
+      "evidenceLines": [
+        366,
+        369,
+        412,
+        413,
+        419
+      ],
+      "note": "board nets/ports VBUS_F_S1, VBUS_S_S1 plus test points TP_VBUS_F_S1/TP_VBUS_S_S1"
+    },
+    {
+      "label": "DTEST0",
+      "role": "measurement pin (Check=V(DTEST0))",
+      "result": "resolved-via-authoritative-mapping",
+      "schematicDirectHits": 0,
+      "physicalDutPin": "nQON",
+      "evidenceLines": [
+        705,
+        707,
+        708,
+        713,
+        716,
+        717,
+        718,
+        719,
+        720,
+        721,
+        1180,
+        1181,
+        1182,
+        1288
+      ],
+      "note": "nQON nets nQON_S_S1/nQON_F_S1 with relays K65_nQON_PU/K66_TMU_nQON, R_nQON, test points TP_nQON_S_S1/TP_nQON_F_S1 exist in the schematic"
+    }
+  ],
+  "nonPinIntents": [
+    {
+      "text": "check int pin toggle",
+      "decision": "intent observation only; INT is neither driven nor measured by this row's code (observation happens through DTEST0 per Notes); not added to involvedPins; no alarm"
+    }
+  ],
+  "alarms": [],
+  "result": "no pinAlarm"
+}

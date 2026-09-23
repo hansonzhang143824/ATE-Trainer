@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "implementation-manifest.schema.json",
+  "type": "object",
+  "required": [
+    "runId",
+    "targetRoot",
+    "scope",
+    "backups",
+    "changes",
+    "selfChecks"
+  ],
+  "properties": {
+    "runId": {"type": "string"},
+    "targetRoot": {"const": "D:/PROJECT6-DALI/ForCodexDebug"},
+    "scope": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "backups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["original", "backup", "sha256"],
+        "properties": {
+          "original": {"type": "string"},
+          "backup": {"type": "string"},
+          "sha256": {"type": "string"}
+        }
+      }
+    },
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "symbols", "beforeSha256", "afterSha256", "planRefs"],
+        "properties": {
+          "path": {"type": "string"},
+          "symbols": {"type": "array", "items": {"type": "string"}},
+          "beforeSha256": {"type": "string"},
+          "afterSha256": {"type": "string"},
+          "planRefs": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "selfChecks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["command", "exitCode"],
+        "properties": {
+          "command": {"type": "string"},
+          "exitCode": {"type": "integer"},
+          "log": {"type": "string"}
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

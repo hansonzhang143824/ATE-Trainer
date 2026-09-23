@@ -1,0 +1,22 @@
+import sys,io,os,hashlib
+sys.stdout=io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8',errors='replace')
+base=r'D:\Newtest\DSH\ATE-Coding-Plat'
+gc=os.path.join(base,'team','artifacts','acceptance-20260916-dali10','gate-check-t21')
+# remove the temp root overlay config (out of scope artifact)
+t=os.path.join(base,'team_t21_baseline_config.json')
+if os.path.exists(t): os.remove(t); print('removed temp root config:',os.path.basename(t))
+# confirm the authoritative config is byte-identical to the pre-experiment snapshot
+orig=open(os.path.join(gc,'project_config.orig.json'),'rb').read()
+cp=os.path.join(base,'project_config.json'); now=open(cp,'rb').read()
+print('project_config.json restored byte-identical:',now==orig, hashlib.sha256(now).hexdigest()[:16])
+print()
+print('=== final payload ===')
+p=os.path.join(base,'team','artifacts','acceptance-20260916-dali10','implementation-payload-TM600-TM601.cpp')
+r=open(p,'rb').read(); v=r.decode('utf-8-sig')
+print('  %d B / %s'%(len(r),hashlib.sha256(r).hexdigest()))
+print('  BOM',r[:3]==b'\xef\xbb\xbf','loneLF',r.count(b'\n')-r.count(b'\r\n'))
+print()
+print('=== target tree untouched? ===')
+s=open(r'D:\PROJECT6-DALI\ForCodexDebug\source\test.cpp','rb').read()
+print('  test.cpp %d B / %s'%(len(s),hashlib.sha256(s).hexdigest()))
+print('  unchanged from t20 after-state:',hashlib.sha256(s).hexdigest()=='3dbceb496d79d7d08631713b98e46c0c2ba6163eaf5356a87dded677e35ba479')

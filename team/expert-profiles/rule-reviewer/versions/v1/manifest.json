@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "profileId": "rule-reviewer",
+  "version": "v1",
+  "publishedAt": "2026-09-20T14:30:34.799448Z",
+  "executionClass": "review-readonly",
+  "evaluation": {
+    "verdict": "pass",
+    "failed": [],
+    "caseCount": 1,
+    "checks": [
+      {
+        "id": "assets",
+        "ok": true,
+        "detail": "all required assets present"
+      },
+      {
+        "id": "profile_metadata",
+        "ok": true,
+        "detail": "profile.yaml parsed and identified"
+      },
+      {
+        "id": "execution_class_registered",
+        "ok": true,
+        "detail": "executionClass 'review-readonly' is registered in the plugin policy registry"
+      },
+      {
+        "id": "execution_class_matches_profile_map",
+        "ok": true,
+        "detail": "plugin maps rule-reviewer to 'review-readonly'"
+      },
+      {
+        "id": "declared_readable",
+        "ok": true,
+        "detail": "readable: ['<run>/strategy', '<run>/method', '<run>/implementation']"
+      },
+      {
+        "id": "declared_writable",
+        "ok": true,
+        "detail": "writable: ['<run>/review']"
+      },
+      {
+        "id": "declared_requiredGates",
+        "ok": true,
+        "detail": "requiredGates: ['scripts/review_method_batch.py']"
+      },
+      {
+        "id": "readable_has_no_retired_artifact",
+        "ok": true,
+        "detail": "readable declares no retired artifact"
+      },
+      {
+        "id": "output_contract",
+        "ok": true,
+        "detail": "object schema with required=['tm', 'reviewVerdict', 'findings', 'evidence']"
+      },
+      {
+        "id": "case_index_matches_disk",
+        "ok": true,
+        "detail": "index ['TM106'] vs cases/ ['TM106']"
+      },
+      {
+        "id": "case_TM106",
+        "ok": true,
+        "detail": "case is complete and inside the allowed read scope"
+      },
+      {
+        "id": "preset_agreement",
+        "ok": true,
+        "detail": "preset.yml name matches displayName 'PTC Rule Reviewer'"
+      },
+      {
+        "id": "boundary_regression",
+        "ok": true,
+        "detail": "plugin boundary suite passed"
+      }
+    ]
+  },
+  "files": {
+    "CHANGELOG.md": "55d38e31c7af2e0ac13b2b29ca8e155ff88187a8890623334fe163051163a6f2",
+    "cases/TM106/expected.json": "d727aca14a9d83dd46acb54958ed1da6f477c1cd5b346c4cabc1eba7c7952228",
+    "evaluation/expected-results.json": "cf6e4fabf29613118d059cb853797d741036146e9377326b86b097906d097841",
+    "instructions.md": "6f796dea976dc336ac4b1b3a7429f5234b63399e2326770cfbf3c0afa6da617b",
+    "output-contract.schema.json": "53ac8a6991dcded6830638889b3a55e2fc06c7f39bbba8da56cde0de801ef12b",
+    "profile.yaml": "3c9b985bb54dcfad28b8f7b547e9c337334f90624a401da0b30b06f6627c42e5",
+    "status.json": "c5aadbdf4eef5040fc20a44a79d657817a635651168d7677ab65e484f284dba8"
+  },
+  "digest": "5136dbf64a91818a2a7cb89a3a4f70289938f72b35831ce3a1ef311ffd902245"
+}

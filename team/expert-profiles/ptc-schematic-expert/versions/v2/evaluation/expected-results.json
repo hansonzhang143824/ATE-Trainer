@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "profileId": "ptc-schematic-expert",
+  "cases": [
+    { "caseId": "TM106", "expectedVerdict": "pass" }
+  ],
+  "draftRule": "Every case directory under cases/ must appear here, and every entry here must have a case directory; a disagreement fails the draft evaluation rather than being silently ignored."
+}

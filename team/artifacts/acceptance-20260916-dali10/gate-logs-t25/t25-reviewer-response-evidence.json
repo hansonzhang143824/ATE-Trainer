@@ -1,0 +1,283 @@
+{
+  "F1_recheck": {
+    "fam_intersect_powered_SW_token_SW_BST": [
+      "SW"
+    ],
+    "reverse": [
+      "SW_BST"
+    ],
+    "reviewer_correction_holds": false,
+    "my_original_claim_wrong": false
+  },
+  "powered_SW_functions": [
+    {
+      "fn": "TM601_LS_RDSON",
+      "powered": [
+        "ISW",
+        "SW",
+        "VBAT",
+        "VBUS",
+        "VDRV"
+      ],
+      "SW_BST": {
+        "hit": [
+          "SW"
+        ],
+        "defines": [
+          [
+            "K_SW_BST_Cap",
+            57
+          ]
+        ]
+      },
+      "BST_SW": {
+        "hit": [],
+        "defines": [
+          [
+            "K57_CAP_BST_SW",
+            57
+          ]
+        ]
+      },
+      "SW1_BST1": {
+        "hit": [],
+        "defines": [
+          [
+            "K45_Cap_SW1_BST1",
+            45
+          ],
+          [
+            "K_SW1_BST1_Cap",
+            45
+          ]
+        ]
+      },
+      "SW2_BST2": {
+        "hit": [],
+        "defines": [
+          [
+            "K44_Cap_SW2_BST2",
+            44
+          ],
+          [
+            "K_SW2_BST2_Cap",
+            44
+          ]
+        ]
+      },
+      "PMID": {
+        "hit": [],
+        "defines": [
+          [
+            "K85_CAP_PMID",
+            85
+          ],
+          [
+            "K_PMID_Cap",
+            85
+          ]
+        ]
+      },
+      "VBAT": {
+        "hit": [
+          "VBAT"
+        ],
+        "defines": [
+          [
+            "K13_VBAT_Cap",
+            13
+          ],
+          [
+            "K_VBAT_Cap",
+            13
+          ]
+        ]
+      },
+      "VBUS": {
+        "hit": [
+          "VBUS"
+        ],
+        "defines": [
+          [
+            "K5_VBUS_Cap",
+            5
+          ],
+          [
+            "K_VBUS_Cap",
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "fn": "TM641_BST_UV",
+      "powered": [
+        "BST-SW",
+        "BST_SW",
+        "PMID",
+        "SW",
+        "VBAT",
+        "VDRV"
+      ],
+      "SW_BST": {
+        "hit": [
+          "SW"
+        ],
+        "defines": [
+          [
+            "K_SW_BST_Cap",
+            57
+          ]
+        ]
+      },
+      "BST_SW": {
+        "hit": [
+          "BST_SW"
+        ],
+        "defines": [
+          [
+            "K57_CAP_BST_SW",
+            57
+          ]
+        ]
+      },
+      "SW1_BST1": {
+        "hit": [],
+        "defines": [
+          [
+            "K45_Cap_SW1_BST1",
+            45
+          ],
+          [
+            "K_SW1_BST1_Cap",
+            45
+          ]
+        ]
+      },
+      "SW2_BST2": {
+        "hit": [],
+        "defines": [
+          [
+            "K44_Cap_SW2_BST2",
+            44
+          ],
+          [
+            "K_SW2_BST2_Cap",
+            44
+          ]
+        ]
+      },
+      "PMID": {
+        "hit": [
+          "PMID"
+        ],
+        "defines": [
+          [
+            "K85_CAP_PMID",
+            85
+          ],
+          [
+            "K_PMID_Cap",
+            85
+          ]
+        ]
+      },
+      "VBAT": {
+        "hit": [
+          "VBAT"
+        ],
+        "defines": [
+          [
+            "K13_VBAT_Cap",
+            13
+          ],
+          [
+            "K_VBAT_Cap",
+            13
+          ]
+        ]
+      },
+      "VBUS": {
+        "hit": [],
+        "defines": [
+          [
+            "K5_VBUS_Cap",
+            5
+          ],
+          [
+            "K_VBUS_Cap",
+            5
+          ]
+        ]
+      }
+    }
+  ],
+  "R2": {
+    "token_defines": {
+      "SW_BST": [
+        [
+          "K_SW_BST_Cap",
+          57
+        ]
+      ],
+      "BST_SW": [
+        [
+          "K57_CAP_BST_SW",
+          57
+        ]
+      ],
+      "SW1_BST1": [
+        [
+          "K45_Cap_SW1_BST1",
+          45
+        ],
+        [
+          "K_SW1_BST1_Cap",
+          45
+        ]
+      ],
+      "SW2_BST2": [
+        [
+          "K44_Cap_SW2_BST2",
+          44
+        ],
+        [
+          "K_SW2_BST2_Cap",
+          44
+        ]
+      ],
+      "VAC": [
+        [
+          "K21_VAC_Cap",
+          21
+        ]
+      ],
+      "VAC1": [
+        [
+          "K_VAC1_Cap",
+          21
+        ]
+      ]
+    },
+    "canon_by_ch": {
+      "0": "K0_VCC_Cap",
+      "5": "K5_VBUS_Cap",
+      "13": "K13_VBAT_Cap",
+      "21": "K21_VAC_Cap",
+      "44": "K44_Cap_SW2_BST2",
+      "45": "K45_Cap_SW1_BST1",
+      "57": "K57_CAP_BST_SW",
+      "85": "K85_CAP_PMID",
+      "126": "K126_V1P5_CAP"
+    },
+    "resolved": {
+      "SW_BST": [
+        "K57_CAP_BST_SW"
+      ],
+      "BST_SW": [
+        "K57_CAP_BST_SW"
+      ]
+    },
+    "same_physical_relay": true
+  }
+}

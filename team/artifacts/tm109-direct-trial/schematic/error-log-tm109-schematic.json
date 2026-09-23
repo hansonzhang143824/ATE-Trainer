@@ -1,0 +1,48 @@
+{
+  "tm": "TM109",
+  "task": "TM109-SCHEMATIC",
+  "role": "schematic-expert",
+  "stage": "G0 input freeze / input identity verification (pre-G1 hardware parsing)",
+  "status": "failed",
+  "verdict": "blocked",
+  "problem": "Source input hash mismatch. The canonical input file for this task does not have the SHA-256 declared in the dispatch. No schematic connectivity facts were derived, because deriving them from an unverified input would violate the G0 freeze gate.",
+  "impact": "All three schematic-owned products (SCH-Connect-Map, Components-Statistic, schematic-ir PathProof) are unsignable for TM109. The test-strategy-architect start condition (both DFT and schematic reports success/reuse) cannot be satisfied, so the TM109 chain is halted at the schematic input gate. No downstream stage was started.",
+  "evidence": {
+    "source_path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\schematic-ir.json",
+    "declared_sha256": "35fdd1582958eb6e4fd63e29da59dec63dfe19e3fd6198d8cc8b8f727a5c7ff5",
+    "observed_sha256": "7EF9D702892093A5DE75031500F78A6D627E44D5130CC832BE9292D2577D8BDC",
+    "observed_sha256_lowercase": "7ef9d702892093a5de75031500f78a6d627e44d5130cc832be9292d2577d8bdc",
+    "match": false,
+    "file_size_bytes": 454933,
+    "last_write_time_utc": "2026-09-16T14:39:42.2666449Z",
+    "verification_methods": [
+      {
+        "tool": "PowerShell Get-FileHash -Algorithm SHA256",
+        "result": "7EF9D702892093A5DE75031500F78A6D627E44D5130CC832BE9292D2577D8BDC"
+      },
+      {
+        "tool": "certutil -hashfile <path> SHA256",
+        "result": "7ef9d702892093a5de75031500f78a6d627e44d5130cc832be9292d2577d8bdc"
+      }
+    ],
+    "verification_conclusion": "Two independent, byte-exact hashing tools at different times returned the same digest. The mismatch is real and reproducible, not a transient read or encoding artifact.",
+    "read_scope_honored": "Only the declared input file was opened for content. No other trial, TM, or artifact was read, in accordance with the dispatch instruction."
+  },
+  "alternatives_eliminated": [
+    "Transient read error or partial read: eliminated by re-hashing with a second independent tool; digest identical both times.",
+    "Text/line-ending or BOM re-encoding: eliminated because both tools hash raw bytes and agree exactly; a re-encoding would still be a content change and therefore still a valid hash mismatch requiring a ruling.",
+    "Case-only difference: eliminated; digests differ in every nibble, not in case.",
+    "Wrong path: eliminated; the file exists at the declared path with size 454933 bytes and a recent modification timestamp.",
+    "Truncated/corrupted file: not eliminated and not asserted. Content was deliberately not interpreted, because interpreting unverified hardware input is exactly what the G0 gate forbids."
+  ],
+  "not_done": [
+    "No schematic connectivity map was derived or written.",
+    "No components statistic was derived or written.",
+    "No PathProof or candidate-path enumeration was performed.",
+    "No relay, source, method, or route selection was made (out of charter in all cases).",
+    "No repair, regeneration, or normalization of the input file was attempted; a role must not self-repair a blocking hash mismatch."
+  ],
+  "required_ruling": "The Commander or user must confirm which artifact is authoritative for TM109: either (a) re-declare the expected SHA-256 as the observed value 7ef9d702892093a5de75031500f78a6d627e44d5130cc832be9292d2577d8bdc and re-dispatch this task unchanged, or (b) restore/re-supply the project/DALI/schematic-ir.json whose bytes hash to 35fdd1582958eb6e4fd63e29da59dec63dfe19e3fd6198d8cc8b8f727a5c7ff5. After either ruling, re-dispatch TM109-SCHEMATIC and this role will derive the connectivity map into team/artifacts/tm109-direct-trial/schematic/schematic-connect-map.json.",
+  "primary_output_written": false,
+  "primary_output_path_expected": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-direct-trial\\schematic\\schematic-connect-map.json"
+}

@@ -1,0 +1,55 @@
+schemaVersion: 1
+artifact: "dft-conditions"
+projectId: "DALI"
+tm: "TM108"
+sourcePath: "D:\\Newtest\\DSH\\ATE-Coding-Flow\\project\\DALI\\Input_GlobalMaterial\\Dali_testmode.xlsx"
+sourceSheet: "OVERVIEW"
+sourceSha256: "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b"
+rawIntent:
+  Item: "TM108"
+  Level: "HSKP"
+  Name: "VAC1_PRST"
+  Description: "VAC1 PRST CMOP threshold"
+  ExpectValue: "rising vth 4.4V, hys 0.35V"
+  Unit: "V"
+  Test: ""
+  Special: ""
+  Purpose: "SCM"
+  Trim: ""
+  Notes: "ramp up/down vac1 from 3~5V, 1V/ms\nmux A2D_VAC1_PRST to dtest0\ncheck int pin toggle"
+  Code1: "vset[vbat,3,100e-6,0]"
+  Code2: "en_tm[]\nfield[(DMUX_EN,1),(DMUX_SEL,22)]\nvset[vac1,10,1e-3,0]\nvset[vac1,0,1e-3,0]"
+  Code3: "delay[1e-3]\nfinish[]"
+  Power: "VBAT"
+  Dynamic: "VAC1"
+  Check: "V(DTEST0)"
+  isCodeGen: "Y"
+  isRun: ""
+  Assign: ""
+  State__AMS_Validation: "Done"
+  State_Bench_Validation: ""
+  is_CP_test?: ""
+  CP_comment: ""
+  State_ATE_Validation: ""
+  HELPER: "ramp VAC , INT toggle"
+  de_test: "r 4.059\nf 3.738"
+  aetest: ""
+  is_test: "checked"
+derivedTokens:
+  vsetPins: ["vbat", "vac1", "vac1"]
+testCondition:
+  identity: "VAC1_PRST"
+  isTrim: false
+  powerSequence:
+  - {"cmd":"vset","pin":"vbat","value":3,"pluseTime":"100e-6","status":0}
+  - {"cmd":"vset","pin":"vac1","value":10,"pluseTime":"1e-3","status":0}
+  - {"cmd":"vset","pin":"vac1","value":0,"pluseTime":"1e-3","status":0}
+  registerFieldIntent:
+  - {"kind":"en_tm","raw":"en_tm[]"}
+  - {"kind":"field","raw":"field[(DMUX_EN,1),(DMUX_SEL,22)]"}
+  measurement: "V(DTEST0)"
+  involvedPins:
+  - "VBAT"
+  - "VAC1"
+  - "DTEST0"
+  - "A2D_VAC1_PRST"

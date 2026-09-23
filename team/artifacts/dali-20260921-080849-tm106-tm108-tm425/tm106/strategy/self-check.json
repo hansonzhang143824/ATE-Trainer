@@ -1,0 +1,60 @@
+{
+  "tm": "TM106",
+  "stage": "STRATEGY",
+  "role": "test-strategy-architect (strategy-expert v1)",
+  "checkedAt": "2026-09-21T03:22:32.119Z",
+  "batchId": "dali-20260921-080849-tm106-tm108-tm425",
+  "checks": [
+    {
+      "item": "endpoint authority = manifest canonicalInputs.dft.declaredPins ∪ pinResolution.physicalDutPin",
+      "result": "PASS",
+      "detail": "VBAT / VBUS / nQON"
+    },
+    {
+      "item": "pinResolution 唯一映射且在 Components-Statistic dutKelvinPins 中",
+      "result": "PASS",
+      "detail": "V(DTEST0)->nQON (DALI-special-information.json sha 86d11d43...; Components-Statistic semanticIndex.dutKelvinPins 含该引脚); monitorDutPin == physicalDutPin"
+    },
+    {
+      "item": "classification 来自 test-types.md 判定流 + func/param 索引",
+      "result": "PASS",
+      "detail": "一般测试项目 / UVLO(PREST 阈值族)"
+    },
+    {
+      "item": "sourceTable 与 Pin_Channel_define.h extern+宏 一一对应且端口坐标匹配",
+      "result": "PASS",
+      "detail": "VBAT=FXVIe_PLUS S3_CH5 (VBAT_PD3_FXVI); VBUS=ACM200 S5_CH10 (VBUS_DRVH1_ACM); nQON=ACM200 S5_CH9 (NQON_HG1_ACM); 功能继电器 K13+K65; 路径 required_on 并集为空(默认导通 Kelvin)"
+    },
+    {
+      "item": "physicalProofs 全部取自 Path-Proofs.json accepted(status=PASS)，requiredOn 与 canonical 完全一致，F/S 各一腿，pair 唯一",
+      "result": "PASS",
+      "detail": "每端点 2 条证明; selectedPath 含源端口; requiredActuations = requiredOn 并集 = []"
+    },
+    {
+      "item": "继电器状态一致性(无 CBIT 同时要求 ON 与 OFF)",
+      "result": "PASS",
+      "detail": "K8/K4/K18/K19/K59/K64 均 NC 且互不冲突; 功能继电器 K13/K65 ON"
+    },
+    {
+      "item": "功能继电器 K13/K65 适用性与闭合集",
+      "result": "PASS",
+      "detail": "K13 REQUIRED(VBAT 直供, FR-001)与 K65 REQUIRED(观测 DTEST0 开漏)均已入 SetOn; 证据 relays.md:124/145/150 + relay-checklist.md:27 + Map L914/L891"
+    },
+    {
+      "item": "registerConfiguration 绑定 extract_register_config.py 证据",
+      "result": "PASS",
+      "detail": "0X56=0X13, 0X57=0X08 (DMUX_EN=1/DMUX_SEL=19); verifiedAgainstDftCode2=true; evidenceSha256/sourceSha256 复算一致"
+    },
+    {
+      "item": "handoff sha256 绑定合同字节",
+      "result": "PASS",
+      "detail": "sha256=3aaded63ed2f6300db978785b63cd4335e47de499e8e914d22fd027ff32a2b4e"
+    },
+    {
+      "item": "确定性门禁",
+      "result": "PASS",
+      "detail": "python scripts/validate_strategy_contract.py 退出码 0, 输出 PASS (--expected-monitor nQON --manifest tm106/input-manifest.json)"
+    }
+  ],
+  "verdict": "deliverable_ready"
+}

@@ -1,0 +1,24 @@
+=== ① 逐 token 计数（总提及 vs SetOn 调用点）===
+  K48_ACM5_AMP_REF     SetOn操作数=4   注释行=4   其它=0   总提及=8   调用点行=[7000, 7087, 7170, 7513]
+  K76_ACM_BST          SetOn操作数=4   注释行=4   其它=0   总提及=8   调用点行=[7000, 7087, 7170, 7513]
+  K_FPVIH_TO_BST_A     SetOn操作数=2   注释行=4   其它=0   总提及=6   调用点行=[7623, 7734]
+  K_BST_ACM            SetOn操作数=0   注释行=0   其它=0   总提及=0   调用点行=[]
+  K_FPVIL_TO_BST_B     SetOn操作数=0   注释行=0   其它=0   总提及=0   调用点行=[]
+  K110_ACM18_BST       SetOn操作数=0   注释行=0   其它=0   总提及=0   调用点行=[]
+  K109_BUSL1_PB0       SetOn操作数=0   注释行=0   其它=0   总提及=0   调用点行=[]
+
+=== ② 我此前报的"8"属于哪一类？ ===
+  K48_ACM5_AMP_REF   总提及=8（我报的 8）; SetOn 调用点=4（对方更正后的 4）; 注释=4
+  K76_ACM_BST        总提及=8（我报的 8）; SetOn 调用点=4（对方更正后的 4）; 注释=4
+
+=== ③ "6 个函数经 K48+K76 到 BST" 复核（按函数块）===
+  TM607_BUCK_LS_ZCD            SetOn(48)=1  SetOn(76)=1  SetOn(K_FPVIH_TO_BST_A)=0 
+  TM608_BOOST_HS_ZCD           SetOn(48)=1  SetOn(76)=1  SetOn(K_FPVIH_TO_BST_A)=0 
+  TM609_BOOST_HS_NEG           SetOn(48)=1  SetOn(76)=1  SetOn(K_FPVIH_TO_BST_A)=0 
+  TM640_BOOST_HS_OCP           SetOn(48)=1  SetOn(76)=1  SetOn(K_FPVIH_TO_BST_A)=0 
+  TM641_BST_UV                 SetOn(48)=0  SetOn(76)=0  SetOn(K_FPVIH_TO_BST_A)=1 
+  TM643_VBAT_LOOP_INDICTOR     SetOn(48)=0  SetOn(76)=0  SetOn(K_FPVIH_TO_BST_A)=1 
+
+=== ④ K110 / K76 是否共用两根网（pin 级）===
+  pin4: K110_BST_S1=NetK76_ACM_BST_S1_4 | K76_ACM_BST_S1=NetK76_ACM_BST_S1_4  同网=True
+  pin5: K110_BST_S1=NetK57_CAP_BST_SW_S1S2_3 | K76_ACM_BST_S1=NetK57_CAP_BST_SW_S1S2_3  同网=True

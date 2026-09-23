@@ -1,0 +1,76 @@
+Dali-SCH.csv 307157 B / 04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a
+引脚列 = MemberName（v1 误用 PinName 导致空列）
+
+=== K110_BST_S1 的端子归属 ===
+  pin K110_BST_S1.2 → NetK110_BST_S1_2
+  pin K110_BST_S1.3 → NetK109_BUSL_PB0_S1_5
+  pin K110_BST_S1.4 → NetK76_ACM_BST_S1_4
+  pin K110_BST_S1.5 → NetK57_CAP_BST_SW_S1S2_3
+  pin K110_BST_S1.6 → NetK109_BUSL_PB0_S1_4
+  pin K110_BST_S1.7 → NetK110_BST_S1_7
+
+=== K109_BUSL_PB0_S1 的端子归属 ===
+  pin K109_BUSL_PB0_S1.2 → NetK109_BUSL_PB0_S1_2
+  pin K109_BUSL_PB0_S1.3 → FPVIe1_FL_BUS_S1
+  pin K109_BUSL_PB0_S1.4 → NetK109_BUSL_PB0_S1_4
+  pin K109_BUSL_PB0_S1.5 → NetK109_BUSL_PB0_S1_5
+  pin K109_BUSL_PB0_S1.6 → FPVIe1_SL_BUS_S1
+  pin K109_BUSL_PB0_S1.7 → NetK109_BUSL_PB0_S1_7
+
+=== 关键 net 的完整成员 ===
+  [NetK76_ACM_BST_S1_4]
+      <net>                    BST_S_S1
+      K110_BST_S1              K110_BST_S1.4
+      K135_PC1_Sense_S1        K135_PC1_Sense_S1.4
+      K76_ACM_BST_S1           K76_ACM_BST_S1.4
+      R_BST_S1                 R_BST_S1.2
+      TP_BST_S_S1              TP_BST_S_S1.1
+  [NetK110_BST_S1_7]
+      <net>                    PB0_F_S1
+      <net>                    PWM1_F_S1
+      <net>                    S24_P10
+      K110_BST_S1              K110_BST_S1.7
+      K147_PB0_OSC_S1          K147_PB0_OSC_S1.2
+      R_PB0_S1                 R_PB0_S1.1
+      TP_PB0_F_S1              TP_PB0_F_S1.1
+      TP_PWM1_F_S1             TP_PWM1_F_S1.1
+  [NetK109_BUSL_PB0_S1_4]
+      <net>                    S5_ACM200_FH18
+      K109_BUSL_PB0_S1         K109_BUSL_PB0_S1.4
+      K110_BST_S1              K110_BST_S1.6
+  [NetK109_BUSL_PB0_S1_5]
+      <net>                    S5_ACM200_SH18
+      K109_BUSL_PB0_S1         K109_BUSL_PB0_S1.5
+      K110_BST_S1              K110_BST_S1.3
+  [FPVIe1_FL_BUS_S1]
+      <net>                    FPVIe1_FL_BUS_S1
+      K104_BUS_FL_PD5_S1       K104_BUS_FL_PD5_S1.1
+      K109_BUSL_PB0_S1         K109_BUSL_PB0_S1.3
+      K114_BUSL_PA5_S1         K114_BUSL_PA5_S1.3
+      K118_BUS_FL_PA4_S1       K118_BUS_FL_PA4_S1.1
+      K133_KELVIN1_S1S2        K133_KELVIN1_S1S2.2
+      K142_QTMU_BUSB_S1S2      K142_QTMU_BUSB_S1S2.2
+      K146_DCM_BUS1_L_S1       K146_DCM_BUS1_L_S1.2
+      K94_BUS_FL_PC8_S1        K94_BUS_FL_PC8_S1.1
+      K99_BUSL_PB5_S1          K99_BUSL_PB5_S1.3
+  [FPVIe1_SL_BUS_S1]
+      <net>                    FPVIe1_SL_BUS_S1
+      K104_BUS_SL_PD5_S1       K104_BUS_SL_PD5_S1.1
+      K109_BUSL_PB0_S1         K109_BUSL_PB0_S1.6
+      K114_BUSL_PA5_S1         K114_BUSL_PA5_S1.6
+      K118_BUS_SL_PA4_S1       K118_BUS_SL_PA4_S1.1
+      K132_KELVIN1_S1          K132_KELVIN1_S1.7
+      K139_QVML_BUS1_S1        K139_QVML_BUS1_S1.2
+      K94_BUS_SL_PC8_S1        K94_BUS_SL_PC8_S1.1
+      K99_BUSL_PB5_S1          K99_BUSL_PB5_S1.6
+
+=== 结论（三句，均可由上表复核） ===
+  1) K110 pin3=COM1、pin6=COM2；pin4=NC(通电↔COM1) 落 NetK76_ACM_BST_S1_4
+     （该 net 同时含 R_BST_S1 pin2 / TP_BST_S_S1 / K76_ACM_BST_S1 pin4 ⇒ 即 BST 侧）
+     pin7=NO(默认↔COM2) 落 NetK110_BST_S1_7（含 TP_PB0_F_S1 / K147_PB0_OSC_S1 ⇒ 即 PB0 侧）
+     ⇒ 通电 6-5 / 3-4 → BST 侧；默认(复位) 6-7 → PB0 侧
+  2) ACM 源（S5_ACM200_FH18，SCH:724）接 K110 公共端一侧 ⇒ **ACM 到 BST 由 K110 单独完成，必须 SetOn**
+  3) K109 公共端 pin3/pin6 落 FPVIe1_FL_BUS_S1 / FPVIe1_SL_BUS_S1（FPVIe1 侧）
+     其 NC/NO 与 K110 公共端**同 net 相连** ⇒ 属另一条路线/耦合，**同 net ≠ 串联**
+     ⇒ (a) K109 不属 ACM 脚路线；(b) 契约字面权威仍要求 K109（relaySet 含 109、pinRouteTable CH0 Low needsClosed 含 109）
+        ⇒ t29 闭 K109+K110 = 依约保守且合规

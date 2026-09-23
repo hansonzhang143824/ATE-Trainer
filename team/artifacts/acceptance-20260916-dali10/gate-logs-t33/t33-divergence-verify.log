@@ -1,0 +1,18 @@
+契约 revision = 29 ; size = 355658 B
+
+=== ① divergence 字段（逐字）===
+  [14] bst1_sw1   kNumbers=[46, 41]
+       divergence = POLARITY: for bst1_sw1 the connect-map puts SW1 on the HIGH terminal and BST1 on the LOW terminal, i.e. the opposite of bst2sw (BST high / SW low). The 'BST must lead SW' invariant therefore cannot be satisfied by terminal assignment alone - the sign of the applied voltage matters. Registered, not averaged; must be settled by t4/relay-trace.
+  [15] bst2_sw2   kNumbers=[46, 49, 41, 43]
+       divergence = same polarity divergence as bst1_sw1 (SW on the HIGH terminal).
+
+=== ② 宏展开复核（他的更正）===
+  K_FPVIH_TO_SW1_A       = [46]
+  K_FPVIL_TO_BST1_A      = [41]
+  K_FPVIH_TO_SW2_A       = [46, 49]
+  K_FPVIL_TO_BST2_A      = [41, 43]
+  L8791 展开 = [13, 41, 46, 65]
+  L8835 展开 = [13, 41, 43, 46, 49, 65]
+  [14].kNumbers = [46, 41] ; [15].kNumbers = [46, 49, 41, 43]
+
+=== ③ 我哪些产物写了不全的展开 ===

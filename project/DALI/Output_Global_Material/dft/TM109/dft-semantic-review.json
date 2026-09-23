@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "LLM semantic review",
+  "tm": "TM109",
+  "verdict": "PASS",
+  "reviewedAt": "2026-09-22",
+  "readSources": [
+    {
+      "path": "project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx",
+      "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "hashMethod": "scripts/hash_ate_plaintext.py",
+      "withinInputRoot": true,
+      "sheet": "OVERVIEW"
+    }
+  ],
+  "reviewedArtifacts": [
+    {
+      "kind": "meta",
+      "role": "dft-meta.json",
+      "path": "project/DALI/Output_Global_Material/dft/TM109/dft-meta.json",
+      "sha256": "aefe03d2f4bcab7f1c8327cb4d3222e18b349bfec3b7491d11d6192089a23364"
+    },
+    {
+      "kind": "yaml",
+      "role": "dft-conditions.yaml",
+      "path": "project/DALI/Output_Global_Material/dft/TM109/dft-conditions.yaml",
+      "sha256": "2db8b37c9cfdef033daecc47053732eb91e7e4d64494194604bbdd78c67ba46c"
+    }
+  ],
+  "artifactHashes": {
+    "dft-meta.json": "aefe03d2f4bcab7f1c8327cb4d3222e18b349bfec3b7491d11d6192089a23364",
+    "dft-conditions.yaml": "2db8b37c9cfdef033daecc47053732eb91e7e4d64494194604bbdd78c67ba46c"
+  },
+  "sourceSha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+  "acceptancePolicy": "Numeric threshold text (rising vth 4.4V, hys 0.35V; de test r 4.079 / f 3.748) is preserved verbatim in rawIntent and in expectedValue/referenceValue; the parser invented or altered no electrical value.",
+  "fieldChecks": [
+    {
+      "sourceColumn": "Item",
+      "rawIntentValue": "TM109",
+      "target": "tm",
+      "value": "TM109"
+    },
+    {
+      "sourceColumn": "Name",
+      "rawIntentValue": "VAC2_PRST",
+      "target": "testCondition.identity",
+      "value": "VAC2_PRST",
+      "note": "v5 contract type: non-empty string from Name column"
+    },
+    {
+      "sourceColumn": "Level",
+      "rawIntentValue": "HSKP",
+      "target": "rawIntent.Level",
+      "value": "HSKP"
+    },
+    {
+      "sourceColumn": "Description",
+      "rawIntentValue": "VAC2 PRST CMOP threshold",
+      "target": "rawIntent.Description",
+      "value": "verbatim"
+    },
+    {
+      "sourceColumn": "Purpose",
+      "rawIntentValue": "SCM",
+      "target": "rawIntent.Purpose",
+      "value": "SCM"
+    },
+    {
+      "sourceColumn": "Unit",
+      "rawIntentValue": "V",
+      "target": "rawIntent.Unit",
+      "value": "V"
+    },
+    {
+      "sourceColumn": "Trim",
+      "rawIntentValue": "",
+      "target": "testCondition.isTrim",
+      "value": "false",
+      "note": "Trim cell empty -> false"
+    },
+    {
+      "sourceColumn": "Code1+Code2",
+      "rawIntentValue": "vset[vbat,3,100e-6,0]; vset[vac2,10,1e-3,0]; vset[vac2,0,1e-3,0]",
+      "target": "testCondition.powerSequence",
+      "value": "3 items {cmd:vset,pin,value,pluseTime,status}",
+      "note": "v5 contract item type; source order preserved; en_tm/field/delay/finish excluded"
+    },
+    {
+      "sourceColumn": "Code2",
+      "rawIntentValue": "en_tm[] / field[(DMUX_EN,1),(DMUX_SEL,21)]",
+      "target": "testCondition.registerFieldIntent",
+      "value": "[{kind:en_tm,raw:en_tm[]},{kind:field,raw:field[(DMUX_EN,1),(DMUX_SEL,21)]}]",
+      "note": "v5 contract item type"
+    },
+    {
+      "sourceColumn": "Check",
+      "rawIntentValue": "V(DTEST0)",
+      "target": "testCondition.measurement",
+      "value": "V(DTEST0)",
+      "note": "v5 contract type: non-empty string, Check source text"
+    },
+    {
+      "sourceColumn": "Power/Dynamic/Check",
+      "rawIntentValue": "VBAT / VAC2 / V(DTEST0)",
+      "target": "testCondition.involvedPins",
+      "value": "[\"vbat\",\"vac2\",\"DTEST0\"]",
+      "note": "v5 contract type: non-empty string list"
+    },
+    {
+      "sourceColumn": "ExpectValue",
+      "rawIntentValue": "rising vth 4.4V, hys 0.35V",
+      "target": "testCondition.expectedValue/referenceValue",
+      "value": "verbatim"
+    },
+    {
+      "sourceColumn": "Notes",
+      "rawIntentValue": "ramp up/down vac1 from 3~5V, 1V/ms / mux A2D_VAC2_PRST to dtest0 / check int pin toggle",
+      "target": "testCondition.remarks + notes + rawIntent",
+      "value": "verbatim"
+    },
+    {
+      "sourceColumn": "OVERVIEW row",
+      "rawIntentValue": "row 12",
+      "target": "meta.sourceLocation",
+      "value": "{\"sheet\":\"OVERVIEW\",\"row\":12}",
+      "note": "row 12 independently re-parsed from workbook: TM109/VAC2_PRST confirmed"
+    },
+    {
+      "sourceColumn": "parseStatus",
+      "rawIntentValue": "",
+      "target": "meta.parseStatus / meta.openItems",
+      "value": "ok / []"
+    },
+    {
+      "sourceColumn": "rawIntent",
+      "rawIntentValue": "row 12 all 19 non-empty cells",
+      "target": "rawIntent",
+      "value": "29 sheet columns covered"
+    }
+  ]
+}

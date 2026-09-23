@@ -1,0 +1,179 @@
+{
+  "purpose": "Audit chain for meta-excitation-override.json (t26). Requested by compile-diagnostician and needed by t9's evidence pack: reviewers ACCEPTED specific revisions, and without snapshots a third party cannot verify that later revisions were additive.",
+  "createdAt": "2026-09-16 19:13:13",
+  "currentRevision": "t26-correction-8",
+  "currentSnapshot": {
+    "path": "team/artifacts/acceptance-20260916-dali10/meta-excitation-override.t26-correction-8.json",
+    "sizeBytes": 26999,
+    "sha256": "62f2da6f0996ee5afd4e828d59da5a80f7da8fe89e1302632f2e1411380ae5ec",
+    "note": "byte copy of the live artifact taken without modifying it, so the live hash is unchanged"
+  },
+  "history": [
+    {
+      "revision": "t26-correction-1",
+      "sizeBytes": 11511,
+      "sha256": "238b2b6c43d535c815034cdf67ea459d01efcf94aa94bc58f2c2c03d79190b10",
+      "contentAvailable": false,
+      "evidenceOfExistence": "review/t26-independent-review.md (18:57:27) quotes size+hash",
+      "review": "review/t26-independent-review.md"
+    },
+    {
+      "revision": "t26-correction-2",
+      "sizeBytes": 14246,
+      "sha256": "b3dd2095e757dcd572db65e9bf706546adb484d6eab33c284ae2f73451435f46",
+      "contentAvailable": false,
+      "evidenceOfExistence": "review/t26-independent-review-2.md + -3.md quote size+hash",
+      "review": "T26-F1 filed here; T26-F2 added in -3"
+    },
+    {
+      "revision": "t26-correction-3",
+      "sizeBytes": 17081,
+      "sha256": "d45194221c47545e4305cad78c7f0f283db8011e3d92ad59cb11dca5f01735b7",
+      "contentAvailable": false,
+      "evidenceOfExistence": "review/t26-independent-review-4.md (19:03:03) + t26-correction-3-confirmation.md (19:04:28) quote size+hash",
+      "review": "ACCEPT (T26-F1 closed, no new findings)"
+    },
+    {
+      "revision": "t26-correction-4",
+      "sizeBytes": 19157,
+      "sha256": "4b28d464f0411e03462c16d30d1d6830302bc38f7789d73910c6976fbd062b8b",
+      "contentAvailable": false,
+      "evidenceOfExistence": "compile-diagnostician and rule-reviewer both recomputed this hash",
+      "review": "NO dedicated review artifact - gap recorded"
+    },
+    {
+      "revision": "t26-correction-5",
+      "sizeBytes": 21773,
+      "sha256": "38880b78f896f4d9c786d23c2cc96e477d96472ef6d6aa741a9e81d1990e705c",
+      "contentAvailable": false,
+      "evidenceOfExistence": "review/t26-correction-5-acceptance.md (19:06:57) quotes size+hash",
+      "review": "ACCEPT"
+    },
+    {
+      "revision": "t26-correction-6",
+      "sizeBytes": 24424,
+      "sha256": "1af63a29f1e45cb38535d4ecf558d3364f8994c931cc4739e9c0c2ecbee2ccb0",
+      "contentAvailable": false,
+      "evidenceOfExistence": "review/t26-correction-6-increment-acceptance.md (19:08:30) quotes size+hash; rule-reviewer named this hash as its FINAL judgement point",
+      "review": "ACCEPT of the increment; sole delta from -5 = inputSyncGreenWhileUndetectable + reviewRound4"
+    },
+    {
+      "revision": "t26-correction-7",
+      "sizeBytes": 27517,
+      "sha256": "4de0ec9b0db2a1af21b834929b95aa0c2c0252fee24ab5571a4a7680e066c3de",
+      "contentAvailable": false,
+      "evidenceOfExistence": "this record (written by the author at creation time)",
+      "review": "ledger replacement; no review artifact - produced at the reviewer's request"
+    },
+    {
+      "revision": "t26-correction-8",
+      "sizeBytes": 26999,
+      "sha256": "62f2da6f0996ee5afd4e828d59da5a80f7da8fe89e1302632f2e1411380ae5ec",
+      "contentAvailable": true,
+      "snapshot": "meta-excitation-override.t26-correction-8.json",
+      "review": "awaiting rule-reviewer re-anchoring: option (A) re-accept this revision, or (B) name it canonical"
+    }
+  ],
+  "knownGaps": [
+    "revisions 1..7 were overwritten in place: their CONTENT is not recoverable, only their sizes/hashes (quoted in the review artifacts above)",
+    "therefore the assertion 'corrections 5/6/7 are additive only' rests on (i) the review artifacts' quoted hashes and (ii) the author's record - from this revision on, a snapshot is taken before every further edit",
+    "correction-4 has no dedicated review artifact"
+  ],
+  "goingForwardRule": "(i) before any further edit, snapshot the then-current artifact as meta-excitation-override.<revision>.json and append its size+hash here; (ii) before rewriting THIS file, snapshot it as meta-excitation-override-revision-history.snapshot-<n>.json (or append-only).",
+  "verifiabilityGrade": {
+    "grade": "TRACEABLE, NOT INDEPENDENTLY VERIFIABLE for corrections 1..7",
+    "why": "the CONTENT of revisions 1..7 no longer exists (overwritten in place), so their sha256 values can only be cross-checked against the review artifacts' own quotations - that is mutual corroboration, not independent verification. From correction-8 onward the snapshot makes the content verifiable.",
+    "whatAScopeAuditMayClaim": "that the revision sequence and its review attribution are traceable and internally consistent; it may NOT claim that every listed revision was independently re-verified."
+  },
+  "selfProtection": {
+    "risk": "this history file was itself a single in-place file with no snapshot: rewriting it (to append a future revision) and failing would have destroyed the whole evidence chain.",
+    "rules": [
+      "(i) snapshot the ARTIFACT before editing it (already in force; see currentSnapshot)",
+      "(ii) snapshot THIS history file before rewriting it, or append-only - i.e. never rewrite the whole file without a prior snapshot"
+    ],
+    "snapshots": [
+      {
+        "path": "team/artifacts/acceptance-20260916-dali10/meta-excitation-override-revision-history.snapshot-1.json",
+        "sizeBytes": 4349,
+        "sha256": "535e4144aedb4385e39cb5bb5e3467090d9ef423c2f85a8f4bea457479258c88",
+        "takenAt": "2026-09-16 19:18:59",
+        "note": "byte copy of this history file, taken before this edit; anchors the chain at the point corrections 1..8 were listed"
+      },
+      {
+        "path": "team/artifacts/acceptance-20260916-dali10/meta-excitation-override-revision-history.snapshot-2.json",
+        "sizeBytes": 6483,
+        "sha256": "c8d85ac9d3818fd76b424fae8404e18c9018ed6bd49f870a119fde3bb0f06597",
+        "takenAt": "2026-09-16 19:20:46",
+        "note": "byte copy taken before adding the K110 carried-finding block"
+      },
+      {
+        "path": "team/artifacts/acceptance-20260916-dali10/meta-excitation-override-revision-history.snapshot-3.json",
+        "sizeBytes": 9855,
+        "sha256": "e92e16837c3174020331211a6c5328153db9a1160f375cbd9e48b3737e7fc8b5",
+        "takenAt": "2026-09-16 19:23:08",
+        "note": "byte copy taken before refining the K110 carried-finding locators"
+      }
+    ]
+  },
+  "structuralNote": "the gates read project/DALI/meta/dali_tm_meta.json - NOT this override document. This file is a declaration/audit carrier only, so the binding between 'what was declared' and 'what the gate actually consumes' must come from check_input_sync.py assertions (RS-1..RS-4, task t28) or a manifest replay entry; otherwise a regeneration silently erases the fix while every gate stays green.",
+  "updatedAt": "2026-09-16 19:23:08",
+  "carriedFindings": [
+    {
+      "id": "K110 (rule-reviewer, review/t26-tp20-k110-finding.md, 19:13:44) - HIGH, not caused by this task",
+      "claim": "v20 + setup-contract rev 24 require the BST-SW closed set [110, 61], but the deployed test.cpp never closes K110 (or K109).",
+      "evidenceGatheredHere": [
+        "project/DALI/SCH-Connect-Map.txt:42 'CH0 Low -> BST  [Kelvin]  需闭合: K109,K110,K138,K139,K145,K146'",
+        "SCH-Connect-Map.txt:109-110 '... K109(Relay-ON) -> K110(Relay-NC) -> PB0_F / PB0_S' => K110 is double-throw: NOT energised, the node goes to PB0, not BST (corroborates the reviewer)",
+        "setup-contract rev 24 /aliasResolution[bst2sw]/resolution/closedRelayNumbers = [110, 61]; relayChain = K110_ACM18_BST (SetOn) + K61_ACM8_SW (SetOn)",
+        "deployed test.cpp: ZERO occurrences of K109/K110 anywhere in the file (regex \\bK(109|110)\\b => 0 hits); the two function SetOn lists are L9081 (TM600) and L9255 (TM601), neither contains K110",
+        "scripts/verify_bst_sw_sequence.py: 0 mentions of K110, K109 or the number 110 => the BST-SW golden gate cannot see this defect"
+      ],
+      "unknown": [
+        "no fixture-level evidence was found that SW12_U1REF_BST_ACM is hard-wired to BST in a way that bypasses K110; the instrument instance's channel macro (S5_5,S6_5,S11_5,S12_5,S21_5,S22_5,S27_5,S28_5, Pin_Channel_define.h:20) lists the ACM's own channel pins, not a BST net",
+        "which of K109/K110 belong specifically to the ACM route versus the FPVIe CH0-Low route needs the implementer's/captain's adjudication"
+      ],
+      "assessment": "the evidence favours 'the payload is missing a contract-required closure' over 'the contract's [110] needs correction'; either way ruling (ii) is NOT established as implemented until this is settled.",
+      "disposition": "captain - implementer must add the closure, or the contract entry must be re-ruled; a gate assertion is also needed because verify_bst_sw_sequence.py is blind here.",
+      "doesNotAffect": "the t26 meta/model conclusions (K57 two-layer, TM601 zero-cap, VBUS removal) - those are independent of K110.",
+      "locatorResolution": {
+        "question": "rule-reviewer cited SCH L724/L725 for the PB0 NC route while this author cited 109/110 - both are correct: they are different sections of the SAME file.",
+        "sameFile": "project/DALI/SCH-Connect-Map.txt (966 lines)",
+        "acmChannelTable": {
+          "lines": "723-725",
+          "text": [
+            "PB0_PWM1  [Kelvin]  需闭合: 无(默认导通)",
+            "F: S5_ACM200_FH18 -> K110(Relay-NC) -> PB0_F",
+            "S: S5_ACM200_SH18 -> K110(Relay-NC) -> PB0_S"
+          ],
+          "meaning": "the ACM200 S5 channel pins (= the ACM18 pins named by K110_ACM18_BST) sit on the K110 node and reach PB0 through its de-energised NC contact"
+        },
+        "routeList": {
+          "lines": "42-44",
+          "text": [
+            "CH0 Low -> BST  [Kelvin]  需闭合: K109,K110,K138,K139,K145,K146",
+            "S1_FPVIe_FL0 -> K89(Relay-NC) -> K145(Relay-ON) -> K146(Relay-ON) -> K109(Relay-ON) -> K110(Relay-ON) -> BST_F"
+          ],
+          "meaning": "BST is reached only with K110 energised (Relay-ON) - the same double-throw relay"
+        },
+        "conclusion": "both sections agree: without SetOn(K110) the ACM source lands on PB0, not BST => no fixture hard-wire exists and the contract's [110, 61] stands.",
+        "fixPrecision": "for the ACM-pin route only K110 is switched (channel table 723-725); K109 belongs to the FPVIe routes (lines 43/44/269/270), so the payload must add K110_ACM18_BST to the TM600 set-on list."
+      }
+    }
+  ],
+  "ledgerDeltaNotInArtifact": {
+    "reason": "the frozen artifact is anchored at t26-correction-8 and the captain ordered no further edits before the confirmation; these two review artifacts postdate it.",
+    "entries": [
+      {
+        "file": "review/t26-tp20-k110-finding.md",
+        "mtime": "2026-09-16 19:13:44",
+        "what": "the K110 finding above"
+      },
+      {
+        "file": "review/t26-correction-8-confirmation.md",
+        "mtime": "2026-09-16 (this round)",
+        "what": "ACCEPT of the ledger correction; substance unchanged; asks for one line (independentReview.note) to stop naming a specific revision"
+      }
+    ],
+    "status": "recorded here instead of editing the frozen artifact; a one-line artifact edit needs captain authorisation (it would change the anchored hash)."
+  }
+}

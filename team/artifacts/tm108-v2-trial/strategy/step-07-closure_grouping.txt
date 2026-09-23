@@ -1,0 +1,28 @@
+TM108 relay workflow STEP7 CLOSURE-GROUPING (step 7/8) - owner=test-strategy-architect run=tm108-v2-trial
+flow: knowledge/references/L3-method/relay-design-flow.md:39-75
+closure-set source: proof required_on + full proof relay chain
+
+groups are split by CONFLICT, not by stage bookkeeping. After step 5/6 the selected
+allocation has no relay whose required state differs between the rising and the falling
+sweep, so the item needs exactly ONE closure set. The stage split that DOES exist is the
+static-supply group versus the scanned-input group, recorded as two groups so the method
+owner can order them:
+
+group G1 (static supply + observation path, valid before and during both sweeps):
+  actuate      : K13_VBAT_Cap (VBAT cap gate), K65_nQON_PU (nQON 5V pull-up)
+  keep-open    : K21_VAC_Cap (VAC1 is the scanned input), K8_PD3 (VBAT side),
+                 K64_HG1 (nQON side), K141/K142 (QTMU bridge), K14/K15/K16 (P2P)
+  evidence     : SCH-Connect-Map.txt:891 (K65), :914 (K13), :913 (K21), :832-834 (K8)
+
+group G2 (VAC1 scanned input, VAC1=0-10V ramp, both directions):
+  actuate      : K18_VAC3/K19_VAC2 are NOT actuated (default-conducting, 0 union)
+  keep-open    : K70_VAC_F, K87_KELVIN0, K90_PC0_Force, K82_R_CS (the CH0 High branch),
+                 K17 as the shared BUS entry point must be in the selected state
+  evidence     : tm108-paths-proofs.txt S5_ACM200_FH0/SH0 chains (req=[]),
+                 SCH-Connect-Map.txt:192-194, SCH-Connect-Map.txt:190
+
+group G3 (optional alternate, only if the ACM200 VAC123_AMUX_ACM channel is occupied):
+  actuate      : K17 (VAC1), K13, K65
+  keep-open    : K18/K19/K21/K70/K87/K90/K82/K141/K142/K86/K130
+  evidence     : tm108-paths-proofs.txt S1_FPVIe_FL0 (req=[17]) + S1_FPVIe_SL0 (req=[17])
+

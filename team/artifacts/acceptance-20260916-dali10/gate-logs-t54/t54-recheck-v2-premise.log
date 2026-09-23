@@ -1,0 +1,19 @@
+=== ① 穷举键路径：报告里有没有 receipts ===
+  顶层键数 = 35 ｜ 键路径总数 = 343
+  含 "receipt" 的路径 = 1 个：['/livenessDeclaration/receiptInstead']
+  字面出现 "receipts" 次数 = 0
+  字面出现 "generatedAt" 次数 = 1
+
+=== ② 同一文件上 v1 vs v2 ===
+  v1 = febf9518df45f3aa9583d96b
+  v2 = 9804fbe2272477ecf51de616
+  **相同 = False** ⇒ v2 确实改变了口径
+
+=== ③ 跨秒跑两次：哪个投影才稳定（我原来的声称）===
+  run1: v1=febf9518df45f3aa  v2=9804fbe2272477ec  收据body=9804fbe2272477ec  file=77099b16c75e6ce6
+  run2: v1=febf9518df45f3aa  v2=9804fbe2272477ec  收据body=9804fbe2272477ec  file=6c49e1dbe054c5d8
+  **v1 跨次稳定 = True**
+  **v2 跨次稳定 = True**
+  收据 body 与 v2 一致 = True
+
+  ⇒ 结论：**v1 本来就稳定** ⇒ 升 v2 的真实理由是"**预防性**"（防将来嵌入 receipts），**不是**"v1 不稳"；我原先的因果陈述**应撤回**

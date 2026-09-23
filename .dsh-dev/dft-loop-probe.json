@@ -1,0 +1,55 @@
+{
+  "at": "2026-09-19T11:36:41.252Z",
+  "mode": "dispatch-profile",
+  "parentAgentId": "session-aea68189-ac7a-48e9-90b3-133e7104d863",
+  "ok": true,
+  "dispatched": true,
+  "refusalReason": null,
+  "receiptPath": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dispatch-receipts\\ptc-dft-expert-probe-run-2-TM106.json",
+  "receipt": {
+    "profileId": "ptc-dft-expert",
+    "profileVersion": "v2",
+    "executionClass": "input-dft",
+    "targetTms": [
+      "TM106"
+    ],
+    "label": "PTC dft expert [TM106]",
+    "digest": "4f5777fb2a89cb6b163f6ecf6ba77888e4c32ff13fd41f39f94aad0a8393032a",
+    "childSessionId": "931761de-dd4f-4330-804c-2bbfd804119e"
+  },
+  "ownership": {
+    "ok": true,
+    "stage": "INPUT_SYNC",
+    "registryOwner": "captain",
+    "ownershipNote": "registry owner for INPUT_SYNC is captain; the profile's ownerRole is dispatched as a source role of that stage"
+  },
+  "runKeys": [
+    "dispose",
+    "id",
+    "localAgent",
+    "result"
+  ],
+  "runIdentity": {
+    "id": "931761de-dd4f-4330-804c-2bbfd804119e",
+    "agentId": null,
+    "subagentId": null,
+    "sessionId": null,
+    "status": null,
+    "stopReason": null
+  },
+  "settled": {
+    "keys": [
+      "output",
+      "stopReason",
+      "structured"
+    ],
+    "stopReason": "completed",
+    "output": "[{\"type\":\"reasoning\",\"text\":\"The final review is correct. The gate passed.\\n\\nNow produce the final structured output. The user asked: \\\"Report the exact commands, their exit codes, the final gate JSON, and anything you could not prove.\\\"\\n\\nI'll call structured_output with status \\\"done\\\", outputs (paths), gates, and... the schema only has status, outputs, gates, question. So I should include the report in... hmm, structured_output schema: status, outputs, gates, question. The detailed report must go in my text answer preceding the tool call? The instruction says only the structured_output to"
+  },
+  "finalIdentity": {
+    "id": "931761de-dd4f-4330-804c-2bbfd804119e",
+    "agentId": null,
+    "subagentId": null,
+    "sessionId": null
+  }
+}

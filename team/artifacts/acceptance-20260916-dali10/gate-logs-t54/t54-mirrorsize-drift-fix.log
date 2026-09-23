@@ -1,0 +1,20 @@
+=== ① 漂移证据（处置前，先取证）===
+  mirrorOf    = setupArchitect-freeze-snapshots.json
+  mirrorSize  = 97636 （记死值）
+  镜像现盘 size = 171159
+  ⇒ 漂移 = 73523 B
+
+=== ② 改生成器（建议 (c)：改名 + 失效声明）===
+  已改 → 11507 B
+
+=== ③ 顺带写入一次（本次写入同时消化其它内容；不额外再写）===
+  exit=0 ; 保留他方命名空间: setupArchitectFreezeAnchors
+
+=== ④ 处置后自证 ===
+  子键 = ['anchors', 'ledgerNote', 'mirrorOf', 'mirrorSize', 'mirrorSizeAtMirrorTime', 'mirrorSizeNote', 'mirrorAt']
+  mirrorSizeAtMirrorTime = 171159
+  mirrorAt               = 2026-09-17T00:30:00+08:00
+  mirrorSizeNote 含失效声明 = True
+  旧键 mirrorSize 是否已移除 = False
+  entries = 32 ｜ 他方条数 = 1
+  文件 = 12211 B

@@ -1,0 +1,15 @@
+=== 检索"把 109/110 视为部署态缺失"的表述 ===
+  t33-revision-attribution.md                L101  | ~~旧 payload 39,457~~ | 闭 `109/110`、缺 `48/76` | **闭错 + 缺闭**（历史） |
+  t30_apply_v2.py                            L44   # 实测（本 run）: TM600 relaySet 含 109/110 而 SetOn 未闭；TM601 relaySet 的 109/110 之间**缺 86**
+  t54_check_109_110_framing.py               L12   r'缺.{0,10}109/110',
+  t54_check_109_110_framing.py               L14   print('=== 检索"把 109/110 视为部署态缺失"的表述 ===')
+  t54_make_report.py                         L245  'state': '**闭错腿（`109/110`）+ 缺 `[48,76]`**'},
+  t54_update_attribution_payload.py          L52   | ~~旧 payload 39,457~~ | 闭 `109/110`、缺 `48/76` | **闭错 + 缺闭**（历史） |
+  t28-anchors.json                           L118  "note": "编译输入；缺 K109/K110（t23）"
+  t28_make_anchors.py                        L36   ('DEPLOYED test.cpp', 'D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp', '编译输入；缺 K109/K110（t23）'),
+  命中 = 8
+
+=== 同时确认：我记录的"部署态缺件"清单是否只有 48/76 ===
+  build-report.attributionThreeStates.deployed.tm600_seton = [13, 57, 60, 61, 83, 85, 126]
+  state 文字 = 缺 `[48,76]`（**活危害 + 真缺陷**：TM600 在驱动 ch5 仪器而 `K48` 未闭 ⇒ 源被改道 `SW1_F`/`SW2_F`）
+  含 109/110？ = False

@@ -1,0 +1,12 @@
+=== 零写入窗口内的域化断言（枚举规则与结果同印）===
+  枚举规则：根集 = ['team/artifacts/acceptance-20260916-dali10', 'scripts'] ｜ 过滤器 = {'hiddenEntries': False, 'followSymlinks': False, 'maxDepth': 'unbounded'}
+  域内文件数 = 1480
+  探针实效 = 3/3 ｜ 跑前 1480 → 跑后 1482
+  --- 逐项 diff（不聚合）---
+    新增: gate-logs-t28/t28-anchors.json.g-in ｜ 是否在允许集 = True
+    新增: gate-logs-t28/t28-anchors.json.g-out ｜ 是否在允许集 = True
+  **超出允许集 = 0** ⇒ **闭世界断言 = 通过**
+
+=== 入册：自指污染修法 ===
+  已并入 → 67846 B
+  登记 = 67846 B ｜ 标题 52 ｜ 唯一 52 ｜ 重复 无

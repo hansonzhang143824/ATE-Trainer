@@ -1,0 +1,28 @@
+{
+  "tm": "TM110",
+  "stage": "METHOD",
+  "status": "PASS",
+  "strategySha256": "45efd33e72e84fdee4d54534f1666e943aa9a128bf9c7cce63a3224921a51478",
+  "contractSha256": "f8d835786b2c4f6363c49fdbd5b51962c43a9bfb006d459f4692055c7f3acf7b",
+  "checks": {
+    "signedStrategyHandoffHashMatches": true,
+    "canonicalDftHashMatchesManifest": true,
+    "sourceTablesAndRelaysUnchanged": true,
+    "requiredK13AndK65Present": true,
+    "upSweepTriggerFalling": true,
+    "downSweepTriggerRising": true,
+    "riseFallHysPerSite": true,
+    "numericPassFailNotSpecified": true,
+    "bstSwNotApplicableWithEndpointProof": true,
+    "allCommandsWithinSignedRelayUnion": true,
+    "safeZeroBeforeDisconnect": true,
+    "oldResolvedK13K65FindingsNotReopened": true,
+    "scanRangeRuleVerified": true,
+    "scanRangeSourcesVerified": true
+  },
+  "evidence": [
+    "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm110-ptc\\method\\tm110-test-method-contract.json",
+    "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm110-ptc\\strategy\\tm110-resource-config-contract.json",
+    "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM110\\dft-meta.json"
+  ]
+}

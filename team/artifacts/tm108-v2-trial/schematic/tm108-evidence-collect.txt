@@ -1,0 +1,312 @@
+#### Component-Statistic.txt: port -> device rows for the TM108 device nets
+   87|     S10_0 -> QTMU_S1 (QTMUe)
+   91|     S11_0 -> VAC123_AMUX_ACM (ACM200)
+  114|     S11_9 -> NQON_HG1_ACM (ACM200)
+  115|     S12_0 -> VAC123_AMUX_ACM (ACM200)
+  138|     S12_9 -> NQON_HG1_ACM (ACM200)
+  144|     S13_5 -> VBAT_PD3_FXVI (FXVIe_PLUS)
+  152|     S14_5 -> VBAT_PD3_FXVI (FXVIe_PLUS)
+  168|     S19_5 -> VBAT_PD3_FXVI (FXVIe_PLUS)
+  178|     S20_5 -> VBAT_PD3_FXVI (FXVIe_PLUS)
+  181|     S21_0 -> VAC123_AMUX_ACM (ACM200)
+  204|     S21_9 -> NQON_HG1_ACM (ACM200)
+  205|     S22_0 -> VAC123_AMUX_ACM (ACM200)
+  228|     S22_9 -> NQON_HG1_ACM (ACM200)
+  233|     S27_0 -> VAC123_AMUX_ACM (ACM200)
+  256|     S27_9 -> NQON_HG1_ACM (ACM200)
+  257|     S28_0 -> VAC123_AMUX_ACM (ACM200)
+  280|     S28_9 -> NQON_HG1_ACM (ACM200)
+  286|     S29_5 -> VBAT_PD3_FXVI (FXVIe_PLUS)
+  296|     S30_5 -> VBAT_PD3_FXVI (FXVIe_PLUS)
+  308|     S3_5 -> VBAT_PD3_FXVI (FXVIe_PLUS)
+  316|     S4_5 -> VBAT_PD3_FXVI (FXVIe_PLUS)
+  319|     S5_0 -> VAC123_AMUX_ACM (ACM200)
+  342|     S5_9 -> NQON_HG1_ACM (ACM200)
+  343|     S6_0 -> VAC123_AMUX_ACM (ACM200)
+  366|     S6_9 -> NQON_HG1_ACM (ACM200)
+  376|     S10_CH0_A -> QTMU_S1 (QTMUe)
+  377|     S10_CH0_B -> QTMU_S1 (QTMUe)
+  382|     S5_ACM200_FH0 -> VAC123_AMUX_ACM (ACM200)
+  405|     S5_ACM200_FH9 -> NQON_HG1_ACM (ACM200)
+  406|     S5_ACM200_FL(0-11) -> VAC123_AMUX_ACM (ACM200)
+  408|     S5_ACM200_SH0 -> VAC123_AMUX_ACM (ACM200)
+  431|     S5_ACM200_SH9 -> NQON_HG1_ACM (ACM200)
+  432|     S5_ACM200_SL(0-5) -> VAC123_AMUX_ACM (ACM200)
+
+#### Component-Statistic.txt: DUT PIN / TP / net inventory lines relevant to TM108
+   59| ## 任务一: DUT PIN (69个, 136个端口)
+  481|     TP_ACDRV1_F_S1, TP_ACDRV1_S_S1, TP_ACDRV2_F_S1, TP_ACDRV2_S_S1, TP_ACDRV3_F_S1, TP_ACDRV3_S_S1, TP_AMPOUT_S1, TP_AMUX_F_S1, TP_AMUX_S_S1, TP_BST1_F_S1, TP_BST1_S_S1, TP_BST2_F_S1, TP_BST2_S_S1, TP_BST_F_S1, TP_BST_S_S1, TP_BUFOUT_S1, TP_CC1_F_S1, TP_CC1_S_S1, TP_CC2_F_S1, TP_CC2_S_S1, TP_COMP_F_S1, TP_COMP_S_S1, TP_DRVH1_F_S1, TP_DRVH1_S_S1, TP_HG1_F_S1, TP_HG1_S_S1, TP_HG2_F_S1, TP_HG2_S_S1, 
+  486|   [DUT PIN net] (118):
+  491|     AGND, AGND_F_S1, AGND_S_S1, DGND, JGND
+  493|     AMPOUT_S1, Backup_S1, KLV_FORCE_S1, KLV_SENSE_S1, NetC1_CS_S1_2, NetC1_OSC_S1_1, NetC1_OSC_S1_2, NetC1_Stable_S1_1, NetC2_CS_S1_2, NetC2_OSC_S1_2, NetC2_Stable_S1_1, NetC4_SVLP_S1(NC)_1, NetC4_SVLP_S1(NC)_2, NetCap2_PMID_S1_2, NetCap2_V1P5_S1_2, NetCap2_VAC_S1_2, NetCap2_VBAT_S1_2, NetCap2_VBUS_S1_2, NetCap2_VCC_S1_2, NetCap_SW1_BST1_S1_1, NetCap_SW2_BST2_S1_1, NetCap_SW_BST_S1_1, NetK0_VCC_Ca
+
+#### SCH-Connect-Map.txt: rows containing QTMU / DCM / S10
+  451| ## 列3: QTMUe → PIN (BUS继电器)
+  452|   注: QTMU不分Kelvin(仅FH, Low端=DGND), High端到达即闭环, 无F/S配对要求
+  453|   ACDRV1 ← S10_CH0_A  [通路]  需闭合: K141,K22,K30
+  454|     S10_CH0_A -> K141(Relay-ON) -> K30(Relay-ON) -> K22(Relay-ON) -> ACDRV1
+  455|   ACDRV2 ← S10_CH0_A  [通路]  需闭合: K141,K23,K30
+  456|     S10_CH0_A -> K141(Relay-ON) -> K30(Relay-ON) -> K23(Relay-ON) -> ACDRV2
+  457|   ACDRV3 ← S10_CH0_A  [通路]  需闭合: K141,K24,K30
+  458|     S10_CH0_A -> K141(Relay-ON) -> K30(Relay-ON) -> K24(Relay-ON) -> ACDRV3
+  459|   AMUX ← S10_CH0_A  [通路]  需闭合: K141,K154
+  460|     S10_CH0_A -> K141(Relay-ON) -> K154(Relay-ON) -> K155(Relay-NC) -> AMUX
+  461|   BST ← S10_CH0_A  [通路]  需闭合: K141,K46,K48,K76
+  462|     S10_CH0_A -> K141(Relay-ON) -> K46(Relay-ON) -> K48(Relay-ON) -> K76(Relay-ON) -> BST
+  463|   CC1 ← S10_CH0_A  [通路]  需闭合: K96
+  464|     S10_CH0_A -> K141(Relay-NC) -> K96(Relay-ON) -> K97(Relay-NC) -> K98(Relay-NC) -> CC1
+  465|   COMP ← S10_CH0_A  [通路]  需闭合: K141,K156,K157
+  466|     S10_CH0_A -> K141(Relay-ON) -> K156(Relay-ON) -> K157(Relay-ON) -> COMP
+  467|   DMA_PA7 ← S10_CH0_A  [通路]  需闭合: K120
+  468|     S10_CH0_A -> K141(Relay-NC) -> K120(Relay-ON) -> K121(Relay-NC) -> DMA_PA7
+  469|   HG1 ← S10_CH0_A  [通路]  需闭合: K141,K62,K64
+  470|     S10_CH0_A -> K141(Relay-ON) -> K62(Relay-ON) -> K64(Relay-ON) -> HG1
+  471|   HG2 ← S10_CH0_A  [通路]  需闭合: K141,K83,K84
+  472|     S10_CH0_A -> K141(Relay-ON) -> K83(Relay-ON) -> K84(Relay-ON) -> HG2
+  473|   INT_PA0 ← S10_CH0_A  [通路]  需闭合: K101
+  474|     S10_CH0_A -> K141(Relay-NC) -> K101(Relay-ON) -> K102(Relay-NC) -> INT_PA0
+  475|   KLV1 ← S10_CH0_A  [通路]  需闭合: K141,K35
+  476|     S10_CH0_A -> K141(Relay-ON) -> K35(Relay-ON) -> K36(Relay-NC) -> K37(Relay-NC) -> KLV1
+  477|   KLV2 ← S10_CH0_A  [通路]  需闭合: K141,K35,K37
+  478|     S10_CH0_A -> K141(Relay-ON) -> K35(Relay-ON) -> K36(Relay-NC) -> K37(Relay-ON) -> KLV2
+  479|   PA1 ← S10_CH0_A  [通路]  需闭合: K106
+  480|     S10_CH0_A -> K141(Relay-NC) -> K106(Relay-ON) -> K107(Relay-NC) -> PA1
+  481|   PA6_PWM2 ← S10_CH0_A  [通路]  需闭合: K111
+  482|     S10_CH0_A -> K141(Relay-NC) -> K111(Relay-ON) -> K112(Relay-NC) -> PA6_PWM2
+  483|   PB1 ← S10_CH0_A  [通路]  需闭合: K106,K107
+  484|     S10_CH0_A -> K141(Relay-NC) -> K106(Relay-ON) -> K107(Relay-ON) -> PB1
+  485|   PB3 ← S10_CH0_A  [通路]  需闭合: K96,K98
+  486|     S10_CH0_A -> K141(Relay-NC) -> K96(Relay-ON) -> K97(Relay-NC) -> K98(Relay-ON) -> PB3
+  487|   PB5 ← S10_CH0_A  [通路]  需闭合: K123
+  488|     S10_CH0_A -> K141(Relay-NC) -> K123(Relay-ON) -> K124(Relay-NC) -> PB5
+  489|   PB6 ← S10_CH0_A  [通路]  需闭合: K116,K117
+  490|     S10_CH0_A -> K141(Relay-NC) -> K116(Relay-ON) -> K117(Relay-ON) -> PB6
+  491|   PB7 ← S10_CH0_A  [通路]  需闭合: K116
+  492|     S10_CH0_A -> K141(Relay-NC) -> K116(Relay-ON) -> K117(Relay-NC) -> PB7
+  493|   PC3 ← S10_CH0_A  [通路]  需闭合: K101,K102
+  494|     S10_CH0_A -> K141(Relay-NC) -> K101(Relay-ON) -> K102(Relay-ON) -> PC3
+  495|   PC5 ← S10_CH0_A  [通路]  需闭合: K111,K112
+  496|     S10_CH0_A -> K141(Relay-NC) -> K111(Relay-ON) -> K112(Relay-ON) -> PC5
+  497|   PD2 ← S10_CH0_A  [通路]  需闭合: K120,K121
+  498|     S10_CH0_A -> K141(Relay-NC) -> K120(Relay-ON) -> K121(Relay-ON) -> PD2
+  499|   PD3 ← S10_CH0_A  [通路]  需闭合: K7,K8
+  500|     S10_CH0_A -> K141(Relay-NC) -> K7(Relay-ON) -> K8(Relay-ON) -> PD3
+  501|   PGND ← S10_CH0_A  [通路]  需闭合: K141,K154,K155
+  502|     S10_CH0_A -> K141(Relay-ON) -> K154(Relay-ON) -> K155(Relay-ON) -> PGND
+  503|   PGND_WL ← S10_CH0_A  [通路]  需闭合: K141,K35,K36
+  504|     S10_CH0_A -> K141(Relay-ON) -> K35(Relay-ON) -> K36(Relay-ON) -> PGND_WL
+  505|   PMID ← S10_CH0_A  [通路]  需闭合: K141,K83
+  506|     S10_CH0_A -> K141(Relay-ON) -> K83(Relay-ON) -> K84(Relay-NC) -> PMID
+  507|   SDA ← S10_CH0_A  [通路]  需闭合: K141,K58,K59
+  508|     S10_CH0_A -> K141(Relay-ON) -> K58(Relay-ON) -> K59(Relay-ON) -> SDA
+  509|   SW1 ← S10_CH0_A  [通路]  需闭合: K141,K46
+  510|     S10_CH0_A -> K141(Relay-ON) -> K46(Relay-ON) -> K48(Relay-NC) -> K49(Relay-NC) -> SW1
+  511|   SW2 ← S10_CH0_A  [通路]  需闭合: K141,K46,K49
+  512|     S10_CH0_A -> K141(Relay-ON) -> K46(Relay-ON) -> K48(Relay-NC) -> K49(Relay-ON) -> SW2
+  513|   VBAT ← S10_CH0_A  [通路]  需闭合: K7
+  514|     S10_CH0_A -> K141(Relay-NC) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT
+  515|   VCC ← S10_CH0_A  [通路]  需闭合: K141,K25,K30
+  516|     S10_CH0_A -> K141(Relay-ON) -> K30(Relay-ON) -> K25(Relay-ON) -> VCC
+  517|   VCN ← S10_CH0_A  [通路]  需闭合: K141,K156
+  518|     S10_CH0_A -> K141(Relay-ON) -> K156(Relay-ON) -> K157(Relay-NC) -> VCN
+  519|   VDM ← S10_CH0_A  [通路]  需闭合: K141,K58
+  520|     S10_CH0_A -> K141(Relay-ON) -> K58(Relay-ON) -> K59(Relay-NC) -> VDM
+  521|   nRST ← S10_CH0_A  [通路]  需闭合: K123,K124
+  522|     S10_CH0_A -> K141(Relay-NC) -> K123(Relay-ON) -> K124(Relay-ON) -> nRST
+  845| ## 列8: QTMUe → PIN (Share继电器)
+  846|   注: QTMU不分Kelvin(仅FH, Low端=DGND), High端到达即闭环
+  847|   VDM ← S10_CH0_B  [通路]  需闭合: K152
+  848|     S10_CH0_B -> K152(Relay-ON) -> VDM
+  849|   nQON ← S10_CH0_A  [通路]  需闭合: K66
+  850|     S10_CH0_A -> K66(Relay-ON) -> nQON
+  856| ## 列10: DCM → PIN (Share继电器)
+  857|   注: DCM为数字源, 不分Kelvin, Low端=DGND, High端到达即闭环
+
+#### SCH-Connect-Map.txt: section header lines (all)
+    7| ## 列1: FPVIe → FPVIe BUS节点 (BUS继电器, FH+SH/FL+SL成组)
+   21| ## 列2: FPVIe → PIN (BUS继电器)
+  451| ## 列3: QTMUe → PIN (BUS继电器)
+  524| ## 列4: QVMe → PIN (BUS继电器)
+  659| ## 列5: ACM → PIN (Share继电器)
+  662| ## 列6: ACM200 → PIN (Share继电器)
+  803| ## 列7: FXVIe_PLUS → PIN (Share继电器)
+  845| ## 列8: QTMUe → PIN (Share继电器)
+  852| ## 列9: QVMe → PIN (Share继电器)
+  856| ## 列10: DCM → PIN (Share继电器)
+  863| ## 列11: 通路分类 (P2P / 上拉 / 下拉 / 稳压 / net短接)
+  866| ### P2P-到地 (PIN ↔ AGND, 需闭合 ≤2)
+  881| ### P2P-互短 (PIN ↔ PIN, 需闭合 ≤2)
+  884| ### 上拉 (PIN + 电阻 + 继电器 + 上拉电源)
+  893| ### 下拉 (PIN + 电阻 + 继电器 + 地)
+  898| ### 稳压 (PIN + 电容 ≥100nF + 继电器)
+  919| ### net短接 (直接导线 / net alias / NetTie 同电气节点)
+  924| ## 附注: DUT PIN → 信号net 映射 (R3.8)
+
+#### SCH-Connect-Map.txt: lines 860-925 (P2P / pull-up / cap rows)
+  860|   SDA ← S24_P2  [通路] [直连]  需闭合: 无(默认导通)
+  861|     S24_P2 -> SDA
+  862| 
+  863| ## 列11: 通路分类 (P2P / 上拉 / 下拉 / 稳压 / net短接)
+  864|   注: 上拉/下拉按连接分类(不看电阻值), Kelvin(F↔S)排除; 稳压按电容值≥100nF 判; net短接=CSV ELECTRICAL_SHORT_GROUP/NET_TIE 直接导线同电气节点
+  865| 
+  866| ### P2P-到地 (PIN ↔ AGND, 需闭合 ≤2)
+  867|   ACDRV1 ↔ AGND  需闭合: K26
+  868|   ACDRV2 ↔ AGND  需闭合: K27
+  869|   ACDRV3 ↔ AGND  需闭合: K28
+  870|   HG1 ↔ AGND  需闭合: K56
+  871|   HG2 ↔ AGND  需闭合: K55
+  872|   KLV1 ↔ AGND  需闭合: K39
+  873|   KLV2 ↔ AGND  需闭合: K40
+  874|   LG1 ↔ AGND  需闭合: K54
+  875|   LG2 ↔ AGND  需闭合: K53
+  876|   NC ↔ AGND  需闭合: K151
+  877|   VAC1 ↔ AGND  需闭合: K14
+  878|   VAC2 ↔ AGND  需闭合: K15
+  879|   VAC3 ↔ AGND  需闭合: K16
+  880| 
+  881| ### P2P-互短 (PIN ↔ PIN, 需闭合 ≤2)
+  882|   KLV1 ↔ KLV2  需闭合: K38
+  883| 
+  884| ### 上拉 (PIN + 电阻 + 继电器 + 上拉电源)
+  885|   PA0 上拉-源表  R_PA0_PU_S1  需闭合: K103,K128
+  886|   PA1 上拉-源表  R_PA1_PU_S1  需闭合: K108,K128
+  887|   PA6 上拉-源表  R_PA6_PU_S1  需闭合: K113,K128
+  888|   PA7 上拉-源表  R_PA7_PU_S1  需闭合: K122,K128
+  889|   SCL 上拉-固定5V  R_SCL_PU_S1  需闭合: K34
+  890|   SDA 上拉-固定5V  R_SDA_PU_S1  需闭合: K63
+  891|   nQON 上拉-固定5V  R_nQON_PU_S1  需闭合: K65
+  892| 
+  893| ### 下拉 (PIN + 电阻 + 继电器 + 地)
+  894|   PA1 下拉  R_PA1_PD_S1  →AGND_F  需闭合: K149
+  895|   PA4 下拉  R_PA4_PD_S1  →AGND_F  需闭合: K150
+  896|   PC4 下拉  R_PC4_PD_S1  →AGND_F  需闭合: K148
+  897| 
+  898| ### 稳压 (PIN + 电容 ≥100nF + 继电器)
+  899|   AGND_F 稳压  C2_GND_S1  C=100nF  需闭合: 无
+  900|   AGND_F 稳压  C5_GND_S1  C=100nF  需闭合: 无
+  901|   AGND_F 稳压  C7_GND_S1  C=100nF  需闭合: 无
+  902|   PMID 稳压  Cap2_PMID_S1  C=4.7uF  需闭合: K85
+  903|   SVLP 稳压  C4_SVLP_S1(NC)  C=100nF  需闭合: 无
+  904|   SW 稳压  Cap_SW_BST_S1  C=220nF  需闭合: K57
+  905|   SW1 稳压  Cap_SW1_BST1_S1  C=220nF  需闭合: K45
+  906|   SW2 稳压  Cap_SW2_BST2_S1  C=220nF  需闭合: K44
+  907|   U1_AMP_PS 稳压  CL_S1  C=4.7uF  需闭合: 无
+  908|   U1_AMP_PS 稳压  CS_S1  C=100nF  需闭合: 无
+  909|   U2_PS 稳压  C8_PWR_S1  C=100nF  需闭合: 无
+  910|   U34_PS 稳压  C3_PWR_S1  C=100nF  需闭合: 无
+  911|   U34_PS 稳压  C6_PWR_S1  C=100nF  需闭合: 无
+  912|   V1P5_VDRV 稳压  Cap2_V1P5_S1  C=2.2uF  需闭合: K126
+  913|   VAC1 稳压  Cap2_VAC_S1  C=4.7uF  需闭合: K21
+  914|   VBAT 稳压  Cap2_VBAT_S1  C=4.7uF  需闭合: K13
+  915|   VBUS 稳压  Cap2_VBUS_S1  C=4.7uF  需闭合: K5
+  916|   VCC 稳压  Cap2_VCC_S1  C=4.7uF  需闭合: K0
+  917|   VCP 稳压  C2_CS_S1  C=100nF  需闭合: K68
+  918| 
+  919| ### net短接 (直接导线 / net alias / NetTie 同电气节点)
+  920|   [DIRECT_NET_ALIAS] FPVIe0_FH_PC_S1 ↔ FPVIe0_SH_PC_S1  (DIRECT_WIRE, CONFIRMED)
+  921|   [DIRECT_NET_ALIAS] FPVIe0_FL_PC_S1 ↔ FPVIe0_SL_PC_S1  (DIRECT_WIRE, CONFIRMED)
+  922|   注: F/S 短接组 (如 FL↔SL 或 FH↔SH) 表示 Force/Sense 已在板上短接, 通路即使后又分叉 force/sense 也不再是 Kelvin 四线走线
+  923| 
+  924| ## 附注: DUT PIN → 信号net 映射 (R3.8)
+  925|   用户确认的短接PIN (netlist无记录, 共享节点视为同一电气节点):
+
+#### SCH-Connect-Map.txt: lines 924-966 (DUT PIN -> net mapping)
+  924| ## 附注: DUT PIN → 信号net 映射 (R3.8)
+  925|   用户确认的短接PIN (netlist无记录, 共享节点视为同一电气节点):
+  926|     PWM2 ↔ PA6  (合并为节点 PWM2_PA6... 追踪到任一即到达)
+  927|   用户确认的 TP↔PIN 短接 (任务一Step6a, PIN 无同名net, 经测试点建立关系):
+  928|     BST ↔ FPVIe1_FH/FL_PC_S1  (经 TP_BST 测试点)
+  929|     PA0 ↔ INT_F/S_S1  (经 TP_PA0 测试点)
+  930|     PA7 ↔ DMA_F/S_S1  (经 TP_PA7 测试点)
+  931|     PC6 ↔ DMO_F/S_S1  (经 TP_PC6 测试点)
+  932|     PWM1 ↔ PB0_F/S_S1  (经 TP_PWM1 测试点)
+  933|     SCL ↔ S24_P1  (经 TP_SCL 测试点)
+  934|     SDA ↔ S24_P2  (经 TP_SDA 测试点)
+  935|     SW ↔ FPVIe1_FL/SL_PC_S1  (经 TP_SW 测试点)
+  936|     VDRV ↔ V1P5_F/S_S1  (经 TP_VDRV 测试点)
+  937|   无同名net, 经TP/继电器名映射(Step B):
+  938|     PA0_F_S1 → INT_F_S1
+  939|     PA0_S_S1 → INT_S_S1
+  940|     PA7_F_S1 → DMA_F_S1
+  941|     PA7_S_S1 → DMA_S_S1
+  942|     PC6_F_S1 → DMO_F_S1
+  943|     PC6_S_S1 → DMO_S_S1
+  944|     PWM1_F_S1 → PB0_F_S1
+  945|     PWM1_S_S1 → PB0_S_S1
+  946|     PWM2_F_S1 → PA6_F_S1
+  947|     PWM2_S_S1 → PA6_S_S1
+  948|     SCL_F_S1 → S24_P1
+  949|     SDA_F_S1 → S24_P2
+  950|     VCN_F_S1 → VCN_FORCE_S1
+  951|     VCP_F_S1 → VCP_FORCE_S1
+  952|     VDRV_F_S1 → V1P5_F_S1
+  953|     VDRV_S_S1 → V1P5_S_S1
+  954|   短路PIN合并(同一信号net):
+  955|     DMA_PA7 ← DMA_F_S1
+  956|     DMA_PA7 ← DMA_S_S1
+  957|     DMO_PC6 ← DMO_F_S1
+  958|     DMO_PC6 ← DMO_S_S1
+  959|     INT_PA0 ← INT_F_S1
+  960|     INT_PA0 ← INT_S_S1
+  961|     PA6_PWM2 ← PA6_F_S1
+  962|     PA6_PWM2 ← PA6_S_S1
+  963|     PB0_PWM1 ← PB0_F_S1
+  964|     PB0_PWM1 ← PB0_S_S1
+  965|     V1P5_VDRV ← V1P5_F_S1
+  966|     V1P5_VDRV ← V1P5_S_S1
+
+#### SCH-Connect-Map.txt: rows for VBAT / VAC1 / VAC_WL / nQON / AGND / HG1 (any column)
+   31|   CH0 Low -> AGND  [单线-仅SL] ⚠F/S未同时连通,非有效通路  需闭合: K138,K140
+   32|     S1_FPVIe_SL0 -> K88(Relay-NC) -> K138(Relay-ON) -> K140(Relay-ON) -> AGND_S
+   69|   CH0 High -> HG1  [Kelvin]  需闭合: K62,K64
+   70|     S1_FPVIe_FH0 -> K87(Relay-NC) -> K62(Relay-ON) -> K64(Relay-ON) -> HG1_F
+   71|     S1_FPVIe_SH0 -> K88(Relay-NC) -> K62(Relay-ON) -> K64(Relay-ON) -> HG1_S
+  189|   CH0 High -> VAC1  [Kelvin]  需闭合: K70,K87,K88,K90,K91
+  190|     S1_FPVIe_FH0 -> K87(Relay-ON) -> K90(Relay-ON) -> K82(Relay-NC) -> K70(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1_F
+  191|     S1_FPVIe_SH0 -> K88(Relay-ON) -> K91(Relay-ON) -> K82(Relay-NC) -> K70(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1_F
+  192|   CH0 Low -> VAC1  [Kelvin]  需闭合: K17
+  193|     S1_FPVIe_FL0 -> K89(Relay-NC) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1_F
+  194|     S1_FPVIe_SL0 -> K88(Relay-NC) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1_S
+  207|   CH0 Low -> VAC_WL  [Kelvin]  需闭合: K32,K33
+  208|     S1_FPVIe_FL0 -> K89(Relay-NC) -> K32(Relay-ON) -> K33(Relay-ON) -> VAC_WL_F
+  209|     S1_FPVIe_SL0 -> K88(Relay-NC) -> K32(Relay-ON) -> K33(Relay-ON) -> VAC_WL_S
+  210|   CH0 High -> VBAT  [Kelvin]  需闭合: K136,K137,K143,K144,K7
+  211|     S1_FPVIe_FH0 -> K87(Relay-NC) -> K143(Relay-ON) -> K144(Relay-ON) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT_F
+  212|     S1_FPVIe_SH0 -> K88(Relay-NC) -> K137(Relay-ON) -> K136(Relay-ON) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT_S
+  242|   CH0 High -> nQON  [Kelvin]  需闭合: K62
+  243|     S1_FPVIe_FH0 -> K87(Relay-NC) -> K62(Relay-ON) -> K64(Relay-NC) -> nQON_F
+  244|     S1_FPVIe_SH0 -> K88(Relay-NC) -> K62(Relay-ON) -> K64(Relay-NC) -> nQON_S
+  257|   CH1 Low -> AGND  [单线-仅SL] ⚠F/S未同时连通,非有效通路  需闭合: K139,K140
+  258|     S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K140(Relay-ON) -> AGND_S
+  295|   CH1 High -> HG1  [Kelvin]  需闭合: K136,K137,K143,K144,K62,K64
+  296|     S1_FPVIe_FH1 -> K131(Relay-NC) -> K144(Relay-ON) -> K143(Relay-ON) -> K62(Relay-ON) -> K64(Relay-ON) -> HG1_F
+  297|     S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K62(Relay-ON) -> K64(Relay-ON) -> HG1_S
+  406|   CH1 Low -> VAC1  [Kelvin]  需闭合: K138,K139,K145,K146,K17
+  407|     S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1_F
+  408|     S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1_S
+  415|   CH1 Low -> VAC_WL  [Kelvin]  需闭合: K138,K139,K145,K146,K32,K33
+  416|     S1_FPVIe_FL1 -> K133(Relay-NC) -> K146(Relay-ON) -> K145(Relay-ON) -> K32(Relay-ON) -> K33(Relay-ON) -> VAC_WL_F
+  417|     S1_FPVIe_SL1 -> K132(Relay-NC) -> K139(Relay-ON) -> K138(Relay-ON) -> K32(Relay-ON) -> K33(Relay-ON) -> VAC_WL_S
+  418|   CH1 High -> VBAT  [Kelvin]  需闭合: K7
+  419|     S1_FPVIe_FH1 -> K131(Relay-NC) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT_F
+  420|     S1_FPVIe_SH1 -> K132(Relay-NC) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT_S
+  444|   CH1 High -> nQON  [Kelvin]  需闭合: K136,K137,K62,K66
+  445|     S1_FPVIe_FH1 -> K131(Relay-NC) -> K141(Relay-NC) -> K66(Relay-ON) -> nQON_F
+  446|     S1_FPVIe_SH1 -> K132(Relay-NC) -> K136(Relay-ON) -> K137(Relay-ON) -> K62(Relay-ON) -> K64(Relay-NC) -> nQON_S
+  470|     S10_CH0_A -> K141(Relay-ON) -> K62(Relay-ON) -> K64(Relay-ON) -> HG1
+  514|     S10_CH0_A -> K141(Relay-NC) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT
+  557|     S8_QVM_CH0+ -> K137(Relay-ON) -> K62(Relay-ON) -> K64(Relay-ON) -> HG1
+  631|     S8_QVM_CH0- -> K138(Relay-ON) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1
+  637|     S8_QVM_CH0- -> K138(Relay-ON) -> K32(Relay-ON) -> K33(Relay-ON) -> VAC_WL
+  639|     S8_QVM_CH0+ -> K136(Relay-ON) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT
+  655|     S8_QVM_CH0+ -> K137(Relay-ON) -> K62(Relay-ON) -> K64(Relay-NC) -> nQON
+  700|     F: S5_ACM200_FH9 -> K64(Relay-ON) -> HG1_F
+  701|     S: S5_ACM200_SH9 -> K64(Relay-ON) -> HG1_S
+  781|     F: S5_ACM200_FH2 -> K33(Relay-ON) -> VAC_WL_F
+  782|     S: S5_ACM200_SH2 -> K33(Relay-ON) -> VAC_WL_S
+  799|     F: S5_ACM200_FH9 -> K64(Relay-NC) -> nQON_F
+  800|     S: S5_ACM200_SH9 -> K64(Relay-NC) -> nQON_S
+  833|     F: S3_FXVIe_PLUS_FH5 -> K8(Relay-NC) -> VBAT_F
+  834|     S: S3_FXVIe_PLUS_SH5 -> K8(Relay-NC) -> VBAT_S
+  850|     S10_CH0_A -> K66(Relay-ON) -> nQON
+  854|     S8_QVM_CH0- -> K140(Relay-ON) -> AGND

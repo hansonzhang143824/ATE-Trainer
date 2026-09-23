@@ -1,0 +1,564 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "implementation_manifest",
+  "batchId": "dali-20260921-080849-tm106-tm108-tm425",
+  "tm": "TM108",
+  "stage": "IMPLEMENTATION",
+  "role": "ate-implementer",
+  "trialPath": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108",
+  "mode": {
+    "kind": "skeleton",
+    "option": "B",
+    "description": "skeleton verification mode option B: no source edits, pre-seeded implementation accepted as-is (user adjudication)",
+    "sourceEdits": false,
+    "preseedSymbol": "TM108_HSKP_VAC1_PRST",
+    "preseedLocation": "test.cpp lines 8925-8969 (file tail; totalLines=8969)"
+  },
+  "changes": [
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "afterSha256": "8c2fd155839958dae7952653e892e5918a90352ce67601b04a447072235f495d",
+      "beforeSha256": "8c2fd155839958dae7952653e892e5918a90352ce67601b04a447072235f495d",
+      "symbols": [
+        "TM108_HSKP_VAC1_PRST"
+      ],
+      "changeType": "none-preseed-accepted",
+      "changeLocations": [],
+      "backup": null,
+      "backupNote": "no source edits under skeleton option B; no backup file created"
+    }
+  ],
+  "backups": [],
+  "signedInputs": {
+    "methodContractSha256": "bd47c31e6d68c6ea1f0b0eb70f8ebe0fa3819642fd38e9e070e5eac06bc1265b"
+  },
+  "methodContractPath": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108/method/tm108-test-method-contract.json",
+  "methodContract": {
+    "schemaVersion": 1,
+    "artifactKind": "test_method_contract",
+    "batchId": "dali-20260921-080849-tm106-tm108-tm425",
+    "tm": "TM108",
+    "stage": "METHOD",
+    "role": "test-method-expert",
+    "verdict": "deliverable_ready",
+    "methodFamily": "scan",
+    "classification": {
+      "projectType": {
+        "value": "一般测试项目",
+        "flowLocator": "knowledge/standards/test-types.md §项目结构类型判定表(7类,按序命中即停) #7 一般测试项目 —— TM108 非 Trim(isTrim=false)/非 Contact/非 OTP/非 Leakage，ramp 阈值翻转属第 7 行",
+        "indexLocator": "knowledge/references/func_type_index.md #7 一般测试项目 (框架=普通, 测量方法=AWG rampv_capv)",
+        "evidenceLocator": "project/DALI/Output_Global_Material/dft/TM108/dft-meta.json:testCondition (isTrim=false, dynamicPins=[VAC1], powerSequence vac1 10->0V ramp, Check=V(DTEST0))"
+      },
+      "parameterType": {
+        "value": "UVLO (PRST 阈值族: VAC1_PRST 上升/下降阈值+迟滞)",
+        "flowLocator": "knowledge/standards/test-types.md §具体参数类型(11类) #4 UVLO —— UVLO/OVP/PRST/VBAT_LOW/RECHG: 欠压/过压锁定阈值(ramp 电压 -> monitor 翻转)",
+        "indexLocator": "knowledge/references/param_type_index.md #UVLO (PRST 阈值 AWG: rampv_capv 双扫 TRIG_RISING/FALLING + Hys + VAC1/2/3 三通道, golden=L4-Golden-code/UVLO.cpp)",
+        "evidenceLocator": "project/DALI/Output_Global_Material/dft/TM108/dft-meta.json:rawIntent (Name=VAC1_PRST, ExpectValue=rising vth 4.4V hys 0.35V, Notes ramp up/down vac1 from 3~5V 1V/ms / mux A2D_VAC1_PRST to dtest0 / check int pin toggle)"
+      }
+    },
+    "pinResolution": {
+      "logicalSignal": "V(DTEST0)",
+      "physicalDutPin": "nQON",
+      "monitorDutPin": "nQON",
+      "resolutionState": "RESOLVED",
+      "mappingEvidence": {
+        "document": "project/DALI/Input_GlobalMaterial/DALI-special-information.json",
+        "documentSha256": "86d11d43f8602cba604605fc015ba75a2d04a079345a5084f7442053c796d188",
+        "logicalLabel": "DTEST0",
+        "physicalDutPin": "nQON",
+        "authority": "project user ruling (trial input-manifest.json:canonicalInputs.specialPinInformation.document.mappings[0])",
+        "note": "该 TM 无 intentResolution 声明, 映射依据 specialPinInformation 与 Components-Statistic (与签约策略一致)"
+      }
+    },
+    "powerSequence": {
+      "staticSupply": [
+        {
+          "pin": "VBAT",
+          "vsetRaw": "vset[vbat,3,100e-6,0]",
+          "voltageV": 3,
+          "delayS": 0.0001,
+          "source": "DFT Code1",
+          "instrument": "VBAT_PD3_FXVI (FXVIe_PLUS S3 CH5)"
+        }
+      ],
+      "rampSegments": [
+        {
+          "pin": "VAC1",
+          "vsetRaw": "vset[vac1,10,1e-3,0]",
+          "targetV": 10,
+          "source": "DFT Code2 order1 (DFT 记录的扫描端点之一; 方法扫描范围按用户裁决解析为 3~5V)"
+        },
+        {
+          "pin": "VAC1",
+          "vsetRaw": "vset[vac1,0,1e-3,0]",
+          "targetV": 0,
+          "source": "DFT Code2 order2 (DFT 记录的扫描端点之一; 方法扫描范围按用户裁决解析为 3~5V)"
+        }
+      ],
+      "postDelay": {
+        "vsetRaw": "delay[1e-3]",
+        "source": "DFT Code3"
+      },
+      "relaySequence": "SetOn(K13, K65) → delay_ms(3) 强制 3ms 继电器稳定 → 上电 → 寄存器配置 → 双向扫描; 断电见 powerDownPlan (先归零后断继电器)",
+      "notes": "供电时序按 DFT Code1/Code2/Code3 原样记录; 扫描范围裁决只作用于扫描范围选择, 不改变静态供电 vset 的含义; Notes 声明的扫描斜率 1V/ms (1V/ms) 作为 ramp 时序参考"
+    },
+    "methodPhases": [
+      {
+        "phase": "P1_RELAY_SETON",
+        "state": "SETON",
+        "actions": [
+          "cbite.SetOn(K13, K65, -1); // 策略闭合集: K13_VBAT_Cap (VBAT 稳压电容) + K65_nQON_PU (nQON 上拉); 路径继电器 K8/K18/K19/K64 默认 NC 导通不闭",
+          "delay_ms(3); // 强制 3ms 继电器稳定 (PTC implementationRecipe 必选项)"
+        ]
+      },
+      {
+        "phase": "P2_POWER_ON",
+        "state": "POWER_ON",
+        "actions": [
+          "VBAT_PD3_FXVI.Set(FV, 3.0, ...); // vset[vbat,3,100e-6,0] VBAT=3.0V 静态供电, delay 100us",
+          "VAC123_AMUX_ACM.Set(FV, 3.0, ...); // VAC1 预置 3.0V (升扫起点, 选中扫描范围 [3,5]V)"
+        ]
+      },
+      {
+        "phase": "P3_TESTMODE_REGISTER",
+        "state": "TESTMODE",
+        "actions": [
+          "entertestmode(); // 签约 enter test mode",
+          "I2CWriteSameData(DEV_ADDR, 0x56, 0x16);  // Write reg 0x56 = 22 (DMUX_EN=1, DMUX_SEL=22 将 A2D_VAC1_PRST 选通至 DTEST0)",
+          "I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // Write reg 0x57 = 8",
+          "delay_ms(1); // Code3 delay[1e-3]"
+        ]
+      },
+      {
+        "phase": "P4_SWEEP_MEASURE",
+        "state": "MEASURE",
+        "actions": [
+          "升扫: test_method.rampv_capv(VAC123_AMUX_ACM 强压 3.0→5.0V (斜率参考 Notes 1V/ms), NQON_HG1_ACM 捕获 V(DTEST0)/nQON, TRIG_FALLING) — 2026-09-18 用户裁决边沿; 翻转时刻 VAC1 电压记 result FALLING",
+          "降扫: test_method.rampv_capv(VAC123_AMUX_ACM 强压 5.0→3.0V, NQON_HG1_ACM 捕获, TRIG_RISING) — 用户裁决边沿; 翻转时刻 VAC1 电压记 result RISING"
+        ]
+      },
+      {
+        "phase": "P5_RESULT_LOG",
+        "state": "LOG",
+        "actions": [
+          "逐 site: result FALLING → VAC1_PRST_Rise.SetTestResult; result RISING → VAC1_PRST_Fall.SetTestResult (单位 V)",
+          "派生: VAC1_PRST_Hys = VAC1_PRST_Rise − VAC1_PRST_Fall (V), SetTestResult (toggle-awg-rules 三参数规则)"
+        ]
+      },
+      {
+        "phase": "P6_POWER_DOWN",
+        "state": "OFF",
+        "actions": [
+          "VAC1=0: VAC123_AMUX_ACM.Set(FV, 0, ...); // 扫描 PIN 归零",
+          "VBAT=0: VBAT_PD3_FXVI.Set(FV, 0, ...); // 静态供电归零 (zero-before-off)",
+          "delay_ms(1); RELAY_OFF: 断开 K13, K65 (先归零后断继电器)"
+        ]
+      }
+    ],
+    "measurementPlan": {
+      "measurementPin": "V(DTEST0)",
+      "monitorPhysicalDutPin": "nQON",
+      "monitorSourceTable": "NQON_HG1_ACM (ACM200 S5 CH9)",
+      "quantity": "VOLTAGE",
+      "isToggle": true,
+      "resultPublisher": {
+        "kind": "set_test_result",
+        "minimumCount": 2,
+        "resultNames": [
+          "FALLING",
+          "RISING"
+        ]
+      },
+      "scanRangeResolution": {
+        "state": "USER_DECIDED",
+        "scanPin": "VAC1",
+        "predictedValue": {
+          "source": "ExpectValue",
+          "text": "rising vth 4.4V, hys 0.35V",
+          "risingVth": 4.4,
+          "hysReference": 0.35,
+          "unit": "V"
+        },
+        "vsetCandidate": {
+          "fromV": 0,
+          "toV": 10,
+          "evidence": "DFT Code2 vset[vac1,10,1e-3,0] / vset[vac1,0,1e-3,0] 端点 10V 与 0V"
+        },
+        "notesCandidate": {
+          "fromV": 3,
+          "toV": 5,
+          "evidence": "Notes 明确数值范围: ramp up/down vac1 from 3~5V, 1V/ms"
+        },
+        "selectedRange": {
+          "fromV": 3,
+          "toV": 5,
+          "authority": "notes"
+        },
+        "selectionReason": "预测值 4.4V 同时落在 vset 端点范围 [0,10] 与 Notes 范围 [3,5] 内 (两方都包含); 比较区间中点与预测值距离: vset 中点 5.0V 距 4.4V 为 0.6V, Notes 中点 4.0V 距 4.4V 为 0.4V; Notes 中点更近, 按用户裁决选 Notes 明确范围 [3,5]V。",
+        "risingResult": "FALLING",
+        "fallingResult": "RISING",
+        "triggerMapping": "2026-09-18 用户全局裁决 (knowledge/standards/toggle-awg-rules.md): 升扫 TRIG_FALLING, 降扫 TRIG_RISING; 相反的旧方法与黄金案例仅作历史参考",
+        "expectValueUsage": "ExpectValue 仅用于扫描范围选择与参考记录, 不构成验收上下限、容差或数值 PASS/FAIL",
+        "dftRecordedEndpointsNote": "DFT Code2 记录的 vset 端点 10V/0V 保持 DFT 原样记录; 方法扫描范围依裁决解析为 Notes 的 [3,5]V"
+      },
+      "sweeps": [
+        {
+          "direction": "RISING",
+          "fromV": 3,
+          "toV": 5,
+          "result": "FALLING",
+          "sweepPin": "VAC1",
+          "trigger": "TRIG_FALLING",
+          "slewRateVsPerMsReference": 1
+        },
+        {
+          "direction": "FALLING",
+          "fromV": 5,
+          "toV": 3,
+          "result": "RISING",
+          "sweepPin": "VAC1",
+          "trigger": "TRIG_RISING",
+          "slewRateVsPerMsReference": 1
+        }
+      ],
+      "calculation": {
+        "capturedQuantity": "监测信号 V(DTEST0)/nQON 按裁决触发边沿翻转瞬间的扫描 PIN VAC1 电压值 (V)",
+        "resultFALLING": "升扫 (VAC1 3→5V, TRIG_FALLING) 捕获的阈值电压 → 日志参数 VAC1_PRST_Rise",
+        "resultRISING": "降扫 (VAC1 5→3V, TRIG_RISING) 捕获的阈值电压 → 日志参数 VAC1_PRST_Fall",
+        "derived": "VAC1_PRST_Hys = VAC1_PRST_Rise − VAC1_PRST_Fall (V)"
+      },
+      "limits": {
+        "acceptanceLimits": "none — scan 家族无数值验收限值; ExpectValue/de-test 仅作参考记录, 不得变成验收上下限、容差或数值 PASS/FAIL (method-expert 扫描范围裁决第 3 条)",
+        "referenceValues": {
+          "expectValue": "rising vth 4.4V, hys 0.35V",
+          "deTest": "r 4.059 / f 3.738 (历史 bench 参考)"
+        }
+      }
+    },
+    "powerDownPlan": {
+      "actions": [
+        "VAC1=0: VAC123_AMUX_ACM.Set(FV, 0, ...); // 扫描 PIN 归零",
+        "VBAT=0: VBAT_PD3_FXVI.Set(FV, 0, ...); // 静态供电归零 (zero-before-off)",
+        "delay_ms(1); RELAY_OFF: 断开 K13, K65 (先归零后断继电器)"
+      ],
+      "safeEndState": "VBAT=0V、VAC1=0V、K13/K65 断开、DUT 掉电、全部源表输出禁能"
+    },
+    "logPlan": {
+      "requiredResults": [
+        "FALLING",
+        "RISING"
+      ],
+      "publisher": "SetTestResult 逐 site (STS 参数)",
+      "logParamMapping": {
+        "FALLING": "VAC1_PRST_Rise",
+        "RISING": "VAC1_PRST_Fall"
+      },
+      "derivedResults": [
+        {
+          "name": "VAC1_PRST_Hys",
+          "formula": "VAC1_PRST_Rise - VAC1_PRST_Fall",
+          "unit": "V"
+        }
+      ],
+      "unit": "V"
+    },
+    "goldenApplicability": {
+      "golden": "knowledge/references/L4-Golden-code/UVLO.cpp (PRST_TEST, VAC1/2/3 PRST 阈值历史案例)",
+      "applicable": [
+        "两段式 rampv_capv 升/降扫 + 触发捕获结构",
+        "Rise/Fall/Hys 三参数与 SetTestResult 逐 site 记录模式",
+        "3ms 继电器稳定延时与先归零后断继电器 (zero-before-off) 断电模式"
+      ],
+      "superseded": [
+        "触发边沿: 黄金案例升扫 TRIG_RISING/降扫 TRIG_FALLING 与 2026-09-18 用户全局裁决 (升扫 TRIG_FALLING/降扫 TRIG_RISING) 相反 — 按裁决执行, 黄金案例边沿仅作历史参考",
+        "资源与寄存器: 黄金案例 VAC123_VBATD_ACM/NTC2_FOVI 与 DEV_ADDRESS 0x13/0x55/0x56/0x58 写序列属旧芯片映射 — 以本 TM 签约策略资源 (VBAT_PD3_FXVI/VAC123_AMUX_ACM/NQON_HG1_ACM) 与签约寄存器配置 (0x56=0x16, 0x57=0x08) 为准"
+      ]
+    },
+    "resourceBoundary": {
+      "sourceContract": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108/strategy/tm108-resource-config-contract.json",
+      "allocations": [
+        {
+          "dutPin": "VBAT",
+          "role": "static_supply",
+          "selectionState": "SELECTED",
+          "sourceTable": "VBAT_PD3_FXVI",
+          "instrumentCategory": "FXVIe_PLUS",
+          "ports": [
+            "S3_FXVIe_PLUS_FH5",
+            "S3_FXVIe_PLUS_SH5"
+          ],
+          "selectedPath": "S3_FXVIe_PLUS_FH5 -[K8_PD3_S1(NC) NetK7_BUSH_VBAT_S1_4 -> NetCap1_VBAT_S1_1]-> VBAT_F_S1 ; S3_FXVIe_PLUS_SH5 -[K8_PD3_S1(NC) NetK7_BUSH_VBAT_S1_5 -> NetK8_PD3_S1_2]-> VBAT_S_S1",
+          "physicalProofs": [
+            {
+              "sourcePort": "S3_FXVIe_PLUS_FH5",
+              "dutPin": "VBAT_F_S1",
+              "requiredOn": [],
+              "locator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S3_FXVIe_PLUS_FH5, dut_pin=VBAT_F_S1)]"
+            },
+            {
+              "sourcePort": "S3_FXVIe_PLUS_SH5",
+              "dutPin": "VBAT_S_S1",
+              "requiredOn": [],
+              "locator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S3_FXVIe_PLUS_SH5, dut_pin=VBAT_S_S1)]"
+            }
+          ],
+          "requiredActuations": [],
+          "functionalRelays": [
+            {
+              "id": "K13",
+              "name": "K13_VBAT_Cap",
+              "state": "ON",
+              "locator": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h:169 (#define K13_VBAT_Cap 13, 亦见 :658 K_VBAT_Cap 13) + knowledge/hardware/relays.md:124 FR-001 总原则 + knowledge/standards/relay-checklist.md:27 + SCH-Connect-Map.json rawText L914 (VBAT 稳压 Cap2_VBAT_S1 C=4.7uF 需闭合: K13) —— DFT Power=VBAT 且单次 vset[vbat,3V] 直供(非扫描/非电流测量)故必闭"
+            }
+          ],
+          "evidenceChainRef": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108/strategy/tm108-resource-config-contract.json#resourceAllocation[dutPin=VBAT] (完整 evidenceChain 以签约策略合同为准)"
+        },
+        {
+          "dutPin": "VAC1",
+          "role": "dynamic_sweep",
+          "selectionState": "SELECTED",
+          "sourceTable": "VAC123_AMUX_ACM",
+          "instrumentCategory": "ACM200",
+          "ports": [
+            "S5_ACM200_FH0",
+            "S5_ACM200_SH0"
+          ],
+          "selectedPath": "S5_ACM200_FH0 -[K18_VAC3_S1(NC) VAC_FORCE_S1 -> NetK18_VAC3_S1_2; K19_VAC2_S1(NC) NetK18_VAC3_S1_2 -> NetCap1_VAC1_S1_1]-> VAC1_F_S1 ; S5_ACM200_SH0 -[K18_VAC3_S1(NC) VAC_SENSE_S1 -> NetK18_VAC3_S1_7; K19_VAC2_S1(NC) NetK18_VAC3_S1_7 -> NetK19_VAC2_S1_7]-> VAC1_S_S1",
+          "physicalProofs": [
+            {
+              "sourcePort": "S5_ACM200_FH0",
+              "dutPin": "VAC1_F_S1",
+              "requiredOn": [],
+              "locator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S5_ACM200_FH0, dut_pin=VAC1_F_S1)]"
+            },
+            {
+              "sourcePort": "S5_ACM200_SH0",
+              "dutPin": "VAC1_S_S1",
+              "requiredOn": [],
+              "locator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S5_ACM200_SH0, dut_pin=VAC1_S_S1)]"
+            }
+          ],
+          "requiredActuations": [],
+          "functionalRelays": [],
+          "evidenceChainRef": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108/strategy/tm108-resource-config-contract.json#resourceAllocation[dutPin=VAC1] (完整 evidenceChain 以签约策略合同为准)"
+        },
+        {
+          "dutPin": "nQON",
+          "role": "monitor",
+          "selectionState": "SELECTED",
+          "sourceTable": "NQON_HG1_ACM",
+          "instrumentCategory": "ACM200",
+          "ports": [
+            "S5_ACM200_FH9",
+            "S5_ACM200_SH9"
+          ],
+          "selectedPath": "S5_ACM200_FH9 -[K64_HG1_S1(NC) NetK62_BUS_FH_QON_S1_2 -> NetK64_HG1_S1_7]-> nQON_F_S1 ; S5_ACM200_SH9 -[K64_HG1_S1(NC) NetK62_BUS_SH_QON_S1_2 -> NetK64_HG1_S1_2]-> nQON_S_S1",
+          "physicalProofs": [
+            {
+              "sourcePort": "S5_ACM200_FH9",
+              "dutPin": "nQON_F_S1",
+              "requiredOn": [],
+              "locator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S5_ACM200_FH9, dut_pin=nQON_F_S1)]"
+            },
+            {
+              "sourcePort": "S5_ACM200_SH9",
+              "dutPin": "nQON_S_S1",
+              "requiredOn": [],
+              "locator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S5_ACM200_SH9, dut_pin=nQON_S_S1)]"
+            }
+          ],
+          "requiredActuations": [],
+          "functionalRelays": [
+            {
+              "id": "K65",
+              "name": "K65_nQON_PU",
+              "state": "ON",
+              "locator": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h:229 (#define K65_nQON_PU 65, 亦见 :685 K_nQON_PU 65) + knowledge/hardware/relays.md:150 (DALI 实例 K65_nQON_PU) 与 :145 (观测开漏输出必须闭合) + SCH-Connect-Map.json rawText L891 (nQON 上拉-固定5V R_nQON_PU_S1 需闭合: K65) —— DFT 经 nQON 观测开漏 INT 翻转，上拉必闭"
+            }
+          ],
+          "evidenceChainRef": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108/strategy/tm108-resource-config-contract.json#resourceAllocation[dutPin=nQON] (完整 evidenceChain 以签约策略合同为准)"
+        }
+      ],
+      "relayGroups": [
+        {
+          "groupId": "TM108-G1-VBAT",
+          "endpointId": "VBAT",
+          "stage": "SETON",
+          "setOnRelayIds": [
+            "K13"
+          ],
+          "purpose": "VBAT 3.0V 静态供电: FXVIe_PLUS CH5 默认导通 Kelvin 通路 + K13 稳压电容(FR-001)"
+        },
+        {
+          "groupId": "TM108-G2-VAC1",
+          "endpointId": "VAC1",
+          "stage": "SETON",
+          "setOnRelayIds": [],
+          "purpose": "VAC1 10->0V ramp 经 ACM200 CH0 默认导通 Kelvin 通路, 无需闭合通路继电器"
+        },
+        {
+          "groupId": "TM108-G3-nQON",
+          "endpointId": "nQON",
+          "stage": "SETON",
+          "setOnRelayIds": [
+            "K65"
+          ],
+          "purpose": "nQON 上拉 5V 使能开漏 INT 翻转观测(K65_nQON_PU)"
+        }
+      ],
+      "registerConfiguration": {
+        "tm": "TM108",
+        "evidencePath": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108/strategy/register-config-evidence.json",
+        "evidenceSha256": "2a839effffc96d21ac3d054ee79ef359bca3b40a318e937dd70ec084e24d598a",
+        "sourcePath": "project/DALI/reg_config/tm108.sv",
+        "sourceSha256": "4d0ea5c30fe5369e98a6d81215bbfb5b5f41bf44ea1c5dbc8df94af75bb92dc1",
+        "fieldIntent": [
+          {
+            "field": "DMUX_EN",
+            "value": 1
+          },
+          {
+            "field": "DMUX_SEL",
+            "value": 22
+          }
+        ],
+        "orderedWrites": [
+          {
+            "sourceLine": 14,
+            "sourceText": "I2CWriteSameData(DEV_ADDR, 0x56, 0x16);  // Write reg 0x56 = 22",
+            "address": "0X56",
+            "value": "0X16"
+          },
+          {
+            "sourceLine": 15,
+            "sourceText": "I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // Write reg 0x57 = 8",
+            "address": "0X57",
+            "value": "0X08"
+          }
+        ]
+      },
+      "conflicts": [],
+      "pathRequiredOnUnion": [],
+      "functionalRelayUnion": [
+        "K13",
+        "K65"
+      ]
+    },
+    "signedInputs": {
+      "strategyContractPath": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108/strategy/tm108-resource-config-contract.json",
+      "strategyContractSha256": "515d10c2efe9bc0611782388c07e421d5fee20ade117e89085ae045533c98e7b",
+      "dftMetaPath": "project/DALI/Output_Global_Material/dft/TM108/dft-meta.json",
+      "dftMetaSha256": "d9ebf5886c23e650d7b5363f72efe69d8dc5869014e3367286f5102f547e9ceb",
+      "dftConditionsPath": "project/DALI/Output_Global_Material/dft/TM108/dft-conditions.yaml",
+      "dftConditionsSha256": "19852fcef05c474f683eba92e46b6ce817ffc830cc1a06ee5114d913cae4461c",
+      "dftWorkbookSha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "registerConfigEvidencePath": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108/strategy/register-config-evidence.json",
+      "registerConfigEvidenceSha256": "2a839effffc96d21ac3d054ee79ef359bca3b40a318e937dd70ec084e24d598a"
+    },
+    "evidence": [
+      {
+        "kind": "strategy",
+        "path": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108/strategy/tm108-resource-config-contract.json",
+        "note": "签约策略合同 sha256=515d10c2efe9bc0611782388c07e421d5fee20ade117e89085ae045533c98e7b"
+      },
+      {
+        "kind": "dft",
+        "path": "project/DALI/Output_Global_Material/dft/TM108/dft-meta.json",
+        "note": "已签 DFT 投影 (testCondition/scanIntent/measurement)"
+      },
+      {
+        "kind": "dft",
+        "path": "project/DALI/Output_Global_Material/dft/TM108/dft-conditions.yaml",
+        "note": "测试条件解释"
+      },
+      {
+        "kind": "register",
+        "path": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108/strategy/register-config-evidence.json",
+        "note": "0X56=0X16, 0X57=0X08 顺序写"
+      },
+      {
+        "kind": "schematic",
+        "path": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json",
+        "note": "status=PASS 通路证明"
+      },
+      {
+        "kind": "standard",
+        "path": "knowledge/standards/toggle-awg-rules.md",
+        "note": "2026-09-18 用户全局触发边沿裁决与三参数规则"
+      },
+      {
+        "kind": "golden",
+        "path": "knowledge/references/L4-Golden-code/UVLO.cpp",
+        "note": "VAC PRST 阈值黄金案例 (触发边沿按裁决覆盖)"
+      },
+      {
+        "kind": "ruling",
+        "path": "team/ptc/INSTRUCTION_EXECUTION_TABLE.md",
+        "note": "用户裁决执行表"
+      }
+    ],
+    "openItems": []
+  },
+  "sourceReadsUsed": [
+    {
+      "path": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108/method/tm108-test-method-contract.json",
+      "purpose": "signed implementation recipe (whole contract embedded below)"
+    },
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "purpose": "pre-seeded TM108_HSKP_VAC1_PRST verification, lines 8850-8969"
+    }
+  ],
+  "preseedCompliance": [
+    "P1: cbite.SetOn(K13_VBAT_Cap, K65_nQON_PU, -1) + delay_ms(3) — test.cpp:8934-8935 (3ms relay-stabilization rule)",
+    "P2: VBAT=3V via VBAT_PD3_FXVI — test.cpp:8937",
+    "P3: entertestmode() + I2CWriteSameData 0x56=0x16 then 0x57=0x08 — test.cpp:8941-8943, equals registerConfiguration.orderedWrites (sourceLine 14/15)",
+    "P4: dual rampv_capv, TRIG_FALLING (rising sweep) / TRIG_RISING (falling sweep) per 2026-09-18 user ruling — test.cpp:8946-8952",
+    "P5: per-site SetTestResult for VAC1_PRST_Fall / VAC1_PRST_Rise / VAC1_PRST_Hys — test.cpp:8953-8959",
+    "P6: zero-before-off: VAC123_AMUX_ACM/VBAT_PD3_FXVI/NQON_HG1_ACM zeroed with RELAY_ON, delay_ms(1), then RELAY_OFF — test.cpp:8960-8967"
+  ],
+  "knownDeviations": [
+    {
+      "id": "DEV-1-scan-range",
+      "contractRef": "methodContract.measurementPlan.scanRangeResolution (state=USER_DECIDED, selectedRange [3,5]V, authority=notes)",
+      "preseedEvidence": "test.cpp:8946-8952 ramps 0.0->10.0 and 10.0->0.0 (vsetCandidate endpoints); test.cpp:8925 header comment states 'The signed method resolves the scan to 0->10->0V.'",
+      "acceptance": "accepted-as-is per user adjudication (skeleton option B, no source edits); verify_implementation_batch.py validate_body is the authority"
+    },
+    {
+      "id": "DEV-2-vac1-poweron-preset",
+      "contractRef": "methodContract.methodPhases[P2_POWER_ON]: VAC123_AMUX_ACM.Set(FV, 3.0, ...) preset 3.0V as rising-scan start",
+      "preseedEvidence": "test.cpp:8938-8939 VAC123_AMUX_ACM.Set(FV, 0, ACM200_10V, ACM200_100MA, ACM200_RELAY_ON)",
+      "acceptance": "accepted-as-is per user adjudication (skeleton option B, no source edits); verify_implementation_batch.py validate_body is the authority"
+    },
+    {
+      "id": "DEV-3-rise-fall-param-mapping",
+      "contractRef": "methodContract.logPlan.logParamMapping {FALLING->VAC1_PRST_Rise, RISING->VAC1_PRST_Fall}; measurementPlan.calculation.resultFALLING = rising-sweep capture -> VAC1_PRST_Rise",
+      "preseedEvidence": "test.cpp:8928-8929 + 8956-8957: TRIG_FALLING (rising sweep) output falling_v -> VAC1_PRST_Fall; TRIG_RISING (falling sweep) output rising_v -> VAC1_PRST_Rise (inverse of contract mapping)",
+      "acceptance": "accepted-as-is per user adjudication (skeleton option B, no source edits); verify_implementation_batch.py validate_body is the authority"
+    },
+    {
+      "id": "DEV-4-hys-formula",
+      "contractRef": "methodContract.logPlan.derivedResults[0]: VAC1_PRST_Hys = VAC1_PRST_Rise - VAC1_PRST_Fall (unit V)",
+      "preseedEvidence": "test.cpp:8955 hys_v[site] = (rising_v[site] - falling_v[site]) * 1e3",
+      "acceptance": "accepted-as-is per user adjudication (skeleton option B, no source edits); verify_implementation_batch.py validate_body is the authority"
+    },
+    {
+      "id": "DEV-5-delay-placement",
+      "contractRef": "methodContract.methodPhases[P3_TESTMODE_REGISTER]: delay_ms(1) after register writes (DFT Code3 delay[1e-3])",
+      "preseedEvidence": "test.cpp:8940 delay_ms(1) placed between power-on and entertestmode()",
+      "acceptance": "accepted-as-is per user adjudication (skeleton option B, no source edits); verify_implementation_batch.py validate_body is the authority"
+    },
+    {
+      "id": "DEV-6-header-comments",
+      "contractRef": "PTC source-comment rule: TM107-style function header + PIN=<v>V via <source table> comments, normally generated by scripts/apply_ptc_source_comments.py",
+      "preseedEvidence": "test.cpp:8925 single-line header, inline comments as pre-seeded; comment applier is expected to fail with PermissionError in option B (dispatcher: gate does not require it to succeed)",
+      "acceptance": "accepted-as-is per user adjudication (skeleton option B, no source edits); verify_implementation_batch.py validate_body is the authority"
+    }
+  ],
+  "gateCommands": {
+    "applyComments": "python scripts/apply_ptc_source_comments.py --trial team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108 --source D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+    "verify": "python scripts/verify_implementation_batch.py team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108",
+    "deliverable": "python scripts/write_implementation_deliverable.py team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm108"
+  },
+  "openItems": []
+}

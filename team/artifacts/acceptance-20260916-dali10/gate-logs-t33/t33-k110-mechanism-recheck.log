@@ -1,0 +1,43 @@
+=== 权威端子表 knowledge/hardware/relays.md ===
+  13624 B / 8029ee13690ca2158e48ea002bad69f2d943d76126bb133b4e54b8401934fcdb
+  L29 口诀: 默认 2-3 通、6-7 通；通电 3-4 通、6-5 通
+  L31 注意: 磁保持继电器 —— 标注 NO 的脚默认闭合，NC 脚通电后才闭合（与普通继电器直觉相反）
+
+=== 网表 Dali-SCH.csv 端子级实测 ===
+  CSV 307157 B / 04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a
+  列名: ['SheetPath', 'RecordType', 'RecordKey', 'NetName', 'MemberType', 'MemberName', 'Designator', 'ComponentUniqueID', 'MemberUniqueID', 'ComponentKind', 'LibraryReference', 'ComponentValue', 'ComponentComment', 'PortIOType']
+
+  --- K109 命中行数: 10 ---
+    desig=K109_BUSL_PB0_S1 pin=3        net=FPVIe1_FL_BUS_S1                   value=IM06DJR
+    desig=K109_BUSL_PB0_S1 pin=6        net=FPVIe1_SL_BUS_S1                   value=IM06DJR
+    desig=K109_BUSL_PB0_S1 pin=2        net=NetK109_BUSL_PB0_S1_2              value=IM06DJR
+    desig=         pin=         net=NetK109_BUSL_PB0_S1_4              value=
+    desig=K109_BUSL_PB0_S1 pin=4        net=NetK109_BUSL_PB0_S1_4              value=IM06DJR
+    desig=K110_BST_S1 pin=6        net=NetK109_BUSL_PB0_S1_4              value=IM06DJR
+    desig=         pin=         net=NetK109_BUSL_PB0_S1_5              value=
+    desig=K109_BUSL_PB0_S1 pin=5        net=NetK109_BUSL_PB0_S1_5              value=IM06DJR
+    desig=K110_BST_S1 pin=3        net=NetK109_BUSL_PB0_S1_5              value=IM06DJR
+    desig=K109_BUSL_PB0_S1 pin=7        net=NetK109_BUSL_PB0_S1_7              value=IM06DJR
+
+  --- K110 命中行数: 18 ---
+    desig=K110_BST_S1 pin=6        net=NetK109_BUSL_PB0_S1_4              value=IM06DJR
+    desig=K110_BST_S1 pin=3        net=NetK109_BUSL_PB0_S1_5              value=IM06DJR
+    desig=         pin=         net=NetK110_BST_S1_2                   value=
+    desig=K110_BST_S1 pin=2        net=NetK110_BST_S1_2                   value=IM06DJR
+    desig=R_PB0_S1 pin=2        net=NetK110_BST_S1_2                   value=11K
+    desig=TP_PB0_S_S1 pin=1        net=NetK110_BST_S1_2                   value=TEST POINT-SMALL
+    desig=TP_PWM1_S_S1 pin=1        net=NetK110_BST_S1_2                   value=TEST POINT-SMALL
+    desig=K110_BST_S1 pin=5        net=NetK57_CAP_BST_SW_S1S2_3           value=IM06DJR
+    desig=K110_BST_S1 pin=4        net=NetK76_ACM_BST_S1_4                value=IM06DJR
+    desig=         pin=         net=NetK110_BST_S1_7                   value=
+    desig=K110_BST_S1 pin=7        net=NetK110_BST_S1_7                   value=IM06DJR
+    desig=K147_PB0_OSC_S1 pin=NO       net=NetK110_BST_S1_7                   value=TLP3412
+    desig=R_PB0_S1 pin=1        net=NetK110_BST_S1_7                   value=11K
+    desig=TP_PB0_F_S1 pin=1        net=NetK110_BST_S1_7                   value=TEST POINT-SMALL
+    desig=TP_PWM1_F_S1 pin=1        net=NetK110_BST_S1_7                   value=TEST POINT-SMALL
+
+=== 判读 ===
+  若 K110 的 pin6(COM2) 与 S5_ACM200_FH18 同 net，且 pin5(NC)/pin7(NO) 分别落 BST_F/PB0_F：
+    ⇒ 通电 6-5 → BST_F；默认(复位) 6-7 → PB0_F ⇒ ACM 路线由 K110 单独完成（K110 必须 SetOn）
+  若 K109 的公共端(3/6)落在 FPVIe1_*_BUS_S1 而其在 BST 串中仅"同 net"：
+    ⇒ K109 不属 ACM 脚路线（同 net ≠ 串联），但契约 relaySet/needsClosed 仍字面要求 109

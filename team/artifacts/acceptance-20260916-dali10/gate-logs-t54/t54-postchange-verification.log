@@ -1,0 +1,49 @@
+=== A. JSON 可解析 + schema ===
+  [OK ] build-report.json 可解析                                28909 B
+  [OK ] schema PASS/exit 0                                   PASS D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916
+  [OK ] 可解析 t28-anchors.snapshots.meta.json                  
+  [OK ] 可解析 t28-anchors.json                                 
+  [OK ] 可解析 setup-contract.json                              
+
+=== B. JSONL 账本：逐行解析 + 链式自证 ===
+  [OK ] 账本非空                                                 4 行
+  [OK ] 全部行可解析                                               
+  [OK ] 链式自证 prevLineSha256 正确                               
+  [OK ] 双哈希字段在位                                              
+  [OK ] meta.appendOnly == true                              
+  [OK ] meta.hashPolicy 在位                                   
+
+=== C. 生成器幂等（连跑两次）===
+  [OK ] 连跑两次 size 一致                                         [(28909, 3), (28909, 3)]
+
+=== D. 关键字段在位 ===
+  [OK ] 字段 contract                                          
+  [OK ] 字段 gateSummary                                       
+  [OK ] 字段 controls                                          
+  [OK ] 字段 attributionSplit                                  
+  [OK ] 字段 attributionLimitations                            
+  [OK ] 字段 attributionThreeStates                            
+  [OK ] 字段 exitZeroSemantics                                 
+  [OK ] 字段 emptyPassGuard                                    
+  [OK ] 字段 capabilityLimitations                             
+  [OK ] 字段 gateFailOpenForms                                 
+  [OK ] 字段 withdrawnClaims                                   
+  [OK ] 字段 checkExtraStance                                  
+  [OK ] 字段 provenanceSources                                 
+  [OK ] 字段 builds                                            
+  [OK ] 字段 diagnostics                                       
+  [OK ] contract 顶层无 size/sha256/mtime                       
+  [OK ] contract.baseline 在位                                 
+  [OK ] gateExpectationSet.residualCaveat 在位                 
+  [OK ] emptyPassGuard.status 标【未强制】                         
+  [OK ] bst2sw_supersededCh1VariantRelaySet 在位               
+  [OK ] bst2sw_closedRelayNumbersSuperseded 在位               
+  [OK ] verdict == blocked（未伪造 GREEN）                        blocked
+
+=== E. 两棵树未被写入 ===
+  [OK ] 部署态仍为 15c7d2b8…（未落盘）                                 469714 B
+  [OK ] devel 未被我改（434,629 B）                                434629 B
+
+=== 汇总 ===
+  FAIL 项 = （无）
+  总判定 = PASS

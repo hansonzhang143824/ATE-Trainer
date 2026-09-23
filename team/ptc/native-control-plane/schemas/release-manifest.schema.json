@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dsh-ptc.invalid/schemas/release-manifest-1.schema.json",
+  "title": "DSH native PTC Release Bundle manifest (schemaVersion 1)",
+  "description": "Contract for team/ptc/releases/<releaseId>/release-manifest.json. Byte-level integrity is owned by plugins/dsh-ptc-control-plane/lib/release-integrity.js; this schema freezes the document shape only. Rules that JSON Schema cannot express (path sort order, path uniqueness, bundleDigest binding, snapshot coverage, verification consistency, previousReleaseId != releaseId) are enforced by plugins/dsh-ptc-control-plane/test/release-manifest-schema.test.mjs.",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "releaseId",
+    "createdAt",
+    "createdBy",
+    "previousReleaseId",
+    "snapshots",
+    "files",
+    "bundleDigest",
+    "releaseVerification"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": 1,
+      "description": "Frozen manifest contract version; any contract change requires a new schemaVersion."
+    },
+    "releaseId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "description": "Release identity; matches the bundle directory name, e.g. ptc-release-v1."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC 3339 publish timestamp. format is annotation-only in draft 2020-12; the schema test asserts it, and consumers must enable format assertion."
+    },
+    "createdBy": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Publisher identity."
+    },
+    "previousReleaseId": {
+      "type": ["string", "null"],
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "description": "Previous release kept for rollback; null for the first release. Must differ from releaseId (enforced by tests)."
+    },
+    "snapshots": {
+      "type": "object",
+      "description": "The five frozen snapshot categories. The union of all listed paths must equal the files[].path set, with every file declared in exactly one category (enforced by tests).",
+      "required": ["profiles", "orchestration", "contracts", "policies", "verification"],
+      "additionalProperties": false,
+      "properties": {
+        "profiles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "description": "Agent profile snapshots (instructions, boundaries, output contracts, cases).",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^profiles/"
+          }
+        },
+        "orchestration": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "description": "Orchestration snapshots: ptc_stage_registry snapshot, Captain entry and stage advancement rules.",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^orchestration/"
+          }
+        },
+        "contracts": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "description": "Upstream/downstream handoff contracts.",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^contracts/"
+          }
+        },
+        "policies": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "description": "Dispatcher identity and key policy/gate script snapshots.",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^policies/"
+          }
+        },
+        "verification": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "description": "Verification evidence: single-agent evaluation and full pipeline regression results.",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^verification/"
+          }
+        }
+      }
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "Every bundled file except release-manifest.json itself, listed strictly ascending by path (ordering enforced by tests).",
+      "not": {
+        "contains": {
+          "type": "object",
+          "required": ["path"],
+          "properties": {
+            "path": { "const": "release-manifest.json" }
+          }
+        }
+      },
+      "items": {
+        "type": "object",
+        "required": ["path", "size", "sha256"],
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[^\\\\/]",
+            "description": "POSIX-style relative path: no leading slash, no backslash, no '..' segment. Mirrors lib/release-integrity.js path rules.",
+            "not": {
+              "anyOf": [
+                { "pattern": "\\\\" },
+                { "pattern": "(^|/)\\.\\.(/|$)" }
+              ]
+            }
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991,
+            "description": "Exact on-disk byte size, bounded by Number.MAX_SAFE_INTEGER."
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "Lowercase 64-character SHA-256 of the exact on-disk bytes, per team/ptc/HASH_CONTRACT.md."
+          }
+        }
+      }
+    },
+    "bundleDigest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Lowercase 64-character SHA-256 of the canonical file list, computed by lib/release-integrity.js#digestReleaseEntries over files[]. The manifest never hashes itself."
+    },
+    "releaseVerification": {
+      "type": "object",
+      "description": "Release verification conclusion recorded at publish time. result 'passed' requires both sub-conclusions 'passed' (enforced by tests).",
+      "required": ["result", "singleAgentEvaluation", "pipelineRegression"],
+      "additionalProperties": false,
+      "properties": {
+        "result": {
+          "enum": ["passed", "failed"],
+          "description": "Overall release verification conclusion."
+        },
+        "singleAgentEvaluation": {
+          "enum": ["passed", "failed"],
+          "description": "Single-agent evaluation conclusion (plan section 6)."
+        },
+        "pipelineRegression": {
+          "enum": ["passed", "failed"],
+          "description": "Full pipeline regression conclusion (plan section 6)."
+        }
+      }
+    }
+  }
+}

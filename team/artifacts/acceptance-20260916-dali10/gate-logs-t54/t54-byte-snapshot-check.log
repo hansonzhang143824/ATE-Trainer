@@ -1,0 +1,20 @@
+=== run 树中的快照/备份类目录 ===
+  backups                                                    344 文件 /   998148 B
+  backups\t53-20260916-211719                                  3 文件 /   554284 B
+  gate-logs-t25\backups                                        4 文件 /   173375 B
+  gate-logs-t28\backups                                        3 文件 /    48107 B
+  gate-logs-t30\backups                                        1 文件 /    12185 B
+  共 5 个快照类目录
+
+=== 判据：被覆写的版本是否还有**字节副本**可复核？ ===
+  setup-contract.json 旧版(354,106 / rev28 / 含[110,61])      ⇒ 有：backups/t53-20260916-211719/setup-contract.json (354106 B)
+  setup-contract.json 旧版(328,805 / rev24 / fd00a508…)      ⇒ **无字节副本（不可复核）**
+  payload union 版(6034af71…)                               ⇒ **无字节副本（不可复核）**
+  payload 版(39,457 / 2d0984d9…)                            ⇒ **无字节副本（不可复核）**
+  payload 版(42,998 / c03632d9…)                            ⇒ **无字节副本（不可复核）**
+
+=== 全树按"已知旧尺寸"搜索 ===
+  setup-contract rev24           ( 328805 B) ⇒ **0 命中**
+  setup-contract rev28           ( 354106 B) ⇒ ['backups\\t53-20260916-211719\\setup-contract.json']
+  payload c03632d9               (  42998 B) ⇒ **0 命中**
+  payload 2d0984d9               (  39457 B) ⇒ **0 命中**

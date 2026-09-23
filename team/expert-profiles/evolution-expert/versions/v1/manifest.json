@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "profileId": "evolution-expert",
+  "version": "v1",
+  "publishedAt": "2026-09-20T15:26:23.296277Z",
+  "executionClass": "evolution-proposal",
+  "evaluation": {
+    "verdict": "pass",
+    "failed": [],
+    "caseCount": 1,
+    "checks": [
+      {
+        "id": "assets",
+        "ok": true,
+        "detail": "all required assets present"
+      },
+      {
+        "id": "profile_metadata",
+        "ok": true,
+        "detail": "profile.yaml parsed and identified"
+      },
+      {
+        "id": "execution_class_registered",
+        "ok": true,
+        "detail": "executionClass 'evolution-proposal' is registered in the plugin policy registry"
+      },
+      {
+        "id": "execution_class_matches_profile_map",
+        "ok": true,
+        "detail": "plugin maps evolution-expert to 'evolution-proposal'"
+      },
+      {
+        "id": "declared_readable",
+        "ok": true,
+        "detail": "readable: ['team/artifacts', 'team/ptc']"
+      },
+      {
+        "id": "declared_writable",
+        "ok": true,
+        "detail": "writable: ['team/expert-profiles/evolution-expert/proposals', 'ErrorLog/evolution-expert.log']"
+      },
+      {
+        "id": "declared_requiredGates",
+        "ok": true,
+        "detail": "requiredGates: ['scripts/validate_evolution_proposal.py']"
+      },
+      {
+        "id": "readable_has_no_retired_artifact",
+        "ok": true,
+        "detail": "readable declares no retired artifact"
+      },
+      {
+        "id": "output_contract",
+        "ok": true,
+        "detail": "object schema with required=['proposalId', 'evidenceBatch', 'evidenceArtifacts', 'ruleChange', 'rationale', 'status']"
+      },
+      {
+        "id": "case_index_matches_disk",
+        "ok": true,
+        "detail": "index ['TM106'] vs cases/ ['TM106']"
+      },
+      {
+        "id": "case_TM106",
+        "ok": true,
+        "detail": "case is complete and inside the allowed read scope"
+      },
+      {
+        "id": "preset_agreement",
+        "ok": true,
+        "detail": "preset.yml name matches displayName 'PTC Evolution Expert'"
+      },
+      {
+        "id": "boundary_regression",
+        "ok": true,
+        "detail": "plugin boundary suite passed"
+      }
+    ]
+  },
+  "files": {
+    "CHANGELOG.md": "04107c28a8870d70e64912be82925160ed17d511e558acf132a7f5b8e78e2daf",
+    "cases/TM106/expected.json": "5481c0e37f147f8104c1c70987329738d3d7eba63daf150fb9668555c9a6d256",
+    "evaluation/expected-results.json": "d7c7f1668188f48866b7620600ff9a51d15193f4e19fb73de3b943c6024eee10",
+    "instructions.md": "10dda96ca96608ce3b2d4543bdb6ca3623599f7be2fbd95819d7aaf4313055a6",
+    "output-contract.schema.json": "76784db513adeba00d670dd404ba91a8338c2ffe159e9661abc524fb316f4dab",
+    "profile.yaml": "49c9869683003a721e0561bec870fedc81f0a89b29276dc3a32d2cbe4bf8c5da",
+    "status.json": "5988be040700e583aad1ef6157aaeaf3b2bfa4033d48eb5a44f3bc3f38ce973d"
+  },
+  "digest": "84df213e278851adc58c9c48e1c49b2720012f3ee752bef89c35d5ec789e25b8"
+}

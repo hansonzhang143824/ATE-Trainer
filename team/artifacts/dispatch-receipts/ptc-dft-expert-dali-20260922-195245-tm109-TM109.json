@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "dispatchId": "ptc-dft-expert-dali-20260922-195245-tm109-TM109",
+  "runId": "dali-20260922-195245-tm109",
+  "profileId": "ptc-dft-expert",
+  "profileVersion": "v7",
+  "executionClass": "input-dft",
+  "personaSha256": "b6be3a9b425743a5144114a8340328490a8fe462c371dbc2ad48691c13c5e336",
+  "contractSha256": "00b8f2bfcf6a5e4f531be83ee9b48c4a213feee5dededa226cc166544f895a4a",
+  "policySha256": "1e6be182a3fd6507e2e2af71efd475609b8db1c150f57f30e51c68025adc2301",
+  "targetTms": [
+    "TM109"
+  ],
+  "createdAt": "2026-09-22T11:52:45.149Z",
+  "label": "PTC dft expert [TM109]",
+  "digest": "73e17d5655b102dd18acc3b246908b52882dace0414f34cb265c1aff9c527b09",
+  "stage": "INPUT_SYNC",
+  "trialDirs": [
+    "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dali-20260922-195245-tm109\\tm109"
+  ],
+  "registryOwnership": {
+    "ok": true,
+    "stage": "INPUT_SYNC",
+    "registryOwner": "captain",
+    "ownershipNote": "registry owner for INPUT_SYNC is captain; the profile's ownerRole is dispatched as a source role of that stage"
+  },
+  "manifestDigest": "71b3f07886dde4d731e47ed29679a0f979b92c24267f27a7d23225dc5e558d91",
+  "childSessionId": null,
+  "task": "Work only on these requested test items: TM109.\nYour isolated trial directories are: [\"D:\\\\Newtest\\\\DSH\\\\ATE-Coding-Flow\\\\team\\\\artifacts\\\\dali-20260922-195245-tm109\\\\tm109\"].\nThis is batch dali-20260922-195245-tm109, the enforced INPUT_SYNC stage.\nFollow your installed role contract and material boundary. Do not read Captain status, old trial records, or files outside your authorized input/output paths.\nProduce the required source-stage artifacts and report the result to the Captain.\nYour runtime label is: PTC dft expert [TM109]",
+  "dispatchedAt": "2026-09-22T11:52:45.884Z",
+  "preflight": {
+    "unchanged": true,
+    "reports": [
+      {
+        "tm": "TM109",
+        "exitCode": 0,
+        "role": "dft-expert",
+        "gate": "DFT_OUTPUT",
+        "status": "ready",
+        "canonicalInput": {
+          "path": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\project\\DALI\\Input_GlobalMaterial\\Dali_testmode.xlsx",
+          "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+          "sheet": "OVERVIEW"
+        },
+        "requiredOutputs": [
+          "D:\\Newtest\\DSH\\ATE-Coding-Flow\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-meta.json",
+          "D:\\Newtest\\DSH\\ATE-Coding-Flow\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-conditions.yaml",
+          "D:\\Newtest\\DSH\\ATE-Coding-Flow\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-semantic-review.json"
+        ],
+        "missingOrStaleOutputs": []
+      }
+    ]
+  },
+  "executionMode": "UNCHANGED"
+}

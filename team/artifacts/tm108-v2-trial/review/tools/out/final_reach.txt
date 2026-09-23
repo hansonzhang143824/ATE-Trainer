@@ -1,0 +1,858 @@
+=== 1. every "BoardCheck" occurrence in test.cpp ===
+     86| 1. BoardCheck update limit and add check point of Relay K61,K67 status
+    249| bool DO_BoardCheck = true;//true;
+    788| 		//=======Operator 模式 必须要做BoardCheck
+    794| 		////====================BoardCheck Setup Block=================================================
+    795| 		DO_BoardCheck = MessageBoxA(NULL, "   Bypass BoardCheck!  (跳过BoardCheck)\n", "BoardCheck提示对话框", MB_YESNO) == IDNO;
+    796| 		if (DO_BoardCheck)
+   9105| //   sub.cpp (x4) and BoardCheck.cpp, so the count itself is not unique to the golden. The choice is
+  (if these are not a type use, BoardCheck::log is not reachable)
+
+=== 2. LogDataStruct.h (in the include closure) — full listing if small ===
+  bytes=18132 lines=601 sha256=7d84cfd0a8b3e3ed8c5aa120f72387902542da22eed5aebeeedecce93eae4435
+      1| #pragma once
+      2| 
+      3| #include "stdafx.h"	// must be front
+      4| #include "mylib.h"
+      5| 
+      6| class CAccoCsvData{
+      7| public:
+      8| 	vector<string> test_vec;
+      9| 
+     10| 	map<string, string> lolim_map;
+     11| 	map<string, string> hilim_map;
+     12| 	map<string, string> unit_map;
+     13| 
+     14| 	map<DWORD, map<string, string>> val_map;	// map<serial, map<test, value>>
+     15| 	map<DWORD, string> bin_map;					// map<serial, bin>
+     16| 	map<DWORD, string> site_map;				// map<serial, site>
+     17| 	map<DWORD, string> passfg_map;				// map<serial, pass_flag>
+     18| 
+     19| 	map<string, DWORD> site_num_map;			// map<site, number>
+     20| 
+     21| 	Cmylib mylib;
+     22| 
+     23| 	void clear(){
+     24| 		test_vec.clear();
+     25| 		lolim_map.clear();
+     26| 		hilim_map.clear();
+     27| 		unit_map.clear();
+     28| 		val_map.clear();
+     29| 		bin_map.clear();
+     30| 		site_map.clear();
+     31| 		passfg_map.clear();
+     32| 		site_num_map.clear();
+     33| 	}
+     34| 
+     35| 	BOOL get_site_numbers(map<DWORD, map<DWORD, string>>& data_map, map<string, DWORD>& res_map){
+     36| 		if (data_map.empty())
+     37| 			return FALSE;
+     38| 
+     39| 		DWORD row_label = 999;
+     40| 		DWORD serial = 1;
+     41| 
+     42| 		for (DWORD row = 1; row <= data_map.size(); ++row){
+     43| 			if (data_map[row][1] == "SITE_NUM"){
+     44| 				row_label = row;
+     45| 				if (row_label == 1)
+     46| 					return FALSE;
+     47| 			}
+     48| 			if (row > row_label + 4){	// value region
+     49| 				string site(data_map[row][1]);
+     50| 				res_map[site]++;
+     51| 			}
+     52| 		}
+     53| 
+     54| 		return TRUE;
+     55| 	}
+     56| 
+     57| 	// get single site value
+     58| 	BOOL load_data(map<DWORD, map<DWORD, string>>& data_map, string site_num){
+     59| 		if (data_map.empty())
+     60| 			return FALSE;
+     61| 
+     62| 		DWORD row_label = 999;
+     63| 		DWORD serial = 1;
+     64| 
+     65| 		for (DWORD row = 1; row <= data_map.size(); ++row){
+     66| 			if (data_map[row][1] == "SITE_NUM"){
+     67| 				row_label = row;
+     68| 				if (row_label == 1)
+     69| 					return FALSE;
+     70| 				for (DWORD col = 7; col < data_map[row].size(); ++col){
+     71| 					string label(data_map[row][col]);
+     72| 					string unit(data_map[row + 1][col]);
+     73| 					string lolim(data_map[row + 2][col]);
+     74| 					string hilim(data_map[row + 3][col]);
+     75| 					lolim_map[label] = lolim;
+     76| 					hilim_map[label] = hilim;
+     77| 					unit_map[label] = unit;
+     78| 
+     79| 					test_vec.push_back(label);
+     80| 				}
+     81| 			}
+     82| 			if (row > row_label + 4){	// value region
+     83| 				string bin(data_map[row][4]);
+     84| 				string site(data_map[row][1]);
+     85| 				string passfg(data_map[row][3]);
+     86| 
+     87| 				if (site == site_num){
+     88| 					bin_map[serial] = bin;
+     89| 					site_map[serial] = site;
+     90| 					passfg_map[serial] = passfg;
+     91| 
+     92| 					for (DWORD col = 7; col < data_map[row].size(); ++col){
+     93| 						string label(data_map[row_label][col]);
+     94| 						val_map[serial][label] = data_map[row][col];
+     95| 					}
+     96| 					serial++;
+     97| 				}
+     98| 			}
+     99| 		}
+    100| 
+    101| 		return TRUE;
+    102| 	}
+    103| 
+    104| 	BOOL load_data(map<DWORD, map<DWORD, string>>& data_map){
+    105| 		if (data_map.empty())
+    106| 			return FALSE;
+    107| 
+    108| 		DWORD row_label = 999;
+    109| 		DWORD serial = 1;
+    110| 
+    111| 		for (DWORD row = 1; row <= data_map.size(); ++row){
+    112| 			if (data_map[row][1] == "SITE_NUM"){
+    113| 				row_label = row;
+    114| 				if (row_label == 1)
+    115| 					return FALSE;
+    116| 				for (DWORD col = 7; col <= data_map[row].size(); ++col){
+    117| 					string label(data_map[row][col]);
+    118| 					string unit(data_map[row + 1][col]);
+    119| 					string lolim(data_map[row + 2][col]);
+    120| 					string hilim(data_map[row + 3][col]);
+    121| 
+    122| 					if (label != ""){
+    123| 						lolim_map[label] = lolim;
+    124| 						hilim_map[label] = hilim;
+    125| 						unit_map[label] = unit;
+    126| 
+    127| 						test_vec.push_back(label);
+    128| 					}
+    129| 				}
+    130| 			}
+    131| 			if (row > row_label + 4){	// value region
+    132| 				string bin(data_map[row][4]);
+    133| 				string site(data_map[row][1]);
+    134| 				string passfg(data_map[row][3]);
+    135| 
+    136| 				bin_map[serial] = bin;
+    137| 				site_map[serial] = site;
+    138| 				passfg_map[serial] = passfg;
+    139| 				site_num_map[site]++;
+    140| 
+    141| 				for (DWORD col = 7; col <= data_map[row].size(); ++col){
+    142| 					string label(data_map[row_label][col]);
+    143| 					val_map[serial][label] = data_map[row][col];
+    144| 				}
+    145| 				serial++;
+    146| 			}
+    147| 		}
+    148| 
+    149| 		return TRUE;
+    150| 	}
+    151| 
+    152| 	BOOL load_data(string file_name){
+    153| 		CMapMemFile raw_file;
+    154| 		map<DWORD, map<DWORD, string>> raw_map;	// map<row, map<column, value>>
+    155| 
+    156| 		if (!raw_file.create(file_name.c_str())) return FALSE;
+    157| 
+    158| 		raw_file.CsvReader(raw_map);
+    159| 		raw_file.CloseMapFile();
+    160| 
+    161| 		load_data(raw_map);
+    162| 
+    163| 		return TRUE;
+    164| 	}
+    165| 
+    166| 	BOOL load_data_bc(map<DWORD, map<DWORD, string>>& data_map){
+    167| 		if (data_map.empty())
+    168| 			return FALSE;
+    169| 
+    170| 		// load test limit
+    171| 		for (DWORD row = 2; row <= data_map.size(); ++row){
+    172| 			if (data_map[row][1] == "Time")
+    173| 				break;
+    174| 
+    175| 			for (DWORD col = 2; col <= data_map[row].size(); ++col){
+    176| 				if (data_map[row][col] == "Low Limit"){
+    177| 					string label(data_map[row][col + 5]);
+    178| 					string unit(data_map[row][col + 4]);
+    179| 					string lolim(data_map[row][col + 1]);
+    180| 					string hilim(data_map[row][col + 3]);
+    181| 					lolim_map[label] = lolim;
+    182| 					hilim_map[label] = hilim;
+    183| 					unit_map[label] = unit;
+    184| 
+    185| 					test_vec.push_back(label);
+    186| 				}
+    187| 			}
+    188| 		}
+    189| 
+    190| 		DWORD serial = 1;
+    191| 
+    192| 		for (DWORD row = 1; row <= data_map.size(); ++row){
+    193| 			if (data_map[row][1] != "Time"){
+    194| 				DWORD col_label = (DWORD)data_map[row].size();
+    195| 				string label(data_map[row][col_label]);
+    196| 
+    197| 				for (DWORD col = 2; col <= data_map[row].size(); ++col){
+    198| 					if ((data_map[row][col].find("Site") != string::npos) || (data_map[row][col].find("SITE") != string::npos)){
+    199| 						val_map[serial][label] = data_map[row][col + 2];
+    200| 
+    201| 						if (data_map[row][col + 1] == "PASS")
+    202| 							passfg_map[serial] = "TRUE";
+    203| 						else
+    204| 							passfg_map[serial] = "FALSE";
+    205| 
+    206| 						serial++;
+    207| 					}
+    208| 				}
+    209| 			}
+    210| 			//if(data_map[row][1] == "Time")
+    211| 			//	serial++;
+    212| 			//else{
+    213| 			//	DWORD col_label = (DWORD)data_map[row].size() ;
+    214| 			//	string label(data_map[row][col_label]);
+    215| 			//	for(DWORD col = 2; col <= data_map[row].size(); ++col){
+    216| 			//		if(data_map[row][col].find("Site") != string::npos)
+    217| 			//			val_map[serial][label] = data_map[row][col + 2];
+    218| 			//	}
+    219| 			//}
+    220| 		}
+    221| 
+    222| 		return TRUE;
+    223| 	}
+    224| 
+    225| public:
+    226| 	CAccoCsvData(void) {}
+    227| 	~CAccoCsvData(void) {}
+    228| };
+    229| 
+    230| class CTestStatisticStruct
+    231| {
+    232| public:
+    233| 	vector<string> test_vec;	 // vector<test_name>
+    234| 	map<string, string> std_map;  // map<test_name,std>
+    235| 	map<string, string> mean_map; // map<test_name,mean>
+    236| 	map<string, string> min_map;  // map<test_name,min>
+    237| 	map<string, string> max_map;  // map<test_name,max>
+    238| 	map<string, string> cpl_map;  // map<test_name,cpl>
+    239| 	map<string, string> cpu_map;  // map<test_name,cpu>
+    240| 	map<string, string> cpk_map;  // map<test_name,cpk>
+    241| 	map<string, string> grr_map;  // map<test_name,grr>
+    242| 	map<string, string> lolim_map;  // map<test_name,lolim>
+    243| 	map<string, string> hilim_map;  // map<test_name,hilim>
+    244| 	map<string, string> unit_map;  // map<test_name,unit>
+    245| 
+    246| 	map<string, DWORD> count_map;// map<test_name,count>
+    247| 
+    248| 	BOOL load_data(map<DWORD, map<DWORD, string>>& data_map){
+    249| 		for (DWORD row = 2; row <= data_map.size(); ++row){
+    250| 			if (data_map[row][2] == "") break;
+    251| 
+    252| 			std_map[data_map[row][2]] = data_map[row][6];
+    253| 			mean_map[data_map[row][2]] = data_map[row][7];
+    254| 			min_map[data_map[row][2]] = data_map[row][8];
+    255| 			max_map[data_map[row][2]] = data_map[row][9];
+    256| 			cpl_map[data_map[row][2]] = data_map[row][10];
+    257| 			cpu_map[data_map[row][2]] = data_map[row][11];
+    258| 			cpk_map[data_map[row][2]] = data_map[row][12];
+    259| 			grr_map[data_map[row][2]] = data_map[row][13];
+    260| 			lolim_map[data_map[row][2]] = data_map[row][3];
+    261| 			hilim_map[data_map[row][2]] = data_map[row][4];
+    262| 			unit_map[data_map[row][2]] = data_map[row][5];
+    263| 			count_map[data_map[row][2]] = atoi(data_map[row][14].c_str());
+    264| 		}
+    265| 
+    266| 		return TRUE;
+    267| 	}
+    268| 
+    269| 
+    270| 	BOOL export_SCA(map<DWORD, map<DWORD, string>>& sca_map, map<DWORD, map<DWORD, string>>& out_map){
+    271| 		DWORD row_testname = 0;
+    272| 		DWORD col_testname = 0;
+    273| 
+    274| 		for (DWORD row = 1; row <= sca_map.size(); ++row){
+    275| 			for (DWORD col = 1; col <= sca_map[row].size(); ++col){
+    276| 				if (sca_map[row][col] == "Testname"){
+    277| 					row_testname = row;
+    278| 					col_testname = col;
+    279| 					break;
+    280| 				}
+    281| 			}
+    282| 			if ((row_testname != 0) && (col_testname != 0)) break;
+    283| 		}
+    284| 
+    285| 		out_map[1][1] = "Testname";
+    286| 		out_map[1][2] = "(mean - 6sigma)";
+    287| 		out_map[1][3] = "min. reading";
+    288| 		out_map[1][4] = "mean";
+    289| 		out_map[1][5] = "stdev";
+    290| 		out_map[1][6] = "max. reading";
+    291| 		out_map[1][7] = "(mean + 6sigma)";
+    292| 		out_map[1][8] = "LTL";
+    293| 		out_map[1][9] = "UTL";
+    294| 		out_map[1][10] = "Unit ATE";
+    295| 
+    296| 		for (DWORD row = row_testname + 3; row <= sca_map.size(); ++row){
+    297| 			if (sca_map[row][col_testname] != ""){
+    298| 				string testname_str(sca_map[row][col_testname]);
+    299| 
+    300| 				if (std_map.find(testname_str) != std_map.end()){
+    301| 					double mean = atof(mean_map[testname_str].c_str());
+    302| 					double std = atof(std_map[testname_str].c_str());
+    303| 					double neg6sigma = mean - 6 * std;
+    304| 					double pos6sigma = mean + 6 * std;
+    305| 					string str_neg6sigma = mylib.float2str(neg6sigma);
+    306| 					string str_pos6sigma = mylib.float2str(pos6sigma);
+    307| 
+    308| 					out_map[row][1] = testname_str;
+    309| 					out_map[row][2] = str_neg6sigma;
+    310| 					out_map[row][3] = min_map[testname_str];
+    311| 					out_map[row][4] = mean_map[testname_str];
+    312| 					out_map[row][5] = std_map[testname_str];
+    313| 					out_map[row][6] = max_map[testname_str];
+    314| 					out_map[row][7] = str_pos6sigma;
+    315| 					out_map[row][8] = lolim_map[testname_str];
+    316| 					out_map[row][9] = hilim_map[testname_str];
+    317| 					out_map[row][10] = unit_map[testname_str];
+    318| 				}
+    319| 			}
+    320| 		}
+    321| 
+    322| 		return TRUE;
+    323| 	}
+    324| 
+    325| 	BOOL export_CPK(map<DWORD, map<DWORD, string>>& out_map){
+    326| 		out_map[1][1] = "Test Number";
+    327| 		out_map[1][2] = "Test Name";
+    328| 		out_map[1][3] = "Low Limit";
+    329| 		out_map[1][4] = "High Limit";
+    330| 		out_map[1][5] = "Unit";
+    331| 		out_map[1][6] = "Stdev";
+    332| 		out_map[1][7] = "Average";
+    333| 		out_map[1][8] = "Min";
+    334| 		out_map[1][9] = "Max";
+    335| 		out_map[1][10] = "Cpl";
+    336| 		out_map[1][11] = "Cpu";
+    337| 		out_map[1][12] = "Cpk";
+    338| 		out_map[1][13] = "Count";
+    339| 		out_map[1][14] = "Comment";
+    340| 
+    341| 		DWORD row = 2;
+    342| 		DWORD num = 1;
+    343| 		for (vector<string>::iterator it = test_vec.begin(); it != test_vec.end(); ++it){
+    344| 			string testname_str = *it;
+    345| 			if ((std_map.find(*it) != std_map.end()) && (cpk_map[testname_str] != "999999") && (unit_map[testname_str] != "DB")){
+    346| 				out_map[row][1] = mylib.int2str(num++);
+    347| 				out_map[row][2] = testname_str;
+    348| 				out_map[row][3] = lolim_map[testname_str];
+    349| 				out_map[row][4] = hilim_map[testname_str];
+    350| 				out_map[row][5] = unit_map[testname_str];
+    351| 				out_map[row][6] = std_map[testname_str];
+    352| 				out_map[row][7] = mean_map[testname_str];
+    353| 				out_map[row][8] = min_map[testname_str];
+    354| 				out_map[row][9] = max_map[testname_str];
+    355| 				out_map[row][10] = cpl_map[testname_str];
+    356| 				out_map[row][11] = cpu_map[testname_str];
+    357| 				out_map[row][12] = cpk_map[testname_str];
+    358| 				out_map[row][13] = mylib.int2str(count_map[testname_str]);
+    359| 
+    360| 				row++;
+    361| 			}
+    362| 		}
+    363| 
+    364| 		return TRUE;
+    365| 	}
+    366| 
+    367| 	BOOL export_CYCLE(CTestStatisticStruct& cycle2, CTestStatisticStruct& cycle3, map<DWORD, map<DWORD, string>>& out_map){
+    368| 		out_map[1][1] = "Test Name";
+    369| 		out_map[1][2] = "Low Limit";
+    370| 		out_map[1][3] = "High Limit";
+    371| 		out_map[1][4] = "Unit";
+    372| 		out_map[1][5] = "Average";
+    373| 		out_map[1][6] = "";
+    374| 		out_map[1][7] = "";
+    375| 		out_map[1][8] = "";
+    376| 		out_map[1][9] = "";
+    377| 		out_map[1][10] = "6*Stdev";
+    378| 		out_map[1][11] = "";
+    379| 		out_map[1][12] = "";
+    380| 		out_map[1][13] = "";
+    381| 		out_map[1][14] = "";
+    382| 		out_map[1][15] = "Comment";
+    383| 		out_map[2][1] = "";
+    384| 		out_map[2][2] = "";
+    385| 		out_map[2][3] = "";
+    386| 		out_map[2][4] = "";
+    387| 		out_map[2][5] = "1st";
+    388| 		out_map[2][6] = "2nd";
+    389| 		out_map[2][7] = "2nd_delta%";
+    390| 		out_map[2][8] = "3rd";
+    391| 		out_map[2][9] = "3rd_delta%";
+    392| 		out_map[2][10] = "1st";
+    393| 		out_map[2][11] = "2nd";
+    394| 		out_map[2][12] = "2nd_delta%";
+    395| 		out_map[2][13] = "3rd";
+    396| 		out_map[2][14] = "3rd_delta%";
+    397| 		out_map[2][15] = "";
+    398| 
+    399| 		DWORD row = 3;
+    400| 		for (vector<string>::iterator it = test_vec.begin(); it != test_vec.end(); ++it){
+    401| 			string testname_str = *it;
+    402| 			if ((std_map.find(*it) != std_map.end()) && (unit_map[testname_str] != "DB") && (mean_map[testname_str] != "999999") && (cycle2.mean_map[testname_str] != "999999") && (cycle3.mean_map[testname_str] != "999999")){
+    403| 				out_map[row][1] = testname_str;
+    404| 				out_map[row][2] = lolim_map[testname_str];
+    405| 				out_map[row][3] = hilim_map[testname_str];
+    406| 				out_map[row][4] = unit_map[testname_str];
+    407| 
+    408| 				out_map[row][5] = mean_map[testname_str];
+    409| 				out_map[row][6] = cycle2.mean_map[testname_str];
+    410| 				out_map[row][8] = cycle3.mean_map[testname_str];
+    411| 
+    412| 				double lolim = atof(lolim_map[testname_str].c_str());
+    413| 				double hilim = atof(hilim_map[testname_str].c_str());
+    414| 				double mean1 = atof(mean_map[testname_str].c_str());
+    415| 				double mean2 = atof(cycle2.mean_map[testname_str].c_str());
+    416| 				double mean3 = atof(cycle3.mean_map[testname_str].c_str());
+    417| 				double sigma1 = atof(std_map[testname_str].c_str());
+    418| 				double sigma2 = atof(cycle2.std_map[testname_str].c_str());
+    419| 				double sigma3 = atof(cycle3.std_map[testname_str].c_str());
+    420| 
+    421| 				if (hilim != lolim){
+    422| 					out_map[row][7] = mylib.float2str((mean2 - mean1) / (hilim - lolim) * 100);
+    423| 					out_map[row][9] = mylib.float2str((mean3 - mean1) / (hilim - lolim) * 100);
+    424| 					out_map[row][12] = mylib.float2str(6 * (sigma2 - sigma1) / (hilim - lolim) * 100);
+    425| 					out_map[row][14] = mylib.float2str(6 * (sigma3 - sigma1) / (hilim - lolim) * 100);
+    426| 				}
+    427| 				else {
+    428| 					out_map[row][7] = "0";
+    429| 					out_map[row][9] = "0";
+    430| 					out_map[row][12] = "0";
+    431| 					out_map[row][14] = "0";
+    432| 				}
+    433| 
+    434| 				out_map[row][10] = mylib.float2str(6 * sigma1);
+    435| 				out_map[row][11] = mylib.float2str(6 * sigma2);
+    436| 				out_map[row][13] = mylib.float2str(6 * sigma3);
+    437| 
+    438| 				row++;
+    439| 			}
+    440| 		}
+    441| 
+    442| 		return TRUE;
+    443| 	}
+    444| 
+    445| 	CTestStatisticStruct(void) {}
+    446| 	~CTestStatisticStruct(void) {}
+    447| 
+    448| private:
+    449| 	Cmylib mylib;
+    450| 
+    451| };
+    452| 
+    453| class CTcsResultStruct
+    454| {
+    455| public:
+    456| 	vector<string> test_vec;
+    457| 
+    458| 	map<string, double> lolim_map;
+    459| 	map<string, double> hilim_map;
+    460| 	map<string, string> unit_map;
+    461| 
+    462| 	DWORD samples_cnt;
+    463| 	DWORD setups_cnt;
+    464| 
+    465| 	map<string, DWORD> setup_map;							// map<setup, cnt>
+    466| 	map<string, double> mgb_map;								// map<test_name, mgb>
+    467| 	map<string, double> grr_map;								// map<test_name, grr>
+    468| 	map<string, string> str_mgb_map;							// map<test_name, mgb>
+    469| 	map<string, string> str_grr_map;							// map<test_name, grr>
+    470| 	map<string, map<string, double>> std_map;					// map<test_name, map<part id, std>>
+    471| 	map<string, double> avg_std_map;							// map<test_name, avg_std>
+    472| 	//map<string,map<string,map<string,string>>> data_map;	// map<test_name, map<part id, map<setup, value>>>
+    473| 	map<string, map<DWORD, map<string, string>>> data_map;	// map<test_name, map<part id, map<setup, value>>>
+    474| 	map<string, map<string, double>> sigma_bysetup_map;		// map<test_name, map<partid,sigma>>
+    475| 	//map<string,map<DWORD,double>> partid_map;				// map<test_name, map<partid,sigma>>
+    476| 
+    477| 	CTcsResultStruct(void) {}
+    478| 	~CTcsResultStruct(void) {}
+    479| };
+    480| 
+    481| 
+    482| class CSOS_config
+    483| {
+    484| public:
+    485| 	vector<string> test_vec;			 // the test items which need to do sos
+    486| 	map<string, DWORD> scope_map;		 // the distance from samples to current tested sample will do sos
+    487| 	map<string, DWORD> min_count_map;	 // the minimize samples to do sos, else do dpat
+    488| 	map<string, double> nsigma_map;		 // the times of sigma for new sos limit
+    489| 	map<string, double> nosos_lolim_map;  // the low limit for nosos skip
+    490| 	map<string, double> nosos_hilim_map;  // the high limit for nosos skip
+    491| 
+    492| 	CSOS_config(void) {
+    493| 		test_vec.clear();
+    494| 		scope_map.clear();
+    495| 		min_count_map.clear();
+    496| 		nsigma_map.clear();
+    497| 		nosos_lolim_map.clear();
+    498| 		nosos_hilim_map.clear();
+    499| 	}
+    500| 	~CSOS_config(void) {}
+    501| 
+    502| 	void clear(){
+    503| 		test_vec.clear();
+    504| 		scope_map.clear();
+    505| 		min_count_map.clear();
+    506| 		nsigma_map.clear();
+    507| 		nosos_lolim_map.clear();
+    508| 		nosos_hilim_map.clear();
+    509| 	}
+    510| 
+    511| 	BOOL load(map<DWORD, map<DWORD, string>>& config_map){
+    512| 		if (config_map.empty()) return FALSE;
+    513| 
+    514| 		for (map<DWORD, map<DWORD, string>>::iterator it_row = config_map.begin(); it_row != config_map.end(); ++it_row){
+    515| 			if (it_row->first == 1) continue;
+    516| 
+    517| 			string test = it_row->second[1];
+    518| 			string scope = it_row->second[2];
+    519| 			string min_count = it_row->second[3];
+    520| 			string nsigma = it_row->second[4];
+    521| 			string nosos_lolim = it_row->second[5];
+    522| 			string nosos_hilim = it_row->second[6];
+    523| 
+    524| 			if (test == "") break;
+    525| 			else{
+    526| 				if (scope == "") scope_map[test] = 20;
+    527| 				else scope_map[test] = atoi(scope.c_str());
+    528| 
+    529| 				if (min_count == "") min_count_map[test] = 50;
+    530| 				else min_count_map[test] = atoi(min_count.c_str());
+    531| 
+    532| 				if (nsigma == "") nsigma_map[test] = 6;
+    533| 				else nsigma_map[test] = atof(nsigma.c_str());
+    534| 
+    535| 				if (nosos_lolim == "") nosos_lolim_map[test] = 999999;
+    536| 				else nosos_lolim_map[test] = atof(nosos_lolim.c_str());
+    537| 
+    538| 				if (nosos_hilim == "") nosos_hilim_map[test] = 999999;
+    539| 				else nosos_hilim_map[test] = atof(nosos_hilim.c_str());
+    540| 
+    541| 				test_vec.push_back(test);
+    542| 			}
+    543| 		}
+    544| 
+    545| 		return TRUE;
+    546| 	}
+    547| 
+    548| 	BOOL load(string file){
+    549| 		CMapMemFile map_file;
+    550| 		map<DWORD, map<DWORD, string>> data_map;	// map<row, map<column, value>>
+    551| 
+    552| 		if (!map_file.create(file.c_str())) return FALSE;
+    553| 
+    554| 		map_file.CsvReader(data_map);
+    555| 		map_file.CloseMapFile();
+    556| 
+    557| 		load(data_map);
+    558| 
+    559| 		return TRUE;
+    560| 	}
+    561| 
+    562| 
+    563| };
+    564| 
+    565| 
+    566| class CSOS_output
+    567| {
+    568| public:
+    569| 	map<DWORD, map<DWORD, map<string, double>>> all_tested_bin1_map;	 // map<x,map<y,map<test,value>>>
+    570| 	DWORD all_tested_bin1_cnt;
+    571| 
+    572| 	map<DWORD, map<DWORD, map<string, double>>> outlier_data_map;		 // map<x,map<y,map<test,value>>>
+    573| 	map<DWORD, map<DWORD, map<string, string>>> outlier_type_map;		 // map<x,map<y,map<test,sos_type>>>
+    574| 	map<string, vector<double>> distri_vec_map;						 // map<test,vector<distri value>>
+    575| 	map<string, DWORD> distri_cnt;									 // map<test,distri_cnt>
+    576| 	map<string, DWORD> sos_cnt;										 // map<test,sos_cnt>
+    577| 	map<string, DWORD> outlier_cnt;									 // map<test,outlier_cnt>
+    578| 
+    579| 	void clear(){
+    580| 		all_tested_bin1_cnt = 0;
+    581| 		all_tested_bin1_map.clear();
+    582| 		outlier_data_map.clear();
+    583| 		outlier_type_map.clear();
+    584| 		distri_vec_map.clear();
+    585| 		distri_cnt.clear();
+    586| 		sos_cnt.clear();
+    587| 		outlier_cnt.clear();
+    588| 	}
+    589| 
+    590| 	CSOS_output(void) {
+    591| 		all_tested_bin1_cnt = 0;
+    592| 		all_tested_bin1_map.clear();
+    593| 		outlier_data_map.clear();
+    594| 		outlier_type_map.clear();
+    595| 		distri_vec_map.clear();
+    596| 		distri_cnt.clear();
+    597| 		sos_cnt.clear();
+    598| 		outlier_cnt.clear();
+    599| 	}
+    600| 	~CSOS_output(void) {}
+    601| };
+
+=== 3. mylib.h (in the include closure) — members matching log/print/record ===
+  bytes=21989 lines=811 sha256=1d1d85b88e30f56a7ce6f14fc3907106178982dbb014fe1be7d29a6e2d1d41a9
+  hits=2
+    558| 				vector<string> multi_no_vec; // record [0,1]
+    736| 				vector<string> multi_no_vec; // record [0,1]
+
+=== 4. spec.h / sub.h / tempchar.h — SetTestResult or CParam declarations ===
+  spec.h         lines=662   CParam=0 SetTestResult=0 class-decl-['CBIT', 'CFunc', 'CMapMemFile', 'DEVICE', 'INDEX', 'LOG_TRIM', 'PARAMETER', 'SPEC']
+  sub.h          lines=153   CParam=0 SetTestResult=0 class-decl-[]
+  tempchar.h     lines=316   CParam=0 SetTestResult=0 class-decl-['Thermal_stream']
+  StdAfx.h       lines=693   CParam=0 SetTestResult=0 class-decl-[]
+  userres.h      NOT FOUND
+  usertype.h     NOT FOUND
+
+=== 5. any DECLARATION of SetTestResult (with a parameter list and semicolon) ===
+  source\Coutlier.cpp            206| StsGetParam(funcindex, param_str.c_str())->SetTestResult(SITE, 0, 1);
+  source\Coutlier.cpp            208| StsGetParam(funcindex, param_str.c_str())->SetTestResult(SITE, 0, 999999);
+  source\Coutlier.cpp            210| StsGetParam(funcindex, param_str.c_str())->SetTestResult(SITE, 0, 999999);
+  source\Coutlier.cpp            212| StsGetParam(funcindex, param_str.c_str())->SetTestResult(SITE, 0, 999999);
+  source\Coutlier.cpp            221| StsGetParam(funcindex, param_str.c_str())->SetTestResult(SITE, 0, sos_flag[test][SITE]);
+  source\Coutlier.cpp            223| StsGetParam(funcindex, param_str.c_str())->SetTestResult(SITE, 0, test_value[test][SITE]);
+  source\Coutlier.cpp            225| StsGetParam(funcindex, param_str.c_str())->SetTestResult(SITE, 0, sos_config.nosos_lolim_map[test]);
+  source\Coutlier.cpp            227| StsGetParam(funcindex, param_str.c_str())->SetTestResult(SITE, 0, sos_config.nosos_hilim_map[test]);
+  source\Coutlier.cpp            237| StsGetParam(funcindex, param_str.c_str())->SetTestResult(SITE, 0, sos_flag[test][SITE]);
+  source\Coutlier.cpp            239| StsGetParam(funcindex, param_str.c_str())->SetTestResult(SITE, 0, test_value[test][SITE]);
+  source\Coutlier.cpp            241| StsGetParam(funcindex, param_str.c_str())->SetTestResult(SITE, 0, sos_low_limit[test][SITE]);
+  source\Coutlier.cpp            243| StsGetParam(funcindex, param_str.c_str())->SetTestResult(SITE, 0, sos_high_limit[test][SITE]);
+  source\sub.cpp                2154| StsGetParam(funcindex, paraname.get_post_rt_str(funclabel).c_str())->SetTestResult(site, 0, re_post_val[site] * unit_scale);			// log post trimming re
+  source\sub.cpp                2166| StsGetParam(funcindex, paraname.get_post_str(funclabel).c_str())->SetTestResult(site, 0, re_post_val[site] * unit_scale);			// log post trimming resul
+  source\sub.cpp                2179| //		StsGetParam(funcindex, paraname.get_post_rt_str(funclabel).c_str())->SetTestResult(site, 0, re_post_val[site] * unit_scale);			// log post trimmin
+  source\sub.cpp                2183| //		StsGetParam(funcindex, paraname.get_post_str(funclabel).c_str())->SetTestResult(site, 0, re_post_val[site] * unit_scale);			// log post trimming r
+  source\test.cpp               1145| Part_No->SetTestResult(site, 0, Part_Num);
+  source\test.cpp               1146| QC_flag->SetTestResult(site, 0, TEST_FLOW);
+  source\test.cpp               1149| X_Coordinate->SetTestResult(site, 0, 1);
+  source\test.cpp               1153| X_Coordinate->SetTestResult(site, 0, 999);
+  source\test.cpp               1155| Y_Coordinate->SetTestResult(site, 0, 1);
+  source\test.cpp               1156| Wafer_ID->SetTestResult(site, 0, 22);
+  source\test.cpp               1157| VBAT->SetTestResult(site, 0, V_TYP_VBAT);
+  source\test.cpp               1158| VBUS->SetTestResult(site, 0, V_TYP_VBUS);
+  source\test.cpp               1159| //VCC->SetTestResult(site, 0, V_TYP_VCC);
+  source\test.cpp               1421| Iq_Standby->SetTestResult(site, 0, iq_standby[site]);
+  source\test.cpp               1422| Iq_Standby_PLUG->SetTestResult(site, 0, iq_standby_plug[site]);
+  source\test.cpp               1475| Iin_Suspend->SetTestResult(site, 0, iin_suspend[site]);
+  source\test.cpp               1535| Iq_Shipmode->SetTestResult(site, 0, iq_shipmode[site]);
+  source\test.cpp               1588| Iq_Operation->SetTestResult(site, 0, iq_operation[site]);
+  source\test.cpp               1656| VS_PRE->SetTestResult(site, 0, vs_pre[site]);
+  source\test.cpp               1719| LP_VBG->SetTestResult(site, 0, lp_vbg[site]);
+  source\test.cpp               1782| LP_VBG_BF->SetTestResult(site, 0, lp_vbg_bf[site]);
+  source\test.cpp               1850| LP_HR_0P5U->SetTestResult(site, 0, lp_hr_0p5u[site]);
+  source\test.cpp               1909| LP_PTAT_0P5U->SetTestResult(site, 0, lp_ptat_0p5u[site]);
+  source\test.cpp               1984| VSPRE_MAX_CMP_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               1985| VSPRE_MAX_CMP_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               1986| VSPRE_MAX_CMP_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               2064| VBUS_PRST_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               2065| VBUS_PRST_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               2066| VBUS_PRST_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               2143| VBUS_HT_VBAT_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               2144| VBUS_HT_VBAT_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               2145| VBUS_HT_VBAT_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               2304| VAC1_PRST_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               2305| VAC1_PRST_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               2306| VAC1_PRST_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               2382| VAC2_PRST_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               2383| VAC2_PRST_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               2384| VAC2_PRST_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               2460| VAC3_PRST_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               2461| VAC3_PRST_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               2462| VAC3_PRST_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               2539| VBAT_UV_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               2540| VBAT_UV_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               2541| VBAT_UV_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               2620| VBAT_HT_3P1V_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               2621| VBAT_HT_3P1V_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               2622| VBAT_HT_3P1V_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               2694| VCC_UV_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               2695| VCC_UV_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               2696| VCC_UV_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               2761| VCC_VBUS_PATH_ACC->SetTestResult(site, 0, vcc_vbus_path_acc[site]);
+  source\test.cpp               2819| VCC_VAC_PATH_ACC->SetTestResult(site, 0, vcc_vac_path_acc[site]);
+  source\test.cpp               2872| VCC_VBAT_PATH_ACC->SetTestResult(site, 0, vcc_vbat_path_acc[site]);
+  source\test.cpp               2925| VCC_CUR_LIMIT_VBAT_PATH->SetTestResult(site, 0, vcc_cur_limit_vbat_path[site]);
+  source\test.cpp               2983| VCC_CUR_LIMIT_VBUS_PATH->SetTestResult(site, 0, vcc_cur_limit_vbus_path[site]);
+  source\test.cpp               3058| VAC_PATH_ON_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               3059| VAC_PATH_ON_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               3060| VAC_PATH_ON_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               3116| VMCU_VBAT_PATH_ACC1->SetTestResult(site, 0, vmcu_vbat_path_acc1[site]);
+  source\test.cpp               3172| VMCU_VBAT_PATH_ACC2->SetTestResult(site, 0, vmcu_vbat_path_acc2[site]);
+  source\test.cpp               3232| VMCU_VCC_PATH_ACC->SetTestResult(site, 0, vmcu_vcc_path_acc[site]);
+  source\test.cpp               3288| VMCU_CUR_LIMIT_VBAT_PATH->SetTestResult(site, 0, vmcu_cur_limit_vbat_path[site]);
+  source\test.cpp               3346| VMCU_CUR_LIMIT_VCC_PATH->SetTestResult(site, 0, vmcu_cur_limit_vcc_path[site]);
+  source\test.cpp               3427| VBAT_PATH_ON_VMCU_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               3428| VBAT_PATH_ON_VMCU_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               3429| VBAT_PATH_ON_VMCU_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               3515| VBAT_PATH_ON_VCC_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               3516| VBAT_PATH_ON_VCC_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               3517| VBAT_PATH_ON_VCC_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               3595| VCC_VBAT_HT_2P8_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               3596| VCC_VBAT_HT_2P8_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               3597| VCC_VBAT_HT_2P8_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               3677| VCC_VBAT_HT_3P7_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               3678| VCC_VBAT_HT_3P7_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               3679| VCC_VBAT_HT_3P7_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               3741| IRPPO_EA_FB->SetTestResult(site, 0, irppo_ea_fb[site]);
+  source\test.cpp               3807| IHR_P_1UA->SetTestResult(site, 0, ihr_p_1ua[site]);
+  source\test.cpp               4002| IPTAT_1UA->SetTestResult(site, 0, iptat_1ua[site]);
+  source\test.cpp               4126| AVSS_BG->SetTestResult(site, 0, avss_bg[site]);
+  source\test.cpp               4188| TSD_TM->SetTestResult(site, 0, tsd_tm[site]);
+  source\test.cpp               4249| TDIE_WARM_TM->SetTestResult(site, 0, tdie_warm_tm[site]);
+  source\test.cpp               4401| VTH_SCL_IN_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               4402| VTH_SCL_IN_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               4403| VTH_SCL_IN_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               4479| VTH_SDA_IN_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               4480| VTH_SDA_IN_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               4481| VTH_SDA_IN_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               4543| R_INT->SetTestResult(site, 0, r_int[site]);
+  source\test.cpp               4603| R_SDA->SetTestResult(site, 0, r_sda[site]);
+  source\test.cpp               4665| IPD_VBUS->SetTestResult(site, 0, ipd_vbus[site]);
+  source\test.cpp               4730| IPD_VAC3->SetTestResult(site, 0, ipd_vac3_4v[site]);
+  source\test.cpp               4810| VAC1_SNK_DET_VTH_RELMODE_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               4811| VAC1_SNK_DET_VTH_RELMODE_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               4812| VAC1_SNK_DET_VTH_RELMODE_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               4890| VAC2_SNK_DET_VTH_RELMODE_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               4891| VAC2_SNK_DET_VTH_RELMODE_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               4892| VAC2_SNK_DET_VTH_RELMODE_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               4971| VAC1_SNK_DET_VTH_ABSMODE_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               4972| VAC1_SNK_DET_VTH_ABSMODE_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               4973| VAC1_SNK_DET_VTH_ABSMODE_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               5051| VAC2_SNK_DET_VTH_ABSMODE_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               5052| VAC2_SNK_DET_VTH_ABSMODE_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               5053| VAC2_SNK_DET_VTH_ABSMODE_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               5136| PWM1_Vth_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               5137| PWM1_Vth_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               5138| PWM1_Vth_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               5220| PWM2_Vth_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               5221| PWM2_Vth_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               5222| PWM2_Vth_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               5289| PWM1_Current->SetTestResult(site, 0, pwm1_curr[site]);
+  source\test.cpp               5356| PWM2_Current->SetTestResult(site, 0, pwm2_curr[site]);
+  source\test.cpp               5423| DMO_PD_R->SetTestResult(site, 0, dmo_ron[site]);
+  source\test.cpp               5490| DMA_PD_R->SetTestResult(site, 0, dma_ron[site]);
+  source\test.cpp               5709| VBUS_OVP_VTH1_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               5710| VBUS_OVP_VTH1_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               5711| VBUS_OVP_VTH1_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               5794| VBUS_OVP_VTH2_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               5795| VBUS_OVP_VTH2_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               5796| VBUS_OVP_VTH2_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               5881| VBUS_OVP_VTH3_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               5882| VBUS_OVP_VTH3_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               5883| VBUS_OVP_VTH3_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               5962| VBUS_REVI_VTH_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               5963| VBUS_REVI_VTH_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               5964| VBUS_REVI_VTH_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               6044| VBAT_LOW_VTH_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               6045| VBAT_LOW_VTH_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               6046| VBAT_LOW_VTH_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               6125| VBAT_OVP_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               6126| VBAT_OVP_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               6127| VBAT_OVP_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               6208| VBUS_HT_4P8V_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               6209| VBUS_HT_4P8V_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               6210| VBUS_HT_4P8V_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               6290| VTRIKLE_VTH1_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               6291| VTRIKLE_VTH1_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               6292| VTRIKLE_VTH1_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               6371| VTRIKLE_VTH2_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               6372| VTRIKLE_VTH2_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               6373| VTRIKLE_VTH2_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               6452| VRE_CHG_VTH1_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               6453| VRE_CHG_VTH1_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               6454| VRE_CHG_VTH1_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               6534| VRE_CHG_VTH2_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               6535| VRE_CHG_VTH2_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               6536| VRE_CHG_VTH2_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               6600| VAC1_FB->SetTestResult(site, 0, vac1_fb[site]);
+  source\test.cpp               6664| VAC2_FB->SetTestResult(site, 0, vac2_fb[site]);
+  source\test.cpp               6728| VAC3_FB->SetTestResult(site, 0, vac3_fb[site]);
+  source\test.cpp               6794| VBUS_FB->SetTestResult(site, 0, vbus_fb[site]);
+  source\test.cpp               7145| LS_ZCD->SetTestResult(site, 0, ls_zcd[site]);
+  source\test.cpp               7232| HS_ZCD->SetTestResult(site, 0, hs_zcd[site]);
+  source\test.cpp               7320| HS_NEG->SetTestResult(site, 0, hs_neg[site]);
+  source\test.cpp               7389| VC_CLAMP_LOW->SetTestResult(site, 0, v_clamp_low[site]);
+  source\test.cpp               7478| PSM_THREHOLD_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               7479| PSM_THREHOLD_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               7480| PSM_THREHOLD_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               7567| VC_OFFSET_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               7568| VC_OFFSET_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               7569| VC_OFFSET_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               7671| BOOST_HS_OCP->SetTestResult(site, 0, boost_ocp[site]);
+  source\test.cpp               7778| BST_UV_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               7779| BST_UV_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               7780| BST_UV_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               7892| VBAT_LOOP_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               7893| VBAT_LOOP_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               7894| VBAT_LOOP_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               7992| IBUS_ACC_1P0A->SetTestResult(site, 0, acc_1p0a[site]);
+  source\test.cpp               7993| IBUS_ACC_2P0A->SetTestResult(site, 0, acc_2p0a[site]);
+  source\test.cpp               7994| IBUS_ACC_0P5A->SetTestResult(site, 0, acc_0p5a[site]);
+  source\test.cpp               8091| IBUS_ACC_1P0A->SetTestResult(site, 0, acc_1p0a[site]);
+  source\test.cpp               8092| IBUS_ACC_2P0A->SetTestResult(site, 0, acc_2p0a[site]);
+  source\test.cpp               8093| IBUS_ACC_0P5A->SetTestResult(site, 0, acc_0p5a[site]);
+  source\test.cpp               8196| IBUS_SNS_GAIN->SetTestResult(site, 0, gain[site]);
+  source\test.cpp               8516| VTH_COMP_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               8517| VTH_COMP_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               8518| VTH_COMP_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               8596| ZCD_COMP_Rise->SetTestResult(site, 0, rise_result[site]);
+  source\test.cpp               8597| ZCD_COMP_Fall->SetTestResult(site, 0, fall_result[site]);
+  source\test.cpp               8598| ZCD_COMP_Hys->SetTestResult(site, 0, hys[site]);
+  source\test.cpp               8656| IBP_ZTC_1UA->SetTestResult(site, 0, ibp_ztc_1ua[site]);
+  source\test.cpp               8711| VREF_VTH_CMP->SetTestResult(site, 0, vref_vth_cmp[site]);
+  source\test.cpp               8775| VPCHG_SHORT_CURRENT->SetTestResult(site, 0, vpchg_short_current[site]);
+  source\test.cpp               8833| VREF_1P65->SetTestResult(site, 0, vref_1p65[site]);
+  source\test.cpp               8953| BST1_UV_Rise->SetTestResult(site, 0, bst1_rise[site]);
+  source\test.cpp               8954| BST1_UV_Fall->SetTestResult(site, 0, bst1_fall[site]);
+  source\test.cpp               8955| BST1_UV_Hys->SetTestResult(site, 0, bst1_hys[site]);
+  source\test.cpp               8956| BST2_UV_Rise->SetTestResult(site, 0, bst2_rise[site]);
+  source\test.cpp               8957| BST2_UV_Fall->SetTestResult(site, 0, bst2_fall[site]);
+  source\test.cpp               8958| BST2_UV_Hys->SetTestResult(site, 0, bst2_hys[site]);
+  source\test.cpp               9285| HS_RDSON->SetTestResult(site, 0, hs_rdson[site]);
+  source\test.cpp               9434| LS_RDSON->SetTestResult(site, 0, ls_rdson[site]);
+  source\Test_Method.cpp          65| SERIAL	StsGetParam(funcindex, "OS_SHORT")->SetTestResult(SITE, 0, SHORT_FLAG[SITE]);
+  source\Test_Method.cpp          66| SERIAL	StsGetParam(funcindex, "OS_SOME_OPEN")->SetTestResult(SITE, 0, SOME_OPEN_FLAG[SITE]);
+  source\Test_Method.cpp          67| SERIAL	StsGetParam(funcindex, "OS_ALL_OPEN")->SetTestResult(SITE, 0, ALL_OPEN_FLAG[SITE]);
+  source\Test_Method.cpp          68| SERIAL	StsGetParam(funcindex, "OS_ALAM")->SetTestResult(SITE, 0, ALAM_FLAG[SITE]);
+  source\Test_Method.cpp          71| SERIAL	StsGetParam(funcindex, "OS_LEAK")->SetTestResult(SITE, 0, LEAK_FLAG[SITE]);
+  source\treg.cpp               1710| StsGetParam(funcindex, paraname.get_step_str(funclabel, step).c_str())->SetTestResult(TSITE, 0, meas_results[TSITE] * unit_scale);
+  source\treg.cpp               1715| //	StsGetParam(funcindex, trimfullname.c_str())->SetTestResult(TSITE, 0, meas_results[TSITE] * unit_scale);
+  source\treg.cpp               1770| StsGetParam(funcindex, paraname.get_step_str(funclabel, step).c_str())->SetTestResult(TSITE, 0, meas_results[TSITE] * unit_scale);
+  source\treg.cpp               1812| StsGetParam(funcindex, paraname.get_pre_str(funclabel).c_str())->SetTestResult(TSITE, 0, meas_results[TSITE] * unit_scale);		// log pre trimming resul
+  source\treg.cpp               1903| StsGetParam(funcindex, paraname.get_post_rt_str(funclabel).c_str())->SetTestResult(TSITE, 0, meas_results[TSITE] * unit_scale);			// log post trimming
+  source\treg.cpp               1910| StsGetParam(funcindex, paraname.get_post_str(funclabel).c_str())->SetTestResult(TSITE, 0, meas_results[TSITE] * unit_scale);			// log post trimming re
+  source\treg.cpp               1968| //						StsGetParam(funcindex, paraname.get_step_str(funclabel, step).c_str())->SetTestResult(TSITE, 0, meas_results[TSITE] * unit_scale);
+  source\treg.cpp               1972| //					StsGetParam(funcindex, trimfullname.c_str())->SetTestResult(TSITE, 0, meas_results[TSITE] * unit_scale);
+  source\treg.cpp               2032| //				StsGetParam(funcindex, paraname.get_pre_str(funclabel).c_str())->SetTestResult(TSITE, 0, meas_results[TSITE] * unit_scale);		// log pre trimming
+  source\treg.cpp               2039| //			StsGetParam(funcindex, trimfullname.c_str())->SetTestResult(TSITE, 0, meas_results[TSITE] * unit_scale);		// log pre trimming result
+  source\treg.cpp               2060| //				StsGetParam(funcindex, paraname.get_post_str(funclabel).c_str())->SetTestResult(TSITE, 0, meas_results[TSITE] * unit_scale);			// log post trimm
+  source\treg.cpp               2074| //			StsGetParam(funcindex, trimfullname.c_str())->SetTestResult(TSITE, 0, meas_results[TSITE] * unit_scale);			// log post trimming result
+  source\src\treg.cpp             72| LOG_TREG_RESULT->SetTestResult(site, 0, meas_results[site]);
+
+=== 6. tree-wide search for other candidate log APIs ===
+  LogData      [('source\\test.cpp', 91)]
+  msLogData    [('source\\treg.cpp', 2), ('source\\src\\treg.cpp', 1)]
+  DataLog      [('source\\BoardCheck.cpp', 1)]
+  datalog      [('source\\BoardCheck.cpp', 66), ('source\\treg.cpp', 1), ('source\\treg.h', 1), ('source\\src\\treg.cpp', 2), ('source\\src\\treg.h', 1)]
+  test_log     [('source\\BoardCheck.cpp', 1), ('source\\BoardCheck.h', 1)]

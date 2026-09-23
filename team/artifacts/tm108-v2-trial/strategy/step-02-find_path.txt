@@ -1,0 +1,164 @@
+TM108 relay workflow STEP2 FIND-PATH (step 2/8) - owner=test-strategy-architect run=tm108-v2-trial
+flow: knowledge/references/L3-method/relay-design-flow.md:39-75
+closure-set source: proof required_on + full proof relay chain
+
+candidate source ports per terminal, with the FULL proof relay chain
+(state=NC means the contact is default-conducting and is NOT in required_on):
+
+-- VAC1_F_S1
+   S10_CH0_B              type=QTMU       role=-  side=-   req=[17, 142]
+       net=NetCap1_VAC1_S1_1 terminal_stop=True
+       K142_QTMU_BUSB#142(ON) -> K17_BUSL_VAC#17(ON) -> K18_VAC3#18(NC) -> K19_VAC2#19(NC)
+   S1_FPVIe_FH0           type=FPVIe      role=F  side=FH  req=[70, 87, 90]
+       net=NetCap1_VAC1_S1_1 terminal_stop=True
+       K87_KELVIN0#87(ON) -> K90_PC0_Force#90(ON) -> K82_R_CS#82(NC) -> K70_VAC_F#70(ON) -> K18_VAC3#18(NC) -> K19_VAC2#19(NC)
+   S1_FPVIe_FL0           type=FPVIe      role=F  side=FL  req=[17]
+       net=NetCap1_VAC1_S1_1 terminal_stop=True
+       K89_KELVIN0#89(NC) -> K17_BUSL_VAC#17(ON) -> K18_VAC3#18(NC) -> K19_VAC2#19(NC)
+   S1_FPVIe_FL1           type=FPVIe      role=F  side=FL  req=[17, 145, 146]
+       net=NetCap1_VAC1_S1_1 terminal_stop=True
+       K133_KELVIN1#133(NC) -> K146_DCM_BUS1_L#146(ON) -> K145_DCM_BUS0_L#145(ON) -> K17_BUSL_VAC#17(ON) -> K18_VAC3#18(NC) -> K19_VAC2#19(NC)
+   S5_ACM200_FH0          type=ACM200     role=F  side=FH  req=[]
+       net=NetCap1_VAC1_S1_1 terminal_stop=True
+       K18_VAC3#18(NC) -> K19_VAC2#19(NC)
+   REJECTED S1_FPVIe_SH0           net=NetCap1_VAC1_S1_1          {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+   REJECTED S1_FPVIe_SL0           net=NetCap1_VAC1_S1_1          {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+
+-- VAC1_S_S1
+   S1_FPVIe_SL0           type=FPVIe      role=S  side=SL  req=[17]
+       net=NetK19_VAC2_S1_7 terminal_stop=True
+       K88_KELVIN0#88(NC) -> K17_BUSL_VAC#17(ON) -> K18_VAC3#18(NC) -> K19_VAC2#19(NC)
+   S1_FPVIe_SL1           type=FPVIe      role=S  side=SL  req=[17, 138, 139]
+       net=NetK19_VAC2_S1_7 terminal_stop=True
+       K132_KELVIN1#132(NC) -> K139_QVML_BUS1#139(ON) -> K138_QVML_BUS0#138(ON) -> K17_BUSL_VAC#17(ON) -> K18_VAC3#18(NC) -> K19_VAC2#19(NC)
+   S5_ACM200_SH0          type=ACM200     role=S  side=SH  req=[]
+       net=NetK19_VAC2_S1_7 terminal_stop=True
+       K18_VAC3#18(NC) -> K19_VAC2#19(NC)
+   S8_QVM_CH0-            type=QVM        role=S  side=-   req=[17, 138]
+       net=NetK19_VAC2_S1_7 terminal_stop=True
+       K138_QVML_BUS0#138(ON) -> K17_BUSL_VAC#17(ON) -> K18_VAC3#18(NC) -> K19_VAC2#19(NC)
+   REJECTED S1_FPVIe_FL0           net=NetK19_VAC2_S1_7           {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+
+-- VBAT_F_S1
+   S10_CH0_A              type=QTMU       role=-  side=-   req=[7]
+       net=NetCap1_VBAT_S1_1 terminal_stop=True
+       K141_QTMU_BUSA#141(NC) -> K7_BUSH_VBAT#7(ON) -> K8_PD3#8(NC)
+   S1_FPVIe_FH0           type=FPVIe      role=F  side=FH  req=[7, 143, 144]
+       net=NetCap1_VBAT_S1_1 terminal_stop=True
+       K87_KELVIN0#87(NC) -> K143_DCM_BUS0_H#143(ON) -> K144_DCM_BUS1_H#144(ON) -> K7_BUSH_VBAT#7(ON) -> K8_PD3#8(NC)
+   S1_FPVIe_FH1           type=FPVIe      role=F  side=FH  req=[7]
+       net=NetCap1_VBAT_S1_1 terminal_stop=True
+       K131_KELVIN1#131(NC) -> K7_BUSH_VBAT#7(ON) -> K8_PD3#8(NC)
+   S3_FXVIe_PLUS_FH5      type=FXVIe_PLUS role=F  side=FH  req=[]
+       net=NetCap1_VBAT_S1_1 terminal_stop=True
+       K8_PD3#8(NC)
+   S8_QVM_CH0+            type=QVM        role=F  side=+   req=[7, 130, 136]
+       net=NetCap1_VBAT_S1_1 terminal_stop=True
+       K136_QVMH_BUS0#136(ON) -> K132_KELVIN1#132(NC) -> K130_KELVIN1_F#130(ON) -> K131_KELVIN1#131(NC) -> K7_BUSH_VBAT#7(ON) -> K8_PD3#8(NC)
+   REJECTED S1_FPVIe_SH0           net=NetCap1_VBAT_S1_1          {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+   REJECTED S1_FPVIe_SH1           net=NetCap1_VBAT_S1_1          {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+
+-- VBAT_S_S1
+   S10_CH0_A              type=QTMU       role=-  side=-   req=[7, 130]
+       net=NetK8_PD3_S1_2 terminal_stop=True
+       K141_QTMU_BUSA#141(NC) -> K131_KELVIN1#131(NC) -> K130_KELVIN1_F#130(ON) -> K132_KELVIN1#132(NC) -> K7_BUSH_VBAT#7(ON) -> K8_PD3#8(NC)
+   S1_FPVIe_SH0           type=FPVIe      role=S  side=SH  req=[7, 136, 137]
+       net=NetK8_PD3_S1_2 terminal_stop=True
+       K88_KELVIN0#88(NC) -> K137_QVMH_BUS1#137(ON) -> K136_QVMH_BUS0#136(ON) -> K7_BUSH_VBAT#7(ON) -> K8_PD3#8(NC)
+   S1_FPVIe_SH1           type=FPVIe      role=S  side=SH  req=[7]
+       net=NetK8_PD3_S1_2 terminal_stop=True
+       K132_KELVIN1#132(NC) -> K7_BUSH_VBAT#7(ON) -> K8_PD3#8(NC)
+   S3_FXVIe_PLUS_SH5      type=FXVIe_PLUS role=S  side=SH  req=[]
+       net=NetK8_PD3_S1_2 terminal_stop=True
+       K8_PD3#8(NC)
+   REJECTED S1_FPVIe_FH0           net=NetK8_PD3_S1_2             {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+   REJECTED S1_FPVIe_FH1           net=NetK8_PD3_S1_2             {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+   REJECTED S8_QVM_CH0+            net=NetK8_PD3_S1_2             {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+
+-- nQON_F_S1
+   S10_CH0_A              type=QTMU       role=-  side=-   req=[66]
+       net=NetK64_HG1_S1_7 terminal_stop=True
+       K66_TMU_nQON#66(ON)
+   S1_FPVIe_FH0           type=FPVIe      role=F  side=FH  req=[62]
+       net=NetK64_HG1_S1_7 terminal_stop=True
+       K87_KELVIN0#87(NC) -> K62_BUS_FH_QON#62(ON) -> K64_HG1#64(NC)
+   S1_FPVIe_FH1           type=FPVIe      role=F  side=FH  req=[66]
+       net=NetK64_HG1_S1_7 terminal_stop=True
+       K131_KELVIN1#131(NC) -> K141_QTMU_BUSA#141(NC) -> K66_TMU_nQON#66(ON)
+   S24_P0                 type=DCM        role=F  side=-   req=[]
+       net=NetK64_HG1_S1_7 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+   S5_ACM200_FH9          type=ACM200     role=F  side=FH  req=[]
+       net=NetK64_HG1_S1_7 terminal_stop=True
+       K64_HG1#64(NC)
+   S8_QVM_CH0+            type=QVM        role=F  side=+   req=[66, 130, 136]
+       net=NetK64_HG1_S1_7 terminal_stop=True
+       K136_QVMH_BUS0#136(ON) -> K132_KELVIN1#132(NC) -> K130_KELVIN1_F#130(ON) -> K131_KELVIN1#131(NC) -> K141_QTMU_BUSA#141(NC) -> K66_TMU_nQON#66(ON)
+   REJECTED S1_FPVIe_SH0           net=NetK64_HG1_S1_7            {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+   REJECTED S1_FPVIe_SH1           net=NetK64_HG1_S1_7            {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+
+-- nQON_S_S1
+   S10_CH0_A              type=QTMU       role=-  side=-   req=[62, 86, 141]
+       net=NetK64_HG1_S1_2 terminal_stop=True
+       K141_QTMU_BUSA#141(ON) -> K87_KELVIN0#87(NC) -> K86_KELVIN0_F#86(ON) -> K88_KELVIN0#88(NC) -> K62_BUS_SH_QON#62(ON) -> K64_HG1#64(NC)
+   S1_FPVIe_SH0           type=FPVIe      role=S  side=SH  req=[62]
+       net=NetK64_HG1_S1_2 terminal_stop=True
+       K88_KELVIN0#88(NC) -> K62_BUS_SH_QON#62(ON) -> K64_HG1#64(NC)
+   S1_FPVIe_SH1           type=FPVIe      role=S  side=SH  req=[62, 136, 137]
+       net=NetK64_HG1_S1_2 terminal_stop=True
+       K132_KELVIN1#132(NC) -> K136_QVMH_BUS0#136(ON) -> K137_QVMH_BUS1#137(ON) -> K62_BUS_SH_QON#62(ON) -> K64_HG1#64(NC)
+   S5_ACM200_SH9          type=ACM200     role=S  side=SH  req=[]
+       net=NetK64_HG1_S1_2 terminal_stop=True
+       K64_HG1#64(NC)
+   REJECTED S1_FPVIe_FH0           net=NetK64_HG1_S1_2            {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+   REJECTED S1_FPVIe_FH1           net=NetK64_HG1_S1_2            {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+   REJECTED S8_QVM_CH0+            net=NetK64_HG1_S1_2            {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+
+-- AGND_F_S1
+   S3_FXVIe_PLUS_FL(0-3)  type=FXVIe_PLUS role=-  side=-   req=[]
+       net=AGND_F_S1 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+   S3_FXVIe_PLUS_FL(4-7)  type=FXVIe_PLUS role=-  side=-   req=[]
+       net=AGND_F_S1 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+   S5_ACM200_FL(0-11)     type=ACM200     role=-  side=-   req=[]
+       net=AGND_F_S1 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+   S5_ACM200_FL(12-23)    type=ACM200     role=-  side=-   req=[]
+       net=AGND_F_S1 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+
+-- AGND_S_S1
+   S10_CH0_B              type=QTMU       role=-  side=-   req=[130, 139, 140]
+       net=NetK92_AGND_F2S_S1_2 terminal_stop=True
+       K142_QTMU_BUSB#142(NC) -> K133_KELVIN1#133(NC) -> K130_KELVIN1_S#130(ON) -> K132_KELVIN1#132(NC) -> K139_QVML_BUS1#139(ON) -> K140_QVML_AGND#140(ON)
+   S1_FPVIe_SL0           type=FPVIe      role=S  side=SL  req=[138, 140]
+       net=NetK92_AGND_F2S_S1_2 terminal_stop=True
+       K88_KELVIN0#88(NC) -> K138_QVML_BUS0#138(ON) -> K140_QVML_AGND#140(ON)
+   S1_FPVIe_SL1           type=FPVIe      role=S  side=SL  req=[139, 140]
+       net=NetK92_AGND_F2S_S1_2 terminal_stop=True
+       K132_KELVIN1#132(NC) -> K139_QVML_BUS1#139(ON) -> K140_QVML_AGND#140(ON)
+   S3_FXVIe_PLUS_SL(0-3)  type=FXVIe_PLUS role=-  side=-   req=[]
+       net=NetK92_AGND_F2S_S1_2 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+   S3_FXVIe_PLUS_SL(4-7)  type=FXVIe_PLUS role=-  side=-   req=[]
+       net=NetK92_AGND_F2S_S1_2 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+   S5_ACM200_SL(0-5)      type=ACM200     role=-  side=-   req=[]
+       net=NetK92_AGND_F2S_S1_2 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+   S5_ACM200_SL(12-17)    type=ACM200     role=-  side=-   req=[]
+       net=NetK92_AGND_F2S_S1_2 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+   S5_ACM200_SL(18-23)    type=ACM200     role=-  side=-   req=[]
+       net=NetK92_AGND_F2S_S1_2 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+   S5_ACM200_SL(6-11)     type=ACM200     role=-  side=-   req=[]
+       net=NetK92_AGND_F2S_S1_2 terminal_stop=True
+       <EMPTY path: 0 relay steps>
+   S8_QVM_CH0-            type=QVM        role=S  side=-   req=[140]
+       net=NetK92_AGND_F2S_S1_2 terminal_stop=True
+       K140_QVML_AGND#140(ON)
+   REJECTED S1_FPVIe_FL0           net=NetK92_AGND_F2S_S1_2       {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+   REJECTED S1_FPVIe_FL1           net=NetK92_AGND_F2S_S1_2       {'terminal_stop': True, 'role_match': False, 'cbit_complete': True, 'missing_cbit': []}
+

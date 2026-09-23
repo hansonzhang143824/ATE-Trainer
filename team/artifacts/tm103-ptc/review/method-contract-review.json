@@ -1,0 +1,358 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm103-method-contract-review",
+  "artifactKind": "method-contract-rule-review",
+  "taskId": "TM103-PTC-RULE_REVIEW_METHOD",
+  "trial": "tm103-ptc",
+  "tm": "TM103",
+  "projectId": "DALI",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_METHOD",
+  "generatedAt": "2026-09-18T03:10:52.688Z",
+  "verdict": "pass",
+  "verdictStatement": "The signed STRATEGY and METHOD contracts are internally consistent, conformant to the cited R- rules, and faithful to the binding resolved intent decision. No invented limit or tolerance, no re-allocated source, relay or register, the exclusive SetOn closure is respected, AMUX is never driven or measured, and every claimed source and relay is backed by a named project artifact. One non-blocking evidence-accuracy finding is recorded (F-1); it changes no value, limit, allocation or sequence and does not warrant restoring test-method work.",
+  "reviewedRevision": {
+    "manifest": "team/artifacts/tm103-ptc/review/contract-manifest.json",
+    "snapshot": "team/artifacts/tm103-ptc/review/immutable-review-snapshot.json",
+    "copyDir": "team/artifacts/tm103-ptc/review/copy",
+    "files": [
+      {
+        "copy": "01-tm103-resource-config-contract.json",
+        "source": "team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json",
+        "sha256": "92eb967dcc96807010c811e4c4d46ddc205ec2d1dd467dcd8d238bb249c6954a"
+      },
+      {
+        "copy": "02-deliverable-ready.json",
+        "source": "team/artifacts/tm103-ptc/strategy/deliverable-ready.json",
+        "sha256": "8ee5da2a165b17db4762c50c2192cecdc0be30140e3131f579d66091d1115c7b"
+      },
+      {
+        "copy": "03-tm103-test-method-contract.json",
+        "source": "team/artifacts/tm103-ptc/method/tm103-test-method-contract.json",
+        "sha256": "210d6058f99287ee22e89ca7d8accbd597d08b102f5b8cca622b6686f879a79a"
+      },
+      {
+        "copy": "04-deliverable-ready.json",
+        "source": "team/artifacts/tm103-ptc/method/deliverable-ready.json",
+        "sha256": "8b394b4bf22af94eb87a37e2b43b7c8c44a966a036c9cc6bcc301540eea00e17"
+      }
+    ],
+    "note": "Only the byte-exact copies were inspected. The strategy and method handoff sha256 values equal the byte SHA-256 of their contracts (verified through the snapshot gate), and the method contract's bindingInputs[0].sha256 equals the frozen strategy hash."
+  },
+  "gates": [
+    {
+      "id": "REVIEW entry",
+      "command": "python scripts/verify_review_snapshot.py create --implementation-manifest team/artifacts/tm103-ptc/review/contract-manifest.json --copy-dir team/artifacts/tm103-ptc/review/copy --snapshot team/artifacts/tm103-ptc/review/immutable-review-snapshot.json",
+      "exitCode": 0,
+      "result": "PASS: created 4 byte-exact review copies"
+    },
+    {
+      "id": "REVIEW verdict (snapshot)",
+      "command": "python scripts/verify_review_snapshot.py verify --snapshot team/artifacts/tm103-ptc/review/immutable-review-snapshot.json",
+      "exitCode": 0,
+      "result": "PASS: frozen snapshot is current and byte-exact (no revision drift)"
+    },
+    {
+      "id": "REVIEW verdict (evidence scope)",
+      "command": "python scripts/verify_review_evidence_scope.py --evidence team/artifacts/tm103-ptc/review/review-evidence-scope.json",
+      "exitCode": 0,
+      "result": "PASS: bounded review evidence checks are valid"
+    },
+    {
+      "id": "STRATEGY contract gate (independent re-run)",
+      "command": "python scripts/validate_strategy_contract.py <strategy contract> <strategy handoff> --expected-monitor VDM --manifest team/artifacts/tm103-ptc/input-manifest.json",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "id": "PTC output ABI gate (independent re-run)",
+      "command": "python scripts/validate_ptc_output_contracts.py",
+      "exitCode": 0,
+      "result": "PASS"
+    }
+  ],
+  "scope": {
+    "inScope": [
+      "review/copy/01-tm103-resource-config-contract.json",
+      "review/copy/02-deliverable-ready.json",
+      "review/copy/03-tm103-test-method-contract.json",
+      "review/copy/04-deliverable-ready.json",
+      "team/artifacts/tm103-ptc/input-manifest.json canonicalInputs.intentResolution.entry (binding intent decision)",
+      "project and knowledge evidence named by the two contracts, examined only where a check required it"
+    ],
+    "outOfScope": [
+      "trial schematic/dft intermediate artifacts that are not runner-listed (their quoted content was accepted as part of the frozen revision)",
+      "historical trials",
+      "any edit of the strategy contract, the method contract, project code, or project rules"
+    ]
+  },
+  "intentFidelity": {
+    "bindingDecision": {
+      "path": "team/artifacts/tm103-ptc/input-manifest.json",
+      "entry": "canonicalInputs.intentResolution.entry",
+      "status": "resolved",
+      "staticSupplies": "VBAT = 4 V",
+      "sweptPin": "VDM",
+      "monitorDutPin": "VDM",
+      "registerWrites": [
+        "0x57=0x02",
+        "0x5E=0x04"
+      ],
+      "monitorIntent": "I(ATEST0) IBP_HR 0.5 uA current, forced/measured on the VDM pin"
+    },
+    "checks": [
+      {
+        "id": "IF-1",
+        "subject": "endpoint set",
+        "result": "PASS",
+        "detail": "The strategy declares exactly {staticSupplies[].pin} U {sweptPin} U {monitorDutPin} = {VBAT, VDM}, one resourceAllocation row per physical pin, both SELECTED with a nonempty sourceTable, and resourceSummary.sourceTablesUnresolved = false. No third endpoint exists; sweptPin and monitorDutPin coincide on VDM and are correctly collapsed into one row."
+      },
+      {
+        "id": "IF-2",
+        "subject": "no invented limit or tolerance",
+        "result": "PASS",
+        "detail": "measurementPlan.limit.state = UNRESOLVED_NO_PROJECT_AUTHORITY with lowerBound/upperBound/tolerance null, and logPlan.judgement = LOGGED_WITHOUT_METHOD_BOUND. No numeric pass/fail bound appears anywhere in the method contract. metrologyFacts is explicitly forbidden from being used as a bound."
+      },
+      {
+        "id": "IF-3",
+        "subject": "no re-allocated source",
+        "result": "PASS",
+        "detail": "inheritedStrategyBoundary.resourceAllocation repeats RA-1 (VBAT_PD3_FXVI / FXVIe_PLUS / S3_5) and RA-2 (VDM_SDA_ACM / ACM200 / S5_7) verbatim; the method allocates no additional instrument, channel or return path."
+      },
+      {
+        "id": "IF-4",
+        "subject": "no re-allocated relay",
+        "result": "PASS",
+        "detail": "setOnClosure [13] and mustRemainUnactuated [8, 7, 59, 58, 152] equal the signed strategy values. The non-required upstream bus relays [141, 142, 136, 137, 143, 144] remain unactuated."
+      },
+      {
+        "id": "IF-5",
+        "subject": "no re-allocated register",
+        "result": "PASS",
+        "detail": "registerDelta repeats entertestmode(), 0x57=0x02, 0x5E=0x04 exactly (decision.registerWrites[0..1]); registerValuesNotRestated states no value is altered."
+      },
+      {
+        "id": "IF-6",
+        "subject": "exclusive SetOn closure respected",
+        "result": "PASS",
+        "detail": "The method issues exactly ONE SetOn-family command in the whole contract - cbite.SetOn(K13_VBAT_Cap, -1) in PH-02 - and no SetOff and no second SetOn, so exclusivity cannot release a required relay or close a forbidden one. PH-01's exit condition replaces the previous item's exclusive SetOn state with this item's."
+      },
+      {
+        "id": "IF-7",
+        "subject": "AMUX never driven or measured",
+        "result": "PASS",
+        "detail": "AMUX appears exactly twice in the method contract: once inside a quoted rule citation (relay-checklist.md:42) and once as inheritedStrategyBoundary.nonEndpoint declared 'not allocated, not driven, not measured'. No phase resource state, setpoint, ramp, measurement call or log entry references AMUX, and the strategy declines to allocate it."
+      },
+      {
+        "id": "IF-8",
+        "subject": "every claimed source/relay backed by a named project artifact",
+        "result": "PASS",
+        "detail": "Spot-verified by direct reads: Pin_Channel_define.h:12 (_PIN_CHANNEL_DEFINE_VBAT_PD3_FXVI_ = S3_5,...) and :22 (_PIN_CHANNEL_DEFINE_VDM_SDA_ACM_ = S5_7,...); SCH-Connect-Map.txt:832-834 (VBAT via K8 Relay-NC, no closure), :814-816 (PD3 branch requires K8 Relay-ON), :795-797 (VDM via K59 Relay-NC, no closure), :768-770 class SDA branch requires K59, :914 (VBAT 稳压 Cap2_VBAT_S1 requires K13), :801 and :804 (instrument low ends grouped to AGND_F). The trial-schematic union records (K86/K130) that have zero matches in SCH-Connect-Map.txt are explicitly excluded rather than used."
+      },
+      {
+        "id": "IF-9",
+        "subject": "method uncertainty is routed, not converted into fact",
+        "result": "PASS",
+        "detail": "OI-TM103-MTH-01 is routed to 'project test spec / user ruling', OI-TM103-MTH-02 to 'project DFT input owner / user ruling'; both are blocking:false and neither is silently promoted to an asserted value. The range and mode decisions that the method DID make (ACM200_3p6V / ACM200_1UA, FXVIe_PLUS_10V / FXVIe_PLUS_100MA) are derived from the project's own deterministic range rule (scripts/gen_power_sequence.py:36-37, :41-44, :269-277 plus DEFAULT_IRANGE_A at :106), not invented."
+      }
+    ]
+  },
+  "ruleConformance": [
+    {
+      "rule": "R-RNG (range >= 2x value, force <= 90% FS, smallest satisfying range)",
+      "citedBy": [
+        "strategy",
+        "method"
+      ],
+      "verified": "PASS",
+      "evidence": "scripts/gen_power_sequence.py:36-37 and :269-277 read directly. 1.0 V -> ACM200_3p6V (table_max 1.8); 0.5 uA == 500e-9 == table_max of ACM200_1UA, equality boundary takes that range; 4.0 V -> FXVIe_PLUS_10V (table_max 5.0); 0.05 A -> FXVIe_PLUS_100MA (table_max 50e-3). All four selections reproduce exactly."
+    },
+    {
+      "rule": "R-PON-01 (vset -> FV)",
+      "citedBy": [
+        "method"
+      ],
+      "verified": "PASS",
+      "evidence": "scripts/gen_power_sequence.py:264-266 mode_for_cmd returns FV for vset. Both forced resources are FV."
+    },
+    {
+      "rule": "R-PON-04 / R-PON-06 / R-PON-07 / R-PON-08 / R-PON-09",
+      "citedBy": [
+        "method"
+      ],
+      "verified": "PASS",
+      "evidence": "R-PON-09 pin-type correction verified: ATEST_PIN_TOKENS = ('VDM','NTC','AMON','ATEST') at scripts/gen_power_sequence.py:102 and knowledge/standards/rules-registry.md:32 and :53 (VDM named an ATEST-class analog pin -> direct measurement range, no two-stage). VBAT is a power pin whose selected range is the 100MA compliance range, so the twoStageCheck NOT_APPLICABLE ruling is consistent with _is_small_irange (:343-345, suffixes 1UA/10UA/100UA). R-PON-07/R-PON-08 are declared NOT_APPLICABLE with resource proof (no floating pair, no iset)."
+    },
+    {
+      "rule": "R-POFF-02 / R-POFF-03 / R-POFF-04 / R-POFF-05 / R-POFF-06",
+      "citedBy": [
+        "method"
+      ],
+      "verified": "PASS",
+      "evidence": "powerDownPlan V1..V5 matches gen_normal_power_off (:522-534: zero all with RELAY_ON, delay_ms(1), then unified-range RELAY_OFF) and RELAY_OFF_RANGES (:62-66: ACM200 -> 10V/10MA, FXVIe_PLUS -> FXVIe_PLUS_10V/FXVIe_PLUS_10MA). R-POFF-04 (FPVIe last) is correctly NOT_APPLICABLE because no FPVIe source exists. The declared divergence from the generator's list-order zeroing is disclosed and grounded in the enforceable check rule R021 (skills/agents/check-agent.md:137)."
+    },
+    {
+      "rule": "R-SETON / E011 / units.md cbite.SetOn format",
+      "citedBy": [
+        "strategy",
+        "method"
+      ],
+      "verified": "PASS",
+      "evidence": "knowledge/standards/units.md:86-95 (SetOn(..., -1) followed by delay_ms(3)) matches PH-02 exactly. The method issues an explicit SetOn even though no route relay is needed, which is the mandatory statement the rule requires."
+    },
+    {
+      "rule": "Exclusive SetOn semantics",
+      "citedBy": [
+        "strategy",
+        "method"
+      ],
+      "verified": "PASS",
+      "evidence": "knowledge/sources/cbite-qtmue.md:92-94 read directly: SetOn closes only the listed relays and releases all others; two separate calls are the documented failure mode. Both contracts declare oneCall/exclusive and the method emits a single SetOn."
+    },
+    {
+      "rule": "FR-001 / Cap2 rule (relay-checklist.md:25-40)",
+      "citedBy": [
+        "strategy",
+        "method"
+      ],
+      "verified": "PASS",
+      "evidence": "relay-checklist.md:27-38 read directly: a powered PIN requires its Cap closed by default; the exception is per PIN and only for the PIN whose current is measured. Line 38 names TM103 explicitly: 'TM103 measures I(VDM) -> VDM has no Cap, but VBAT is pure supply -> K13_VBAT_Cap must still be closed'. The strategy closes exactly K13 and nothing else, and PH-02 places the closure before the rail is energised."
+    },
+    {
+      "rule": "Anti-short rule (relay-checklist.md:44-50)",
+      "citedBy": [
+        "strategy",
+        "method"
+      ],
+      "verified": "PASS",
+      "evidence": "relay-checklist.md:44-50 read directly: a source path must not connect another DUT PIN and a Share selector may only be closed on the target side. Both share selectors (K8_PD3 on the VBAT/PD3 channel, K59_SDA on the VDM/SDA channel) are kept NOT_ACTUATED, their Relay-NC branches being the target branches (SCH-Connect-Map.txt:832-834 / :795-797)."
+    },
+    {
+      "rule": "R-BST-SW differential constraint",
+      "citedBy": [
+        "method"
+      ],
+      "verified": "PASS",
+      "evidence": "knowledge/standards/rules-registry.md:44 read directly: R-BST-SW is scoped to Current Threshold / ZCD items (TM607-609). TM103's endpoint set is {VBAT, VDM} and neither BST nor SW is an endpoint, a sourceTable or a relayGroup member, so NOT_APPLICABLE_WITH_ENDPOINT_PROOF is correct."
+    },
+    {
+      "rule": "H011 / R034 (entertestmode before register writes) and E025 (LogData unit)",
+      "citedBy": [
+        "method"
+      ],
+      "verified": "PASS",
+      "evidence": "knowledge/standards/error-checklist.md:20-24 read directly. PH-04 orders entertestmode() -> 0x57 -> 0x5E after power-up and before any VDM stimulus, matching project/DALI/reg_config/tm103.sv:12-15. The log unit follows knowledge/standards/units.md:18-39 (MIRET A -> uA x1e6 at the GetMeasResult assignment with the '// A -> uA' comment), matching the DFT Unit column 'uA'."
+    },
+    {
+      "rule": "Test-type classification (test-types.md:60, :70-74, :85)",
+      "citedBy": [
+        "method"
+      ],
+      "verified": "PASS",
+      "evidence": "Read directly: class 7 general test item (FV-MV/FI-MV/FV-MI/FI-MI/AWG); AWG is an addition, not a replacement, and writing AWG without AWG intent is forbidden; :85 is the ATEST static measurement guard (Check holding only V/I(ATESTx), empty Dynamic, no same-pin multi-value vset -> not a toggle). The DFT Dynamic field is empty, so FV-MI and NOT_APPLICABLE-notToggle are correct."
+    },
+    {
+      "rule": "Six-step framework template (framework.md:18-38)",
+      "citedBy": [
+        "method"
+      ],
+      "verified": "PASS",
+      "evidence": "Read directly: Step 1 relay code, Step 2 power on, Step 3 entertestmode + registers, Step 4 measurement, Step 5 power off, Step 6 FOR_EACH_VALID_SITE + SetTestResult. The method's PH-01..PH-08 map onto these steps and keep the single Log write after power-down."
+    },
+    {
+      "rule": "Instrument defaults and metrology facts",
+      "citedBy": [
+        "method"
+      ],
+      "verified": "PASS",
+      "evidence": "knowledge/sources/fxvie.md:137,144 (risingTime default 0.02 ms) and knowledge/sources/acm200.md:148-151 (risingTime default 0.1 ms, unit mS) read directly. hardware-specs.md:16 (ACM200 range set), :46 (ACM200 +/-3.6 V accuracy 0.6 mV + 0.025%Rdg -> ~0.85 mV at 1 V), :47 (1 uA range 8 nA + 0.05%Rdg + 0.5 nA/V), :67 (FXVIe_PLUS +/-10 V 2 mV + 0.025%Rdg -> ~3 mV at 4 V) and :36 (16-bit DAC/ADC) all reproduce the numbers quoted."
+    },
+    {
+      "rule": "Library corroboration",
+      "citedBy": [
+        "method"
+      ],
+      "verified": "PASS",
+      "evidence": "Library-Functions/Test_Method/Test_Method.cpp:95-108 read directly: get_fxvi_v_range(4.0) returns FXVIe_PLUS_10V (4.0 <= 10 branch), independently corroborating the VBAT voltage range."
+    }
+  ],
+  "findings": [
+    {
+      "id": "F-1",
+      "severity": "minor",
+      "category": "evidence-accuracy",
+      "blocking": false,
+      "subject": "The method contract's supporting grep claim for the unresolved limit is not reproducible.",
+      "location": [
+        "review/copy/03-tm103-test-method-contract.json:771 (measurementPlan.limit.whyNotDerived)",
+        "review/copy/03-tm103-test-method-contract.json:1038 (openItems[OI-TM103-MTH-01].evidence[2])"
+      ],
+      "claimAsWritten": "'no located active standard defines a default MI tolerance (grep over knowledge/standards for limit/tolerance/LSL/USL returns 0 matches)' / 'knowledge/standards (grep for limit/tolerance/LSL/USL): 0 matches'",
+      "observed": "The reproduced query returns 2 matches: knowledge/standards/treg.md:124 'spec, // SPEC 对象 (用于获取 limits)' and knowledge/standards/treg.md:164 'check_need_retry(limits, results)'.",
+      "assessment": "The stated count is wrong, but both candidates are Trim-framework SPEC-object handling that CONFIRM the conclusion rather than refute it: limits are obtained from the spec object, and no default MI tolerance is published for a non-trim MI measurement. No bound, tolerance, allocation, sequence or log unit is affected, and the recorded state UNRESOLVED_NO_PROJECT_AUTHORITY remains the correct conclusion. Independently re-verified supporting facts: project/DALI/meta/dali_tm_meta.json contains 0 bound-like keys (limit/lsl/usl/min/max/tol), the DFT row carries ExpectValue 0.5 and Unit uA with no bound columns, and the framework's limit route is the PGS spec object (knowledge/sources/system-functions.md GetMinLimit/GetMaxLimit, treg.md:124).",
+      "recommendation": "Correct the two evidence strings during the normal remediation/implementation edit so they name treg.md:124 and :164 and state that they show limits come from the SPEC object rather than a default MI tolerance. This is a documentation fix inside an already-signed decision; it must NOT restart test-method work and does not change any contract value."
+    },
+    {
+      "id": "F-2",
+      "severity": "informational",
+      "category": "citation-range",
+      "blocking": false,
+      "subject": "One cited line range is one line short of the rule it names.",
+      "location": [
+        "review/copy/03-tm103-test-method-contract.json:1020"
+      ],
+      "claimAsWritten": "knowledge/standards/error-checklist.md:20-24 (H011/R034 entertestmode ordering, E025 LogData unit, E011 explicit SetOn when no relay is needed)",
+      "observed": "H011 is at error-checklist.md:20, E025 at :21, R034 at :24 - all inside the range; E011 is at :25, one line outside it.",
+      "assessment": "The named rules exist and are correctly characterised; only the range end is off by one. No rule content is misstated.",
+      "recommendation": "Widen the citation to :20-25 at the next edit."
+    },
+    {
+      "id": "F-3",
+      "severity": "informational",
+      "category": "evidence-boundary",
+      "blocking": false,
+      "subject": "Some quoted evidence comes from non-runner-listed trial artifacts.",
+      "location": [
+        "review/copy/01-tm103-resource-config-contract.json:312 (SCH-Connect-Map.json consistencyNotes[1], selection.anySelectionMade=false)",
+        "review/copy/01-tm103-resource-config-contract.json:566 (openQuestions[9])",
+        "review/copy/01-tm103-resource-config-contract.json:576 (outOfScopeFlagsForDownstream[4])"
+      ],
+      "observed": "The trial schematic artifacts are not in the runner-listed review boundary, so those specific fields were not re-derived by this review.",
+      "assessment": "The quoted content is carried inside the frozen revision and carries no allocation, limit, relay or register decision by itself; every allocation and relay decision rests on project artifacts that were verified (IF-8). No defect is asserted; this is recorded so the boundary of this review is explicit.",
+      "recommendation": "None required."
+    }
+  ],
+  "dispositions": [
+    {
+      "id": "OI-TM103-STR-03",
+      "ownerAssignedByStrategy": "rule-reviewer",
+      "disposition": "ACCEPTED - NO DEFECT",
+      "reasoning": "The loop-orientation statement is presented as a decision with its basis, not as a netlist fact. Both instrument low ends are grouped to AGND_F on the board (project/DALI/SCH-Connect-Map.txt:801 for the ACM200 low ends FL/SL and :804 for the FXVIe_PLUS low end), so forcing the HIGH terminal onto VBAT and VDM with an AGND return is the board-consistent single-ended reading. The method carries it only as the node-voltage reference convention and re-decides no value. No invented tolerance or unbacked netlist claim results."
+    }
+  ],
+  "blockingDefects": [],
+  "nonBlockingFindings": [
+    "F-1",
+    "F-2",
+    "F-3"
+  ],
+  "limitTreatmentJudgement": {
+    "reportedState": "UNRESOLVED_NO_PROJECT_AUTHORITY",
+    "judgement": "CORRECT TREATMENT, NOT AN OMISSION",
+    "reasoning": [
+      "The framework routes pass/fail to the test spec, not to the test method: the six-step template writes the value with Param->SetTestResult (knowledge/standards/framework.md:31-35) and the limits are read from the PGS SPEC object (knowledge/sources/system-functions.md GetMinLimit/GetMaxLimit; knowledge/standards/treg.md:124 uses 'spec' to obtain 'limits').",
+      "The enforceable unit rule E025 requires the logged unit to match the spec/DFT expected unit; it does not require the method to assert a bound. The method logs in uA, matching the DFT Unit column.",
+      "No runner-listed or project artifact publishes a bound: project/DALI/meta/dali_tm_meta.json has 0 bound-like keys and the DFT row carries only ExpectValue 0.5 and Unit uA with Trim/Record empty.",
+      "Inventing a tolerance from the ACM200 accuracy figures would violate the no-invented-limit rule; the contract explicitly forbids that use of metrologyFacts.",
+      "The uncertainty is routed to a named owner ('project test spec / user ruling') with a required ruling (absolute uA window or a percentage tolerance) and impact stated as zero for code generation, so it is neither omitted nor silently converted into a fact."
+    ],
+    "residual": "The pass/fail verdict can only be produced once a bound is supplied by the project spec owner; this is correctly recorded as non-blocking for the method stage."
+  },
+  "summary": {
+    "checksRun": 9,
+    "checksPassed": 9,
+    "blockingDefects": 0,
+    "nonBlockingFindings": 3,
+    "recommendation": "proceed to IMPLEMENTATION; carry F-1/F-2 as documentation corrections in the next normal edit of the signed method contract, without reopening test-method work"
+  }
+}

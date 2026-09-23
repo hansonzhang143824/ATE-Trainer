@@ -1,0 +1,9 @@
+生成器含 livenessDeclaration = False
+  已插入 livenessDeclaration → 34265 B
+
+  重生成输出尾部:   候选 payload missing = []
+Traceback (most recent call last):
+  File "D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10\gate-logs-t54\t54_add_liveness_and_receipt.py", line 79, in <module>
+    rec = json.load(io.open(os.path.join(RUN, 'gate-logs-t54', 'build-report.receipt.json'), encoding='utf-8-sig'))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t54\\build-report.receipt.json'

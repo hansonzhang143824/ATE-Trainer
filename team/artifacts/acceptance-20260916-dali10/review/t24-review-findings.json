@@ -1,0 +1,130 @@
+{
+  "task": "t24",
+  "attemptId": "9470c5f9-a76d-45cf-bcf6-697d9f07d141",
+  "replaces": "t6 (permanently unclaimable: its dependency t5 FAILED)",
+  "reviewedTask": "t23",
+  "author": "rule-reviewer",
+  "kind": "review",
+  "round": 1,
+  "runId": "acceptance-20260916-dali10",
+  "date": "2026-09-16",
+  "readOnly": true,
+  "reviewedArtifact": {
+    "path": "team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp",
+    "size": 35014,
+    "sha256_plaintext": "444810dde99f79ed1ef1939bb1659d5769f547bfc1103e9b9187ee46f455675c",
+    "encoding": "UTF-8 BOM, CRLF=475, bare LF=0, NUL=0",
+    "verifiedAt": "2026-09-16T18:5x (recomputed at start and end of review; unchanged)"
+  },
+  "frozenBaselinesRecomputed": {
+    "setup-contract.json": { "size": 328805, "sha256_plaintext": "fd00a5082170293fcea29446c009fc432977d61a8f624ef17ac1c82f41515a18", "note": "the task text quoted the prefix 295d483a; the live rev22 value is fd00a508. I report the recomputed value and flag the mismatch rather than silently using the quoted one. t22's snapshot recorded 305744 B / c0661286..., so this file has advanced again since t22; the task instructed all baselines be recomputed at reference time." },
+    "test-plan.json": { "size": 166099, "sha256_plaintext": "1925250df53f8b52126fdda9efa84ae84fe2bc8e529867e0965fc0ffe9a08016", "matchesQuotedPrefix": true, "version": "v20" },
+    "test-plan-tm600-tm601-measurement-excerpt.md": { "size": 8423, "sha256_plaintext": "9554d4d6f4fe878d05ba65fe5a79628192445f46ff74793e22d146f0e9ef89c8", "matchesQuotedPrefix": true },
+    "implementation-manifest.json": { "size": 22910, "sha256_plaintext": "4182452a44878c4409ae2f1fc3f26b784859310458e8e2c3d79deaff8899b6e8", "note": "the t23 handoff quoted 21117 B / 5b6b3a01...; the live size is 22910 B, so the manifest advanced after that report" },
+    "APPLY-TM600-TM601.md": { "size": 6178, "sha256_plaintext": "8cad400f8cb0e75b1503174d31f791cfc96606ed73636b16f38d135497be409c", "matchesQuotedPrefix": true }
+  },
+  "verdict": "pass",
+  "verdictScope": "The reviewed artifact is the t23 payload revision 444810dd. This verdict judges the payload as authored. It is NOT an approval of the target tree: the payload is still not deployed (the deployed test.cpp is 3dbceb49... with bare 126), and t25's model/harness fixes are separate.",
+  "rulings": {
+    "T24-C_failureReportingChannel": {
+      "question": "Does the payload report failure through the project's result object, and is 'return 0' acceptable?",
+      "ruling": "ACCEPTABLE - requirement satisfied",
+      "evidence": [
+        "implementation-payload-TM600-TM601.cpp:323  HS_RDSON->SetTestResult(site, 0, hs_rdson[site]);",
+        "implementation-payload-TM600-TM601.cpp:472  LS_RDSON->SetTestResult(site, 0, ls_rdson[site]);",
+        "test.cpp uses arrow-form SetTestResult at 188 sites and dot-form at 0 sites; 'return 0;' is the uniform return of a DUT_API int test function, with the outcome carried by the result value",
+        "project precedent for reading the code back: test.cpp:7059 if (ls_zcd[site] != ERROR_RES)"
+      ],
+      "reason": "The failure value ERROR_RES (9999) reaches the result object via SetTestResult, so a failing outcome is reported. 'return 0' is the project's function-level convention and does not constitute a missing failure channel.",
+      "blocking": false
+    },
+    "T24-A_distinguishability": {
+      "question": "Is it acceptable that absent-current and opposite-sign both report ERROR_RES (no second code may be invented)?",
+      "ruling": "ACCEPTABLE - no revision required",
+      "evidence": [
+        "Test_Method.h:32 is the ONLY ERROR_* token in Test_Method.h: ERROR_RES",
+        "test.cpp contains exactly one ERROR_* token: ERROR_RES; sub.cpp contains none",
+        "no polarity / fixture / reverse error-code token exists anywhere in the inspected sources",
+        "the two conditions occupy separate branches and are separately annotated: L285-287 and L445-446, with the inline note at L291 / L450 'no current (|I| <= 0.1 A), or an MVRET/MIRET sign mismatch'",
+        "i_meas and v_meas are retained SIGNED (L281-282, L439-440), so the two situations differ in |i_meas| and remain separable post-hoc from the logged quantities"
+      ],
+      "reason": "The premise behind 'must be independently reported' was that a second failure code is available. Measurement shows the project provides exactly one (ERROR_RES), and the user's rule forbids inventing another. Adding a second code would violate that rule; therefore reporting ERROR_RES in both cases is the only compliant encoding. The go/no-go verdict does not depend on telling the two apart: both are failures, both are marked invalid. Diagnostic separation is available from the signed measured quantities, and absent-current vs reverse-polarity remain physically distinct (|I| ~ 0 versus |I| at the set point).",
+      "recommendation": "Non-blocking future hardening only: if stronger diagnostic separation is ever wanted, the compliant route is separable reporting through the existing test-result/datalog channel (e.g. a status field), adjudicated by the Captain as a cross-TM convention change - NOT a new error code, and not inside a single repair task.",
+      "blocking": false
+    }
+  },
+  "advisories": [
+    {
+      "id": "T24-ADV-1",
+      "severity": "low",
+      "category": "gate-robustness",
+      "problem": "The forbidden ramp tokens appear as bare words in a payload comment: implementation-payload-TM600-TM601.cpp:43 'FORBIDDEN, must not appear: test_method.rampi_capv / rampv_capv ...'. The reported count of 0 is correct for executable code (after stripping comments: rampi_capv( = 0, rampv_capv( = 0, test_method.rampi_capv = 0), and it does not break verify_bst_sw_sequence.py today because that scanner matches the call form \\brampi_capv\\s*\\( (scripts/verify_bst_sw_sequence.py:100) which the bare word does not satisfy. However the token is still textually present, so any future scanner that matches the bare token would mis-enrol these functions.",
+      "evidence": "python comment-stripped count = 0 for all four patterns; scripts/verify_bst_sw_sequence.py:100 uses r'\\brampi_capv\\s*\\('",
+      "requiredFix": "Optional/preventive only: rephrase the comment (e.g. 'the rampi/rampv_capv family') so the literal token never appears in the payload. Not a release blocker.",
+      "file": "team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp",
+      "line": 43,
+      "resolved": true
+    },
+    {
+      "id": "T24-ADV-2",
+      "severity": "low",
+      "category": "traceability",
+      "problem": "The task text pinned setup-contract.json rev22 as prefix 295d483a..., but the live file recomputes to fd00a508... / 328805 B. The frozen-input hash quoted in the task is therefore stale.",
+      "evidence": "python-plaintext recomputation of team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+      "requiredFix": "Record the recomputed value (fd00a508...) in the run ledger before the gate/build stage cites it; do not cite the quoted prefix.",
+      "file": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+      "resolved": true
+    },
+    {
+      "id": "T24-ADV-3",
+      "severity": "low",
+      "category": "sign-encoding-clarity",
+      "problem": "The sign test is encoded as a multiplication: L288 `if (i_meas[site] > 0.1 && v_meas[site] * i_meas[site] > 0.0)` (and L447 for TM601). Behaviour is correct (same sign -> magnitude; opposite sign -> ERROR_RES) and cannot overflow for these magnitudes, but an explicit same-sign expression would be clearer for a safety-relevant polarity check, and the comparison chain would read better as `fabs(i_meas) > 0.1 && v_meas*i_meas > 0.0` since using the signed current directly in the same expression it was sign-checked with is the subtle part.",
+      "evidence": "L288, L447; L289/L448 use fabs of both terms for the reported magnitude; L291/L450 report ERROR_RES",
+      "requiredFix": "Non-blocking clarity improvement for a later revision: state the same-sign condition explicitly.",
+      "file": "team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp",
+      "line": 288,
+      "resolved": true
+    },
+    {
+      "id": "T24-ADV-4",
+      "severity": "medium",
+      "category": "handoff-order",
+      "problem": "t23's handoff quotes implementation-manifest.json as 21117 B / 5b6b3a01..., but the live file is 22910 B / 4182452a.... The manifest advanced after that report, so any downstream task citing the t23-quoted hash would be citing a stale artifact.",
+      "evidence": "python-plaintext recomputation of team/artifacts/acceptance-20260916-dali10/implementation-manifest.json",
+      "requiredFix": "Cite the recomputed manifest hash in the next handoff; this is the same class of drift that has recurred throughout the run.",
+      "file": "team/artifacts/acceptance-20260916-dali10/implementation-manifest.json",
+      "resolved": true
+    }
+  ],
+  "openItemsOutsideThisVerdict": [
+    "The payload is not deployed: ForCodexDebug/source/test.cpp = 462848 B / 3dbceb496d79d7d08631713b98e46c0c2ba6163eaf5356a87dded677e35ba479 (mtime 18:23:31) still carries bare 126 in both functions' SetOn, which is the direct cause of the gate's exit 1.",
+    "verify_relay_trace.py still reports TM601_LS_RDSON: K57_CAP_BST_SW after t25's F2 fix, and after the payload lands the payload closes K57, so that warning is expected to clear with the write.",
+    "meta powered_pins still contains VBUS for TM601_LS_RDSON, so the K5_VBUS_Cap false positive persists until the t26/t25-proposal meta correction lands (per t22 ruling A2).",
+    "Settling/R-C effect of the closed 220 nF K57 branch on the measured rail is deliberately not analysed by the payload and remains a bring-up item (U11) given the zero on-paper 2 ms margin."
+  ],
+  "checksThatPassed": [
+    "T22 CONFORMANCE: K5_VBUS_Cap occurrence in executable code = 0; K44_Cap_SW2_BST2 = 0; K45_Cap_SW1_BST1 = 0; K57_CAP_BST_SW = 2 (TM601 SetOn L377 and TM600 SetOn L203). TM601 SetOn L377 = K154_BUSH0_AMUX, K155_FOVI3_PGND, K60_BUSL0_VCP, K61_ACM8_SW, K13_VBAT_Cap, K85_CAP_PMID, K57_CAP_BST_SW, K126_V1P5_CAP (8 args, -1 excluded).",
+    "INVARIANTS (comment-stripped executable code): delay_ms(1) = 6 (L246/263/311/424/456/461), delay_ms(2) = 0, SetClamp(50, 50) = 2 (L256 TM600, L414 TM601), MeasureVI(200, 5, FPVIe_MV_X10) = 2 (L268, L429), rampi_capv = 0, rampv_capv = 0, bare 126 = 0, K126_V1P5_CAP present (2 in SetOn lists), ERROR_RES = 2 executable (L291, L450).",
+    "POSITIVE MAGNITUDE: every resistance assignment is either fabs/fabs * 1e3 (L289, L448) or ERROR_RES (L291, L450) - there is no path that assigns a negative, zero or other passing value; the previous draft's `... : 0.0` ultra-low-resistance pass is gone.",
+    "FAIL-CLOSED ORDERING: each function zeroes the force first (L269 / L430 Set(FI,0)) and only then evaluates and records the failure code (L288-291 / L447-450), matching the project precedent test.cpp:8087-8090 with ERROR_RES defined at source/Test_Method.h:32.",
+    "POLARITY DIAGNOSTIC: opposite sign is detected via the v*i < 0 product and routed to the failure path; the comments state it is a FAILURE and is never expressed as a negative resistance (L283-284, L441-444).",
+    "FROZEN VALUES: TM600 PMID staircase 0/5/10/15/20 with 15 V->FXVIe_PLUS_30V (L234), 10 V->FXVIe_PLUS_20V (L229 rise, L298 fall), 5 V->10V; ACM 10 V->ACM200_20V (L227, L300), ACM 15/20 V->40V; TM601 PMID 9 V with FXVIe_PLUS_20V (L393); VBAT 4.2 V in both (L215, L388); TM600 +1 A (L262), TM601 derived -1 A (L423); VBUS is never a source (no vset vbus; VBUS appears only in explanatory text).",
+    "2 ms HARD CAP: force applied at L262/L423, MeasureVI 200 x 5 us = 1 ms, delay_ms(1) settle, then immediate Set(FI,0) at L269/L430; delay_ms(2) nowhere.",
+    "CLEANUP: each function has exactly one return, at the very end (L325, L474) - no goto, no mid-body break - so no path can skip cleanup; the RELAY_OFF block releases VBAT/V1P5/PMID/SW12 then FPVI1 (TM600 L317) then FPVI0 LAST (TM600 L318, TM601 L467), matching R-POFF.",
+    "SECTION HYGIENE: the TM600 segment (L179-338) no longer carries TM601-specific framing; its sign narrative is positive-oriented (L273-274) and mentions only its own MVRET/MIRET.",
+    "SCOPE: payload mentions TM643 = 0 and defines only TM600_HS_RDSON and TM601_LS_RDSON; no byte-identical copy of the read-only golden knowledge/references/L4-Golden-code/tm600-normal-highcurrent.cpp (sha256 8cdb0be1...) exists anywhere in ForCodexDebug or devel; devel/source/test.cpp = 5c9cb3f9... and StdAfx.h = ba8ab3de... (unchanged run baseline).",
+    "INFERENTIAL WORDING: the string 'inert' appears 0 times; the payload states explicitly that settling is NOT analysed and is a bring-up item with U11 given the zero on-paper 2 ms margin."
+  ],
+  "readOnlyProof": {
+    "method": "python-plaintext sha256 recomputed on the reviewed artifact and all inspected objects at review start and end",
+    "reviewedArtifactUnchanged": true,
+    "reviewerWrites": [
+      "review/t24-implementation-review.md",
+      "review/t24-review-findings.json",
+      "review/t24-readonly-verify.json"
+    ],
+    "develUntouched": true,
+    "targetTreeUntouched": true
+  }
+}

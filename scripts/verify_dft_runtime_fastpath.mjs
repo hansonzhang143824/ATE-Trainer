@@ -1,0 +1,32 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
+import { runCaptainEntry, startRequiredSourceDispatches, finishScopedSources } from '../plugins/dsh-ptc-material-boundary/lib/captain-entry.js';
+import { listReceipts } from '../plugins/dsh-ptc-material-boundary/lib/dispatch-profile.js';
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const output = path.join(root, 'project/DALI/Output_Global_Material/dft/TM109');
+const snapshot = () => Object.fromEntries(['dft-meta.json', 'dft-conditions.yaml', 'dft-semantic-review.json'].map((name) => {
+  const file = path.join(output, name);
+  return [name, { sha256: createHash('sha256').update(fs.readFileSync(file)).digest('hex'), mtimeMs: fs.statSync(file).mtimeMs }];
+}));
+const before = snapshot();
+const start = performance.now();
+const entry = await runCaptainEntry(root, 'TM109，只执行DFT expert');
+assert.deepEqual(entry.dispatches.map((item) => item.role), ['dft-expert']);
+let spawnCount = 0;
+const ctx = { subagents: { getProvider: () => ({}), start: async () => { spawnCount++; throw new Error('Ready TM109 must not start a model'); } }, logger: console };
+const runs = await startRequiredSourceDispatches(ctx, entry, { id: 'fastpath-acceptance' }, undefined, { workspaceRoot: root, pinnedProfiles: { 'dft-expert': 'ptc-dft-expert' } });
+const terminal = await finishScopedSources(root, entry, runs);
+assert.equal(terminal.mode, 'UNCHANGED');
+assert.equal(terminal.status, 'done');
+assert.equal(spawnCount, 0);
+assert.deepEqual(snapshot(), before);
+const receipts = listReceipts(root, entry.batchId);
+assert.equal(receipts.length, 1);
+assert.equal(receipts[0].profileVersion, 'v7');
+const report = { passed: true, elapsedMs: Math.round(performance.now() - start), batchId: entry.batchId, mode: terminal.mode, profileVersion: receipts[0].profileVersion, spawnCount, advanced: false, artifactsUnchanged: true, artifacts: before };
+fs.writeFileSync(path.join(root, 'team/artifacts', entry.batchId, 'fastpath-acceptance.json'), JSON.stringify(report, null, 2) + '\n');
+console.log(JSON.stringify(report, null, 2));

@@ -1,0 +1,1622 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm109-test-method-contract",
+  "artifactKind": "test-method-contract",
+  "taskId": "TM109-METHOD-R1",
+  "role": "test-method-expert",
+  "stage": "METHOD",
+  "projectId": "DALI",
+  "tm": "TM109",
+  "generatedAt": "2026-09-18 00:10:06 +08:00",
+  "verdict": "deliverable_ready",
+  "contractFieldSet": "TEAM_ARCHITECTURE_V2.md (测试方法专家 §6 输出：测试方法契约): methodEvidence[] / methodPhases[] / measurementPlan / powerDownPlan / logPlan / evidence[] / openItems[], plus the Golden applicability, evidence and routed-finding fields required by team/roles/test-method-expert.md",
+  "signedInputs": [
+    {
+      "name": "tm109-resource-config-contract.json",
+      "path": "team/artifacts/tm109-direct-trial/strategy/tm109-resource-config-contract.json",
+      "declaredSha256": "a22502ece50f321312a466b77cfef5a40efe8f9a41995f7ee8af3b44048107e2",
+      "verifiedSha256": "a22502ece50f321312a466b77cfef5a40efe8f9a41995f7ee8af3b44048107e2",
+      "verified": true,
+      "verifiedWith": "python scripts/hash_ate_plaintext.py (project plaintext reader)"
+    },
+    {
+      "name": "deliverable-ready.json (strategy handoff)",
+      "path": "team/artifacts/tm109-direct-trial/strategy/deliverable-ready.json",
+      "declaredSha256": "356312954f2b27ce9e0a4dcc3784d01f0eae601db463f07c0b12e8aad40413cb",
+      "verifiedSha256": "356312954f2b27ce9e0a4dcc3784d01f0eae601db463f07c0b12e8aad40413cb",
+      "verified": true,
+      "verifiedWith": "python scripts/hash_ate_plaintext.py"
+    }
+  ],
+  "inputVerification": {
+    "method": "python scripts/hash_ate_plaintext.py <path> (reads the DLP-transparent plaintext); cross-checked with node crypto and with the harness read tool",
+    "result": "both signed inputs match the sha256 recorded in the strategy handoff; the strategy handoff event is deliverable_ready with nextRole = test-method-expert",
+    "environmentNote": {
+      "class": "FACT about this environment, not about the artifacts",
+      "observation": "for the DLP-protected files under team/artifacts, PowerShell's native hashing path (Get-FileHash, [System.IO.File]::ReadAllBytes + SHA256, certutil) returns a different digest of the same byte length than the plaintext readers (python scripts/hash_ate_plaintext.py, node crypto, the harness read tool). Example on the signed strategy contract: native path eade048f82eba316f43d390532abaaee35b447d17aa700a66d386f00667fa820 versus plaintext a22502ece50f321312a466b77cfef5a40efe8f9a41995f7ee8af3b44048107e2.",
+      "resolution": "scripts/hash_ate_plaintext.py documents itself as 'Hash a DLP transparent-protected ATE file through Python's plaintext reader', and its digest equals the digest the strategy role recorded for every input; the plaintext digest is therefore the authoritative one and the native digest is treated as ciphertext",
+      "consequenceForThisContract": "all hashes in this artifact and in the handoff are computed with the project plaintext reader; a verifier that uses the native Windows path will see a mismatch that is not an artifact drift"
+    }
+  },
+  "itemUnderTest": {
+    "parameterBaseName": "VAC2_PRST",
+    "parameterNames": [
+      "VAC2_PRST_Rise",
+      "VAC2_PRST_Fall",
+      "VAC2_PRST_Hys"
+    ],
+    "namingBasis": "DFT ShortName VAC2_PRST + the two-segment ramp rule (knowledge/standards/toggle-awg-rules.md:14)",
+    "projectType": "normal (一般测试项目) — handed over by the signed strategy contract classification",
+    "parameterType": "UVLO family, specific parameter PRST — handed over by the signed strategy contract classification",
+    "dftIntentVerbatim": {
+      "hardwareInitial": "vset[vbat,4.2,100e-6,0] (DFT Hardware_initial)",
+      "dynamic": "vset[vac2,3.8,100e-6,1]; vset[vac2,4.4,1e-3,1]; vset[vac2,4.1,100e-6,1]; vset[vac2,3.5,1e-3,1] (DFT Dynamic, in order)",
+      "check": "INT (DFT Check)",
+      "softwareInitial": "entertestmode(); I2CWriteSameData(DEV_ADDR, 0x55, 0x96) (DFT Software_initial, verbatim field annotation EN_DTEST0=1, DTEST0_MUX=22)",
+      "expectValue": "rising vth 4.15V, hys 0.35V (DFT ExpectValue, unit V)",
+      "typeColumn": "Toggle, MV"
+    },
+    "dftIntentSource": "recorded verbatim inside the signed strategy contract (endpointRequirements[], registerDelta[]) because this task's signed input set is the strategy contract and its handoff; the DFT deliverables themselves were not re-read by this role",
+    "stimulusShapeDecision": {
+      "decision": "the four DFT vset values are the item's stimulus envelope and level order; the method interpolates them with two continuous threshold sweeps (up 3.80 -> 4.40 V, down 4.40 -> 3.50 V) because a threshold+hysteresis item needs the applied level at the observation transition, which discrete steps cannot supply",
+      "class": "method decision (method-owned per TEAM_ARCHITECTURE_V2.md test-method-expert section 5 'Toggle / 阈值' row: ramp start/end, step, sample points and rise/fall/hysteresis algorithms are method decisions)",
+      "dftPreservation": "every DFT-declared level is visited in the DFT order before, inside or at the end of a sweep: 3.80 V (MP-5 preset), 4.40 V (MP-6 stop), 4.10 V (passed inside MP-7), 3.50 V (MP-7 stop); no level outside the DFT-declared span is applied",
+      "alternativeConsidered": "pure discrete-step measurement (force 3.80 / 4.40 / 4.10 / 3.50 V and compare the observation state after each step) was rejected as the primary method because it only brackets the thresholds (rising in (3.80, 4.40], falling in [3.50, 4.10)) and cannot produce a Rise/Fall/Hys triple; it remains the documented fallback if a ruling forbids the ramp form, and it would then require a separate limit ruling"
+    }
+  },
+  "strategyBoundaryCarriedVerbatim": {
+    "note": "these values are copied from the signed strategy contract for traceability only; this contract does not change any source allocation, route, relay group, relay state or register value",
+    "endpointMap": [
+      {
+        "endpointId": "EP-VBAT",
+        "dutPin": "VBAT",
+        "pinInstances": [
+          "VBAT_F_S1",
+          "VBAT_S_S1"
+        ],
+        "requirementRole": "initial-condition rail",
+        "sourceTable": "FXVIe_PLUS",
+        "slot": "S3",
+        "channel": "5",
+        "ports": [
+          "S3_FXVIe_PLUS_FH5 (force)",
+          "S3_FXVIe_PLUS_SH5 (sense)"
+        ],
+        "selectedPath": "S3_FXVIe_PLUS_FH5 -> K8_PD3_S1(un-actuated) -> VBAT_F_S1; S3_FXVIe_PLUS_SH5 -> K8_PD3_S1(un-actuated) -> VBAT_S_S1",
+        "closureSet": [],
+        "relayGroup": "RG-1"
+      },
+      {
+        "endpointId": "EP-VAC2",
+        "dutPin": "VAC2",
+        "pinInstances": [
+          "VAC2_F_S1",
+          "VAC2_S_S1"
+        ],
+        "requirementRole": "stimulus endpoint (four DFT-ordered vset steps, verbatim: 3.8 / 4.4 / 4.1 / 3.5)",
+        "sourceTable": "ACM200",
+        "slot": "S5",
+        "channel": "0",
+        "ports": [
+          "S5_ACM200_FH0 (force)",
+          "S5_ACM200_SH0 (sense)"
+        ],
+        "selectedPath": "S5_ACM200_FH0 -> K19_VAC2_S1(actuated) -> K70_VAC_F_S1(actuated) -> VAC2_F_S1; S5_ACM200_SH0 -> K19_VAC2_S1(actuated) -> VAC2_S_S1",
+        "closureSet": [
+          19,
+          70
+        ],
+        "closureInstances": [
+          "K19_VAC2_S1",
+          "K70_VAC_F_S1"
+        ],
+        "relayGroup": "RG-2"
+      },
+      {
+        "endpointId": "EP-INT",
+        "dutPin": "INT",
+        "pinInstances": [
+          "INT_F_S1",
+          "INT_S_S1"
+        ],
+        "requirementRole": "check endpoint (DFT Check)",
+        "sourceTable": "ACM200",
+        "slot": "S5",
+        "channel": "15",
+        "ports": [
+          "S5_ACM200_FH15 (force)",
+          "S5_ACM200_SH15 (sense)"
+        ],
+        "selectedPath": "S5_ACM200_FH15 -> K102_PC3_S1 (un-actuated/default conducting) -> INT_F_S1; S5_ACM200_SH15 -> K102_PC3_S1 (un-actuated/default conducting) -> INT_S_S1",
+        "closureSet": [],
+        "relayGroup": "RG-3"
+      }
+    ],
+    "registerDelta": [
+      {
+        "order": 1,
+        "call": "entertestmode",
+        "argsRaw": [],
+        "scope": "per-TM item"
+      },
+      {
+        "order": 2,
+        "call": "I2CWriteSameData",
+        "deviceAddrSymbol": "DEV_ADDR",
+        "reg": "0x55",
+        "data": "0x96",
+        "fields": [
+          {
+            "field": "EN_DTEST0",
+            "annotationValueVerbatim": "1"
+          },
+          {
+            "field": "DTEST0_MUX",
+            "annotationValueVerbatim": "22"
+          }
+        ],
+        "fieldExpansion": "UNRESOLVED"
+      }
+    ],
+    "negativeRelayLists": {
+      "RG_1": [
+        "K8_PD3_S1 must remain un-actuated",
+        "K7_BUSH_VBAT_S1, K143_DCM_BUS0_H_S1, K144_DCM_BUS1_H_S1, K130_KELVIN1_F_S1, K136_QVMH_BUS0_S1, K131_KELVIN1_S1S2, K132_KELVIN1_S1, K141_QTMU_BUSA_S1S2 are not part of the selected closure set"
+      ],
+      "RG_2": [
+        "K18_VAC3_S1, K20_AMUX_S1, K68_VCP_F_S1 must stay un-actuated",
+        "K82_R_CS_S1S2, K87_KELVIN0_S1S2, K89_KELVIN0_S1S2, K90_PC0_Force_S1, K133_KELVIN1_S1S2, K142_QTMU_BUSB_S1S2, K145_DCM_BUS0_L_S1, K146_DCM_BUS1_L_S1, K138_QVML_BUS0_S1, K139_QVML_BUS1_S1, K17_BUSL_VAC_S1 are not required by the selected route"
+      ],
+      "RG_3": [
+        "K102_PC3_S1 must remain un-actuated",
+        "K101_BUS_FH_PA0_S1, K130_KELVIN1_F_S1, K136_QVMH_BUS0_S1, K137_QVMH_BUS1_S1, K143_DCM_BUS0_H_S1, K144_DCM_BUS1_H_S1, K131_KELVIN1_S1S2, K132_KELVIN1_S1, K141_QTMU_BUSA_S1S2 are not required"
+      ]
+    },
+    "sharedNodeConstraint": "NetK102_PC3_S1_7 members are INT_F_S1 and PA0_F_S1 and NetK102_PC3_S1_2 members are INT_S_S1 and PA0_S_S1 (strategy conflict C-05). This method lands no resource on that node beyond the selected ACM200 ch15 monitor with an empty closure, so no other DUT pin is driven through the shared node."
+  },
+  "methodEvidence": [
+    {
+      "id": "ME-01",
+      "source": "team/artifacts/tm109-direct-trial/strategy/tm109-resource-config-contract.json",
+      "locator": "endpointRequirements[] / resourceAllocation[] / relayGroups[] / registerDelta[] / handoff.usableBoundaries",
+      "applicability": "direct",
+      "reason": "the only authority for the resource, route, relay and register boundary this method works inside"
+    },
+    {
+      "id": "ME-02",
+      "source": "knowledge/references/L3-method/voltage-threshold-ate.md",
+      "locator": "lines 9-34 (method A for Pin+PRST/UVLO/OVP/LOW), line 30 (Hys formula)",
+      "applicability": "direct",
+      "reason": "same parameter family (PRST) and the same threshold+hysteresis measurement form; its trigger-edge sentence conflicts with ME-06 and is registered as CF-M1"
+    },
+    {
+      "id": "ME-03",
+      "source": "knowledge/references/L3-method/UVLO.md",
+      "locator": "lines 5-19",
+      "applicability": "direct",
+      "reason": "states the framework: general test item class, measurement via a test_method rampv_capv member instead of measureVI, and the Rise/Fall/Hys naming"
+    },
+    {
+      "id": "ME-04",
+      "source": "knowledge/references/L1-chip/UVLO.md",
+      "locator": "lines 16-22",
+      "applicability": "direct",
+      "reason": "mechanism and indicator-pin structure (open-drain needs a pull-up, push-pull does not) — this is the basis of routed finding RF-02"
+    },
+    {
+      "id": "ME-05",
+      "source": "knowledge/standards/toggle-awg-rules.md",
+      "locator": "lines 12-34",
+      "applicability": "direct",
+      "reason": "three-parameter rule for a two-segment ramp, the trigger convention, and the statement that a Toggle observation needs a two-relay closure"
+    },
+    {
+      "id": "ME-06",
+      "source": "knowledge/standards/relay-checklist.md",
+      "locator": "lines 6-13 (closed loop), 25-42 (Cap2 rule FR-001), 44-50 (anti-short), 52-69 (path classification incl. pull-up types)",
+      "applicability": "direct",
+      "reason": "Cap2 default-close rule for a powered rail (RF-01) and the pull-up role relay for an open-drain observation (RF-02), plus the anti-short rule this method's verification steps enforce"
+    },
+    {
+      "id": "ME-07",
+      "source": "knowledge/standards/register-config.md",
+      "locator": "lines 12-22 (entertestmode rule), line 40 (global versus per-TM boundary)",
+      "applicability": "direct",
+      "reason": "fixes the unlock-before-write ordering used in MP-4"
+    },
+    {
+      "id": "ME-08",
+      "source": "knowledge/references/L4-Golden-code/UVLO.cpp with UVLO.md",
+      "locator": "whole file (98 lines) and UVLO.md sections 2-5",
+      "applicability": "partial",
+      "reason": "same parameter type (a VAC2_PRST block exists verbatim in the Golden's parameter list) and the same double-sweep plus Hys skeleton, so the method skeleton, the power-up order and the teardown order are reused; the resources, the observation instrument, the operation point and the register set are not transferable and are rewritten from the signed contract (see goldenApplicability)"
+    },
+    {
+      "id": "ME-09",
+      "source": "knowledge/references/L4-Golden-code/toggle-template.cpp",
+      "locator": "registered by UVLO.md:3 as the same source snapshot",
+      "applicability": "partial",
+      "reason": "duplicate of ME-08, recorded so a later reader does not treat it as independent corroboration"
+    },
+    {
+      "id": "ME-10",
+      "source": "knowledge/references/L4-Golden-code/OVP.cpp",
+      "locator": "registered by voltage-threshold-ate.md:34",
+      "applicability": "partial",
+      "reason": "same threshold family and the same double-sweep form, but a different parameter, unit convention and limits; useful only as family corroboration for the Hys computation"
+    },
+    {
+      "id": "ME-11",
+      "source": "knowledge/references/L3-method/diff-pair-spec.md",
+      "locator": "lines 38-56 (sweep direction, step 1-10 mV, 1 V/ms, single-ended result semantics)",
+      "applicability": "partial",
+      "reason": "written for a differential BST-SW pair, so the BST-SW-specific parts do not apply to this item; only the generic threshold-sweep step/slope practice and the single-ended capture semantics are reused, and they are labelled method decisions"
+    },
+    {
+      "id": "ME-12",
+      "source": "knowledge/standards/site-num-rule.md",
+      "locator": "lines 7-9",
+      "applicability": "direct",
+      "reason": "per-site arrays must be sized with SITE_NUM as defined in the project StdAfx.h"
+    },
+    {
+      "id": "ME-13",
+      "source": "knowledge/hardware/pin-resource-map.md",
+      "locator": "lines 5-19 (pin to resource), 32-45 (relay quick table: K43_SDA_INT, K58_INT_PU for Toggle tests)",
+      "applicability": "unavailable for selection / direct for the conflict record",
+      "reason": "the quick table names the observation pull-up relays, but the signed strategy contract proves those names and numbers are absent from the frozen DALI relay table (conflict C-04 / OI-S-02); the table is therefore used only as the source of routed finding RF-02 and never as a relay selection"
+    },
+    {
+      "id": "ME-14",
+      "source": "scripts/verify_bst_sw_sequence.py",
+      "locator": "lines 78-114 (target derivation) and 497-499 (empty PASS)",
+      "applicability": "direct",
+      "reason": "the project's own BST-SW gate derives its target set from rampi_capv current-ramp functions; this is the deterministic basis for the per-phase NOT_APPLICABLE result"
+    },
+    {
+      "id": "ME-15",
+      "source": "knowledge/standards/context-management.md",
+      "locator": "lines 92-102 (Golden = structure reference, never a relay or pin dictionary)",
+      "applicability": "direct",
+      "reason": "forbids copying the Golden's relay or pin names, which is why this contract takes every resource from the signed strategy contract"
+    }
+  ],
+  "goldenApplicability": {
+    "candidates": [
+      {
+        "golden": "knowledge/references/L4-Golden-code/UVLO.cpp",
+        "parameterMatch": "PRST threshold family — the Golden even carries VAC2_PRST_Rise/_Fall/_Hys parameters",
+        "verdict": "partial"
+      },
+      {
+        "golden": "knowledge/references/L4-Golden-code/toggle-template.cpp",
+        "parameterMatch": "same source snapshot as UVLO.cpp",
+        "verdict": "partial (duplicate)"
+      },
+      {
+        "golden": "knowledge/references/L4-Golden-code/OVP.cpp",
+        "parameterMatch": "same threshold family, different parameter",
+        "verdict": "partial"
+      },
+      {
+        "golden": "knowledge/references/L4-Golden-code/tm600-normal-highcurrent.cpp and Rdson.cpp",
+        "parameterMatch": "high-current / RDSON, no threshold ramp",
+        "verdict": "unavailable"
+      }
+    ],
+    "dimensionComparison": [
+      {
+        "dimension": "parameter type",
+        "goldenValue": "UVLO/PRST threshold with hysteresis (VAC1/2/3 blocks)",
+        "tm109Value": "PRST threshold with hysteresis on VAC2 only",
+        "verdict": "match"
+      },
+      {
+        "dimension": "DUT topology / observation form",
+        "goldenValue": "rail swept single-ended, internal indicator muxed to an observation pin",
+        "tm109Value": "rail swept single-ended, internal indicator (DFT Check token INT) observed on ACM200 S5 ch15",
+        "verdict": "match in form, different instrument"
+      },
+      {
+        "dimension": "key relative voltages",
+        "goldenValue": "no differential pair; ramp around a 2.95-3.45 V band",
+        "tm109Value": "no differential pair; ramp around the DFT's 3.80-4.40 V band",
+        "verdict": "same class, different band"
+      },
+      {
+        "dimension": "DFT operation point",
+        "goldenValue": "single rail pre-set 2.8 V then swept up 2.95 -> 3.45 and down 3.25 -> 2.75",
+        "tm109Value": "VBAT held at 4.2 V, VAC2 preset 3.80 V then swept up to 4.40 V and down to 3.50 V (four DFT-declared levels)",
+        "verdict": "differs — the Golden's step counts, spans and limits are not reused"
+      },
+      {
+        "dimension": "source operating mode",
+        "goldenValue": "ACM200 FV rail plus a FOVIe comparator observation channel",
+        "tm109Value": "ACM200 S5 ch0 FV rail plus an ACM200 S5 ch15 observation channel; VBAT on FXVIe_PLUS S3 ch5",
+        "verdict": "differs — different instrument families for both rail and observation"
+      },
+      {
+        "dimension": "resource boundary",
+        "goldenValue": "K_VCC_Cap / K_VBAT_Cap / K_VACx_ACM closures",
+        "tm109Value": "RG-1 {} , RG-2 {K19, K70}, RG-3 {} from the signed strategy contract",
+        "verdict": "differs — the Golden's relay names are not transferable (context-management.md:92-102)"
+      }
+    ],
+    "conclusion": "partial. The method skeleton is reused from the PRST Golden (ordered power-up, rail pre-set below the swept threshold, unlock then register write, one up-sweep plus one down-sweep with a latched capture, Hys = (Rise - Fall) * 1e3 mV, levels to 0 before the relays open). Every resource, parameter value, sweep span, limit and observation instrument is rewritten from the signed strategy contract and the DFT-declared levels; nothing is copied from the Golden.",
+    "nonTransferableItems": [
+      "all relay and pin names",
+      "the Golden's sweep spans, step counts and dwell arguments",
+      "the Golden's register set (0x13 / 0x58 / 0x56 / 0x55 = 0x01 pattern)",
+      "the Golden's limits and its parameter list"
+    ]
+  },
+  "bstSwApplicability": {
+    "rule": "0 V <= BST_actual - SW_actual <= 5 V must hold in every planned phase of an item that involves BST, SW, or a PMID-pulled SW potential (TEAM_ARCHITECTURE_V2.md section 4, no automatic exception)",
+    "applicableToThisItem": false,
+    "derivation": [
+      "strategy contract endpointRequirements[] enumerates exactly three endpointIds (EP-VBAT / EP-VAC2 / EP-INT); no endpoint, resource allocation or relay group addresses BST or SW",
+      "the only path relays this method actuates are the strategy-owned closure {K19_VAC2, K70_VAC_F} (relayGroups[RG-2]); frozen relay numbers 19 and 70 carry no BST/SW token",
+      "the signed register delta contains only entertestmode and I2CWriteSameData(DEV_ADDR, 0x55, 0x96); no field of that delta addresses a BST or SW node (field expansion is UNRESOLVED)",
+      "scripts/verify_bst_sw_sequence.py derives its BST-SW target set from functions that contain a rampi_capv current ramp (lines 78-114) and prints an empty PASS when there is no such target (lines 497-499); TM109 is a voltage-threshold toggle item with no current ramp, so it is outside that gate's target set"
+    ],
+    "consequence": "every phase below carries an explicit bstSwCheck entry with result NOT_APPLICABLE and the same derivation; no phase of this item can form a tester-driven BST_actual/SW_actual pair",
+    "falsificationTrigger": [
+      "a ruling binds the DTEST0_MUX = 22 observation pad (strategy conflict C-06 / open item OI-S-08) to a BST or SW node, or",
+      "any later signed revision routes, drives or observes a BST or SW node in this item;",
+      "if that happens this check must be re-proved for every phase with BST_actual and SW_actual both derived from the actual route and drive state (an SW node pulled by PMID must be counted at the actual PMID potential), per TEAM_ARCHITECTURE_V2.md section 4"
+    ],
+    "gateEvidence": "python scripts/verify_bst_sw_sequence.py prints '[scan] test.cpp 无 rampi_capv 电流斜坡测试项 (非 ZCD/OCP 家族), 空 PASS' and exits 0 for an item with no current ramp; TM109 is such an item"
+  },
+  "methodPhases": [
+    {
+      "phaseId": "MP-1",
+      "name": "pre-state verification (item entry)",
+      "category": "power-up",
+      "purpose": "prove the item starts from a de-energised, relay-open state before any closure or source is enabled",
+      "prerequisite": "item function entered (funcindex/funclabel valid); no earlier phase of TM109 executed in this item",
+      "relayGroup": "none actuated; the relay set is the safe empty set of relay-checklist.md:74",
+      "resourceState": {
+        "VBAT": "FXVIe_PLUS S3 ch5 output off / 0 V; instrument relay off",
+        "VAC2": "ACM200 S5 ch0 output off / 0 V; instrument relay off",
+        "INT": "ACM200 S5 ch15 monitor not attached; no drive",
+        "registers": "no register state asserted by this item yet"
+      },
+      "registerActivation": "none",
+      "actualNodeVoltages": {
+        "VBAT": "0 V tester-side (source disabled). DUT-side potential UNKNOWN (node not connected to any tester resource; no signed input asserts it).",
+        "VAC2": "0 V tester-side (source disabled). DUT-side potential UNKNOWN (node not connected to any tester resource; no signed input asserts it).",
+        "INT": "not driven; potential is DUT-determined and UNKNOWN (monitor channel not attached).",
+        "BST": "not routed, not driven",
+        "SW": "not routed, not driven",
+        "note": "tester-side potentials are the forced/sensed values; a DUT-side potential that no signed input asserts is recorded UNKNOWN instead of assumed"
+      },
+      "differentialChecks": [
+        {
+          "check": "BST_actual - SW_actual",
+          "result": "NOT_APPLICABLE",
+          "reason": "no BST/SW node in this item (see bstSwCheck)"
+        }
+      ],
+      "bstSwCheck": {
+        "constraint": "0 V <= BST_actual - SW_actual <= 5 V",
+        "applicable": false,
+        "bstActual": "not routed and not driven by this item: no BST endpoint exists in the signed resource/configuration contract",
+        "swActual": "not routed and not driven by this item: no SW endpoint exists in the signed resource/configuration contract",
+        "differenceV": null,
+        "result": "NOT_APPLICABLE",
+        "proofBasis": [
+          "strategy contract endpointRequirements[] enumerates exactly three endpointIds (EP-VBAT / EP-VAC2 / EP-INT); no endpoint, resource allocation or relay group addresses BST or SW",
+          "the only path relays this method actuates are the strategy-owned closure {K19_VAC2, K70_VAC_F} (relayGroups[RG-2]); frozen relay numbers 19 and 70 carry no BST/SW token",
+          "the signed register delta contains only entertestmode and I2CWriteSameData(DEV_ADDR, 0x55, 0x96); no field of that delta addresses a BST or SW node (field expansion is UNRESOLVED)",
+          "scripts/verify_bst_sw_sequence.py derives its BST-SW target set from functions that contain a rampi_capv current ramp (lines 78-114) and prints an empty PASS when there is no such target (lines 497-499); TM109 is a voltage-threshold toggle item with no current ramp, so it is outside that gate's target set"
+        ],
+        "wouldBecomeApplicableIf": [
+          "a ruling binds the DTEST0_MUX = 22 observation pad (strategy conflict C-06 / open item OI-S-08) to a BST or SW node, or",
+          "any later signed revision routes, drives or observes a BST or SW node in this item;",
+          "if that happens this check must be re-proved for every phase with BST_actual and SW_actual both derived from the actual route and drive state (an SW node pulled by PMID must be counted at the actual PMID potential), per TEAM_ARCHITECTURE_V2.md section 4"
+        ]
+      },
+      "setpoint": "none (no source enabled)",
+      "ramp": "none",
+      "delay": "none",
+      "sample": "read back and record the relay/source state",
+      "exitCondition": "all three sources report off/0 V and the relay state reads back as un-actuated; otherwise abort to MP-10",
+      "onFailure": "MP-10",
+      "evidence": [
+        "L4-Golden-code/UVLO.cpp:26,40-41,74-79",
+        "relay-checklist.md:74 (explicit SetOn(-1) when nothing must close)"
+      ]
+    },
+    {
+      "phaseId": "MP-2",
+      "name": "equipotential route closure",
+      "category": "power-up",
+      "purpose": "close the strategy-owned VAC2 path relays while every source is still at 0 V, so no contact switches a live level",
+      "prerequisite": "MP-1 exitCondition met",
+      "relayGroup": "RG-2 = {K19_VAC2_S1, K70_VAC_F_S1} actuated (strategy-owned, verbatim). RG-1 {} with K8_PD3_S1 un-actuated. RG-3 {} with K102_PC3_S1 un-actuated. The negative lists stay un-actuated: K18_VAC3_S1, K20_AMUX_S1, K68_VCP_F_S1 and every entry of the strategy's notRequiredBySelectedRoute lists.",
+      "resourceState": {
+        "VBAT": "FXVIe_PLUS S3 ch5 output still off / 0 V",
+        "VAC2": "ACM200 S5 ch0 output still off / 0 V; K19 and K70 now closed",
+        "INT": "monitor not attached",
+        "registers": "unchanged"
+      },
+      "registerActivation": "none",
+      "actualNodeVoltages": {
+        "VBAT": "0 V tester-side (undriven). DUT-side UNKNOWN.",
+        "VAC2": "0 V tester-side (undriven; the closure is made at equipotential so VAC2 is not hot-switched). DUT-side UNKNOWN.",
+        "INT": "not driven; UNKNOWN.",
+        "BST": "not routed, not driven",
+        "SW": "not routed, not driven",
+        "note": "tester-side potentials are the forced/sensed values; a DUT-side potential that no signed input asserts is recorded UNKNOWN instead of assumed"
+      },
+      "differentialChecks": [
+        {
+          "check": "BST_actual - SW_actual",
+          "result": "NOT_APPLICABLE",
+          "reason": "no BST/SW node in this item"
+        },
+        {
+          "check": "VAC2 node vs tester AGND reference with the source disabled",
+          "result": "0 V commanded; the non-floating ACM200 loop closes through the tester AGND reference (relay-checklist.md:8-13)"
+        },
+        {
+          "check": "no non-target pin is landed by the closure",
+          "result": "PASS by construction: only {K19,K70} close and the ACM200 ch0 group siblings K18/K20/K68 stay un-actuated (anti-short rule, relay-checklist.md:44-50)"
+        }
+      ],
+      "bstSwCheck": {
+        "constraint": "0 V <= BST_actual - SW_actual <= 5 V",
+        "applicable": false,
+        "bstActual": "not routed and not driven by this item: no BST endpoint exists in the signed resource/configuration contract",
+        "swActual": "not routed and not driven by this item: no SW endpoint exists in the signed resource/configuration contract",
+        "differenceV": null,
+        "result": "NOT_APPLICABLE",
+        "proofBasis": [
+          "strategy contract endpointRequirements[] enumerates exactly three endpointIds (EP-VBAT / EP-VAC2 / EP-INT); no endpoint, resource allocation or relay group addresses BST or SW",
+          "the only path relays this method actuates are the strategy-owned closure {K19_VAC2, K70_VAC_F} (relayGroups[RG-2]); frozen relay numbers 19 and 70 carry no BST/SW token",
+          "the signed register delta contains only entertestmode and I2CWriteSameData(DEV_ADDR, 0x55, 0x96); no field of that delta addresses a BST or SW node (field expansion is UNRESOLVED)",
+          "scripts/verify_bst_sw_sequence.py derives its BST-SW target set from functions that contain a rampi_capv current ramp (lines 78-114) and prints an empty PASS when there is no such target (lines 497-499); TM109 is a voltage-threshold toggle item with no current ramp, so it is outside that gate's target set"
+        ],
+        "wouldBecomeApplicableIf": [
+          "a ruling binds the DTEST0_MUX = 22 observation pad (strategy conflict C-06 / open item OI-S-08) to a BST or SW node, or",
+          "any later signed revision routes, drives or observes a BST or SW node in this item;",
+          "if that happens this check must be re-proved for every phase with BST_actual and SW_actual both derived from the actual route and drive state (an SW node pulled by PMID must be counted at the actual PMID potential), per TEAM_ARCHITECTURE_V2.md section 4"
+        ]
+      },
+      "setpoint": "all sources 0 V (unchanged); only the relay state changes",
+      "ramp": "none",
+      "delay": "relay settle >= 3 ms after the closure (L4-Golden-code/UVLO.cpp:27)",
+      "sample": "read back the relay state before any source is enabled",
+      "exitCondition": "K19 and K70 read back actuated; K8_PD3, K102_PC3, K18, K20, K68 read back un-actuated; all sources still 0 V; otherwise abort to MP-10",
+      "onFailure": "MP-10",
+      "evidence": [
+        "strategy contract relayGroups[RG-2]",
+        "relay-checklist.md:44-50",
+        "L4-Golden-code/UVLO.cpp:44,61"
+      ]
+    },
+    {
+      "phaseId": "MP-3",
+      "name": "VBAT initial condition raise",
+      "category": "power-up",
+      "purpose": "establish the DFT-declared initial-condition rail (vset[vbat,4.2]) before any register write and before the stimulus",
+      "prerequisite": "MP-2 exitCondition met",
+      "relayGroup": "RG-1 (empty) with K8_PD3_S1 un-actuated; RG-2 stays closed; RG-3 stays empty",
+      "resourceState": {
+        "VBAT": "FXVIe_PLUS S3 ch5 in force-voltage mode at 4.2 V with the SH5 sense leg active (Kelvin)",
+        "VAC2": "ACM200 S5 ch0 still 0 V / output off",
+        "INT": "monitor not attached",
+        "registers": "unchanged"
+      },
+      "registerActivation": "none",
+      "actualNodeVoltages": {
+        "VBAT": "4.2 V tester-side (forced, Kelvin-sensed) from DFT Hardware_initial vset[vbat,4.2,...] verbatim",
+        "VAC2": "0 V tester-side; below the DFT-stated rising threshold 4.15 V, so no PRST release is expected at this phase (DERIVED from the DFT ExpectValue text, not a chip-behaviour assertion)",
+        "INT": "not driven; UNKNOWN.",
+        "BST": "not routed, not driven",
+        "SW": "not routed, not driven",
+        "note": "tester-side potentials are the forced/sensed values; a DUT-side potential that no signed input asserts is recorded UNKNOWN instead of assumed"
+      },
+      "differentialChecks": [
+        {
+          "check": "BST_actual - SW_actual",
+          "result": "NOT_APPLICABLE",
+          "reason": "no BST/SW node in this item"
+        },
+        {
+          "check": "VBAT vs tester AGND reference",
+          "result": "4.2 V forced single-ended, Kelvin-sensed on VBAT_S_S1"
+        }
+      ],
+      "bstSwCheck": {
+        "constraint": "0 V <= BST_actual - SW_actual <= 5 V",
+        "applicable": false,
+        "bstActual": "not routed and not driven by this item: no BST endpoint exists in the signed resource/configuration contract",
+        "swActual": "not routed and not driven by this item: no SW endpoint exists in the signed resource/configuration contract",
+        "differenceV": null,
+        "result": "NOT_APPLICABLE",
+        "proofBasis": [
+          "strategy contract endpointRequirements[] enumerates exactly three endpointIds (EP-VBAT / EP-VAC2 / EP-INT); no endpoint, resource allocation or relay group addresses BST or SW",
+          "the only path relays this method actuates are the strategy-owned closure {K19_VAC2, K70_VAC_F} (relayGroups[RG-2]); frozen relay numbers 19 and 70 carry no BST/SW token",
+          "the signed register delta contains only entertestmode and I2CWriteSameData(DEV_ADDR, 0x55, 0x96); no field of that delta addresses a BST or SW node (field expansion is UNRESOLVED)",
+          "scripts/verify_bst_sw_sequence.py derives its BST-SW target set from functions that contain a rampi_capv current ramp (lines 78-114) and prints an empty PASS when there is no such target (lines 497-499); TM109 is a voltage-threshold toggle item with no current ramp, so it is outside that gate's target set"
+        ],
+        "wouldBecomeApplicableIf": [
+          "a ruling binds the DTEST0_MUX = 22 observation pad (strategy conflict C-06 / open item OI-S-08) to a BST or SW node, or",
+          "any later signed revision routes, drives or observes a BST or SW node in this item;",
+          "if that happens this check must be re-proved for every phase with BST_actual and SW_actual both derived from the actual route and drive state (an SW node pulled by PMID must be counted at the actual PMID potential), per TEAM_ARCHITECTURE_V2.md section 4"
+        ]
+      },
+      "setpoint": "VBAT = 4.2 V (DFT value, verbatim)",
+      "ramp": "raise monotonically to 4.2 V; no DFT rate is stated, so the level change uses the threshold-family practice of <= 1 V/ms (diff-pair-spec.md:42)",
+      "delay": "settle >= 3 ms after the source is enabled (L4-Golden-code/UVLO.cpp:27)",
+      "sample": "sense VBAT back and confirm it settled at 4.2 V before proceeding",
+      "exitCondition": "VBAT sense reading equals 4.2 V within the instrument's own accuracy and no compliance/clamp flag is raised; otherwise abort to MP-10",
+      "onFailure": "MP-10",
+      "evidence": [
+        "strategy endpointRequirements[EP-VBAT].rawDftToken and resourceAllocation[RA-1]",
+        "L4-Golden-code/UVLO.cpp:28"
+      ]
+    },
+    {
+      "phaseId": "MP-4",
+      "name": "test-mode unlock and register activation",
+      "category": "configuration",
+      "purpose": "unlock the test registers and apply the signed per-item register delta that enables the observation path",
+      "prerequisite": "MP-3 exitCondition met (VBAT up and settled; VAC2 still 0 V)",
+      "relayGroup": "unchanged ({} for RG-1, {K19,K70} for RG-2, {} for RG-3)",
+      "resourceState": {
+        "VBAT": "FXVIe_PLUS S3 ch5 FV 4.2 V, sense active",
+        "VAC2": "ACM200 S5 ch0 at 0 V with the output on, so the instrument relay stays closed through the teardown order",
+        "INT": "ACM200 S5 ch15 attached as the observation monitor in a high-impedance comparator-style configuration (family practice FI = 0, L4-Golden-code/UVLO.cpp:30)",
+        "registers": "test mode unlocked; DEV_ADDR reg 0x55 = 0x96"
+      },
+      "registerActivation": {
+        "ordered": true,
+        "actions": [
+          {
+            "order": 1,
+            "call": "entertestmode",
+            "argsRaw": []
+          },
+          {
+            "order": 2,
+            "call": "I2CWriteSameData",
+            "deviceAddrSymbol": "DEV_ADDR",
+            "reg": "0x55",
+            "data": "0x96"
+          }
+        ],
+        "verbatimFrom": "strategy registerDelta[] orders 1-2; no value, address or field is re-derived, re-ordered or added here",
+        "ruleApplied": "entertestmode before any register write, unconditionally after a power-up (knowledge/standards/register-config.md:12-22)",
+        "placementDecision": "the delta is placed after the VBAT rail is established and before the VAC2 stimulus so the observation mux is active for the whole sweep; the strategy contract explicitly leaves this placement to the method stage (registerDelta[2].boundaryNote)",
+        "notDecidedHere": "the field expansion of EN_DTEST0 / DTEST0_MUX is UNRESOLVED in the signed contract and is not performed"
+      },
+      "actualNodeVoltages": {
+        "VBAT": "4.2 V tester-side",
+        "VAC2": "0 V tester-side; held below the DFT-stated rising threshold 4.15 V during the register write",
+        "INT": "after the write the INT pad carries the muxed indicator; the pad identity is UNRESOLVED (strategy C-06 / OI-S-08), so the observed level is recorded as DUT-driven with the value read after the write",
+        "BST": "not routed, not driven",
+        "SW": "not routed, not driven",
+        "note": "tester-side potentials are the forced/sensed values; a DUT-side potential that no signed input asserts is recorded UNKNOWN instead of assumed"
+      },
+      "differentialChecks": [
+        {
+          "check": "BST_actual - SW_actual",
+          "result": "NOT_APPLICABLE",
+          "reason": "no BST/SW node in this item"
+        },
+        {
+          "check": "register-write precondition",
+          "result": "VAC2 below the rising threshold and VBAT valid at the moment of the write; the family Golden likewise configures its rail below the swept threshold before ramping (L4-Golden-code/UVLO.cpp:29-37)"
+        }
+      ],
+      "bstSwCheck": {
+        "constraint": "0 V <= BST_actual - SW_actual <= 5 V",
+        "applicable": false,
+        "bstActual": "not routed and not driven by this item: no BST endpoint exists in the signed resource/configuration contract",
+        "swActual": "not routed and not driven by this item: no SW endpoint exists in the signed resource/configuration contract",
+        "differenceV": null,
+        "result": "NOT_APPLICABLE",
+        "proofBasis": [
+          "strategy contract endpointRequirements[] enumerates exactly three endpointIds (EP-VBAT / EP-VAC2 / EP-INT); no endpoint, resource allocation or relay group addresses BST or SW",
+          "the only path relays this method actuates are the strategy-owned closure {K19_VAC2, K70_VAC_F} (relayGroups[RG-2]); frozen relay numbers 19 and 70 carry no BST/SW token",
+          "the signed register delta contains only entertestmode and I2CWriteSameData(DEV_ADDR, 0x55, 0x96); no field of that delta addresses a BST or SW node (field expansion is UNRESOLVED)",
+          "scripts/verify_bst_sw_sequence.py derives its BST-SW target set from functions that contain a rampi_capv current ramp (lines 78-114) and prints an empty PASS when there is no such target (lines 497-499); TM109 is a voltage-threshold toggle item with no current ramp, so it is outside that gate's target set"
+        ],
+        "wouldBecomeApplicableIf": [
+          "a ruling binds the DTEST0_MUX = 22 observation pad (strategy conflict C-06 / open item OI-S-08) to a BST or SW node, or",
+          "any later signed revision routes, drives or observes a BST or SW node in this item;",
+          "if that happens this check must be re-proved for every phase with BST_actual and SW_actual both derived from the actual route and drive state (an SW node pulled by PMID must be counted at the actual PMID potential), per TEAM_ARCHITECTURE_V2.md section 4"
+        ]
+      },
+      "setpoint": "no stimulus change; register state changes only",
+      "ramp": "none",
+      "delay": ">= 1 ms after the register write before any stimulus change (L4-Golden-code/UVLO.cpp:36)",
+      "sample": "record the I2C write status and the observation state after the write",
+      "exitCondition": "both register actions report success and the monitor returns a defined state; an I2C failure or an undefined observation state goes to MP-10",
+      "onFailure": "MP-10",
+      "evidence": [
+        "strategy registerDelta[] orders 1-2 and its rule entry",
+        "knowledge/standards/register-config.md:12-22",
+        "L4-Golden-code/UVLO.cpp:31-36"
+      ]
+    },
+    {
+      "phaseId": "MP-5",
+      "name": "VAC2 preset to the DFT first level",
+      "category": "stimulus",
+      "purpose": "reach the DFT's first declared stimulus level and capture the pre-sweep observation state",
+      "prerequisite": "MP-4 exitCondition met",
+      "relayGroup": "unchanged",
+      "resourceState": {
+        "VBAT": "FV 4.2 V, sense active",
+        "VAC2": "ACM200 S5 ch0 FV at 3.80 V, output on, sense leg closed",
+        "INT": "monitoring",
+        "registers": "0x55 = 0x96 active"
+      },
+      "registerActivation": "retained from MP-4; no further writes",
+      "actualNodeVoltages": {
+        "VBAT": "4.2 V tester-side",
+        "VAC2": "3.80 V tester-side (DFT Dynamic step 1, verbatim); single-ended against the tester AGND reference",
+        "INT": "DUT-driven indicator state, sampled and logged as the below-threshold reference state",
+        "BST": "not routed, not driven",
+        "SW": "not routed, not driven",
+        "note": "tester-side potentials are the forced/sensed values; a DUT-side potential that no signed input asserts is recorded UNKNOWN instead of assumed"
+      },
+      "differentialChecks": [
+        {
+          "check": "BST_actual - SW_actual",
+          "result": "NOT_APPLICABLE",
+          "reason": "no BST/SW node in this item"
+        },
+        {
+          "check": "VAC2 vs tester AGND reference",
+          "result": "3.80 V forced single-ended (diff-pair-spec.md section 3 single-ended case: the captured value equals the swept-end voltage)"
+        }
+      ],
+      "bstSwCheck": {
+        "constraint": "0 V <= BST_actual - SW_actual <= 5 V",
+        "applicable": false,
+        "bstActual": "not routed and not driven by this item: no BST endpoint exists in the signed resource/configuration contract",
+        "swActual": "not routed and not driven by this item: no SW endpoint exists in the signed resource/configuration contract",
+        "differenceV": null,
+        "result": "NOT_APPLICABLE",
+        "proofBasis": [
+          "strategy contract endpointRequirements[] enumerates exactly three endpointIds (EP-VBAT / EP-VAC2 / EP-INT); no endpoint, resource allocation or relay group addresses BST or SW",
+          "the only path relays this method actuates are the strategy-owned closure {K19_VAC2, K70_VAC_F} (relayGroups[RG-2]); frozen relay numbers 19 and 70 carry no BST/SW token",
+          "the signed register delta contains only entertestmode and I2CWriteSameData(DEV_ADDR, 0x55, 0x96); no field of that delta addresses a BST or SW node (field expansion is UNRESOLVED)",
+          "scripts/verify_bst_sw_sequence.py derives its BST-SW target set from functions that contain a rampi_capv current ramp (lines 78-114) and prints an empty PASS when there is no such target (lines 497-499); TM109 is a voltage-threshold toggle item with no current ramp, so it is outside that gate's target set"
+        ],
+        "wouldBecomeApplicableIf": [
+          "a ruling binds the DTEST0_MUX = 22 observation pad (strategy conflict C-06 / open item OI-S-08) to a BST or SW node, or",
+          "any later signed revision routes, drives or observes a BST or SW node in this item;",
+          "if that happens this check must be re-proved for every phase with BST_actual and SW_actual both derived from the actual route and drive state (an SW node pulled by PMID must be counted at the actual PMID potential), per TEAM_ARCHITECTURE_V2.md section 4"
+        ]
+      },
+      "setpoint": "VAC2 = 3.80 V (DFT value, verbatim)",
+      "ramp": "monotonic rise 0 V -> 3.80 V at <= 1 V/ms (diff-pair-spec.md:42)",
+      "delay": "settle >= 1 ms after the level is reached (method decision; the DFT states no timing, TM109-OI-3)",
+      "sample": "sample the observation state at the settled 3.80 V level and store it as the pre-sweep reference",
+      "exitCondition": "the pre-sweep state is captured and equals the below-threshold state; if it already equals the above-threshold state the DFT envelope does not bracket the rising threshold, so the measurement is invalid -> MP-10 with the full trace (no reinterpretation)",
+      "onFailure": "MP-10",
+      "evidence": [
+        "strategy endpointRequirements[EP-VAC2].rawDftToken (four DFT-ordered vset steps, verbatim: 3.8 / 4.4 / 4.1 / 3.5)",
+        "L4-Golden-code/UVLO.cpp:29"
+      ]
+    },
+    {
+      "phaseId": "MP-6",
+      "name": "rising sweep and threshold capture",
+      "category": "measurement",
+      "purpose": "sweep VAC2 from the DFT first level to the DFT second level and capture the rising PRST threshold",
+      "prerequisite": "MP-5 exitCondition met",
+      "relayGroup": "unchanged",
+      "resourceState": {
+        "VBAT": "FV 4.2 V, sense active",
+        "VAC2": "ACM200 S5 ch0 ramping FV between 3.80 V and 4.40 V",
+        "INT": "monitoring, edge capture armed",
+        "registers": "0x55 = 0x96 active"
+      },
+      "registerActivation": "retained; no further writes",
+      "actualNodeVoltages": {
+        "VBAT": "4.2 V tester-side",
+        "VAC2": "swept 3.80 V -> 4.40 V tester-side; the captured value is the applied VAC2 level at the observation transition",
+        "INT": "DUT-driven indicator; transitions once inside the sweep (edge latched together with the applied VAC2 level)",
+        "BST": "not routed, not driven",
+        "SW": "not routed, not driven",
+        "note": "tester-side potentials are the forced/sensed values; a DUT-side potential that no signed input asserts is recorded UNKNOWN instead of assumed"
+      },
+      "differentialChecks": [
+        {
+          "check": "BST_actual - SW_actual",
+          "result": "NOT_APPLICABLE",
+          "reason": "no BST/SW node in this item"
+        },
+        {
+          "check": "VAC2 sweep stays inside the DFT-declared envelope",
+          "result": "start 3.80 V and stop 4.40 V are the DFT step-1 and step-2 values; no voltage outside the DFT-declared span is applied"
+        }
+      ],
+      "bstSwCheck": {
+        "constraint": "0 V <= BST_actual - SW_actual <= 5 V",
+        "applicable": false,
+        "bstActual": "not routed and not driven by this item: no BST endpoint exists in the signed resource/configuration contract",
+        "swActual": "not routed and not driven by this item: no SW endpoint exists in the signed resource/configuration contract",
+        "differenceV": null,
+        "result": "NOT_APPLICABLE",
+        "proofBasis": [
+          "strategy contract endpointRequirements[] enumerates exactly three endpointIds (EP-VBAT / EP-VAC2 / EP-INT); no endpoint, resource allocation or relay group addresses BST or SW",
+          "the only path relays this method actuates are the strategy-owned closure {K19_VAC2, K70_VAC_F} (relayGroups[RG-2]); frozen relay numbers 19 and 70 carry no BST/SW token",
+          "the signed register delta contains only entertestmode and I2CWriteSameData(DEV_ADDR, 0x55, 0x96); no field of that delta addresses a BST or SW node (field expansion is UNRESOLVED)",
+          "scripts/verify_bst_sw_sequence.py derives its BST-SW target set from functions that contain a rampi_capv current ramp (lines 78-114) and prints an empty PASS when there is no such target (lines 497-499); TM109 is a voltage-threshold toggle item with no current ramp, so it is outside that gate's target set"
+        ],
+        "wouldBecomeApplicableIf": [
+          "a ruling binds the DTEST0_MUX = 22 observation pad (strategy conflict C-06 / open item OI-S-08) to a BST or SW node, or",
+          "any later signed revision routes, drives or observes a BST or SW node in this item;",
+          "if that happens this check must be re-proved for every phase with BST_actual and SW_actual both derived from the actual route and drive state (an SW node pulled by PMID must be counted at the actual PMID potential), per TEAM_ARCHITECTURE_V2.md section 4"
+        ]
+      },
+      "setpoint": "VAC2 rising sweep 3.80 V -> 4.40 V",
+      "ramp": {
+        "direction": "increasing",
+        "startV": 3.8,
+        "stopV": 4.4,
+        "stepV": 0.01,
+        "stepBasis": "<= 10 mV (diff-pair-spec.md:42 states 1-10 mV for a threshold sweep); the same step is used up and down so Rise and Fall are comparable; capture uncertainty is +/- 1 step = +/- 10 mV",
+        "slew": "<= 1 V/ms (diff-pair-spec.md:42)",
+        "dwellPerStep": ">= 10 us (diff-pair-spec.md:61 steady-per-step practice); the PRST deglitch time is not asserted by any signed input (MF-06)",
+        "trigger": "TRIG_RISING",
+        "triggerBasis": "knowledge/standards/toggle-awg-rules.md:30 (ramp up -> RISING, user-confirmed 2026-08-27) corroborated by the family Golden L4-Golden-code/UVLO.cpp:37; the conflicting statement in voltage-threshold-ate.md:26,32 is registered as CF-M1"
+      },
+      "delay": "hold the DFT step-2 level 4.40 V for >= 1 ms after the sweep stops and re-sample the observation state",
+      "sample": "one latched capture at the observation transition per site; no averaging that would move the edge",
+      "exitCondition": "exactly one observation transition is captured inside the envelope for every valid site and VAC2_PRST_Rise is latched in volts; zero or more than one transition -> measurement invalid -> MP-10 with the full trace (never a silent 0 or a substituted value)",
+      "onFailure": "MP-10",
+      "evidence": [
+        "DFT step order 3.8 -> 4.4 (verbatim through the signed contract)",
+        "L4-Golden-code/UVLO.cpp:37,54-55",
+        "toggle-awg-rules.md:14,30"
+      ]
+    },
+    {
+      "phaseId": "MP-7",
+      "name": "falling sweep and threshold capture",
+      "category": "measurement",
+      "purpose": "sweep VAC2 down through the DFT remaining levels and capture the falling PRST threshold",
+      "prerequisite": "MP-6 exitCondition met",
+      "relayGroup": "unchanged",
+      "resourceState": {
+        "VBAT": "FV 4.2 V, sense active",
+        "VAC2": "ACM200 S5 ch0 ramping FV between 4.40 V and 3.50 V",
+        "INT": "monitoring, edge capture armed",
+        "registers": "0x55 = 0x96 active"
+      },
+      "registerActivation": "retained; no further writes",
+      "actualNodeVoltages": {
+        "VBAT": "4.2 V tester-side",
+        "VAC2": "swept 4.40 V -> 3.50 V tester-side, passing the DFT levels 4.10 V and 3.50 V in order; the captured value is the applied VAC2 level at the observation transition",
+        "INT": "DUT-driven indicator; transitions once inside the sweep (edge latched together with the applied VAC2 level)",
+        "BST": "not routed, not driven",
+        "SW": "not routed, not driven",
+        "note": "tester-side potentials are the forced/sensed values; a DUT-side potential that no signed input asserts is recorded UNKNOWN instead of assumed"
+      },
+      "differentialChecks": [
+        {
+          "check": "BST_actual - SW_actual",
+          "result": "NOT_APPLICABLE",
+          "reason": "no BST/SW node in this item"
+        },
+        {
+          "check": "VAC2 sweep stays inside the DFT-declared envelope",
+          "result": "start 4.40 V (DFT step 2) and stop 3.50 V (DFT step 4) bound the DFT's own decreasing sequence 4.4 -> 4.1 -> 3.5; no voltage outside the DFT-declared span is applied"
+        }
+      ],
+      "bstSwCheck": {
+        "constraint": "0 V <= BST_actual - SW_actual <= 5 V",
+        "applicable": false,
+        "bstActual": "not routed and not driven by this item: no BST endpoint exists in the signed resource/configuration contract",
+        "swActual": "not routed and not driven by this item: no SW endpoint exists in the signed resource/configuration contract",
+        "differenceV": null,
+        "result": "NOT_APPLICABLE",
+        "proofBasis": [
+          "strategy contract endpointRequirements[] enumerates exactly three endpointIds (EP-VBAT / EP-VAC2 / EP-INT); no endpoint, resource allocation or relay group addresses BST or SW",
+          "the only path relays this method actuates are the strategy-owned closure {K19_VAC2, K70_VAC_F} (relayGroups[RG-2]); frozen relay numbers 19 and 70 carry no BST/SW token",
+          "the signed register delta contains only entertestmode and I2CWriteSameData(DEV_ADDR, 0x55, 0x96); no field of that delta addresses a BST or SW node (field expansion is UNRESOLVED)",
+          "scripts/verify_bst_sw_sequence.py derives its BST-SW target set from functions that contain a rampi_capv current ramp (lines 78-114) and prints an empty PASS when there is no such target (lines 497-499); TM109 is a voltage-threshold toggle item with no current ramp, so it is outside that gate's target set"
+        ],
+        "wouldBecomeApplicableIf": [
+          "a ruling binds the DTEST0_MUX = 22 observation pad (strategy conflict C-06 / open item OI-S-08) to a BST or SW node, or",
+          "any later signed revision routes, drives or observes a BST or SW node in this item;",
+          "if that happens this check must be re-proved for every phase with BST_actual and SW_actual both derived from the actual route and drive state (an SW node pulled by PMID must be counted at the actual PMID potential), per TEAM_ARCHITECTURE_V2.md section 4"
+        ]
+      },
+      "setpoint": "VAC2 falling sweep 4.40 V -> 3.50 V",
+      "ramp": {
+        "direction": "decreasing",
+        "startV": 4.4,
+        "stopV": 3.5,
+        "stepV": 0.01,
+        "stepBasis": "identical step to MP-6 so Rise and Fall are comparable; capture uncertainty +/- 10 mV",
+        "slew": "<= 1 V/ms (diff-pair-spec.md:42)",
+        "dwellPerStep": ">= 10 us (diff-pair-spec.md:61); PRST deglitch time not asserted by any signed input (MF-06)",
+        "trigger": "TRIG_FALLING",
+        "triggerBasis": "knowledge/standards/toggle-awg-rules.md:30 corroborated by L4-Golden-code/UVLO.cpp:38; conflicting locator registered as CF-M1"
+      },
+      "delay": "hold the DFT step-4 level 3.50 V for >= 1 ms after the sweep stops and re-sample the observation state",
+      "sample": "one latched capture at the observation transition per site",
+      "exitCondition": "exactly one observation transition is captured inside the envelope for every valid site and VAC2_PRST_Fall is latched in volts; otherwise -> MP-10 with the full trace",
+      "onFailure": "MP-10",
+      "evidence": [
+        "DFT step order 4.4 -> 4.1 -> 3.5 (verbatim through the signed contract)",
+        "L4-Golden-code/UVLO.cpp:38"
+      ]
+    },
+    {
+      "phaseId": "MP-8",
+      "name": "calculation, judgement and result logging",
+      "category": "judgement",
+      "purpose": "compute the hysteresis from the two captured thresholds and publish the per-site results",
+      "prerequisite": "MP-6 and MP-7 captures valid for the site under evaluation",
+      "relayGroup": "unchanged",
+      "resourceState": {
+        "VBAT": "FV 4.2 V, sense active",
+        "VAC2": "ACM200 S5 ch0 at 3.50 V after the capture",
+        "INT": "monitoring",
+        "registers": "0x55 = 0x96 active"
+      },
+      "registerActivation": "retained; no further writes",
+      "actualNodeVoltages": {
+        "VBAT": "4.2 V tester-side",
+        "VAC2": "3.50 V tester-side (DFT step-4 value, held after the falling sweep)",
+        "INT": "DUT-driven indicator; the post-capture state is sampled and logged as context",
+        "BST": "not routed, not driven",
+        "SW": "not routed, not driven",
+        "note": "tester-side potentials are the forced/sensed values; a DUT-side potential that no signed input asserts is recorded UNKNOWN instead of assumed"
+      },
+      "differentialChecks": [
+        {
+          "check": "BST_actual - SW_actual",
+          "result": "NOT_APPLICABLE",
+          "reason": "no BST/SW node in this item"
+        }
+      ],
+      "bstSwCheck": {
+        "constraint": "0 V <= BST_actual - SW_actual <= 5 V",
+        "applicable": false,
+        "bstActual": "not routed and not driven by this item: no BST endpoint exists in the signed resource/configuration contract",
+        "swActual": "not routed and not driven by this item: no SW endpoint exists in the signed resource/configuration contract",
+        "differenceV": null,
+        "result": "NOT_APPLICABLE",
+        "proofBasis": [
+          "strategy contract endpointRequirements[] enumerates exactly three endpointIds (EP-VBAT / EP-VAC2 / EP-INT); no endpoint, resource allocation or relay group addresses BST or SW",
+          "the only path relays this method actuates are the strategy-owned closure {K19_VAC2, K70_VAC_F} (relayGroups[RG-2]); frozen relay numbers 19 and 70 carry no BST/SW token",
+          "the signed register delta contains only entertestmode and I2CWriteSameData(DEV_ADDR, 0x55, 0x96); no field of that delta addresses a BST or SW node (field expansion is UNRESOLVED)",
+          "scripts/verify_bst_sw_sequence.py derives its BST-SW target set from functions that contain a rampi_capv current ramp (lines 78-114) and prints an empty PASS when there is no such target (lines 497-499); TM109 is a voltage-threshold toggle item with no current ramp, so it is outside that gate's target set"
+        ],
+        "wouldBecomeApplicableIf": [
+          "a ruling binds the DTEST0_MUX = 22 observation pad (strategy conflict C-06 / open item OI-S-08) to a BST or SW node, or",
+          "any later signed revision routes, drives or observes a BST or SW node in this item;",
+          "if that happens this check must be re-proved for every phase with BST_actual and SW_actual both derived from the actual route and drive state (an SW node pulled by PMID must be counted at the actual PMID potential), per TEAM_ARCHITECTURE_V2.md section 4"
+        ]
+      },
+      "setpoint": "no further stimulus change",
+      "ramp": "none",
+      "delay": "none",
+      "sample": "per-site computed values from the two latched captures",
+      "exitCondition": "all valid sites have Rise, Fall and Hys computed and reported; invalid sites are reported invalid, never filled in",
+      "calculation": {
+        "VAC2_PRST_Rise": "latched VAC2 level (V) at the MP-6 observation transition",
+        "VAC2_PRST_Fall": "latched VAC2 level (V) at the MP-7 observation transition",
+        "VAC2_PRST_Hys": "(VAC2_PRST_Rise - VAC2_PRST_Fall) * 1e3  [mV]",
+        "formulaEvidence": [
+          "knowledge/references/L3-method/voltage-threshold-ate.md:30",
+          "L4-Golden-code/UVLO.cpp:82-84",
+          "knowledge/references/L3-method/UVLO.md:15"
+        ]
+      },
+      "onFailure": "MP-10",
+      "evidence": [
+        "L4-Golden-code/UVLO.cpp:80-95"
+      ]
+    },
+    {
+      "phaseId": "MP-9",
+      "name": "ordered power-down and safe end state",
+      "category": "power-down",
+      "purpose": "remove every source before any path relay opens, then prove the safe end state",
+      "prerequisite": "MP-8 finished",
+      "relayGroup": "RG-2 {K19,K70} still closed until ordered action 4; then the safe empty set",
+      "resourceState": {
+        "VBAT": "FXVIe_PLUS S3 ch5 FV 0 V, then instrument relay off",
+        "VAC2": "ACM200 S5 ch0 FV 0 V, then instrument relay off",
+        "INT": "monitor channel zeroed and detached",
+        "registers": "left in the state the item's DFT delta defined; no register write is performed during power-down because neither the DFT nor the signed contract declares an exit-test-mode action and the method must not invent one"
+      },
+      "registerActivation": "none (explicit decision, see resourceState.registers)",
+      "actualNodeVoltages": {
+        "VBAT": "ramped to 0 V tester-side before the path relays open; safe end state 0 V",
+        "VAC2": "ramped to 0 V tester-side before the path relays open; safe end state 0 V with the route open",
+        "INT": "not driven by the tester; DUT-determined, UNKNOWN, monitor detached",
+        "BST": "not routed, not driven",
+        "SW": "not routed, not driven",
+        "note": "tester-side potentials are the forced/sensed values; a DUT-side potential that no signed input asserts is recorded UNKNOWN instead of assumed"
+      },
+      "differentialChecks": [
+        {
+          "check": "BST_actual - SW_actual",
+          "result": "NOT_APPLICABLE",
+          "reason": "no BST/SW node in this item"
+        },
+        {
+          "check": "no live level is switched by a relay opening",
+          "result": "PASS by ordering: every source command reaches 0 V before the corresponding instrument relay and path relay are opened"
+        }
+      ],
+      "bstSwCheck": {
+        "constraint": "0 V <= BST_actual - SW_actual <= 5 V",
+        "applicable": false,
+        "bstActual": "not routed and not driven by this item: no BST endpoint exists in the signed resource/configuration contract",
+        "swActual": "not routed and not driven by this item: no SW endpoint exists in the signed resource/configuration contract",
+        "differenceV": null,
+        "result": "NOT_APPLICABLE",
+        "proofBasis": [
+          "strategy contract endpointRequirements[] enumerates exactly three endpointIds (EP-VBAT / EP-VAC2 / EP-INT); no endpoint, resource allocation or relay group addresses BST or SW",
+          "the only path relays this method actuates are the strategy-owned closure {K19_VAC2, K70_VAC_F} (relayGroups[RG-2]); frozen relay numbers 19 and 70 carry no BST/SW token",
+          "the signed register delta contains only entertestmode and I2CWriteSameData(DEV_ADDR, 0x55, 0x96); no field of that delta addresses a BST or SW node (field expansion is UNRESOLVED)",
+          "scripts/verify_bst_sw_sequence.py derives its BST-SW target set from functions that contain a rampi_capv current ramp (lines 78-114) and prints an empty PASS when there is no such target (lines 497-499); TM109 is a voltage-threshold toggle item with no current ramp, so it is outside that gate's target set"
+        ],
+        "wouldBecomeApplicableIf": [
+          "a ruling binds the DTEST0_MUX = 22 observation pad (strategy conflict C-06 / open item OI-S-08) to a BST or SW node, or",
+          "any later signed revision routes, drives or observes a BST or SW node in this item;",
+          "if that happens this check must be re-proved for every phase with BST_actual and SW_actual both derived from the actual route and drive state (an SW node pulled by PMID must be counted at the actual PMID potential), per TEAM_ARCHITECTURE_V2.md section 4"
+        ]
+      },
+      "setpoint": "all sources commanded to 0 V (VBAT and VAC2 in force-voltage at 0 V) before any path relay opens",
+      "orderedActions": [
+        {
+          "order": 1,
+          "action": "command VAC2 (ACM200 S5 ch0) to 0 V while its instrument relay stays on"
+        },
+        {
+          "order": 2,
+          "action": "command VBAT (FXVIe_PLUS S3 ch5) to 0 V while its instrument relay stays on"
+        },
+        {
+          "order": 3,
+          "action": "wait >= 200 us for the levels to settle at 0 V"
+        },
+        {
+          "order": 4,
+          "action": "open the RG-2 path relays K19_VAC2_S1 and K70_VAC_F_S1 (safe empty relay set)"
+        },
+        {
+          "order": 5,
+          "action": "turn the instrument relays off and zero/detach the ACM200 ch15 monitor"
+        },
+        {
+          "order": 6,
+          "action": "read back every source level and relay state"
+        }
+      ],
+      "ramp": "monotonic decrease to 0 V",
+      "delay": ">= 200 us between reaching 0 V and opening the path relays (L4-Golden-code/UVLO.cpp:74-78)",
+      "sample": "read back source levels and relay states for the end-state record",
+      "exitCondition": "both rails read 0 V and all path relays read un-actuated with the monitor off; a mismatch leaves the item failed and goes to MP-10",
+      "onFailure": "MP-10",
+      "evidence": [
+        "L4-Golden-code/UVLO.cpp:74-79",
+        "L4-Golden-code/UVLO.md:24"
+      ]
+    },
+    {
+      "phaseId": "MP-10",
+      "name": "exception cleanup",
+      "category": "cleanup",
+      "purpose": "guarantee a safe terminal state on any failure, abort or timeout, with the failing context preserved",
+      "prerequisite": "any phase reports a failure or an abort, or an exit condition is not met",
+      "relayGroup": "forced to the safe empty set after the sources are zeroed",
+      "resourceState": {
+        "VBAT": "forced FV 0 V, then instrument relay off",
+        "VAC2": "forced FV 0 V, then instrument relay off",
+        "INT": "monitor zeroed and detached",
+        "registers": "left as-is; no invented writes"
+      },
+      "registerActivation": "none",
+      "actualNodeVoltages": {
+        "VBAT": "forced to 0 V tester-side",
+        "VAC2": "forced to 0 V tester-side",
+        "INT": "not driven by the tester",
+        "BST": "not routed, not driven",
+        "SW": "not routed, not driven",
+        "note": "tester-side potentials are the forced/sensed values; a DUT-side potential that no signed input asserts is recorded UNKNOWN instead of assumed"
+      },
+      "differentialChecks": [
+        {
+          "check": "BST_actual - SW_actual",
+          "result": "NOT_APPLICABLE",
+          "reason": "no BST/SW node in this item"
+        },
+        {
+          "check": "no source is left driving after cleanup",
+          "result": "PASS by construction: the cleanup repeats the MP-9 order unconditionally"
+        }
+      ],
+      "bstSwCheck": {
+        "constraint": "0 V <= BST_actual - SW_actual <= 5 V",
+        "applicable": false,
+        "bstActual": "not routed and not driven by this item: no BST endpoint exists in the signed resource/configuration contract",
+        "swActual": "not routed and not driven by this item: no SW endpoint exists in the signed resource/configuration contract",
+        "differenceV": null,
+        "result": "NOT_APPLICABLE",
+        "proofBasis": [
+          "strategy contract endpointRequirements[] enumerates exactly three endpointIds (EP-VBAT / EP-VAC2 / EP-INT); no endpoint, resource allocation or relay group addresses BST or SW",
+          "the only path relays this method actuates are the strategy-owned closure {K19_VAC2, K70_VAC_F} (relayGroups[RG-2]); frozen relay numbers 19 and 70 carry no BST/SW token",
+          "the signed register delta contains only entertestmode and I2CWriteSameData(DEV_ADDR, 0x55, 0x96); no field of that delta addresses a BST or SW node (field expansion is UNRESOLVED)",
+          "scripts/verify_bst_sw_sequence.py derives its BST-SW target set from functions that contain a rampi_capv current ramp (lines 78-114) and prints an empty PASS when there is no such target (lines 497-499); TM109 is a voltage-threshold toggle item with no current ramp, so it is outside that gate's target set"
+        ],
+        "wouldBecomeApplicableIf": [
+          "a ruling binds the DTEST0_MUX = 22 observation pad (strategy conflict C-06 / open item OI-S-08) to a BST or SW node, or",
+          "any later signed revision routes, drives or observes a BST or SW node in this item;",
+          "if that happens this check must be re-proved for every phase with BST_actual and SW_actual both derived from the actual route and drive state (an SW node pulled by PMID must be counted at the actual PMID potential), per TEAM_ARCHITECTURE_V2.md section 4"
+        ]
+      },
+      "setpoint": "all sources forced to 0 V regardless of the failing phase",
+      "orderedActions": [
+        {
+          "order": 1,
+          "action": "force VAC2 to 0 V and then VBAT to 0 V regardless of the phase that failed"
+        },
+        {
+          "order": 2,
+          "action": "wait >= 200 us"
+        },
+        {
+          "order": 3,
+          "action": "open all path relays (safe empty set) and turn the instrument relays off"
+        },
+        {
+          "order": 4,
+          "action": "log phaseId, site list, last applied VAC2/VBAT levels, last observed INT states, relay state, register state and the sweep trace if a capture failed"
+        },
+        {
+          "order": 5,
+          "action": "return the item as failed; never continue to a later phase with a partially valid capture"
+        }
+      ],
+      "ramp": "forced monotonic decrease to 0 V",
+      "delay": ">= 200 us before the relays open",
+      "sample": "record the cleanup read-backs in the failure log",
+      "exitCondition": "the safe end state is proven and the failure context is logged",
+      "onFailure": "none (terminal)",
+      "evidence": [
+        "L4-Golden-code/UVLO.cpp:74-79",
+        "TEAM_ARCHITECTURE_V2.md test-method-expert section 3 step 5"
+      ]
+    }
+  ],
+  "measurementPlan": {
+    "forceMeasureEndpoints": [
+      {
+        "endpoint": "VAC2",
+        "resource": "ACM200 S5 ch0, ports S5_ACM200_FH0 (force) and S5_ACM200_SH0 (sense)",
+        "mode": "force voltage, Kelvin sense on the same channel",
+        "role": "swept stimulus whose applied level is the measured quantity at the observation transition"
+      },
+      {
+        "endpoint": "VBAT",
+        "resource": "FXVIe_PLUS S3 ch5, ports S3_FXVIe_PLUS_FH5 (force) and S3_FXVIe_PLUS_SH5 (sense)",
+        "mode": "force voltage, Kelvin sense",
+        "role": "static initial-condition rail held at 4.2 V for the whole item"
+      },
+      {
+        "endpoint": "INT",
+        "resource": "ACM200 S5 ch15, ports S5_ACM200_FH15 (force) and S5_ACM200_SH15 (sense)",
+        "mode": "high-impedance comparator-style observation, edge latched against the applied VAC2 level (family practice FI = 0, L4-Golden-code/UVLO.cpp:30)",
+        "role": "observation endpoint"
+      }
+    ],
+    "range": {
+      "requirement": "the VAC2 channel must cover 0-4.40 V with a resolution step of 10 mV; the VBAT channel must cover 4.2 V; both must be able to source the DFT rail levels without entering compliance",
+      "rangeEnum": "implementation-owned: the concrete range enumeration is a code decision (ate-implementer) and is not fixed here; the family Golden uses the 10 V class for the swept rail and the 20 V class for the supply (L4-Golden-code/UVLO.cpp:28-29,37)",
+      "currentMagnitude": "UNRESOLVED — DFT labels no vset/iset argument position (strategy OI-S-06); no current magnitude or limit is asserted by this contract, and the implementation must record the value it uses",
+      "basis": "no numbered DFT argument is interpreted here"
+    },
+    "sweepOrStep": {
+      "form": "two-segment ramp with latched edge capture, the threshold-family standard form (L3-method/UVLO.md:14, L4-Golden-code/UVLO.cpp:37-38)",
+      "segments": [
+        {
+          "segment": "rising",
+          "phase": "MP-6",
+          "startV": 3.8,
+          "stopV": 4.4,
+          "stepV": 0.01,
+          "slew": "<= 1 V/ms",
+          "trigger": "TRIG_RISING",
+          "result": "VAC2_PRST_Rise (V)"
+        },
+        {
+          "segment": "falling",
+          "phase": "MP-7",
+          "startV": 4.4,
+          "stopV": 3.5,
+          "stepV": 0.01,
+          "slew": "<= 1 V/ms",
+          "trigger": "TRIG_FALLING",
+          "result": "VAC2_PRST_Fall (V)"
+        }
+      ],
+      "envelopeBasis": "the four DFT vset values 3.8 / 4.4 / 4.1 / 3.5 bound both segments; no voltage outside that span is applied",
+      "fallback": "discrete-step measurement of the same four DFT levels, used only if a ruling forbids the ramp form; it brackets the thresholds instead of measuring them and needs its own limit ruling"
+    },
+    "sample": {
+      "points": "one latched capture at each observation transition per valid site; the pre-sweep and post-sweep observation states are additionally recorded as context",
+      "dwell": ">= 10 us per sweep step (diff-pair-spec.md:61 practice); >= 1 ms after a level change or a register write; >= 3 ms after a relay change",
+      "averaging": "no averaging or filtering that could move the latched edge",
+      "invalidCapture": "zero transitions, more than one transition, or an undefined observation state invalidates the site and routes the item to MP-10; the value is never defaulted to 0 or interpolated"
+    },
+    "calculation": {
+      "VAC2_PRST_Rise": "applied VAC2 voltage (V) latched at the MP-6 transition",
+      "VAC2_PRST_Fall": "applied VAC2 voltage (V) latched at the MP-7 transition",
+      "VAC2_PRST_Hys": "(VAC2_PRST_Rise - VAC2_PRST_Fall) * 1e3 [mV]",
+      "perSite": "each formula is evaluated per site inside the per-site loop; no cross-site value is substituted",
+      "evidence": [
+        "knowledge/references/L3-method/voltage-threshold-ate.md:30",
+        "L4-Golden-code/UVLO.cpp:82-84"
+      ]
+    },
+    "limit": "see limitPlan",
+    "siteHandling": {
+      "arrays": "per-site arrays sized with SITE_NUM as defined in the project StdAfx.h (site-num-rule.md:7-9)",
+      "loop": "FOR_EACH_VALID_SITE for the computation and the result publication",
+      "partialSites": "a site without a valid capture on either segment is reported invalid; sites are never filled from a neighbour or from a global average",
+      "publication": "SetTestResult(site, 0, value) once per parameter per site (L4-Golden-code/UVLO.cpp:86-94)"
+    }
+  },
+  "limitPlan": {
+    "parameterBaseName": "VAC2_PRST",
+    "parameters": [
+      {
+        "name": "VAC2_PRST_Rise",
+        "unit": "V",
+        "nominal": 4.15,
+        "source": "DFT ExpectValue text 'rising vth 4.15V, hys 0.35V', verbatim through the signed strategy contract",
+        "class": "FACT (DFT text)",
+        "toleranceStatus": "UNRESOLVED — the DFT states no numeric minimum, maximum or pass-fail bound (strategy TM109-OI-2)",
+        "judgement": "PENDING_LIMIT_RULING",
+        "comparisonWhenRuled": "Rise within [nominal - tol, nominal + tol]"
+      },
+      {
+        "name": "VAC2_PRST_Fall",
+        "unit": "V",
+        "nominal": 3.8,
+        "source": "DERIVED = Rise - Hys = 4.15 - 0.35",
+        "class": "DERIVED (the DFT states no falling value: strategy TM109-OI-5)",
+        "judgement": "LOG_ONLY_PENDING_RULING",
+        "comment": "published as a computed result and as log context, but not used for a pass/fail decision until a ruling supplies a falling limit"
+      },
+      {
+        "name": "VAC2_PRST_Hys",
+        "unit": "mV",
+        "nominal": 350,
+        "source": "DFT ExpectValue text 'hys 0.35V' = 350 mV (the family stores Hys in mV)",
+        "class": "FACT (DFT text) with a unit conversion",
+        "toleranceStatus": "UNRESOLVED (strategy TM109-OI-2)",
+        "judgement": "PENDING_LIMIT_RULING"
+      }
+    ],
+    "rules": [
+      "the method does not invent a tolerance band; an unrulled parameter is computed, logged and published but not judged",
+      "capture uncertainty is +/- 1 sweep step = +/- 10 mV per threshold and up to +/- 20 mV on the derived Hys; if a ruled band is narrower than that, the sweep step must be reduced until the uncertainty fits, and the step used must be recorded",
+      "a site with an invalid capture is failed or flagged as invalid; it is never judged against the limit with a substituted value",
+      "no limit is derived from the Golden, from chip general knowledge or from experience"
+    ],
+    "unitConvention": {
+      "Rise": "V",
+      "Fall": "V",
+      "Hys": "mV (Rise - Fall) * 1e3",
+      "basis": "knowledge/references/L3-method/voltage-threshold-ate.md:30 and L4-Golden-code/UVLO.cpp:82-84; the OVP Golden stores Hys in V, so the convention used here is stated explicitly"
+    }
+  },
+  "powerDownPlan": {
+    "ordered": true,
+    "actions": [
+      {
+        "order": 1,
+        "action": "command VAC2 (ACM200 S5 ch0) to 0 V while its instrument relay stays on"
+      },
+      {
+        "order": 2,
+        "action": "command VBAT (FXVIe_PLUS S3 ch5) to 0 V while its instrument relay stays on"
+      },
+      {
+        "order": 3,
+        "action": "wait >= 200 us for the levels to settle at 0 V"
+      },
+      {
+        "order": 4,
+        "action": "open the RG-2 path relays K19_VAC2_S1 and K70_VAC_F_S1 (safe empty relay set)"
+      },
+      {
+        "order": 5,
+        "action": "turn the instrument relays off and zero/detach the ACM200 ch15 monitor"
+      },
+      {
+        "order": 6,
+        "action": "read back every source level and relay state"
+      }
+    ],
+    "actualNodeVoltages": {
+      "VBAT": "ramped to 0 V tester-side before the path relays open; safe end state 0 V",
+      "VAC2": "ramped to 0 V tester-side before the path relays open; safe end state 0 V with the route open",
+      "INT": "not driven by the tester; DUT-determined, UNKNOWN, monitor detached",
+      "BST": "not routed, not driven",
+      "SW": "not routed, not driven",
+      "note": "tester-side potentials are the forced/sensed values; a DUT-side potential that no signed input asserts is recorded UNKNOWN instead of assumed"
+    },
+    "differentialChecks": [
+      {
+        "check": "BST_actual - SW_actual",
+        "result": "NOT_APPLICABLE",
+        "reason": "no BST/SW node in this item"
+      },
+      {
+        "check": "no live level is switched by a relay opening",
+        "result": "PASS by ordering: every source command reaches 0 V before the corresponding instrument relay and path relay are opened"
+      }
+    ],
+    "bstSwCheck": {
+      "constraint": "0 V <= BST_actual - SW_actual <= 5 V",
+      "applicable": false,
+      "bstActual": "not routed and not driven by this item: no BST endpoint exists in the signed resource/configuration contract",
+      "swActual": "not routed and not driven by this item: no SW endpoint exists in the signed resource/configuration contract",
+      "differenceV": null,
+      "result": "NOT_APPLICABLE",
+      "proofBasis": [
+        "strategy contract endpointRequirements[] enumerates exactly three endpointIds (EP-VBAT / EP-VAC2 / EP-INT); no endpoint, resource allocation or relay group addresses BST or SW",
+        "the only path relays this method actuates are the strategy-owned closure {K19_VAC2, K70_VAC_F} (relayGroups[RG-2]); frozen relay numbers 19 and 70 carry no BST/SW token",
+        "the signed register delta contains only entertestmode and I2CWriteSameData(DEV_ADDR, 0x55, 0x96); no field of that delta addresses a BST or SW node (field expansion is UNRESOLVED)",
+        "scripts/verify_bst_sw_sequence.py derives its BST-SW target set from functions that contain a rampi_capv current ramp (lines 78-114) and prints an empty PASS when there is no such target (lines 497-499); TM109 is a voltage-threshold toggle item with no current ramp, so it is outside that gate's target set"
+      ],
+      "wouldBecomeApplicableIf": [
+        "a ruling binds the DTEST0_MUX = 22 observation pad (strategy conflict C-06 / open item OI-S-08) to a BST or SW node, or",
+        "any later signed revision routes, drives or observes a BST or SW node in this item;",
+        "if that happens this check must be re-proved for every phase with BST_actual and SW_actual both derived from the actual route and drive state (an SW node pulled by PMID must be counted at the actual PMID potential), per TEAM_ARCHITECTURE_V2.md section 4"
+      ]
+    },
+    "safeEndState": "VAC2 and VBAT at 0 V, the RG-2 path relays K19 and K70 open, all sources with their instrument relays off, the ACM200 ch15 monitor detached, and the register state left exactly as the DFT delta defined it",
+    "registerPolicy": "no register write is performed in the power-down: neither the DFT nor the signed contract declares an exit-test-mode action, and inventing one would be a change outside this role's boundary",
+    "exceptionPath": "MP-10 repeats the same order unconditionally and adds the failure context to the log"
+  },
+  "logPlan": {
+    "rawValues": [
+      "applied VAC2 level at each latched transition",
+      "pre-sweep observation state at 3.80 V",
+      "post-sweep observation state at 4.40 V and at 3.50 V",
+      "VBAT sense value",
+      "relay state read-backs (K19, K70, K8_PD3, K102_PC3, K18, K20, K68)",
+      "I2C write status for each register action",
+      "sweep step and dwell actually used"
+    ],
+    "calculatedValues": [
+      "VAC2_PRST_Rise (V)",
+      "VAC2_PRST_Fall (V)",
+      "VAC2_PRST_Hys (mV)"
+    ],
+    "judgement": [
+      "the judged value with its limit and tolerance when a ruling exists",
+      "the explicit PENDING_LIMIT_RULING marker while it does not, so a reader can never mistake an unjudged value for a passed one"
+    ],
+    "unit": {
+      "Rise": "V",
+      "Fall": "V",
+      "Hys": "mV"
+    },
+    "precision": {
+      "Rise": "the sweep step used (nominal 0.01 V)",
+      "Fall": "the sweep step used (nominal 0.01 V)",
+      "Hys": "mV with the same step resolution"
+    },
+    "context": [
+      "TM / item id / function label",
+      "site index",
+      "phaseId of the failing phase",
+      "last applied VAC2 and VBAT levels",
+      "last observed INT states",
+      "relay and register state",
+      "the sweep trace when a capture failed"
+    ],
+    "publication": "SetTestResult(site, 0, value) per parameter per site (L4-Golden-code/UVLO.cpp:86-94)",
+    "failureContextRule": "an invalid capture or an aborted phase must leave the last applied levels, the observed states and the phaseId in the log before the cleanup returns"
+  },
+  "conflicts": [
+    {
+      "id": "CF-M1",
+      "severity": "low",
+      "topic": "trigger-edge convention for a threshold ramp",
+      "fact": "knowledge/references/L3-method/voltage-threshold-ate.md:26,32 says an ascending ramp is captured with a falling-edge trigger (TRIG_FALLING) while knowledge/standards/toggle-awg-rules.md:30 (user-confirmed 2026-08-27) and the family Golden L4-Golden-code/UVLO.cpp:37-38 use TRIG_RISING for the ascending sweep and TRIG_FALLING for the descending sweep",
+      "adopted": "TRIG_RISING on the ascending sweep capturing VAC2_PRST_Rise and TRIG_FALLING on the descending sweep capturing VAC2_PRST_Fall",
+      "basis": "evidence priority: the user-confirmed active standard plus the executable family Golden outrank the other standard; the parameter naming convention (Rise from the ascending sweep, Hys = Rise - Fall) is identical in both sources, so only the trigger token is affected",
+      "status": "registered and resolved by evidence priority; a user ruling would supersede it",
+      "impactIfWrong": "the two captures would be swapped, which the naming convention would then expose as a negative Hys"
+    },
+    {
+      "id": "CF-M2",
+      "severity": "none",
+      "topic": "no new conflict with the signed strategy contract",
+      "fact": "this contract found no resource, route, relay-group or register contradiction; the strategy's own conflicts C-01 to C-07 and its open items are carried forward unchanged",
+      "status": "registered"
+    }
+  ],
+  "routedFindings": [
+    {
+      "id": "RF-01",
+      "severity": "high",
+      "routedTo": "test-strategy-architect",
+      "closingSource": "schematic-expert (relay table / path classification) or a user ruling",
+      "topic": "VBAT Cap2 / 稳压 role relay identity is absent from the signed boundary",
+      "fact": "the Cap2 rule closes the stabilising capacitor of any powered PIN by default (knowledge/standards/relay-checklist.md:25-42, FR-001: 'PIN 加电就需要其 Cap 稳压电容, 默认闭'), with the DALI family listed as K13_VBAT_Cap / K21_VAC_Cap / K0_VCC_Cap / K5_VBUS_Cap. VBAT is powered at 4.2 V for the whole item, so its Cap relay is expected closed; the signed strategy contract's RG-1 closure is empty and records the VBAT Cap2 as UNRESOLVED because no relay in the frozen DALI table carries a Cap name or number (strategy conflict C-04 / open item OI-S-02)",
+      "methodImpact": "the MP-3 VBAT rail is established without the relay the rule expects; the phases and measurements are otherwise unaffected, and the rail level is verified by the sense leg",
+      "note": "VAC2 is the swept source, so the same rule removes its Cap rather than closing it; the VAC2 side therefore needs no supplementation",
+      "questionForOwner": "which frozen relay instance (number and instance name) is the VBAT stabilising capacitor of the DALI board, or is the VBAT Cap relay explicitly waived for TM109?",
+      "blockingForCodeWrite": "yes for a faithful FR-001 closure set; no for the electrical method itself",
+      "class": "定点补证"
+    },
+    {
+      "id": "RF-02",
+      "severity": "high",
+      "routedTo": "test-strategy-architect",
+      "closingSource": "schematic-expert (frozen relay table / column-11 path classification) or a user ruling",
+      "topic": "the Toggle observation closure for the INT endpoint is empty in the signed boundary",
+      "fact": "knowledge/standards/toggle-awg-rules.md:34 states that a Toggle observation needs a two-relay closure, naming an INT/SDA observation relay and a pull-up relay; knowledge/hardware/pin-resource-map.md:42-43 names K43_SDA_INT and K58_INT_PU, and relay-checklist.md:60 requires the pull-up relay to be closed for an open-drain observation. The signed strategy contract's RG-3 closure is empty, its functionalRelays record the INT pull-up as UNRESOLVED, and conflict C-04 shows those knowledge-layer names and numbers do not exist in the frozen DALI relay table. The INT pad structure (open-drain versus push-pull) is not asserted by any signed input (knowledge/references/L1-chip/UVLO.md:21)",
+      "methodImpact": "this item's only measurement is the observation of the INT indicator transition; if the pad is open-drain and no pull-up can be closed, the transition may not be observable and MP-5 to MP-7 cannot produce a valid capture",
+      "conditional": "closes with no contract change if the pad is proven push-pull; otherwise the pull-up instance must be supplied by the strategy owner and RG-3's closure amended by that owner (this role must not amend it)",
+      "questionForOwner": "is the INT observation pad push-pull, and if it is open-drain which frozen relay instance provides its pull-up for TM109?",
+      "blockingForCodeWrite": "yes — the observation closure must be known before the item is coded",
+      "class": "定点补证"
+    },
+    {
+      "id": "RF-03",
+      "severity": "medium",
+      "routedTo": "user ruling (with test-strategy-architect as the artifact owner)",
+      "closingSource": "a DFT/register artifact binding DTEST0_MUX = 22 to a DUT pin, or a user ruling",
+      "topic": "the observation pad identity is unresolved (carried strategy C-06 / OI-S-08)",
+      "fact": "the DFT Check column carries the token INT while the same row's Software_initial writes field[(EN_DTEST0,1),(DTEST0_MUX,22)]; no frozen deliverable binds that mux value to a DUT pin, and the strategy contract states it allocates reachable resources for the INT pin without asserting which pad carries the indicator signal",
+      "methodImpact": "the whole measurement assumes the observed pad is the indicator the item's DFT check token names; if it is not, the capture is meaningless even though every phase executes correctly",
+      "blockingForCodeWrite": "no for the code structure; yes for confidence in the result",
+      "class": "定点补证"
+    },
+    {
+      "id": "RF-04",
+      "severity": "low",
+      "routedTo": "test-strategy-architect (documentation only)",
+      "closingSource": "the strategy owner",
+      "topic": "stale wording inside the signed contract's open item OI-S-03",
+      "fact": "openItems[OI-S-03].description still says the INT endpoint's source table, slot and channel are 'recorded UNRESOLVED', while revision 2 of the same contract selects them (resourceAllocation[RA-3].selectionState = SELECTED, ACM200 S5 ch15) and revision.reason states that the captain correction made INT selection strategy-owned",
+      "methodImpact": "none for this contract: the operative revision-2 fields, the resourceSummary and handoff.usableBoundaries all agree on ACM200 S5 ch15, so this is a wording inconsistency and not two conflicting boundaries",
+      "action": "recorded only; the signed artifact is not edited by this role",
+      "class": "documentation finding"
+    }
+  ],
+  "evidence": [
+    {
+      "file": "team/artifacts/tm109-direct-trial/strategy/tm109-resource-config-contract.json",
+      "sha256": "a22502ece50f321312a466b77cfef5a40efe8f9a41995f7ee8af3b44048107e2",
+      "locator": "signed strategy deliverable revision 2 (endpointRequirements, resourceAllocation, relayGroups, registerDelta, conflicts, openItems, handoff)",
+      "class": "signed upstream contract (the only resource/route/relay/register authority)"
+    },
+    {
+      "file": "team/artifacts/tm109-direct-trial/strategy/deliverable-ready.json",
+      "sha256": "356312954f2b27ce9e0a4dcc3784d01f0eae601db463f07c0b12e8aad40413cb",
+      "locator": "event deliverable_ready; fromRole test-strategy-architect; nextRole test-method-expert; taskId TM109-STRATEGY-R1",
+      "class": "signed handoff gate"
+    },
+    {
+      "file": "knowledge/references/L3-method/voltage-threshold-ate.md",
+      "locator": "9-34",
+      "class": "active standard (threshold method, Hys formula)"
+    },
+    {
+      "file": "knowledge/references/L3-method/UVLO.md",
+      "locator": "5-19",
+      "class": "active standard (framework and naming)"
+    },
+    {
+      "file": "knowledge/references/L1-chip/UVLO.md",
+      "locator": "16-22",
+      "class": "chip knowledge (indicator pin structure)"
+    },
+    {
+      "file": "knowledge/standards/toggle-awg-rules.md",
+      "locator": "12-34",
+      "class": "active standard (two-segment ramp, trigger convention, toggle relays)"
+    },
+    {
+      "file": "knowledge/standards/relay-checklist.md",
+      "locator": "6-13, 25-42, 44-50, 52-69",
+      "class": "active standard (closed loop, Cap2, anti-short, path classification)"
+    },
+    {
+      "file": "knowledge/standards/register-config.md",
+      "locator": "12-22, 40",
+      "class": "active standard (unlock rule and scope boundary)"
+    },
+    {
+      "file": "knowledge/standards/site-num-rule.md",
+      "locator": "7-9",
+      "class": "active standard (SITE_NUM)"
+    },
+    {
+      "file": "knowledge/standards/context-management.md",
+      "locator": "92-102",
+      "class": "active standard (Golden usage discipline)"
+    },
+    {
+      "file": "knowledge/references/L4-Golden-code/UVLO.cpp",
+      "locator": "whole file (98 lines)",
+      "class": "verified same-family Golden (framework evidence, not a resource source)"
+    },
+    {
+      "file": "knowledge/references/L4-Golden-code/UVLO.md",
+      "locator": "3, 16-28",
+      "class": "Golden annotation"
+    },
+    {
+      "file": "knowledge/references/L4-Golden-code/OVP.cpp",
+      "locator": "registered by voltage-threshold-ate.md:34",
+      "class": "family corroboration"
+    },
+    {
+      "file": "knowledge/references/L3-method/diff-pair-spec.md",
+      "locator": "38-56",
+      "class": "active standard (sweep practice, single-ended capture semantics)"
+    },
+    {
+      "file": "knowledge/hardware/pin-resource-map.md",
+      "locator": "5-19, 32-45",
+      "class": "quick reference; its relay names conflict with the frozen table (C-04) and are used only for RF-02"
+    },
+    {
+      "file": "scripts/verify_bst_sw_sequence.py",
+      "locator": "78-114, 497-499",
+      "class": "project deterministic gate (BST-SW target derivation)"
+    }
+  ],
+  "openItems": [
+    {
+      "id": "MF-01",
+      "type": "functional_relay_identity_absent",
+      "kind": "定点补证",
+      "severity": "high",
+      "description": "VBAT stabilising capacitor (Cap2 / 稳压) role relay identity is absent from the signed boundary; see routed finding RF-01",
+      "owner": "test-strategy-architect with schematic-expert as the closing source",
+      "exactSource": "the frozen DALI relay table classified by the column-11 稳压 rule (PIN -> capacitor >= 100 nF -> relay), or a schematic-expert statement",
+      "blocking": true
+    },
+    {
+      "id": "MF-02",
+      "type": "observation_closure_absent",
+      "kind": "定点补证",
+      "severity": "high",
+      "description": "the Toggle observation closure for INT is empty (no pull-up identity, pad structure unknown); see routed finding RF-02",
+      "owner": "test-strategy-architect with schematic-expert as the closing source",
+      "exactSource": "the INT pin's column-11 classification (上拉-固定5V / 上拉-源表 / push-pull) at the frozen revision, or a user ruling",
+      "blocking": true
+    },
+    {
+      "id": "MF-03",
+      "type": "observation_pad_identity",
+      "kind": "定点补证",
+      "severity": "medium",
+      "description": "DTEST0_MUX = 22 is not bound to a DUT pin by any frozen deliverable (strategy C-06 / OI-S-08)",
+      "owner": "user ruling or the strategy owner",
+      "exactSource": "a DFT/register-map artifact binding the mux value to a DUT pin, or a user ruling",
+      "blocking": false
+    },
+    {
+      "id": "MF-04",
+      "type": "missing_numeric_limit",
+      "kind": "定点补证",
+      "severity": "high",
+      "description": "no numeric pass/fail bound or tolerance exists for the rising threshold or the hysteresis (strategy TM109-OI-2)",
+      "owner": "user ruling",
+      "exactSource": "the numeric minimum, maximum or tolerance for VAC2_PRST_Rise and VAC2_PRST_Hys",
+      "blocking": false,
+      "note": "values are computed and published but not judged until ruled"
+    },
+    {
+      "id": "MF-05",
+      "type": "unstated_second_edge_limit",
+      "kind": "定点补证",
+      "severity": "low",
+      "description": "the DFT states no falling threshold value (strategy TM109-OI-5); this contract publishes a derived Falling = Rise - Hys = 3.80 V for logging only",
+      "owner": "user ruling",
+      "exactSource": "the falling-threshold limit, if the decreasing steps are judged",
+      "blocking": false
+    },
+    {
+      "id": "MF-06",
+      "type": "missing_explicit_timing",
+      "kind": "定点补证",
+      "severity": "medium",
+      "description": "the DFT states no ramp rate, delay, settle time or sampling window (strategy TM109-OI-3); this contract sets them as method decisions (1 V/ms, 10 us per step, 1 ms after a level change, 3 ms after a relay change) and records that the PRST deglitch time is not asserted",
+      "owner": "method (values) with a user ruling confirming the DFT silence",
+      "exactSource": "the PRST deglitch/debounce time and any DFT-stated timing, if they exist",
+      "blocking": false
+    },
+    {
+      "id": "MF-07",
+      "type": "unlabelled_dft_arguments",
+      "kind": "定点补证",
+      "severity": "medium",
+      "description": "no DFT argument position is labelled for vset/is et, so no current magnitude, clamp or range capability check can be completed (strategy OI-S-06); this contract asserts no current value",
+      "owner": "user ruling",
+      "exactSource": "a DFT argument-semantics key or a vset argument ruling",
+      "blocking": false
+    },
+    {
+      "id": "MF-08",
+      "type": "documentation_inconsistency",
+      "kind": "documentation finding",
+      "severity": "low",
+      "description": "strategy open item OI-S-03's description still calls the INT endpoint unresolved although revision 2 selected it; see routed finding RF-04",
+      "owner": "test-strategy-architect",
+      "exactSource": "a wording correction in the strategy artifact",
+      "blocking": false
+    },
+    {
+      "id": "MF-09",
+      "type": "uninterpreted_dft_token",
+      "kind": "定点补证",
+      "severity": "low",
+      "description": "the DFT Type column reads 'Toggle, MV'; the MV token is not interpreted by any signed input and this contract treats the item as a toggle/threshold item (projectType normal) per the strategy classification",
+      "owner": "user ruling if the token carries a method meaning",
+      "exactSource": "the DFT type-token legend",
+      "blocking": false
+    }
+  ],
+  "handoff": {
+    "nextRole": "ate-implementer",
+    "requiredGate": "test-method-expert deliverable_ready (this contract) per team/ROLE_ROUTING.md:45",
+    "usableBoundaries": [
+      "phases MP-1 to MP-10 with their relay groups, resource states, register activation, actual node voltages, setpoints, ramps, delays and exit conditions",
+      "the two-segment ramp measurement scheme and the Hys calculation",
+      "the limit plan with its explicit PENDING_LIMIT_RULING markers",
+      "the ordered power-down and the exception cleanup",
+      "the log plan"
+    ],
+    "blockingItems": [
+      "MF-01",
+      "MF-02"
+    ],
+    "nonBlockingItems": [
+      "MF-03",
+      "MF-04",
+      "MF-05",
+      "MF-06",
+      "MF-07",
+      "MF-08",
+      "MF-09"
+    ],
+    "returnRule": "return to test-strategy-architect for MF-01 / MF-02 (relay identities) and to the user for MF-03 / MF-04 / MF-05 / MF-07; this contract must not be repaired by the implementation role, which may not select a relay, a register value or a limit"
+  },
+  "charterBoundary": {
+    "decided": [
+      "phase sequence and prerequisites",
+      "actual node voltages per phase",
+      "the two-segment ramp measurement scheme with its step, slew, dwell and trigger",
+      "the Hys calculation and unit convention",
+      "limit usage and the explicit unjudged markers",
+      "the ordered power-down and the exception cleanup",
+      "the log plan"
+    ],
+    "notDecided": [
+      "source allocation, routes, relay groups, relay states and register values (signed strategy contract)",
+      "the identity of the VBAT Cap2 relay and of the INT pull-up relay (RF-01, RF-02)",
+      "the observation pad identity (RF-03)",
+      "the numeric tolerance band (MF-04)",
+      "the concrete SDK/API calls, range enumerations and code structure (ate-implementer)"
+    ],
+    "strategyArtifactsUnmodified": "no file under team/artifacts/tm109-direct-trial/strategy was written, edited or regenerated by this role; the strategy contract sha256 re-verified after this contract was written is unchanged"
+  }
+}

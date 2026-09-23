@@ -1,0 +1,28 @@
+{
+  "runId": "baseline-20260916",
+  "capturedAt": "2026-09-16T13:28:00+08:00",
+  "targetRoot": "D:/PROJECT6-DALI/ForCodexDebug",
+  "plaintextSourceHashes": {
+    "source/test.cpp": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+    "source/sub.cpp": "e86d49bef7ae725106311d8205df6dbc11184c7a0920eeaed416a515ac391470",
+    "source/StdAfx.h": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6"
+  },
+  "items": [
+    {"tm": "TM000", "state": "present", "symbol": "TM000_IQ_STANDBY", "lineHint": 1358},
+    {"tm": "TM001", "state": "present", "symbol": "TM001_IIN_SUSPEND", "lineHint": 1432},
+    {"tm": "TM102", "state": "present", "symbol": "TM102_HSKP_LP_ATEST0", "lineHint": 1730},
+    {"tm": "TM103", "state": "present", "symbol": "TM103_HSKP_LP_HR_0P5U", "lineHint": 1802},
+    {"tm": "TM108", "state": "present", "symbol": "TM108_HSKP_VAC1_PRST", "lineHint": 2155},
+    {"tm": "TM109", "state": "present", "symbol": "TM109_HSKP_VAC2_PRST", "lineHint": 2233},
+    {"tm": "TM135", "state": "present-grouped", "symbol": "Trim_BG_RES_DIV", "lineHint": 3924},
+    {"tm": "TM600", "state": "absent", "evidence": ["project/DALI/input/DFT.csv:90", "docs/PROGRESS.md:1108"]},
+    {"tm": "TM601", "state": "absent", "evidence": ["project/DALI/input/DFT.csv:98", "project/DALI/_archive/_dump_OVERVIEW.txt:994"]},
+    {"tm": "TM1205", "state": "present", "symbol": "TM1205_TRX_BST_UV_GD", "lineHint": 8766}
+  ],
+  "gateBaseline": {
+    "green": ["material-audit", "material", "material-status", "awg", "meta", "smoke", "input-sync", "relay-trace", "merge", "bst-sw", "path-def"],
+    "knownRed": ["cbit"],
+    "newRed": []
+  },
+  "releaseBuild": {"exitCode": 0, "errors": 0, "warnings": 0}
+}

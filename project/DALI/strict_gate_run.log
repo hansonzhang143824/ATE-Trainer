@@ -1,0 +1,63 @@
+======================================================================
+Component-Statistic — SCH-DALI.NET 原理图解析
+规范: 原理图解析基本规则.txt / knowledge/hardware/schematic-parsing.md
+======================================================================
+
+## 门控检查结果
+  [PASS] G1 PIN成对检查
+  [PASS] G2 源表通道成对检查
+  [PASS] G2b 源表类型交叉验证(.h)
+  [PASS] G3 继电器浮空检查
+        - (警告) K109_BUSL_PB0_S1: A part pin[2] 浮空(1脚,允许)
+        - (警告) K109_BUSL_PB0_S1: B part pin[7] 浮空(1脚,允许)
+        - (警告) K114_BUSL_PA5_S1: A part pin[2] 浮空(1脚,允许)
+        - (警告) K114_BUSL_PA5_S1: B part pin[7] 浮空(1脚,允许)
+        - (警告) K123_BUSL_PB5_S1: A part pin[2] 浮空(1脚,允许)
+        - (警告) K123_BUSL_PB5_S1: B part pin[7] 浮空(1脚,允许)
+        - (警告) K134_PC1_Force_S1: A part pin[2] 浮空(1脚,允许)
+        - (警告) K135_PC1_Sense_S1: A part pin[2] 浮空(1脚,允许)
+        - (警告) K135_PC1_Sense_S1: B part pin[7] 浮空(1脚,允许)
+        - (警告) K151_NC_GND_S1S2: A part pin[4] 浮空(1脚,允许)
+        - (警告) K154_BUSH_AMUX_S1: A part pin[2] 浮空(1脚,允许)
+        - (警告) K154_BUSH_AMUX_S1: B part pin[7] 浮空(1脚,允许)
+        - (警告) K17_BUSL_VAC_S1: A part pin[2] 浮空(1脚,允许)
+        - (警告) K17_BUSL_VAC_S1: B part pin[7] 浮空(1脚,允许)
+        - (警告) K29_BUSL_VCC_S1: A part pin[2] 浮空(1脚,允许)
+        - (警告) K29_BUSL_VCC_S1: B part pin[7] 浮空(1脚,允许)
+        - (警告) K30_BUSH_ACDRV_S1: A part pin[2] 浮空(1脚,允许)
+        - (警告) K30_BUSH_ACDRV_S1: B part pin[7] 浮空(1脚,允许)
+        - (警告) K32_BUSL_SCL_S1: A part pin[2] 浮空(1脚,允许)
+        - (警告) K32_BUSL_SCL_S1: B part pin[7] 浮空(1脚,允许)
+        - (警告) K35_BUSH_KLV_S1: A part pin[2] 浮空(1脚,允许)
+        - (警告) K35_BUSH_KLV_S1: B part pin[7] 浮空(1脚,允许)
+        - (警告) K3_BUSL_VBUS_S1: A part pin[2] 浮空(1脚,允许)
+        - (警告) K3_BUSL_VBUS_S1: B part pin[7] 浮空(1脚,允许)
+        - (警告) K44_Cap_SW2_BST2_S1S2: A part pin[4] 浮空(1脚,允许)
+        - (警告) K45_Cap_SW1_BST1_S1S2: A part pin[4] 浮空(1脚,允许)
+        - (警告) K51_BUSL_LG_S1: A part pin[2] 浮空(1脚,允许)
+        - (警告) K51_BUSL_LG_S1: B part pin[7] 浮空(1脚,允许)
+        - (警告) K57_CAP_BST_SW_S1S2: A part pin[4] 浮空(1脚,允许)
+        - (警告) K58_BUSH_VDM_S1: A part pin[2] 浮空(1脚,允许)
+        - (警告) K58_BUSH_VDM_S1: B part pin[7] 浮空(1脚,允许)
+        - (警告) K60_BUSL_VCP_S1: A part pin[2] 浮空(1脚,允许)
+        - (警告) K60_BUSL_VCP_S1: B part pin[7] 浮空(1脚,允许)
+        - (警告) K7_BUSH_VBAT_S1: A part pin[2] 浮空(1脚,允许)
+        - (警告) K7_BUSH_VBAT_S1: B part pin[7] 浮空(1脚,允许)
+        - (警告) K83_BUSH_PMID_S1: A part pin[2] 浮空(1脚,允许)
+        - (警告) K83_BUSH_PMID_S1: B part pin[7] 浮空(1脚,允许)
+        - (警告) K91_PC0_Sense_S1: A part pin[2] 浮空(1脚,允许)
+        - (警告) K91_PC0_Sense_S1: B part pin[7] 浮空(1脚,允许)
+        - (警告) K93_AGND2PGND_S1: A part pin[2] 浮空(1脚,允许)
+        - (警告) K93_AGND2PGND_S1: B part pin[7] 浮空(1脚,允许)
+        - (警告) K99_BUSL_PB5_S1: A part pin[2] 浮空(1脚,允许)
+        - (警告) K99_BUSL_PB5_S1: B part pin[7] 浮空(1脚,允许)
+  [PASS] G4 元器件连接性检查
+  [PASS] G5 net连接性检查
+  [PASS] G1c 孤立PORT检查
+  [PASS] G1d TP短接待确认
+
+## 任务一: DUT PIN (69个, 136个端口)
+  Kelvin (67):
+...
+已写出: D:\Newtest\DSH\ATE-Coding-Platform\project\DALI\Component-Statistic.txt
+已写出: D:\Newtest\DSH\ATE-Coding-Platform\project\DALI\SCH-Connect-Map.txt  (966行)

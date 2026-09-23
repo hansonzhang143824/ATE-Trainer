@@ -1,0 +1,643 @@
+{
+ "schema": "verification-report (team/schemas/verification-report.schema.json — MISSING in this run; see T32-F4)",
+ "runId": "acceptance-20260916-dali10",
+ "task": "t32",
+ "producedBy": "dft-expert",
+ "generatedAt": "2026-09-16T19:25:06+08:00",
+ "subject": {
+  "claim": "TM600_HS_RDSON / TM601_LS_RDSON are real new capabilities, landed and gate-verified",
+  "deployedArtifact": {
+   "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+   "sizeBytes": 469714,
+   "sha256": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a",
+   "lines": 9354,
+   "bom": false
+  },
+  "payloadArtifact": {
+   "path": "team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp",
+   "sizeBytes": 36381,
+   "sha256": "73b511b775beda61cc91ea41fdc5358e53579fb4e32cc553bf47792667fea19e",
+   "invariants": {
+    "delay_ms(1)": 6,
+    "delay_ms(2)": 0,
+    "SetClamp(50,50)": 2,
+    "MeasureVI(200,5,FPVIe_MV_X10)": 2,
+    "bare 126": 0,
+    "K126_V1P5_CAP": 2,
+    "ERROR_RES": 2
+   },
+   "K109_BUSL1_PB0": 1,
+   "K110_ACM18_BST": 1,
+   "setOn600": [
+    [
+     "K83_BUSH0_PMID",
+     "K60_BUSL0_VCP",
+     "K61_ACM8_SW",
+     "K109_BUSL1_PB0",
+     "K110_ACM18_BST",
+     "K13_VBAT_Cap",
+     "K85_CAP_PMID",
+     "K57_CAP_BST_SW",
+     "K126_V1P5_CAP"
+    ]
+   ]
+  }
+ },
+ "verdict": "fail",
+ "verdictReason": "Two of six acceptance criteria fail. (1) T32-F1: the contract-required BST excitation relays K109/K110 are absent from the deployed TM600 SetOn — the t29 repair is in the payload only. (2) The contract verify command cannot exit 0 because team/schemas/verification-report.schema.json does not exist (T32-F4). Additionally the GREEN gate logs in circulation and the t24 review verdict do not belong to the deployed revision (T32-F2/T32-F3).",
+ "newCapabilityProof": {
+  "baseline": {
+   "path": "team/artifacts/acceptance-20260916-dali10/backups/test.cpp.before_TM600_TM601.bak",
+   "sizeBytes": 434629,
+   "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+   "hits": {
+    "TM600": 0,
+    "TM601": 0,
+    "RDSON": 0
+   },
+   "functionsPresent": {
+    "TM600_HS_RDSON": false,
+    "TM601_LS_RDSON": false
+   }
+  },
+  "goldenNotCopied": {
+   "path": "knowledge/references/L4-Golden-code/tm600-normal-highcurrent.cpp",
+   "sizeBytes": 6106,
+   "sha256": "8cdb0be1dd8381008a6a6ca84743170d6e1cf6f5c84f21a1e2e947a0187b72ce",
+   "probedDistinctiveLines": 28,
+   "hitsInPayload": [],
+   "hitsInDeployed": [],
+   "verdict": "no copied golden bytes: 0/28 distinctive golden statements appear in either candidate"
+  },
+  "deployedFunctions": {
+   "TM600_HS_RDSON": {
+    "lines": [
+     9057,
+     9204
+    ],
+    "chars": 9907
+   },
+   "TM601_LS_RDSON": {
+    "lines": [
+     9217,
+     9353
+    ],
+    "chars": 9976
+   }
+  }
+ },
+ "independentRecomputation": {
+  "deployed": {
+   "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+   "sizeBytes": 469714,
+   "sha256": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a",
+   "lines": 9354,
+   "bom": false
+  },
+  "tokenCounts": {
+   "TM600_raw": 11,
+   "TM601_raw": 10,
+   "TM600_commentsStripped": 1,
+   "TM601_commentsStripped": 1,
+   "TM600_HS_RDSON_stripped": 1,
+   "TM601_LS_RDSON_stripped": 1
+  },
+  "invariantsScopedToTwoFunctions": {
+   "delay_ms(1)": {
+    "expectedInTwoFunctions": 6,
+    "TM600": 3,
+    "TM601": 3,
+    "sum": 6,
+    "match": true
+   },
+   "delay_ms(2)": {
+    "expectedInTwoFunctions": 0,
+    "TM600": 0,
+    "TM601": 0,
+    "sum": 0,
+    "match": true
+   },
+   "SetClamp(50,50)": {
+    "expectedInTwoFunctions": 2,
+    "TM600": 1,
+    "TM601": 1,
+    "sum": 2,
+    "match": true
+   },
+   "MeasureVI(200,5,FPVIe_MV_X10)": {
+    "expectedInTwoFunctions": 2,
+    "TM600": 1,
+    "TM601": 1,
+    "sum": 2,
+    "match": true
+   },
+   "bare 126": {
+    "expectedInTwoFunctions": 0,
+    "TM600": 0,
+    "TM601": 0,
+    "sum": 0,
+    "match": true
+   },
+   "K126_V1P5_CAP": {
+    "expectedInTwoFunctions": 2,
+    "TM600": 1,
+    "TM601": 1,
+    "sum": 2,
+    "match": true
+   },
+   "ERROR_RES": {
+    "expectedInTwoFunctions": 2,
+    "TM600": 1,
+    "TM601": 1,
+    "sum": 2,
+    "match": true
+   }
+  },
+  "invariantsWholeFile": {
+   "delay_ms(1)": 292,
+   "delay_ms(2)": 39,
+   "SetClamp(50,50)": 2,
+   "MeasureVI(200,5,FPVIe_MV_X10)": 2,
+   "bare 126": 0,
+   "K126_V1P5_CAP": 2,
+   "ERROR_RES": 4
+  },
+  "payloadInvariants": {
+   "delay_ms(1)": 6,
+   "delay_ms(2)": 0,
+   "SetClamp(50,50)": 2,
+   "MeasureVI(200,5,FPVIe_MV_X10)": 2,
+   "bare 126": 0,
+   "K126_V1P5_CAP": 2,
+   "ERROR_RES": 2
+  }
+ },
+ "bstClosureComparison": {
+  "contractPath": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+  "contractSha256": "fd00a5082170293fcea29446c009fc432977d61a8f624ef17ac1c82f41515a18",
+  "contractSizeBytes": 328805,
+  "contractNeedsClosedEntriesMentioning109_110": [
+   [
+    138,
+    60,
+    61
+   ],
+   [
+    138,
+    60,
+    61
+   ],
+   [
+    138,
+    139,
+    145,
+    146,
+    29
+   ],
+   [
+    138,
+    139,
+    145,
+    146,
+    29
+   ]
+  ],
+  "requiredVsDeployed": [
+   {
+    "required": "K109_BUSL1_PB0",
+    "requirementLocator": "contract.needsClosed entries containing 109",
+    "deployedState": "present in payload, ABSENT from deployed test.cpp",
+    "deployedCount": 0,
+    "payloadCount": 1
+   },
+   {
+    "required": "K110_ACM18_BST",
+    "requirementLocator": "contract.needsClosed entries containing 110",
+    "deployedState": "present in payload, ABSENT from deployed test.cpp",
+    "deployedCount": 0,
+    "payloadCount": 1
+   }
+  ],
+  "deployedSetOnTM600": [
+   "K83_BUSH0_PMID",
+   "K60_BUSL0_VCP",
+   "K61_ACM8_SW",
+   "K13_VBAT_Cap",
+   "K85_CAP_PMID",
+   "K57_CAP_BST_SW",
+   "K126_V1P5_CAP"
+  ],
+  "payloadSetOnTM600": [
+   "K83_BUSH0_PMID",
+   "K60_BUSL0_VCP",
+   "K61_ACM8_SW",
+   "K109_BUSL1_PB0",
+   "K110_ACM18_BST",
+   "K13_VBAT_Cap",
+   "K85_CAP_PMID",
+   "K57_CAP_BST_SW",
+   "K126_V1P5_CAP"
+  ],
+  "deployedSetOnTM601": [
+   "K154_BUSH0_AMUX",
+   "K155_FOVI3_PGND",
+   "K60_BUSL0_VCP",
+   "K61_ACM8_SW",
+   "K13_VBAT_Cap",
+   "K85_CAP_PMID",
+   "K57_CAP_BST_SW",
+   "K126_V1P5_CAP"
+  ]
+ },
+ "develZeroWrite": {
+  "source/test.cpp": {
+   "target": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a",
+   "devel": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+   "identical": false,
+   "targetSize": 469714,
+   "develSize": 434629
+  },
+  "source/StdAfx.h": {
+   "target": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+   "devel": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+   "identical": true,
+   "targetSize": 56968,
+   "develSize": 56968
+  },
+  "source/sub.cpp": {
+   "target": "e86d49bef7ae725106311d8205df6dbc11184c7a0920eeaed416a515ac391470",
+   "devel": "e86d49bef7ae725106311d8205df6dbc11184c7a0920eeaed416a515ac391470",
+   "identical": true,
+   "targetSize": 121909,
+   "develSize": 121909
+  },
+  "source/Pin_Channel_define.h": {
+   "target": "d5ce16a0ae79549424110755e99d9ae74cce79d18b8a1eaae3fd5588df285e35",
+   "devel": "d5ce16a0ae79549424110755e99d9ae74cce79d18b8a1eaae3fd5588df285e35",
+   "identical": true,
+   "targetSize": 10934,
+   "develSize": 10934
+  }
+ },
+ "eightDisciplineAudit": [
+  {
+   "n": 1,
+   "name": "DFT intent traceable",
+   "command": "python -X utf8 -c \"json.load(open(team/artifacts/<run>/dft-ir.json))\" ; python scripts/validate_team_artifact.py dft-ir team/artifacts/<run>/dft-ir.json",
+   "exitCode": 0,
+   "evidence": [
+    "team/artifacts/acceptance-20260916-dali10/dft-ir.json (130724 B / d8f900a41e6a30f2c7022a881f5636a652c0fe0a6189e0d42aeb43fe1388a31b) items[TM600].symbol=TM600_HS_RDSON, items[TM601].symbol=TM601_LS_RDSON",
+    "OVERVIEW rows 132/133 (limits 11 / 7.5 mΩ), DFT.csv records index 18/19 (10 / 8 mohm retained as registered conflict)",
+    "dft-ir.json limitConflictPairs + captainRulings CR-02..CR-06"
+   ],
+   "status": "passed"
+  },
+  {
+   "n": 2,
+   "name": "contract as the single global source",
+   "command": "python -X utf8 -c \"json.load(open(team/artifacts/<run>/setup-contract.json))\"",
+   "exitCode": 0,
+   "evidence": [
+    "team/artifacts/acceptance-20260916-dali10/setup-contract.json (328805 B / fd00a5082170293fcea29446c009fc432977d61a8f624ef17ac1c82f41515a18)",
+    "t24 review cites the same revision (rev 24 = 328805 B) as its authority",
+    "t29 evidence cites the same contract for the K109/K110 requirement"
+   ],
+   "status": "passed"
+  },
+  {
+   "n": 3,
+   "name": "no self-approval",
+   "command": "read team/artifacts/<run>/review/t24-implementation-review.md",
+   "exitCode": 0,
+   "evidence": [
+    "payload author = ate-implementer; reviewer = rule-reviewer (t24 verdict=pass, 13573 B / 7b0c4d9e4334fc9081d6c0815ef156f4153d57f988d1c10a8bef616e14484abb)",
+    "additional independent opinion t25 (15329 B / dbc290caa19923056dc8b8339e9208d9d96d2e0aa6b61276a090ade07473dc36)",
+    "this verification executed by dft-expert (t32) — three distinct identities"
+   ],
+   "status": "passed"
+  },
+  {
+   "n": 4,
+   "name": "backup and before/after hashes complete",
+   "command": "python -X utf8 -c \"hashlib.sha256(open(backup))\"",
+   "exitCode": 0,
+   "evidence": [
+    "backup backups/test.cpp.before_TM600_TM601.bak = 434629 B / 5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317 (= pre-change baseline)",
+    "t20-apply-verification.json records before=5c9cb3f9… and after=3dbceb49…",
+    "t23-apply-result.json / t23-apply-verification.json record 3dbceb49… -> 15c7d2b8…",
+    "team/artifacts/acceptance-20260916-dali10/implementation-manifest.json (36733 B / 53ae63abe20fdfef7b3fbc22541e9f387e21f4e2d5dcab6dfd287b66e361dc71) carries the hash table"
+   ],
+   "status": "passed"
+  },
+  {
+   "n": 5,
+   "name": "only permitted trees written",
+   "command": "python -X utf8 -c \"compare target vs devel hashes\"",
+   "exitCode": 0,
+   "evidence": [
+    "devel/source/StdAfx.h = ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6 (== target), devel/source/sub.cpp = e86d49bef7ae725106311d8205df6dbc11184c7a0920eeaed416a515ac391470 (== target)",
+    "devel/source/test.cpp = 5c9cb3f9339f… = the pre-change baseline (devel never received the change)",
+    "this task wrote only team/artifacts/acceptance-20260916-dali10/verification-report.json and the t32 evidence files"
+   ],
+   "status": "passed"
+  },
+  {
+   "n": 6,
+   "name": "gate delta attribution clear",
+   "command": "python scripts/run_gates.ps1 (not re-run by t32); read gate-logs-t25 / t25-verify / t28",
+   "exitCode": 1,
+   "evidence": [
+    "gate-logs-t25/run-gates-stdout.log (18:44:58): relay-trace NEW-RED -> \"新增红 1 个（阻塞）\" — matches the deployed-tree state (179/4)",
+    "gate-logs-t25-verify/run-gates-stdout.log (18:58:58) and gate-logs-t28/run-gates-stdout.log (19:22:25): FULL_EXIT=0, 11 GREEN + cbit KNOWN-RED — but their relay-trace logs show 182/2 with zero TM601 warnings, i.e. a different revision than the deployed one",
+    "t21-new-red-analysis.md (8695 B / f8bb40c6d7f269ef46affc3685e93771d57c5a7c75065732b4e0339d6da7e87e) attributes the earlier NEW-RED class"
+   ],
+   "status": "failed",
+   "note": "attribution is not clear for the deployed revision: the GREEN logs belong to another revision (T32-F3)"
+  },
+  {
+   "n": 7,
+   "name": "compile separated from electrical validation",
+   "command": "read build/gate artifacts; no instrument invoked",
+   "exitCode": 0,
+   "evidence": [
+    "build evidence exists under team/artifacts/acceptance-20260916-dali10/build-verified/ and gate-logs-t25*/",
+    "no SMU/hardware/bench data exists anywhere in this run; t29 §7 states \"A compile closed loop is not electrical sign-off\"",
+    "this task performed no build and no hardware access"
+   ],
+   "status": "passed"
+  },
+  {
+   "n": 8,
+   "name": "all evidence under team/artifacts/<run-id>/",
+   "command": "python -X utf8 -c \"os.listdir(team/artifacts/<run>)\"",
+   "exitCode": 0,
+   "evidence": [
+    "run directory team/artifacts/acceptance-20260916-dali10 holds the contract, plan, schematic IR, DFT IR, manifest, review/ and the t2x/t29 evidence",
+    "this task wrote t32-probe-*.py, t32-verify-recompute.py, t32-*-evidence.json and verification-report.json inside that directory only",
+    "scripts/ and D:/PROJECT6-DALI/ForCodexDebug were not modified by this task"
+   ],
+   "status": "passed"
+  }
+ ],
+ "findings": [
+  {
+   "id": "T32-F1",
+   "severity": "blocker",
+   "category": "bst-closure / deployed-revision",
+   "problem": "contract-required BST excitation relays K109_BUSL1_PB0 and K110_ACM18_BST are ABSENT from the deployed TM600_HS_RDSON SetOn set in D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp (469714 B / 15c7d2b8d37b1564). The t29 repair exists only in implementation-payload-TM600-TM601.cpp (36381 B / 73b511b775beda61), which contains both. The deployed set is the pre-t29 one.",
+   "file": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+   "line": 9057,
+   "requiredFix": "land the payload containing K109/K110 into the target tree (REPLACE semantics on the TM600/TM601 region), then re-run the gates against the landed revision and re-run this verification. Until then the BST-SW 5 V excitation route required by the contract is not closed in executable code.",
+   "evidence": {
+    "deployedSetOn": [
+     "K83_BUSH0_PMID",
+     "K60_BUSL0_VCP",
+     "K61_ACM8_SW",
+     "K13_VBAT_Cap",
+     "K85_CAP_PMID",
+     "K57_CAP_BST_SW",
+     "K126_V1P5_CAP"
+    ],
+    "payloadSetOn": [
+     "K83_BUSH0_PMID",
+     "K60_BUSL0_VCP",
+     "K61_ACM8_SW",
+     "K109_BUSL1_PB0",
+     "K110_ACM18_BST",
+     "K13_VBAT_Cap",
+     "K85_CAP_PMID",
+     "K57_CAP_BST_SW",
+     "K126_V1P5_CAP"
+    ],
+    "deployedK109count": 0,
+    "deployedK110count": 0
+   }
+  },
+  {
+   "id": "T32-F2",
+   "severity": "high",
+   "category": "reviewed-object identity",
+   "problem": "the independent review t24 (verdict=pass) was performed on payload 444810dd… (35014 B), and the object it verified is not the object that is deployed today (15c7d2b8…): the reviewed payload contained bare relay token 126 while the deployed file uses K126_V1P5_CAP, and the reviewed SetOn lists lack K60_BUSL0_VCP / K85_CAP_PMID that the deployed file has. Neither the reviewed payload hash nor the deployed hash appears in the review text.",
+   "file": "team/artifacts/acceptance-20260916-dali10/review/t24-implementation-review.md",
+   "requiredFix": "record which revision each review verdict applies to (payload sha256 in the review header) and re-review after the landing; a verdict that predates the deployed bytes cannot be counted as review of the deployment.",
+   "evidence": {
+    "reviewCitedHashes": [
+     "444810dde99f79ed1ef1939bb1659d5769f547bfc1103e9b9187ee46f455675c",
+     "dce54185d89382bfdd1a58196eb7b410ca88646aa82d38a3dd9820d3f868e18f"
+    ],
+    "deployedHash": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a",
+    "payloadHash": "73b511b775beda61cc91ea41fdc5358e53579fb4e32cc553bf47792667fea19e"
+   }
+  },
+  {
+   "id": "T32-F3",
+   "severity": "high",
+   "category": "gate evidence attribution",
+   "problem": "the GREEN gate evidence circulated for this run (gate-logs-t25-verify, gate-logs-t28 — both \"no new red\") does not belong to the deployed revision. Those logs report relay-trace \"功能规则 182 处, FR-001 反向 2 处\" with zero TM601 warnings, whereas the deployed revision produces \"179 处 / 反向 4 处\" plus two TM601_FR-001 warnings plus two \"虚构继电器名 126\" FAILs (see gate-logs-t25/relay-trace.log). The 179/4 run is the one whose inputs match the deployed tree state.",
+   "file": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25-verify/relay-trace.log",
+   "requiredFix": "after the landing, re-run scripts/run_gates.ps1 against the target tree and record the revision hash inside the log directory; do not carry forward gate logs from a different revision.",
+   "evidence": {
+    "deployedStateLog": "team/artifacts/acceptance-20260916-dali10/gate-logs-t25/relay-trace.log (179 / 4 / NEW-RED)",
+    "carriedForwardLogs": [
+     "gate-logs-t25-verify/relay-trace.log (182 / 2 / PASSED, 18:58:58)",
+     "gate-logs-t28/relay-trace.log (182 / 2 / PASSED, 19:22:25)"
+    ],
+    "targetMtime": "2026-09-16T18:53:33"
+   }
+  },
+  {
+   "id": "T32-F4",
+   "severity": "medium",
+   "category": "schema gap (verification unreachable)",
+   "problem": "(closed by captain: the schema now exists) the contract's verify command originally could not pass: team/schemas/verification-report.schema.json does not exist (the validator resolves schemas as team/schemas/<name>.schema.json). Exit code observed: 1, FileNotFoundError. The verification kind therefore has no schema in this run.",
+   "file": "scripts/validate_team_artifact.py",
+   "line": 101,
+   "requiredFix": "the schema owner must add team/schemas/verification-report.schema.json (out of t32's in-scope paths, which are limited to verification-report.json). This report is emitted in a schema-shaped layout so it can be re-validated unchanged once the schema exists.",
+   "evidence": {
+    "schemaDir": [
+     "build-report.schema.json",
+     "dft-ir.schema.json",
+     "implementation-manifest.schema.json",
+     "review-findings.schema.json",
+     "schematic-ir.schema.json",
+     "setup-contract.schema.json",
+     "test-plan.schema.json"
+    ],
+    "command": "python scripts/validate_team_artifact.py verification-report team/artifacts/acceptance-20260916-dali10/verification-report.json",
+    "observed": "FileNotFoundError: .../team/schemas/verification-report.schema.json"
+   },
+   "status": "CLOSED",
+   "resolution": {
+    "closedBy": "Captain (schema supplied before t37)",
+    "closedAt": "2026-09-16 (before t37 start)",
+    "schemaFile": "team/schemas/verification-report.schema.json",
+    "schemaSizeBytes": 4172,
+    "schemaSha256": "84ab7f3f265707de2c9a88a226b1a56c59c9e5f5da42a30b0e237256c548b07b",
+    "schemaStyle": "same shape as build-report.schema.json; additionalProperties:true; verdict enum pass/fail/blocked; findings severity enum low/medium/high/blocker; required keys mirror this report",
+    "reVerificationCommand": "python scripts/validate_team_artifact.py verification-report team/artifacts/acceptance-20260916-dali10/verification-report.json",
+    "reVerificationExitCode": 0,
+    "reVerificationObserved": "PASS D:\\...\\verification-report.json conforms to D:\\...\\team\\schemas\\verification-report.schema.json",
+    "scope": "infrastructure gap only: this closure does NOT touch T32-F1/F2/F3, which remain open"
+   }
+  },
+  {
+   "id": "T32-F5",
+   "severity": "low",
+   "category": "reviewable-invariant scoping",
+   "problem": "the invariant counts in the acceptance criteria (delay_ms(1)x6, SetClamp(50,50)x2, MeasureVI(200,5,FPVIe_MV_X10)x2, bare 126=0, K126_V1P5_CAP=2, ERROR_RES=2) hold exactly for the payload / the two TM600+TM601 function bodies, not for whole-file test.cpp (whole file: delay_ms(1)=292, ERROR_RES=4, K57_CAP_BST_SW=6, K45_Cap_SW1_BST1=1, K5_VBUS_Cap=9). A whole-file recomputation would read as a mismatch.",
+   "file": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+   "requiredFix": "state the scope (payload file, or the two function bodies) whenever these invariants are quoted.",
+   "evidence": {
+    "scoped": {
+     "delay_ms(1)": {
+      "expectedInTwoFunctions": 6,
+      "TM600": 3,
+      "TM601": 3,
+      "sum": 6,
+      "match": true
+     },
+     "delay_ms(2)": {
+      "expectedInTwoFunctions": 0,
+      "TM600": 0,
+      "TM601": 0,
+      "sum": 0,
+      "match": true
+     },
+     "SetClamp(50,50)": {
+      "expectedInTwoFunctions": 2,
+      "TM600": 1,
+      "TM601": 1,
+      "sum": 2,
+      "match": true
+     },
+     "MeasureVI(200,5,FPVIe_MV_X10)": {
+      "expectedInTwoFunctions": 2,
+      "TM600": 1,
+      "TM601": 1,
+      "sum": 2,
+      "match": true
+     },
+     "bare 126": {
+      "expectedInTwoFunctions": 0,
+      "TM600": 0,
+      "TM601": 0,
+      "sum": 0,
+      "match": true
+     },
+     "K126_V1P5_CAP": {
+      "expectedInTwoFunctions": 2,
+      "TM600": 1,
+      "TM601": 1,
+      "sum": 2,
+      "match": true
+     },
+     "ERROR_RES": {
+      "expectedInTwoFunctions": 2,
+      "TM600": 1,
+      "TM601": 1,
+      "sum": 2,
+      "match": true
+     }
+    },
+    "wholeFile": {
+     "delay_ms(1)": 292,
+     "delay_ms(2)": 39,
+     "SetClamp(50,50)": 2,
+     "MeasureVI(200,5,FPVIe_MV_X10)": 2,
+     "bare 126": 0,
+     "K126_V1P5_CAP": 2,
+     "ERROR_RES": 4
+    }
+   }
+  }
+ ],
+ "acceptanceResults": [
+  {
+   "criterion": "真实新增能力取证：TM600/TM601 为真实新增（改动前基线命中=0）且非黄金副本",
+   "status": "passed",
+   "evidence": "baseline team/artifacts/acceptance-20260916-dali10/backups/test.cpp.before_TM600_TM601.bak = 434629 B / 5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317；TM600=0 TM601=0 RDSON=0；两函数均不存在。黄金 knowledge/references/L4-Golden-code/tm600-normal-highcurrent.cpp = 6106 B / 8cdb0be1dd8381008a6a6ca84743170d6e1cf6f5c84f21a1e2e947a0187b72ce；其 28 条特征语句在 payload 中命中 0 条、在部署文件中命中 0 条。部署文件现算 469714 B / 15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a，含 TM600_HS_RDSON(L9057-9204) 与 TM601_LS_RDSON(L9217-9353)。"
+  },
+  {
+   "criterion": "八项审查纪律逐条核验（命令 + exit code + locator）",
+   "status": "passed",
+   "evidence": "见 eightDisciplineAudit；逐条给出命令、exit code 与产物 locator。"
+  },
+  {
+   "criterion": "独立复算落盘结果（哈希 / 出现次数 / 去注释不变量）",
+   "status": "passed",
+   "evidence": "python 明文现算 deployed=469714 B/15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a；TM600 出现 11 次、TM601 10 次（去注释后各 1 次，均为函数名/参数名声明）；去注释不变量按\"两函数体\"口径逐条相符：{\"delay_ms(1)\": 6, \"delay_ms(2)\": 0, \"SetClamp(50,50)\": 2, \"MeasureVI(200,5,FPVIe_MV_X10)\": 2, \"bare 126\": 0, \"K126_V1P5_CAP\": 2, \"ERROR_RES\": 2}。整个文件口径的对照值见 findings T32-F5。"
+  },
+  {
+   "criterion": "BST 闭合集合符合性（t29 后）：TM600 SetOn 是否含 K109/K110 + 对照表",
+   "status": "failed",
+   "evidence": "部署 TM600 SetOn = [\"K83_BUSH0_PMID\", \"K60_BUSL0_VCP\", \"K61_ACM8_SW\", \"K13_VBAT_Cap\", \"K85_CAP_PMID\", \"K57_CAP_BST_SW\", \"K126_V1P5_CAP\"] —— **不含 K109/K110**（各 0 次）；payload 同函数 SetOn = [\"K83_BUSH0_PMID\", \"K60_BUSL0_VCP\", \"K61_ACM8_SW\", \"K109_BUSL1_PB0\", \"K110_ACM18_BST\", \"K13_VBAT_Cap\", \"K85_CAP_PMID\", \"K57_CAP_BST_SW\", \"K126_V1P5_CAP\"] —— 两者均在。见 findings T32-F1 与 bstClosureComparison。"
+  },
+  {
+   "criterion": "devel 零写入（devel 与目标树同哈希证据）",
+   "status": "passed",
+   "evidence": "StdAfx.h 与 sub.cpp（以及 Pin_Channel_define.h）在 devel 与目标树**逐字节相同**：{\"source/StdAfx.h\": true, \"source/sub.cpp\": true, \"source/Pin_Channel_define.h\": true}。test.cpp 不同属预期且由基线锚定：devel=5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317（=改前基线 5c9cb3f9…），target=15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a；本任务未对 devel 做任何写操作。"
+  },
+  {
+   "criterion": "产出 verification-report.json 并通过 validate_team_artifact.py（exit 0）",
+   "status": "passed",
+   "evidence": "报告已产出并通过校验：team/artifacts/acceptance-20260916-dali10/verification-report.json 现算 25535 B / 0904a49dd208f228c5d4026a960ebf2f965dbbcb9967fcc82434132a9c66ae65；python scripts/validate_team_artifact.py verification-report ... 实测 exit 0（PASS：conforms to team/schemas/verification-report.schema.json）。该 schema 由 Captain 在本任务前补齐 = 4172 B / 84ab7f3f265707de2c9a88a226b1a56c59c9e5f5da42a30b0e237256c548b07b。（原始缺口为 schema 缺失 → FileNotFoundError/exit 1，见 findings T32-F4 的 resolution。）"
+  }
+ ],
+ "commandsRun": [
+  {
+   "command": "python -X utf8 team/artifacts/acceptance-20260916-dali10/t32-verify-recompute.py",
+   "status": "passed",
+   "exitCode": 0,
+   "evidence": "deployed 469714 B / 15c7d2b8…; baseline 434629 B / 5c9cb3f9… hits 0/0/0; golden 6106 B / 8cdb0be1… 0 hits; devel==target for StdAfx.h/sub.cpp"
+  },
+  {
+   "command": "python -X utf8 team/artifacts/acceptance-20260916-dali10/t32-probe-scoped.py",
+   "status": "passed",
+   "exitCode": 0,
+   "evidence": "scoped invariants match for payload and for the two deployed function bodies; K109/K110 = 0 in deployed, 1 each in payload"
+  },
+  {
+   "command": "python -X utf8 team/artifacts/acceptance-20260916-dali10/t32-probe-disciplines.py",
+   "status": "passed",
+   "exitCode": 0,
+   "evidence": "eight-discipline evidence collected (t32-discipline-evidence.json, 12162 B)"
+  },
+  {
+   "command": "python -X utf8 team/artifacts/acceptance-20260916-dali10/t32-probe-identity.py",
+   "status": "passed",
+   "exitCode": 0,
+   "evidence": "review cites 444810dd…/dce54185… while deployed is 15c7d2b8… and payload is 73b511b7…; manifest cites 15c7d2b8… but not 73b511b7…"
+  },
+  {
+   "command": "python -X utf8 scripts/validate_team_artifact.py verification-report team/artifacts/acceptance-20260916-dali10/verification-report.json",
+   "status": "failed",
+   "exitCode": 1,
+   "evidence": "FileNotFoundError: team/schemas/verification-report.schema.json does not exist (schema missing in this run; T32-F4)"
+  },
+  {
+   "command": "python scripts/validate_team_artifact.py verification-report team/artifacts/acceptance-20260916-dali10/verification-report.json",
+   "status": "passed",
+   "exitCode": 0,
+   "evidence": "re-run AFTER this F4 closure edit: \"PASS ... conforms to ... team/schemas/verification-report.schema.json\" exit 0. The earlier commandsRun entry with exitCode 1 records the pre-schema state and is retained for audit."
+  }
+ ],
+ "limitations": [
+  "compilation success is not electrical correctness: this verification contains no instrument, hardware or silicon data; no SMU run was performed",
+  "the deployed file was writable by other members during this run; every hash here is valid only at its measurement instant",
+  "the contract verify command could not be executed to exit 0 (schema missing, T32-F4) — the report is schema-shaped but unvalidated",
+  "gate evidence for the deployed revision is inferred from relay-trace function/rule counts (179/4 vs 182/2) plus mtimes; a re-run against the landed revision is still owed",
+  "review t24 was written in Chinese; its verdict and hash citations were read as text and are quoted verbatim"
+ ],
+ "f4ClosureAndVerdict": {
+  "f4": "CLOSED — verification-report.schema.json supplied by the Captain before t37; validator exit code 0",
+  "verdictPolicy": "overall verdict INTENTIONALLY REMAINS fail: T32-F1 (t29 repair not landed in the target tree), T32-F2 (t24 review does not cover the deployed bytes) and T32-F3 (GREEN gate evidence belongs to another revision) are still open",
+  "allOtherFindingsUnchanged": [
+   "T32-F1 blocker",
+   "T32-F2 high",
+   "T32-F3 high",
+   "T32-F5 low"
+  ],
+  "compilationIsNotElectricalSignoff": "validator/compile success says nothing about electrical correctness; this run contains no instrument or hardware data",
+  "nextReReviewTrigger": "after the payload carrying K109/K110 is landed and the gates are re-run against the landed revision, and t24 is re-issued for the new bytes"
+ }
+}

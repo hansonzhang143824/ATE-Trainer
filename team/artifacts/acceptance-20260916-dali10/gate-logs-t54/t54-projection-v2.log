@@ -1,0 +1,12 @@
+前置：语法 OK（45625 B）
+现盘报告里是否有 receipts 顶层键 = False
+  已改 body 投影为 v2
+  已改 projectionSpec 为 v2
+  已改 reproducibleNote
+  生成器 → 45848 B
+
+=== 自证：跨秒跑两次，body 哈希应**稳定** ===
+  run1: size=35743 file=e20cd1f8f0880e70 body=9804fbe2272477ec v=2 exclude=['generatedAt', 'receipts']
+  run2: size=35743 file=829d0a0689bf5f2b body=9804fbe2272477ec v=2 exclude=['generatedAt', 'receipts']
+  整文件 sha 相同 = False （预期 False：报告含 receipts/generatedAt）
+  **body 哈希相同 = True** （预期 True：v2 已排除 receipts）

@@ -1,0 +1,87 @@
+{
+  "event": "deliverable_ready",
+  "fromRole": "test-method-expert",
+  "nextRole": "ate-implementer",
+  "taskId": "TM109-METHOD-R1",
+  "tm": "TM109",
+  "projectId": "DALI",
+  "stage": "METHOD",
+  "artifact": "team/artifacts/tm109-direct-trial/method/tm109-test-method-contract.json",
+  "sha256": "d9d7e10f9dc96730695a97a7e2b59b235987b3745689a3eaccc738a893000459",
+  "artifacts": [
+    {
+      "path": "team/artifacts/tm109-direct-trial/method/tm109-test-method-contract.json",
+      "sha256": "d9d7e10f9dc96730695a97a7e2b59b235987b3745689a3eaccc738a893000459",
+      "role": "test method contract (machine)"
+    },
+    {
+      "path": "team/artifacts/tm109-direct-trial/method/tm109-test-method-contract.md",
+      "sha256": "a9d7bd7043c08d5c591d13e7aa3905b28d9d8a4d9e2907f79e4058e3b8486c9c",
+      "role": "test method contract (human summary)"
+    },
+    {
+      "path": "team/artifacts/tm109-direct-trial/method/self-check-tm109-method.py",
+      "sha256": "4d7a9fa7c236c5dff7c8c4dfa52be9dd4d659c07c1e49055560419f033b23d98",
+      "role": "reproducible self-check; writes self-check-tm109-method.json"
+    }
+  ],
+  "hashReader": "python hashlib over Path.read_bytes() (scripts/hash_ate_plaintext.py convention: DLP plaintext). The native Windows path (Get-FileHash / certutil / .NET) returns a different digest of the same byte length for these files.",
+  "inputGate": {
+    "artifact": "team/artifacts/tm109-direct-trial/strategy/tm109-resource-config-contract.json",
+    "sha256": "a22502ece50f321312a466b77cfef5a40efe8f9a41995f7ee8af3b44048107e2",
+    "verified": true,
+    "handoffEvent": "strategy/deliverable-ready.json (deliverable_ready, nextRole test-method-expert)"
+  },
+  "verdict": "deliverable_ready",
+  "permittedNextAction": "Implement TM109 inside the signed resource boundary and this method contract. Do not select a relay, change a register value, invent a limit, or substitute a timing, node voltage or capture value. Phases MP-1..MP-10, the two-segment ramp, the Hys calculation, the ordered power-down and the log plan are fixed here.",
+  "blockingItems": [
+    "MF-01",
+    "MF-02"
+  ],
+  "blockingItemNote": "MF-01 (VBAT Cap2 / stabilising relay identity) and MF-02 (INT Toggle observation closure, i.e. pull-up identity plus pad structure) are relay-identity supplements owned by test-strategy-architect with schematic-expert as the closing source. The electrical method is complete without them, but the closure sets for RG-1 and RG-3 must be known before the item is coded. Route them per team/ROLE_ROUTING.md ('resource, route, relay and register issues return to strategy'); the implementation role must not choose a relay.",
+  "nonBlockingItems": [
+    "MF-03",
+    "MF-04",
+    "MF-05",
+    "MF-06",
+    "MF-07",
+    "MF-08",
+    "MF-09"
+  ],
+  "routedFindings": [
+    {
+      "id": "RF-01",
+      "severity": "high",
+      "routedTo": "test-strategy-architect",
+      "topic": "VBAT Cap2 / stabilising role relay identity absent from the signed boundary (FR-001 default close)",
+      "question": "which frozen relay instance is the VBAT stabilising capacitor of the DALI board, or is its closure waived for TM109?"
+    },
+    {
+      "id": "RF-02",
+      "severity": "high",
+      "routedTo": "test-strategy-architect",
+      "topic": "the Toggle observation closure for INT is empty (no pull-up identity; pad structure unknown)",
+      "question": "is the INT observation pad push-pull, and if it is open-drain which frozen relay instance provides its pull-up for TM109?"
+    },
+    {
+      "id": "RF-03",
+      "severity": "medium",
+      "routedTo": "user ruling",
+      "topic": "DTEST0_MUX = 22 is not bound to a DUT pin by any frozen deliverable (strategy C-06 / OI-S-08); the measurement assumes the observed pad is the indicator the DFT check token names",
+      "question": "which DUT pad carries the DTEST0 mux output configured by register 0x55 = 0x96 for TM109?"
+    },
+    {
+      "id": "RF-04",
+      "severity": "low",
+      "routedTo": "test-strategy-architect (documentation only)",
+      "topic": "strategy open item OI-S-03's description is stale versus revision 2; no boundary impact"
+    }
+  ],
+  "strategyArtifactsUnmodified": true,
+  "selfCheck": {
+    "script": "team/artifacts/tm109-direct-trial/method/self-check-tm109-method.py",
+    "report": "team/artifacts/tm109-direct-trial/method/self-check-tm109-method.json",
+    "result": "PASS (17 checks)"
+  },
+  "gateSatisfied": "test-method-expert start matrix row: the signed strategy contract validated and its hash was re-verified with the project plaintext reader; the method contract, its evidence, its per-phase BST-SW evaluation, its Golden applicability and its self-check are complete."
+}

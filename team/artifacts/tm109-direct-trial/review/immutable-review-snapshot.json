@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "tm109-immutable-review-snapshot",
+  "artifactKind": "frozen-review-revision",
+  "taskId": "TM109-RULE-REVIEW-METHOD",
+  "stage": "RULE_REVIEW_METHOD",
+  "tm": "TM109",
+  "generatedAt": "2026-09-18 00:26:51 +08:00",
+  "hashReader": "python hashlib.sha256 over Path.read_bytes() (scripts/hash_ate_plaintext.py convention: DLP plaintext). The native Windows path returns a different digest of the same byte length for these files.",
+  "note": "verify_review_snapshot.py is not applicable at RULE_REVIEW_METHOD because it requires an implementation manifest (scripts/verify_review_snapshot.py line 105 --implementation-manifest; line 39 reads manifest['changes']; line 41 fails when absent) and no implementation manifest or implementation/ directory exists in this trial yet. This file is the equivalent frozen-revision record for the two signed contracts and their two handoffs.",
+  "revision": [
+    {
+      "path": "team/artifacts/tm109-direct-trial/strategy/tm109-resource-config-contract.json",
+      "sha256": "a22502ece50f321312a466b77cfef5a40efe8f9a41995f7ee8af3b44048107e2",
+      "bytes": 58850,
+      "role": "signed strategy contract (reviewed)"
+    },
+    {
+      "path": "team/artifacts/tm109-direct-trial/strategy/deliverable-ready.json",
+      "sha256": "356312954f2b27ce9e0a4dcc3784d01f0eae601db463f07c0b12e8aad40413cb",
+      "bytes": 863,
+      "role": "strategy handoff (reviewed)"
+    },
+    {
+      "path": "team/artifacts/tm109-direct-trial/method/tm109-test-method-contract.json",
+      "sha256": "d9d7e10f9dc96730695a97a7e2b59b235987b3745689a3eaccc738a893000459",
+      "bytes": 97854,
+      "role": "signed method contract (reviewed)"
+    },
+    {
+      "path": "team/artifacts/tm109-direct-trial/method/deliverable-ready.json",
+      "sha256": "2174275fefcc7fed2eaa1f5142aa0dead88519bc7d05a8a208e44dc9c0c033b3",
+      "bytes": 4708,
+      "role": "method handoff (reviewed)"
+    }
+  ],
+  "strategyDeclares": {
+    "artifact": "team/artifacts/tm109-direct-trial/strategy/tm109-resource-config-contract.json",
+    "sha256": "a22502ece50f321312a466b77cfef5a40efe8f9a41995f7ee8af3b44048107e2"
+  },
+  "methodDeclaresInput": {
+    "artifact": "team/artifacts/tm109-direct-trial/strategy/tm109-resource-config-contract.json",
+    "sha256": "a22502ece50f321312a466b77cfef5a40efe8f9a41995f7ee8af3b44048107e2"
+  },
+  "verification": "declared sha256 == recomputed sha256 for all four files; the strategy hash recorded inside the method handoff (signedInputs/inputGate) equals the recomputed hash."
+}

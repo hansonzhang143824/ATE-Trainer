@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>PTC 专家控制台 v0.3 · Live</title>
+<style>
+  :root{--bg:#111418;--panel:#1a1f26;--line:#2a323c;--fg:#dde3ea;--dim:#8b96a3;--acc:#4da3ff;--ok:#3fbf6f;--warn:#e6b33d;--err:#e5604f}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--fg);font:13px/1.5 "Segoe UI","Microsoft YaHei",sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+  header{display:flex;align-items:center;gap:12px;padding:8px 16px;background:var(--panel);border-bottom:1px solid var(--line)}
+  header .logo{font-weight:600;font-size:15px}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px}
+  .pill{background:#222a33;border:1px solid var(--line);border-radius:12px;padding:2px 10px;font-size:12px;color:var(--dim)}
+  .pill b{color:var(--fg)}
+  header .spacer{flex:1}
+  button{background:#2a3646;color:var(--fg);border:1px solid #3a4a5e;border-radius:4px;padding:5px 14px;cursor:pointer;font-size:12px}
+  button.primary{background:#1c5a94;border-color:#2f7fd4}
+  button.ghost{background:transparent}
+  button.mini{padding:2px 10px;font-size:11px}
+  button:disabled{opacity:.45;cursor:default}
+  button:hover:not(:disabled){filter:brightness(1.2)}
+  #main{flex:1;display:flex;min-height:0}
+  aside{width:210px;background:var(--panel);border-right:1px solid var(--line);overflow-y:auto;padding:6px}
+  aside h3{font-size:11px;color:var(--dim);padding:6px 8px;font-weight:400;text-transform:uppercase;letter-spacing:1px}
+  .expert{padding:7px 10px;border-radius:6px;cursor:pointer;margin-bottom:2px;border:1px solid transparent}
+  .expert:hover{background:#222a33}
+  .expert.sel{background:#223144;border-color:#3a5f8f}
+  .expert .nm{font-weight:600;font-size:12px}
+  .expert .meta{font-size:10px;color:var(--dim);margin-top:1px}
+  .expert .meta .dirty{color:var(--warn)}
+  #content{flex:1;display:flex;flex-direction:column;min-width:0}
+  nav{display:flex;gap:2px;padding:8px 16px 0;background:var(--panel);border-bottom:1px solid var(--line)}
+  nav .tab{padding:7px 18px;border-radius:6px 6px 0 0;cursor:pointer;color:var(--dim);border:1px solid transparent;border-bottom:none;font-size:13px}
+  nav .tab.on{background:var(--bg);color:var(--fg);border-color:var(--line)}
+  #view{flex:1;overflow-y:auto;padding:16px 18px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:13px 15px;margin-bottom:13px}
+  .card h4{font-size:12px;color:var(--acc);margin-bottom:9px;letter-spacing:.5px}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th{color:var(--dim);text-align:left;font-weight:400;padding:4px 8px;border-bottom:1px solid var(--line)}
+  td{padding:5px 8px;border-bottom:1px solid #212830;vertical-align:top}
+  .mono{font-family:Consolas,monospace;font-size:11px;color:#a8d5ff}
+  .ok{color:var(--ok)} .err{color:var(--err)} .warn{color:var(--warn)} .dim{color:var(--dim)}
+  #trainWrap{display:flex;gap:14px;height:100%}
+  #chatCol{flex:1.2;display:flex;flex-direction:column;min-width:0}
+  #chat{flex:1;overflow-y:auto;padding:6px 2px;display:flex;flex-direction:column;gap:12px}
+  .msg{max-width:88%;border-radius:10px;padding:9px 13px;white-space:pre-wrap;word-break:break-word}
+  .msg.user{align-self:flex-end;background:#23405e;border:1px solid #35608c}
+  .msg.ai{align-self:flex-start;background:var(--panel);border:1px solid var(--line)}
+  .msg .who{font-size:10px;color:var(--dim);margin-bottom:4px}
+  #inputbar{display:flex;gap:8px;margin-top:10px;align-items:flex-end}
+  #inputbar textarea{flex:1;background:#141a21;border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:9px 12px;font:13px "Segoe UI","Microsoft YaHei",sans-serif;resize:none;height:70px}
+  #dropzone{font-size:11px;color:var(--dim);border:1px dashed var(--line);border-radius:6px;padding:6px 10px;text-align:center}
+  #propCol{flex:1;display:flex;flex-direction:column;min-width:340px;overflow-y:auto;padding-right:2px}
+  .prop{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-bottom:8px}
+  .prop .txt{font-size:12px;margin-top:4px}
+  .prop .why{font-size:11px;color:var(--dim);margin-top:4px}
+  .prop input[type=checkbox]{margin-top:3px;flex:none}
+  .prop label{cursor:pointer}
+  input[type=text],select{background:#141a21;border:1px solid var(--line);color:var(--fg);border-radius:4px;padding:5px 8px;font-size:12px}
+  .ver{display:flex;gap:12px;padding:7px 8px;border-left:2px solid var(--line);margin-left:6px}
+  .ver.cur{border-left-color:var(--acc)}
+  .ver .v{font-weight:700;width:28px}
+  .pipe{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+  .stage{padding:5px 10px;border-radius:5px;border:1px solid var(--line);background:#1e242c;font-size:11px;color:var(--dim)}
+  .stage.done{border-color:#2c5e42;color:var(--ok)}
+  .stage.run{border-color:#2f7fd4;color:#4da3ff;background:#16283c;animation:pulse 1.5s infinite}
+  @keyframes pulse{50%{filter:brightness(1.35)}}
+  .arrow{color:var(--dim)}
+  .logbox{background:#0c0f13;border:1px solid var(--line);border-radius:6px;padding:10px;font:11px Consolas,monospace;height:160px;overflow-y:auto;color:#9fb4c8;white-space:pre-wrap;word-break:break-all}
+  footer{display:flex;gap:14px;padding:5px 16px;background:var(--panel);border-top:1px solid var(--line);font-size:11px;color:var(--dim)}
+  .hidden{display:none}
+  #statusbar .res{color:var(--acc)}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">🎛️ PTC 专家控制台</span>
+  <span class="pill" id="pill-dsh"><span class="dot" style="background:var(--warn)"></span>DSH …</span>
+  <span class="pill" id="pill-batch">批次 …</span>
+  <span class="pill" id="pill-trainer">Trainer …</span>
+  <span class="spacer"></span>
+  <button class="ghost" onclick="runRoster()">⟳ Roster 校验</button>
+  <button class="primary" onclick="switchTab(1)">📦 发布</button>
+</header>
+
+<div id="main">
+  <aside>
+    <h3>专家 · <span id="exp-count">…</span></h3>
+    <div id="expertList"></div>
+    <h3 style="margin-top:10px">操作提示</h3>
+    <div style="font-size:11px;color:var(--dim);padding:0 8px">
+      选专家 → 评估草稿 → 发布。<br>
+      训练走左侧「对话式训练」。
+    </div>
+  </aside>
+
+  <div id="content">
+    <nav>
+      <div class="tab on" onclick="switchTab(0)">💬 对话式训练</div>
+      <div class="tab" onclick="switchTab(1)">📦 发布</div>
+      <div class="tab" onclick="switchTab(2)">🩺 纠错</div>
+      <div class="tab" onclick="switchTab(3)">🏃 DSH 运行</div>
+      <div class="tab" onclick="switchTab(4)">🧭 Captain 职责</div>
+    </nav>
+
+    <div id="view">
+
+      <!-- 0 对话式训练 -->
+      <div style="height:100%" id="p0">
+        <div id="trainWrap">
+          <div id="chatCol">
+            <div id="chat">
+              <div class="msg ai"><div class="who">🤖 Trainer</div>你好，这里是对话式训练。把流程图、领域知识、执行问题、吐槽随手丢进下面的输入框——什么格式都行。
+我会拆解成训练提案（每条标注：归属专家｜落盘位置｜写入形式｜依据）。回复后右侧自动生成可勾选的提案卡片，勾选执行即可；也可用「快捷写入」直接落盘单条规则。</div>
+            </div>
+            <div id="targetBanner" style="margin-top:8px;font-size:12px;color:var(--fg)"><span class="dim">🎯 训练目标：未指定</span></div>
+            <div id="modeBanner" style="margin-top:4px;font-size:12px;color:var(--fg)"><span class="dim">📍 地址簿加载中…</span></div>
+            <div id="inputbar">
+              <div id="dropzone">📎 拖入流程图<br>截图 / 粘贴</div>
+              <textarea id="chatInput" placeholder="把流程图、知识、问题、吐槽丢到这里…（Ctrl+Enter 发送）"></textarea>
+              <button class="primary" style="height:70px" id="sendBtn" onclick="sendTrainer()">发送</button>
+            </div>
+          </div>
+          <div id="propCol">
+            <div class="card hidden" id="propCardsCard">
+              <h4>📋 训练提案（Trainer 回复自动解析 · 勾选后执行）</h4>
+                  <div id="propCards"></div>
+                  <div style="margin-top:10px;display:flex;gap:8px">
+                    <button class="primary" onclick="applyProposals()">✅ 写入选中提案</button>
+                    <button class="ghost mini" onclick="applyProposals(true)">全选/全不选</button>
+                  </div>
+                  <div class="dim" style="font-size:11px;margin-top:6px">instructions.md 提案→自动写入并跑评估；其他落盘位置→暂存到 team/artifacts/training-proposals.md 待人工执行。</div>
+                  <div id="prop-result" class="logbox hidden" style="height:120px;margin-top:8px"></div>
+                </div>
+                <div class="card">
+                  <h4>⚡ 快捷写入（不经 Trainer，直接落盘 + 评估）</h4>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <select id="qr-profile"></select>
+                <input type="text" id="qr-rule" placeholder="规则文本，如：产物目录首选 trial/<批次>/，被拒时降级 Output_Global_Material/dft/<TM>/">
+                <input type="text" id="qr-src" placeholder="出处（可选），如：A3 / 用户口述 2026-09-21">
+                <button class="primary" onclick="trainRule()">写入草稿并评估</button>
+              </div>
+              <div id="qr-result" class="logbox hidden" style="height:120px;margin-top:8px"></div>
+            </div>
+            <div class="card">
+              <h4>ℹ️ 提案格式说明</h4>
+              <div class="dim" style="font-size:12px">Trainer 回复的每条提案格式：<br>
+              <span class="mono">[编号] (专家 | 落盘位置 | 形式) 内容 —— 依据</span><br>
+              落盘位置含 instructions.md / profile.yaml / cases/&lt;TM&gt;/ / output-contract.schema.json / scripts/。Trainer 回复后，上方会自动生成可勾选的提案卡片。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1 发布 -->
+      <div class="hidden" id="p1">
+        <div class="card">
+          <h4>当前专家 · <select id="pub-sel" onchange="pick(this.value)" style="max-width:280px"></select></h4>
+          <div id="verList"></div>
+          <div style="margin-top:12px;display:flex;gap:8px">
+            <button onclick="evaluateDraft()">🧪 评估草稿</button>
+            <button class="primary" onclick="publishProfile()">📦 发布下一版</button>
+          </div>
+          <div id="pub-result" class="logbox hidden" style="margin-top:10px"></div>
+        </div>
+        <div class="card">
+          <h4>全队状态</h4>
+          <table><thead><tr><th>角色</th><th>已发布</th><th>草稿评估</th><th>草稿状态</th><th>案例数</th></tr></thead>
+          <tbody id="teamTable"></tbody></table>
+        </div>
+      </div>
+
+      <!-- 2 纠错 -->
+      <div class="hidden" id="p2">
+        <div class="card">
+          <h4>问题清单（LINK-REGRESSION-ISSUES 摘要）</h4>
+          <table>
+            <tr><th style="width:44px">编号</th><th>问题</th><th style="width:60px">类别</th><th style="width:96px">操作</th></tr>
+            <tr><td class="mono">A1</td><td>子代理完成后 Captain 不自动唤醒</td><td class="warn">流程</td><td><button class="ghost mini" onclick="toTrainer('A1：子代理完成后 Captain 不自动唤醒，需要人工 autopilot 兜底唤醒。请出训练提案')">转训练提案</button></td></tr>
+            <tr><td class="mono">A3</td><td>trial 目录与 profile.writable 边界矛盾</td><td class="warn">流程</td><td><button class="ghost mini" onclick="toTrainer('A3：DFT_Expert 产物目录策略——首选 trial 目录，被拒则降级 Output_Global_Material/dft/<TM>/，回执记录降级原因。请出训练提案')">转训练提案</button></td></tr>
+            <tr><td class="mono">B2</td><td>dft verdict "PASS" 是注解无验证力</td><td class="err">合同</td><td><button class="ghost mini" onclick="toTrainer('B2：dft 产物中 verdict PASS 只是注解字符串，无机器验证力。请出训练提案（含 schema 层修复方向）')">转训练提案</button></td></tr>
+            <tr><td class="mono">B5</td><td>合同三源无一致性锁定</td><td class="err">合同</td><td><button class="ghost mini" onclick="toTrainer('B5：output-contract schema、expected.json、verify 脚本三源无一致性锁定，改一处另两处不报错。请出训练提案')">转训练提案</button></td></tr>
+          </table>
+          <div class="dim" style="margin-top:8px">「转训练提案」= 把问题文本塞进对话式训练输入框，切到训练页签发送。</div>
+        </div>
+      </div>
+
+      <!-- 3 DSH 运行 -->
+      <div class="hidden" id="p3">
+        <div class="card">
+          <h4>最新批次流水线</h4>
+          <div class="pipe" id="batchPipe"></div>
+          <table style="margin-top:10px"><thead><tr><th>专家（本批）</th><th>版本</th><th>目标 TM</th><th>状态</th><th>派发时间</th></tr></thead><tbody id="specTable"></tbody></table>
+          <table style="margin-top:10px"><thead><tr><th>回执（真实）</th></tr></thead><tbody id="receiptTable"></tbody></table>
+          <div style="margin-top:12px;display:flex;gap:8px">
+            <button class="primary" onclick="advanceBatch()">⏰ 唤醒 Captain（推进当前批次）</button>
+          </div>
+          <div id="adv-result" class="logbox hidden" style="margin-top:10px"></div>
+        </div>
+        <div class="card">
+          <h4>说明</h4>
+          <div class="dim" style="font-size:12px">批次状态来自 team/artifacts/&lt;batch&gt;/advance-handoff.json，回执来自 dispatch-receipts/。
+「唤醒 Captain」= 对当前最新批次执行 captain_delivery_entry.py --continue-batch（与 autopilot 兑底同机制，可能触发真实派发）。</div>
+        </div>
+      </div>
+
+              <!-- 4 Captain 职责 -->
+              <div class="hidden" id="p4">
+                <div class="card">
+                  <h4>🚀 开批（Captain 交付会话）</h4>
+                      <textarea id="cap-kick-msg" style="width:100%;height:80px;background:#141a21;border:1px solid var(--line);color:var(--fg);border-radius:6px;padding:10px;font:12px Consolas,monospace;resize:vertical" placeholder="首条消息必须包含 TM 编号，例如：TM108，只跑到 DFT 解析为止：验证文档识别和 DFT 解析这两环是否正确，先不要推进策略及后面的阶段。"></textarea>
+                      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+                        <button class="ghost mini" onclick="capPreset()">📋 填入模板</button>
+                        <button class="primary" onclick="capKick()">🚀 开批（发送首条消息）</button>
+                        <button onclick="capPollOnce()">⟳ 刷新回复</button>
+                      </div>
+                      <div class="dim" style="font-size:11px;margin-top:6px">后端自动创建 ate-ptc 会话（Captain）并注入首条消息，回复每 5 秒自动轮询显示在下方；开批后的后续指令（如「继续推进」「继续审计」）也在此输入框发送。会话持久复用（team/ptc/.captain-session.json）。</div>
+                      <div id="cap-kick-log" class="logbox hidden" style="margin-top:10px"></div>
+                    </div>
+                    <div class="card">
+                      <h4>① 行为规则（AGENTS.md · Captain entry 节）</h4>
+                  <textarea id="cap-agmd" style="width:100%;height:220px;background:#141a21;border:1px solid var(--line);color:var(--fg);border-radius:6px;padding:10px;font:12px Consolas,monospace;resize:vertical"></textarea>
+                  <div class="dim" style="font-size:11px;margin-top:6px">新开 Captain 会话即生效。不能包含二级标题（## ）。</div>
+                </div>
+                <div class="card">
+                  <h4>② 阶段编排（ptc_stage_registry.json · 唯一权威）</h4>
+                  <table><thead><tr><th>阶段</th><th>owner</th><th>gate 脚本</th><th>测试族(逗号分隔)</th><th>产物(逗号分隔)</th></tr></thead>
+                  <tbody id="capStages"></tbody></table>
+                  <div class="dim" style="font-size:11px;margin-top:6px">阶段链顺序固定（INPUT_SYNC→…→COMPLETE，不可改）；改 owner/gate/测试族后，下次 captain_delivery_entry.py 调用即生效。</div>
+                </div>
+                <div class="card">
+                  <h4>③ 强制层（只读）</h4>
+                  <div class="dim" style="font-size:12px">入口识别与自动派发在 plugins/dsh-ptc-material-boundary/lib/captain-entry.js（谁能当 Captain、TM 触发开批、自动派发与推进），修改需改代码并重启 DSH web，面板不提供在线编辑。</div>
+                </div>
+                <div style="display:flex;gap:8px;margin-bottom:13px">
+                  <button onclick="loadCaptConfig()">⟳ 重新加载</button>
+                  <button class="primary" onclick="saveCaptConfig()">💾 保存（自动备份）</button>
+                </div>
+                <div id="cap-result" class="logbox hidden"></div>
+              </div>
+
+    </div>
+  </div>
+</div>
+
+<footer id="statusbar">
+  <span id="sb-left">桥接服务 127.0.0.1:4090 · <span class="res" id="sb-res">就绪</span></span>
+  <span id="sb-right"></span>
+</footer>
+
+<script>
+const STAGES=['INPUT_SYNC','STRATEGY','METHOD','RULE_REVIEW_METHOD','IMPLEMENTATION','RULE_REVIEW_IMPLEMENTATION','COMPILE','COMPLETE'];
+let S={experts:[],batch:null,dsh:{online:false},trainer:{}}, sel=null, pollTimer=null;
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const sb=(t,cls)=>{$('sb-res').textContent=t;$('sb-res').className='res '+(cls||'')};
+const NAMES={ 'ptc-dft-expert':'DFT_Expert','ptc-schematic-expert':'Schematic_Expert','strategy-expert':'Strategic_Expert','method-expert':'Method_Expert','rule-reviewer':'Review_Expert','ate-implementer':'Implement_Expert','compile-diagnostician':'Compile_Expert','evolution-expert':'Evolution_Expert' };
+
+function switchTab(i){
+  document.querySelectorAll('nav .tab').forEach((t,j)=>t.classList.toggle('on',i===j));
+  for(let k=0;k<5;k++) $('p'+k).classList.toggle('hidden',k!==i);
+}
+
+async function loadState(){
+  try{
+    S=await fetch('/api/state').then(r=>r.json());
+    renderHeader(); renderExperts(); renderTeam(); renderPublish(); renderBatch(); loadMode();
+  }catch(e){ $('pill-dsh').innerHTML='<span class="dot" style="background:var(--err)"></span>桥接服务离线'; }
+}
+
+function renderHeader(){
+  $('pill-dsh').innerHTML=`<span class="dot" style="background:${S.dsh.online?'var(--ok)':'var(--err)'}"></span>DSH ${S.dsh.online?'在线':'离线'}`;
+  $('pill-batch').innerHTML=S.batch?`批次 <b>${esc(S.batch.batchId)}</b> · <b>${esc(S.batch.state)}</b>`:'批次 —';
+  $('pill-trainer').innerHTML=`Trainer <b>${S.trainer.pending?'思考中…':(S.trainer.sessionId?'在线':'待首次喂料')}</b>`;
+}
+
+function renderExperts(){
+  $('exp-count').textContent=S.experts.length+' 角色';
+  $('expertList').innerHTML=S.experts.map(e=>`
+    <div class="expert ${e.profileId===sel?'sel':''}" onclick="pick('${e.profileId}')">
+      <div class="nm">${NAMES[e.profileId]||e.profileId}</div>
+      <div class="meta">${e.publishedVersion||'未发布'} · ${e.draftClean?'draft 干净':'<span class="dirty">draft 有变更</span>'} · ${e.caseCount} 案例</div>
+    </div>`).join('');
+}
+
+function pick(id){ sel=id; renderExperts(); renderTarget(); syncSelects(); renderPublish(); sb('训练目标：'+(NAMES[id]||id)); }
+function clearTarget(){ sel=null; renderExperts(); renderTarget(); syncSelects(); sb('训练目标已清除，Trainer 将自动归属'); }
+function renderTarget(){
+  $('targetBanner').innerHTML=sel
+    ? `🎯 训练目标：<b>${NAMES[sel]||sel}</b> <span class="mono dim">${sel}</span> <button class="ghost mini" onclick="clearTarget()">✕ 清除</button>`
+    : `<span class="dim">🎯 训练目标：未指定——Trainer 将自行判断材料归属哪个专家（点击左侧专家可指定）</span>`;
+}
+async function loadMode(){
+  try{
+    const d=await fetch('/api/bindings/mode').then(r=>r.json());
+    if(d.error){ $('modeBanner').innerHTML='<span class="dim">📍 地址簿不可用：'+esc(d.error)+'</span>'; return; }
+    const m=d.activeMode, next=m==='training'?'delivery':'training';
+    $('modeBanner').innerHTML=`📍 运行模式：<b>${m==='training'?'训练态':'交付态'}</b> <span class="mono dim">${d.book?.root||''}</span> <button class="ghost mini" onclick="toggleMode('${next}')">⇄ 切换到${next==='training'?'训练态':'交付态'}</button> <span class="dim">· 发送消息自动注入此模式地址簿</span>`;
+  }catch{ $('modeBanner').innerHTML='<span class="dim">📍 地址簿离线</span>'; }
+}
+async function toggleMode(m){
+  if(!confirm(`切换到${m==='training'?'训练态（Training_Materials）':'交付态（project/DALI）'}？后续训练消息按新根注入地址簿。`)) return;
+  const r=await api('/api/bindings/mode',{mode:m});
+  if(r.error) return sb('切换失败：'+r.error,'err');
+  sb(`已切换${m==='training'?'训练态':'交付态'}，根=${r.book?.root}`,'ok');
+  loadMode();
+}
+function syncSelects(){
+  const opts=S.experts.map(e=>`<option value="${e.profileId}" ${e.profileId===sel?'selected':''}>${NAMES[e.profileId]||e.profileId}</option>`).join('');
+  $('qr-profile').innerHTML=opts;
+  $('pub-sel').innerHTML='<option value="">（选择专家…）</option>'+opts;
+  if(sel) $('pub-sel').value=sel;
+}
+
+function renderTeam(){
+  $('teamTable').innerHTML=S.experts.map(e=>`<tr>
+    <td>${NAMES[e.profileId]||e.profileId}<div class="mono dim">${e.profileId}</div></td>
+    <td class="ok">${e.publishedVersion||'—'}</td>
+    <td>${e.draftVerdict==='pass'?'<span class="ok">pass</span>':e.draftVerdict?`<span class="err">${e.draftVerdict}</span>`:'—'}</td>
+    <td>${e.draftClean?'<span class="dim">无变更</span>':'<span class="warn">待评估/发布</span>'}</td>
+    <td>${e.caseCount}</td></tr>`).join('');
+}
+
+function renderPublish(){
+  const e=S.experts.find(x=>x.profileId===sel);
+  if(!e){ $('verList').innerHTML='<div class="dim">在上方选择或点击左侧专家</div>'; return; }
+  $('pub-name')?.textContent;
+  const hist=(e.history||[]).slice().reverse();
+  $('verList').innerHTML=(e.draftClean?'':`<div class="ver cur"><span class="v warn">draft</span><div class="warn">草稿有变更，待评估/发布</div></div>`)+
+    (hist.length?hist.map(h=>`<div class="ver ${h.version===e.publishedVersion?'cur':''}"><span class="v ok">${h.version}</span><div>${h.version===e.publishedVersion?'当前生效':'历史版本'} <span class="dim">${esc((h.publishedAt||'').slice(0,19).replace('T',' '))}</span></div></div>`).join(''):'<div class="dim">无版本记录</div>');
+}
+
+function renderBatch(){
+  if(!S.batch){ $('batchPipe').innerHTML='<span class="dim">无批次目录</span>'; $('specTable').innerHTML='<tr><td class="dim" colspan="5">—</td></tr>'; $('receiptTable').innerHTML='<tr><td class="dim">—</td></tr>'; return; }
+  const cur=S.batch.state;
+  $('batchPipe').innerHTML=STAGES.map(s=>`<span class="stage ${s===cur?'run':(STAGES.indexOf(s)<STAGES.indexOf(cur)?'done':'')}">${s}</span>`).join('<span class="arrow">→</span>');
+  const sp=S.batch.specialists||[];
+  $('specTable').innerHTML=sp.length?sp.map(s=>{
+    const active=s.child&&s.child.activeMs<90000;
+    const nm=NAMES[s.profileId]||s.profileId;
+    const st=active?'🏃 跑动中':(s.child?('💤 已静默 '+Math.max(1,Math.round(s.child.activeMs/60000))+' 分钟'):'❓ 无子会话信息');
+    return `<tr><td>${esc(nm)}</td><td class="mono">${esc(s.profileVersion||'—')}</td><td class="mono">${esc((s.targetTms||[]).join(',')||'—')}</td><td style="color:${active?'var(--ok)':'inherit'}">${st}</td><td class="dim mono">${esc((s.dispatchedAt||'').slice(11,19))}</td></tr>`;
+  }).join(''):'<tr><td class="dim" colspan="5">本批暂无专家派发</td></tr>';
+  $('receiptTable').innerHTML=(S.batch.receipts||[]).map(r=>`<tr><td class="mono">${esc(r)}</td></tr>`).join('')||'<tr><td class="dim">无回执</td></tr>';
+}
+
+// ---- 操作 ----
+async function api(path,body){
+  sb('执行中… '+path);
+  const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body||{})}).then(x=>x.json()).catch(e=>({error:String(e)}));
+  return r;
+}
+function showLog(id,r){
+  const el=$(id); el.classList.remove('hidden');
+  el.textContent=`exit=${r.exitCode??'?'} ${r.verdict?`verdict=${r.verdict}`:''}\n${(r.stdout||'').slice(0,3000)}\n${(r.stderr||'').slice(0,1500)}`;
+}
+
+async function evaluateDraft(){
+  if(!sel) return sb('先在左侧选专家','err');
+  const r=await api('/api/evaluate',{profile:sel});
+  showLog('pub-result',r); sb(r.verdict==='pass'?'评估 pass':'评估未通过','ok'===r.verdict?'ok':'err'); loadState();
+}
+async function publishProfile(){
+  if(!sel) return sb('先在左侧选专家','err');
+  if(!confirm(`发布 ${sel} 到 ${'新版本'}？发布后不可改。`)) return;
+  const r=await api('/api/publish',{profile:sel});
+  showLog('pub-result',r); sb(`发布 ${r.version||'?'} exit=${r.exitCode}`,r.exitCode===0?'ok':'err'); loadState();
+}
+async function runRoster(){
+  const r=await api('/api/roster');
+  showLog('pub-result',r); sb('roster '+(r.exitCode===0?'complete':'异常'),r.exitCode===0?'ok':'err'); loadState();
+}
+async function trainRule(){
+  const profile=$('qr-profile').value, rule=$('qr-rule').value.trim(), source=$('qr-src').value.trim();
+  if(!rule) return sb('规则文本不能为空','err');
+  const r=await api('/api/train-rule',{profile,rule,source});
+  const el=$('qr-result'); el.classList.remove('hidden');
+  el.textContent=JSON.stringify(r.write||r)+'\n'+((r.evaluation&&(r.evaluation.stdout||'')).slice(0,2500)||r.error||'');
+  sb('写入完成，评估 '+(r.evaluation?.verdict||'?'),r.evaluation?.verdict==='pass'?'ok':'err');
+  $('qr-rule').value=''; loadState();
+}
+
+// ---- Trainer 聊天 ----
+function chatMsg(who,text,cls){
+  const d=document.createElement('div'); d.className='msg '+cls;
+  d.innerHTML=`<div class="who">${who}</div>${esc(text)}`;
+  $('chat').appendChild(d); $('chat').scrollTop=$('chat').scrollHeight;
+}
+async function sendTrainer(){
+  const t=$('chatInput').value.trim(); if(!t) return;
+  $('chatInput').value='';
+  const prefix=sel?`【训练目标：${sel}（${NAMES[sel]||sel}）——本次材料优先拆解为该专家的提案；只有明显属于其他专家的才标注建议改派】\n\n`:'';
+  chatMsg('👤 你 · '+new Date().toLocaleTimeString().slice(0,5),t,'user');
+  $('sendBtn').disabled=true;
+  const r=await api('/api/trainer/send',{text:prefix+t});
+  $('sendBtn').disabled=false;
+  if(!r.accepted){ chatMsg('🤖 Trainer','发送失败：'+(r.error||r.raw||''),'ai'); return sb('Trainer 发送失败','err'); }
+  sb('Trainer 已接收，思考中…');
+  if(pollTimer) clearInterval(pollTimer);
+  pollTimer=setInterval(pollTrainer,4000);
+}
+async function pollTrainer(){
+  try{
+    const p=await fetch('/api/trainer/poll').then(r=>r.json());
+    renderHeader();
+    if(p.reply&&p.reply.text){
+      chatMsg('🤖 Trainer · '+new Date(p.reply.at||Date.now()).toLocaleTimeString().slice(0,5),p.reply.text,'ai');
+      renderProposals(p.reply.text);
+        sb('Trainer 回复就绪','ok'); clearInterval(pollTimer); pollTimer=null;
+    }else if(!p.pending){ clearInterval(pollTimer); pollTimer=null; }
+  }catch{}
+}
+function toTrainer(t){ switchTab(0); $('chatInput').value=t; $('chatInput').focus(); }
+
+// ---- 批次驱动 ----
+async function advanceBatch(){
+  if(!S.batch) return sb('无批次目录','err');
+  if(!confirm(`对批次 ${S.batch.batchId} 唤醒 Captain（--continue-batch）？可能触发真实派发。`)) return;
+  sb('Captain 推进中…（最长 10 分钟）');
+  const r=await api('/api/batch/advance',{});
+  const el=$('adv-result'); el.classList.remove('hidden');
+  el.textContent=`exit=${r.exitCode??'?'}\n${(r.stdout||'').slice(0,4000)}\n${(r.stderr||'').slice(0,2000)}`;
+  sb('Captain 推进结束 exit='+ (r.exitCode??'?'), r.exitCode===0?'ok':'err'); loadState();
+}
+
+// ---- 提案卡片 ----
+const ID_BY_NAME=Object.fromEntries(Object.entries(NAMES).map(([k,v])=>[v,k]));
+let curProps=[];
+function parseProposals(text){
+  const out=[];
+  for(const b of String(text).split(/\n(?=\[\d+\s*[（(])/)){
+    const m=b.match(/^\[(\d+)\]\s*[（(]\s*([^|()（）]+?)\s*\|\s*([^|()（）]+?)\s*\|\s*([^()（）]+?)\s*[）)]\s*([\s\S]*)/);
+    if(m) out.push({no:m[1],expert:m[2].trim(),loc:m[3].trim(),form:m[4].trim(),text:m[5].trim()});
+  }
+  return out;
+}
+function renderProposals(text){
+  curProps=parseProposals(text);
+  $('propCardsCard').classList.remove('hidden');
+  $('propCards').innerHTML=curProps.length?curProps.map((p,i)=>`
+    <div class="prop"><label style="display:flex;gap:8px;align-items:flex-start">
+      <input type="checkbox" data-i="${i}" checked>
+      <div><b>[${esc(p.no)}]</b> <span class="mono">${esc(p.expert)}</span> · <span class="warn">${esc(p.loc)}</span> <span class="dim">(${esc(p.form)})</span>
+        <div class="txt">${esc(p.text)}</div></div>
+    </label></div>`).join('')
+    : '<span class="dim" style="font-size:12px">本次回复未解析出提案——可能是总结/闲聊；可用下方「快捷写入」手动落盘。</span>';
+  $('prop-result').classList.add('hidden');
+}
+async function applyProposals(toggleAll){
+  const boxes=[...$('propCards').querySelectorAll('input[type=checkbox]')];
+  if(toggleAll===true){ const all=boxes.every(b=>b.checked); boxes.forEach(b=>b.checked=!all); return; }
+  const picks=boxes.filter(b=>b.checked).map(b=>curProps[+b.dataset.i]).filter(Boolean);
+  if(!picks.length) return sb('未勾选任何提案','err');
+  sb('正在写入 '+picks.length+' 条提案…');
+  const results=[];
+  for(const p of picks){
+    const profile=ID_BY_NAME[p.expert]||p.expert;
+    const r=await api('/api/proposal/apply',{profile,location:p.loc,text:p.text,source:'trainer 提案['+p.no+']'});
+    results.push(`[${p.no}] ${profile} → ${p.loc} ：${r.ok?(r.mode==='staged'?'已暂存 training-proposals.md':(r.deduped?'已存在(dedup)':'已写 instructions.md，评估 '+(r.evaluation?.verdict||'?'))):(r.error||'失败')}`);
+  }
+  const el=$('prop-result'); el.classList.remove('hidden'); el.textContent=results.join('\n');
+  sb(picks.length+' 条提案处理完成','ok'); loadState();
+}
+
+// ---- Captain 开批 ----
+let capPollTimer=null;
+function capPreset(){ $('cap-kick-msg').value='TM108，只跑到 DFT 解析为止：验证文档识别和 DFT 解析这两环是否正确，先不要推进策略及后面的阶段。'; }
+async function capKick(){
+  const text=$('cap-kick-msg').value.trim();
+  if(!text){ sb('开批消息不能为空','err'); return; }
+  const el=$('cap-kick-log'); el.classList.remove('hidden');
+  el.textContent='⏳ 正在创建/复用 Captain 会话并注入首条消息…';
+  try{
+    const r=await api('/api/captain/send',{text});
+    if(!r.accepted){ el.textContent='❌ 注入失败：'+(r.error||r.raw||'未知'); sb('开批失败','err'); return; }
+    el.textContent='✅ 已注入 Captain 会话 '+esc(r.sessionId)+'\n⏳ 等待 Captain 回复（每 5 秒自动轮询）…';
+    sb('开批消息已发出','ok');
+    if(capPollTimer) clearInterval(capPollTimer);
+    capPollTimer=setInterval(capPoll,5000);
+  }catch(e){ el.textContent='❌ '+e; sb('开批失败','err'); }
+}
+async function capPoll(){
+  try{
+    const r=await fetch('/api/captain/poll').then(x=>x.json());
+    if(!r.sessionId && !r.reply) return; // 从未开批，不显示
+    const el=$('cap-kick-log'); el.classList.remove('hidden');
+    if(r.reply){
+      el.textContent='💬 Captain @'+r.reply.at+(r.pending?'（处理中…）':'（本轮结束）')+'\n\n'+r.reply.text;
+      el.scrollTop=el.scrollHeight;
+      if(!r.pending && capPollTimer){ clearInterval(capPollTimer); capPollTimer=null; }
+    }else if(r.pending){
+      el.textContent=(el.textContent.split('\n')[0]||'')+'\n⏳ Captain 处理中…';
+    }else{
+      el.textContent=(el.textContent.split('\n')[0]||'')+'\n（暂无回复，可稍后点「刷新回复」）';
+    }
+  }catch(e){}
+}
+function capPollOnce(){ capPoll(); sb('已刷新 Captain 回复'); }
+
+// ---- Captain 职责 ----
+let capReg=null;
+async function loadCaptConfig(){
+  try{
+    const c=await fetch('/api/captain/config').then(r=>r.json());
+    if(c.error) return sb('读取失败：'+c.error,'err');
+    $('cap-agmd').value=c.agmd;
+    capReg=c.registry;
+    const owners=['captain',...Object.keys(NAMES)];
+    $('capStages').innerHTML=(c.stateMachine||[]).map(s=>{
+      const st=c.registry.stages[s]||{};
+      return `<tr><td class="mono">${s}</td>
+        <td><select data-s="${s}" data-k="owner" style="width:130px">${owners.map(o=>`<option ${st.owner===o?'selected':''}>${o}</option>`).join('')}</select></td>
+        <td><input type="text" data-s="${s}" data-k="gate" value="${esc(st.gate||'')}" style="width:230px"></td>
+        <td><input type="text" data-s="${s}" data-k="families" value="${esc((st.families||[]).join(', '))}"></td>
+        <td><input type="text" data-s="${s}" data-k="outputs" value="${esc((st.outputs||[]).join(', '))}" style="width:260px"></td></tr>`;
+    }).join('');
+    sb('Captain 配置已加载');
+  }catch(e){ sb('读取失败：'+e,'err'); }
+}
+async function saveCaptConfig(){
+  if(!capReg) return sb('先加载配置','err');
+  const reg=JSON.parse(JSON.stringify(capReg));
+  document.querySelectorAll('#capStages [data-s]').forEach(el=>{
+    const s=el.dataset.s,k=el.dataset.k;let v=el.value.trim();
+    if(k==='families'||k==='outputs') v=v?v.split(/[,，]\s*/).filter(Boolean):[];
+    if(!reg.stages[s]) reg.stages[s]={};
+    reg.stages[s][k]=v;
+  });
+  const r=await api('/api/captain/config',{agmd:$('cap-agmd').value,registry:reg});
+  const el=$('cap-result'); el.classList.remove('hidden');
+  if(r.ok){ el.textContent=(r.done||[]).join('\n'); sb('Captain 配置已保存','ok'); loadCaptConfig(); }
+  else { el.textContent=JSON.stringify(r); sb('保存失败','err'); }
+}
+
+// ---- init ----
+switchTab(0); loadState(); setInterval(loadState,5000); loadCaptConfig(); capPoll();
+const qt=$('qr-profile');
+const fillProfiles=()=>{ syncSelects(); };
+setTimeout(fillProfiles,1500); setTimeout(fillProfiles,4000);
+renderTarget();
+$('chatInput').addEventListener('keydown',e=>{ if(e.ctrlKey&&e.key==='Enter') sendTrainer(); });
+</script>
+</body>
+</html>

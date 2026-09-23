@@ -1,0 +1,319 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "strategy_resource_config_contract",
+  "batchId": "dali-20260921-080849-tm106-tm108-tm425",
+  "tm": "TM106",
+  "stage": "STRATEGY",
+  "verdict": "deliverable_ready",
+  "classification": {
+    "projectType": {
+      "value": "一般测试项目",
+      "flowLocator": "knowledge/standards/test-types.md §项目结构类型判定表(7类,按序命中即停) #7 一般测试项目 —— TM106 非 Trim(isTrim=false)/非 Contact/非 OTP/非 Leakage，ramp 阈值翻转属第 7 行",
+      "indexLocator": "knowledge/references/func_type_index.md #7 一般测试项目 (框架=普通, 测量方法=AWG rampv_capv)",
+      "evidenceLocator": "project/DALI/Output_Global_Material/dft/TM106/dft-meta.json:testCondition (isTrim=false, dynamicPins=[VBUS], powerSequence vbus 3->5->3V ramp, Check=V(DTEST0))"
+    },
+    "parameterType": {
+      "value": "UVLO (PRST 阈值族: VBUS_PRST 上升/下降阈值+迟滞)",
+      "flowLocator": "knowledge/standards/test-types.md §具体参数类型(11类) #4 UVLO —— UVLO/OVP/PRST/VBAT_LOW/RECHG: 欠压/过压锁定阈值(ramp 电压 -> monitor 翻转)",
+      "indexLocator": "knowledge/references/param_type_index.md #UVLO (PRST 阈值 AWG: rampv_capv 双扫 TRIG_RISING/FALLING + Hys, golden=L4-Golden-code/UVLO.cpp)",
+      "evidenceLocator": "project/DALI/Output_Global_Material/dft/TM106/dft-meta.json:rawIntent (Name=VBUS_PRST, ExpectValue=rising vth 3.9V hys 0.2V, Notes mux A2D_VBUS_PRST to dtest0 / check int pin toggle)"
+    }
+  },
+  "pinResolution": {
+    "logicalSignal": "V(DTEST0)",
+    "physicalDutPin": "nQON",
+    "monitorDutPin": "nQON",
+    "resolutionState": "RESOLVED",
+    "componentsStatisticLocator": "project/DALI/Output_Global_Material/schematic/Components-Statistic.json:semanticIndex.dutKelvinPins (含 nQON)",
+    "mappingEvidence": {
+      "document": "project/DALI/Input_GlobalMaterial/DALI-special-information.json",
+      "documentSha256": "86d11d43f8602cba604605fc015ba75a2d04a079345a5084f7442053c796d188",
+      "logicalLabel": "DTEST0",
+      "aliases": [
+        "DEST0",
+        "V(DTEST0)",
+        "V(DEST0)"
+      ],
+      "physicalDutPin": "nQON",
+      "pinClass": "digital_mux_pin",
+      "authority": "project user ruling (trial input-manifest.json:canonicalInputs.specialPinInformation.document.mappings[0])",
+      "rationale": "DFT Check=V(DTEST0) 是 DMUX 输出的逻辑监测标签(Notes: mux A2D_VBUS_PRST to dtest0); Pin_Channel_define.h 与 Components-Statistic 的 DUT Kelvin 引脚集均无 DTEST0 物理引脚; 按 specialPinInformation 权威映射 DTEST0->nQON, nQON 在 dutKelvinPins 集合内, 作为唯一物理监测引脚参与源表/通路/上拉选择"
+    }
+  },
+  "resourceAllocation": [
+    {
+      "dutPin": "VBAT",
+      "role": "static_supply",
+      "selectionState": "SELECTED",
+      "sourceTable": "VBAT_PD3_FXVI",
+      "instrumentCategory": "FXVIe_PLUS",
+      "ports": [
+        "S3_FXVIe_PLUS_FH5",
+        "S3_FXVIe_PLUS_SH5"
+      ],
+      "selectedPath": "S3_FXVIe_PLUS_FH5 -[K8_PD3_S1(NC) NetK7_BUSH_VBAT_S1_4 -> NetCap1_VBAT_S1_1]-> VBAT_F_S1 ; S3_FXVIe_PLUS_SH5 -[K8_PD3_S1(NC) NetK7_BUSH_VBAT_S1_5 -> NetK8_PD3_S1_2]-> VBAT_S_S1",
+      "evidenceChain": {
+        "dftEndpointLocator": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm106/input-manifest.json:canonicalInputs.dft.declaredPins[0]=VBAT + project/DALI/Output_Global_Material/dft/TM106/dft-meta.json:testCondition.staticPower[0] (vset[vbat,3,100e-6,0], VBAT=3.0V 静态供电)",
+        "sourceTableLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h:12 (#define _PIN_CHANNEL_DEFINE_VBAT_PD3_FXVI_ 值含 S3_5) 与 :93 (extern FXVIe_PLUS VBAT_PD3_FXVI;) —— VBAT 位于 FXVIe_PLUS 槽位3 通道5",
+        "schematicRouteLocator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S3_FXVIe_PLUS_FH5,dut_pin=VBAT_F_S1)] path=K8_PD3_S1(NC) NetK7_BUSH_VBAT_S1_4->NetCap1_VBAT_S1_1 terminal_stop=true validation 全PASS; 同法 (S3_FXVIe_PLUS_SH5,VBAT_S_S1) path=K8_PD3_S1(NC) NetK7_BUSH_VBAT_S1_5->NetK8_PD3_S1_2; SCH-Connect-Map.json rawText L832 (VBAT [Kelvin] 需闭合: 无(默认导通))",
+        "relayDefinitionLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h:643 (#define K_PD3_FXVI 8 // FXVIe_PLUS[] -> PD3: K8_FOVI5_PD3) —— 路径继电器 K8 默认 NC 保持导通，SetOn 不闭",
+        "registerConfigurationLocator": "strategy/register-config-evidence.json:orderedWrites[0..1] (0X56=0X13, 0X57=0X08 <- project/DALI/reg_config/tm106.sv:14-15, DMUX_EN=1/DMUX_SEL=19 将 A2D_VBUS_PRST 选通至 DTEST0)",
+        "interconnectLocator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(S3_FXVIe_PLUS_FH5,VBAT_F_S1)] —— 源端口 S3_FXVIe_PLUS_FH5 即路径首节点，经 K8_PD3_S1 NC 触点直连 DUT Kelvin 端子"
+      },
+      "physicalProofs": [
+        {
+          "sourcePort": "S3_FXVIe_PLUS_FH5",
+          "dutPin": "VBAT_F_S1",
+          "requiredOn": [],
+          "locator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S3_FXVIe_PLUS_FH5, dut_pin=VBAT_F_S1)]"
+        },
+        {
+          "sourcePort": "S3_FXVIe_PLUS_SH5",
+          "dutPin": "VBAT_S_S1",
+          "requiredOn": [],
+          "locator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S3_FXVIe_PLUS_SH5, dut_pin=VBAT_S_S1)]"
+        }
+      ],
+      "requiredActuations": [],
+      "functionalRelays": [
+        {
+          "id": "K13",
+          "name": "K13_VBAT_Cap",
+          "state": "ON",
+          "locator": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h:169 (#define K13_VBAT_Cap 13, 亦见 :658 K_VBAT_Cap 13) + knowledge/hardware/relays.md:124 FR-001 总原则 + knowledge/standards/relay-checklist.md:27 + SCH-Connect-Map.json rawText L914 (VBAT 稳压 Cap2_VBAT_S1 C=4.7uF 需闭合: K13) —— DFT Power=VBAT 且单次 vset[vbat,3V] 直供(非扫描/非电流测量)故必闭"
+        }
+      ]
+    },
+    {
+      "dutPin": "VBUS",
+      "role": "dynamic_sweep",
+      "selectionState": "SELECTED",
+      "sourceTable": "VBUS_DRVH1_ACM",
+      "instrumentCategory": "ACM200",
+      "ports": [
+        "S5_ACM200_FH10",
+        "S5_ACM200_SH10"
+      ],
+      "selectedPath": "S5_ACM200_FH10 -[K4_DRVH1_S1(NC) NetK3_BUSL_VBUS_S1_4 -> NetCap1_VBUS_S1_1]-> VBUS_F_S1 ; S5_ACM200_SH10 -[K4_DRVH1_S1(NC) NetK3_BUSL_VBUS_S1_5 -> NetK4_DRVH1_S1_2]-> VBUS_S_S1",
+      "evidenceChain": {
+        "dftEndpointLocator": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm106/input-manifest.json:canonicalInputs.dft.declaredPins[1]=VBUS + project/DALI/Output_Global_Material/dft/TM106/dft-meta.json:testCondition.powerSequence/dynamicPins (vbus 3->5->3V ramp, 1e-3)",
+        "sourceTableLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h:25 (#define _PIN_CHANNEL_DEFINE_VBUS_DRVH1_ACM_ 值含 S5_10) 与 :106 (extern ACM200 VBUS_DRVH1_ACM;) —— VBUS 位于 ACM200 槽位5 通道10",
+        "schematicRouteLocator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S5_ACM200_FH10,dut_pin=VBUS_F_S1)] path=K4_DRVH1_S1(NC) NetK3_BUSL_VBUS_S1_4->NetCap1_VBUS_S1_1 terminal_stop=true; 同法 (S5_ACM200_SH10,VBUS_S_S1) path=K4_DRVH1_S1(NC) NetK3_BUSL_VBUS_S1_5->NetK4_DRVH1_S1_2; SCH-Connect-Map.json rawText L783 (VBUS [Kelvin] 需闭合: 无(默认导通))",
+        "relayDefinitionLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h:160 (#define K4_ACM10_DRVH1 4) 与 :624 (#define K_DRVH1_ACM 4 // ACM200[] -> DRVH1: K4_ACM10_DRVH1) —— K4 默认 NC 保持导通",
+        "registerConfigurationLocator": "strategy/register-config-evidence.json:orderedWrites[0..1] (0X56=0X13, 0X57=0X08 <- project/DALI/reg_config/tm106.sv:14-15)",
+        "interconnectLocator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(S5_ACM200_FH10,VBUS_F_S1)] —— 源端口 S5_ACM200_FH10 即路径首节点，经 K4_DRVH1_S1 NC 触点直连 DUT Kelvin 端子"
+      },
+      "physicalProofs": [
+        {
+          "sourcePort": "S5_ACM200_FH10",
+          "dutPin": "VBUS_F_S1",
+          "requiredOn": [],
+          "locator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S5_ACM200_FH10, dut_pin=VBUS_F_S1)]"
+        },
+        {
+          "sourcePort": "S5_ACM200_SH10",
+          "dutPin": "VBUS_S_S1",
+          "requiredOn": [],
+          "locator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S5_ACM200_SH10, dut_pin=VBUS_S_S1)]"
+        }
+      ],
+      "requiredActuations": [],
+      "functionalRelays": []
+    },
+    {
+      "dutPin": "nQON",
+      "role": "monitor",
+      "selectionState": "SELECTED",
+      "sourceTable": "NQON_HG1_ACM",
+      "instrumentCategory": "ACM200",
+      "ports": [
+        "S5_ACM200_FH9",
+        "S5_ACM200_SH9"
+      ],
+      "selectedPath": "S5_ACM200_FH9 -[K64_HG1_S1(NC) NetK62_BUS_FH_QON_S1_2 -> NetK64_HG1_S1_7]-> nQON_F_S1 ; S5_ACM200_SH9 -[K64_HG1_S1(NC) NetK62_BUS_SH_QON_S1_2 -> NetK64_HG1_S1_2]-> nQON_S_S1",
+      "evidenceChain": {
+        "dftEndpointLocator": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm106/input-manifest.json:canonicalInputs.dft.checkLabel=V(DTEST0) + canonicalInputs.specialPinInformation.document.mappings[0] (DTEST0->nQON) + project/DALI/Output_Global_Material/dft/TM106/dft-meta.json:rawIntent.Check",
+        "sourceTableLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h:24 (#define _PIN_CHANNEL_DEFINE_NQON_HG1_ACM_ 值含 S5_9) 与 :105 (extern ACM200 NQON_HG1_ACM;) —— nQON 位于 ACM200 槽位5 通道9",
+        "schematicRouteLocator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S5_ACM200_FH9,dut_pin=nQON_F_S1)] path=K64_HG1_S1(NC) NetK62_BUS_FH_QON_S1_2->NetK64_HG1_S1_7 terminal_stop=true; 同法 (S5_ACM200_SH9,nQON_S_S1) path=K64_HG1_S1(NC) NetK62_BUS_SH_QON_S1_2->NetK64_HG1_S1_2; SCH-Connect-Map.json rawText L798 (nQON [Kelvin] 需闭合: 无(默认导通))",
+        "relayDefinitionLocator": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h:228 (#define K64_ACM9_HG1 64) 与 :625 (#define K_HG1_ACM 64 // ACM200[] -> HG1: K64_ACM9_HG1) —— K64 默认 NC 保持导通",
+        "registerConfigurationLocator": "strategy/register-config-evidence.json:orderedWrites[0..1] (0X56=0X13, 0X57=0X08 <- project/DALI/reg_config/tm106.sv:14-15, DMUX_EN=1/DMUX_SEL=19)",
+        "interconnectLocator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(S5_ACM200_FH9,nQON_F_S1)] —— 源端口 S5_ACM200_FH9 即路径首节点，经 K64_HG1_S1 NC 触点直连 DUT Kelvin 端子"
+      },
+      "physicalProofs": [
+        {
+          "sourcePort": "S5_ACM200_FH9",
+          "dutPin": "nQON_F_S1",
+          "requiredOn": [],
+          "locator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S5_ACM200_FH9, dut_pin=nQON_F_S1)]"
+        },
+        {
+          "sourcePort": "S5_ACM200_SH9",
+          "dutPin": "nQON_S_S1",
+          "requiredOn": [],
+          "locator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs[(source_port=S5_ACM200_SH9, dut_pin=nQON_S_S1)]"
+        }
+      ],
+      "requiredActuations": [],
+      "functionalRelays": [
+        {
+          "id": "K65",
+          "name": "K65_nQON_PU",
+          "state": "ON",
+          "locator": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h:229 (#define K65_nQON_PU 65, 亦见 :685 K_nQON_PU 65) + knowledge/hardware/relays.md:150 (DALI 实例 K65_nQON_PU) 与 :145 (观测开漏输出必须闭合) + SCH-Connect-Map.json rawText L891 (nQON 上拉-固定5V R_nQON_PU_S1 需闭合: K65) —— DFT 经 nQON 观测开漏 INT 翻转，上拉必闭"
+        }
+      ]
+    }
+  ],
+  "resourceSummary": {
+    "sourceTablesUnresolved": false,
+    "endpointCount": 3,
+    "pathRequiredOnUnion": [],
+    "functionalRelayUnion": [
+      "K13",
+      "K65"
+    ],
+    "setOnRelayUnion": [
+      "K13",
+      "K65"
+    ],
+    "conflicts": []
+  },
+  "relayGroups": [
+    {
+      "groupId": "TM106-G1-VBAT",
+      "endpointId": "VBAT",
+      "stage": "SETON",
+      "setOnRelayIds": [
+        "K13"
+      ],
+      "purpose": "VBAT 3.0V 静态供电: FXVIe_PLUS CH5 默认导通 Kelvin 通路 + K13 稳压电容(FR-001)"
+    },
+    {
+      "groupId": "TM106-G2-VBUS",
+      "endpointId": "VBUS",
+      "stage": "SETON",
+      "setOnRelayIds": [],
+      "purpose": "VBUS 3->5->3V ramp 经 ACM200 CH10 默认导通 Kelvin 通路, 无需闭合通路继电器"
+    },
+    {
+      "groupId": "TM106-G3-nQON",
+      "endpointId": "nQON",
+      "stage": "SETON",
+      "setOnRelayIds": [
+        "K65"
+      ],
+      "purpose": "nQON 上拉 5V 使能开漏 INT 翻转观测(K65_nQON_PU)"
+    }
+  ],
+  "registerConfiguration": {
+    "tm": "TM106",
+    "evidencePath": "team/artifacts/dali-20260921-080849-tm106-tm108-tm425/tm106/strategy/register-config-evidence.json",
+    "evidenceSha256": "1573fed3284781e71731aa42f06cfabe640f24b1f54cc050e90f134548d52c6a",
+    "sourcePath": "project/DALI/reg_config/tm106.sv",
+    "sourceSha256": "3c1a61b0ce4daf7a12174fa0bce71217467a3d4ff11d3a86830dc4b778977a6b",
+    "fieldIntent": [
+      {
+        "field": "DMUX_EN",
+        "value": 1
+      },
+      {
+        "field": "DMUX_SEL",
+        "value": 19
+      }
+    ],
+    "orderedWrites": [
+      {
+        "sourceLine": 14,
+        "sourceText": "I2CWriteSameData(DEV_ADDR, 0x56, 0x13);  // Write reg 0x56 = 19",
+        "address": "0X56",
+        "value": "0X13"
+      },
+      {
+        "sourceLine": 15,
+        "sourceText": "I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // Write reg 0x57 = 8",
+        "address": "0X57",
+        "value": "0X08"
+      }
+    ]
+  },
+  "relayDesignWorkflow": {
+    "note": "knowledge/references/L3-method/relay-design-flow.md 八步流程审计轨迹; 最终验收以 Path-Proofs/冲突检查/功能继电器检查为准",
+    "steps": [
+      {
+        "step": "1 找Pin",
+        "result": "VBAT(静态3.0V)/VBUS(动态3->5->3V)/监测 DTEST0->nQON"
+      },
+      {
+        "step": "2 找通路",
+        "result": "Path-Proofs accepted: VBAT 9条, VBUS 9条, nQON 10条候选(含 QTMU/FPVIe/FXVIe_PLUS/ACM200/QVM)"
+      },
+      {
+        "step": "3 分流",
+        "result": "无差分Pin组、无大电流 -> 非稀缺源表(FXVIe_PLUS/ACM200)"
+      },
+      {
+        "step": "4 最短通路",
+        "result": "VBAT=S3_FXVIe_PLUS_CH5(F/S 0继电器), VBUS=S5_ACM200_CH10(0), nQON=S5_ACM200_CH9(0); 所选通路 required_on 均为空(默认导通 Kelvin)"
+      },
+      {
+        "step": "5 局部冲突",
+        "result": "无: 所选通路无 ON 继电器, 无同源表端占用"
+      },
+      {
+        "step": "6 全局冲突",
+        "result": "无: K8/K4/K64 均 NC 且互不交叉; 源端口与 pair 唯一归属各端点"
+      },
+      {
+        "step": "7 闭合分组",
+        "result": "单组 SetOn 闭合集: K13(VBAT 稳压) + K65(nQON 上拉); K8/K4/K64 保持 NC"
+      },
+      {
+        "step": "8 终点",
+        "result": "闭合集移交 METHOD 阶段按 CBITe.h SetOn 语义落地; 策略只交付闭合集与端口分配"
+      }
+    ]
+  },
+  "evidence": [
+    {
+      "kind": "dft",
+      "path": "project/DALI/Output_Global_Material/dft/TM106/dft-meta.json",
+      "note": "已签 DFT 投影, sourceSha256=896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b"
+    },
+    {
+      "kind": "dft",
+      "path": "project/DALI/Output_Global_Material/dft/TM106/dft-conditions.yaml",
+      "note": "测试条件解释(阈值 AWG: rampv_capv 双扫)"
+    },
+    {
+      "kind": "schematic",
+      "path": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json",
+      "note": "status=PASS, 669 条 accepted 通路证明"
+    },
+    {
+      "kind": "schematic",
+      "path": "project/DALI/Output_Global_Material/schematic/SCH-Connect-Map.json",
+      "note": "L913-L915 稳压电容/L891 nQON 上拉"
+    },
+    {
+      "kind": "schematic",
+      "path": "project/DALI/Output_Global_Material/schematic/Components-Statistic.json",
+      "note": "dutKelvinPins 66 引脚集(含 VBAT/VBUS/nQON)"
+    },
+    {
+      "kind": "vs_header",
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h",
+      "note": "源表对象与通道宏"
+    },
+    {
+      "kind": "vs_header",
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h",
+      "note": "继电器定义 K13/K65/K4/K8/K64"
+    },
+    {
+      "kind": "reg_config",
+      "path": "project/DALI/reg_config/tm106.sv",
+      "note": "已批准寄存器配置源"
+    }
+  ],
+  "openItems": []
+}

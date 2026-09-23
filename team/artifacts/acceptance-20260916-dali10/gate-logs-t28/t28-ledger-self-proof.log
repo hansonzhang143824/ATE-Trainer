@@ -1,0 +1,8 @@
+WROTE meta = 644 B / 62faa45f3ef0047ed244845f75b6e0af4d0be149d5a34afef302a3cae930ee8d
+APPENDED → 账本现 3 行 / 1216 B
+
+=== 自证 ===
+  新行键 = ['at', 'reason', 'live_size', 'live_sha256', 'live_body_sha256', 'entries', 'preservedPeerKeys', 'lineCount', 'prevLineSha256', 'ledger_self_sha256']
+  含 lineCount / prevLineSha256 / ledger_self_sha256 = True
+  prevLineSha256 与上一行实际哈希一致 = True
+  头文件 appendOnly = True

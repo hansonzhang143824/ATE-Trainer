@@ -1,0 +1,46 @@
+{
+  "tm": "TM425",
+  "verdict": "PASS",
+  "reviewer": "ptc-dft-expert v3 (executionClass input-dft)",
+  "reviewedAtUtc": "2026-09-21T02:58:32.334Z",
+  "batchId": "dali-20260921-080849-tm106-tm108-tm425",
+  "sourceSha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+  "readSources": [
+    {
+      "path": "project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx",
+      "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "withinInputRoot": true
+    }
+  ],
+  "reviewedArtifacts": [
+    {
+      "path": "project/DALI/Output_Global_Material/dft/TM425/dft-meta.json",
+      "sha256": "a7cdab0cf5606d8b5eade6a1184eb2f31af93e0d0c674e9a574c95f159f5bb76"
+    },
+    {
+      "path": "project/DALI/Output_Global_Material/dft/TM425/dft-conditions.yaml",
+      "sha256": "32d690f794cb9b6429f0f865bb9b4904cc06181203cd6e63a93dd7a6549d7a06"
+    }
+  ],
+  "checksPerformed": [
+    "meta.tm==TM425",
+    "meta.sourceSha256==workbook plaintext sha256 (hash_ate_plaintext form1 output matches gate record)",
+    "meta.rawIntent is the field-for-field OVERVIEW row copy (29 fields); raw source text preserved verbatim",
+    "testCondition carries all 20 required condition fields (identity..notes)",
+    "reviewedArtifacts bind current artifact byte hashes; values cross-checked identical between refresh/render stdout (metaSha256/outputSha256) and run_code fs sha256",
+    "meta and yaml accepted by validate_dft_outputs (form4) in this session; review binding rejected by the same gate (see ErrorLog)"
+  ],
+  "findingsSummary": "Semantic review re-performed against current artifacts. Electrical facts consistent with rawIntent: TM106 ExpectValue 'rising vth 3.9V, hys 0.2V' (3.9V rising threshold, 0.2V hysteresis), direct power-on via vset[...,100e-6,...], ramp vbus 3->5->3; TM108 ExpectValue 'rising vth 4.4V, hys 0.35V'; TM425 ExpectValue 1.2 with isTrim=true (Trim=Y) and bench reference 1.197V preserved verbatim. Deterministic scripts own all numbers.",
+  "unknownsMarked": [
+    "helper commands en_tm[]/delay[]/finish[] appear in Code columns without codeExplain definitions; intent inferred (enter test mode / settle wait / end-of-test) and raw text preserved verbatim in rawIntent"
+  ],
+  "gateStatus": {
+    "installedGates": "RUN in this session via approved pwsh whitelist (forms 1-4); exit codes and hashes in project/DALI/ErrorLog/dft-expert.log",
+    "commands": [
+      "hash_ate_plaintext.py",
+      "refresh_dft_meta_from_source.py",
+      "render_dft_conditions_yaml.py",
+      "validate_dft_outputs.py"
+    ]
+  }
+}

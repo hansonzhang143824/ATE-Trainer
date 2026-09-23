@@ -1,0 +1,25 @@
+=== ① t28-citation-notice.txt ===
+  路径: team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28-citation-notice.txt
+  size = 4724 B
+  文件内是否含现算正确值 = True
+  文件内是否含 65 位错值（…31111cea…） = False
+
+=== ② t28-anchors.json 内 check_input_sync.py 条 ===
+  路径: team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28-anchors.json
+  size = 11142 B ; 条目 = 32
+  该条 len = 64 ; 与现算一致 = True
+
+=== ③ 其余各文件（只给路径+size，按新格式）===
+  scripts/verify_relay_trace.py                              21068 B
+  team/artifacts/acceptance-20260916-dali10/setup-contract.json 350700 B
+  team/artifacts/acceptance-20260916-dali10/build-report.json 13075 B
+
+=== ④ devel/source/test.cpp 完整值（补全，不再只给前缀）===
+  路径: D:/PROJECT6-DALI/devel/source/test.cpp
+  size = 434629 B
+  完整哈希 = 5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317
+  （本轮我从未写入 devel；已由我方多轮 before/after 现算佐证）
+
+=== ⑤ 我此后消息格式（采纳其建议）===
+  格式：<路径> · <size> B · 现算：python -c "...sha256..."
+  **不再在消息里输出任何哈希字面** —— 从机制上消除"复制粘贴引入错误"这一通道。

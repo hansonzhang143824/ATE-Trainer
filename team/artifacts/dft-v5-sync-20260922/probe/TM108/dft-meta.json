@@ -1,0 +1,333 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "dft-meta",
+  "projectId": "DALI",
+  "tm": "TM108",
+  "sourceSha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+  "canonicalInput": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\project\\DALI\\Input_GlobalMaterial\\Dali_testmode.xlsx",
+  "readSources": [
+    {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\project\\DALI\\Input_GlobalMaterial\\Dali_testmode.xlsx",
+      "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "insideInputRoot": true
+    }
+  ],
+  "sourceLocation": {
+    "sheet": "OVERVIEW",
+    "row": 11
+  },
+  "parseStatus": "ok",
+  "rawIntent": {
+    "Item": "TM108",
+    "Level": "HSKP",
+    "Name": "VAC1_PRST",
+    "Description": "VAC1 PRST CMOP threshold",
+    "ExpectValue": "rising vth 4.4V, hys 0.35V",
+    "Unit": "V",
+    "Test": "",
+    "Special": "",
+    "Purpose": "SCM",
+    "Trim": "",
+    "Notes": "ramp up/down vac1 from 3~5V, 1V/ms\nmux A2D_VAC1_PRST to dtest0\ncheck int pin toggle",
+    "Code1": "vset[vbat,3,100e-6,0]",
+    "Code2": "en_tm[]\nfield[(DMUX_EN,1),(DMUX_SEL,22)]\nvset[vac1,10,1e-3,0]\nvset[vac1,0,1e-3,0]",
+    "Code3": "delay[1e-3]\nfinish[]",
+    "Power": "VBAT",
+    "Dynamic": "VAC1",
+    "Check": "V(DTEST0)",
+    "isCodeGen": "Y",
+    "isRun": "",
+    "Assign": "",
+    "State \nAMS\nValidation": "Done",
+    "State\nBench Validation": "",
+    "is CP test?": "",
+    "CP comment": "",
+    "State\nATE Validation": "",
+    "HELPER": "ramp VAC , INT toggle",
+    "de test": "r 4.059\nf 3.738",
+    "aetest": "",
+    "is test": "checked"
+  },
+  "parsedVsetCommands": [
+    {
+      "column": "Code1",
+      "order": 1,
+      "pin": "vbat",
+      "args": [
+        "3",
+        "100e-6",
+        "0"
+      ],
+      "raw": "vset[vbat,3,100e-6,0]",
+      "powerOnDirect": true
+    },
+    {
+      "column": "Code2",
+      "order": 1,
+      "pin": "vac1",
+      "args": [
+        "10",
+        "1e-3",
+        "0"
+      ],
+      "raw": "vset[vac1,10,1e-3,0]",
+      "powerOnDirect": false
+    },
+    {
+      "column": "Code2",
+      "order": 2,
+      "pin": "vac1",
+      "args": [
+        "0",
+        "1e-3",
+        "0"
+      ],
+      "raw": "vset[vac1,0,1e-3,0]",
+      "powerOnDirect": false
+    }
+  ],
+  "declaredPins": [
+    "vbat",
+    "vac1"
+  ],
+  "openItems": [],
+  "generation": "deterministic OVERVIEW-only parse",
+  "testCondition": {
+    "identity": "VAC1_PRST",
+    "identityDetails": {
+      "testItem": "TM108",
+      "level": "HSKP",
+      "parameterName": "VAC1_PRST",
+      "description": "VAC1 PRST CMOP threshold",
+      "purpose": "SCM",
+      "unit": "V"
+    },
+    "remarks": "ramp up/down vac1 from 3~5V, 1V/ms\nmux A2D_VAC1_PRST to dtest0\ncheck int pin toggle",
+    "expectedValue": "rising vth 4.4V, hys 0.35V",
+    "isTrim": false,
+    "powerSequence": [
+      {
+        "cmd": "vset",
+        "pin": "vbat",
+        "value": 3,
+        "pluseTime": "100e-6",
+        "status": 0
+      },
+      {
+        "cmd": "vset",
+        "pin": "vac1",
+        "value": 10,
+        "pluseTime": "1e-3",
+        "status": 0
+      },
+      {
+        "cmd": "vset",
+        "pin": "vac1",
+        "value": 0,
+        "pluseTime": "1e-3",
+        "status": 0
+      }
+    ],
+    "rawPowerSequence": [
+      {
+        "column": "Code1",
+        "order": 1,
+        "sourceOrder": 1,
+        "pin": "vbat",
+        "args": [
+          "3",
+          "100e-6",
+          "0"
+        ],
+        "raw": "vset[vbat,3,100e-6,0]",
+        "directPowerOn": true
+      },
+      {
+        "column": "Code2",
+        "order": 1,
+        "sourceOrder": 2,
+        "pin": "vac1",
+        "args": [
+          "10",
+          "1e-3",
+          "0"
+        ],
+        "raw": "vset[vac1,10,1e-3,0]",
+        "directPowerOn": false
+      },
+      {
+        "column": "Code2",
+        "order": 2,
+        "sourceOrder": 3,
+        "pin": "vac1",
+        "args": [
+          "0",
+          "1e-3",
+          "0"
+        ],
+        "raw": "vset[vac1,0,1e-3,0]",
+        "directPowerOn": false
+      }
+    ],
+    "staticPower": [
+      {
+        "column": "Code1",
+        "order": 1,
+        "sourceOrder": 1,
+        "pin": "vbat",
+        "args": [
+          "3",
+          "100e-6",
+          "0"
+        ],
+        "raw": "vset[vbat,3,100e-6,0]",
+        "directPowerOn": true
+      }
+    ],
+    "directPowerActions": [
+      {
+        "column": "Code1",
+        "order": 1,
+        "sourceOrder": 1,
+        "pin": "vbat",
+        "args": [
+          "3",
+          "100e-6",
+          "0"
+        ],
+        "raw": "vset[vbat,3,100e-6,0]",
+        "directPowerOn": true
+      }
+    ],
+    "hasRamp": true,
+    "ramps": [
+      {
+        "pin": "vac1",
+        "orderedVset": [
+          {
+            "column": "Code2",
+            "order": 1,
+            "sourceOrder": 2,
+            "pin": "vac1",
+            "args": [
+              "10",
+              "1e-3",
+              "0"
+            ],
+            "raw": "vset[vac1,10,1e-3,0]",
+            "directPowerOn": false
+          },
+          {
+            "column": "Code2",
+            "order": 2,
+            "sourceOrder": 3,
+            "pin": "vac1",
+            "args": [
+              "0",
+              "1e-3",
+              "0"
+            ],
+            "raw": "vset[vac1,0,1e-3,0]",
+            "directPowerOn": false
+          }
+        ]
+      }
+    ],
+    "helperIntent": "ramp VAC , INT toggle",
+    "scanIntent": {
+      "state": "DECLARED",
+      "source": "HELPER",
+      "raw": "ramp VAC , INT toggle",
+      "entries": [
+        {
+          "kind": "ramp",
+          "pin": "VAC",
+          "from": "NOT_DECLARED",
+          "to": "NOT_DECLARED"
+        },
+        {
+          "kind": "internal",
+          "direction": "TOGGLE",
+          "from": "NOT_DECLARED",
+          "to": "NOT_DECLARED"
+        }
+      ]
+    },
+    "dynamicPins": [
+      "VAC1"
+    ],
+    "highCurrent": {
+      "state": "NOT_DECLARED",
+      "evidenceColumns": [
+        "Name",
+        "Description",
+        "Notes",
+        "Special"
+      ]
+    },
+    "differentialVoltage": {
+      "state": "NOT_DECLARED",
+      "evidenceColumns": [
+        "Name",
+        "Description",
+        "Notes",
+        "Special"
+      ]
+    },
+    "internalComparison": {
+      "state": "NOT_DECLARED",
+      "expression": "",
+      "sourceText": ""
+    },
+    "involvedPins": [
+      "vbat",
+      "vac1",
+      "DTEST0"
+    ],
+    "involvedPinsDetails": {
+      "vsetPins": [
+        "vbat",
+        "vac1",
+        "DTEST0"
+      ],
+      "logicalCheck": "V(DTEST0)"
+    },
+    "measurement": "V(DTEST0)",
+    "measurementDetails": {
+      "check": "V(DTEST0)",
+      "quantity": "VOLTAGE",
+      "isToggle": true,
+      "resultTypes": [
+        "Rise",
+        "Fall"
+      ],
+      "resultTypeProvenance": [
+        {
+          "type": "Rise",
+          "state": "SOURCE_DECLARED"
+        },
+        {
+          "type": "Fall",
+          "state": "SOURCE_DECLARED"
+        },
+        {
+          "type": "Hys",
+          "state": "DERIVED",
+          "derivation": "rising threshold minus falling threshold"
+        }
+      ]
+    },
+    "registerFieldIntent": [
+      {
+        "kind": "en_tm",
+        "raw": "en_tm[]"
+      },
+      {
+        "kind": "field",
+        "raw": "field[(DMUX_EN,1),(DMUX_SEL,22)]"
+      }
+    ],
+    "referenceValue": "rising vth 4.4V, hys 0.35V",
+    "notes": "ramp up/down vac1 from 3~5V, 1V/ms\nmux A2D_VAC1_PRST to dtest0\ncheck int pin toggle"
+  }
+}

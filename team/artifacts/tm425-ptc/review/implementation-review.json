@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 3,
+  "artifactId": "tm425-implementation-review",
+  "taskId": "TM425-PTC-RULE_REVIEW_IMPLEMENTATION-F8",
+  "trial": "tm425-ptc",
+  "tm": "TM425",
+  "role": "rule-reviewer",
+  "stage": "RULE_REVIEW_IMPLEMENTATION",
+  "verdict": "pass",
+  "signedInputs": {
+    "implementationManifestPath": "implementation/implementation-manifest.json",
+    "implementationManifestSha256": "4fa81e08335cca3c7df226a2c68b720cbf23c8f1024b2c813a456776212838c7",
+    "methodContractPath": "method/tm425-test-method-contract.json",
+    "methodContractSha256": "81408a784f65f179e86bd04eb405e91abb085ddb73d6d12ee6e4b52041463b6b",
+    "strategyContractPath": "strategy/tm425-resource-config-contract.json",
+    "strategyContractSha256": "b5de503e74efa5dd051f2c57a23ec0a23e409e6452498ab1d78c83c8d1b19009"
+  },
+  "parameterType": {
+    "methodFamily": "trim",
+    "isTrim": true,
+    "hasRamp": false
+  },
+  "checks": [
+    {
+      "id": "IR-1",
+      "result": "PASS",
+      "detail": "当前 implementation manifest 绑定当前 test.cpp 与 sub.cpp 哈希；TM425 只有一个 DUT_API 实现。"
+    },
+    {
+      "id": "IR-2",
+      "result": "PASS",
+      "detail": "test.cpp 调用 trim_reg.trim(\"mnt_v1p2_buf\")，并执行 MNT_V1P2_BUF.execute(measure_mnt_v1p2_buf, ...)。"
+    },
+    {
+      "id": "IR-3",
+      "result": "PASS",
+      "detail": "sub.cpp 中 measure_mnt_v1p2_buf 为有效未注释定义；写入 EFUSE_REG_F8 到 I2C 0xF8，使用 VDM_SDA_ACM 测量并返回 mV。"
+    },
+    {
+      "id": "IR-4",
+      "result": "PASS",
+      "detail": "NU1201.treg [mnt_v1p2_buf] 定义目标 1200 mV、4 bit/16 step；_EFUSE_REG_F8 的 bits 4..7 映射该 trim key。"
+    }
+  ],
+  "deterministicVerifier": {
+    "command": "python scripts/verify_implementation_batch.py team/artifacts/tm425-ptc",
+    "result": {
+      "trial": "tm425-ptc",
+      "tm": "TM425",
+      "symbol": "TM425_VREF_1P2V_BUF",
+      "methodFamily": "trim",
+      "sourceSha256": "2ed19d63e8d761efcfbf7eaf187ee4e36e9a492bc965c94759e568dd7ff2c90c",
+      "callbackSourceSha256": "228be739e4160c75a7c206e438f70600a7846822f62ae173b3db13079107f038",
+      "status": "PASS"
+    }
+  },
+  "blockingDefects": [],
+  "summary": {
+    "checksPassed": 4,
+    "blockingDefects": 0,
+    "nextRole": "compile-diagnostician"
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 2,
+  "artifactId": "tm103-strategy-self-check",
+  "taskId": "TM103-PTC-STRATEGY",
+  "trial": "tm103-ptc",
+  "tm": "TM103",
+  "role": "test-strategy-architect",
+  "stage": "STRATEGY",
+  "generatedAt": "2026-09-18T03:26:21.359Z",
+  "revision": "v3 (pinResolution re-emit)",
+  "contractSha256": "a081ef45971712fb6815b5aabb99b0e3bfbb6a3f9be39557d73ccc2a4f0a1aa9",
+  "checks": [
+    {
+      "id": "SC-01",
+      "requirement": "read the role contract, the runtime base, the routing doc, the STRATEGY output ABI and the runtime Pin-resolution stop rule",
+      "status": "PASS",
+      "evidence": "team/roles/test-strategy-architect.md; team/AGENT_RUNTIME_BASE.md; team/ROLE_ROUTING.md; team/ptc/OUTPUT_CONTRACTS.md (STRATEGY section, 'Logical signal / physical pin binding'); team/ptc/ATE_PTC_RUNTIME.md:18-20 ('Pin-resolution stop rule')"
+    },
+    {
+      "id": "SC-02",
+      "requirement": "the decision is read from the manifest intentResolution entry, not from the DFT.csv row",
+      "status": "PASS",
+      "evidence": "team/artifacts/tm103-ptc/input-manifest.json canonicalInputs.intentResolution.entry (status resolved): VBAT=4.0 V, sweptPin=VDM, monitorDutPin=VDM, 0x57=0x02, 0x5E=0x04"
+    },
+    {
+      "id": "SC-03",
+      "requirement": "the DFT logical monitor label is resolved to exactly one physical DUT pin listed by the current Components-Statistic output BEFORE any resource or relay allocation",
+      "status": "PASS",
+      "evidence": "pinResolution: logicalSignal 'ATEST0' -> physicalDutPin 'VDM'; VDM is present in Components-Statistic.json dutKelvinPins (68 bases) at index 63; the label token 'ATEST0' itself has no entry in that list (index -1), so a project pin/function mapping was used, as the stop rule requires"
+    },
+    {
+      "id": "SC-04",
+      "requirement": "pinResolution.physicalDutPin is byte-equal to the manifest decision.monitorDutPin",
+      "status": "PASS",
+      "evidence": "pinResolution.physicalDutPin = \"VDM\"; input-manifest decision.monitorDutPin = \"VDM\"; the gate's own equality check passed"
+    },
+    {
+      "id": "SC-05",
+      "requirement": "pinResolution carries resolutionState = RESOLVED, a non-empty logicalSignal, a Components-Statistic locator and non-empty mapping evidence",
+      "status": "PASS",
+      "evidence": "resolutionState='RESOLVED'; logicalSignal='ATEST0'; componentsStatisticLocator names dutKelvinPins[63] and the artifact's own dutKelvinPinsLocator; mappingEvidence holds six independently located project facts"
+    },
+    {
+      "id": "SC-06",
+      "requirement": "the label->pin mapping is proved from project evidence, not guessed, and no similarly named pin was substituted",
+      "status": "PASS",
+      "evidence": "project/DALI/_archive/_dump_TestIO.txt:1-6 (pad table: VDM -> Analog Test ATEST0; AMUX(PD6) -> ATEST1; nQON -> DTEST0); project/DALI/meta/dali_tm_meta.json functions[row=7,item=TM103] (check 'I(ATEST0)', code2 'field[(EN_ATEST0,1),(ATEST0_MUX,4)]' + vset[vdm,...]); project/DALI/_archive/_dump_ATESTMAP.txt:6 (select 4 -> IBP_HR_0.5UA, matching ExpectValue 0.5 uA); project/DALI/reg_config/tm103.sv:14-18; uniqueness sweep over all 20 project functions (every I(ATEST0) row drives vdm)"
+    },
+    {
+      "id": "SC-07",
+      "requirement": "the rejected counter-candidates are recorded rather than silently dropped",
+      "status": "PASS",
+      "evidence": "pinResolution.counterCandidatesConsidered records AMUX (pad table assigns it ATEST1; legacy DFT.csv-only pairing) and nQON (DTEST0), each with the specific project fact that rejects it"
+    },
+    {
+      "id": "SC-08",
+      "requirement": "resourceAllocation has exactly one SELECTED row per endpoint of the resolved decision ({staticSupplies[].pin} U {sweptPin} U {monitorDutPin})",
+      "status": "PASS",
+      "evidence": "rows VBAT and VDM = the set {VBAT, VDM}; sweptPin and monitorDutPin coincide on the single physical pin VDM, so one row; the gate's endpoint-set equality check passed"
+    },
+    {
+      "id": "SC-09",
+      "requirement": "no endpoint is invented that the decision does not declare",
+      "status": "PASS",
+      "evidence": "AMUX appears only as conflict/counter evidence (endpointDerivation.declaredNonEndpoints, CF-1, CF-2, pinResolution.counterCandidatesConsidered); no AMUX allocation row exists"
+    },
+    {
+      "id": "SC-10",
+      "requirement": "every row has selectionState = SELECTED and a non-empty sourceTable; resourceSummary.sourceTablesUnresolved = false",
+      "status": "PASS",
+      "evidence": "RA-1 VBAT / VBAT_PD3_FXVI; RA-2 VDM / VDM_SDA_ACM; resourceSummary.sourceTablesUnresolved is the boolean false"
+    },
+    {
+      "id": "SC-11",
+      "requirement": "every selected relay, route and source is proved by project evidence; nothing is copied from an old code block",
+      "status": "PASS",
+      "evidence": "re-read this revision: project/DALI/Pin_Channel_define.h:12,:22,:93,:103; project/DALI/Component-Statistic.txt:308,:340,:403,:429,:441,:445,:446-447,:457; project/DALI/SCH-Connect-Map.txt:768-770,:795-797,:801,:804,:814-816,:832-834,:847-848,:898-917,:914,:210-212,:418-420,:513-514,:638-639,:234-236,:436-438,:519-520,:650-651; project/DALI/CBIT表-DALI.xlsx sheet1 rows 97,113,114,134,135,178 read directly from the workbook XML (K152=S36_CBIT24, K7=S34_CBIT7, K8=S34_CBIT8, K58=S34_CBIT58, K59=S34_CBIT59, K13=S34_CBIT13)"
+    },
+    {
+      "id": "SC-12",
+      "requirement": "a relay that cannot be tied to a project-evidenced path is reported, not substituted",
+      "status": "PASS",
+      "evidence": "selectionMethod.unionMembersNotProvenAsRoute reports K86_KELVIN0_F and K130_KELVIN1_F: they appear ON in the trial artifact's relay union records with VDM in their dutPins union, the tokens K86/K130 have 0 occurrences in project/DALI/SCH-Connect-Map.txt, and project/DALI/path_proofs.json.txt shows them as the FPVIe0/FPVIe1 force-sense Kelvin bridge (K87->K86->K88, K131->K130->K132), i.e. members of the rejected bus alternatives. They are excluded from setOnClosure, no similarly named relay was used in their place, and the gap is raised as OI-TM103-STR-04"
+    },
+    {
+      "id": "SC-13",
+      "requirement": "the previous revision's unverifiable locators were checked against the current artifact and corrected rather than carried forward",
+      "status": "PASS",
+      "evidence": "CF-5: a search of the current team/artifacts/tm103-ptc/schematic/SCH-Connect-Map.json returns 0 occurrences of 'consistencyNotes', 'anySelectionMade', 'outOfScopeFlagsForDownstream' and the quoted 'chain-context' sentence; the actual top-level keys are schemaVersion, sourceSha256, artifactId, artifactKind, canonicalInput, projectionSource, derivation, counts, dutPins, sourcePorts, candidatePaths, relays, hazards, openQuestions, scope. The three stale citations are withdrawn and replaced by derivation/openQuestions[8]/openQuestions[9]/openQuestions[10]"
+    },
+    {
+      "id": "SC-14",
+      "requirement": "boundary respected: no sequencing, measurement, limit, power-down or Log decision is made here",
+      "status": "PASS",
+      "evidence": "boundary block; setOnClosure.scheduleOwnership hands the K13 timing to test-method-expert; openItemsForDownstream OI-TM103-STR-01/02/03"
+    },
+    {
+      "id": "SC-15",
+      "requirement": "handoff JSON carries event/status/stage/verdict, the byte sha256 of the contract and nextRole = test-method-expert",
+      "status": "PASS",
+      "evidence": "deliverable-ready.json: event=deliverable_ready, status=success, stage=STRATEGY, verdict=deliverable_ready, sha256=a081ef45971712fb6815b5aabb99b0e3bfbb6a3f9be39557d73ccc2a4f0a1aa9, nextRole=test-method-expert"
+    },
+    {
+      "id": "SC-16",
+      "requirement": "the STRATEGY gate validator returns PASS",
+      "status": "PASS",
+      "evidence": "python scripts/validate_strategy_contract.py team/artifacts/tm103-ptc/strategy/tm103-resource-config-contract.json team/artifacts/tm103-ptc/strategy/deliverable-ready.json --expected-monitor VDM --manifest team/artifacts/tm103-ptc/input-manifest.json -> stdout 'PASS', exit code 0"
+    }
+  ],
+  "correctedFromPreviousRevision": [
+    "Added the mandatory top-level pinResolution block (the previous revision was rejected with 'contract has no pinResolution').",
+    "Withdrew three SCH-Connect-Map.json locators that do not exist in the current artifact revision (consistencyNotes[1], selection.anySelectionMade, outOfScopeFlagsForDownstream[4]) and replaced them with derivation/openQuestions[10] and openQuestions[8]/[9] (see CF-5).",
+    "Corrected the open-question index for the compliance/range triple from [9] to [8], since openQuestions[8] is that text and [9] is the loop-orientation text.",
+    "Reported K86_KELVIN0_F / K130_KELVIN1_F with the project path_proofs evidence that explains them (FPVIe Kelvin bridge) instead of asserting only that they are absent from the connect map."
+  ],
+  "residualRisks": [
+    "The exact contact orientation inside the multi-pole share relays K8_PD3 and K59_SDA is taken from the generated per-branch chains and must-close sets of project/DALI/SCH-Connect-Map.txt, not from a raw netlist dump read directly by this role. Both selected branches are stated there as requiring no energized relay, which is what this contract relies on.",
+    "The ATEST0->VDM binding rests on the project pad/Analog-Test table (project/DALI/_archive/_dump_TestIO.txt, an archived table whose footer reads 'update 2026/02/27') corroborated by the governing workbook row, the ATEST0 select map and reg_config/tm103.sv; the archived table is not one of the runner-listed inputs, so a reviewer may want to confirm its currency. The binding itself is also declared directly by the binding manifest entry.",
+    "The mandatory closure K13_VBAT_Cap is a functional/stabilization relay; the moment it is closed within the sequence is method-side and is not decided here.",
+    "K86_KELVIN0_F / K130_KELVIN1_F: no project connect-map path proves them, so this contract does not assert their required frame state (OI-TM103-STR-04).",
+    "ACM200 current range/limit and FXVIe_PLUS compliance for the 0.5 uA intent are not published in the parsed inputs (OI-TM103-STR-02)."
+  ],
+  "verdict": "deliverable_ready"
+}

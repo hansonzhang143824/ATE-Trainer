@@ -1,0 +1,217 @@
+=== definition at treg.cpp:201 ===
+    201| int TREG_ERROR::error_count = 0;
+    202| 
+    203| TREG_ERROR::TREG_ERROR() {
+    204| 	TREG_ERROR::error_func = default_error_func;
+    205| }
+    206| 
+    207| TREG_ERROR::~TREG_ERROR() {
+    208| 
+    209| }
+    210| 
+    211| // �Զ����vprintf_s����������һ����������С�͸�ʽ�ַ������Լ��ɱ�����б�
+    212| int TREG_ERROR::vprintf_s(char *buffer, size_t bufferSize, const char *format, va_list args) {
+    213| 	int result = vsnprintf(buffer, bufferSize, format, args);
+    214| 	// ����Ƿ����˻��������
+    215| 	if (result >= 0 && (size_t)result < bufferSize) {
+    216| 		buffer[result] = '\0'; // ȷ���ַ�����null��β
+    217| 		return result;
+    218| 	}
+    219| 	else {
+    220| 		// �����������������ǿ���ѡ���ӡ������Ϣ�����߲�ȡ������ʩ
+    221| 		fprintf(stderr, "Buffer overflow occurred in vprintf_s!\n");
+    222| 		return -1; // ���ش������
+    223| 	}
+    224| }
+    225| 
+    226| // ��װ���������ڼ򻯵���
+    227| int TREG_ERROR::treg_error_log(const char *format, ...) {
+    228| 	error_count++;
+    229| 	if (error_count == 1)
+    230| 	{
+    231| 		FreeConsole();
+    232| 		AllocConsole();
+    233| 		COORD size = { 280, 180 };
+    234| 		SetConsoleTitleA("AccoTEST Debug Window");
+    235| 		freopen("conout$", "w+t", stdout);
+    236| 		::DeleteMenu(GetSystemMenu(GetConsoleWindow(), FALSE), SC_CLOSE, MF_BYCOMMAND);
+    237| 		printf_s("\n");
+    238| 		printf_s(" ERROR  Information List..............\n");
+    239| 		printf_s("\n");
+
+=== definition at treg.cpp:212 ===
+    212| int TREG_ERROR::vprintf_s(char *buffer, size_t bufferSize, const char *format, va_list args) {
+    213| 	int result = vsnprintf(buffer, bufferSize, format, args);
+    214| 	// ����Ƿ����˻��������
+    215| 	if (result >= 0 && (size_t)result < bufferSize) {
+    216| 		buffer[result] = '\0'; // ȷ���ַ�����null��β
+    217| 		return result;
+    218| 	}
+    219| 	else {
+    220| 		// �����������������ǿ���ѡ���ӡ������Ϣ�����߲�ȡ������ʩ
+    221| 		fprintf(stderr, "Buffer overflow occurred in vprintf_s!\n");
+    222| 		return -1; // ���ش������
+    223| 	}
+    224| }
+    225| 
+    226| // ��װ���������ڼ򻯵���
+    227| int TREG_ERROR::treg_error_log(const char *format, ...) {
+    228| 	error_count++;
+    229| 	if (error_count == 1)
+    230| 	{
+    231| 		FreeConsole();
+    232| 		AllocConsole();
+    233| 		COORD size = { 280, 180 };
+    234| 		SetConsoleTitleA("AccoTEST Debug Window");
+    235| 		freopen("conout$", "w+t", stdout);
+    236| 		::DeleteMenu(GetSystemMenu(GetConsoleWindow(), FALSE), SC_CLOSE, MF_BYCOMMAND);
+    237| 		printf_s("\n");
+    238| 		printf_s(" ERROR  Information List..............\n");
+    239| 		printf_s("\n");
+    240| 	}
+    241| 	char buffer_input[512] = { "" };
+    242| 	char *buffer = buffer_input;
+    243| 	size_t bufferSize = 512;
+    244| 	va_list args;
+    245| 	va_start(args, format); // ��ʼ�������б�
+    246| 	int result = vprintf_s(buffer, bufferSize, format, args);
+    247| 	va_end(args); // ���������б�
+    248| 	printf_s(" %d. ", error_count);
+    249| 	printf_s(buffer);
+    250| 	return result;
+
+=== definition at treg.cpp:227 ===
+    227| int TREG_ERROR::treg_error_log(const char *format, ...) {
+    228| 	error_count++;
+    229| 	if (error_count == 1)
+    230| 	{
+    231| 		FreeConsole();
+    232| 		AllocConsole();
+    233| 		COORD size = { 280, 180 };
+    234| 		SetConsoleTitleA("AccoTEST Debug Window");
+    235| 		freopen("conout$", "w+t", stdout);
+    236| 		::DeleteMenu(GetSystemMenu(GetConsoleWindow(), FALSE), SC_CLOSE, MF_BYCOMMAND);
+    237| 		printf_s("\n");
+    238| 		printf_s(" ERROR  Information List..............\n");
+    239| 		printf_s("\n");
+    240| 	}
+    241| 	char buffer_input[512] = { "" };
+    242| 	char *buffer = buffer_input;
+    243| 	size_t bufferSize = 512;
+    244| 	va_list args;
+    245| 	va_start(args, format); // ��ʼ�������б�
+    246| 	int result = vprintf_s(buffer, bufferSize, format, args);
+    247| 	va_end(args); // ���������б�
+    248| 	printf_s(" %d. ", error_count);
+    249| 	printf_s(buffer);
+    250| 	return result;
+    251| }
+    252| 
+    253| 
+    254| 
+    255| 
+    256| void TREG_ERROR::error(const char *msg, ...) {
+    257| 	char buff[4096];
+    258| 	va_list marker;
+    259| 	va_start(marker, msg);
+    260| 	int size = sizeof(buff);
+    261| 	_vsnprintf_s(buff, size, msg, marker);
+    262| 	buff[size - 1] = '\0';
+    263| 	va_end(marker);
+    264| 
+    265| 	if (error_func)
+
+=== definition at treg.cpp:256 ===
+    256| void TREG_ERROR::error(const char *msg, ...) {
+    257| 	char buff[4096];
+    258| 	va_list marker;
+    259| 	va_start(marker, msg);
+    260| 	int size = sizeof(buff);
+    261| 	_vsnprintf_s(buff, size, msg, marker);
+    262| 	buff[size - 1] = '\0';
+    263| 	va_end(marker);
+    264| 
+    265| 	if (error_func)
+    266| 		error_func(buff);
+    267| }
+    268| 
+    269| void TREG_ERROR::register_error_func(void(*func)(const char *)) {
+    270| 	error_func = func;
+    271| }
+    272| 
+    273| ///////////////////////////////////////////////////////////////////////////////
+    274| // TREG_LOG
+    275| void(*TREG_LOG::datalog_func)(unsigned tnum, double value, int site) = NULL;
+    276| 
+    277| TREG_LOG::TREG_LOG() {
+    278| 
+    279| }
+    280| 
+    281| TREG_LOG::~TREG_LOG() {
+    282| 
+    283| }
+    284| 
+    285| void TREG_LOG::log_data(unsigned tnum, unsigned index, double value, int site, bool use_mslogdata, bool allow_mslogdata, string testname, double ll, double ul, const char *unit) {
+    286| 
+    287| #ifdef TREG_ETS364
+    288| 	if (log_data_func && test_func) {
+    289| 		unsigned testnum;
+    290| 		if (use_mslogdata)
+    291| 			testnum = tnum;
+    292| 		else
+    293| 			testnum = tnum + index;
+    294| 
+
+=== definition at treg.cpp:269 ===
+    269| void TREG_ERROR::register_error_func(void(*func)(const char *)) {
+    270| 	error_func = func;
+    271| }
+    272| 
+    273| ///////////////////////////////////////////////////////////////////////////////
+    274| // TREG_LOG
+    275| void(*TREG_LOG::datalog_func)(unsigned tnum, double value, int site) = NULL;
+    276| 
+    277| TREG_LOG::TREG_LOG() {
+    278| 
+    279| }
+    280| 
+    281| TREG_LOG::~TREG_LOG() {
+    282| 
+    283| }
+    284| 
+    285| void TREG_LOG::log_data(unsigned tnum, unsigned index, double value, int site, bool use_mslogdata, bool allow_mslogdata, string testname, double ll, double ul, const char *unit) {
+    286| 
+    287| #ifdef TREG_ETS364
+    288| 	if (log_data_func && test_func) {
+    289| 		unsigned testnum;
+    290| 		if (use_mslogdata)
+    291| 			testnum = tnum;
+    292| 		else
+    293| 			testnum = tnum + index;
+    294| 
+    295| 		if (TREG::eng_mode()) {
+    296| 			if (!get_limits(testnum)) { // check if test# exists
+    297| 				TREG_ERROR::error("TREG: Test number '%d' doesn't exist.", testnum);
+    298| 				return;
+    299| 			}
+    300| 		}
+    301| 
+    302| 		if (use_mslogdata && allow_mslogdata) {
+    303| 			char u[5]; // size from uicclib.h
+    304| 			double sc = 1.0;
+    305| 			if (!unit || ll == FLT_MAX || ul == FLT_MAX)
+    306| 				get_limits(tnum, &ll, &ul, 1, u, sizeof(u), &sc);  // bin is hardcoded to 1 currently!
+    307| 			if (unit)
+
+     42|                             TREG_ERROR::treg_error_log(ERROR_INVALID_SITE); \
+    201| int TREG_ERROR::error_count = 0;
+    204| 	TREG_ERROR::error_func = default_error_func;
+    227| int TREG_ERROR::treg_error_log(const char *format, ...) {
+    228| 	error_count++;
+    229| 	if (error_count == 1)
+    248| 	printf_s(" %d. ", error_count);
+    270| 	error_func = func;
+    309| 			SetTestNumber(testnum);
+    312| 			//msLogData(site, (char *)testname.c_str(), 9.4, ll/sc, ul/sc, value/sc, u);
+    346| 			SetTestNumber(testnum);
+    348| 			msLogData(site, (char *)testname.c_str(), 9.4, ll / sc, ul / sc, value / sc, u);

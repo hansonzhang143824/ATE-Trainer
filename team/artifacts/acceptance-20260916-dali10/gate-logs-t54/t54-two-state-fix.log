@@ -1,0 +1,25 @@
+=== 修复前 ===
+  [before] contract 顶层键 = ['path', 'revision', 'revisionNote', 'currentOnDisk', 'size', 'sha256', 'mtime', 'bst2sw_closedRelayNumbers', 'bst2sw_supersededRelaySet', 'note']
+        revision = '32' ; size = 377694 ; mtime = '2026-09-16T22:10:11'
+        currentOnDisk = {"revision": 39, "size": 377694, "mtime": "2026-09-16T22:10:11"}
+
+=== 生成器原块 ===
+    'contract': {
+        'path': 'team/artifacts/acceptance-20260916-dali10/setup-contract.json',
+        'revision': gateRevFromLog,          # ← 门禁**实际读取**的 rev（证据锚，取自 bst-sw.log 自述）
+        'revisionNote': ('本字段 = 门禁日志自述的 rev（与门禁证据同版）；'
+                         '现盘 rev 见 currentOnDisk —— 二者可能不同，引用时须区分'),
+        'currentOnDisk': {'revision': rev, 'size': c_size, 'mtime': c_mt}, 'size': c_size, 'sha256': c_sha, 'mtime': c_mt,
+        'bst2sw_closedRelayNumbers': b2['resolution'].get('closedRelayNumbers'),
+        'bst2sw_supersededRelaySet': b2['resolution'].get('supersededRelaySet'),
+        'note': 't53 收尾（路径 1）已落地：权威期望由 ch18 的 [110,61] 切到 ch5 路线 [48,60,61,76]',
+    },
+
+
+  生成器已改 → 29482 B
+  重生成: [归属] 门禁日志自述 rev = 32 ; 现盘 rev = 39 | WROTE D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10\build-report.json (25119 B / b8d22db5b322aa1ed435ec0292cba57c0489537f2dc38a197856509
+
+=== 修复后 ===
+  [after] contract 顶层键 = ['baseline', 'path', 'revision', 'revisionNote', 'currentOnDisk', 'bst2sw_closedRelayNumbers', 'bst2sw_supersededRelaySet', 'note']
+        revision = '32' ; size = None ; mtime = None
+        currentOnDisk = {"baseline": "on-disk (现盘)", "revision": 39, "size": 377694, "sha256": "18587b83307d47e0d6f287ee28e812b6c8f25781d2e449b293e45b50282b6d9f", "mtime": "2026-09-16T22:10:11"}

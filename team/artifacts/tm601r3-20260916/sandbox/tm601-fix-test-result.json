@@ -1,0 +1,15 @@
+{
+  "tm601_fixed": {
+    "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm601r3-20260916\\sandbox\\test.cpp.tm601_bstleg",
+    "size": 469745,
+    "sha256": "8ff605377a7aa8ace928ea4ae250cdcc56d4288378406984dd1a513dcc3a5489"
+  },
+  "gate_exit": 1,
+  "t30_lines": [
+    "[t30] TM600_HS_RDSON: 契约声明必需 [48, 60, 61, 76, 83] vs payload SetOn 比对完成, 缺失=[48, 76] (缺失数 2)",
+    "[t30] TM601_LS_RDSON: 契约声明必需 [60, 61, 154, 155] vs payload SetOn 比对完成, 缺失=[] (缺失数 0)",
+    "[t30] 契约来源: setup_contract.json rev=36 | 判据: setup-contract.json aliasResolution[*].resolution.closedRelayNumbers (indexed by usedByTm / tmDeltas.<TM>.aliasesUsed); route enumerations (pinRouteTable) and the relaySet budget pool are locators only"
+  ],
+  "novelty_tm601_combo": [],
+  "novelty_tm600_shape": []
+}

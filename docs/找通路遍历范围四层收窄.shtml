@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>找通路 · 遍历范围四层收窄</title>
+<meta name="description" content="gen_source_path.py 规划门：找通路只遍历该 PIN 收录行，四层收窄——能力白名单 → 精度门 → 最短/第二短 → 跨需求重叠检测；relay-agent 直接消费规划输出，不二次穷举。">
+<style>
+:root{
+  --sans:system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Consolas,"Courier New",monospace;
+  --bg:#eef1ef;
+  --surface:#ffffff;
+  --surface-2:#f5f8f6;
+  --ink:#1a201d;
+  --muted:#5b655e;
+  --faint:#8a948d;
+  --border:#d7ddd9;
+  --border-2:#c6cfca;
+  --accent:#0e7a6f;
+  --accent-strong:#0b5f57;
+  --accent-soft:rgba(14,122,111,.10);
+  --ok:#1e7f50; --ok-bg:rgba(30,127,80,.10);
+  --warn:#a96f0e; --warn-bg:rgba(169,111,14,.12);
+  --bad:#b83b2b; --bad-bg:rgba(184,59,43,.10);
+  --info:#2f5fa6; --info-bg:rgba(47,95,166,.10);
+  --vio:#6b4fa0; --vio-bg:rgba(107,79,160,.10);
+  --code-bg:#0f1815; --code-ink:#d9efe7;
+  --shadow:0 1px 2px rgba(16,24,20,.05),0 8px 24px -12px rgba(16,24,20,.12);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1216;
+    --surface:#171b21;
+    --surface-2:#1d232b;
+    --ink:#e6e9e7;
+    --muted:#9aa39d;
+    --faint:#69726c;
+    --border:#262d35;
+    --border-2:#323b45;
+    --accent:#38bfae;
+    --accent-strong:#4fd0bf;
+    --accent-soft:rgba(56,191,174,.12);
+    --ok:#3fae76; --ok-bg:rgba(63,174,118,.14);
+    --warn:#d39a3f; --warn-bg:rgba(211,154,63,.14);
+    --bad:#e06a57; --bad-bg:rgba(224,106,87,.14);
+    --info:#6f9be0; --info-bg:rgba(111,155,224,.14);
+    --vio:#a088dc; --vio-bg:rgba(160,136,220,.16);
+    --code-bg:#0c1114; --code-ink:#cfeee3;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 30px -14px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1216;
+  --surface:#171b21;
+  --surface-2:#1d232b;
+  --ink:#e6e9e7;
+  --muted:#9aa39d;
+  --faint:#69726c;
+  --border:#262d35;
+  --border-2:#323b45;
+  --accent:#38bfae;
+  --accent-strong:#4fd0bf;
+  --accent-soft:rgba(56,191,174,.12);
+  --ok:#3fae76; --ok-bg:rgba(63,174,118,.14);
+  --warn:#d39a3f; --warn-bg:rgba(211,154,63,.14);
+  --bad:#e06a57; --bad-bg:rgba(224,106,87,.14);
+  --info:#6f9be0; --info-bg:rgba(111,155,224,.14);
+  --vio:#a088dc; --vio-bg:rgba(160,136,220,.16);
+  --code-bg:#0c1114; --code-ink:#cfeee3;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 30px -14px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--sans);font-size:15px;line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ---------- masthead ---------- */
+.masthead{max-width:960px;margin:0 auto;padding:3rem 1.5rem 1.6rem}
+.eyebrow{
+  margin:0 0 .9rem;font-family:var(--mono);font-size:.72rem;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
+}
+h1{margin:0 0 1rem;font-size:clamp(1.8rem,3.6vw,2.5rem);font-weight:700;letter-spacing:-.02em;line-height:1.15;text-wrap:balance}
+.thesis{
+  margin:0 0 1.4rem;max-width:68ch;font-size:1rem;color:var(--muted);
+  padding:.9rem 1.1rem;background:var(--surface);border:1px solid var(--border);
+  border-left:3px solid var(--accent);border-radius:10px;
+}
+.thesis b{color:var(--ink);font-weight:600}
+.meta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+@media (max-width:820px){.meta-grid{grid-template-columns:1fr}}
+.meta{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.7rem .85rem;font-size:.82rem;color:var(--muted)}
+.meta-k{display:block;font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-strong);margin-bottom:.2rem}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .meta-k{color:var(--accent)}}
+:root[data-theme="dark"] .meta-k{color:var(--accent)}
+.theme-toggle{
+  position:absolute;top:1.1rem;right:1.1rem;
+  font-family:var(--mono);font-size:.72rem;color:var(--muted);
+  background:var(--surface);border:1px solid var(--border);border-radius:8px;
+  padding:.35rem .6rem;cursor:pointer;
+}
+
+/* ---------- layout ---------- */
+.layout{max-width:960px;margin:0 auto;padding:0 1.5rem 3rem}
+.layout > section{margin:2.4rem 0}
+section > h2{
+  font-size:1.15rem;font-weight:700;letter-spacing:-.01em;
+  margin:0 0 .6rem;padding-left:.7rem;border-left:3px solid var(--accent);
+}
+.lead{color:var(--muted);font-size:.92rem;margin:0 0 1.2rem;max-width:70ch}
+
+/* ---------- flow ---------- */
+.flow{max-width:820px;margin:0 auto}
+.node{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  box-shadow:var(--shadow);padding:1rem 1.2rem;
+}
+.node-top{display:flex;align-items:center;gap:.65rem;margin-bottom:.5rem}
+.badge{
+  font-family:var(--mono);font-weight:700;font-size:.78rem;
+  display:inline-flex;align-items:center;justify-content:center;
+  width:2rem;height:2rem;border-radius:50%;flex:0 0 auto;
+}
+.ntitle{font-weight:700;font-size:1.02rem;letter-spacing:-.01em}
+.nsub{font-family:var(--mono);font-size:.74rem;color:var(--faint);font-weight:600;letter-spacing:.04em}
+.node ul{margin:.2rem 0 0;padding-left:1.15rem}
+.node li{margin:.28rem 0;font-size:.92rem}
+.node .k{font-family:var(--mono);font-size:.86rem}
+.arrow{height:34px;position:relative;margin:0 auto;width:2px;background:var(--border-2)}
+.arrow::after{
+  content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);
+  border-left:6px solid transparent;border-right:6px solid transparent;border-top:8px solid var(--border-2);
+}
+.node .tag{
+  display:inline-block;font-family:var(--mono);font-size:.74rem;font-weight:600;
+  padding:.05rem .45rem;border-radius:5px;margin:0 .15rem;
+}
+.t-ok{color:var(--ok);background:var(--ok-bg)}
+.t-warn{color:var(--warn);background:var(--warn-bg)}
+.t-bad{color:var(--bad);background:var(--bad-bg)}
+.t-info{color:var(--info);background:var(--info-bg)}
+.t-vio{color:var(--vio);background:var(--vio-bg)}
+
+/* layer accent colors */
+.node.l1{border-left:4px solid var(--vio)}
+.node.l1 .badge{color:var(--vio);background:var(--vio-bg)}
+.node.l2{border-left:4px solid var(--accent)}
+.node.l2 .badge{color:var(--accent);background:var(--accent-soft)}
+.node.l3{border-left:4px solid var(--info)}
+.node.l3 .badge{color:var(--info);background:var(--info-bg)}
+.node.l4{border-left:4px solid var(--warn)}
+.node.l4 .badge{color:var(--warn);background:var(--warn-bg)}
+.node.input{background:var(--surface-2);border-left:4px solid var(--faint)}
+.node.input .badge{color:var(--muted);background:var(--border)}
+.node.output{border-left:4px solid var(--ok)}
+.node.output .badge{color:var(--ok);background:var(--ok-bg)}
+.node.consume{background:var(--surface-2);border-left:4px solid var(--accent-strong)}
+.node.consume .badge{color:var(--accent-strong);background:var(--accent-soft)}
+
+.decision{
+  margin:.55rem 0 0;padding:.7rem .9rem;background:var(--surface-2);
+  border:1px dashed var(--border-2);border-radius:8px;font-size:.88rem;
+}
+.decision .row{margin:.22rem 0;display:flex;gap:.5rem;align-items:baseline}
+.decision .row > span:first-child{flex:0 0 7.5rem;font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+
+/* ---------- table ---------- */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse;font-size:.86rem;background:var(--surface)}
+th,td{text-align:left;padding:.6rem .8rem;border-bottom:1px solid var(--border);vertical-align:top}
+th{background:var(--surface-2);font-weight:700;font-size:.78rem;letter-spacing:.05em;color:var(--muted)}
+tr:last-child td{border-bottom:none}
+td code{font-family:var(--mono);font-size:.8rem;color:var(--accent-strong)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) td code{color:var(--accent)}}
+:root[data-theme="dark"] td code{color:var(--accent)}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+@media (max-width:820px){.stats{grid-template-columns:1fr}}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;box-shadow:var(--shadow)}
+.stat .big{font-size:1.5rem;font-weight:700;font-family:var(--mono);letter-spacing:-.02em}
+.stat .big small{font-size:.78rem;color:var(--muted);font-weight:500}
+.stat .cap{font-size:.78rem;color:var(--muted);margin-top:.35rem}
+
+/* ---------- checklists ---------- */
+.pills{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.4rem}
+.pill{font-family:var(--mono);font-size:.78rem;padding:.25rem .6rem;border-radius:6px;background:var(--surface);border:1px solid var(--border)}
+
+footer{
+  max-width:960px;margin:0 auto;padding:0 1.5rem 3rem;
+  color:var(--faint);font-size:.78rem;font-family:var(--mono);
+}
+</style>
+</head>
+<body>
+<button class="theme-toggle" type="button" aria-label="切换深色/浅色模式">主题</button>
+
+<header class="masthead">
+  <p class="eyebrow">gen_source_path.py · 规划门</p>
+  <h1>找通路 · 遍历范围四层收窄</h1>
+  <p class="thesis">
+    执行时不穷举全网表：找通路<b>只遍历该 PIN 在地图列2/6/7 收录的行</b>（<span class="k">PATH_COSTS[pin]</span>），
+    逐层收窄 <b>能力白名单 → 精度门 → 最短/第二短 → 跨需求重叠检测</b>，
+    产出 <b>源表 + 通道 + 需闭合继电器清单</b> 供 relay-agent 直接消费。
+  </p>
+  <div class="meta-grid">
+    <div class="meta"><span class="meta-k">前置原则</span>找通路三原则（精度是门不是筛 · 最短通路 · 并行效率）</div>
+    <div class="meta"><span class="meta-k">消费方</span>relay-agent Step1/2 · 不二次穷举</div>
+    <div class="meta"><span class="meta-k">正文</span>standards/path-principles.md §遍历范围边界</div>
+  </div>
+</header>
+
+<main class="layout">
+  <section>
+    <h2>四层收窄流程图</h2>
+    <p class="lead">任一层的候选被淘汰即不进入下一层；每层先锁小范围，再在小范围内择优，全程不做"全网表枚举再筛"。</p>
+
+    <div class="flow">
+      <div class="node input">
+        <div class="node-top">
+          <span class="badge">入</span>
+          <span class="ntitle">需求 DSL</span>
+        </div>
+        <ul>
+          <li><span class="k">fv:pin,&lt;V&gt;</span> 静态电压　·　<span class="k">hc:&lt;A&gt;,pin</span> 大电流　·　<span class="k">diff:pinA-pinB[,vrng]</span> 真差分　·　<span class="k">fi:pinA-pinB,&lt;A&gt;</span> 电流型 Pin2Pin　·　<span class="k">meas:pin</span> / <span class="k">pw:pin,&lt;V&gt;</span></li>
+          <li>DSL 前加 <span class="k">!</span> 前缀 = DFT 点名特殊精度</li>
+        </ul>
+      </div>
+
+      <div class="arrow"></div>
+
+      <div class="node l1">
+        <div class="node-top">
+          <span class="badge">①</span>
+          <span class="ntitle">能力白名单</span>
+          <span class="nsub">REQ_RULES</span>
+        </div>
+        <ul>
+          <li><b>先锁源表类型，再列通路</b>（不枚举全网表再筛）</li>
+          <li>只遍历 <span class="k">PATH_COSTS[pin]</span> 收录的行</li>
+          <li><span class="k">hc≥200mA</span> / <span class="k">fv&gt;40V</span> / <span class="k">fi≥200mA</span> → <span class="tag t-vio">FPVIe</span></li>
+          <li>真差分（两点都非地）→ <span class="tag t-vio">FPVIe</span> / <span class="tag t-vio">ACM200</span></li>
+          <li>单端对地 → 排除 <span class="tag t-vio">FPVIe</span></li>
+        </ul>
+      </div>
+
+      <div class="arrow"></div>
+
+      <div class="node l2">
+        <div class="node-top">
+          <span class="badge">②</span>
+          <span class="ntitle">精度门 — "门"不是"筛"</span>
+          <span class="nsub">accuracy gate</span>
+        </div>
+        <div class="decision">
+          <div class="row"><span>DFT 点名精度</span><span>（DSL <span class="k">!</span> 前缀）→ 收窄 {<span class="tag t-vio">FPVIe</span>, <span class="tag t-vio">ACM200</span>}</span></div>
+          <div class="row"><span>未点名精度</span><span>→ ACM200/FOVIe/FXVIe/FXVIe_PLUS/FPVIe <b>全部通过</b>，决策落 ③</span></div>
+        </div>
+        <ul>
+          <li>精度 = 满足性（satisfiability），不是择优性；能力硬约束是<b>另一层</b>，与精度门无关</li>
+        </ul>
+      </div>
+
+      <div class="arrow"></div>
+
+      <div class="node l3">
+        <div class="node-top">
+          <span class="badge">③</span>
+          <span class="ntitle">最短 / 第二短</span>
+          <span class="nsub">drive_paths · lru 缓存</span>
+        </div>
+        <ul>
+          <li>白名单内按<b>需闭合继电器数</b>（并集）升序</li>
+          <li>第 1 位 = 最短通路 · 第 2 位 = 冲突兜底（第二短）</li>
+          <li>Pin2Pin 特殊规则：可用 FPVIe 单通道浮动跨两点 → <b>算最短</b>，优先于拆两个独立源表单端（TM641 方案B）</li>
+          <li>实测排名：BST → ACM200 ch5 <span class="k">(K48+K76=2)</span> &lt; FPVIe ch0 <span class="k">(K46+K48+K76=3)</span></li>
+        </ul>
+      </div>
+
+      <div class="arrow"></div>
+
+      <div class="node l4">
+        <div class="node-top">
+          <span class="badge">④</span>
+          <span class="ntitle">跨需求重叠检测</span>
+          <span class="nsub">avoid_relay_conflicts · 预计算+增量</span>
+        </div>
+        <ul>
+          <li><b>只扫已选中需求</b>：预计算继电器集，仅被换路那条增量重算（不扫全部组合）</li>
+        </ul>
+        <div class="decision">
+          <div class="row"><span>pin集相交</span><span><span class="tag t-ok">[继电器共用]</span> ✓ 良性共用，可并行（TM641 K61 先例）</span></div>
+          <div class="row"><span>pin集不相交</span><span>→ 自动换第二短避让</span></div>
+          <div class="row"><span>避让成功</span><span><span class="tag t-ok">[继电器避让]</span> ✓ 不阻塞</span></div>
+          <div class="row"><span>第二短也撞</span><span><span class="tag t-warn">[继电器冲突·残留]</span> ⚠ 需串行，不阻塞</span></div>
+          <div class="row"><span>缺失无法满足</span><span><span class="tag t-bad">✗ 阻塞裁决</span> 超量程 hc&gt;10A / fv&gt;100V · Pin2Pin 两端无任何源</span></div>
+        </div>
+        <ul>
+          <li>冲突降级原则（用户拍板）：<b>只要本电路可满足的都不需人工裁决</b>；FPVIe 满 → 自动 ACM200 / 拆两独立源表单端 <span class="tag t-info">[自动降级/拆源表]</span> ✓</li>
+        </ul>
+      </div>
+
+      <div class="arrow"></div>
+
+      <div class="node output">
+        <div class="node-top">
+          <span class="badge">出</span>
+          <span class="ntitle">规划输出</span>
+        </div>
+        <ul>
+          <li><b>源表 + 通道 + 需闭合继电器清单</b> + FPVIe 预算 + 冲突标注（共用/避让/残留/降级）</li>
+        </ul>
+      </div>
+
+      <div class="arrow"></div>
+
+      <div class="node consume">
+        <div class="node-top">
+          <span class="badge">→</span>
+          <span class="ntitle">relay-agent 直接消费</span>
+          <span class="nsub">Step1/2 通路继电器</span>
+        </div>
+        <ul>
+          <li>有规划输出（源表+通道+继电器）→ <b>不再手工全量穷举</b>（relay-agent Step13 规划门优先）</li>
+          <li>穷举法仅在无规划输出（人工兜底）时使用</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>每层说明</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>层</th><th>输入</th><th>逻辑</th><th>产出</th><th>脚本</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>① 能力白名单</td>
+            <td>需求 DSL + PIN</td>
+            <td>PATH_COSTS[pin] 行 + REQ_RULES 锁源表类型；hc/真差分/单端对地先行裁源</td>
+            <td>候选源表类型集合</td>
+            <td><code>drive_paths(srcs=…)</code></td>
+          </tr>
+          <tr>
+            <td>② 精度门</td>
+            <td>候选通路</td>
+            <td>DSL <code>!</code> 点名精度 → 收窄 {FPVIe, ACM200}；否则全驱动源通过</td>
+            <td>精度门内候选</td>
+            <td><code>drive_paths(precise=…)</code></td>
+          </tr>
+          <tr>
+            <td>③ 最短/第二短</td>
+            <td>精度门内候选</td>
+            <td>按需闭合继电器并集数升序取首位/次位；Pin2Pin 差分优先</td>
+            <td>最短/第二短 + 继电器清单</td>
+            <td><code>ranked_paths</code> (lru) / <code>diff_paths</code> (lru)</td>
+          </tr>
+          <tr>
+            <td>④ 跨需求重叠检测</td>
+            <td>选中需求集合</td>
+            <td>继电器集预计算；pin集相交=共用并行，不相交=第二短避让/残留串行；缺失=阻塞</td>
+            <td>冲突标注 + 换路结果</td>
+            <td><code>avoid_relay_conflicts</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>实测数据</h2>
+    <div class="stats">
+      <div class="stat">
+        <div class="big">109 → 58<small> ms</small></div>
+        <div class="cap">12 需求 × 1000 次完整规划 + 冲突检测（近 2×，lru 缓存 + 白名单枚举 + 预计算）</div>
+      </div>
+      <div class="stat">
+        <div class="big">12 / 12<small> 全绿</small></div>
+        <div class="cap">demo 结论逐项一致：1-10 ✓ 最短/避让 · 11 ✗ 超量程阻塞 · 12 ⚠ 残留串行</div>
+      </div>
+      <div class="stat">
+        <div class="big">0 / 0 / 0</div>
+        <div class="cap">TM641 真实场景（diff BST-SW→FPVIe ch0 + VCP_SW→ACM200 ch8）冲突 / 避让 / 残留全为 0</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>规则同步</h2>
+    <p class="lead">本次遍历范围优化同步落地到以下文件：</p>
+    <div class="pills">
+      <span class="pill">standards/path-principles.md §遍历范围边界</span>
+      <span class="pill">agents/relay-agent.md Step13 规划门优先</span>
+      <span class="pill">memory nuvolta-path-principles</span>
+      <span class="pill">MEMORY.md 恢复点</span>
+      <span class="pill">daylog 2026-08-30</span>
+    </div>
+  </section>
+</main>
+
+<footer>D:\Newtest\CLAUDE_PROCESS · 找通路遍历范围四层收窄 · R-SHTML（UTF-8 无 BOM · CSS 全内联 · 零外部资源）</footer>
+
+<script>
+(function(){
+  var b=document.querySelector('.theme-toggle');
+  var s=document.documentElement;
+  b.addEventListener('click',function(){
+    if(s.getAttribute('data-theme')==='dark'){s.removeAttribute('data-theme')}
+    else{s.setAttribute('data-theme','dark')}
+  });
+})();
+</script>
+</body>
+</html>

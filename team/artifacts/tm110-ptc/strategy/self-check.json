@@ -1,0 +1,34 @@
+{
+  "event": "self_check",
+  "status": "pass",
+  "stage": "STRATEGY",
+  "tm": "TM110",
+  "validator": "python scripts/validate_strategy_contract.py",
+  "result": "PASS",
+  "contractSha256": "45efd33e72e84fdee4d54534f1666e943aa9a128bf9c7cce63a3224921a51478",
+  "manifest": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm110-ptc\\input-manifest.json",
+  "expectedMonitor": "nQON",
+  "resolvedFindings": [
+    "TM110-METHOD-K13-001",
+    "TM110-METHOD-K65-001"
+  ],
+  "relayFlowAudit": {
+    "eightStepsCompleted": true,
+    "pathRequiredOnRelayUnion": [
+      18
+    ],
+    "functionalRelayUnion": [
+      13,
+      65
+    ],
+    "setOnRelayUnion": [
+      13,
+      18,
+      65
+    ],
+    "rampCapExcluded": null,
+    "p2pExcluded": true,
+    "newMissingRelay": false,
+    "rampCapCheck": "No dedicated VAC3 capacitor; K21 is VAC1 only"
+  }
+}

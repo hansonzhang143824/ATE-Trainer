@@ -1,0 +1,394 @@
+#### ALL meta functionNames ####
+  TM000_IQ_STANDBY                 dftItem=TM000      testType=normal   projectType=一般测试项目 paramType=一般
+  TM001_IIN_SUSPEND                dftItem=TM001      testType=normal   projectType=一般测试项目 paramType=一般
+  TM001_2_IQ_SHIPMODE              dftItem=TM001_2    testType=normal   projectType=一般测试项目 paramType=一般
+  TM001_3_IQ_OPERATION             dftItem=TM001_3    testType=normal   projectType=一般测试项目 paramType=一般
+  TM100_HSKP_ATEST0                dftItem=TM100      testType=normal   projectType=一般测试项目 paramType=一般
+  TM101_HSKP_LP_ATEST0             dftItem=TM101      testType=normal   projectType=一般测试项目 paramType=一般
+  TM102_HSKP_LP_ATEST0             dftItem=TM102      testType=normal   projectType=一般测试项目 paramType=一般
+  TM103_HSKP_LP_HR_0P5U            dftItem=TM103      testType=normal   projectType=一般测试项目 paramType=一般
+  TM104_HSKP_LP_PTAT_0P5U          dftItem=TM104      testType=normal   projectType=一般测试项目 paramType=一般
+  TM105_HSKP_VSPRE_MAX_CMP         dftItem=TM105      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM106_HSKP_VBUS_PRST             dftItem=TM106      testType=toggle   projectType=一般测试项目(AWG) paramType=UVLO
+  TM107_HSKP_VBUS_HT_VBAT          dftItem=TM107      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM108_HSKP_VAC1_PRST             dftItem=TM108      testType=toggle   projectType=一般测试项目(AWG) paramType=UVLO
+  TM109_HSKP_VAC2_PRST             dftItem=TM109      testType=toggle   projectType=一般测试项目(AWG) paramType=UVLO
+  TM110_HSKP_VAC3_PRST             dftItem=TM110      testType=toggle   projectType=一般测试项目(AWG) paramType=UVLO
+  TM111_HSKP_VBAT_UV               dftItem=TM111      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM112_HSKP_VBAT_HT_3P1V          dftItem=TM112      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM113_VCC_UV                     dftItem=TM113      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM114_VCC_VBUS_PATH_ACC          dftItem=TM114      testType=normal   projectType=一般测试项目 paramType=一般
+  TM115_VCC_VAC_PATH_ACC           dftItem=TM115      testType=normal   projectType=一般测试项目 paramType=一般
+  TM116_VCC_VBAT_PATH_ACC          dftItem=TM116      testType=normal   projectType=一般测试项目 paramType=一般
+  TM117_VCC_CUR_LIMIT_VBAT_PATH    dftItem=TM117      testType=normal   projectType=一般测试项目 paramType=一般
+  TM118_VCC_CUR_LIMIT_VBUS_PATH    dftItem=TM118      testType=normal   projectType=一般测试项目 paramType=一般
+  TM121_VAC_PATH_ON                dftItem=TM121      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM122_VMCU_VBAT_PATH_ACC1        dftItem=TM122      testType=normal   projectType=一般测试项目 paramType=一般
+  TM123_VMCU_VBAT_PATH_ACC2        dftItem=TM123      testType=normal   projectType=一般测试项目 paramType=一般
+  TM124_VMCU_VCC_PATH_ACC          dftItem=TM124      testType=normal   projectType=一般测试项目 paramType=一般
+  TM125_VMCU_CUR_LIMIT_VBAT_PATH   dftItem=TM125      testType=normal   projectType=一般测试项目 paramType=一般
+  TM126_VMCU_CUR_LIMIT_VCC_PATH    dftItem=TM126      testType=normal   projectType=一般测试项目 paramType=一般
+  TM127_VBAT_PATH_ON_VMCU          dftItem=TM127      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM128_VBAT_PATH_ON_VCC           dftItem=TM128      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM129_VCC_VBAT_HT_2P8            dftItem=TM129      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM130_VCC_VBAT_HT_3P7            dftItem=TM130      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM131_IRPPO_EA_FB                dftItem=TM131      testType=normal   projectType=一般测试项目 paramType=一般
+  TM132_IHR_P_1UA                  dftItem=TM132      testType=normal   projectType=一般测试项目 paramType=一般
+  Trim_IZTC_RES                    dftItem=TM133      testType=trim     projectType=trim paramType=一般
+  TM134_IPTAT_1UA                  dftItem=TM134      testType=normal   projectType=一般测试项目 paramType=一般
+  Trim_BG_RES_DIV                  dftItem=TM135      testType=trim     projectType=trim paramType=一般
+  TM136_AVSS_BG                    dftItem=TM136      testType=normal   projectType=一般测试项目 paramType=一般
+  TM137_TSD_TM                     dftItem=TM137      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM138_TDIE_WARM_TM               dftItem=TM138      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  Trim_VBG                         dftItem=TM139      testType=trim     projectType=trim paramType=一般
+  TM200_VTH_SCL_IN                 dftItem=TM200      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM201_VTH_SDA_IN                 dftItem=TM201      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM202_R_INT                      dftItem=TM202      testType=normal   projectType=一般测试项目 paramType=一般
+  TM203_R_SDA                      dftItem=TM203      testType=normal   projectType=一般测试项目 paramType=一般
+  TM204_IPD_VBUS                   dftItem=TM204      testType=normal   projectType=一般测试项目 paramType=一般
+  TM207_IPD_VAC3                   dftItem=TM207      testType=normal   projectType=一般测试项目 paramType=一般
+  TM210_VAC1_SNK_DET_VTH_RELMODE   dftItem=TM210      testType=toggle   projectType=trim paramType=一般
+  TM211_VAC2_SNK_DET_VTH_RELMODE   dftItem=TM211      testType=toggle   projectType=trim paramType=一般
+  TM212_VAC1_SNK_DET_VTH_ABSMODE   dftItem=TM212      testType=toggle   projectType=trim paramType=一般
+  TM213_VAC2_SNK_DET_VTH_ABSMODE   dftItem=TM213      testType=toggle   projectType=trim paramType=一般
+  TM214_PWM1_Vth                   dftItem=TM214      testType=toggle   projectType=trim paramType=一般
+  TM215_PWM2_Vth                   dftItem=TM215      testType=toggle   projectType=trim paramType=一般
+  TM216_PWM1_Current               dftItem=TM216      testType=normal   projectType=trim paramType=一般
+  TM217_PWM2_Current               dftItem=TM217      testType=normal   projectType=trim paramType=一般
+  TM220_DMO_PD_R                   dftItem=TM220      testType=normal   projectType=一般测试项目 paramType=一般
+  TM222_DMA_PD_R                   dftItem=TM222      testType=normal   projectType=一般测试项目 paramType=一般
+  TM300_OSC_64K                    dftItem=TM300      testType=trim     projectType=trim paramType=Freq Related
+  TM301_OSC_4P5M                   dftItem=TM301      testType=trim     projectType=trim paramType=Freq Related
+  TM400_VBUS_OVP_VTH1              dftItem=TM400      testType=toggle   projectType=一般测试项目(AWG) paramType=UVLO
+  TM401_VBUS_OVP_VTH2              dftItem=TM401      testType=toggle   projectType=一般测试项目(AWG) paramType=UVLO
+  TM402_VBUS_OVP_VTH3              dftItem=TM402      testType=toggle   projectType=一般测试项目(AWG) paramType=UVLO
+  TM403_VBUS_REVI_VTH              dftItem=TM403      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM406_VBAT_LOW_VTH               dftItem=TM406      testType=toggle   projectType=一般测试项目(AWG) paramType=UVLO
+  TM408_VBAT_OVP                   dftItem=TM408      testType=toggle   projectType=一般测试项目(AWG) paramType=UVLO
+  TM409_VBUS_HT_4P8V               dftItem=TM409      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM410_VTRIKLE_VTH1               dftItem=TM410      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM411_VTRIKLE_VTH2               dftItem=TM411      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM412_VRE_CHG_VTH1               dftItem=TM412      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM413_VRE_CHG_VTH2               dftItem=TM413      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM418_VAC1_FB                    dftItem=TM418      testType=normal   projectType=一般测试项目 paramType=一般
+  TM419_VAC2_FB                    dftItem=TM419      testType=normal   projectType=一般测试项目 paramType=一般
+  TM420_VAC3_FB                    dftItem=TM420      testType=normal   projectType=一般测试项目 paramType=一般
+  TM421_VBUS_FB                    dftItem=TM421      testType=normal   projectType=一般测试项目 paramType=一般
+  TM422_VBAT_FB                    dftItem=TM422      testType=trim     projectType=trim paramType=一般
+  TM424_VREF_TRIM                  dftItem=TM424      testType=trim     projectType=trim paramType=一般
+  TM425_VREF_1P2V_BUF              dftItem=TM425      testType=trim     projectType=trim paramType=一般
+  TM607_BUCK_LS_ZCD                dftItem=TM607      testType=toggle   projectType=一般测试项目(AWG) paramType=Current Threshold
+  TM608_BOOST_HS_ZCD               dftItem=TM608      testType=toggle   projectType=一般测试项目(AWG) paramType=Current Threshold
+  TM609_BOOST_HS_NEG               dftItem=TM609      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM614_VC_CLAMP_LOW               dftItem=TM614      testType=normal   projectType=一般测试项目 paramType=一般
+  TM615_PSM_THREHOLD               dftItem=TM615      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM616_VC_OFFSET                  dftItem=TM616      testType=toggle   projectType=一般测试项目(AWG) paramType=电压阈值
+  TM640_BOOST_HS_OCP               dftItem=TM640      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM641_BST_UV                     dftItem=TM641      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM643_VBAT_LOOP_INDICTOR         dftItem=TM643      testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+  TM700_IBUS_SNS_ACC_BU            dftItem=TM700      testType=normal   projectType=一般测试项目 paramType=一般
+  TM701_IBUS_SNS_ACC_BO            dftItem=TM701      testType=normal   projectType=一般测试项目 paramType=一般
+  TM702_IBUS_SNS_GAIN_TRIM         dftItem=TM702      testType=trim     projectType=trim paramType=电压阈值
+  TM702_1_IBUS_SNS_GAIN_TEST_BUCK  dftItem=TM702_1    testType=normal   projectType=一般测试项目 paramType=电压阈值
+  TM703_IBUS_SNS_VOS_TRIM          dftItem=TM703      testType=trim     projectType=trim paramType=电压阈值
+  TM1004_QDT_VTH_COMP              dftItem=TM1004     testType=toggle   projectType=trim paramType=一般
+  TM1006_QDT_ZCD_COMP              dftItem=TM1006     testType=toggle   projectType=一般测试项目(AWG) paramType=Current Threshold
+  TM1007_QDT_IBP_ZTC_1UA_TEST      dftItem=TM1007     testType=normal   projectType=一般测试项目 paramType=一般
+  TM1008_QDT_VREF_VTH_CMP          dftItem=TM1008     testType=normal   projectType=一般测试项目 paramType=一般
+  TM1009_QDT_VPCHG_SHORT_CURRENT   dftItem=TM1009     testType=normal   projectType=一般测试项目 paramType=一般
+  TM1100_DEMO_VREF_1P65            dftItem=TM1100     testType=normal   projectType=trim paramType=一般
+  TM1205_TRX_BST_UV_GD             dftItem=TM1205     testType=toggle   projectType=一般测试项目(AWG) paramType=一般
+
+#### compact meta for scope ####
+==========================================================================================
+TM000_IQ_STANDBY                 dftItem=TM000     testType=normal   paramType=一般     projectType=一般测试项目
+  overview: level=Top name=Iq_Standby exp='23 w/o digital iq.' unit=uA test='Direct' helper=''
+  params: [{"check": "MI", "checkPin": "VBAT", "dftItem": "TM000"}]
+  hardwareInit: vset[vbat,4.4,100e-6,0] | field
+  registers: []
+  capAuthority: {"powered_pins": ["VBAT"], "mi_pins": ["VBAT"], "ramp_pins": [], "testpad_pins": []}
+==========================================================================================
+TM001_IIN_SUSPEND                dftItem=TM001     testType=normal   paramType=一般     projectType=一般测试项目
+  overview: level=Top name=Iin_Suspend exp='' unit=uA test='Direct' helper=''
+  params: [{"check": "MI", "checkPin": "VBAT", "dftItem": "TM001"}]
+  hardwareInit: vset[vbat,3.7,100e-6,0] | en_tm | field
+  registers: []
+  capAuthority: {"powered_pins": ["VBAT"], "mi_pins": ["VBAT"], "ramp_pins": [], "testpad_pins": []}
+==========================================================================================
+TM001_2_IQ_SHIPMODE              dftItem=TM001_2   testType=normal   paramType=一般     projectType=一般测试项目
+  overview: level=Top name=Iq_Shipmode exp='' unit=uA test='Direct' helper=''
+  params: [{"check": "MI", "checkPin": "VBAT", "dftItem": "TM001_2"}]
+  hardwareInit: vset[vbat,3.7,100e-6,0] | vset[vac1,5.0,100e-6,0] | vset[vac1,0.0,100e-6,0] | en_tm | field
+  registers: []
+  capAuthority: {"powered_pins": ["VAC1", "VBAT"], "mi_pins": ["VBAT"], "ramp_pins": [], "testpad_pins": []}
+==========================================================================================
+TM001_3_IQ_OPERATION             dftItem=TM001_3   testType=normal   paramType=一般     projectType=一般测试项目
+  overview: level=Top name=Iq_Operation exp='' unit=uA test='Direct' helper=''
+  params: [{"check": "MI", "checkPin": "VBAT", "dftItem": "TM001_3"}]
+  hardwareInit: vset[vbat,3.7,100e-6,0] | vset[vac1,5.0,100e-6,0]
+  registers: []
+  capAuthority: {"powered_pins": ["VAC1", "VBAT"], "mi_pins": ["VBAT"], "ramp_pins": [], "testpad_pins": []}
+==========================================================================================
+TM102_HSKP_LP_ATEST0             dftItem=TM102     testType=normal   paramType=一般     projectType=一般测试项目
+  overview: level=HSKP name=LP_VBG_BF exp=1.27 unit=V test='Direct' helper=''
+  params: [{"check": "MV", "checkPin": "ATEST0", "dftItem": "TM102"}]
+  hardwareInit: vset[vbat,4.0,100e-6,0] | vset[vdm,1.2,100e-6,0] | en_tm | field
+  registers: []
+  capAuthority: {"powered_pins": ["VBAT", "VDM"], "mi_pins": [], "ramp_pins": [], "testpad_pins": ["VDM"]}
+==========================================================================================
+TM103_HSKP_LP_HR_0P5U            dftItem=TM103     testType=normal   paramType=一般     projectType=一般测试项目
+  overview: level=HSKP name=LP_HR_0P5U exp=0.5 unit=uA test='Direct' helper=''
+  params: [{"check": "MI", "checkPin": "ATEST0", "dftItem": "TM103"}]
+  hardwareInit: vset[vbat,4.0,100e-6,0] | vset[vdm,1.0,100e-6,0] | en_tm | field
+  registers: []
+  capAuthority: {"powered_pins": ["VBAT", "VDM"], "mi_pins": ["ATEST0"], "ramp_pins": [], "testpad_pins": ["VDM"]}
+==========================================================================================
+TM108_HSKP_VAC1_PRST             dftItem=TM108     testType=toggle   paramType=UVLO   projectType=一般测试项目(AWG)
+  overview: level=HSKP name=VAC1_PRST exp='rising vth 4.4V, hys 0.35V' unit=V test='' helper='ramp VAC , INT toggle'
+  params: [{"check": "MV", "checkPin": "DTEST0", "dftItem": "TM108"}]
+  hardwareInit: vset[vbat,3.0,100e-6,0] | vset[vac1,10.0,1e-3,0] | vset[vac1,0.0,1e-3,0] | en_tm | field
+  registers: []
+  capAuthority: {"powered_pins": ["VAC1", "VBAT"], "mi_pins": [], "ramp_pins": ["VAC1"], "testpad_pins": []}
+==========================================================================================
+TM109_HSKP_VAC2_PRST             dftItem=TM109     testType=toggle   paramType=UVLO   projectType=一般测试项目(AWG)
+  overview: level=HSKP name=VAC2_PRST exp='rising vth 4.4V, hys 0.35V' unit=V test='' helper='ramp VAC , INT toggle'
+  params: [{"check": "MV", "checkPin": "DTEST0", "dftItem": "TM109"}]
+  hardwareInit: vset[vbat,3.0,100e-6,0] | vset[vac2,10.0,1e-3,0] | vset[vac2,0.0,1e-3,0] | en_tm | field
+  registers: []
+  capAuthority: {"powered_pins": ["VAC2", "VBAT"], "mi_pins": [], "ramp_pins": ["VAC2"], "testpad_pins": []}
+==========================================================================================
+Trim_BG_RES_DIV                  dftItem=TM135     testType=trim     paramType=一般     projectType=trim
+  overview: level=BG name=VREF_1P0 exp=1 unit=V test='' helper=''
+  params: [{"check": "MV", "checkPin": "ATEST0", "dftItem": "TM135"}]
+  hardwareInit: vset[vbat,5.0,100e-6,0] | en_tm | field | field
+  registers: []
+  capAuthority: {"powered_pins": ["VBAT"], "mi_pins": [], "ramp_pins": [], "testpad_pins": []}
+==========================================================================================
+TM1205_TRX_BST_UV_GD             dftItem=TM1205    testType=toggle   paramType=一般     projectType=一般测试项目(AWG)
+  overview: level=TRX name=TRX_BST_UV_GD exp='' unit=V test='' helper=''
+  params: []
+  hardwareInit: vset[vbat,4.0,100e-6,0] | vset[bst1_sw1,4.0,1000e-6,0] | vset[bst1_sw1,0.0,1000e-6,0] | vset[bst2_sw2,4.0,1000e-6,0] | vset[bst2_sw2,0.0,1000e-6,0] | en_tm | field | field
+  registers: []
+  capAuthority: {"powered_pins": ["BST1_SW1", "BST2_SW2", "VBAT"], "mi_pins": [], "ramp_pins": ["BST1_SW1", "BST2_SW2"], "testpad_pins": []}
+
+#### reg_config bodies (tm102/103/108/109/135/1205) ####
+==========================================================================================
+### tm102.sv 687ffbf66fcdd5bdeb90e25b287b9f4592503e140e387dfee2f5690fc9a344dd
+    /////////////////////// Auto-generated AMS Test Code ////////////
+    /////////////////////// Test: LP_VBG_BF ////////////
+    // Test Item: TM102, generate time: 2026-05-15 16:48:30 //
+    //////////////////generated by Tom/////////////////////////////
+    `NVT_STIM.en_vsrc_vbat = 1;
+    `NVT_STIM.vsrcVBAT.ramp_vsrc_val(4, 100e-6);
+    #1000;
+    // pin VBAT set to 4V
+    //		vset[vbat,4,100e-6,0]
+    entertestmode();
+    //		en_tm[]
+    `NVT_STIM.en_vsrc_vdm = 1;
+    `NVT_STIM.vsrcVDM.ramp_vsrc_val(1.2, 100e-6);
+    #1000;
+    // pin VDM set to 1.2V
+    //		vset[vdm,1.2,100e-6,0]
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x02);  // Write reg 0x57 = 2
+    I2CWriteSameData(DEV_ADDR, 0x5E, 0x02);  // Write reg 0x5E = 2
+    //		field[(EN_ATEST0,1),(ATEST0_MUX,2)]
+    `NVT_STIM.en_vsrc_vdm = 0;  // disable vdm
+    //		vset_off[vdm]
+    #1000000;  // delay 1e-3s
+    //		delay[1e-3]
+    $finish;
+    //		finish[]
+    /////////////////////// End of Auto-generated Code ////////////
+==========================================================================================
+### tm103.sv 64767755a612140a3b2b2359ad1120eb9c364dba61e53aa8cc58c179d993ab79
+    /////////////////////// Auto-generated AMS Test Code ////////////
+    /////////////////////// Test: LP_HR_0P5U ////////////
+    // Test Item: TM103, generate time: 2026-05-15 16:48:30 //
+    //////////////////generated by Tom/////////////////////////////
+    `NVT_STIM.en_vsrc_vbat = 1;
+    `NVT_STIM.vsrcVBAT.ramp_vsrc_val(4, 100e-6);
+    #1000;
+    // pin VBAT set to 4V
+    //		vset[vbat,4,100e-6,0]
+    entertestmode();
+    //		en_tm[]
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x02);  // Write reg 0x57 = 2
+    I2CWriteSameData(DEV_ADDR, 0x5E, 0x04);  // Write reg 0x5E = 4
+    //		field[(EN_ATEST0,1),(ATEST0_MUX,4)]
+    `NVT_STIM.en_vsrc_vdm = 1;
+    `NVT_STIM.vsrcVDM.ramp_vsrc_val(1, 100e-6);
+    #1000;
+    // pin VDM set to 1V
+    //		vset[vdm,1,100e-6,0]
+    #1000000;  // delay 1e-3s
+    //		delay[1e-3]
+    $finish;
+    //		finish[]
+    /////////////////////// End of Auto-generated Code ////////////
+==========================================================================================
+### tm108.sv 4d0ea5c30fe5369e98a6d81215bbfb5b5f41bf44ea1c5dbc8df94af75bb92dc1
+    /////////////////////// Auto-generated AMS Test Code ////////////
+    /////////////////////// Test: VAC1_PRST ////////////
+    // Test Item: TM108, generate time: 2026-05-15 16:48:30 //
+    //////////////////generated by Tom/////////////////////////////
+    `NVT_STIM.en_vsrc_vbat = 1;
+    `NVT_STIM.vsrcVBAT.ramp_vsrc_val(3, 100e-6);
+    #1000;
+    // pin VBAT set to 3V
+    //		vset[vbat,3,100e-6,0]
+    entertestmode();
+    //		en_tm[]
+    I2CWriteSameData(DEV_ADDR, 0x56, 0x16);  // Write reg 0x56 = 22
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // Write reg 0x57 = 8
+    //		field[(DMUX_EN,1),(DMUX_SEL,22)]
+    `NVT_STIM.en_vsrc_vac1 = 1;
+    `NVT_STIM.vsrcVAC1.ramp_vsrc_val(10, 1e-3);
+    #1000;
+    // pin VAC1 set to 10V
+    //		vset[vac1,10,1e-3,0]
+    `NVT_STIM.en_vsrc_vac1 = 1;
+    `NVT_STIM.vsrcVAC1.ramp_vsrc_val(0, 1e-3);
+    #1000;
+    // pin VAC1 set to 0V
+    //		vset[vac1,0,1e-3,0]
+    #1000000;  // delay 1e-3s
+    //		delay[1e-3]
+    $finish;
+    //		finish[]
+    /////////////////////// End of Auto-generated Code ////////////
+==========================================================================================
+### tm109.sv 235d9cee0da964489d53c9c70d2b3e932f98be24442ce9cd8d247716e7ad80d5
+    /////////////////////// Auto-generated AMS Test Code ////////////
+    /////////////////////// Test: VAC2_PRST ////////////
+    // Test Item: TM109, generate time: 2026-05-15 16:48:30 //
+    //////////////////generated by Tom/////////////////////////////
+    `NVT_STIM.en_vsrc_vbat = 1;
+    `NVT_STIM.vsrcVBAT.ramp_vsrc_val(3, 100e-6);
+    #1000;
+    // pin VBAT set to 3V
+    //		vset[vbat,3,100e-6,0]
+    entertestmode();
+    //		en_tm[]
+    I2CWriteSameData(DEV_ADDR, 0x56, 0x15);  // Write reg 0x56 = 21
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // Write reg 0x57 = 8
+    //		field[(DMUX_EN,1),(DMUX_SEL,21)]
+    `NVT_STIM.en_vsrc_vac2 = 1;
+    `NVT_STIM.vsrcVAC2.ramp_vsrc_val(10, 1e-3);
+    #1000;
+    // pin VAC2 set to 10V
+    //		vset[vac2,10,1e-3,0]
+    `NVT_STIM.en_vsrc_vac2 = 1;
+    `NVT_STIM.vsrcVAC2.ramp_vsrc_val(0, 1e-3);
+    #1000;
+    // pin VAC2 set to 0V
+    //		vset[vac2,0,1e-3,0]
+    #1000000;  // delay 1e-3s
+    //		delay[1e-3]
+    $finish;
+    //		finish[]
+    /////////////////////// End of Auto-generated Code ////////////
+==========================================================================================
+### tm135.sv 9a4d6989ba080e9c69fa8d79b9976d3f0f98f8f9ec587773f297afa4363a0a94
+    /////////////////////// Auto-generated AMS Test Code ////////////
+    /////////////////////// Test: VREF_1P0 ////////////
+    // Test Item: TM135, generate time: 2026-05-15 16:48:30 //
+    //////////////////generated by Tom/////////////////////////////
+    `NVT_STIM.en_vsrc_vbat = 1;
+    `NVT_STIM.vsrcVBAT.ramp_vsrc_val(5, 100e-6);
+    #1000;
+    // pin VBAT set to 5V
+    //		vset[vbat,5,100e-6,0]
+    entertestmode();
+    //		en_tm[]
+    I2CWriteSameData(DEV_ADDR, 0x10, 0x43);  // Write reg 0x10 = 67
+    //		field[(WAKE_UP,1)]
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x02);  // Write reg 0x57 = 2
+    I2CWriteSameData(DEV_ADDR, 0x5E, 0x0A);  // Write reg 0x5E = 10
+    //		field[(EN_ATEST0,1),(ATEST0_MUX,10)]
+    #1000000;  // delay 1e-3s
+    //		delay[1e-3]
+    $finish;
+    //		finish[]
+    /////////////////////// End of Auto-generated Code ////////////
+==========================================================================================
+### tm1205.sv 67bb9bd49159e5cab4b7e11ac4cda3ac732182003d7f7e6c647c4d2fae0f479a
+    /////////////////////// Auto-generated AMS Test Code ////////////
+    /////////////////////// Test: TRX_BST_UV_GD ////////////
+    // Test Item: TM1205, generate time: 2026-05-15 16:48:30 //
+    //////////////////generated by Tom/////////////////////////////
+    `NVT_STIM.en_vsrc_vbat = 1;
+    `NVT_STIM.vsrcVBAT.ramp_vsrc_val(4, 100e-6);
+    #1000;
+    // pin VBAT set to 4V
+    //		vset[vbat,4,100e-6,0]
+    entertestmode();
+    //		en_tm[]
+    I2CWriteSameData(DEV_ADDR, 0x10, 0x43);  // Write reg 0x10 = 67
+    //		field[(wake_up,1)]
+    //		field[(wake_up,1)]
+    I2CWriteSameData(DEV_ADDR, 0x67, 0x2F);  // Renew reg 0x67 = 47
+    I2CWriteSameData(DEV_ADDR, 0x68, 0x30);  // Renew reg 0x68 = 48
+    //		field_renew[(D2A_OVRD_SEL,47),(ovrd_value,3)]
+    I2CWriteSameData(DEV_ADDR, 0x67, 0x2D);  // Renew reg 0x67 = 45
+    I2CWriteSameData(DEV_ADDR, 0x68, 0x30);  // Renew reg 0x68 = 48
+    //		field_renew[(D2A_OVRD_SEL,45),(ovrd_value,3)]
+    I2CWriteSameData(DEV_ADDR, 0x67, 0x30);  // Renew reg 0x67 = 48
+    I2CWriteSameData(DEV_ADDR, 0x68, 0x30);  // Renew reg 0x68 = 48
+    //		field_renew[(D2A_OVRD_SEL,48),(ovrd_value,3)]
+    I2CWriteSameData(DEV_ADDR, 0x5C, 0x02);  // Renew reg 0x5C = 2
+    //		field_renew[(D2A_TRX_TM_BOOTGD_DEG_BYPASS,1)]
+    #1000000;  // delay 1e-3s
+    //		delay[1e-3]
+    I2CWriteSameData(DEV_ADDR, 0x56, 0x39);  // Renew reg 0x56 = 57
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // Renew reg 0x57 = 8
+    //		field_renew[(DMUX_EN,1),(DMUX_SEL,57)]
+    `NVT_STIM.en_vsrc_bst1_sw1 = 1;
+    `NVT_STIM.vsrcBST1_SW1.ramp_vsrc_val(4, 1000e-6);
+    #1000;
+    // pin BST1_SW1 set to 4V
+    //		vset[bst1_sw1,4,1000e-6,0]
+    `NVT_STIM.en_vsrc_bst1_sw1 = 1;
+    `NVT_STIM.vsrcBST1_SW1.ramp_vsrc_val(0, 1000e-6);
+    #1000;
+    // pin BST1_SW1 set to 0V
+    //		vset[bst1_sw1,0,1000e-6,0]
+    #1000000;  // delay 1e-3s
+    //		delay[1e-3]
+    I2CWriteSameData(DEV_ADDR, 0x56, 0x3A);  // Renew reg 0x56 = 58
+    I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // Renew reg 0x57 = 8
+    //		field_renew[(DMUX_EN,1),(DMUX_SEL,58)]
+    `NVT_STIM.en_vsrc_bst2_sw2 = 1;
+    `NVT_STIM.vsrcBST2_SW2.ramp_vsrc_val(4, 1000e-6);
+    #1000;
+    // pin BST2_SW2 set to 4V
+    //		vset[bst2_sw2,4,1000e-6,0]
+    `NVT_STIM.en_vsrc_bst2_sw2 = 1;
+    `NVT_STIM.vsrcBST2_SW2.ramp_vsrc_val(0, 1000e-6);
+    #1000;
+    // pin BST2_SW2 set to 0V
+    //		vset[bst2_sw2,0,1000e-6,0]
+    #1000000;  // delay 1e-3s
+    //		delay[1e-3]
+    $finish;
+    //		finish[]
+    /////////////////////// End of Auto-generated Code ////////////
+
+#### PROGRESS.md + test_conditions mentions ####
+==========================================================================================
+### docs/PROGRESS.md efc810564b5d66a7282b9952a6acac6d2360d64ff2fc8ee284109efa0331a6d8 utf-8-sig lines 1290
+      82 3. 材料门硬门禁(两层): 3a 材料门 verify_material_receipt.py(生成前拦截, 校验该 TM 有没有可参考的案例: 参数类型已登记 ∨ code 黄金案例+要点总结, 没有 → FAIL 禁生成, 缺材料由用户 action 提供); 3b 黄金约束门 verify_bst_sw_sequence.py(生成后, 登记 R-BST-SW)。
+      84 5. 坏脚本修复: verify_bst_sw_sequence.py 参数化(目标函数按 meta capAuthority 拓扑指纹派生 HS=BST-SW/LS=PMID-SW, 量程按 max|iset|≥1A→10A, 寄存器 LS=0x01/HS=0x02, 去 text.index 崩溃源); verify_library_status.py 去 project_manifest 依赖 + stub 检测驱动 FAIL; 
+      96 - rules-registry 增 R-BST-SW(specialized 黄金约束, 第 17 条 active)
+     103 - 四件套升级（三件套→四件套）：新增 `debug/`（排查方法论，按需非必须）；RDSON 已建 chip+method+code+debug 四件套，CurrentSense 已有 chip+method，UVLO/Current Threshold 已有 chip+method
+     648 - TM600 浮动大电流（vs reference）: **PASSED**, 10 条差异全部 WARN（手写码偏大松弛, 基准合规但非最接近档, 如 PMID 全程 FOVIe_40V vs 生成严格档）
+     659 3. 浮动大电流 TM600 → POWER SEQUENCE PASSED（10 WARN 全合规）✓
+    1106 **2026-07-18: Agent/Skill/知识库 重构完成 + TM600 修复 + E006 固化**
+    1108 ### 最新修复 (TM600)
+    1121 - `references/tm600-normal-highcurrent.cpp` ← 修复后代码（去K38, 正Cap名, 保FET下电）
+    1157 ├── tm600-normal-highcurrent.cpp ← Normal + 大电流 + 浮动源
+    1182 | TM600 | RDSON_TEST | HS_RDSON | Normal (MI&MV) | ✅ 已生成 |
+    1234 - 2026-07-14: 完成TM600(HS_RDSON) v1，含台阶上电/大电流/浮动源
+==========================================================================================
+### project/DALI/meta/test_conditions.yaml 0f4354ed5b3ecc0233fae8689ce70f4e97942ed900d8d8dd7b34d9e4694f5c48 utf-8-sig lines 334
+DONE

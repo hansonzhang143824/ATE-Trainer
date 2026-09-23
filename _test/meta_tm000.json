@@ -1,0 +1,11 @@
+{
+  "functionName": "TM000_IQ_STANDBY",
+  "testType": "normal",
+  "params": [],
+  "hardwareInit": [
+    {"cmd": "vset", "pin": "vbat", "value": 4.4, "time": "100e-6", "ignore": 0}
+  ],
+  "pinsInvolved": ["VBAT"],
+  "floatingPairs": [],
+  "mvNoFipins": []
+}

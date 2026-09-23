@@ -1,0 +1,18 @@
+=== 拆分验证：口径变化到底来自"排除项"还是"序列化" ===
+  v1 原算法（去行字节）                    = febf9518df45f3aa9583d96b
+  去 generatedAt + **sort_keys 重序列化** = 9804fbe2272477ecf51de616
+  去 generatedAt+receipts + 重序列化      = 9804fbe2272477ecf51de616
+  （去 gen）vs（去 gen+receipts）相同 = True ⇒ `receipts` 排除= **no-op**
+  v1原算法 vs 去gen重序列化 相同 = False ⇒ 差别主因 = **序列化方式**，非排除项
+
+=== 写入纪律登记（我方两处更正）===
+  已并入 → 55706 B
+
+=== 把"预防性"与"实质"写进 projectionSpec.note（诚实化）===
+  已写入 → 49962 B
+  run1: RECEIPT D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10
+  run2: RECEIPT D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260916-dali10
+
+  projectionSpec.note = 跨秒不变；跨版本不可混用 —— 排除表/序列化任一变化都必须换版本号。**v2 的实质变更是序列化口径**（v1=去行字节；v2=json.dumps sort_keys 重序列化）；新增的排除项 `receipts` 在当前正文中**不存
+  body = 9804fbe2272477ecf51de616
+  登记 = 55706 B ｜ 标题 44 ｜ 唯一 44 ｜ 重复 无

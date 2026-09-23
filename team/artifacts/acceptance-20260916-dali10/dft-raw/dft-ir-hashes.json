@@ -1,0 +1,507 @@
+{
+ "runId": "acceptance-20260916-dali10",
+ "task": "t1 (DFT intent extraction)",
+ "producedBy": "dft-expert",
+ "generatedAt": "2026-09-16T15:32:10+08:00",
+ "deliverable": {
+  "path": "team/artifacts/acceptance-20260916-dali10/dft-ir.json",
+  "sha256": "d8f900a41e6a30f2c7022a881f5636a652c0fe0a6189e0d42aeb43fe1388a31b",
+  "size": 130724,
+  "schema": "team/schemas/dft-ir.schema.json",
+  "schemaValidation": "PASS (scripts/validate_team_artifact.py dft-ir)",
+  "selfVerification": "see the verificationReports block (each report records the artifact digest it was issued against)"
+ },
+ "sourceHashes": {
+  "project/DALI/Dali_testmode.xlsx": {
+   "sha256": "d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e",
+   "size": 12210607
+  },
+  "project/DALI/input/DFT.csv": {
+   "sha256": "b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4",
+   "size": 16862
+  },
+  "project/DALI/input/DFT_restored.csv": {
+   "sha256": "0e0c31106586eacc0ef919b2c5a42d78c036e714d905ec9a7121dbffadcd8bc2",
+   "size": 16824
+  },
+  "project/DALI/meta/dali_tm_meta.json": {
+   "sha256": "1f5eeb5e33372e197dbcb5d0ac2739e3166729f7210a5f7ca46a423dfcd9f7f1",
+   "size": 143019
+  },
+  "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp": {
+   "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+   "size": 434629
+  },
+  "docs/PROGRESS.md": {
+   "sha256": "efc810564b5d66a7282b9952a6acac6d2360d64ff2fc8ee284109efa0331a6d8",
+   "size": 120403
+  },
+  "knowledge/references/L4-Golden-code/tm600-normal-highcurrent.cpp": {
+   "sha256": "8cdb0be1dd8381008a6a6ca84743170d6e1cf6f5c84f21a1e2e947a0187b72ce",
+   "size": 6106
+  },
+  "knowledge/references/L4-Golden-code/TM1205_TRX_BST_UV_GD.cpp": {
+   "sha256": "67d0c3f1c4e5c907fcf2b41fdaa058dc9655142e5ed64438f06c215529c4b01d",
+   "size": 5571
+  },
+  "knowledge/references/L4-Golden-code/TM1205_TRX_BST_UV_GD.md": {
+   "sha256": "1feb55df7c8f1dbc1b2c38344c38283d0b87645744d5f9ca549d3a2efdde902d",
+   "size": 5037
+  },
+  "project/DALI/reg_config/tm102.sv": {
+   "sha256": "687ffbf66fcdd5bdeb90e25b287b9f4592503e140e387dfee2f5690fc9a344dd",
+   "size": 916
+  },
+  "project/DALI/reg_config/tm103.sv": {
+   "sha256": "64767755a612140a3b2b2359ad1120eb9c364dba61e53aa8cc58c179d993ab79",
+   "size": 848
+  },
+  "project/DALI/reg_config/tm108.sv": {
+   "sha256": "4d0ea5c30fe5369e98a6d81215bbfb5b5f41bf44ea1c5dbc8df94af75bb92dc1",
+   "size": 979
+  },
+  "project/DALI/reg_config/tm109.sv": {
+   "sha256": "235d9cee0da964489d53c9c70d2b3e932f98be24442ce9cd8d247716e7ad80d5",
+   "size": 977
+  },
+  "project/DALI/reg_config/tm135.sv": {
+   "sha256": "9a4d6989ba080e9c69fa8d79b9976d3f0f98f8f9ec587773f297afa4363a0a94",
+   "size": 808
+  },
+  "project/DALI/reg_config/tm600.sv": {
+   "sha256": "290574bcd198cb5e85429f8ae37f91ce97da31713cfc7075b9d07e57014bada0",
+   "size": 1495
+  },
+  "project/DALI/reg_config/tm601.sv": {
+   "sha256": "d250b43cdaba3513b031f6dfc5ffc4743f5c6058787709f7286122152948fade",
+   "size": 1378
+  },
+  "project/DALI/reg_config/tm1205.sv": {
+   "sha256": "67bb9bd49159e5cab4b7e11ac4cda3ac732182003d7f7e6c647c4d2fae0f479a",
+   "size": 2365
+  },
+  "knowledge/references/param_type_index.md": {
+   "sha256": "84e290928b8dbcf5b234d7ec0bf1c3d8131477db62d9894a89d36526a3e9f00c",
+   "size": 16341
+  }
+ },
+ "runOutputHashes": [
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/DFT-full.json",
+   "sha256": "82a475b8397fe769f4cf898a78b092cfa67e0d9ef62c0af1a5872c6b48e85451",
+   "size": 28040
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/DFT_restored-full.json",
+   "sha256": "8ef6728840f276025f3099fc3df5e7c4fddd4f74683ad2d0590b095e59e09339",
+   "size": 28047
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/compact-dump.txt",
+   "sha256": "8cb825d4b2904f7626e2b927cbd75da05a631f0288807ffc804dc5504e3ad182",
+   "size": 28761
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/csv-full-dump.txt",
+   "sha256": "4a47a42bfbdcf8886e7708c0e55b1c15f48146f31533e3551e4c54e97436cdca",
+   "size": 9446
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/dft-ir-hashes.json",
+   "sha256": "c0de01786d1e2e26f67c8af2c6f72af64b28241bec791b2904fe4bafcea9d556",
+   "size": 22159
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/dft-ir-verification.json",
+   "sha256": "dbdee734413e6d63182f52a7c8d08c9b7382389fedbd29afd2b5b76bdd458168",
+   "size": 19657
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/meta-refs-dump.txt",
+   "sha256": "168230c7f60e5af5f2007b9e50256f226f703cd31c9d5c466cf54ab405a8b29c",
+   "size": 51415
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/meta-scope.json",
+   "sha256": "81eadf69fe672dc4a6f173d264bf972e576225596273e01a6ad541fc243996cb",
+   "size": 15077
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/overview-dft.json",
+   "sha256": "149b591249799a1965f196b422b3aec470215dfefba5e94f534089018d967331",
+   "size": 22642
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/overview-dump.txt",
+   "sha256": "0ca326c468ccb99637f2e5374adfaca555cd4488f20e0b4b5e404ffece6183f4",
+   "size": 12402
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/regconfig-scope.json",
+   "sha256": "945969b7555e65d47d25412363f4c967bf67041f6539e80a804d829a6a7d0946",
+   "size": 26651
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/source-refs.json",
+   "sha256": "d83616c0fd01abdeae23a918aac852f1d69fe1f6d3e1c55fa04d61402d7994db",
+   "size": 31637
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/testcpp-blocks.json",
+   "sha256": "8b20b75018388066cbeda450a93546ca424062a88af5205df99f38f8c47f7571",
+   "size": 61889
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/testcpp-blocks.txt",
+   "sha256": "036523632aaff3666d6864e42c45d642c4d49d28e2fff35229d93b60d77d5259",
+   "size": 60848
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_compact.py",
+   "sha256": "b7e07ff918a3a7b358fbd76d3ab7e641d5b471516d034c99008cce6979afd277",
+   "size": 3907
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_csv_full.py",
+   "sha256": "d735441f1bb3329b1080a5d283cf42a1c50531e3cf5dc3e57a35949641df88dd",
+   "size": 2092
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_dump_rows.py",
+   "sha256": "0ed857283342253a0bff2e2706eff37c7a4a2b89b4701eb5c03a29b0f81db614",
+   "size": 711
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_extract_overview.py",
+   "sha256": "c290af18aedf0b932963823faa6199461e2a832734ba16f339c76461ddafe184",
+   "size": 3923
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_build.py",
+   "sha256": "ca8f56864d87c50dfc4f66e02b7eaa280322de3291d7f9cd5858f1fba498e87b",
+   "size": 53159
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_consistency_audit.py",
+   "sha256": "01cf907a10ba49d2107ef39b505013b8503580d26abc135739984def344f369a",
+   "size": 1727
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_freeze_notice.py",
+   "sha256": "7c1a3e758cf2f66887a8eb96d3c8e5b46839a849e6fe4bc989349d19e237854c",
+   "size": 4937
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_generate.py",
+   "sha256": "b6ccc851be7fe5adc95aebbbbd02a7cce02836acd0156024b4562cc56abe97d7",
+   "size": 750
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_hashes.py",
+   "sha256": "e0b39bc0b16d687e526a81e911f47fdae5de4ff5f6c3f0f0324c823072aa422a",
+   "size": 4497
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_items_part1.py",
+   "sha256": "e8e9db07c63667a6fa24d9c1da986a7cb26d9b8e6c6146b4b0592efa1ebbde66",
+   "size": 19104
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_patch_captain4_rulings.py",
+   "sha256": "683dc9c7aec4bdba4a9bcb3ffc3f8c730397b6a795dfbfbc6fb1fdaf8950ffd4",
+   "size": 19864
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_patch_captain_requirements.py",
+   "sha256": "a73f422eb2214e6e83c7a7282fa7ed4af74dd8547283cefe282fd0a674a87b47",
+   "size": 12715
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_patch_implementer_review.py",
+   "sha256": "395d9f97409bdb4c1cb0b179eab3fb2caa59d7b7666a43c9eaf10e3bdb3a57f8",
+   "size": 10763
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_patch_rulings.py",
+   "sha256": "ddfc19a0b2aaa88423cca6e6259aef067e6f5630a41f6fa01f5675c66dbe17a9",
+   "size": 16922
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_reanchor_fixture.py",
+   "sha256": "41e72c1e3768a67b7e63b3642dc81910a999e611df3c97f70da6f272ab691fe6",
+   "size": 5403
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_t9_disciplines.py",
+   "sha256": "a3edcbc055090e9e62afe81c923ee5d08642ebbec8175fd512ff00b0f06308b7",
+   "size": 3130
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_verify.py",
+   "sha256": "a266fd33bac720989b95abe7e06988d939ed4847eb0fe97c5a6b6c591f2c97cf",
+   "size": 21783
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_meta_refs.py",
+   "sha256": "e16a8d5369b2f03fafe339bd23eab3a5dcca416ec1023aefdde697e9a3887aa4",
+   "size": 4027
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_probe.py",
+   "sha256": "83e277ddf6ea92dd96b6038c3c8ef7a780c2dafdcd24b11025b61fc42ec3f978",
+   "size": 1721
+  },
+  {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_testcpp_blocks.py",
+   "sha256": "172ca0a9551a79d7699f6563eec93ffad62fe74b0a72c3460412e3a83d210136",
+   "size": 3441
+  }
+ ],
+ "writeBoundary": {
+  "workspaceRoot": "D:/Newtest/DSH/ATE-Coding-Plat",
+  "filesWritten": [
+   "team/artifacts/acceptance-20260916-dali10/dft-ir.json",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/DFT-full.json",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/DFT_restored-full.json",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/compact-dump.txt",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/csv-full-dump.txt",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/dft-ir-hashes.json",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/dft-ir-verification.json",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/meta-refs-dump.txt",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/meta-scope.json",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/overview-dft.json",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/overview-dump.txt",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/regconfig-scope.json",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/source-refs.json",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/testcpp-blocks.json",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/testcpp-blocks.txt",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_compact.py",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_csv_full.py",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_dump_rows.py",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_extract_overview.py",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_build.py",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_consistency_audit.py",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_freeze_notice.py",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_generate.py",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_hashes.py",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_items_part1.py",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_patch_captain4_rulings.py",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_patch_captain_requirements.py",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_patch_implementer_review.py",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_patch_rulings.py",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_reanchor_fixture.py",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_t9_disciplines.py",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_ir_verify.py",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_meta_refs.py",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_probe.py",
+   "team/artifacts/acceptance-20260916-dali10/dft-raw/scripts/dft_testcpp_blocks.py"
+  ],
+  "debugCopyUntouched": {
+   "path": "D:/PROJECT6-DALI/ForCodexDebug",
+   "writesPerformed": 0,
+   "note": "t1 performed read-only analysis; test.cpp/sub.cpp/StdAfx.h were read via python byte mode and hashed, never written"
+  },
+  "productionTreeUntouched": {
+   "path": "D:/PROJECT6-DALI/devel",
+   "writesPerformed": 0,
+   "note": "devel/source/test.cpp sha256 equals ForCodexDebug/source/test.cpp sha256 (both read in this task)"
+  }
+ },
+ "hashHistory": [
+  {
+   "revision": "v1",
+   "sha256": "f3faedc26675a4ad06d66569c19ec17ee1c06211336eb4feba4fb40e30d2e3c8",
+   "sizeBytes": 88109,
+   "note": "first build (t1 handoff)"
+  },
+  {
+   "revision": "v2",
+   "sha256": "478f88a4576a4ca269705737b1859064d96b18f9c0eedfe1d3af764ea5a0f755",
+   "sizeBytes": 88101,
+   "note": "TM1205 md hash corrected"
+  },
+  {
+   "revision": "v3",
+   "sha256": "85db02e38d49803e174c8c5645471041ea62911e651bafb9efd6dc777469521e",
+   "sizeBytes": 99058,
+   "note": "captain follow-up (PA-01/PA-02, plaintext anchors, CR-01 symbols, MV&MI)"
+  },
+  {
+   "revision": "v4",
+   "sha256": "0a1c3b1e474c508c63d639d69e3b905ce94cb5b8085c98745c05a6625669597e",
+   "sizeBytes": 107133,
+   "note": "implementer-review response (forceAndSense split, DD-01, C-03 corroboration)"
+  },
+  {
+   "revision": "v5",
+   "sha256": "82398d2f882abc2bc452ed307e47ae64ff25d7a13553abfe61b73fdd04d0d568",
+   "sizeBytes": 116140,
+   "note": "post-ruling R-01..R-05 (BD-01/02/03 closed, DD-01 closed, FS-01 narrowed)"
+  },
+  {
+   "revision": "v6-CURRENT",
+   "sha256": "d8f900a41e6a30f2c7022a881f5636a652c0fe0a6189e0d42aeb43fe1388a31b",
+   "sizeBytes": 130724,
+   "note": "captain fourth augmentation (CR-02..CR-06 ruling records, TM601 PGND-High/SW-Low polarity + fixture evidence, FS-01 resolved)"
+  }
+ ],
+ "provenanceCorrection": {
+  "issue": "the captain ledger registered \"v4 = 116140 B / 82398d2f…\" and described v4 as still carrying items.TM601.forceAndSense.force.pins=[PMID,SW] with consistentWithCheckNode=false",
+  "correction": "82398d2f… (116140 B) is the v5 revision. The actual current artifact is d8f900a41e6a30f2 (130724 B), which already contains the captain fourth augmentation: CR-02..CR-06, force.pins=[PGND (High), SW (Low)], the SUPERSEDED-BY-RULING .sv notation (kept verbatim), fixtureEvidence from schematic-ir.json paths[], and FS-01=resolved-with-fixture-evidence.",
+  "action": "mirror this table into RUN-LEDGER.md; always re-hash before citing"
+ },
+ "lateRulingsNotInIR": [
+  {
+   "id": "BD-04",
+   "irState": "open (in conflicts C-02 and blockingDecisions)",
+   "authoritativeState": "CLOSED by captain ruling",
+   "ruling": "TM108/TM109 rising threshold = OVERVIEW 4.4 V; DFT.csv 4.15 V retained verbatim as a registered conflict",
+   "basis": "same authority rule as the user BD-01 ruling, reinforced by the DFT.csv TM109 row being self-contradictory (ramps vac3 for a VAC2_PRST item, DMUX copied from TM108)",
+   "carriedBy": [
+    "team/artifacts/acceptance-20260916-dali10/test-plan.json (t4, user rulings authoritative)",
+    "RUN-LEDGER.md"
+   ],
+   "note": "stated by the captain as an analogy to the user criterion and therefore overridable by the user"
+  },
+  {
+   "id": "BD-05",
+   "irState": "open (built before the ruling — lag, not disagreement)",
+   "authoritativeState": "CLOSED by user ruling",
+   "ruling": "golden SetClamp(50,50) re-issued after every FV/FI switch, +/-0.5 V compliance, provisional engineering default, not a pass/fail criterion, no hardware run, production tree untouched",
+   "carriedBy": [
+    "team/artifacts/acceptance-20260916-dali10/test-plan.json (t4)",
+    "RUN-LEDGER.md"
+   ],
+   "note": "captain decided not to request a fifth IR revision; if one is ever made, add a notices entry only — do not rebuild the body"
+  }
+ ],
+ "notRebuilt": {
+  "reason": "captain instruction: no fifth revision",
+  "artifactUntouched": true,
+  "generatedAt": "2026-09-16T14:58:53+08:00"
+ },
+ "fixtureAnchor": {
+  "usedInIRBody": {
+   "sha256": "a83110d992071733367f356fd3f4d7007136e5a8b526cfa606e2310b53bc1da4",
+   "note": "anchor embedded in items.TM601.forceAndSense.fixtureEvidence at the v6 build; the IR body is FROZEN by captain decision, so this value is left as-is"
+  },
+  "liveAtReanchor": {
+   "path": "team/artifacts/acceptance-20260916-dali10/schematic-ir.json",
+   "sha256": "9f4a7707fb0a1b31f4f884dcac617c5273506de6c2a088a3b9c3f1b20683f639",
+   "sizeBytes": 457531
+  },
+  "drift": true,
+  "driftMeaning": "schematic-ir.json was regenerated by t2 after the v6 IR build, so the embedded anchor points at an earlier revision of the schematic IR. The four cited fixture paths, their relay sets and the polarity conclusion were RE-VERIFIED against the live file at re-anchor time and are unchanged.",
+  "recheckAgainstLiveFile": [
+   {
+    "pathId": "S1_FPVIe_FH0->PGND_F_S1",
+    "stillPresent": true,
+    "dutPin": "PGND_F_S1",
+    "resources": [
+     "154",
+     "155"
+    ],
+    "sourceDomain": "HIGH",
+    "confidence": "direct"
+   },
+   {
+    "pathId": "S1_FPVIe_FL0->SW_F_S1",
+    "stillPresent": true,
+    "dutPin": "SW_F_S1",
+    "resources": [
+     "60",
+     "61"
+    ],
+    "sourceDomain": "LOW",
+    "confidence": "direct"
+   },
+   {
+    "pathId": "S1_FPVIe_SH0->PGND_S_S1",
+    "stillPresent": true,
+    "dutPin": "PGND_S_S1",
+    "resources": [
+     "154",
+     "155"
+    ],
+    "sourceDomain": "HIGH",
+    "confidence": "direct"
+   },
+   {
+    "pathId": "S1_FPVIe_SL0->SW_S_S1",
+    "stillPresent": true,
+    "dutPin": "SW_S_S1",
+    "resources": [
+     "60",
+     "61"
+    ],
+    "sourceDomain": "LOW",
+    "confidence": "direct"
+   }
+  ],
+  "absentCounterpartsStillAbsent": true,
+  "conclusionUnchanged": "TM601 force/sense = SW↔PGND with PGND on the HIGH end (relays 154/155 HIGH, 60/61 LOW); PMID↔SW remains TM600-only",
+  "recheckedAt": "2026-09-16T14:58:53+08:00",
+  "recommendedForT7T9": "re-run this script (dft_ir_reanchor_fixture.py) before asserting fixture provenance; cite liveAtReanchor.sha256 in preference to the frozen in-body anchor, and note the drift explicitly"
+ },
+ "verificationReports": {
+  "current": {
+   "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/dft-ir-verification.json",
+   "artifactSha256": "d8f900a41e6a30f2c7022a881f5636a652c0fe0a6189e0d42aeb43fe1388a31b",
+   "issuedAt": "2026-09-16T14:29:55+08:00",
+   "passed": 135,
+   "checkCount": 136,
+   "failedChecks": [
+    "schematic-ir.json fixture evidence digest matches the file on disk"
+   ]
+  },
+  "history": [],
+  "note": "earlier reports for earlier revisions were superseded in place; each report records the artifact digest it was issued against (artifactSha256), which is the only reliable way to pair a report with a revision"
+ },
+ "t9HandoffDisciplines": {
+  "why": "this run produced at least 8 stale-hash incidents; these are the rules that survived cross-verification between dft-expert and ate-implementer",
+  "rules": [
+   {
+    "id": "D1",
+    "rule": "with several writers on one sidecar, none may build from scratch - read-modify-write and preserve unknown keys",
+    "origin": "dft-expert writer-chain defect: dft_ir_hashes.py rebuilt the sidecar and silently dropped 4 auxiliary blocks"
+   },
+   {
+    "id": "D2",
+    "rule": "never assert that a field is on disk from another party's stdout - re-read the file",
+    "origin": "cross-verified during the sidecar incident"
+   },
+   {
+    "id": "D3",
+    "rule": "after changing a writer, prove survival by running the OTHER writers afterwards and re-reading (idempotence proof)",
+    "origin": "agreed in the dft-expert / ate-implementer thread"
+   },
+   {
+    "id": "D4",
+    "rule": "never cite a number you printed earlier - re-read the file immediately before quoting it (complement of D2)",
+    "origin": "dft-expert quoted a writer-stdout value (20483 B / 4ebc1089...) in the very message where it had just stated this rule; that value is VOID"
+   },
+   {
+    "id": "D5",
+    "rule": "match artifacts by sha256, never by a size-field name (deliverable.size and sizeBytes coexist in this run)",
+    "origin": "dft-expert; adopted as t9 reconciliation guidance"
+   },
+   {
+    "id": "D6",
+    "rule": "a file regenerated inside this run is valid only at its measurement instant - schematic-ir.json and test-plan.json were rebuilt repeatedly",
+    "origin": "dft-expert; recorded in HASH-AUDIT.md"
+   }
+  ],
+  "adoptedBy": {
+   "party": "ate-implementer",
+   "where": "team/artifacts/acceptance-20260916-dali10/HASH-AUDIT.md",
+   "note": "that file reported 9403 B at adoption time; recompute before citing (D6 applies to it too)"
+  },
+  "voidValues": [
+   {
+    "value": "dft-raw/dft-ir-hashes.json 20483 B / 4ebc1089...",
+    "status": "VOID - writer stdout, not a disk read; do not cite"
+   }
+  ],
+  "recordedAt": "2026-09-16T15:30:32+08:00"
+ }
+}

@@ -1,0 +1,15 @@
+前置：语法 OK（51202 B）
+  已加 lastAppendDecision + 回填 → 52162 B
+后置：语法 OK
+  run1: RECEIPT D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260
+  run2: RECEIPT D:\Newtest\DSH\ATE-Coding-Plat\team\artifacts\acceptance-20260
+  账本行数 54 → 54（**0 增长** ⇒ 策略生效）
+
+=== 自证 ===
+  收据含 lastAppendDecision = True
+  值 = {"note": "**本次生成对历史账本的追加决策（每次都会重算、因此总是可见）** —— `reason` 只在真正追加的行里出现 ⇒ **在 skip 情形下结构上不可达** ⇒ 故把决策放在本字段（收据每次重算），而**不改任何历史行**。", "policy": "仅在身份（reproducibleBodySha256，projectionSpec 口径）变化时追加", "appende
+  历史行含 reason 的行数 = 0 / 54 （**仍为 0 ⇒ 未改历史行**，但决策现已在收据可见 ✓）
+
+=== 规则入册 ===
+  已并入 → 68923 B
+  登记 = 68923 B ｜ 标题 53 ｜ 唯一 53 ｜ 重复 无

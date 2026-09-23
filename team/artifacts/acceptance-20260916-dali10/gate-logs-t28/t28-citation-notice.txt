@@ -1,0 +1,52 @@
+【最终引用通告（本段由脚本从 t28-anchors.json 直接渲染，无任何人工转录）】
+
+① 作废声明：我在此前两条消息里对哈希的字面引用**全部作废**（我两次手抄都出错，其中一次甚至在"更正"里又抄了同一个错值）。**请勿以我的消息文本作为哈希来源。**
+
+② 唯一真源：`team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28-anchors.json`
+   （16 条锚点，每条 = path / size / sha256 / readAt / note；生成时刻 2026-09-16T20:04:28+08:00）
+   读取方式：python 一行现算 —— `hashlib.sha256(open(path,"rb").read()).hexdigest()`
+   （本工作区源受 DLP 保护，**必须用 python 读**，不得用 pwsh 文本工具。）
+
+③ 本节按你复核所需列出条目（**哈希由脚本直读，可逐条与现算比对**）：
+
+- t28 被审脚本             scripts/check_input_sync.py                       17455 B
+    sha256 = e804c459b2d3088e72d455eb9e1b7893119cea47ad0a640735b6f5db42d784d1
+- t28 红证证据             team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28-red-proof.json     5351 B
+    sha256 = b97441a457119ca0ca11dca2b55a69e302c06cc6cc0b378f663bc77d4d78c529
+- t28 红态日志(AFTER)      team/artifacts/acceptance-20260916-dali10/gate-logs-t28/redproof-after-fix.log     6377 B
+    sha256 = 6a17726003afaa6e6470c20e7e94ea18477e96c6590d76ad906e1970c3aae7e2
+- t28 绿态日志(BEFORE)     team/artifacts/acceptance-20260916-dali10/gate-logs-t28/redproof-before-fix.log     1317 B
+    sha256 = c0bfc972d34b44915165f7d893f19d8a6f9fe9c8ce641d8c20ed168d17327786
+- t28 绿门日志             team/artifacts/acceptance-20260916-dali10/gate-logs-t28/input-sync-green.log     1933 B
+    sha256 = 538a00a425faca00bed76b8f01150e2c9df8d2504a87f83939b3fad562ea692f
+- t28 报告               team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28-summary.md    17690 B
+    sha256 = 0333aedd8c6e52fd802a8987300c0535453814826cb4edffd4fd87c650526a2e
+    ⚠️ 报告类文档：会随作者更正漂移 ⇒ 引用请**现算 + 标时刻**
+- t30 被审脚本             scripts/verify_bst_sw_sequence.py                 24964 B
+    sha256 = 17092feac034902e463fc5f14c79dc48cb1195436eda14f26d25691e11d54c78
+- t30 阳性对照日志           team/artifacts/acceptance-20260916-dali10/gate-logs-t30/bst-sw-positive-control.log     1262 B
+    sha256 = 6333fd67bae609d3e16f90ceb267b28f1d50eb6182bd89ca439f83031d890537
+- t30 报告               team/artifacts/acceptance-20260916-dali10/gate-logs-t30/t30-summary.md    11337 B
+    sha256 = bd10937cf27fcf0aff311bde9f245d73adf4d87a06faeb6310bec9eff2e7c634
+    ⚠️ 报告类文档：会随作者更正漂移 ⇒ 引用请**现算 + 标时刻**
+- 门禁基线(未改)             scripts/gate_baseline.json                           28 B
+    sha256 = 021015da84e6fd4c54a595796e1bad73e18c57db94f856871d5667044302cb1d
+- 门禁外壳                 scripts/run_gates.ps1                              9763 B
+    sha256 = dd2a4337f22d339a4a0f866c43d1843413db8f1d9e726c07bf8fbcaa5ab310b9
+- relay-trace 门        scripts/verify_relay_trace.py                     21068 B
+    sha256 = 65e0c67f827bf4ff6e6d1b3a45bf3b76058815f8d4df501b19a3271f06410f9c
+- t33 报告               team/artifacts/acceptance-20260916-dali10/build-report.json    13075 B
+    sha256 = 808abcc1b0176c9b92ffc44e9bd1684921be4958260b51422ffe2195f54e46e2
+- 契约(冻结 rev 24)        team/artifacts/acceptance-20260916-dali10/setup-contract.json   328805 B
+    sha256 = fd00a5082170293fcea29446c009fc432977d61a8f624ef17ac1c82f41515a18
+- DEPLOYED test.cpp    D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp   469714 B
+    sha256 = 15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a
+- 生产树 devel test.cpp   D:/PROJECT6-DALI/devel/source/test.cpp           434629 B
+    sha256 = 5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317
+
+④ 制度性止损（写入 t28-summary.md §8 漂移登记）：
+   1) 我不再在消息里手抄任何长哈希；需要引用时只给「路径 + size」，请你从本 JSON 读取或一行 python 现算；
+   2) 一切读取/哈希一律用 python（DLP 保护），不用 pwsh 文本工具；
+   3) 写文档的脚本必须证明幂等（我这次的"定稿脚本"第一版非幂等，两次运行产生两个哈希，已修并连跑三次验证稳定）。
+
+⑤ 结论不变：t28 / t30 均已被你 ACCEPT；我不再改任何被审文件；R1 修法倾向 (ii) 且须 Captain 另开任务；reviewStatus 的 t24 部分撤回登记保留；B-6 三例我已全文采纳。边界：无电性结论；未做机台验证；编译成功 ≠ 电性正确。

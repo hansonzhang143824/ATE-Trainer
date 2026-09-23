@@ -1,0 +1,456 @@
+{
+  "schemaVersion": 1,
+  "reviewGeneration": 3,
+  "reviewer": "LLM semantic review (DFT expert, batch INPUT_SYNC re-verification)",
+  "tm": "TM106",
+  "reviewPurpose": "Re-verify the current deterministic DFT output pair against the single canonical OVERVIEW row for this TM, and prove that every source column is covered by both artifacts.",
+  "verdict": "PASS",
+  "reviewedAt": "2026-09-19",
+  "readSources": [
+    {
+      "path": "project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx",
+      "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "hashMethod": "scripts/hash_ate_plaintext.py",
+      "withinInputRoot": true,
+      "sheet": "OVERVIEW",
+      "rowLocator": "OVERVIEW!R10 (Item=TM106)"
+    }
+  ],
+  "reviewedArtifacts": [
+    {
+      "kind": "meta",
+      "role": "dft-meta.json",
+      "path": "project/DALI/Output_Global_Material/dft/TM106/dft-meta.json",
+      "sha256": "59d5e926b70f88e6adac84f91c3501c078f0e4ced2e12989bb3eb5483de63c58"
+    },
+    {
+      "kind": "yaml",
+      "role": "dft-conditions.yaml",
+      "path": "project/DALI/Output_Global_Material/dft/TM106/dft-conditions.yaml",
+      "sha256": "4ca2f9e3a34b7d9c6b592db85a4ee95fe51112200c9558f51e8bf2426c0933b5"
+    }
+  ],
+  "artifactHashes": {
+    "dft-meta.json": "59d5e926b70f88e6adac84f91c3501c078f0e4ced2e12989bb3eb5483de63c58",
+    "dft-conditions.yaml": "4ca2f9e3a34b7d9c6b592db85a4ee95fe51112200c9558f51e8bf2426c0933b5"
+  },
+  "sourceSha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+  "canonicalRowCoverage": {
+    "method": "Mechanical comparison of every named OVERVIEW column of this TM row against dft-meta.rawIntent and dft-conditions.rawIntent. Header-less (anonymous) columns are ignored when empty; this row has no anonymous non-empty cell.",
+    "namedColumns": 29,
+    "statusCounts": {
+      "MATCH": 25,
+      "MATCH_AFTER_LINE_ENDING_NORMALIZATION": 4
+    },
+    "allColumnsCovered": true,
+    "allValuesEqual": true
+  },
+  "acceptancePolicy": "The 'de test' rise/fall figures (r 3.798 / f 3.613) are reference evidence only; per team/roles/dft-expert.md the adjudicated acceptance limits for TM106 are the ExpectValue figures: rising threshold 3.9 V with hysteresis 0.2 V.",
+  "fieldChecks": [
+    {
+      "sourceColumn": "Item",
+      "sourceCell": "OVERVIEW!R10C0",
+      "sourceValue": "TM106",
+      "metaTarget": "dft-meta.rawIntent[\"Item\"]",
+      "metaValue": "TM106",
+      "yamlTarget": "dft-conditions.rawIntent[Item]",
+      "yamlValue": "TM106",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "Level",
+      "sourceCell": "OVERVIEW!R10C1",
+      "sourceValue": "HSKP",
+      "metaTarget": "dft-meta.rawIntent[\"Level\"]",
+      "metaValue": "HSKP",
+      "yamlTarget": "dft-conditions.rawIntent[Level]",
+      "yamlValue": "HSKP",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "Name",
+      "sourceCell": "OVERVIEW!R10C2",
+      "sourceValue": "VBUS_PRST",
+      "metaTarget": "dft-meta.rawIntent[\"Name\"]",
+      "metaValue": "VBUS_PRST",
+      "yamlTarget": "dft-conditions.rawIntent[Name]",
+      "yamlValue": "VBUS_PRST",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "Description",
+      "sourceCell": "OVERVIEW!R10C3",
+      "sourceValue": "VBUS PRST COMP threshold",
+      "metaTarget": "dft-meta.rawIntent[\"Description\"]",
+      "metaValue": "VBUS PRST COMP threshold",
+      "yamlTarget": "dft-conditions.rawIntent[Description]",
+      "yamlValue": "VBUS PRST COMP threshold",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "ExpectValue",
+      "sourceCell": "OVERVIEW!R10C4",
+      "sourceValue": "rising vth 3.9V, hys 0.2V",
+      "metaTarget": "dft-meta.rawIntent[\"ExpectValue\"]",
+      "metaValue": "rising vth 3.9V, hys 0.2V",
+      "yamlTarget": "dft-conditions.rawIntent[ExpectValue]",
+      "yamlValue": "rising vth 3.9V, hys 0.2V",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "Unit",
+      "sourceCell": "OVERVIEW!R10C5",
+      "sourceValue": "V",
+      "metaTarget": "dft-meta.rawIntent[\"Unit\"]",
+      "metaValue": "V",
+      "yamlTarget": "dft-conditions.rawIntent[Unit]",
+      "yamlValue": "V",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "Test",
+      "sourceCell": "OVERVIEW!R10C6",
+      "sourceValue": "",
+      "metaTarget": "dft-meta.rawIntent[\"Test\"]",
+      "metaValue": "",
+      "yamlTarget": "dft-conditions.rawIntent[Test]",
+      "yamlValue": "",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "Special",
+      "sourceCell": "OVERVIEW!R10C7",
+      "sourceValue": "",
+      "metaTarget": "dft-meta.rawIntent[\"Special\"]",
+      "metaValue": "",
+      "yamlTarget": "dft-conditions.rawIntent[Special]",
+      "yamlValue": "",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "Purpose",
+      "sourceCell": "OVERVIEW!R10C8",
+      "sourceValue": "SCM",
+      "metaTarget": "dft-meta.rawIntent[\"Purpose\"]",
+      "metaValue": "SCM",
+      "yamlTarget": "dft-conditions.rawIntent[Purpose]",
+      "yamlValue": "SCM",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "Trim",
+      "sourceCell": "OVERVIEW!R10C9",
+      "sourceValue": "",
+      "metaTarget": "dft-meta.rawIntent[\"Trim\"]",
+      "metaValue": "",
+      "yamlTarget": "dft-conditions.rawIntent[Trim]",
+      "yamlValue": "",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "Notes",
+      "sourceCell": "OVERVIEW!R10C10",
+      "sourceValue": "ramp up/down vbus from 3~5V,\r\nmux A2D_VBUS_PRST to dtest0\r\ncheck int pin toggle",
+      "metaTarget": "dft-meta.rawIntent[\"Notes\"]",
+      "metaValue": "ramp up/down vbus from 3~5V,\nmux A2D_VBUS_PRST to dtest0\ncheck int pin toggle",
+      "yamlTarget": "dft-conditions.rawIntent[Notes]",
+      "yamlValue": "ramp up/down vbus from 3~5V,\nmux A2D_VBUS_PRST to dtest0\ncheck int pin toggle",
+      "status": "MATCH_AFTER_LINE_ENDING_NORMALIZATION",
+      "evidence": "identical text; the workbook cell uses CRLF and both artifacts store LF (uniform across every multi-line cell of every artifact in this batch)"
+    },
+    {
+      "sourceColumn": "Code1",
+      "sourceCell": "OVERVIEW!R10C11",
+      "sourceValue": "vset[vbat,3,100e-6,0]",
+      "metaTarget": "dft-meta.rawIntent[\"Code1\"]",
+      "metaValue": "vset[vbat,3,100e-6,0]",
+      "yamlTarget": "dft-conditions.rawIntent[Code1]",
+      "yamlValue": "vset[vbat,3,100e-6,0]",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "Code2",
+      "sourceCell": "OVERVIEW!R10C12",
+      "sourceValue": "en_tm[]\r\nfield[(DMUX_EN,1),(DMUX_SEL,19)]\r\nvset[vbus,3,100e-6,1]\r\nvset[vbus,5,1e-3,0]\r\nvset[vbus,3,1e-3,0]",
+      "metaTarget": "dft-meta.rawIntent[\"Code2\"]",
+      "metaValue": "en_tm[]\nfield[(DMUX_EN,1),(DMUX_SEL,19)]\nvset[vbus,3,100e-6,1]\nvset[vbus,5,1e-3,0]\nvset[vbus,3,1e-3,0]",
+      "yamlTarget": "dft-conditions.rawIntent[Code2]",
+      "yamlValue": "en_tm[]\nfield[(DMUX_EN,1),(DMUX_SEL,19)]\nvset[vbus,3,100e-6,1]\nvset[vbus,5,1e-3,0]\nvset[vbus,3,1e-3,0]",
+      "status": "MATCH_AFTER_LINE_ENDING_NORMALIZATION",
+      "evidence": "identical text; the workbook cell uses CRLF and both artifacts store LF (uniform across every multi-line cell of every artifact in this batch)"
+    },
+    {
+      "sourceColumn": "Code3",
+      "sourceCell": "OVERVIEW!R10C13",
+      "sourceValue": "delay[1e-3]\r\nfinish[]",
+      "metaTarget": "dft-meta.rawIntent[\"Code3\"]",
+      "metaValue": "delay[1e-3]\nfinish[]",
+      "yamlTarget": "dft-conditions.rawIntent[Code3]",
+      "yamlValue": "delay[1e-3]\nfinish[]",
+      "status": "MATCH_AFTER_LINE_ENDING_NORMALIZATION",
+      "evidence": "identical text; the workbook cell uses CRLF and both artifacts store LF (uniform across every multi-line cell of every artifact in this batch)"
+    },
+    {
+      "sourceColumn": "Power",
+      "sourceCell": "OVERVIEW!R10C14",
+      "sourceValue": "VBAT",
+      "metaTarget": "dft-meta.rawIntent[\"Power\"]",
+      "metaValue": "VBAT",
+      "yamlTarget": "dft-conditions.rawIntent[Power]",
+      "yamlValue": "VBAT",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "Dynamic",
+      "sourceCell": "OVERVIEW!R10C15",
+      "sourceValue": "VBUS",
+      "metaTarget": "dft-meta.rawIntent[\"Dynamic\"]",
+      "metaValue": "VBUS",
+      "yamlTarget": "dft-conditions.rawIntent[Dynamic]",
+      "yamlValue": "VBUS",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "Check",
+      "sourceCell": "OVERVIEW!R10C16",
+      "sourceValue": "V(DTEST0)",
+      "metaTarget": "dft-meta.rawIntent[\"Check\"]",
+      "metaValue": "V(DTEST0)",
+      "yamlTarget": "dft-conditions.rawIntent[Check]",
+      "yamlValue": "V(DTEST0)",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "isCodeGen",
+      "sourceCell": "OVERVIEW!R10C17",
+      "sourceValue": "Y",
+      "metaTarget": "dft-meta.rawIntent[\"isCodeGen\"]",
+      "metaValue": "Y",
+      "yamlTarget": "dft-conditions.rawIntent[isCodeGen]",
+      "yamlValue": "Y",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "isRun",
+      "sourceCell": "OVERVIEW!R10C18",
+      "sourceValue": "",
+      "metaTarget": "dft-meta.rawIntent[\"isRun\"]",
+      "metaValue": "",
+      "yamlTarget": "dft-conditions.rawIntent[isRun]",
+      "yamlValue": "",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "Assign",
+      "sourceCell": "OVERVIEW!R10C19",
+      "sourceValue": "",
+      "metaTarget": "dft-meta.rawIntent[\"Assign\"]",
+      "metaValue": "",
+      "yamlTarget": "dft-conditions.rawIntent[Assign]",
+      "yamlValue": "",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "State \r\nAMS\r\nValidation",
+      "sourceCell": "OVERVIEW!R10C20",
+      "sourceValue": "Done",
+      "metaTarget": "dft-meta.rawIntent[\"State \\nAMS\\nValidation\"]",
+      "metaValue": "Done",
+      "yamlTarget": "dft-conditions.rawIntent[State__AMS_Validation]",
+      "yamlValue": "Done",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "State\r\nBench Validation",
+      "sourceCell": "OVERVIEW!R10C21",
+      "sourceValue": "",
+      "metaTarget": "dft-meta.rawIntent[\"State\\nBench Validation\"]",
+      "metaValue": "",
+      "yamlTarget": "dft-conditions.rawIntent[State_Bench_Validation]",
+      "yamlValue": "",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "is CP test?",
+      "sourceCell": "OVERVIEW!R10C22",
+      "sourceValue": "",
+      "metaTarget": "dft-meta.rawIntent[\"is CP test?\"]",
+      "metaValue": "",
+      "yamlTarget": "dft-conditions.rawIntent[is_CP_test?]",
+      "yamlValue": "",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "CP comment",
+      "sourceCell": "OVERVIEW!R10C23",
+      "sourceValue": "",
+      "metaTarget": "dft-meta.rawIntent[\"CP comment\"]",
+      "metaValue": "",
+      "yamlTarget": "dft-conditions.rawIntent[CP_comment]",
+      "yamlValue": "",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "State\r\nATE Validation",
+      "sourceCell": "OVERVIEW!R10C24",
+      "sourceValue": "",
+      "metaTarget": "dft-meta.rawIntent[\"State\\nATE Validation\"]",
+      "metaValue": "",
+      "yamlTarget": "dft-conditions.rawIntent[State_ATE_Validation]",
+      "yamlValue": "",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "HELPER",
+      "sourceCell": "OVERVIEW!R10C25",
+      "sourceValue": "ramp VBUS, INT toggle",
+      "metaTarget": "dft-meta.rawIntent[\"HELPER\"]",
+      "metaValue": "ramp VBUS, INT toggle",
+      "yamlTarget": "dft-conditions.rawIntent[HELPER]",
+      "yamlValue": "ramp VBUS, INT toggle",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "de test",
+      "sourceCell": "OVERVIEW!R10C33",
+      "sourceValue": "r 3.798\r\nf 3.613",
+      "metaTarget": "dft-meta.rawIntent[\"de test\"]",
+      "metaValue": "r 3.798\nf 3.613",
+      "yamlTarget": "dft-conditions.rawIntent[de_test]",
+      "yamlValue": "r 3.798\nf 3.613",
+      "status": "MATCH_AFTER_LINE_ENDING_NORMALIZATION",
+      "evidence": "identical text; the workbook cell uses CRLF and both artifacts store LF (uniform across every multi-line cell of every artifact in this batch)"
+    },
+    {
+      "sourceColumn": "aetest",
+      "sourceCell": "OVERVIEW!R10C34",
+      "sourceValue": "",
+      "metaTarget": "dft-meta.rawIntent[\"aetest\"]",
+      "metaValue": "",
+      "yamlTarget": "dft-conditions.rawIntent[aetest]",
+      "yamlValue": "",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    },
+    {
+      "sourceColumn": "is test",
+      "sourceCell": "OVERVIEW!R10C35",
+      "sourceValue": "checked",
+      "metaTarget": "dft-meta.rawIntent[\"is test\"]",
+      "metaValue": "checked",
+      "yamlTarget": "dft-conditions.rawIntent[is_test]",
+      "yamlValue": "checked",
+      "status": "MATCH",
+      "evidence": "workbook cell equals dft-meta.rawIntent and dft-conditions.rawIntent verbatim"
+    }
+  ],
+  "semanticChecks": [
+    {
+      "sourceColumn": "Trim",
+      "sourceValue": "",
+      "target": "testCondition.isTrim=false",
+      "evidence": "Trim column is empty, so this item is not a trim item",
+      "status": "MATCH"
+    },
+    {
+      "sourceColumn": "Power",
+      "sourceValue": "VBAT",
+      "target": "testCondition.staticPower[0] / directPowerActions[0]",
+      "evidence": "Code1 vset[vbat,3,100e-6,0] is the single static supply; the 4th vset argument (0) does not change the direct power-on decision",
+      "status": "MATCH"
+    },
+    {
+      "sourceColumn": "Dynamic",
+      "sourceValue": "VBUS",
+      "target": "testCondition.dynamicPins / ramps[0]",
+      "evidence": "VBUS is the swept pin; Code2 sweeps vbus 3 V -> 5 V -> 3 V and Notes independently states 'ramp up/down vbus from 3~5V' - the two agree",
+      "status": "MATCH"
+    },
+    {
+      "sourceColumn": "Check",
+      "sourceValue": "V(DTEST0)",
+      "target": "testCondition.measurement.check",
+      "evidence": "logical monitor preserved verbatim; never converted into a physical DUT pin",
+      "status": "MATCH"
+    },
+    {
+      "sourceColumn": "HELPER",
+      "sourceValue": "ramp VBUS, INT toggle",
+      "target": "testCondition.scanIntent",
+      "evidence": "declares a VBUS ramp and an internal INT toggle; state=DECLARED",
+      "status": "MATCH"
+    },
+    {
+      "sourceColumn": "Code2",
+      "sourceValue": "field[(DMUX_EN,1),(DMUX_SEL,19)]",
+      "target": "testCondition.registerFieldIntent",
+      "evidence": "register field writes preserved verbatim",
+      "status": "MATCH"
+    },
+    {
+      "sourceColumn": "Code3",
+      "sourceValue": "delay[1e-3] finish[]",
+      "target": "rawIntent only",
+      "evidence": "timing/termination command; the signed testCondition contract has no timing field, so no timing value is asserted",
+      "status": "MATCH"
+    },
+    {
+      "sourceColumn": "de test",
+      "sourceValue": "r 3.798 / f 3.613",
+      "target": "rawIntent reference evidence",
+      "evidence": "reference evidence only - NOT the acceptance limit for TM106 (adjudicated in the role contract)",
+      "status": "MATCH"
+    },
+    {
+      "sourceColumn": "is test",
+      "sourceValue": "checked",
+      "target": "testCondition.measurement.resultTypes",
+      "evidence": "item is marked tested; Rise/Fall are source-declared and Hys is derived as rising minus falling",
+      "status": "MATCH"
+    }
+  ],
+  "preservedSourceFacts": [],
+  "openItems": [],
+  "verificationRuns": [
+    {
+      "check": "canonical plaintext hash",
+      "command": "python scripts/hash_ate_plaintext.py project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx",
+      "result": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "matchesArtifacts": true
+    },
+    {
+      "check": "YAML determinism / currency",
+      "command": "python scripts/render_dft_conditions_yaml.py --tm TM106 --out <temp> --expected-sha 896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "result": "generated bytes identical to the live dft-conditions.yaml"
+    },
+    {
+      "check": "DFT gate",
+      "command": "python scripts/validate_dft_outputs.py --tm TM106",
+      "result": "status=ready, missingOrStaleOutputs=[]"
+    }
+  ],
+  "discrepancies": []
+}

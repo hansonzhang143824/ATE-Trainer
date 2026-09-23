@@ -1,0 +1,60 @@
+{
+  "tm": "TM425",
+  "stage": "STRATEGY",
+  "role": "test-strategy-architect (strategy-expert v1)",
+  "checkedAt": "2026-09-21T03:22:32.119Z",
+  "batchId": "dali-20260921-080849-tm106-tm108-tm425",
+  "checks": [
+    {
+      "item": "endpoint authority = manifest canonicalInputs.dft.declaredPins ∪ pinResolution.physicalDutPin",
+      "result": "PASS",
+      "detail": "VBAT / VDM"
+    },
+    {
+      "item": "pinResolution 唯一映射且在 Components-Statistic dutKelvinPins 中",
+      "result": "PASS",
+      "detail": "V(ATEST1)->VDM (DALI-special-information.json sha 86d11d43...; Components-Statistic semanticIndex.dutKelvinPins 含该引脚); monitorDutPin == physicalDutPin"
+    },
+    {
+      "item": "classification 来自 test-types.md 判定流 + func/param 索引",
+      "result": "PASS",
+      "detail": "Trim 参数 / 内部1.2V基准缓冲(电压基准Trim族, 参照 VBG 行)"
+    },
+    {
+      "item": "sourceTable 与 Pin_Channel_define.h extern+宏 一一对应且端口坐标匹配",
+      "result": "PASS",
+      "detail": "VBAT=FXVIe_PLUS S3_CH5; VDM=ACM200 S5_CH7 (VDM_SDA_ACM); 功能继电器 K13(无 K65, Check=V(ATEST1) 不观测 DTEST0)"
+    },
+    {
+      "item": "physicalProofs 全部取自 Path-Proofs.json accepted(status=PASS)，requiredOn 与 canonical 完全一致，F/S 各一腿，pair 唯一",
+      "result": "PASS",
+      "detail": "每端点 2 条证明; selectedPath 含源端口; requiredActuations = requiredOn 并集 = []"
+    },
+    {
+      "item": "继电器状态一致性(无 CBIT 同时要求 ON 与 OFF)",
+      "result": "PASS",
+      "detail": "K8/K4/K18/K19/K59/K64 均 NC 且互不冲突; 功能继电器 K13/K65 ON"
+    },
+    {
+      "item": "功能继电器 K13/K65 适用性与闭合集",
+      "result": "PASS",
+      "detail": "K13 REQUIRED(VBAT 直供, FR-001)并已入 SetOn; K65 NOT_APPLICABLE"
+    },
+    {
+      "item": "registerConfiguration 绑定 extract_register_config.py 证据",
+      "result": "PASS",
+      "detail": "0X10=0X43, 0X57=0X04, 0X58=0X02 (WAKE_UP/EN_ATEST1/ATEST1_MUX/DIS_NTC_DETECTION_ANALOG); verifiedAgainstDftCode2=true; evidenceSha256/sourceSha256 复算一致"
+    },
+    {
+      "item": "handoff sha256 绑定合同字节",
+      "result": "PASS",
+      "detail": "sha256=35a8eb6c4ccd7a103804779c1cf9194279664df25a6ab0fb70a6f437cdc06637"
+    },
+    {
+      "item": "确定性门禁",
+      "result": "PASS",
+      "detail": "python scripts/validate_strategy_contract.py 退出码 0, 输出 PASS (--expected-monitor VDM --manifest tm425/input-manifest.json)"
+    }
+  ],
+  "verdict": "deliverable_ready"
+}

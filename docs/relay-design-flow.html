@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>继电器通路设计流程 relay-design-flow</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  :root { --bg:#0d1117; --card:#161b22; --line:#30363d; --txt:#e6edf3; --sub:#8b949e; --acc:#58a6ff; --dec:#d29922; --err:#f85149; --ok:#3fb950; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--txt); font-family:"Segoe UI",-apple-system,"Microsoft YaHei",sans-serif; padding:36px 28px 80px; }
+  .wrap { max-width:1180px; margin:0 auto; }
+  header { text-align:center; margin-bottom:28px; border-bottom:1px solid var(--line); padding-bottom:22px; }
+  header h1 { font-size:26px; letter-spacing:1px; }
+  header h1 b { color:var(--acc); }
+  header p { color:var(--sub); font-size:14px; margin-top:8px; line-height:1.7; }
+  header .meta { display:inline-flex; gap:8px; margin-top:12px; flex-wrap:wrap; justify-content:center; }
+  .pill { background:var(--card); border:1px solid var(--line); border-radius:999px; padding:4px 14px; font-size:12px; color:var(--sub); }
+  .pill b { color:var(--acc); }
+  .pill.start { border-color:var(--ok); color:var(--ok); }
+
+  .section { margin-top:30px; }
+  .section h2 { font-size:19px; color:var(--acc); border-left:3px solid var(--acc); padding-left:12px; margin-bottom:16px; }
+  .section h2 span { color:var(--sub); font-size:13px; font-weight:400; margin-left:8px; }
+
+  .flow-wrap { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; overflow-x:auto; }
+  .mermaid { display:flex; justify-content:center; min-width:820px; }
+
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  th, td { border:1px solid var(--line); padding:9px 12px; text-align:left; vertical-align:top; }
+  th { background:#111820; color:var(--acc); font-weight:600; }
+  td b { color:var(--txt); }
+  tr:nth-child(even) td { background:#121a24; }
+  .tag { display:inline-block; padding:2px 8px; border-radius:6px; font-size:12px; font-weight:700; }
+  .tag.yes { background:#0f2d1a; color:var(--ok); border:1px solid var(--ok); }
+  .tag.no { background:#2a0e0e; color:var(--err); border:1px solid var(--err); }
+  .tag.proc { background:#0d213a; color:var(--acc); border:1px solid var(--acc); }
+
+  .note { background:var(--card); border-left:3px solid var(--dec); border-radius:8px; padding:14px 16px; font-size:14px; line-height:1.8; }
+  .note b { color:var(--dec); }
+  .note.warn { border-color:var(--err); } .note.warn b { color:var(--err); }
+  .note.ok { border-color:var(--ok); } .note.ok b { color:var(--ok); }
+
+  ol.steps { padding-left:22px; font-size:14px; line-height:1.9; } ol.steps li { margin:8px 0; }
+  code { background:#111820; padding:1px 7px; border-radius:5px; font-size:13px; color:#7ee787; font-family:Consolas,monospace; }
+  pre { background:#111820; border:1px solid var(--line); border-radius:10px; padding:16px; overflow-x:auto; font-size:13px; line-height:1.6; color:#c9d1d9; font-family:Consolas,monospace; }
+  pre .c { color:#8b949e; } pre .k { color:#ff7b72; } pre .s { color:#a5d6ff; }
+
+  footer { margin-top:44px; text-align:center; color:var(--sub); font-size:13px; line-height:2; border-top:1px solid var(--line); padding-top:18px; }
+  footer b { color:var(--acc); }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>继电器<b>通路设计流程</b> relay-design-flow</h1>
+  <p>每个新 TM 的继电器设计都必须重走的完整流程 · 禁止直接复制黄金案例结构</p>
+  <div class="meta">
+    <span class="pill start">定稿 2026-09-02</span>
+    <span class="pill">来源：飞书白板流程图</span>
+    <span class="pill">关联：<b>path-principles.md</b> · relay-checklist.md · relay-agent.md</span>
+  </div>
+</header>
+
+<!-- ========== ① 完整流程图 ========== -->
+<section class="section">
+  <h2>① 完整流程图<span>（Mermaid 渲染 · 用户连线完整版）</span></h2>
+  <div class="flow-wrap">
+    <div class="mermaid">
+flowchart TD
+    A["列举所有继电器，并找到对应的定义名字"]
+    B{"如果有冲突"}
+    C["所有通路放在一起，找到每个PIN到源表的最短通路，单个PIN就是PIN到源表，组合PIN就检查源表两端到两个PIN，包括功能继电器"]
+    D["所有组合Pin的通路放在一起，找到的最短通路"]
+    E{"检查第二短通路是否无冲突"}
+    F["报错"]
+    G{"检查无冲突"}
+    H["分两次或者多次闭合继电器，分成多组"]
+    I["找出用到的Pin"]
+    J["在SCH_Connect-Map里找通路"]
+    K["找到Pin到非稀缺源表（FOVI，FXVI，ACM）的所有通路"]
+    L["列出来分时复用的通路继电器"]
+    M["非组合继电器寻找第二短通路，检查是否有冲突"]
+    N{"测试条件里是否存差分Pin组或者 大电流"}
+    O["列出来电流通路继电器"]
+    P{"只保证电流同路，不保证差分条件是否无冲突"}
+    Q{"如果有分时复用"}
+    R["列出来第二短通路继电器"]
+    S["找到FPVI/QVM可以联通到组合Pin的所有通路"]
+    T{"确认所有最短通路是否有冲突"}
+    U["列出差分电压组合Pin到非稀缺源表（FOVI，FXVI，ACM）的所有通路"]
+    V["调取cbite.SetOn 函数使用方法，完成cbite闭合的操作"]
+    W{"如果通路不存在"}
+    X{"是否可以满足分时复用"}
+    I --> J
+    N -- "是" --> S
+    N -- "否" --> K
+    E -- "是" --> R
+    E -- "否" --> P
+    O --> U
+    X -- "否" --> E
+    X -- "是" --> L
+    B -- "否" --> A
+    B -- "是" --> M
+    T -- "是" --> X
+    T -- "否" --> C
+    K --> C
+    C --> B
+    S --> W
+    U --> C
+    W -- "否" --> D
+    W -- "是" --> K
+    Q -- "否" --> V
+    Q -- "是" --> H
+    R --> C
+    M --> G
+    D --> T
+    A --> Q
+    P -- "是" --> O
+    P --> F
+    G -- "是" --> A
+    G -- "否" --> F
+    L --> C
+    H --> V
+    J --> N
+    </div>
+  </div>
+</section>
+
+<!-- ========== ② 节点速览 ========== -->
+<section class="section">
+  <h2>② 节点速览<span>（I~X 共 24 个节点）</span></h2>
+  <table>
+    <thead><tr><th style="width:60px;">节点</th><th>含义</th><th style="width:110px;">类型</th></tr></thead>
+    <tbody>
+      <tr><td><b>I</b></td><td>找出测试用到的全部 Pin</td><td><span class="tag proc">起点</span></td></tr>
+      <tr><td><b>J</b></td><td>在 SCH_Connect-Map 里找通路</td><td><span class="tag proc">处理</span></td></tr>
+      <tr><td><b>N</b></td><td>测试条件里是否存【差分 Pin 组 或 大电流】？</td><td><span class="tag no">判断</span></td></tr>
+      <tr><td><b>S</b></td><td>找 FPVI/QVM 可以联通到组合 Pin 的所有通路（差分/大电流→稀缺源表）</td><td><span class="tag proc">处理</span></td></tr>
+      <tr><td><b>K</b></td><td>找 Pin 到非稀缺源表（FOVI/FXVI/ACM）的所有通路</td><td><span class="tag proc">处理</span></td></tr>
+      <tr><td><b>W</b></td><td>如果 FPVI/QVM 通路不存在？</td><td><span class="tag no">判断</span></td></tr>
+      <tr><td><b>D</b></td><td>所有组合 Pin 的通路放一起，找到最短通路</td><td><span class="tag proc">处理</span></td></tr>
+      <tr><td><b>C</b></td><td><b>最短通路汇总</b>：所有通路放一起，找每个 PIN 到源表最短通路（单 PIN=PIN到源表；组合 PIN=源表两端到两 PIN，含功能继电器）</td><td><span class="tag proc">核心</span></td></tr>
+      <tr><td><b>T</b></td><td>确认所有最短通路是否有冲突？</td><td><span class="tag no">判断</span></td></tr>
+      <tr><td><b>X</b></td><td>是否可以满足分时复用？</td><td><span class="tag no">判断</span></td></tr>
+      <tr><td><b>L</b></td><td>列出来分时复用的通路继电器</td><td><span class="tag proc">处理</span></td></tr>
+      <tr><td><b>E</b></td><td>检查第二短通路是否无冲突？</td><td><span class="tag no">判断</span></td></tr>
+      <tr><td><b>R</b></td><td>列出来第二短通路继电器</td><td><span class="tag proc">处理</span></td></tr>
+      <tr><td><b>P</b></td><td>只保证电流同路，不保证差分条件是否无冲突？</td><td><span class="tag no">判断</span></td></tr>
+      <tr><td><b>O</b></td><td>列出来电流通路继电器</td><td><span class="tag proc">处理</span></td></tr>
+      <tr><td><b>U</b></td><td>列出差分电压组合 Pin 到非稀缺源表（FOVI/FXVI/ACM）的所有通路</td><td><span class="tag proc">处理</span></td></tr>
+      <tr><td><b>B</b></td><td>如果有冲突（全局/含功能继电器）？</td><td><span class="tag no">判断</span></td></tr>
+      <tr><td><b>M</b></td><td>非组合继电器寻找第二短通路，检查是否有冲突</td><td><span class="tag proc">处理</span></td></tr>
+      <tr><td><b>G</b></td><td>检查无冲突？</td><td><span class="tag no">判断</span></td></tr>
+      <tr><td><b>A</b></td><td>列举所有继电器，并找到对应的定义名字</td><td><span class="tag proc">处理</span></td></tr>
+      <tr><td><b>Q</b></td><td>如果有分时复用？</td><td><span class="tag no">判断</span></td></tr>
+      <tr><td><b>H</b></td><td>分两次或者多次闭合继电器，分成多组</td><td><span class="tag proc">处理</span></td></tr>
+      <tr><td><b>V</b></td><td>调取 cbite.SetOn 函数使用方法，完成 cbite 闭合的操作</td><td><span class="tag yes">终点</span></td></tr>
+      <tr><td><b>F</b></td><td>报错（不可解，阻塞裁决）</td><td><span class="tag no">终止</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========== ③ 主线流程 ========== -->
+<section class="section">
+  <h2>③ 主线流程（步骤化）</h2>
+  <ol class="steps">
+    <li><b>找 Pin（I）</b> → 找通路（J，在 SCH_Connect-Map 里找）</li>
+    <li><b>分流判断（N）</b>：是否含【差分 Pin 组 或 大电流】？<br>
+      <span class="tag yes">是</span> → 走 <b>S</b> FPVI/QVM 通路 → <b>W 判断通路是否存在？</b> 不存在→转 <b>K</b> 非稀缺；存在→<b>D</b> 组合 Pin 找最短<br>
+      <span class="tag no">否</span> → 走 <b>K</b> 非稀缺源表通路</li>
+    <li><b>最短通路（C）</b>：所有通路放一起找每个 PIN 到源表最短<br>
+      <span class="tag proc">单 PIN</span>=PIN到源表 ｜ <span class="tag proc">组合 PIN</span>=源表两端到两 PIN，含功能继电器<br>
+      （回流：K / D→T / U 的结果都回到 C 重新汇总）</li>
+    <li><b>冲突检查（T）</b>：最短通路是否有冲突？
+      <ul>
+        <li><span class="tag yes">是</span> → <b>X 分时复用？</b> 是→L 列分时继电器→回 C；否→<b>E 第二短无冲突？</b> 是→R 列第二短→回 C；否→<b>P 放弃差分只保电流？</b> 是→O→U→回 C；否→<b>F 报错</b></li>
+        <li><span class="tag no">否</span> → 回 C 继续汇总</li>
+      </ul>
+    </li>
+    <li><b>全局冲突（B）</b>：包含功能继电器后是否有冲突？<span class="tag no">否</span>→<b>A</b> 列举继电器+找名→Q；<span class="tag yes">是</span>→<b>M</b> 非组合继电器第二短 → <b>G 无冲突？</b> 是→A→Q；否→F 报错</li>
+    <li><b>分时复用（Q）</b>：<span class="tag yes">是</span>→<b>H</b> 分多组闭合→V；<span class="tag no">否</span>→V</li>
+    <li><b>终点（V）</b>：调取 cbite.SetOn 用法，完成闭合操作</li>
+  </ol>
+</section>
+
+<!-- ========== ④ 关键要点 ========== -->
+<section class="section">
+  <h2>④ 关键要点</h2>
+  <div class="note">
+    <b>铁律：</b>每个新 TM 必须重走本流程，<b>禁止直接复制黄金案例的继电器结构</b>（黄金案例只作同构参照）。
+  </div>
+  <div class="note ok" style="margin-top:12px;">
+    <b>优先级（2026-08-30 用户权威）：</b>差分/大电流 → 优先 <b>FPVI/QVM</b>（稀缺源表）；单 PIN/普通 → 非稀缺源表（FOVI/FXVI/ACM）。冲突降级链 = <b>分时复用 → 第二短通路 → 放弃差分只保电流 → 报错</b>（本电路可满足则不裁决，缺失才阻塞）。
+  </div>
+  <div class="note warn" style="margin-top:12px;">
+    <b>易错点：</b>分时场景必须<b>每组一次独立 SetOn</b>——SetOn 是<b>全量设置</b>（先清后设、只闭列出），把两组宏合并进一次 SetOn 会造成两路并联。
+  </div>
+</section>
+
+<!-- ========== ⑤ 执行案例 TM1205 ========== -->
+<section class="section">
+  <h2>⑤ 执行案例：TM1205（TRX_BST_UV_GD）</h2>
+  <table>
+    <thead><tr><th style="width:110px;">流程步</th><th>执行</th><th>结论</th></tr></thead>
+    <tbody>
+      <tr><td><b>① 找 Pin</b></td><td>VBAT/BST1/BST2/SW1/SW2/nQON；差分对 = BST1−SW1、BST2−SW2</td><td>6 Pin，2 差分对</td></tr>
+      <tr><td><b>② 找通路</b></td><td>BST1/2 只有 FPVIe Low(K41/K41+K43)，无 High；SW1/2 有 High(K46/K46+K49)+Low(K47/K47+K50)</td><td>差分须 High→SW + Low→BST</td></tr>
+      <tr><td><b>③ 分流 N</b></td><td>B SST1−SW1、BST2−SW2 均差分→是；VBAT/nQON 单 PIN→否</td><td>差分走 FPVI/QVM；单 Pin 走非稀缺</td></tr>
+      <tr><td><b>④ 最短</b></td><td>路1={K46,K41}；路2={K46,K49,K41,K43}；VBAT=FXVI(K8 NC)；nQON=K65_PU</td><td>组合 Pin 并集最短，含功能继电器</td></tr>
+      <tr><td><b>⑤ 冲突 X</b></td><td>路1/路2 都占 FPVI0 同一差分通道 → 冲突</td><td>可<b>分时</b>（先路1后路2，DMUX 57→58）</td></tr>
+      <tr><td><b>⑥ 全局 B</b></td><td>分时后继电器无额外冲突</td><td>无冲突 → 列举继电器</td></tr>
+      <tr><td><b>⑦ 分时 Q</b></td><td>有 → 分两组</td><td>两组各独立 SetOn</td></tr>
+      <tr><td><b>⑧ 终点 V</b></td><td>按 CBITe.h 全量语义分组独立 SetOn</td><td>路2 必须重新 SetOn</td></tr>
+    </tbody>
+  </table>
+  <pre><span class="c">// 组1 - 路1 (BST1-SW1): 全量设置只闭路1宏</span>
+cbite.SetOn(K_FPVIH_TO_SW1_A, K_FPVIL_TO_BST1_A, K13_VBAT_Cap, K65_nQON_PU, -1);
+delay_ms(3);
+<span class="c">// ... 测路1 (DMUX 57) ...</span>
+<span class="c">// 组2 - 路2 (BST2-SW2): 重新 SetOn 切路 (K43/K49 NC→ON 选 BST2/SW2)</span>
+cbite.SetOn(K_FPVIH_TO_SW2_A, K_FPVIL_TO_BST2_A, K13_VBAT_Cap, K65_nQON_PU, -1);
+delay_ms(3);
+<span class="c">// ... 测路2 (DMUX 58) ...</span></pre>
+</section>
+
+<footer>
+  固化文件：<b>knowledge\standards\relay-design-flow.md</b> · 强制前置接 <b>skills\agents\relay-agent.md</b><br>
+  关联：path-principles.md（找通路三原则 + ②'Pin2Pin + 冲突降级）· relay-checklist.md · agents/relay-agent.md
+</footer>
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      darkMode: true, background: '#0d1117',
+      primaryColor: '#0d213a', primaryTextColor: '#e6edf3',
+      primaryBorderColor: '#1f6feb', lineColor: '#5a6b7d', fontSize: '13px'
+    },
+    flowchart: { htmlLabels: true, curve: 'basis', useMaxWidth: true }
+  });
+</script>
+</body>
+</html>

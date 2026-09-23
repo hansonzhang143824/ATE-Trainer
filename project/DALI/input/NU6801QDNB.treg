@@ -1,0 +1,634 @@
+
+; =============================================================================
+; ============================== TRIM PARAMETER  ==============================
+; =============================================================================
+; ===                                                                       ===
+; ===   [PARAMETER NAME]                                                    ===
+; ===                                                                       ===
+; ===   Target          = TRIM TARGET (with unit conversion  eg. u=10e-6 )  ===
+; ===   Trim_type       = TRIM TYPE   ("abs", "rel", "min" or "max" )       ===
+; ===   Table           = TRIM TABLE  ("*0%, -0.362%" or "5mv, *10mV")      ===
+; ===                                   ^                      ^            ===
+; ===                                   |                      |            ===
+; ===             START VALUE ( value copied into working after dut.sot() ) ===
+; ===                                                                       ===
+; ===   Trim_start_adj  = ADJUST START VALUE ("true" or "false")            ===
+; ===                                                                       ===
+; =============================================================================
+
+[bandgap]
+;Target				= 1220 mV 
+Target				= 1220
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+[iztc_res]
+;Target				= 220uA 
+Target				= 220 
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0.008,0.009,0.01,0.011,0.012,0.013,0.014,0.015,0.016,0.017,0.018,0.019,0.02,0.021,0.022,0.023,0.024,0.025,0.026,0.027,0.028,0.029,0.03,0.031,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007,-0.008,-0.009,-0.01,-0.011,-0.012,-0.013,-0.014,-0.015,-0.016,-0.017,-0.018,-0.019,-0.02,-0.021,-0.022,-0.023,-0.024,-0.025,-0.026,-0.027,-0.028,-0.029,-0.03,-0.031
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+
+[bg_res_div]
+;Target				= 1000mV
+Target				= 1000 
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7
+Table               = *0,0.001,0.002,0.003,-0.001,-0.002,-0.003,-0.004
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+[osc_4p5m]
+;Target				= 4.5 Mhz 
+Target				= 4.5
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+
+[ibus_sns_ea_os]
+;Target				= 0 mV 
+Target				= 0 
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+
+[ibus_sns_gain]
+;Target				= 198 mohm 
+Target				= 198 
+Trim_type      		= nom
+;               	   0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0.008,0.009,0.01,0.011,0.012,0.013,0.014,0.015,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007,-0.008,-0.009,-0.01,-0.011,-0.012,-0.013,-0.014,-0.015
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+
+[ibus_loop_os]
+;Target				= 0 mV 
+Target				= 0 
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+[amux_ea_os]
+;Target				= 0 mV 
+Target				= 0 mV
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+
+[mnt_vbus_ea_os_buck]
+;Target				=  5500mV
+Target				= 5500
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0.008,0.009,0.01,0.011,0.012,0.013,0.014,0.015,0.016,0.017,0.018,0.019,0.02,0.021,0.022,0.023,0.024,0.025,0.026,0.027,0.028,0.029,0.03,0.031,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007,-0.008,-0.009,-0.01,-0.011,-0.012,-0.013,-0.014,-0.015,-0.016,-0.017,-0.018,-0.019,-0.02,-0.021,-0.022,-0.023,-0.024,-0.025,-0.026,-0.027,-0.028,-0.029,-0.03,-0.031
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+
+[mnt_vbus_ea_os_boost]
+;Target				=  9000mV
+Target				= 9000
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0.008,0.009,0.01,0.011,0.012,0.013,0.014,0.015,0.016,0.017,0.018,0.019,0.02,0.021,0.022,0.023,0.024,0.025,0.026,0.027,0.028,0.029,0.03,0.031,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007,-0.008,-0.009,-0.01,-0.011,-0.012,-0.013,-0.014,-0.015,-0.016,-0.017,-0.018,-0.019,-0.02,-0.021,-0.022,-0.023,-0.024,-0.025,-0.026,-0.027,-0.028,-0.029,-0.03,-0.031
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+[mnt_vbat_cv_buf]
+;Target				=  0 mV, mnt_vbat_cv_buf
+Target				=0
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0.008,0.009,0.01,0.011,0.012,0.013,0.014,0.015,0.016,0.017,0.018,0.019,0.02,0.021,0.022,0.023,0.024,0.025,0.026,0.027,0.028,0.029,0.03,0.031,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007,-0.008,-0.009,-0.01,-0.011,-0.012,-0.013,-0.014,-0.015,-0.016,-0.017,-0.018,-0.019,-0.02,-0.021,-0.022,-0.023,-0.024,-0.025,-0.026,-0.027,-0.028,-0.029,-0.03,-0.031
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+
+[mnt_v1p2_buf]
+;Target				= 1200 mV 
+Target				= 1200
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+[mnt_vbat_rsns_loop]
+;Target				= 0 mV 
+Target				= 0 
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+[mnt_dac_buf_os]
+;Target				= 1680 mV 
+Target				= 1680 
+Trim_type      		= nom
+;               	   0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0.008,0.009,0.01,0.011,0.012,0.013,0.014,0.015,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007,-0.008,-0.009,-0.01,-0.011,-0.012,-0.013,-0.014,-0.015
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+[ibat_cc_loop]
+;Target				= 0 mV 
+Target				= 0
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+
+[buck_rcs]
+;Target				=110mohm
+Target				= 110 
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7,
+;               	  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 9696
+
+[boost_rcs]
+;Target				=90mohm
+Target				= 90 
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 9696
+
+[boost_hsfet_gain]
+;Target				= 100 mohm 
+Target				= 100 
+Trim_type      		= nom
+;               	   0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0.008,0.009,0.01,0.011,0.012,0.013,0.014,0.015,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007,-0.008,-0.009,-0.01,-0.011,-0.012,-0.013,-0.014,-0.015
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+[boost_lsfet_gain]
+;Target				= 100 mohm 
+Target				= 100 
+Trim_type      		= nom
+;               	   0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0.008,0.009,0.01,0.011,0.012,0.013,0.014,0.015,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007,-0.008,-0.009,-0.01,-0.011,-0.012,-0.013,-0.014,-0.015
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+[buck_hsfet_gain]
+;Target				= 100 mohm 
+Target				= 100 
+Trim_type      		= nom
+;               	   0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0.008,0.009,0.01,0.011,0.012,0.013,0.014,0.015,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007,-0.008,-0.009,-0.01,-0.011,-0.012,-0.013,-0.014,-0.015
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+[buck_lsfet_gain]
+;Target				= 100 mohm 
+Target				= 100 
+Trim_type      		= nom
+;               	   0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0.008,0.009,0.01,0.011,0.012,0.013,0.014,0.015,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007,-0.008,-0.009,-0.01,-0.011,-0.012,-0.013,-0.014,-0.015
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+[boost_hsfet_os]
+;Target				= 0 mV 
+Target				= 0 
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+[boost_lsfet_os]
+;Target				= 0 mV 
+Target				= 0 
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+[buck_hsfet_os]
+;Target				= 0 mV 
+Target				= 0 
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+[buck_lsfet_os]
+;Target				= 0 mV 
+Target				= 0 
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+
+[cs_hsfet_os]
+;Target				= 0 mV 
+Target				= 0 
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0.008,0.009,0.01,0.011,0.012,0.013,0.014,0.015,0.016,0.017,0.018,0.019,0.02,0.021,0.022,0.023,0.024,0.025,0.026,0.027,0.028,0.029,0.03,0.031,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007,-0.008,-0.009,-0.01,-0.011,-0.012,-0.013,-0.014,-0.015,-0.016,-0.017,-0.018,-0.019,-0.02,-0.021,-0.022,-0.023,-0.024,-0.025,-0.026,-0.027,-0.028,-0.029,-0.03,-0.031
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+[cs_lsfet_os]
+;Target				= 0 mV 
+Target				= 0 
+Trim_type      		= nom
+;               	  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63
+Table               = *0,0.001,0.002,0.003,0.004,0.005,0.006,0.007,0.008,0.009,0.01,0.011,0.012,0.013,0.014,0.015,0.016,0.017,0.018,0.019,0.02,0.021,0.022,0.023,0.024,0.025,0.026,0.027,0.028,0.029,0.03,0.031,0,-0.001,-0.002,-0.003,-0.004,-0.005,-0.006,-0.007,-0.008,-0.009,-0.01,-0.011,-0.012,-0.013,-0.014,-0.015,-0.016,-0.017,-0.018,-0.019,-0.02,-0.021,-0.022,-0.023,-0.024,-0.025,-0.026,-0.027,-0.028,-0.029,-0.03,-0.031
+Trim_start_learn    = 50
+Trim_step_learn     = 50
+Trim_step_char      = 96
+
+; =============================================================================
+; ============================== Bit Fields ===================================
+; =============================================================================
+; ===                                                                       === 
+; ===    Version      =    0x1010                                           ===
+; ===       ^                 ^                                             ===
+; ===       |                 |                                             ===
+; ===   SETTING NAME          |                                             ===
+; ===                         |                                             ===
+; ===                    SETTING VALUE                                      ===
+; ===                binary: b1010 = int 10                                 ===
+; ===                int:     1010 = int 1010                               ===
+; ===                hex:   0x1010 = int 4112                               ===
+; ===                                                                       === 
+; =============================================================================
+[*SELECTIONS]
+ibus_off_term_flt   =b0
+                                  ;0 : option to select terminal filter disable
+                                 ;1 : option to select terminal filter enable
+
+addr_trim   =b0
+                                  ;0 : option to select addr_trim disable
+                                 ;1 :  option to select addr_trim enable
+
+part_id_trim   =b0
+                                  ;0 : option to select part_id_trim disable
+                                 ;1 : option to select part_id_trim enable
+
+
+; =============================================================================
+; ==============================  Build Words  ================================
+; =============================================================================
+; ===                                                                       === 
+; ===   0:             bandgap       =         !                  1         ===
+; ===   ^                ^                     ^                  ^         ===
+; ===   |                |                     |                  |         ===                            
+; === BIT POS in REG     |                     |                  |         ===
+; ===                    |                     |                  |         ===
+; ===          PARAMETER or SETTING NAME       |                  |         ===
+; ===                                           |                  |         === 
+; ===                        INVERT BIT (if '!' is present)       |         ===
+; ===                                                                       ===
+; ===                                     BIT POS in PARAMETER or SETTING   ===
+; ===                                                                       ===
+; =============================================================================
+
+[_EFUSE_REG_F0]
+0:  bandgap		             = 0
+1:  bandgap		             = 1
+2:  bandgap		             = 2
+3:  bandgap		             = 3
+4:  iztc_res		                 = 0
+5:  iztc_res		                 = 1
+6:  iztc_res		                 = 2
+7:  iztc_res		                 = 3
+
+[_EFUSE_REG_F1]
+0:  iztc_res		                 = 4
+1:  iztc_res		                 = 5
+2:  bg_res_div		         = 0
+3:  bg_res_div		         = 1
+4:  bg_res_div		         = 2
+5:  osc_4p5m		         = 0
+6:  osc_4p5m		         = 1
+7:  osc_4p5m		         = 2
+
+[_EFUSE_REG_F2]
+0:  osc_4p5m		         = 3
+1: ibus_sns_ea_os	     = 0
+2: ibus_sns_ea_os	     = 1
+3: ibus_sns_ea_os	     = 2
+4: ibus_sns_ea_os	     = 3
+5: ibus_sns_gain		     = 0
+6: ibus_sns_gain		     = 1
+7: ibus_sns_gain		     = 2
+
+[_EFUSE_REG_F3]
+0: ibus_sns_gain		     = 3
+1: ibus_sns_gain		     = 4
+2: ibus_loop_os	         = 0
+3: ibus_loop_os	         = 1
+4: ibus_loop_os	         = 2
+5: ibus_loop_os	         = 3
+6: amux_ea_os		         = 0
+7: amux_ea_os		         = 1
+
+[_EFUSE_REG_F4]
+0: amux_ea_os		                 = 2
+1: amux_ea_os		                 = 3
+2: mnt_vbus_ea_os_buck	 = 0
+3: mnt_vbus_ea_os_buck	 = 1
+4: mnt_vbus_ea_os_buck	 = 2
+5: mnt_vbus_ea_os_buck	 = 3
+6: mnt_vbus_ea_os_buck	 = 4
+7: mnt_vbus_ea_os_buck	 = 5
+
+[_EFUSE_REG_F5]
+0: mnt_vbus_ea_os_boost	 = 0
+1: mnt_vbus_ea_os_boost   = 1
+2: mnt_vbus_ea_os_boost	 = 2
+3: mnt_vbus_ea_os_boost	 = 3
+4: mnt_vbus_ea_os_boost	 = 4
+5: mnt_vbus_ea_os_boost	 = 5
+6: ibus_off_term_flt         	 = 0
+7: mnt_vbat_cv_buf	             = 0
+
+[_EFUSE_REG_F6]
+0: mnt_vbat_cv_buf	             = 1
+1: mnt_vbat_cv_buf	             = 2
+2: mnt_vbat_cv_buf	             = 3
+3: mnt_vbat_cv_buf	             = 4
+4: mnt_vbat_cv_buf	             = 5
+5: mnt_v1p2_buf	                 = 0
+6: mnt_v1p2_buf         	         = 1
+7: mnt_v1p2_buf	                 = 2
+
+[_EFUSE_REG_F7]
+0: mnt_v1p2_buf	                 = 3
+1: mnt_vbat_rsns_loop	     = 0
+2: mnt_vbat_rsns_loop	     = 1
+3: mnt_vbat_rsns_loop	     = 2
+4: mnt_vbat_rsns_loop	     = 3
+5: mnt_dac_buf_os                = 0
+6: mnt_dac_buf_os        	     = 1
+7: mnt_dac_buf_os                = 2
+
+[_EFUSE_REG_F8]
+0: mnt_dac_buf_os                = 3
+1: mnt_dac_buf_os                = 4
+2: ibat_cc_loop            	         = 0
+3: ibat_cc_loop            	         = 1
+4: ibat_cc_loop            	         = 2
+5: ibat_cc_loop            	         = 3
+6: boost_rcs        	                 = 1
+7: boost_rcs                           = 2
+
+[_EFUSE_REG_F9]
+0: boost_rcs                           = 3
+1: buck_rcs                            = 1
+2: buck_rcs                            = 2
+3: buck_rcs                            = 3
+4: boost_hsfet_gain              = 0
+5: boost_hsfet_gain              = 1
+6: boost_hsfet_gain              = 2
+7: boost_hsfet_gain              = 3
+
+[_EFUSE_REG_FA]
+0: boost_hsfet_gain              = 4
+1: boost_lsfet_gain               = 0
+2: boost_lsfet_gain               = 1
+3: boost_lsfet_gain               = 2
+4: boost_lsfet_gain               = 3
+5: boost_lsfet_gain               = 4
+6: buck_hsfet_gain               = 0
+7: buck_hsfet_gain               = 1
+
+[_EFUSE_REG_FB]
+0: buck_hsfet_gain               = 2
+1: buck_hsfet_gain               = 3
+2: buck_hsfet_gain               = 4
+3: buck_lsfet_gain                = 0
+4: buck_lsfet_gain                = 1
+5: buck_lsfet_gain                = 2
+6: buck_lsfet_gain                = 3
+7: buck_lsfet_gain                = 4
+
+[_EFUSE_REG_FC]
+0: boost_hsfet_os               = 0
+1: boost_hsfet_os               = 1
+2: boost_hsfet_os               = 2
+3: boost_hsfet_os               = 3
+4: boost_lsfet_os                = 0
+5: boost_lsfet_os                = 1
+6: boost_lsfet_os                = 2
+7: boost_lsfet_os                = 3
+
+[_EFUSE_REG_FD]
+0: buck_hsfet_os               = 0
+1: buck_hsfet_os               = 1
+2: buck_hsfet_os               = 2
+3: buck_hsfet_os               = 3
+4: buck_lsfet_os                = 0
+5: buck_lsfet_os                = 1
+6: buck_lsfet_os                = 2
+7: buck_lsfet_os                = 3
+
+[_EFUSE_REG_FE]
+0: cs_hsfet_os               = 0
+1: cs_hsfet_os               = 1
+2: cs_hsfet_os               = 2
+3: cs_hsfet_os               = 3
+4: cs_hsfet_os               = 4
+5: cs_hsfet_os               = 5
+6: cs_lsfet_os                = 0
+7: cs_lsfet_os                = 1
+
+[_EFUSE_REG_FF]
+0: cs_lsfet_os               = 2
+1: cs_lsfet_os               = 3
+2: cs_lsfet_os               = 4
+3: cs_lsfet_os               = 5
+4: buck_rcs                  = 0
+5: boost_rcs                 = 0
+6: addr_trim                = 0
+7: part_id_trim            = 0
+
+
+[_EFUSE_REG_REGISTER]
+0:  bandgap		                              = 0
+1:  bandgap		                              = 1
+2:  bandgap		                              = 2
+3:  bandgap		                              = 3
+4:  iztc_res		                                  = 0
+5:  iztc_res		                                  = 1
+6:  iztc_res		                                  = 2
+7:  iztc_res		                                  = 3
+8:  iztc_res		                                  = 4
+9:  iztc_res		                                  = 5
+10:  bg_res_div		                          = 0
+11:  bg_res_div		                          = 1
+12:  bg_res_div		                          = 2
+13:  osc_4p5m		                          = 0
+14:  osc_4p5m		                          = 1
+15:  osc_4p5m		                          = 2
+16:  osc_4p5m		                          = 3
+17: ibus_sns_ea_os                        = 0
+18: ibus_sns_ea_os                        = 1
+19: ibus_sns_ea_os                        = 2
+20: ibus_sns_ea_os                        = 3
+21: ibus_sns_gain	                      = 0
+22: ibus_sns_gain	                      = 1
+23: ibus_sns_gain	                      = 2
+24: ibus_sns_gain	                      = 3
+25: ibus_sns_gain	                      = 4
+26: ibus_loop_os	                          = 0
+27: ibus_loop_os	                          = 1
+28: ibus_loop_os	                          = 2
+29: ibus_loop_os	                          = 3
+30: amux_ea_os		                      = 0
+31: amux_ea_os		                      = 1
+32: amux_ea_os		                      = 2
+33: amux_ea_os		                      = 3
+34: mnt_vbus_ea_os_buck	          = 0
+35: mnt_vbus_ea_os_buck	          = 1
+36: mnt_vbus_ea_os_buck	          = 2
+37: mnt_vbus_ea_os_buck	          = 3
+38: mnt_vbus_ea_os_buck	          = 4
+39: mnt_vbus_ea_os_buck	          = 5
+40: mnt_vbus_ea_os_boost	      = 0
+41: mnt_vbus_ea_os_boost         = 1
+42: mnt_vbus_ea_os_boost         = 2
+43: mnt_vbus_ea_os_boost         = 3
+44: mnt_vbus_ea_os_boost         = 4
+45: mnt_vbus_ea_os_boost         = 5
+46: ibus_off_term_flt         	         = 0
+47: mnt_vbat_cv_buf	                 = 0
+48: mnt_vbat_cv_buf	                 = 1
+49: mnt_vbat_cv_buf	                 = 2
+50: mnt_vbat_cv_buf	                 = 3
+51: mnt_vbat_cv_buf	                 = 4
+52: mnt_vbat_cv_buf	                 = 5
+53: mnt_v1p2_buf	                     = 0
+54: mnt_v1p2_buf         	             = 1
+55: mnt_v1p2_buf	                     = 2
+56: mnt_v1p2_buf	                     = 3
+57: mnt_vbat_rsns_loop	             = 0
+58: mnt_vbat_rsns_loop	             = 1
+59: mnt_vbat_rsns_loop	             = 2
+60: mnt_vbat_rsns_loop	             = 3
+61: mnt_dac_buf_os                     = 0
+62: mnt_dac_buf_os        	             = 1
+63: mnt_dac_buf_os                     = 2
+64: mnt_dac_buf_os                     = 3
+65: mnt_dac_buf_os                     = 4
+66: ibat_cc_loop            	             = 0
+67: ibat_cc_loop            	             = 1
+68: ibat_cc_loop            	             = 2
+69: ibat_cc_loop            	             = 3
+70: boost_rcs        	                     = 1
+71: boost_rcs                                 = 2
+72: boost_rcs                                 = 3
+73: buck_rcs                                  = 1
+74: buck_rcs                                  = 2
+75: buck_rcs                                  = 3
+76: boost_hsfet_gain                    = 0
+77: boost_hsfet_gain                    = 1
+78: boost_hsfet_gain                    = 2
+79: boost_hsfet_gain                    = 3
+80: boost_hsfet_gain                    = 4
+81: boost_lsfet_gain                     = 0
+82: boost_lsfet_gain                     = 1
+83: boost_lsfet_gain                     = 2
+84: boost_lsfet_gain                     = 3
+85: boost_lsfet_gain                     = 4
+86: buck_hsfet_gain                     = 0
+87: buck_hsfet_gain                     = 1
+88: buck_hsfet_gain                     = 2
+89: buck_hsfet_gain                     = 3
+90: buck_hsfet_gain                     = 4
+91: buck_lsfet_gain                      = 0
+92: buck_lsfet_gain                      = 1
+93: buck_lsfet_gain                      = 2
+94: buck_lsfet_gain                      = 3
+95: buck_lsfet_gain                      = 4
+96: boost_hsfet_os                       = 0
+97: boost_hsfet_os                       = 1
+98: boost_hsfet_os                       = 2
+99: boost_hsfet_os                       = 3
+100: boost_lsfet_os                      = 0
+101: boost_lsfet_os                      = 1
+102: boost_lsfet_os                      = 2
+103: boost_lsfet_os                      = 3
+104: buck_hsfet_os                      = 0
+105: buck_hsfet_os                      = 1
+106: buck_hsfet_os                      = 2
+107: buck_hsfet_os                      = 3
+108: buck_lsfet_os                       = 0
+109: buck_lsfet_os                       = 1
+110: buck_lsfet_os                       = 2
+111: buck_lsfet_os                       = 3
+112: cs_hsfet_os                           = 0
+113: cs_hsfet_os                           = 1
+114: cs_hsfet_os                           = 2
+115: cs_hsfet_os                           = 3
+116: cs_hsfet_os                           = 4
+117: cs_hsfet_os                           = 5
+118: cs_lsfet_os                            = 0
+119: cs_lsfet_os                            = 1
+120: cs_lsfet_os                           = 2
+121: cs_lsfet_os                           = 3
+122: cs_lsfet_os                           = 4
+123: cs_lsfet_os                           = 5
+124: buck_rcs                              = 0
+125: boost_rcs                             = 0
+126: addr_trim                             = 0
+127: part_id_trim                        = 0

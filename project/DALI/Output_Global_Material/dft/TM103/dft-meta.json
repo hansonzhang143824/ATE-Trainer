@@ -1,0 +1,226 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "dft-meta",
+  "projectId": "DALI",
+  "tm": "TM103",
+  "sourceSha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+  "canonicalInput": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\Dali_testmode.xlsx",
+  "readSources": [
+    {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\Dali_testmode.xlsx",
+      "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "insideInputRoot": true
+    }
+  ],
+  "rawIntent": {
+    "Item": "TM103",
+    "Level": "HSKP",
+    "Name": "LP_HR_0P5U",
+    "Description": "IBP 0.5UA HR ",
+    "ExpectValue": 0.5,
+    "Unit": "uA",
+    "Test": "Direct",
+    "Special": "",
+    "Purpose": "Debug",
+    "Trim": "",
+    "Notes": "",
+    "Code1": "vset[vbat,4,100e-6,0]",
+    "Code2": "en_tm[]\nfield[(EN_ATEST0,1),(ATEST0_MUX,4)]\nvset[vdm,1,100e-6,0]",
+    "Code3": "delay[1e-3]\nfinish[]",
+    "Power": "VBAT",
+    "Dynamic": "",
+    "Check": "I(ATEST0)",
+    "isCodeGen": "Y",
+    "isRun": "",
+    "Assign": "",
+    "State \nAMS\nValidation": "Done",
+    "State\nBench Validation": "",
+    "is CP test?": "",
+    "CP comment": "",
+    "State\nATE Validation": "",
+    "HELPER": "",
+    "de test": "0.5uA",
+    "aetest": "",
+    "is test": "checked"
+  },
+  "parsedVsetCommands": [
+    {
+      "column": "Code1",
+      "order": 1,
+      "pin": "vbat",
+      "args": [
+        "4",
+        "100e-6",
+        "0"
+      ],
+      "raw": "vset[vbat,4,100e-6,0]",
+      "powerOnDirect": true
+    },
+    {
+      "column": "Code2",
+      "order": 1,
+      "pin": "vdm",
+      "args": [
+        "1",
+        "100e-6",
+        "0"
+      ],
+      "raw": "vset[vdm,1,100e-6,0]",
+      "powerOnDirect": true
+    }
+  ],
+  "declaredPins": [
+    "vbat",
+    "vdm"
+  ],
+  "openItems": [],
+  "generation": "deterministic OVERVIEW-only parse",
+  "testCondition": {
+    "identity": {
+      "testItem": "TM103",
+      "level": "HSKP",
+      "parameterName": "LP_HR_0P5U",
+      "description": "IBP 0.5UA HR ",
+      "purpose": "Debug",
+      "unit": "uA"
+    },
+    "remarks": "",
+    "expectedValue": 0.5,
+    "isTrim": false,
+    "powerSequence": [
+      {
+        "column": "Code1",
+        "order": 1,
+        "sourceOrder": 1,
+        "pin": "vbat",
+        "args": [
+          "4",
+          "100e-6",
+          "0"
+        ],
+        "raw": "vset[vbat,4,100e-6,0]",
+        "directPowerOn": true
+      },
+      {
+        "column": "Code2",
+        "order": 1,
+        "sourceOrder": 2,
+        "pin": "vdm",
+        "args": [
+          "1",
+          "100e-6",
+          "0"
+        ],
+        "raw": "vset[vdm,1,100e-6,0]",
+        "directPowerOn": true
+      }
+    ],
+    "staticPower": [
+      {
+        "column": "Code1",
+        "order": 1,
+        "sourceOrder": 1,
+        "pin": "vbat",
+        "args": [
+          "4",
+          "100e-6",
+          "0"
+        ],
+        "raw": "vset[vbat,4,100e-6,0]",
+        "directPowerOn": true
+      }
+    ],
+    "directPowerActions": [
+      {
+        "column": "Code1",
+        "order": 1,
+        "sourceOrder": 1,
+        "pin": "vbat",
+        "args": [
+          "4",
+          "100e-6",
+          "0"
+        ],
+        "raw": "vset[vbat,4,100e-6,0]",
+        "directPowerOn": true
+      },
+      {
+        "column": "Code2",
+        "order": 1,
+        "sourceOrder": 2,
+        "pin": "vdm",
+        "args": [
+          "1",
+          "100e-6",
+          "0"
+        ],
+        "raw": "vset[vdm,1,100e-6,0]",
+        "directPowerOn": true
+      }
+    ],
+    "hasRamp": false,
+    "ramps": [],
+    "helperIntent": "",
+    "scanIntent": {
+      "state": "NOT_DECLARED",
+      "source": "HELPER",
+      "raw": "",
+      "entries": []
+    },
+    "dynamicPins": [],
+    "highCurrent": {
+      "state": "NOT_DECLARED",
+      "evidenceColumns": [
+        "Name",
+        "Description",
+        "Notes",
+        "Special"
+      ]
+    },
+    "differentialVoltage": {
+      "state": "NOT_DECLARED",
+      "evidenceColumns": [
+        "Name",
+        "Description",
+        "Notes",
+        "Special"
+      ]
+    },
+    "internalComparison": {
+      "state": "NOT_DECLARED",
+      "expression": "",
+      "sourceText": ""
+    },
+    "involvedPins": {
+      "vsetPins": [
+        "vbat",
+        "vdm"
+      ],
+      "logicalCheck": "I(ATEST0)"
+    },
+    "measurement": {
+      "check": "I(ATEST0)",
+      "quantity": "CURRENT",
+      "isToggle": false,
+      "resultTypes": [
+        "Measurement"
+      ],
+      "resultTypeProvenance": [
+        {
+          "type": "Measurement",
+          "state": "SOURCE_DECLARED"
+        }
+      ]
+    },
+    "registerFieldIntent": [
+      "(EN_ATEST0,1),(ATEST0_MUX,4)"
+    ],
+    "referenceValue": 0.5,
+    "notes": ""
+  },
+  "ruling": {
+    "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm103-ptc\\input-manifest.json",
+    "sha256": "c7f9e8af3a639b4d63a5e7004236918f0ccf31e803fb3e40c239337467668ba7",
+    "canonicalInputsDftSha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b"
+  }
+}

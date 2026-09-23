@@ -1,0 +1,12 @@
+=== 位置寻址分布 ===
+  我方活跃目录（gate-logs-*）命中 = 1 ['gate-logs-t54/t54_add_field_addressing_rule.py']
+  backups/ 命中 = 12（他方历史脚本，非我方活跃产物）
+
+=== 逐一核对：用于门禁字段判定的我方脚本 ===
+  t54_verify_rev_vs_expectation.py                         按名 = True  ｜ 按位置 = False
+  t54_gate_function_check.py                               按名 = False ｜ 按位置 = False
+  t54_verify_postreplace_stale.py                          按名 = True  ｜ 按位置 = False
+  t54_make_report.py                                       按名 = True  ｜ 按位置 = False
+
+=== 结论 ===
+  ⚠️ 需处置： ['gate-logs-t54/t54_add_field_addressing_rule.py']

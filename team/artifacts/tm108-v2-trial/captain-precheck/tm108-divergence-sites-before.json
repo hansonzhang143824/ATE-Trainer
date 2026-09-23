@@ -1,0 +1,55 @@
+{
+  "source": "D:\\PROJECT6-DALI\\ForCodexDebug\\source\\test.cpp",
+  "source_sha256_plaintext": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a",
+  "reader": "python byte mode (DLP plaintext)",
+  "function_line_span": [
+    2155,
+    2225
+  ],
+  "extracted_line_span": [
+    2147,
+    2227
+  ],
+  "extracted_block_sha256": "19fe6b5c7770e8f0f9882a040d6354d29db07f7684e8cb9fabbf10abc4194416",
+  "extracted_file": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm108-v2-trial\\captain-precheck\\tm108-block-before.txt",
+  "divergence_sites": {
+    "div1_dtest0_nqon": {
+      "nQON_lines": [
+        2152,
+        2170,
+        2171,
+        2186,
+        2189,
+        2193
+      ],
+      "DTEST0_lines": [
+        2150,
+        2152,
+        2185,
+        2186
+      ]
+    },
+    "div2_k13_relays": {
+      "K13_lines": [
+        2168,
+        2171
+      ],
+      "all_relay_lines_in_function": [
+        2168,
+        2169,
+        2170,
+        2171
+      ],
+      "register_write_lines": [
+        2182,
+        2183
+      ],
+      "correction_note": "first-run \\b-anchored K13/K\\d+ patterns gave a FALSE negative; corrected"
+    },
+    "limit_or_result_lines": [
+      2220,
+      2221,
+      2222
+    ]
+  }
+}

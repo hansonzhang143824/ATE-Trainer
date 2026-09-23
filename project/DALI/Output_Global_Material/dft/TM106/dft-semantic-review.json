@@ -1,0 +1,122 @@
+{
+  "tm": "TM106",
+  "artifactId": "dft-semantic-review",
+  "generatedBy": {
+    "profile": "ptc-dft-expert",
+    "stage": "INPUT_SYNC"
+  },
+  "verdict": "PASS",
+  "parseStatus": "selfResolved",
+  "openItems": [],
+  "readSources": [
+    {
+      "path": "Input_GlobalMaterial/Dali_testmode.xlsx",
+      "role": "canonical DFT input, OVERVIEW row 10 (unique TM106 row); codeExplain sheet inspected for command glossary",
+      "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "withinInputRoot": true
+    },
+    {
+      "path": "Input_GlobalMaterial/Dali-SCH.csv",
+      "role": "pin-existence evidence (parsing rules step 4); schematic raw input taken instead of the schematic parse product, which lies outside this task's address book and was not visited",
+      "sha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a",
+      "withinInputRoot": true
+    },
+    {
+      "path": "Input_GlobalMaterial/DALI-special-information.json",
+      "role": "authoritative logical-label mapping used for DTEST0 (0 direct schematic hits) -> physical DUT pin nQON",
+      "sha256": "86d11d43f8602cba604605fc015ba75a2d04a079345a5084f7442053c796d188",
+      "withinInputRoot": true
+    }
+  ],
+  "reviewedArtifacts": [
+    {
+      "path": "dft-meta.json",
+      "sha256": "7758b9a3995df2d38ec27d54e6f5b51b1eef06438706e9606c5c142548504e51"
+    },
+    {
+      "path": "dft-conditions.yaml",
+      "sha256": "ef5f75ab7936159e922eec916480b0a87995dd0d912d122507524632d5a47b48"
+    }
+  ],
+  "parseBasis": [
+    {
+      "field": "identity",
+      "value": "VBUS_PRST",
+      "basis": "OVERVIEW row 10 'Name' column (one parameter of Item TM106)"
+    },
+    {
+      "field": "isTrim",
+      "value": false,
+      "basis": "'Trim' column empty; rules: Y/Yes means trim, anything else non-trim"
+    },
+    {
+      "field": "powerSequence",
+      "value": "4 vset entries in source order",
+      "basis": "vset[] commands in Code1 + Code2 verbatim; pluseTime kept verbatim ('100e-6' direct, '1e-3'); rampFrom derived from the contract's same-Pin same-status run clause and the previous same-Pin value"
+    },
+    {
+      "field": "registerFieldIntent",
+      "value": "en_tm[] + field[(DMUX_EN,1),(DMUX_SEL,19)]",
+      "basis": "Code2 register lines in source order; en_tm[] is an explicit contract kind so it is recorded as its own entry"
+    },
+    {
+      "field": "measurement",
+      "value": "V(DTEST0)",
+      "basis": "'Check' column, matches rules syntax V(Pin)"
+    },
+    {
+      "field": "involvedPins",
+      "value": [
+        "vbat",
+        "vbus",
+        "DTEST0"
+      ],
+      "basis": "vset target pins (Code1/Code2) + measurement pin (Check); INT appears only as intent text ('check int pin toggle'), not as an ATE-driven/measured pin in this row's code"
+    }
+  ],
+  "resolutions": [
+    {
+      "id": "pluseTime-1e-3",
+      "finding": "Code2 ramp entries use pluseTime '1e-3'; the rules text enumerates only 100e-6 (direct) and 100e-3 (ramp).",
+      "resolution": "Read as ramp: the row's own Notes state 'ramp up/down vbus from 3~5V' and HELPER says 'ramp VBUS'; the two 1e-3 entries form a same-Pin same-status run (vbus 5 then 3), which the output contract's rampFrom clause explicitly covers; additionally the workbook's own codeExplain glossary names the vset third argument 'rampTime', so a 1e-3 pulse time is a 1 ms ramp time.",
+      "evidence": [
+        "Notes column",
+        "HELPER column",
+        "output-contract powerSequence.rampFrom description",
+        "codeExplain sheet vset row: row5: [vset[pinName, / pinVoltToGnd, / rampTime, / switchOnAftSrcReady] || *Vsource is regard to PGND. / *switchOnAftSrcReady=0; => switch(between src and chip pad) is on before source ramp ramp. / *switchOnAftSrcReady=1"
+      ]
+    },
+    {
+      "id": "stage-order-vs-dynamic-ramp",
+      "finding": "Two ramp entries carry status 0 but appear after a status-1 entry; literal stage sorting (all stage 0 before stage 1) would break the declared ramp 3->5->3.",
+      "resolution": "Power phase obeys the stage rule (stage 0: vbat; stage 1: vbus=3 direct, register config in between per source position). The two 1e-3 entries are post-power dynamic actions on VBUS - exactly what the 'Dynamic' column marks ('VBUS', rules: pins that keep acting after power-up, complementing status). powerSequence preserves source order; status is recorded verbatim; execution semantics are stated here for Method_Expert as the rules require.",
+      "evidence": [
+        "Dynamic column",
+        "Notes column",
+        "parsing rules vset status paragraph"
+      ]
+    }
+  ],
+  "observations": [
+    "register config file reg_config/TM106.sv is not part of the provided input material; registerFieldIntent records the row's own Code2 content (contract requires kind+raw only). No missingField raised: no contract-required field is absent from the row.",
+    "de test column (r 3.798 / f 3.613) carried verbatim in testCondition.deTest; threshold interpretation (rising/falling vth, hys) is downstream domain work, not asserted here.",
+    "codeExplain glossary exists for vset/iset/field/check and names the vset third argument 'rampTime'; en_tm/delay/finish have no glossary rows in the inspected sheet; delay[]/finish[] are not contract-required testCondition fields and their raw text is preserved verbatim in rawIntent.",
+    "Old-contract TM106 artifacts were cross-referenced for semantics only under explicit dispatch authorization. Their identity is proven by the pre-overwrite dft-semantic-review.json (read before overwrite), whose reviewedArtifacts recorded dft-meta.json sha256 07379a94341f3d98c4734ef6de5c74e61e2a6b56bbecd3d80a437636182b9cc7 and dft-conditions.yaml sha256 f22578bfead21939ff7e9e8385c3d44030795e47e4f2b30711489f7f57c2fb47. Their interpretation (vbus 3->5->3 ramp, 1e-3 non-direct, en_tm+field register config, V(DTEST0), non-trim) agrees with this independent parse. Their structure was NOT reused; their rawIntent normalized CRLF to LF and empties to '', while this parse keeps the workbook verbatim (CRLF, null).",
+    "Golden case asset team/expert-profiles/ptc-dft-expert/cases/TM106/expected.json binds gate 'python scripts/validate_dft_outputs.py --tm TM106' (expectExit 0, expectContains '\"status\": \"ready\"') and asserts structure/input identity/read boundary only (semanticTruthStatus=PENDING_DOMAIN_INPUT)."
+  ],
+  "gateEvidence": {
+    "nativeSelfCheck": {
+      "performed": true,
+      "checksTotal": 14,
+      "checksPassed": 14,
+      "detail": "native implementation of output-contract.schema.json constraints incl. YAML/JSON equality re-read from disk"
+    },
+    "officialGate": {
+      "command": "python scripts/validate_dft_outputs.py --tm TM106",
+      "status": "NOT_RUN",
+      "exitCode": null,
+      "reason": "process execution is unavailable in this training session: every pwsh invocation (including read-only probes) is rejected by the training boundary, and no other process channel is sanctioned",
+      "impact": "official gate exit code UNKNOWN; must be re-run in an execution-enabled session (round-1 rule: review re-bound here, gate re-run pending)"
+    }
+  }
+}

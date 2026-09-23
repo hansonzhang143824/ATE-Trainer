@@ -1,0 +1,17 @@
+现盘契约: 372138 B / 72e8b552d1da004d07d5d96903ddc8793c30fab39054c4c1a147756816d6c5a8
+  revision = 33
+  bst2sw = [48, 60, 61, 76]
+
+=== 报告内检查 ===
+  rev 28     出现 = False
+  不成立        出现 = False
+  即使保留       出现 = False
+  缺 110      出现 = True
+  attributionSplit.sideCause 摘录:
+    **旁因＝契约决策字段曾未切换（假红）**：`aliasResolution[bst2sw].resolution.closedRelayNumbers` 曾长时间保留 ch18 口径 `[110,61]` ⇒ 屏幕要求一个**非必需**的 `110`、且**看不见真正的缺口 `48/76`**；该假红**已由 t53 落地（现 rev 33 为 `[48,60,61,76]`）解除**。
+
+=== 我的产物中含该错误表述的文件 ===
+  t54_check_causal_wording.py                  L2    """核查：契约现值 + 我产物里是否残留"rev 28 下不成立 / 即使保留也缺 110"这类**因果反向**表述。"""
+  t54_check_causal_wording.py                  L20   for k in ('rev 28', '不成立', '即使保留', '缺 110'):
+  t54_check_causal_wording.py                  L40   if 'rev 28' in t and (KEY_A in t or '缺 110' in t):
+  t54_check_causal_wording.py                  L43   if 'rev 28' in l and (KEY_A in l or '缺 110' in l):

@@ -1,0 +1,2324 @@
+{
+  "runId": "acceptance-20260916-dali10",
+  "generatedBy": "test-strategy-architect (t4, attempt 1)",
+  "generatedAt": "2026-09-16T14:15:48+08:00",
+  "scope": [
+    "TM000",
+    "TM001",
+    "TM102",
+    "TM103",
+    "TM108",
+    "TM109",
+    "TM135",
+    "TM600",
+    "TM601",
+    "TM1205"
+  ],
+  "namingPolicy": "This plan prescribes no test-function name, no C++ symbol and no new API. Instrument, range and register identifiers appear only inside verbatim quotations of upstream artifacts or SDK headers, each accompanied by path + locator + sha256. The implementer takes every identifier from setup-contract.json and the SDK.",
+  "boundary": "Read-only with respect to D:/PROJECT6-DALI/devel and to D:/PROJECT6-DALI/ForCodexDebug/source; this artifact only plans.",
+  "inputArtifacts": [
+    {
+      "path": "team/artifacts/acceptance-20260916-dali10/dft-ir.json",
+      "locator": "whole file",
+      "sha256": "d8f900a41e6a30f2c7022a881f5636a652c0fe0a6189e0d42aeb43fe1388a31b",
+      "note": "t1 DFT intent IR"
+    },
+    {
+      "path": "team/artifacts/acceptance-20260916-dali10/schematic-ir.json",
+      "locator": "whole file",
+      "sha256": "a83110d992071733367f356fd3f4d7007136e5a8b526cfa606e2310b53bc1da4",
+      "note": "t2 schematic IR"
+    },
+    {
+      "path": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+      "locator": "whole file",
+      "sha256": "9c2c6a9c461ed2b13880b9bdba9823339852ab9be654c62885ffa2ca04b46cf0",
+      "note": "t3 global setup contract"
+    },
+    {
+      "path": "team/artifacts/acceptance-20260916-dali10/sch-paths.json",
+      "locator": "path_list",
+      "sha256": "c5bc3b5508ef2e1ffa75a375d2f9ed86928a757164220e3b437efc7af0f99c70",
+      "note": "t3 path evidence (367 paths)"
+    },
+    {
+      "path": "project/DALI/meta/dali_tm_meta.json",
+      "locator": "whole file",
+      "sha256": "1f5eeb5e33372e197dbcb5d0ac2739e3166729f7210a5f7ca46a423dfcd9f7f1",
+      "note": "derived meta (TSZ plaintext via python)"
+    },
+    {
+      "path": "project/DALI/meta/test_conditions.yaml",
+      "locator": "whole file",
+      "sha256": "0f4354ed5b3ecc0233fae8689ce70f4e97942ed900d8d8dd7b34d9e4694f5c48",
+      "note": "test conditions (TSZ plaintext via python)"
+    },
+    {
+      "path": "project/DALI/input/DFT.csv",
+      "locator": "records 19/20 (0-based 18/19)",
+      "sha256": "b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4",
+      "note": "secondary intent source; TSZ plaintext"
+    },
+    {
+      "path": "knowledge/references/L4-Golden-code/tm600-normal-highcurrent.cpp",
+      "locator": "whole file",
+      "sha256": "8cdb0be1dd8381008a6a6ca84743170d6e1cf6f5c84f21a1e2e947a0187b72ce",
+      "note": "archived TM600 golden (legacy generation)"
+    },
+    {
+      "path": "knowledge/references/L4-Golden-code/tm600-normal-highcurrent.md",
+      "locator": "line 16",
+      "sha256": "0e98caa7f5287ec38e1f169e9a7607ae3b39f97145ca123fd0e8d5e5561a844b",
+      "note": "golden notes: FPVI resource arbitration"
+    },
+    {
+      "path": "knowledge/references/L4-Golden-code/toggle-template.cpp",
+      "locator": "whole file",
+      "sha256": "2c5224890be330a21407c9c34c581fecd8c9054f88c3414417e0c330c9eb79a4",
+      "note": "toggle template (ramp rise/fall/hys)"
+    },
+    {
+      "path": "knowledge/references/L4-Golden-code/TM1205_TRX_BST_UV_GD.cpp",
+      "locator": "whole file",
+      "sha256": "67d0c3f1c4e5c907fcf2b41fdaa058dc9655142e5ed64438f06c215529c4b01d",
+      "note": "TM1205 golden (6-step skeleton)"
+    },
+    {
+      "path": "knowledge/standards/rules-registry.md",
+      "locator": "R-PON / R-BST-SW / R-VIR / R-AWG / R-HYS",
+      "sha256": "9ba6e2524bff615a89d10162476dfd724748d263a712b7040c78dc91dafe92d1",
+      "note": "accumulated rules"
+    },
+    {
+      "path": "knowledge/standards/units.md",
+      "locator": "lines 48-75",
+      "sha256": "cd9e299ea23fcee56fd2138a8e34edacaf37ee0ee5ccd20fc10e39bcb693b362",
+      "note": "unit conversion + FV/FI + R-VIR iron rules"
+    },
+    {
+      "path": "team/artifacts/acceptance-20260916-dali10/schematic-ir-sensing.json",
+      "locator": "dfdPairVerdicts / nonKelvinInstruments / channelOptionsForRequiredPairs",
+      "sha256": "43ad8c84ed21290efbb8a955568cab382fdaa5a766405e44bd2f337633a818f8",
+      "note": "t2 supplementary sensing evidence (hash recomputed at build time; this artifact has already been regenerated more than once)"
+    },
+    {
+      "path": "project/DALI/reg_config/tm600.sv",
+      "locator": "register writes",
+      "sha256": "290574bcd198cb5e85429f8ae37f91ce97da31713cfc7075b9d07e57014bada0",
+      "note": "per-TM register authority (high-side item)"
+    },
+    {
+      "path": "project/DALI/reg_config/tm601.sv",
+      "locator": "register writes",
+      "sha256": "d250b43cdaba3513b031f6dfc5ffc4743f5c6058787709f7286122152948fade",
+      "note": "per-TM register authority (low-side item)"
+    }
+  ],
+  "items": [
+    {
+      "tm": "TM000",
+      "name": "Iq_Standby",
+      "symbol": "TM000_IQ_STANDBY (already present in the debug test.cpp)",
+      "classification": {
+        "families": [
+          "normal",
+          "grouped"
+        ],
+        "rationale": "A static supply-current measurement with no ramp, threshold search or trim: the DUT sits in standby and one current is read. It is 'grouped' because TM000_1 is a second condition of the same base item sharing the same method, differing only in register/condition setup - planned as one method with variant parameters, not as two methods.",
+        "specialStructures": [
+          "grouped variant expansion (TM000_1)",
+          "combined power-up through the contract's global sequence"
+        ]
+      },
+      "methodFamily": [
+        "normal",
+        "grouped",
+        "static supply-current measurement (single point, no ramp)"
+      ],
+      "methodIntent": "Measure the standby supply current once, after the standby condition and a 10 ms settle, and log it per site in uA. No search, no iteration, no retained state.",
+      "preconditions": [
+        "Apply the setup contract's global initialization unchanged (its 12 steps) before any TM-specific delta; the contract is the single authority for relays, sources, channels, TReg and power sequence.",
+        "Apply only the TM's own delta (relaySet + pinRouteTable + stimuli + registerDelta) on top of the global state; do not re-derive routes from this plan.",
+        "Verify the contract's safety invariants hold before energising: BST >= SW always (BST-SW <= 5 V), no relay pair that shorts two nodes through the shared floating-instrument bus, and only one function per site at a time.",
+        "Standby condition applied: the base row's register condition (detection paths disabled) written explicitly - do not rely on defaults.",
+        "Current measurement routed on the VBAT channel; no floating high-current loop is involved."
+      ],
+      "parameters": [
+        {
+          "name": "condition",
+          "kind": "register block",
+          "value": "per contract stimuli (base) / per variant (TM000_1)",
+          "source": "OVERVIEW Code2 + contract tmDeltas.TM000"
+        },
+        {
+          "name": "supply",
+          "kind": "voltage",
+          "value": "per contract global initialization (VBAT rail)",
+          "unit": "V"
+        },
+        {
+          "name": "settle",
+          "kind": "time",
+          "value": 10,
+          "unit": "ms",
+          "source": "OVERVIEW Code3 delay[10e-3]"
+        },
+        {
+          "name": "measureSamples",
+          "kind": "count",
+          "value": "per contract measure plan",
+          "note": "single-point current, averaging per the project's normal measurement convention"
+        }
+      ],
+      "sequence": [
+        "Global initialization (contract).",
+        "Apply TM000 relay delta and pin routes (contract).",
+        "Enter test mode and write the standby register condition.",
+        "Wait the 10 ms settle.",
+        "Measure the VBAT supply current (single point).",
+        "Convert to uA and store per site.",
+        "Cleanup per contract."
+      ],
+      "measurement": {
+        "kind": "MI",
+        "pin": "VBAT",
+        "unit": "uA",
+        "form": "single-ended supply current after settle; no differential pair, no forced current",
+        "source": "OVERVIEW Check=I(VBAT) (contract measure plan)"
+      },
+      "calculation": {
+        "formula": "Iq_uA = I_measured_A * 1e6",
+        "unit": "uA",
+        "rule": "log the measured value; no theoretical substitution"
+      },
+      "limits": [
+        {
+          "name": "Iq_Standby",
+          "value": 23,
+          "unit": "uA",
+          "comparison": "record-only until a tolerance is published",
+          "source": "OVERVIEW ExpectValue '23 w/o digital iq.' (dft-ir limits[0], sourceRank 1)",
+          "tolerance": "NOT PUBLISHED in any DFT source",
+          "note": "Acceptance judgement must be reported as 'no published tolerance' rather than a fabricated +-window."
+        }
+      ],
+      "datalog": [
+        {
+          "field": "Iq_standby_<variant>",
+          "unit": "uA",
+          "perSite": true,
+          "source": "Meta parameter for the base and its variants"
+        }
+      ],
+      "exceptionalRequirements": [
+        "Variant TM000_1 must reuse the same method with its own parameters; do not create a second method.",
+        "If a variant's register condition differs only in fields, express it as parameters - the plan forbids duplicating the method per variant."
+      ],
+      "implementationEvidence": [
+        {
+          "existing": "TM000_IQ_STANDBY in the debug test.cpp (read-only reference; lines are recorded in dft-ir implementationState)"
+        },
+        {
+          "existing": "Meta function entry for the base and variants (dali_tm_meta.json)"
+        },
+        {
+          "existing": "Meta/test_conditions entry for the base name (test_conditions.yaml)"
+        },
+        {
+          "contract": "setup-contract.json tmDeltas.TM000 (relaySet, pinRouteTable, stimuli, cleanupDelta)"
+        }
+      ],
+      "unresolved": [
+        "Tolerance is not published (all ten items share this gap); report as record-only."
+      ],
+      "cleanup": [
+        "Follow the contract's global cleanup (8 steps): FI=0 -> FV=0 -> unified RELAY_OFF, rails bled to AGND, then the floating instrument released last.",
+        "Restore every TM-specific relay and register to the contract's post-function state so the next TM starts from the documented baseline."
+      ],
+      "loopsAndSites": {
+        "sites": "parallel sites per the contract's per-site channel budget; S1 site1 evidence detail is in the contract / schematic IR",
+        "sharedRelays": "cross-site shared mechanical relays tagged _S1S2 (cap gates and Kelvin rows) cannot be switched independently between sites - keep the run single-function per site while TM600/TM601 execute"
+      },
+      "authorVersion": "t4 attempt 1",
+      "stimulus": [
+        {
+          "driven": "supply rail",
+          "kind": "voltage",
+          "value": "per contract global initialization",
+          "unit": "V",
+          "source": "contract globalInitialization + tmDeltas.TM000.stimuli"
+        },
+        {
+          "driven": "standby register condition",
+          "kind": "register block",
+          "value": "detection paths disabled for the base row",
+          "source": "OVERVIEW Code2 + contract registerDelta (base and variants)"
+        },
+        {
+          "driven": "settle",
+          "kind": "time",
+          "value": 10,
+          "unit": "ms",
+          "source": "OVERVIEW Code3"
+        }
+      ]
+    },
+    {
+      "tm": "TM001",
+      "name": "Iin_Suspend",
+      "symbol": "TM001_IIN_SUSPEND (already present in the debug test.cpp)",
+      "classification": {
+        "families": [
+          "normal",
+          "grouped"
+        ],
+        "rationale": "Same shape as TM000 - one static current in a defined condition, no ramp/search. Grouped because TM001_2 and TM001_3 are additional conditions of the same base method.",
+        "specialStructures": [
+          "grouped variant expansion (TM001_2, TM001_3)",
+          "test-mode entry required before register writes"
+        ]
+      },
+      "methodFamily": [
+        "normal",
+        "grouped",
+        "static supply-current measurement (single point, no ramp)"
+      ],
+      "methodIntent": "Measure the suspend-mode supply current once after the suspend condition and a 10 ms settle. No search; no retained state.",
+      "preconditions": [
+        "Apply the setup contract's global initialization unchanged (its 12 steps) before any TM-specific delta; the contract is the single authority for relays, sources, channels, TReg and power sequence.",
+        "Apply only the TM's own delta (relaySet + pinRouteTable + stimuli + registerDelta) on top of the global state; do not re-derive routes from this plan.",
+        "Verify the contract's safety invariants hold before energising: BST >= SW always (BST-SW <= 5 V), no relay pair that shorts two nodes through the shared floating-instrument bus, and only one function per site at a time.",
+        "Test mode entered before any register write (OVERVIEW Code2 en_tm[]).",
+        "Suspend condition register block written explicitly (WAKE_UP and gate bits per contract)."
+      ],
+      "parameters": [
+        {
+          "name": "condition",
+          "kind": "register block",
+          "value": "per contract stimuli (base) / per variant (TM001_2, TM001_3)"
+        },
+        {
+          "name": "supply",
+          "kind": "voltage",
+          "value": "per contract global initialization",
+          "unit": "V"
+        },
+        {
+          "name": "settle",
+          "kind": "time",
+          "value": 10,
+          "unit": "ms",
+          "source": "OVERVIEW Code3 delay[10e-3]"
+        }
+      ],
+      "sequence": [
+        "Global initialization (contract).",
+        "TM001 relay delta and pin routes (contract).",
+        "Enter test mode; write the suspend register condition.",
+        "Wait 10 ms.",
+        "Measure the VBAT supply current.",
+        "Convert to uA, store per site.",
+        "Cleanup per contract."
+      ],
+      "measurement": {
+        "kind": "MI",
+        "pin": "VBAT",
+        "unit": "uA",
+        "form": "single-ended supply current after settle",
+        "source": "OVERVIEW Check=I(VBAT)"
+      },
+      "calculation": {
+        "formula": "Iin_uA = I_measured_A * 1e6",
+        "unit": "uA",
+        "rule": "measured value only"
+      },
+      "limits": [
+        {
+          "name": "Iin_Suspend",
+          "value": null,
+          "unit": "uA",
+          "comparison": "record-only",
+          "source": "no numeric limit exists in any DFT source; the bench datapoint 'de test'=1.118 mA is recorded in dft-ir limits[0]",
+          "tolerance": "NOT PUBLISHED",
+          "note": "Must be reported as 'no pass/fail criterion available' with the bench datapoint as reference, never as a fabricated limit."
+        }
+      ],
+      "datalog": [
+        {
+          "field": "Iin_suspend_<variant>",
+          "unit": "uA",
+          "perSite": true
+        }
+      ],
+      "exceptionalRequirements": [
+        "Two variant conditions must be delivered as parameters of one method.",
+        "Because there is no numeric limit, the item closes on execution + logged evidence only; mark it in the final report's limitations."
+      ],
+      "implementationEvidence": [
+        {
+          "existing": "TM001_IIN_SUSPEND in the debug test.cpp"
+        },
+        {
+          "existing": "Meta entry (base + variants)"
+        },
+        {
+          "contract": "setup-contract.json tmDeltas.TM001"
+        }
+      ],
+      "unresolved": [
+        "No numeric limit in any DFT source (registered contract openItem DFT-COVERAGE)."
+      ],
+      "cleanup": [
+        "Follow the contract's global cleanup (8 steps): FI=0 -> FV=0 -> unified RELAY_OFF, rails bled to AGND, then the floating instrument released last.",
+        "Restore every TM-specific relay and register to the contract's post-function state so the next TM starts from the documented baseline."
+      ],
+      "loopsAndSites": {
+        "sites": "parallel sites per the contract's per-site channel budget; S1 site1 evidence detail is in the contract / schematic IR",
+        "sharedRelays": "cross-site shared mechanical relays tagged _S1S2 (cap gates and Kelvin rows) cannot be switched independently between sites - keep the run single-function per site while TM600/TM601 execute"
+      },
+      "authorVersion": "t4 attempt 1",
+      "stimulus": [
+        {
+          "driven": "supply rail",
+          "kind": "voltage",
+          "value": "per contract global initialization",
+          "unit": "V",
+          "source": "contract tmDeltas.TM001.stimuli"
+        },
+        {
+          "driven": "suspend condition",
+          "kind": "register block",
+          "value": "wake + gate bits per contract",
+          "source": "OVERVIEW Code2 + contract registerDelta"
+        },
+        {
+          "driven": "settle",
+          "kind": "time",
+          "value": 10,
+          "unit": "ms",
+          "source": "OVERVIEW Code3"
+        }
+      ]
+    },
+    {
+      "tm": "TM102",
+      "name": "LP_VBG_BF",
+      "symbol": "TM102_HSKP_LP_ATEST0 (already present in the debug test.cpp)",
+      "classification": {
+        "families": [
+          "normal"
+        ],
+        "rationale": "A single voltage read-out on an analogue test pad; no ramp, no search, no trim. Not grouped.",
+        "specialStructures": [
+          "external pad pre-charge before the DUT drives it (weak drive capability)",
+          "source released to high-Z before reading"
+        ]
+      },
+      "methodFamily": [
+        "normal",
+        "analogue test-pad voltage read (single point)"
+      ],
+      "methodIntent": "Route the internal analogue test node to the ATEST pad, release the external source so the DUT drives the pad, and read one voltage.",
+      "preconditions": [
+        "Apply the setup contract's global initialization unchanged (its 12 steps) before any TM-specific delta; the contract is the single authority for relays, sources, channels, TReg and power sequence.",
+        "Apply only the TM's own delta (relaySet + pinRouteTable + stimuli + registerDelta) on top of the global state; do not re-derive routes from this plan.",
+        "Verify the contract's safety invariants hold before energising: BST >= SW always (BST-SW <= 5 V), no relay pair that shorts two nodes through the shared floating-instrument bus, and only one function per site at a time.",
+        "Pre-charge the external pad before connecting the DUT output (the pad must be powered first - OVERVIEW Notes).",
+        "The pad route must be released to high-Z before the measurement; a lingering forced voltage invalidates the reading."
+      ],
+      "parameters": [
+        {
+          "name": "atestMux",
+          "kind": "register field",
+          "value": "per contract registerDelta/stimuli (analogue test mux select for this node)"
+        },
+        {
+          "name": "padRelease",
+          "kind": "operation",
+          "value": "source -> high-Z (current-zero hold) before the read",
+          "source": "OVERVIEW Code2 vset_off[vdm]"
+        },
+        {
+          "name": "settle",
+          "kind": "time",
+          "value": 1,
+          "unit": "ms",
+          "source": "OVERVIEW Code3 delay[1e-3]"
+        }
+      ],
+      "sequence": [
+        "Global initialization (contract).",
+        "TM102 relay delta and pad routes (contract).",
+        "Enter test mode; enable the analogue test pad and select the node.",
+        "Pre-charge the pad, then release the external source to high-Z.",
+        "Wait 1 ms.",
+        "Measure the pad voltage single-ended (per site).",
+        "Cleanup per contract."
+      ],
+      "measurement": {
+        "kind": "MV",
+        "pin": "ATEST0 (VDM pad)",
+        "unit": "V",
+        "form": "single-ended voltage after the external source is released",
+        "source": "contract measure plan (MV on ATEST0)"
+      },
+      "calculation": {
+        "formula": "Vbf_V = V_measured",
+        "unit": "V",
+        "rule": "measured value only; no unit scaling"
+      },
+      "limits": [
+        {
+          "name": "LP_VBG_BF",
+          "value": 1.27,
+          "unit": "V",
+          "comparison": "record-only until a tolerance is published",
+          "source": "OVERVIEW ExpectValue=1.27 nominal (dft-ir limits[0])",
+          "tolerance": "NOT PUBLISHED"
+        }
+      ],
+      "datalog": [
+        {
+          "field": "lp_vbg_bf",
+          "unit": "V",
+          "perSite": true
+        }
+      ],
+      "exceptionalRequirements": [
+        "The pad must never be left driven while the DUT drives it (contention) - the release step is mandatory.",
+        "TM102 shares the AMUX route family with TM103; per the contract they must not run concurrently on one site."
+      ],
+      "implementationEvidence": [
+        {
+          "existing": "TM102_HSKP_LP_ATEST0 in the debug test.cpp"
+        },
+        {
+          "existing": "reg_config/tm102.sv as the register authority"
+        },
+        {
+          "contract": "setup-contract.json tmDeltas.TM102"
+        }
+      ],
+      "cleanup": [
+        "Follow the contract's global cleanup (8 steps): FI=0 -> FV=0 -> unified RELAY_OFF, rails bled to AGND, then the floating instrument released last.",
+        "Restore every TM-specific relay and register to the contract's post-function state so the next TM starts from the documented baseline."
+      ],
+      "loopsAndSites": {
+        "sites": "parallel sites per the contract's per-site channel budget; S1 site1 evidence detail is in the contract / schematic IR",
+        "sharedRelays": "cross-site shared mechanical relays tagged _S1S2 (cap gates and Kelvin rows) cannot be switched independently between sites - keep the run single-function per site while TM600/TM601 execute"
+      },
+      "authorVersion": "t4 attempt 1",
+      "stimulus": [
+        {
+          "driven": "supply rail",
+          "kind": "voltage",
+          "value": "per contract global initialization",
+          "unit": "V",
+          "source": "contract tmDeltas.TM102.stimuli"
+        },
+        {
+          "driven": "analogue test pad",
+          "kind": "pre-charge then release",
+          "value": "pre-charge, then source released to high-Z",
+          "source": "OVERVIEW Code2 + Notes (weak drive)"
+        },
+        {
+          "driven": "settle",
+          "kind": "time",
+          "value": 1,
+          "unit": "ms",
+          "source": "OVERVIEW Code3"
+        }
+      ]
+    },
+    {
+      "tm": "TM103",
+      "name": "LP_HR_0P5U",
+      "symbol": "TM103_HSKP_LP_HR_0P5U (already present in the debug test.cpp)",
+      "classification": {
+        "families": [
+          "normal"
+        ],
+        "rationale": "Force a voltage on the pad and measure the resulting current: a static two-point forcing/measuring operation, not a threshold search.",
+        "specialStructures": [
+          "forced voltage with current measurement (opposite polarity of TM102)"
+        ]
+      },
+      "methodFamily": [
+        "normal",
+        "analogue test-pad current measurement (forced voltage)"
+      ],
+      "methodIntent": "Force 1 V on the VDM pad with the analogue test node selected, and measure the DUT current drawn through that node.",
+      "preconditions": [
+        "Apply the setup contract's global initialization unchanged (its 12 steps) before any TM-specific delta; the contract is the single authority for relays, sources, channels, TReg and power sequence.",
+        "Apply only the TM's own delta (relaySet + pinRouteTable + stimuli + registerDelta) on top of the global state; do not re-derive routes from this plan.",
+        "Verify the contract's safety invariants hold before energising: BST >= SW always (BST-SW <= 5 V), no relay pair that shorts two nodes through the shared floating-instrument bus, and only one function per site at a time.",
+        "The forcing channel is the pad; the measured quantity is the node current, not the forced voltage."
+      ],
+      "parameters": [
+        {
+          "name": "atestMux",
+          "kind": "register field",
+          "value": "per contract registerDelta/stimuli (analogue test mux for this node)"
+        },
+        {
+          "name": "forceVoltage",
+          "kind": "voltage",
+          "value": 1,
+          "unit": "V",
+          "source": "OVERVIEW Code2 vset[vdm,1]"
+        },
+        {
+          "name": "settle",
+          "kind": "time",
+          "value": 1,
+          "unit": "ms",
+          "source": "OVERVIEW Code3 delay[1e-3]"
+        }
+      ],
+      "sequence": [
+        "Global initialization (contract).",
+        "TM103 relay delta and pad routes (contract).",
+        "Enter test mode; enable the analogue test pad and select the node.",
+        "Force 1 V on the pad.",
+        "Wait 1 ms.",
+        "Measure the current through the pad (per site).",
+        "Cleanup per contract."
+      ],
+      "measurement": {
+        "kind": "MI",
+        "pin": "ATEST0 (VDM pad)",
+        "unit": "uA",
+        "form": "current drawn by the selected internal node while 1 V is forced",
+        "source": "contract measure plan (MI on ATEST0; forced 1 V)"
+      },
+      "calculation": {
+        "formula": "Ihr_uA = I_measured_A * 1e6",
+        "unit": "uA",
+        "rule": "measured value only"
+      },
+      "limits": [
+        {
+          "name": "LP_HR_0P5U",
+          "value": 0.5,
+          "unit": "uA",
+          "comparison": "record-only until a tolerance is published",
+          "source": "OVERVIEW ExpectValue=0.5 (dft-ir limits[0])",
+          "tolerance": "NOT PUBLISHED"
+        }
+      ],
+      "datalog": [
+        {
+          "field": "lp_hr_0p5u",
+          "unit": "uA",
+          "perSite": true
+        }
+      ],
+      "exceptionalRequirements": [
+        "Sub-uA currents: the measurement range must be chosen so the value is not swamped by leakage; per the project rule the measured current is used as-is, never the forced value.",
+        "Mutual exclusion with TM102 on the same site (shared pad route)."
+      ],
+      "implementationEvidence": [
+        {
+          "existing": "TM103_HSKP_LP_HR_0P5U in the debug test.cpp"
+        },
+        {
+          "existing": "reg_config/tm103.sv as the register authority"
+        },
+        {
+          "contract": "setup-contract.json tmDeltas.TM103"
+        }
+      ],
+      "cleanup": [
+        "Follow the contract's global cleanup (8 steps): FI=0 -> FV=0 -> unified RELAY_OFF, rails bled to AGND, then the floating instrument released last.",
+        "Restore every TM-specific relay and register to the contract's post-function state so the next TM starts from the documented baseline."
+      ],
+      "loopsAndSites": {
+        "sites": "parallel sites per the contract's per-site channel budget; S1 site1 evidence detail is in the contract / schematic IR",
+        "sharedRelays": "cross-site shared mechanical relays tagged _S1S2 (cap gates and Kelvin rows) cannot be switched independently between sites - keep the run single-function per site while TM600/TM601 execute"
+      },
+      "authorVersion": "t4 attempt 1",
+      "stimulus": [
+        {
+          "driven": "supply rail",
+          "kind": "voltage",
+          "value": "per contract global initialization",
+          "unit": "V",
+          "source": "contract tmDeltas.TM103.stimuli"
+        },
+        {
+          "driven": "pad forcing",
+          "kind": "voltage",
+          "value": 1,
+          "unit": "V",
+          "source": "OVERVIEW Code2 forced voltage on the pad"
+        },
+        {
+          "driven": "settle",
+          "kind": "time",
+          "value": 1,
+          "unit": "ms",
+          "source": "OVERVIEW Code3"
+        }
+      ]
+    },
+    {
+      "tm": "TM108",
+      "name": "VAC1_PRST",
+      "symbol": "TM108_HSKP_VAC1_PRST (already present in the debug test.cpp)",
+      "classification": {
+        "families": [
+          "toggle",
+          "grouped",
+          "awg"
+        ],
+        "rationale": "A threshold search: ramp a pin and capture the flip of a digital monitor. This is an AWG-class measurement (ramp-capture), not a static IV point. Grouped because TM108_1 is a second condition of the same base method.",
+        "specialStructures": [
+          "ramp-capture threshold search",
+          "rise/fall pair with hysteresis",
+          "iteration stop = monitor flip on each sweep",
+          "grouped variant TM108_1"
+        ]
+      },
+      "methodFamily": [
+        "toggle",
+        "awg (ramp-capture)",
+        "threshold + hysteresis"
+      ],
+      "methodIntent": "Sweep VAC1 from below to above the preset threshold (and back) while capturing the monitor flip; report rising threshold, falling threshold and their difference.",
+      "preconditions": [
+        "Apply the setup contract's global initialization unchanged (its 12 steps) before any TM-specific delta; the contract is the single authority for relays, sources, channels, TReg and power sequence.",
+        "Apply only the TM's own delta (relaySet + pinRouteTable + stimuli + registerDelta) on top of the global state; do not re-derive routes from this plan.",
+        "Verify the contract's safety invariants hold before energising: BST >= SW always (BST-SW <= 5 V), no relay pair that shorts two nodes through the shared floating-instrument bus, and only one function per site at a time.",
+        "The ramp source, the ramp direction and the monitor node come from the contract; the threshold is defined as the ramp value at which the monitor flips, so the monitor polarity must be verified before the search.",
+        "Rise and fall are measured in separate sweeps; hysteresis is the difference of the two captured ramp values and is logged in the small unit (mV), never as a raw source unit.",
+        "Monitor mux must be selected for VAC1 (the DFT.csv row for TM109 copies the TM108 mux value - the correct value per source must be used)."
+      ],
+      "parameters": [
+        {
+          "name": "rampPin",
+          "kind": "pin",
+          "value": "VAC1"
+        },
+        {
+          "name": "rampStart",
+          "kind": "voltage",
+          "value": 0,
+          "unit": "V"
+        },
+        {
+          "name": "rampStop",
+          "kind": "voltage",
+          "value": 10,
+          "unit": "V",
+          "source": "OVERVIEW Code2 as written"
+        },
+        {
+          "name": "rampIntent",
+          "kind": "note",
+          "value": "OVERVIEW Notes describe the intended sweep as 3-5 V at 1 V/ms; the written stop value is 10 V - encode the sweep so both the intended window and the flip point are covered, and record which was used"
+        },
+        {
+          "name": "monitor",
+          "kind": "register field",
+          "value": "per contract registerDelta (VAC1 preset path to the monitor node)"
+        },
+        {
+          "name": "sweepCount",
+          "kind": "order",
+          "value": "one rising sweep + one falling sweep"
+        },
+        {
+          "name": "stopCondition",
+          "kind": "rule",
+          "value": "stop each sweep when the monitor flips (or the sweep window is exhausted)"
+        }
+      ],
+      "sequence": [
+        "Global initialization (contract).",
+        "TM108 relay delta and routes (contract).",
+        "Enter test mode; select the VAC1 monitor path.",
+        "Rising sweep on VAC1; capture the ramp value at the monitor flip.",
+        "Return the pin to the low point of the window.",
+        "Falling sweep; capture the ramp value at the flip.",
+        "Compute hysteresis = rise - fall; log all three values in mV.",
+        "Cleanup per contract."
+      ],
+      "measurement": {
+        "kind": "MV (ramp-capture)",
+        "pin": "monitor node selected by the mux (VAC1 preset path)",
+        "unit": "V for the threshold, mV for the hysteresis",
+        "form": "captured ramp value at each flip; two sweeps per site",
+        "source": "contract measure plan (MV on DTEST0, rise/fall/hys)"
+      },
+      "calculation": {
+        "formula": "rise = ramp value at rising flip; fall = ramp value at falling flip; hys_mV = (rise - fall) * 1e3",
+        "unit": "V / mV",
+        "rule": "R-HYS: convert to mV at the assignment, not at the logging call"
+      },
+      "limits": [
+        {
+          "name": "VAC1_PRST rising",
+          "value": 4.4,
+          "unit": "V",
+          "comparison": "record-only until BD-04 is adjudicated",
+          "source": "OVERVIEW + meta 'rising vth 4.4 V, hys 0.35 V' (dft-ir limits[0])",
+          "tolerance": "NOT PUBLISHED"
+        },
+        {
+          "name": "VAC1_PRST rising (registered conflict)",
+          "value": 4.15,
+          "unit": "V",
+          "comparison": "conflicting value retained verbatim",
+          "source": "DFT.csv record 9 'rising vth 4.15 V'",
+          "note": "BD-04 open - do not average, do not silently pick"
+        },
+        {
+          "name": "VAC1_PRST hysteresis",
+          "value": 0.35,
+          "unit": "V",
+          "comparison": "record-only",
+          "source": "OVERVIEW + meta",
+          "tolerance": "NOT PUBLISHED"
+        }
+      ],
+      "datalog": [
+        {
+          "field": "vac1_prst_rise",
+          "unit": "mV",
+          "perSite": true
+        },
+        {
+          "field": "vac1_prst_fall",
+          "unit": "mV",
+          "perSite": true
+        },
+        {
+          "field": "vac1_prst_hys",
+          "unit": "mV",
+          "perSite": true
+        }
+      ],
+      "exceptionalRequirements": [
+        "Because the written ramp stop (10 V) contradicts the documented intent (3-5 V), the plan requires the implementer to keep the intended measurement window and record the deviation - this is a plan-visible ambiguity, not a silent choice.",
+        "The TM108_1 variant must be a parameter set of the same method.",
+        "The monitor flip must not be inferred from the ramp command; it must be an observed transition."
+      ],
+      "implementationEvidence": [
+        {
+          "existing": "TM108_HSKP_VAC1_PRST in the debug test.cpp"
+        },
+        {
+          "golden": "knowledge/references/L4-Golden-code/toggle-template.cpp (ramp-capture + rise/fall/hys pattern)"
+        },
+        {
+          "existing": "reg_config/tm108.sv as the register authority"
+        },
+        {
+          "contract": "setup-contract.json tmDeltas.TM108"
+        }
+      ],
+      "unresolved": [
+        "BD-04: rising threshold 4.4 V (OVERVIEW) vs 4.15 V (DFT.csv) - open."
+      ],
+      "cleanup": [
+        "Follow the contract's global cleanup (8 steps): FI=0 -> FV=0 -> unified RELAY_OFF, rails bled to AGND, then the floating instrument released last.",
+        "Restore every TM-specific relay and register to the contract's post-function state so the next TM starts from the documented baseline."
+      ],
+      "loopsAndSites": {
+        "sites": "parallel sites per the contract's per-site channel budget; S1 site1 evidence detail is in the contract / schematic IR",
+        "sharedRelays": "cross-site shared mechanical relays tagged _S1S2 (cap gates and Kelvin rows) cannot be switched independently between sites - keep the run single-function per site while TM600/TM601 execute"
+      },
+      "authorVersion": "t4 attempt 1",
+      "stimulus": [
+        {
+          "driven": "VAC1",
+          "kind": "voltage ramp",
+          "value": "0 -> written stop value, then back",
+          "unit": "V",
+          "source": "OVERVIEW Code2 (written stop 10 V; documented intent 3-5 V at 1 V/ms - both recorded)"
+        },
+        {
+          "driven": "monitor path",
+          "kind": "register field",
+          "value": "VAC1 preset path",
+          "source": "contract registerDelta"
+        }
+      ]
+    },
+    {
+      "tm": "TM109",
+      "name": "VAC2_PRST",
+      "symbol": "TM109_HSKP_VAC2_PRST (already present in the debug test.cpp)",
+      "classification": {
+        "families": [
+          "toggle",
+          "awg"
+        ],
+        "rationale": "Identical method family to TM108 with a different pin and monitor path; not grouped because no second condition exists for this base.",
+        "specialStructures": [
+          "ramp-capture threshold search",
+          "rise/fall pair with hysteresis",
+          "line-conflict: the DFT.csv row copies TM108's monitor select and ramps a third pin"
+        ]
+      },
+      "methodFamily": [
+        "toggle",
+        "awg (ramp-capture)",
+        "threshold + hysteresis"
+      ],
+      "methodIntent": "Same as TM108 on VAC2 with its own monitor path.",
+      "preconditions": [
+        "Apply the setup contract's global initialization unchanged (its 12 steps) before any TM-specific delta; the contract is the single authority for relays, sources, channels, TReg and power sequence.",
+        "Apply only the TM's own delta (relaySet + pinRouteTable + stimuli + registerDelta) on top of the global state; do not re-derive routes from this plan.",
+        "Verify the contract's safety invariants hold before energising: BST >= SW always (BST-SW <= 5 V), no relay pair that shorts two nodes through the shared floating-instrument bus, and only one function per site at a time.",
+        "The ramp source, the ramp direction and the monitor node come from the contract; the threshold is defined as the ramp value at which the monitor flips, so the monitor polarity must be verified before the search.",
+        "Rise and fall are measured in separate sweeps; hysteresis is the difference of the two captured ramp values and is logged in the small unit (mV), never as a raw source unit.",
+        "The monitor select must be TM109's own value; the DFT.csv row's copied value belongs to TM108 and must not be used.",
+        "The ramp must act on VAC2; the DFT.csv row's alternative pin is a recorded line defect."
+      ],
+      "parameters": [
+        {
+          "name": "rampPin",
+          "kind": "pin",
+          "value": "VAC2"
+        },
+        {
+          "name": "rampStart",
+          "kind": "voltage",
+          "value": 0,
+          "unit": "V"
+        },
+        {
+          "name": "rampStop",
+          "kind": "voltage",
+          "value": 10,
+          "unit": "V",
+          "source": "OVERVIEW Code2 as written (same intent note as TM108)"
+        },
+        {
+          "name": "monitor",
+          "kind": "register field",
+          "value": "per contract registerDelta (VAC2 preset path)"
+        },
+        {
+          "name": "stopCondition",
+          "kind": "rule",
+          "value": "stop each sweep at the monitor flip or window end"
+        }
+      ],
+      "sequence": [
+        "Global initialization (contract).",
+        "TM109 relay delta and routes (contract).",
+        "Enter test mode; select the VAC2 monitor path.",
+        "Rising sweep; capture the flip value.",
+        "Return to the window low point; falling sweep; capture the flip value.",
+        "Compute hysteresis in mV; log rise/fall/hys.",
+        "Cleanup per contract."
+      ],
+      "measurement": {
+        "kind": "MV (ramp-capture)",
+        "pin": "monitor node selected by the mux (VAC2 preset path)",
+        "unit": "V (thresholds), mV (hysteresis)",
+        "form": "captured ramp value at each flip; two sweeps per site"
+      },
+      "calculation": {
+        "formula": "rise = rising flip value; fall = falling flip value; hys_mV = (rise - fall) * 1e3",
+        "unit": "V / mV",
+        "rule": "R-HYS conversion at the assignment"
+      },
+      "limits": [
+        {
+          "name": "VAC2_PRST rising",
+          "value": 4.4,
+          "unit": "V",
+          "comparison": "record-only until BD-04",
+          "source": "OVERVIEW + meta",
+          "tolerance": "NOT PUBLISHED"
+        },
+        {
+          "name": "VAC2_PRST rising (registered conflict)",
+          "value": 4.15,
+          "unit": "V",
+          "comparison": "conflicting value retained verbatim",
+          "source": "DFT.csv record 10",
+          "note": "BD-04 open"
+        },
+        {
+          "name": "VAC2_PRST hysteresis",
+          "value": 0.35,
+          "unit": "V",
+          "comparison": "record-only",
+          "source": "OVERVIEW + meta",
+          "tolerance": "NOT PUBLISHED"
+        }
+      ],
+      "datalog": [
+        {
+          "field": "vac2_prst_rise",
+          "unit": "mV",
+          "perSite": true
+        },
+        {
+          "field": "vac2_prst_fall",
+          "unit": "mV",
+          "perSite": true
+        },
+        {
+          "field": "vac2_prst_hys",
+          "unit": "mV",
+          "perSite": true
+        }
+      ],
+      "exceptionalRequirements": [
+        "The DFT.csv line defect (wrong monitor select and a third pin in the ramp) must be recorded as a source defect in the handoff, not silently corrected.",
+        "BD-04 applies here as well."
+      ],
+      "implementationEvidence": [
+        {
+          "existing": "TM109_HSKP_VAC2_PRST in the debug test.cpp"
+        },
+        {
+          "golden": "knowledge/references/L4-Golden-code/toggle-template.cpp"
+        },
+        {
+          "existing": "reg_config/tm109.sv as the register authority"
+        },
+        {
+          "contract": "setup-contract.json tmDeltas.TM109"
+        }
+      ],
+      "unresolved": [
+        "BD-04 open (4.4 vs 4.15 V)."
+      ],
+      "cleanup": [
+        "Follow the contract's global cleanup (8 steps): FI=0 -> FV=0 -> unified RELAY_OFF, rails bled to AGND, then the floating instrument released last.",
+        "Restore every TM-specific relay and register to the contract's post-function state so the next TM starts from the documented baseline."
+      ],
+      "loopsAndSites": {
+        "sites": "parallel sites per the contract's per-site channel budget; S1 site1 evidence detail is in the contract / schematic IR",
+        "sharedRelays": "cross-site shared mechanical relays tagged _S1S2 (cap gates and Kelvin rows) cannot be switched independently between sites - keep the run single-function per site while TM600/TM601 execute"
+      },
+      "authorVersion": "t4 attempt 1",
+      "stimulus": [
+        {
+          "driven": "VAC2",
+          "kind": "voltage ramp",
+          "value": "0 -> written stop value, then back",
+          "unit": "V",
+          "source": "OVERVIEW Code2"
+        },
+        {
+          "driven": "monitor path",
+          "kind": "register field",
+          "value": "VAC2 preset path (the DFT.csv row's copied value belongs to TM108 and is not used)",
+          "source": "contract registerDelta"
+        }
+      ]
+    },
+    {
+      "tm": "TM135",
+      "name": "VREF_1P0 (trim)",
+      "symbol": "Trim_BG_RES_DIV (trim-driver entry; already present in the debug test.cpp / sub.cpp)",
+      "classification": {
+        "families": [
+          "trim"
+        ],
+        "rationale": "A trim item, not a measurement: the bandgap divider is adjusted until the measured reference reaches its target. The measured quantity is a trim read-back, and the item's closure is the trim code plus the post-trim read-back.",
+        "specialStructures": [
+          "trim search with an explicit target and stop rule",
+          "retained state: the burned trim code",
+          "measurement lives in the trim driver path, not in the test function"
+        ]
+      },
+      "methodFamily": [
+        "trim",
+        "search to target with a retained code"
+      ],
+      "methodIntent": "Execute the divider trim so the measured reference equals the target, then log the resulting trim code and the post-trim measured value.",
+      "preconditions": [
+        "Apply the setup contract's global initialization unchanged (its 12 steps) before any TM-specific delta; the contract is the single authority for relays, sources, channels, TReg and power sequence.",
+        "Apply only the TM's own delta (relaySet + pinRouteTable + stimuli + registerDelta) on top of the global state; do not re-derive routes from this plan.",
+        "Verify the contract's safety invariants hold before energising: BST >= SW always (BST-SW <= 5 V), no relay pair that shorts two nodes through the shared floating-instrument bus, and only one function per site at a time.",
+        "The trim node and its step resolution must come from the TReg resource in the contract; the plan does not define them.",
+        "The read-back path (analogue test node) must be released from any forced source before the trim measurement.",
+        "Trim execution happens through the project's trim driver; the test function only invokes the trim and logs."
+      ],
+      "parameters": [
+        {
+          "name": "trimNode",
+          "kind": "TReg resource",
+          "value": "the barrier/divider trim node named by the contract's treg resource + the meta entry",
+          "source": "contract treg resource + dali_tm_meta.json"
+        },
+        {
+          "name": "target",
+          "kind": "voltage",
+          "value": 1000,
+          "unit": "mV",
+          "source": "OVERVIEW ExpectValue=1 V / meta trim target"
+        },
+        {
+          "name": "atestMux",
+          "kind": "register field",
+          "value": "per contract stimuli (divider read-back path)"
+        },
+        {
+          "name": "stopCondition",
+          "kind": "rule",
+          "value": "stop when the measured value reaches the target within the trim step, or the code range is exhausted",
+          "note": "the concrete search form (linear/exhaustive) is the trim driver's, not this plan's"
+        },
+        {
+          "name": "retainedState",
+          "kind": "state",
+          "value": "the resulting trim code per site"
+        }
+      ],
+      "sequence": [
+        "Global initialization (contract).",
+        "TM135 relay delta and routes (contract).",
+        "Enter test mode; select the read-back path.",
+        "Release the external source on the read-back pad to high-Z.",
+        "Wait 1 ms; establish the pre-trim or post-trim measurement as configured.",
+        "Run the trim so the measured value meets the 1000 mV target.",
+        "Log the trim code and the resulting measured value.",
+        "Cleanup per contract (retain the trim code)."
+      ],
+      "measurement": {
+        "kind": "MV (trim read-back)",
+        "pin": "divider read-back node on the analogue test pad",
+        "unit": "mV",
+        "form": "measured read-back value in mV; the trim driver compares it against the target"
+      },
+      "calculation": {
+        "formula": "value_mV = measured_voltage_V * 1e3; pass condition = |value_mV - target_mV| minimal within the trim step",
+        "unit": "mV",
+        "rule": "the trim decision uses measured values; the programmed code is the output, not the measurement"
+      },
+      "limits": [
+        {
+          "name": "VREF_1P0 trim target",
+          "value": 1000,
+          "unit": "mV",
+          "comparison": "trim to target (search), not a pass/fail window",
+          "source": "OVERVIEW ExpectValue=1 / meta trim target 1000 mV",
+          "tolerance": "NOT PUBLISHED - tolerance is the trim step resolution, which the plan takes from the TReg resource"
+        }
+      ],
+      "datalog": [
+        {
+          "field": "vref_1p0_trim_code",
+          "unit": "code",
+          "perSite": true
+        },
+        {
+          "field": "vref_1p0_measured",
+          "unit": "mV",
+          "perSite": true
+        }
+      ],
+      "exceptionalRequirements": [
+        "The trim must not be re-entered after the code is fixed; retained state is part of the deliverable.",
+        "The measurement function lives in the trim driver layer; the test function must not embed the measurement.",
+        "Same-site exclusivity: trim execution must not overlap another TM's use of the same pad route."
+      ],
+      "implementationEvidence": [
+        {
+          "existing": "Trim_BG_RES_DIV and its measurement function in the debug project (test.cpp / sub.cpp)"
+        },
+        {
+          "existing": "TReg resource entry in the contract (treg family) and the meta trim entry"
+        },
+        {
+          "contract": "setup-contract.json tmDeltas.TM135"
+        }
+      ],
+      "cleanup": [
+        "Follow the contract's global cleanup (8 steps): FI=0 -> FV=0 -> unified RELAY_OFF, rails bled to AGND, then the floating instrument released last.",
+        "Restore every TM-specific relay and register to the contract's post-function state so the next TM starts from the documented baseline."
+      ],
+      "loopsAndSites": {
+        "sites": "parallel sites per the contract's per-site channel budget; S1 site1 evidence detail is in the contract / schematic IR",
+        "sharedRelays": "cross-site shared mechanical relays tagged _S1S2 (cap gates and Kelvin rows) cannot be switched independently between sites - keep the run single-function per site while TM600/TM601 execute"
+      },
+      "authorVersion": "t4 attempt 1",
+      "stimulus": [
+        {
+          "driven": "supply rails",
+          "kind": "voltage",
+          "value": "per contract global initialization",
+          "unit": "V",
+          "source": "contract tmDeltas.TM135.stimuli"
+        },
+        {
+          "driven": "read-back path",
+          "kind": "register field",
+          "value": "divider read-back node on the analogue test pad",
+          "source": "contract registerDelta + meta trim entry"
+        },
+        {
+          "driven": "pad release",
+          "kind": "operation",
+          "value": "external source -> high-Z before the trim read-back",
+          "source": "OVERVIEW Code3 / contract stimuli"
+        },
+        {
+          "driven": "trim execution",
+          "kind": "TReg operation",
+          "value": "target 1000 mV",
+          "unit": "mV",
+          "source": "contract treg resource + meta"
+        }
+      ]
+    },
+    {
+      "tm": "TM600",
+      "name": "HS_RDSON",
+      "symbol": "TM600_HS_RDSON",
+      "classification": {
+        "families": [
+          "normal",
+          "high-current",
+          "differential (force-sense)"
+        ],
+        "rationale": "A force-current / sense-voltage resistance measurement: 1 A is forced through the high-side FET (PMID to SW) and the resulting differential drop across the same pair is measured. It is 'high-current' because 1 A is only realisable on the floating high-current instrument family, and 'differential' because the result is the ratio of a measured differential voltage to the measured loop current.",
+        "specialStructures": [
+          "combined power-up: the bootstrap rail must lead the switched rail by 5 V through a staircase while the high-side FET is forced on",
+          "compliance/clamp is a protection setting, not a test limit (numeric value open)",
+          "explicit FV=0 -> FI=0 -> clamp -> FI=target sequence; clamp re-issued after every mode switch",
+          "teardown order is fixed (FI=0 -> FV=0 -> relay off) with the short 1 A pulse",
+          "first-use candidate: differential sense taken on the floating instrument's own Kelvin pair"
+        ]
+      },
+      "methodFamily": [
+        "high-current resistance (force current, sense differential voltage)",
+        "differential / four-wire Kelvin"
+      ],
+      "methodIntent": "Force 1 A through the high-side FET from PMID to SW with the FET forced on, wait for settling, capture the differential drop across the PMID-SW pair, and compute the resistance from the MEASURED voltage and MEASURED current.",
+      "preconditions": [
+        "Apply the setup contract's global initialization unchanged (its 12 steps) before any TM-specific delta; the contract is the single authority for relays, sources, channels, TReg and power sequence.",
+        "Apply only the TM's own delta (relaySet + pinRouteTable + stimuli + registerDelta) on top of the global state; do not re-derive routes from this plan.",
+        "Verify the contract's safety invariants hold before energising: BST >= SW always (BST-SW <= 5 V), no relay pair that shorts two nodes through the shared floating-instrument bus, and only one function per site at a time.",
+        "The contract's TM600 delta is applied: floating high-current channel with the high terminal on PMID and the low terminal on SW (relay chain recorded in the contract's alias resolution for the PMID-SW alias).",
+        "The Kelvin/sense path must be the sense bus route; the instrument's on-board current-sense shunt route is forbidden (its shunts are the same order as the limit).",
+        "The bootstrap pair must be held at 5 V throughout, and the switched node must follow the PMID staircase so the bootstrap stays positive (E006 invariant).",
+        "The 1 A loop must not be energised while the monitor/shorting relays that merge the two floating channels are closed."
+      ],
+      "parameters": [
+        {
+          "name": "forceLoop",
+          "kind": "node pair",
+          "value": "PMID -> SW (high terminal on PMID, low terminal on SW)",
+          "source": "contract forceSenseTopology + alias resolution for the PMID-SW alias"
+        },
+        {
+          "name": "forceCurrent",
+          "kind": "current",
+          "value": 1.0,
+          "unit": "A",
+          "source": "DFT.csv record 19 and the contract stimuli"
+        },
+        {
+          "name": "forceRamp",
+          "kind": "time",
+          "value": 0.001,
+          "unit": "s",
+          "source": "DFT.csv record 19 (the register-config file uses the same ramp value for its own rail)"
+        },
+        {
+          "name": "currentRange",
+          "kind": "range",
+          "value": "one step above the 1 A target with 2x margin (per the project range rule) - the concrete range identifier is taken from the contract/SDK, not from this plan"
+        },
+        {
+          "name": "voltageRange",
+          "kind": "range",
+          "value": "the lowest range that still accommodates a failing device at 1 A - the concrete identifier comes from the contract/SDK"
+        },
+        {
+          "name": "settle",
+          "kind": "time",
+          "value": 2,
+          "unit": "ms",
+          "source": "the archived golden's 2 ms settle after the 1 A step"
+        },
+        {
+          "name": "measureSamples",
+          "kind": "count",
+          "value": 200,
+          "source": "the archived golden's multi-sample capture for this item (the live precedent uses 50; the golden value is adopted for this 10 mOhm-class item and the difference is recorded)"
+        },
+        {
+          "name": "clamp",
+          "kind": "protection",
+          "value": "50/50 percent-of-range on the 1 V range (provisional engineering default, non-datasheet, may not be used as a pass/fail criterion)",
+          "source": "BD-05 adjudication; the archived golden uses exactly this call",
+          "provisional": true
+        },
+        {
+          "name": "clampReissue",
+          "kind": "rule",
+          "value": "re-issue the clamp after every force/measure mode switch (the setting is cleared by the switch)",
+          "provisional": true
+        }
+      ],
+      "sequence": [
+        "Global initialization (contract).",
+        "TM600 delta: close the floating force pair PMID/SW, the Kelvin sense pair, the VBAT/BST-SW/VDRV capacitor gates and the bootstrap pair (contract).",
+        "Staircase power-up: raise the bootstrap rail and the switched/PMID rail together so the bootstrap always leads by 5 V; force the high-side FET on via the test-mode register block.",
+        "Set the floating channel to voltage-mode zero, then current-mode zero (three-stage preparation).",
+        "Issue the protection clamp (provisional value).",
+        "Apply 1 A with a 1 ms ramp into the PMID->SW loop.",
+        "Wait 2 ms for settling.",
+        "Capture the differential voltage across PMID-SW on the Kelvin sense path and the loop current in the same measurement operation.",
+        "Immediately remove the forced current (1 A pulse must be short).",
+        "Compute the resistance from the measured voltage and measured current; store per site in mOhm.",
+        "Teardown: FI=0 -> FV=0 -> unified relay off, floating channel released last (contract cleanup)."
+      ],
+      "measurement": {
+        "kind": "MV & MI (differential voltage + loop current, same operation)",
+        "pin": "PMID-SW (differential); current on the forcing loop",
+        "unit": "V and A (used only to compute mOhm)",
+        "form": "differential Kelvin voltage across the PMID-SW pair; loop current from the forcing channel",
+        "decisionPoint": {
+          "id": "DV-01",
+          "status": "ruled - primary candidate carries the evidence, fallback recorded",
+          "primary": {
+            "form": "differential sense on the floating instrument's own Kelvin pair",
+            "evidence": [
+              "schematic-ir paths S1_FPVIe_SH0->PMID_S_S1 (relay 83) and S1_FPVIe_SL0->SW_S_S1 (relays 60,61); force and sense run on separate bus wires",
+              "the archived TM600 golden computes the result from the floating instrument's own measured voltage and current",
+              "the schematic IR's own mitigation for this item is: use only the floating instrument's Kelvin routes"
+            ],
+            "conditions": [
+              "the sense path must not use the instrument's shunt (PC) route",
+              "the driver-level setting that routes the sense amplifier to the sense bus must be evidenced by t3 or the SDK before use"
+            ],
+            "annotation": "first use in the live tree; intentional deviation from the live single-ended precedent - flagged for review"
+          },
+          "fallback": {
+            "form": "two single-ended voltage reads on two independent instruments, subtracted",
+            "evidence": [
+              "live precedent in the debug project's trim measurement functions (two voltmeter channels on the sense nodes)"
+            ],
+            "status": "NOT deliverable with the candidates proposed earlier: the named candidates are (i) a channel family with no Kelvin split that the schematic IR explicitly marks invalid for mOhm-level measurement, and (ii) a channel whose + and - terminals serve force and sense respectively. Recording this as 'not deliverable unless t3 identifies an instrument with true Kelvin split'."
+          },
+          "criterion": "evidence from the contract's alias table / driver layer decides; if neither candidate is evidenced, ship the primary as an evidenced first use with a verification requirement, and never fall back to a route the schematic IR forbids."
+        },
+        "activationSemantics": {
+          "orderedSteps": [
+            "1. Configure the floating channel to force 1.0 A with the 1 V voltage range and the 2 A current range (2x margin), output relays on.",
+            "2. Issue the clamp immediately after the range configuration (provisional 50/50 = half of the 1 V range = 0.5 V compliance). The clamp is cleared by any force/measure mode switch, so it must be re-issued after every switch.",
+            "3. Wait 2 ms for settling.",
+            "4. Capture 200 samples at a 5-unit interval with the voltage channel on the x10 gain setting.",
+            "5. Compute the resistance as measured differential voltage divided by measured loop current, times 1e3, in mOhm.",
+            "6. Remove the forced current immediately (1 A pulse must be short), returning current-mode to zero.",
+            "7. Teardown per the contract (voltage-mode zero, then unified relay off, floating channel last)."
+          ],
+          "senseActivation": {
+            "form": "sense taken by the forcing channel's own differential voltage reading while the force loop is closed - no separate sense-activation setting is used in this run",
+            "firstUseInProjectSource": {
+              "reading": "the forcing channel's own measured voltage is never read in the project's live source (0 occurrences)",
+              "goldenSupport": {
+                "path": "knowledge/references/L4-Golden-code/tm600-normal-highcurrent.cpp",
+                "locator": "line 91: the archived TM600 golden divides the forcing channel's measured voltage by its measured current"
+              },
+              "status": "golden-supported, first use in project source - flagged for review"
+            },
+            "excludedThisRun": {
+              "symbols": [
+                "the dedicated sense-activation relay setting",
+                "the contact-mode selection",
+                "the per-side voltage return selectors (high / low)"
+              ],
+              "reason": "zero occurrences in the project source; this run authorises code and compilation only and cannot produce board evidence for their necessity",
+              "consequence": "recorded as bench verification item U9; if board work shows the sense path inactive under the plain relay-on setting, the dedicated sense-activation setting plus contact mode is the documented fallback"
+            }
+          },
+          "gainSetting": {
+            "value": "voltage-channel gain x10",
+            "status": "FIRST USE - intentional deviation from precedent; must be annotated in the implementation and tolerated by review",
+            "argument": "the differential to be resolved is a 10 mV-class signal while the selected voltage range is 1 V, so the x10 gain is required to place the signal usefully inside the range",
+            "rejectedAlternative": "the lowest available voltage range (100 mV class) is explicitly rejected: a failing device at 1 A would saturate against the +-0.5 V clamp, so that range cannot be trusted as the measurement window",
+            "precedentQuality": "the gain argument exists at the method-library layer but is used only at unity gain there (36 call sites at unity), i.e. the argument form is precedented while the non-unity value is not"
+          },
+          "clampAnnotation": {
+            "status": "provisional engineering default",
+            "comparisonRole": "protection only - never a pass/fail criterion"
+          }
+        },
+        "samples": {
+          "count": 200,
+          "interval": 5,
+          "note": "adopted from the archived TM600 golden; the live precedent uses 50 samples - difference recorded"
+        },
+        "gainFirstUse": {
+          "value": "voltage-channel gain x10",
+          "status": "FIRST USE - intentional deviation from precedent; must be annotated in the implementation and tolerated by review",
+          "argument": "the differential to be resolved is a 10 mV-class signal while the selected voltage range is 1 V, so the x10 gain is required to place the signal usefully inside the range",
+          "rejectedAlternative": "the lowest available voltage range (100 mV class) is explicitly rejected: a failing device at 1 A would saturate against the +-0.5 V clamp, so that range cannot be trusted as the measurement window",
+          "precedentQuality": "the gain argument exists at the method-library layer but is used only at unity gain there (36 call sites at unity), i.e. the argument form is precedented while the non-unity value is not"
+        }
+      },
+      "calculation": {
+        "formula": "R_mOhm = |V_measured(PMID-SW)| / |I_measured| * 1e3",
+        "unit": "mOhm",
+        "rule": "R-VIR: both terms must be the MEASURED values from the same measurement operation; the programmed 1 A must never be substituted"
+      },
+      "limits": [
+        {
+          "name": "HS_RDSON",
+          "value": 11,
+          "unit": "mOhm",
+          "comparison": "acceptance limit for this run (user adjudication)",
+          "source": "OVERVIEW row 132 ExpectValue=11 mOhm (Test=direct, Special='Y / 2 FLOAT')",
+          "acceptanceAdjudication": "BD-01 closed by user adjudication: OVERVIEW governs this debug-copy acceptance only; reopen if a newer revision or approved record appears",
+          "registeredConflict": {
+            "value": 10,
+            "unit": "mohm",
+            "source": "DFT.csv record 19",
+            "policy": "retained verbatim; never averaged, rewritten or deleted"
+          },
+          "tolerance": "NOT PUBLISHED in any DFT source"
+        }
+      ],
+      "datalog": [
+        {
+          "field": "hs_rdson",
+          "unit": "mOhm",
+          "perSite": true
+        },
+        {
+          "field": "hs_rdson_vmeas",
+          "unit": "V",
+          "perSite": true,
+          "note": "supporting evidence for the computed value"
+        },
+        {
+          "field": "hs_rdson_imeas",
+          "unit": "A",
+          "perSite": true,
+          "note": "supporting evidence; never the programmed value"
+        }
+      ],
+      "exceptionalRequirements": [
+        "1 A is only realisable on the floating high-current family; the channel budget and the mutual exclusion with TM601 come from the contract.",
+        "The bootstrap staircase and the E006 invariant must hold at every step, including power-down with the FET kept on.",
+        "The clamp is protection only; it must never be logged or evaluated as a limit.",
+        "The sense route must exclude the instrument's shunt route; exclude it explicitly in the implementation and in the review.",
+        "U1 (relay contact rating for 1 A) and U2 (10 kOhm series rows in the sense path) remain open hardware questions and must appear in the limitations section of the final report.",
+        "'Y / 2 FLOAT' is interpreted as two floating nodes (PMID and SW); recorded as an assumption (BD-07) - the plan does not depend on any other reading."
+      ],
+      "implementationEvidence": [
+        {
+          "existing": "no implementation exists in the debug test.cpp for this item - it is a genuine new capability (dft-ir implementationState: absent)"
+        },
+        {
+          "golden": "knowledge/references/L4-Golden-code/tm600-normal-highcurrent.cpp (archived TM600: clamp, 1 A force, measured-V/measured-I division, 4-step bootstrap staircase, teardown with the FET on)"
+        },
+        {
+          "golden": "knowledge/references/L4-Golden-code/tm600-normal-highcurrent.md line 16 (resource arbitration: large current takes the floating bus first, the bootstrap pair degrades to dual independent sources)"
+        },
+        {
+          "golden": "knowledge/references/L4-Golden-code/Rdson.cpp and Rdson.md (resistance method family)"
+        },
+        {
+          "contract": "setup-contract.json tmDeltas.TM600 (relaySet, pinRouteTable, forceSenseTopology, registerDelta, resourceBudget, mutualExclusion, cleanupDelta) + aliasResolution[pmid2sw]"
+        },
+        {
+          "registers": "reg_config/tm600.sv (register authority for this item; the contract quotes it verbatim)"
+        },
+        {
+          "schematic": "schematic-ir.json hazards[high-current | e006-reverse-bias | measurement-validity | shared-resource] and discharge[PMID]"
+        }
+      ],
+      "assumptions": [
+        "Resource arbitration: the contract's arrangement uses both floating channels (one for the 1 A loop, one for the 5 V bootstrap rail); the archived golden instead builds the bootstrap rail from two independent ground-referenced sources and needs only one floating channel. Both are recorded; the contract's arrangement is the primary because it is the approved upstream artifact.",
+        "'Y / 2 FLOAT' = two floating nodes (BD-07)."
+      ],
+      "unresolved": [
+        "BD-05 clamp numeric value (mechanism fixed, value provisional).",
+        "U1 relay contact rating at 1 A; U2 10 kOhm sense rows; U3 shared low terminal; U5 whether the default PMID route must be opened while the floating channel owns PMID.",
+        "DV-01 driver-level evidence for the sense-bus routing."
+      ],
+      "cleanup": [
+        "Follow the contract's global cleanup (8 steps): FI=0 -> FV=0 -> unified RELAY_OFF, rails bled to AGND, then the floating instrument released last.",
+        "Restore every TM-specific relay and register to the contract's post-function state so the next TM starts from the documented baseline."
+      ],
+      "loopsAndSites": {
+        "sites": "parallel sites per the contract's per-site channel budget; S1 site1 evidence detail is in the contract / schematic IR",
+        "sharedRelays": "cross-site shared mechanical relays tagged _S1S2 (cap gates and Kelvin rows) cannot be switched independently between sites - keep the run single-function per site while TM600/TM601 execute"
+      },
+      "authorVersion": "t4 attempt 1",
+      "stimulus": [
+        {
+          "driven": "PMID rail",
+          "kind": "voltage staircase",
+          "value": "raised together with the bootstrap rail so the bootstrap leads by 5 V at every step",
+          "unit": "V",
+          "source": "contract powerSequenceDelta (values per contract register-config rails; DFT ATE value differs - see BD-08)"
+        },
+        {
+          "driven": "bootstrap pair",
+          "kind": "voltage staircase",
+          "value": "held at +5 V relative to the switched node throughout",
+          "unit": "V",
+          "source": "contract powerSequenceDelta + E006 invariant"
+        },
+        {
+          "driven": "supply rail",
+          "kind": "voltage",
+          "value": "per contract power sequence",
+          "unit": "V",
+          "source": "contract tmDeltas.TM600.powerSequenceDelta"
+        },
+        {
+          "driven": "force loop PMID->SW",
+          "kind": "current",
+          "value": 1.0,
+          "unit": "A",
+          "source": "DFT.csv record 19 + contract stimuli (ramp 1 ms)"
+        },
+        {
+          "driven": "protection clamp",
+          "kind": "compliance",
+          "value": "provisional half-range on the 1 V range = 0.5 V, re-issued after each mode switch",
+          "unit": "V",
+          "source": "BD-05 / archived golden",
+          "provisional": true
+        }
+      ],
+      "relayUnion": {
+        "highTerminal": {
+          "node": "PMID",
+          "relays": [
+            83
+          ]
+        },
+        "lowTerminal": {
+          "node": "SW",
+          "relays": [
+            60,
+            61
+          ]
+        },
+        "union": [
+          60,
+          61,
+          83
+        ]
+      }
+    },
+    {
+      "tm": "TM601",
+      "name": "LS_RDSON",
+      "symbol": "TM601_LS_RDSON",
+      "classification": {
+        "families": [
+          "normal",
+          "high-current",
+          "differential (force-sense)"
+        ],
+        "rationale": "Same method family as TM600 applied to the low-side FET: force 1 A through the SW-PGND pair and measure the differential drop across the same pair. The pin pair, the register side bit and the ramp differ from TM600.",
+        "specialStructures": [
+          "force pair SW<->PGND with the ground-side node on the high terminal (matches the netlist's bus assignment and the DFT check label)",
+          "no bootstrap staircase is required for the low-side FET, but the same high-current sequence and teardown rules apply",
+          "shorter current ramp than TM600 (1 us vs 1 ms) taken from the DFT rows",
+          "compliance/clamp identical mechanism to TM600 (numeric value open)"
+        ]
+      },
+      "methodFamily": [
+        "high-current resistance (force current, sense differential voltage)",
+        "differential / four-wire Kelvin"
+      ],
+      "methodIntent": "Force 1 A through the low-side FET between SW and PGND with the low-side FET forced on, wait, capture the differential drop across SW-PGND, and compute the resistance from measured voltage and measured current.",
+      "preconditions": [
+        "Apply the setup contract's global initialization unchanged (its 12 steps) before any TM-specific delta; the contract is the single authority for relays, sources, channels, TReg and power sequence.",
+        "Apply only the TM's own delta (relaySet + pinRouteTable + stimuli + registerDelta) on top of the global state; do not re-derive routes from this plan.",
+        "Verify the contract's safety invariants hold before energising: BST >= SW always (BST-SW <= 5 V), no relay pair that shorts two nodes through the shared floating-instrument bus, and only one function per site at a time.",
+        "The contract's TM601 delta is applied: floating force pair SW<->PGND with PGND on the high terminal, plus the SW-PGND Kelvin sense pair.",
+        "The sense path must be the sense bus route; the shunt (PC) route is forbidden.",
+        "This item cannot share a function or a site with TM600 (channel budget) and cannot run concurrently with TM102/TM103 (shared pad route)."
+      ],
+      "parameters": [
+        {
+          "name": "forceLoop",
+          "kind": "node pair",
+          "value": "SW <-> PGND (high terminal on PGND, low terminal on SW)",
+          "source": "contract forceSenseTopology + alias resolution for the SW-PGND alias"
+        },
+        {
+          "name": "forceCurrent",
+          "kind": "current",
+          "value": 1.0,
+          "unit": "A",
+          "source": "DFT.csv record 20 and the contract stimuli"
+        },
+        {
+          "name": "forceRamp",
+          "kind": "time",
+          "value": 1e-06,
+          "unit": "s",
+          "source": "DFT.csv record 20 (the register-config file's own rail uses 1e-3; the DFT value governs and the difference is recorded)"
+        },
+        {
+          "name": "currentRange",
+          "kind": "range",
+          "value": "one step above the 1 A target with 2x margin (project range rule); identifier from contract/SDK"
+        },
+        {
+          "name": "voltageRange",
+          "kind": "range",
+          "value": "lowest range accommodating a failing device at 1 A; identifier from contract/SDK"
+        },
+        {
+          "name": "settle",
+          "kind": "time",
+          "value": 2,
+          "unit": "ms"
+        },
+        {
+          "name": "measureSamples",
+          "kind": "count",
+          "value": 200,
+          "note": "same treatment as TM600"
+        },
+        {
+          "name": "clamp",
+          "kind": "protection",
+          "value": "same provisional clamp as TM600 (non-datasheet, protection only)",
+          "provisional": true
+        },
+        {
+          "name": "clampReissue",
+          "kind": "rule",
+          "value": "re-issue after every force/measure mode switch",
+          "provisional": true
+        }
+      ],
+      "sequence": [
+        "Global initialization (contract).",
+        "TM601 delta: close the floating force pair SW/PGND, the SW-PGND Kelvin sense pair, the VBAT/VDRV/VBUS capacitor gates (contract).",
+        "Power the rails per the contract; force the low-side FET on via the test-mode register block.",
+        "Set the floating channel to voltage-mode zero, then current-mode zero.",
+        "Issue the protection clamp (provisional value).",
+        "Apply 1 A with a 1 us ramp on the SW->PGND loop.",
+        "Wait 2 ms.",
+        "Capture the differential voltage across SW-PGND and the loop current in the same operation.",
+        "Remove the forced current immediately.",
+        "Compute the resistance from measured voltage and measured current; store per site in mOhm.",
+        "Teardown: FI=0 -> FV=0 -> unified relay off, floating channel released last."
+      ],
+      "measurement": {
+        "kind": "MV & MI (differential voltage + loop current, same operation)",
+        "pin": "SW-PGND (differential); current on the forcing loop",
+        "unit": "V and A (used only to compute mOhm)",
+        "form": "differential Kelvin voltage across SW-PGND; loop current from the forcing channel",
+        "decisionPoint": {
+          "id": "DV-02",
+          "status": "ruled - same form as TM600's DV-01 with the sense pair PGND-SW",
+          "primary": {
+            "form": "differential sense on the floating instrument's own Kelvin pair (relays 60/61 low side, 154/155 high side per the schematic IR)",
+            "annotation": "first use in the live tree; intentional deviation from the live precedent"
+          },
+          "fallback": {
+            "form": "two single-ended reads subtracted",
+            "status": "not deliverable with the candidates proposed earlier (same schematic-IR counter-evidence as DV-01)"
+          },
+          "criterion": "contract alias table / driver evidence decides; never use the shunt route."
+        },
+        "activationSemantics": {
+          "orderedSteps": [
+            "1. Configure the floating channel to force 1.0 A with the 1 V voltage range and the 2 A current range (2x margin), output relays on.",
+            "2. Issue the clamp immediately after the range configuration (provisional 50/50 = half of the 1 V range = 0.5 V compliance). The clamp is cleared by any force/measure mode switch, so it must be re-issued after every switch.",
+            "3. Wait 2 ms for settling.",
+            "4. Capture 200 samples at a 5-unit interval with the voltage channel on the x10 gain setting.",
+            "5. Compute the resistance as measured differential voltage divided by measured loop current, times 1e3, in mOhm.",
+            "6. Remove the forced current immediately (1 A pulse must be short), returning current-mode to zero.",
+            "7. Teardown per the contract (voltage-mode zero, then unified relay off, floating channel last)."
+          ],
+          "senseActivation": {
+            "form": "sense taken by the forcing channel's own differential voltage reading while the force loop is closed - no separate sense-activation setting is used in this run",
+            "firstUseInProjectSource": {
+              "reading": "the forcing channel's own measured voltage is never read in the project's live source (0 occurrences)",
+              "goldenSupport": {
+                "path": "knowledge/references/L4-Golden-code/tm600-normal-highcurrent.cpp",
+                "locator": "line 91: the archived TM600 golden divides the forcing channel's measured voltage by its measured current"
+              },
+              "status": "golden-supported, first use in project source - flagged for review"
+            },
+            "excludedThisRun": {
+              "symbols": [
+                "the dedicated sense-activation relay setting",
+                "the contact-mode selection",
+                "the per-side voltage return selectors (high / low)"
+              ],
+              "reason": "zero occurrences in the project source; this run authorises code and compilation only and cannot produce board evidence for their necessity",
+              "consequence": "recorded as bench verification item U9; if board work shows the sense path inactive under the plain relay-on setting, the dedicated sense-activation setting plus contact mode is the documented fallback"
+            }
+          },
+          "gainSetting": {
+            "value": "voltage-channel gain x10",
+            "status": "FIRST USE - intentional deviation from precedent; must be annotated in the implementation and tolerated by review",
+            "argument": "the differential to be resolved is a 10 mV-class signal while the selected voltage range is 1 V, so the x10 gain is required to place the signal usefully inside the range",
+            "rejectedAlternative": "the lowest available voltage range (100 mV class) is explicitly rejected: a failing device at 1 A would saturate against the +-0.5 V clamp, so that range cannot be trusted as the measurement window",
+            "precedentQuality": "the gain argument exists at the method-library layer but is used only at unity gain there (36 call sites at unity), i.e. the argument form is precedented while the non-unity value is not"
+          },
+          "clampAnnotation": {
+            "status": "provisional engineering default",
+            "comparisonRole": "protection only - never a pass/fail criterion"
+          }
+        },
+        "samples": {
+          "count": 200,
+          "interval": 5,
+          "note": "adopted from the archived TM600 golden; the live precedent uses 50 samples - difference recorded"
+        },
+        "gainFirstUse": {
+          "value": "voltage-channel gain x10",
+          "status": "FIRST USE - intentional deviation from precedent; must be annotated in the implementation and tolerated by review",
+          "argument": "the differential to be resolved is a 10 mV-class signal while the selected voltage range is 1 V, so the x10 gain is required to place the signal usefully inside the range",
+          "rejectedAlternative": "the lowest available voltage range (100 mV class) is explicitly rejected: a failing device at 1 A would saturate against the +-0.5 V clamp, so that range cannot be trusted as the measurement window",
+          "precedentQuality": "the gain argument exists at the method-library layer but is used only at unity gain there (36 call sites at unity), i.e. the argument form is precedented while the non-unity value is not"
+        }
+      },
+      "calculation": {
+        "formula": "R_mOhm = |V_measured(SW-PGND)| / |I_measured| * 1e3",
+        "unit": "mOhm",
+        "rule": "R-VIR: measured values only"
+      },
+      "limits": [
+        {
+          "name": "LS_RDSON",
+          "value": 7.5,
+          "unit": "mOhm",
+          "comparison": "acceptance limit for this run (user adjudication)",
+          "source": "OVERVIEW row 133 ExpectValue=7.5 mOhm (Test=direct, no Special flag)",
+          "acceptanceAdjudication": "BD-01 closed by user adjudication for this debug-copy acceptance only; reopen if a newer revision or approved record appears",
+          "registeredConflict": {
+            "value": 8,
+            "unit": "mohm",
+            "source": "DFT.csv record 20",
+            "policy": "retained verbatim; never averaged or deleted"
+          },
+          "tolerance": "NOT PUBLISHED in any DFT source"
+        }
+      ],
+      "datalog": [
+        {
+          "field": "ls_rdson",
+          "unit": "mOhm",
+          "perSite": true
+        },
+        {
+          "field": "ls_rdson_vmeas",
+          "unit": "V",
+          "perSite": true
+        },
+        {
+          "field": "ls_rdson_imeas",
+          "unit": "A",
+          "perSite": true
+        }
+      ],
+      "exceptionalRequirements": [
+        "No low-side golden case exists; the method is derived from the high-side golden plus the low-side topology, which is why the contract's route facts are mandatory.",
+        "The register side bit differs from TM600; writing the wrong side bit turns on the other FET - the contract's register delta is authoritative.",
+        "The register-config file's force pair and ramp contradict the DFT row for this item (registered conflict); the DFT row governs for this run and the difference stays recorded.",
+        "The clamp is protection only; never a limit.",
+        "U1/U2 remain open hardware questions for the limitations section."
+      ],
+      "implementationEvidence": [
+        {
+          "existing": "no implementation exists in the debug test.cpp for this item - genuine new capability"
+        },
+        {
+          "golden": "knowledge/references/L4-Golden-code/tm600-normal-highcurrent.cpp (method skeleton; the low-side item has no dedicated golden)"
+        },
+        {
+          "golden": "knowledge/references/L4-Golden-code/Rdson.cpp / Rdson.md (resistance method family)"
+        },
+        {
+          "contract": "setup-contract.json tmDeltas.TM601 (relaySet, pinRouteTable, forceSenseTopology, registerDelta, resourceBudget, mutualExclusion, cleanupDelta) + aliasResolution[sw2pgnd]"
+        },
+        {
+          "registers": "reg_config/tm601.sv (register authority; quoted verbatim by the contract)"
+        },
+        {
+          "schematic": "schematic-ir.json hazards[high-current | measurement-validity | polarity] and the SW/PGND paths"
+        }
+      ],
+      "assumptions": [
+        "The SW-PGND sense pair with the ground node on the high terminal is taken from the netlist's bus assignment and matches the DFT check label."
+      ],
+      "unresolved": [
+        "BD-05 clamp value (provisional).",
+        "The register-config file's PMID-SW force pair is electrically inconsistent with a low-side measurement and is not adopted (contract conflict record).",
+        "U1/U2."
+      ],
+      "cleanup": [
+        "Follow the contract's global cleanup (8 steps): FI=0 -> FV=0 -> unified RELAY_OFF, rails bled to AGND, then the floating instrument released last.",
+        "Restore every TM-specific relay and register to the contract's post-function state so the next TM starts from the documented baseline."
+      ],
+      "loopsAndSites": {
+        "sites": "parallel sites per the contract's per-site channel budget; S1 site1 evidence detail is in the contract / schematic IR",
+        "sharedRelays": "cross-site shared mechanical relays tagged _S1S2 (cap gates and Kelvin rows) cannot be switched independently between sites - keep the run single-function per site while TM600/TM601 execute"
+      },
+      "authorVersion": "t4 attempt 1",
+      "stimulus": [
+        {
+          "driven": "supply rails",
+          "kind": "voltage",
+          "value": "per contract power sequence",
+          "unit": "V",
+          "source": "contract tmDeltas.TM601.powerSequenceDelta (register-config rails; DFT ATE value differs - see BD-08)"
+        },
+        {
+          "driven": "force loop SW<->PGND",
+          "kind": "current",
+          "value": 1.0,
+          "unit": "A",
+          "source": "DFT.csv record 20 + contract stimuli (ramp 1 us)"
+        },
+        {
+          "driven": "protection clamp",
+          "kind": "compliance",
+          "value": "same provisional clamp as TM600, re-issued after each mode switch",
+          "unit": "V",
+          "source": "BD-05",
+          "provisional": true
+        }
+      ],
+      "relayUnion": {
+        "highTerminal": {
+          "node": "PGND",
+          "relays": [
+            154,
+            155
+          ]
+        },
+        "lowTerminal": {
+          "node": "SW",
+          "relays": [
+            60,
+            61
+          ]
+        },
+        "union": [
+          60,
+          61,
+          154,
+          155
+        ],
+        "orientation": "inverted: the ground-side node sits on the high terminal, matching the netlist bus assignment and the DFT check label"
+      }
+    },
+    {
+      "tm": "TM1205",
+      "name": "TRX_BST_UV_GD",
+      "symbol": "TM1205_TRX_BST_UV_GD (already present in the debug test.cpp)",
+      "classification": {
+        "families": [
+          "toggle",
+          "differential",
+          "awg",
+          "grouped"
+        ],
+        "rationale": "Two coupled bootstrap rails are swept while their under-voltage indicators are captured; the result is a set of rise/fall/hysteresis values, which is an AWG ramp-capture method. It is differential because each measurement is relative to the bootstrap pair, and grouped because two rails (and six parameters) share one method.",
+        "specialStructures": [
+          "two paired rails measured by one method",
+          "six parameters (rise/fall/hys for each rail)",
+          "override/force register block plus a monitor mux",
+          "no numeric limit exists - structural closure only"
+        ]
+      },
+      "methodFamily": [
+        "toggle",
+        "awg (ramp-capture)",
+        "differential bootstrap-pair threshold"
+      ],
+      "methodIntent": "Sweep each bootstrap rail from below to above its under-voltage release point (and back), capture the monitor flips, and report rise/fall/hysteresis for both rails.",
+      "preconditions": [
+        "Apply the setup contract's global initialization unchanged (its 12 steps) before any TM-specific delta; the contract is the single authority for relays, sources, channels, TReg and power sequence.",
+        "Apply only the TM's own delta (relaySet + pinRouteTable + stimuli + registerDelta) on top of the global state; do not re-derive routes from this plan.",
+        "Verify the contract's safety invariants hold before energising: BST >= SW always (BST-SW <= 5 V), no relay pair that shorts two nodes through the shared floating-instrument bus, and only one function per site at a time.",
+        "The ramp source, the ramp direction and the monitor node come from the contract; the threshold is defined as the ramp value at which the monitor flips, so the monitor polarity must be verified before the search.",
+        "Rise and fall are measured in separate sweeps; hysteresis is the difference of the two captured ramp values and is logged in the small unit (mV), never as a raw source unit.",
+        "The bootstrap pair and the switched node must keep the pair voltage within the allowed step at all times (E006 invariant).",
+        "The monitor mux path must be selected per the contract; the override/force register block precedes the sweep."
+      ],
+      "parameters": [
+        {
+          "name": "rampPins",
+          "kind": "pin pair list",
+          "value": "BST1-SW1 and BST2-SW2 in turn"
+        },
+        {
+          "name": "rampStartStop",
+          "kind": "voltage",
+          "value": "0 -> 4 -> 0",
+          "unit": "V",
+          "source": "OVERVIEW Code2 (4 V ramp over 1 ms)"
+        },
+        {
+          "name": "sweepOrder",
+          "kind": "order",
+          "value": "per rail: one rising sweep, then one falling sweep; the second rail follows the same pattern"
+        },
+        {
+          "name": "monitor",
+          "kind": "register field",
+          "value": "per contract registerDelta (bootstrap under-voltage path to the monitor node)"
+        },
+        {
+          "name": "stopCondition",
+          "kind": "rule",
+          "value": "stop each sweep at the monitor flip or the window end"
+        },
+        {
+          "name": "results",
+          "kind": "parameter set",
+          "value": "six values: rise/fall/hys for each of the two rails"
+        }
+      ],
+      "sequence": [
+        "Global initialization (contract).",
+        "TM1205 relay delta and routes (contract).",
+        "Enter test mode; apply the override/force register block; select the monitor path.",
+        "Rising sweep on the first bootstrap pair; capture the release threshold.",
+        "Falling sweep on the same pair; capture the trigger threshold.",
+        "Repeat both sweeps for the second bootstrap pair.",
+        "Compute the two hysteresis values in mV; log six values.",
+        "Cleanup per contract."
+      ],
+      "measurement": {
+        "kind": "MV (ramp-capture, two pairs)",
+        "pin": "monitor node per selected mux; ramp on each bootstrap pair",
+        "unit": "V (thresholds), mV (hysteresis)",
+        "form": "captured ramp value at each flip; four sweeps per site"
+      },
+      "calculation": {
+        "formula": "hys_mV = (rise - fall) * 1e3 per rail",
+        "unit": "V / mV",
+        "rule": "R-HYS conversion at the assignment"
+      },
+      "limits": [
+        {
+          "name": "TRX_BST_UV_GD",
+          "value": null,
+          "unit": "V",
+          "comparison": "no pass/fail criterion - structural closure only",
+          "source": "OVERVIEW ExpectValue is EMPTY; no tolerance in any DFT source (dft-ir limits[0])",
+          "tolerance": "NOT PUBLISHED",
+          "note": "Per the user/captain position this item closes on structure, execution and logged values; it must be listed under limitations and never presented as a passed/failed electrical result."
+        }
+      ],
+      "datalog": [
+        {
+          "field": "bst1_uv_rise",
+          "unit": "mV",
+          "perSite": true
+        },
+        {
+          "field": "bst1_uv_fall",
+          "unit": "mV",
+          "perSite": true
+        },
+        {
+          "field": "bst1_uv_hys",
+          "unit": "mV",
+          "perSite": true
+        },
+        {
+          "field": "bst2_uv_rise",
+          "unit": "mV",
+          "perSite": true
+        },
+        {
+          "field": "bst2_uv_fall",
+          "unit": "mV",
+          "perSite": true
+        },
+        {
+          "field": "bst2_uv_hys",
+          "unit": "mV",
+          "perSite": true
+        }
+      ],
+      "exceptionalRequirements": [
+        "Six parameters from one method: the implementation must expose them as parameters, not as six methods.",
+        "Because no limit exists, the item must be reported as structural closure (BD-06) with the measured values logged for reference.",
+        "The bootstrap pair must never be reverse-biased during the sweeps."
+      ],
+      "implementationEvidence": [
+        {
+          "existing": "TM1205_TRX_BST_UV_GD in the debug test.cpp"
+        },
+        {
+          "golden": "knowledge/references/L4-Golden-code/TM1205_TRX_BST_UV_GD.cpp and .md (six-step skeleton, ramp-capture)"
+        },
+        {
+          "golden": "knowledge/references/L4-Golden-code/toggle-template.cpp (rise/fall/hys pattern)"
+        },
+        {
+          "existing": "reg_config/tm1205.sv as the register authority"
+        },
+        {
+          "contract": "setup-contract.json tmDeltas.TM1205"
+        }
+      ],
+      "unresolved": [
+        "BD-06: no numeric limit in any DFT source - structural closure only."
+      ],
+      "cleanup": [
+        "Follow the contract's global cleanup (8 steps): FI=0 -> FV=0 -> unified RELAY_OFF, rails bled to AGND, then the floating instrument released last.",
+        "Restore every TM-specific relay and register to the contract's post-function state so the next TM starts from the documented baseline."
+      ],
+      "loopsAndSites": {
+        "sites": "parallel sites per the contract's per-site channel budget; S1 site1 evidence detail is in the contract / schematic IR",
+        "sharedRelays": "cross-site shared mechanical relays tagged _S1S2 (cap gates and Kelvin rows) cannot be switched independently between sites - keep the run single-function per site while TM600/TM601 execute"
+      },
+      "authorVersion": "t4 attempt 1",
+      "stimulus": [
+        {
+          "driven": "bootstrap pairs BST1-SW1 and BST2-SW2",
+          "kind": "voltage ramp",
+          "value": "0 -> 4 -> 0 per pair",
+          "unit": "V",
+          "source": "OVERVIEW Code2 (4 V over 1 ms)"
+        },
+        {
+          "driven": "override/force register block",
+          "kind": "register block",
+          "value": "per contract registerDelta",
+          "source": "OVERVIEW Code1 + contract tmDeltas.TM1205.stimuli"
+        },
+        {
+          "driven": "monitor path",
+          "kind": "register field",
+          "value": "bootstrap under-voltage path",
+          "source": "contract registerDelta"
+        }
+      ]
+    }
+  ],
+  "classificationSummary": [
+    {
+      "tm": "TM000",
+      "families": [
+        "normal",
+        "grouped"
+      ],
+      "rationale": "A static supply-current measurement with no ramp, threshold search or trim: the DUT sits in standby and one current is read. It is 'grouped' because TM000_1 is a second condition of the same base item sharing the same method, differing only in register/condition setup - planned as one method with variant parameters, not as two methods."
+    },
+    {
+      "tm": "TM001",
+      "families": [
+        "normal",
+        "grouped"
+      ],
+      "rationale": "Same shape as TM000 - one static current in a defined condition, no ramp/search. Grouped because TM001_2 and TM001_3 are additional conditions of the same base method."
+    },
+    {
+      "tm": "TM102",
+      "families": [
+        "normal"
+      ],
+      "rationale": "A single voltage read-out on an analogue test pad; no ramp, no search, no trim. Not grouped."
+    },
+    {
+      "tm": "TM103",
+      "families": [
+        "normal"
+      ],
+      "rationale": "Force a voltage on the pad and measure the resulting current: a static two-point forcing/measuring operation, not a threshold search."
+    },
+    {
+      "tm": "TM108",
+      "families": [
+        "toggle",
+        "grouped",
+        "awg"
+      ],
+      "rationale": "A threshold search: ramp a pin and capture the flip of a digital monitor. This is an AWG-class measurement (ramp-capture), not a static IV point. Grouped because TM108_1 is a second condition of the same base method."
+    },
+    {
+      "tm": "TM109",
+      "families": [
+        "toggle",
+        "awg"
+      ],
+      "rationale": "Identical method family to TM108 with a different pin and monitor path; not grouped because no second condition exists for this base."
+    },
+    {
+      "tm": "TM135",
+      "families": [
+        "trim"
+      ],
+      "rationale": "A trim item, not a measurement: the bandgap divider is adjusted until the measured reference reaches its target. The measured quantity is a trim read-back, and the item's closure is the trim code plus the post-trim read-back."
+    },
+    {
+      "tm": "TM600",
+      "families": [
+        "normal",
+        "high-current",
+        "differential (force-sense)"
+      ],
+      "rationale": "A force-current / sense-voltage resistance measurement: 1 A is forced through the high-side FET (PMID to SW) and the resulting differential drop across the same pair is measured. It is 'high-current' because 1 A is only realisable on the floating high-current instrument family, and 'differential' because the result is the ratio of a measured differential voltage to the measured loop current."
+    },
+    {
+      "tm": "TM601",
+      "families": [
+        "normal",
+        "high-current",
+        "differential (force-sense)"
+      ],
+      "rationale": "Same method family as TM600 applied to the low-side FET: force 1 A through the SW-PGND pair and measure the differential drop across the same pair. The pin pair, the register side bit and the ramp differ from TM600."
+    },
+    {
+      "tm": "TM1205",
+      "families": [
+        "toggle",
+        "differential",
+        "awg",
+        "grouped"
+      ],
+      "rationale": "Two coupled bootstrap rails are swept while their under-voltage indicators are captured; the result is a set of rise/fall/hysteresis values, which is an AWG ramp-capture method. It is differential because each measurement is relative to the bootstrap pair, and grouped because two rails (and six parameters) share one method."
+    }
+  ],
+  "globalRulesApplied": [
+    "R-PON: power-on order and range rules (voltage-mode for voltage stimuli, current-mode for current stimuli; range at least twice the target).",
+    "R-BST-SW: bootstrap >= switched node at all times; the large-current loop takes the floating bus first and the bootstrap rail degrades to independent sources.",
+    "R-VIR / E027: resistance always from measured voltage and measured current of the same operation.",
+    "R-HYS: hysteresis computed as rise minus fall and converted to the small unit at the assignment.",
+    "High-current sequence and teardown are fixed (three-stage preparation; FI=0 -> FV=0 -> relay off).",
+    "Relay-state authority: the SCH-Connect-Map legend plus each line's 'needs closed' list is the authority for what must be switched on (the path-definition generator states this as its data authority). Relay state must never be derived from a global normally-closed/normally-open polarity rule; such statements hold only for the specific relay they describe.",
+    "Hash discipline: every cited artifact hash is recomputed at citation time; the run has already seen several artifacts regenerated after being quoted (dft-ir.json, schematic-ir-sensing.json), so quoted hashes are pointers, never anchors.",
+    "Scope discipline for this run: code and compilation closure only. Sense-terminal activation and the clamp value are provisional engineering defaults; no on-tester authorisation is implied."
+  ],
+  "boundaryStatement": "This run delivers a code and compilation closure only. The sense-terminal activation method and the clamp value are provisional engineering defaults and must be verified on the tester before any electrical claim is made.",
+  "assumptions": [
+    "BD-07: 'Y / 2 FLOAT' means two floating nodes.",
+    "Tolerances are unpublished for every item; all items close on execution plus logged evidence, with judgement deferred, unless a decision record above says otherwise."
+  ],
+  "limitations": [
+    "No published tolerance exists for any of the ten items; no pass/fail window is asserted here.",
+    "U1 (relay contact rating at 1 A) and U2 (10 kOhm series rows in the Kelvin sense path) are open hardware questions; no on-tester authorisation is implied by this plan.",
+    "TM1205 closes structurally only (BD-06).",
+    "The clamp value is a provisional engineering default and is protection only (BD-05).",
+    "The source defect recorded for TM109's DFT.csv row (copied monitor select, third pin in the ramp) is carried, not corrected.",
+    "Coverage of TM001/TM102/TM135/TM1205 in DFT.csv is absent; the authoritative DFT input is the workbook (contract openItem DFT-COVERAGE).",
+    "Build/compile success is not electrical validation; this plan asserts nothing about measured silicon behaviour.",
+    "U3 - the two floating channels' low terminals both land on the switched node; plausible but unproven from the netlist.",
+    "U4 - the source type of the two named channel identifiers is inferred, not confirmed.",
+    "U5 - whether the default route to the high-side node must be opened while the floating channel owns that node is unresolved.",
+    "U6 - no sanctioned discharge role exists in the current relay definitions; the contract assumes cap-gate open plus a 1 kOhm bleed (about 4.7 ms time constant on a 4.7 uF rail).",
+    "U7 - (not raised by the contract; slot retained).",
+    "U8 - no formal rejection test exists for the cross path that cross-links the high and low buses.",
+    "U9 (NEW, from this revision) - whether the plain output-relay-on setting is sufficient to activate the sense path, or whether the dedicated sense-activation setting plus contact mode is required. Zero occurrences of the latter in the project source; this run cannot produce board evidence, so it is a bench verification item. If board work shows the sense path inactive, the dedicated sense-activation setting is the documented fallback."
+  ],
+  "blockingDecisions": [
+    {
+      "id": "BD-01",
+      "topic": "TM600/TM601 acceptance limits (limit conflict)",
+      "status": "closed-by-user-adjudication",
+      "severity": "none-remaining-for-limits",
+      "decision": "OVERVIEW governs this run: TM600 = 11 mOhm, TM601 = 7.5 mOhm. The DFT.csv derived values (10 / 8 mohm) are retained verbatim in this plan and in the final report.",
+      "evidence": [
+        {
+          "side": "OVERVIEW",
+          "value": "11 mOhm / 7.5 mOhm",
+          "locator": "OVERVIEW sheet rows 132 / 133",
+          "artifact": "dft-ir.json limitConflictPairs"
+        },
+        {
+          "side": "DFT.csv",
+          "value": "10 mohm / 8 mohm",
+          "locator": "DFT.csv records 19 / 20 (0-based 18 / 19)",
+          "artifact": "dft-ir.json pendingUserAdjudication PA-01/PA-02"
+        }
+      ],
+      "policy": "No averaging, no silent choice, neither value deleted; both sides stay in the file.",
+      "scope": "applies only to this acceptance-20260916-dali10 debug-copy acceptance",
+      "reopenCondition": "must be reopened if a newer revision or an approved record is found"
+    },
+    {
+      "id": "BD-02",
+      "topic": "TM600/TM601 force/sense pin pairs (three-way source disagreement)",
+      "status": "ruled-by-captain",
+      "decision": "TM600: force PMID<->SW, sense PMID-SW. TM601: force SW<->PGND, sense SW-PGND. The register-config files' stimulus pair is superseded (simulation-domain, electrically inconsistent for the low-side item).",
+      "evidence": [
+        {
+          "side": "DFT.csv (adopted)",
+          "locator": "records 19 / 20 row-inline sense labels PMID-SW and PGND-SW"
+        },
+        {
+          "side": "reg_config/*.sv (not adopted as stimulus)",
+          "locator": "tm600.sv / tm601.sv current-force lines, recorded as legacy"
+        },
+        {
+          "side": "schematic IR self-consistency check",
+          "locator": "dft-ir.json forceAndSense.selfConsistency = INCONSISTENT for TM601"
+        }
+      ],
+      "policy": "recorded, not averaged; the not-adopted values remain visible in the contract's conflict list."
+    },
+    {
+      "id": "BD-03",
+      "topic": "TM600/TM601 register map (two maps in parallel)",
+      "status": "ruled-by-captain",
+      "decision": "The per-TM register-config mapping governs: side select 0x02 for the high-side item and 0x01 for the low-side item, with the shared enable/mode writes quoted by the contract. Writing the wrong side bit turns on the other FET.",
+      "evidence": [
+        {
+          "side": "reg_config/tm600.sv:31-33, tm601.sv:26-28 (adopted)",
+          "locator": "quoted verbatim in setup-contract.json registerMap / tmDeltas"
+        },
+        {
+          "side": "DFT.csv register comments (not adopted)",
+          "locator": "records 19/20; the comment names are the suspected swap recorded as a conflict"
+        }
+      ],
+      "policy": "one map adopted, the other retained as a registered conflict; no blending of the two."
+    },
+    {
+      "id": "BD-04",
+      "topic": "TM108/TM109 rising threshold",
+      "status": "OPEN",
+      "severity": "high",
+      "decision": null,
+      "evidence": [
+        {
+          "side": "OVERVIEW + meta",
+          "value": "rising vth 4.4 V, hys 0.35 V",
+          "rank": 1
+        },
+        {
+          "side": "DFT.csv",
+          "value": "rising vth 4.15 V, hys 0.35 V",
+          "locator": "records 9 / 10",
+          "rank": 2
+        }
+      ],
+      "policy": "Both values are carried in the items' limits; measurement and logging are identical either way, so the item is implementable now and the judgement stays open. No averaging.",
+      "requestedAdjudication": "user/captain: which threshold governs this run"
+    },
+    {
+      "id": "BD-05",
+      "topic": "high-current compliance/clamp numeric value",
+      "status": "OPEN (mechanism fixed, value provisional)",
+      "severity": "medium",
+      "decision": "Mechanism: three-stage preparation (voltage-mode zero -> current-mode zero -> clamp) before the 1 A step, and the clamp is cleared by any force/measure mode switch, so it is re-issued after each switch. Numeric value: provisional engineering default of half-range on the 1 V range (0.5 V compliance), explicitly non-datasheet and NOT a pass/fail criterion.",
+      "evidence": [
+        {
+          "side": "SDK header",
+          "locator": "the floating-instrument header declares the clamp call (recorded in the contract's conflict list with the exact lines)"
+        },
+        {
+          "side": "archived golden",
+          "locator": "knowledge/references/L4-Golden-code/tm600-normal-highcurrent.cpp (clamp call with the 50/50 comment)"
+        }
+      ],
+      "policy": "never invented as a specification value; recorded as provisional and as protection only.",
+      "requestedAdjudication": "none required for this debug-copy run; U1 (hardware sign-off before any on-tester use) stays open"
+    },
+    {
+      "id": "BD-06",
+      "topic": "TM1205 has no numeric limit",
+      "status": "OPEN (accepted as structural closure)",
+      "severity": "low",
+      "decision": "TM1205 closes on structure, execution and logged values only; it must be listed under limitations and never reported as a passed/failed electrical result.",
+      "evidence": [
+        {
+          "side": "all DFT sources",
+          "locator": "dft-ir.json items[TM1205].limits[0]: OVERVIEW ExpectValue is EMPTY"
+        }
+      ],
+      "policy": "no fabricated tolerance."
+    },
+    {
+      "id": "BD-07",
+      "topic": "TM600 OVERVIEW Special flag 'Y / 2 FLOAT'",
+      "status": "ASSUMPTION (recorded)",
+      "severity": "low",
+      "decision": "Interpreted as two floating nodes (PMID and SW). Recorded as an assumption, not a measured fact; no part of the TM600 plan depends on any other reading.",
+      "evidence": [
+        {
+          "side": "OVERVIEW row 132",
+          "locator": "Special='Y / 2 FLOAT'"
+        }
+      ],
+      "policy": "assumption is labelled; the flag is not used to size the force current."
+    },
+    {
+      "id": "BD-08",
+      "topic": "TM600/TM601 supply set: DFT/OVERVIEW vs register-config rails (NEW, raised by t4)",
+      "status": "OPEN (needs adjudication)",
+      "severity": "high",
+      "decision": null,
+      "detail": "The DFT/OVERVIEW intent layer carries ATE excitation values (PMID 15 V for TM600, 9 V for TM601, with the standby/supply rail at 4.2 V), while the per-TM register-config files carry simulation-domain values (supply rail 3.5 V, PMID 5 V, and the low-side item supplied from a 5 V rail). The setup contract adopted the register-config values for its per-TM power sequence; an earlier captain ruling stated that register-config stimulus values are simulation-domain and must not override the ATE excitation values. The two positions are in direct conflict and were not averaged.",
+      "evidence": [
+        {
+          "side": "register-config files (adopted by the contract)",
+          "locator": "tm600.sv / tm601.sv ramp values; setup-contract.json tmDeltas.TM600/TM601 powerSequenceDelta"
+        },
+        {
+          "side": "DFT/OVERVIEW (ATE excitation)",
+          "locator": "DFT.csv records 19/20 hardware-initial lines; recorded in the contract's conflict list as 'PMID setpoint divergence'"
+        }
+      ],
+      "policy": "The items reference the contract for the supply set (contract is the approved upstream artifact) and this record marks the divergence explicitly; the implementer must not silently take either side. Registered so that the choice is visible in review and in the final report.",
+      "requestedAdjudication": "captain: confirm that the contract's register-config-derived rails govern this run (default) or that the DFT ATE values govern"
+    },
+    {
+      "id": "DV-01",
+      "topic": "TM600/TM601 differential sense form",
+      "status": "ruled (primary evidenced, fallback recorded as not deliverable)",
+      "severity": "medium",
+      "decision": "Primary: differential sense on the floating instrument's own Kelvin pair, with the sense bus route and the shunt route excluded. Fallback (two single-ended reads subtracted): recorded as not deliverable with the candidates proposed earlier, because the schematic IR marks the named channel family invalid for mOhm-level measurement and the other candidate is not a Kelvin pair.",
+      "evidence": [
+        {
+          "side": "schematic IR (fixture-level, supports the primary)",
+          "locator": "sense paths to the PMID / SW / PGND pins with separate force and sense bus wires; 0 hits for the mandatory instrument relay setting in live code"
+        },
+        {
+          "side": "schematic IR (counter-evidence for the fallback)",
+          "locator": "hazards[measurement-validity] declares the alternative channel family invalid for mOhm-level force/sense work and its mitigation says to use only the floating instrument's Kelvin routes; hazards[shared-resource] shows the bridge relays that would merge the two floating channels"
+        },
+        {
+          "side": "live precedent",
+          "locator": "two-voltmeter subtraction in the debug project's trim measurement functions"
+        },
+        {
+          "side": "schematic IR, supplementary sensing artifact (hash recomputed at build time)",
+          "locator": "dfdPairVerdicts (both Check pairs: kelvinPairAvailable and fourWireProper true, genuine 4-wire, bus route never enters the PC nets) / nonKelvinInstruments / channelOptionsForRequiredPairs (channel 0 recommended for TM600, 3 relays)"
+        }
+      ],
+      "policy": "never fall back to a route the schematic IR forbids; if the driver-level evidence is missing, deliver the primary as an evidenced first use with a verification requirement.",
+      "fourInstrumentRejection": [
+        {
+          "instrument": "quad timing/measurement channel family",
+          "rejectedBecause": "single line per channel with the low side tied to machine ground - no Kelvin split, so it cannot form a differential resistance pair (the schematic IR marks it invalid for mOhm-level differential RDSON)",
+          "reaches": "the Check pins, but not as a Kelvin pair"
+        },
+        {
+          "instrument": "floating voltmeter family",
+          "rejectedBecause": "sense lines only, and one lead lands on a force net, so the pair is a mixed force/sense pair rather than a two-pin Kelvin pair (explicitly listed as not a Kelvin sense pair)",
+          "reaches": "the Check pins, but not as a Kelvin pair"
+        },
+        {
+          "instrument": "general-purpose measurement channel reaching the low-side node",
+          "rejectedBecause": "only one end of either Check pair is reachable and the family is limited to +-200 mA, far below the 1 A requirement",
+          "reaches": "the low-side node only"
+        },
+        {
+          "instrument": "ground-referenced VI family",
+          "rejectedBecause": "its low side returns to analogue ground rather than to the second Check node, so it cannot constitute a floating pair across the device terminals",
+          "reaches": "one node per channel"
+        }
+      ],
+      "activationSurface": "Only one first-use item remains: the non-unity voltage gain. The dedicated sense-activation setting, the contact-mode selection and the per-side voltage return selectors are NOT introduced in this run (zero occurrences in the project source) and are recorded as bench verification item U9."
+    }
+  ],
+  "nextConsumer": "ate-implementer (t5) for implementation; rule-reviewer (t6) will review against this plan and the contract."
+}

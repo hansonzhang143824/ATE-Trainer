@@ -1,0 +1,26 @@
+基线(存量红) 已加载: cbit
+================ run_gates 汇总 ================
+  id               门禁                       状态         exit  秒
+  material-audit   材料门 规则自检                 GREEN      0     0.19
+  material         材料门 主门                   GREEN      0     0.21
+  material-status  材料状态索引 漂移                GREEN      0     0.44
+  awg              AWG/Toggle 3参数 E005      GREEN      0     0.33
+  meta             meta 全覆盖门                GREEN      0     0.84
+  smoke            单函数冒烟                    GREEN      0     0.41
+  input-sync       输入同步门                    GREEN      0     0.32
+  relay-trace      继电器反向检查 E                NEW-RED    1     0.28
+  merge            合并纪律                     GREEN      0     0.20
+  bst-sw           BST-SW 黄金约束              GREEN      0     0.37
+  cbit             CBIT 定义校验                KNOWN-RED  1     1.15
+  path-def         通路定义校验                   GREEN      0     0.40
+*** 新增红 1 个（阻塞）***
+  [relay-trace] 继电器反向检查 E  exit=1
+      - TM643_VBAT_LOOP_INDICTOR: 静态供电 BST_SW 但未闭稳压电容 K57_CAP_BST_SW (FR-001 反向: 供电→闭; meta权威)
+      - TM643_VBAT_LOOP_INDICTOR: 静态供电 VBUS 但未闭稳压电容 K5_VBUS_Cap (FR-001 反向: 供电→闭; meta权威)
+      - TM601_LS_RDSON: 静态供电 SW 但未闭稳压电容 K57_CAP_BST_SW (FR-001 反向: 供电→闭; meta权威)
+      - TM601_LS_RDSON: 静态供电 VBUS 但未闭稳压电容 K5_VBUS_Cap (FR-001 反向: 供电→闭; meta权威)
+      - TM600_HS_RDSON: 虚构继电器名 126 (无 #define)
+      - TM601_LS_RDSON: 虚构继电器名 126 (无 #define)
+      日志: team\artifacts\acceptance-20260916-dali10\gate-logs-t25\relay-trace.log
+存量红（已知, 不阻塞）: cbit
+日志目录: team/artifacts/acceptance-20260916-dali10/gate-logs-t25

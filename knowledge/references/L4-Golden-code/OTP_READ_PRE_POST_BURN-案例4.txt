@@ -1,0 +1,2271 @@
+DUT_API int MTP_TRIM_READBACK(short funcindex, LPCTSTR funclabel)
+{
+//{{AFX_STS_PARAM_PROTOTYPES
+    CParam *BG_RB = StsGetParam(funcindex, "BG_RB");
+    CParam *IZTC_RB = StsGetParam(funcindex, "IZTC_RB");
+    CParam *OSC_96M_RB = StsGetParam(funcindex, "OSC_96M_RB");
+    CParam *OSC_64K_RB = StsGetParam(funcindex, "OSC_64K_RB");
+    CParam *V1P13_RB = StsGetParam(funcindex, "V1P13_RB");
+    CParam *V2P26_RB = StsGetParam(funcindex, "V2P26_RB");
+    CParam *V1P8_RB = StsGetParam(funcindex, "V1P8_RB");
+    CParam *ISNS_GAIN_RX_RB = StsGetParam(funcindex, "ISNS_GAIN_RX_RB");
+    CParam *ISNS_GAIN_TX_RB = StsGetParam(funcindex, "ISNS_GAIN_TX_RB");
+    CParam *ISNS_OS_RB = StsGetParam(funcindex, "ISNS_OS_RB");
+    CParam *ISNS_D2S_OS_RB = StsGetParam(funcindex, "ISNS_D2S_OS_RB");
+    CParam *RTX_IPEAK_GAIN_RB = StsGetParam(funcindex, "RTX_IPEAK_GAIN_RB");
+    CParam *AC1_IPEAK_OS_RB = StsGetParam(funcindex, "AC1_IPEAK_OS_RB");
+    CParam *AC2_IPEAK_OS_RB = StsGetParam(funcindex, "AC2_IPEAK_OS_RB");
+    CParam *MLDO_VOUT_GAIN_RB = StsGetParam(funcindex, "MLDO_VOUT_GAIN_RB");
+    CParam *MLDO_VOUT_OS_RB = StsGetParam(funcindex, "MLDO_VOUT_OS_RB");
+    CParam *ADC_VIN_BUF_RB = StsGetParam(funcindex, "ADC_VIN_BUF_RB");
+    CParam *ADC_VREF_BUF_RB = StsGetParam(funcindex, "ADC_VREF_BUF_RB");
+    CParam *VRECT_MNT_2O22_RB = StsGetParam(funcindex, "VRECT_MNT_2O22_RB");
+    CParam *VOUT_MNT_2O20_RB = StsGetParam(funcindex, "VOUT_MNT_2O20_RB");
+    CParam *LS_COMP_OFF_AC1_RB = StsGetParam(funcindex, "LS_COMP_OFF_AC1_RB");
+    CParam *LS_COMP_OFF_AC2_RB = StsGetParam(funcindex, "LS_COMP_OFF_AC2_RB");
+    CParam *MIN_OFF_TIME_AC1_RB = StsGetParam(funcindex, "MIN_OFF_TIME_AC1_RB");
+    CParam *MIN_OFF_TIME_AC2_RB = StsGetParam(funcindex, "MIN_OFF_TIME_AC2_RB");
+    CParam *MIN_ON_TIME_AC1_RB = StsGetParam(funcindex, "MIN_ON_TIME_AC1_RB");
+    CParam *MIN_ON_TIME_AC2_RB = StsGetParam(funcindex, "MIN_ON_TIME_AC2_RB");
+    CParam *QDT_COMP_OS_RB = StsGetParam(funcindex, "QDT_COMP_OS_RB");
+    CParam *RESEVRED0_RB = StsGetParam(funcindex, "RESEVRED0_RB");
+    CParam *RESEVRED1_RB = StsGetParam(funcindex, "RESEVRED1_RB");
+    CParam *RESEVRED2_RB = StsGetParam(funcindex, "RESEVRED2_RB");
+    CParam *RESEVRED3_RB = StsGetParam(funcindex, "RESEVRED3_RB");
+    CParam *RESEVRED4_RB = StsGetParam(funcindex, "RESEVRED4_RB");
+    CParam *RESEVRED5_RB = StsGetParam(funcindex, "RESEVRED5_RB");
+    CParam *NA1_RB = StsGetParam(funcindex, "NA1_RB");
+    CParam *NA2_RB = StsGetParam(funcindex, "NA2_RB");
+    CParam *NA3_RB = StsGetParam(funcindex, "NA3_RB");
+    CParam *NA4_RB = StsGetParam(funcindex, "NA4_RB");
+    CParam *NA5_RB = StsGetParam(funcindex, "NA5_RB");
+    CParam *PGM_VERSION_RB = StsGetParam(funcindex, "PGM_VERSION_RB");
+    CParam *MTP_LOCK_RB = StsGetParam(funcindex, "MTP_LOCK_RB");
+    CParam *MTP_TRIM_LOCK_RB = StsGetParam(funcindex, "MTP_TRIM_LOCK_RB");
+    CParam *I2C_ADDR_RB = StsGetParam(funcindex, "I2C_ADDR_RB");
+    CParam *CHIP_ID0_RB = StsGetParam(funcindex, "CHIP_ID0_RB");
+    CParam *CHIP_ID1_RB = StsGetParam(funcindex, "CHIP_ID1_RB");
+    CParam *CRC_CHK_H_RB = StsGetParam(funcindex, "CRC_CHK_H_RB");
+    CParam *CRC_CHK_L_RB = StsGetParam(funcindex, "CRC_CHK_L_RB");
+    CParam *RX_ISNS_GAIN_SC_1Ball_L_RB = StsGetParam(funcindex, "RX_ISNS_GAIN_SC_1Ball_L_RB");
+    CParam *RX_ISNS_GAIN_SC_1Ball_H_RB = StsGetParam(funcindex, "RX_ISNS_GAIN_SC_1Ball_H_RB");
+    CParam *RX_ISNS_OS_SC_1Ball_L_RB = StsGetParam(funcindex, "RX_ISNS_OS_SC_1Ball_L_RB");
+    CParam *RX_ISNS_OS_SC_1Ball_H_RB = StsGetParam(funcindex, "RX_ISNS_OS_SC_1Ball_H_RB");
+    CParam *RX_ISNS_GAIN_LC_1Ball_L_RB = StsGetParam(funcindex, "RX_ISNS_GAIN_LC_1Ball_L_RB");
+    CParam *RX_ISNS_GAIN_LC_1Ball_H_RB = StsGetParam(funcindex, "RX_ISNS_GAIN_LC_1Ball_H_RB");
+    CParam *RX_ISNS_OS_LC_1Ball_L_RB = StsGetParam(funcindex, "RX_ISNS_OS_LC_1Ball_L_RB");
+    CParam *RX_ISNS_OS_LC_1Ball_H_RB = StsGetParam(funcindex, "RX_ISNS_OS_LC_1Ball_H_RB");
+    CParam *RX_1Ball_DUMY1_RB = StsGetParam(funcindex, "RX_1Ball_DUMY1_RB");
+    CParam *RX_1Ball_DUMY2_RB = StsGetParam(funcindex, "RX_1Ball_DUMY2_RB");
+    CParam *RX_1Ball_DUMY3_RB = StsGetParam(funcindex, "RX_1Ball_DUMY3_RB");
+    CParam *RX_1Ball_DUMY4_RB = StsGetParam(funcindex, "RX_1Ball_DUMY4_RB");
+    CParam *RX_ISNS_GAIN_SC_4Ball_L_RB = StsGetParam(funcindex, "RX_ISNS_GAIN_SC_4Ball_L_RB");
+    CParam *RX_ISNS_GAIN_SC_4Ball_H_RB = StsGetParam(funcindex, "RX_ISNS_GAIN_SC_4Ball_H_RB");
+    CParam *RX_ISNS_OS_SC_4Ball_L_RB = StsGetParam(funcindex, "RX_ISNS_OS_SC_4Ball_L_RB");
+    CParam *RX_ISNS_OS_SC_4Ball_H_RB = StsGetParam(funcindex, "RX_ISNS_OS_SC_4Ball_H_RB");
+    CParam *RX_ISNS_GAIN_LC_4Ball_L_RB = StsGetParam(funcindex, "RX_ISNS_GAIN_LC_4Ball_L_RB");
+    CParam *RX_ISNS_GAIN_LC_4Ball_H_RB = StsGetParam(funcindex, "RX_ISNS_GAIN_LC_4Ball_H_RB");
+    CParam *RX_ISNS_OS_LC_4Ball_L_RB = StsGetParam(funcindex, "RX_ISNS_OS_LC_4Ball_L_RB");
+    CParam *RX_ISNS_OS_LC_4Ball_H_RB = StsGetParam(funcindex, "RX_ISNS_OS_LC_4Ball_H_RB");
+    CParam *RX_4Ball_DUMY1_RB = StsGetParam(funcindex, "RX_4Ball_DUMY1_RB");
+    CParam *RX_4Ball_DUMY2_RB = StsGetParam(funcindex, "RX_4Ball_DUMY2_RB");
+    CParam *RX_4Ball_DUMY3_RB = StsGetParam(funcindex, "RX_4Ball_DUMY3_RB");
+    CParam *RX_4Ball_DUMY4_RB = StsGetParam(funcindex, "RX_4Ball_DUMY4_RB");
+    CParam *TX_ISNS_GAIN_1Ball_L_RB = StsGetParam(funcindex, "TX_ISNS_GAIN_1Ball_L_RB");
+    CParam *TX_ISNS_GAIN_1Ball_H_RB = StsGetParam(funcindex, "TX_ISNS_GAIN_1Ball_H_RB");
+    CParam *TX_ISNS_OS_1Ball_L_RB = StsGetParam(funcindex, "TX_ISNS_OS_1Ball_L_RB");
+    CParam *TX_ISNS_OS_1Ball_H_RB = StsGetParam(funcindex, "TX_ISNS_OS_1Ball_H_RB");
+    CParam *TX_1Ball_DUMY1_RB = StsGetParam(funcindex, "TX_1Ball_DUMY1_RB");
+    CParam *TX_1Ball_DUMY2_RB = StsGetParam(funcindex, "TX_1Ball_DUMY2_RB");
+    CParam *TX_1Ball_DUMY3_RB = StsGetParam(funcindex, "TX_1Ball_DUMY3_RB");
+    CParam *TX_1Ball_DUMY4_RB = StsGetParam(funcindex, "TX_1Ball_DUMY4_RB");
+    CParam *TX_ISNS_GAIN_4Ball_L_RB = StsGetParam(funcindex, "TX_ISNS_GAIN_4Ball_L_RB");
+    CParam *TX_ISNS_GAIN_4Ball_H_RB = StsGetParam(funcindex, "TX_ISNS_GAIN_4Ball_H_RB");
+    CParam *TX_ISNS_OS_4Ball_L_RB = StsGetParam(funcindex, "TX_ISNS_OS_4Ball_L_RB");
+    CParam *TX_ISNS_OS_4Ball_H_RB = StsGetParam(funcindex, "TX_ISNS_OS_4Ball_H_RB");
+    CParam *TX_4Ball_DUMY1_RB = StsGetParam(funcindex, "TX_4Ball_DUMY1_RB");
+    CParam *TX_4Ball_DUMY2_RB = StsGetParam(funcindex, "TX_4Ball_DUMY2_RB");
+    CParam *TX_4Ball_DUMY3_RB = StsGetParam(funcindex, "TX_4Ball_DUMY3_RB");
+    CParam *TX_4Ball_DUMY4_RB = StsGetParam(funcindex, "TX_4Ball_DUMY4_RB");
+    CParam *VRECT_SNS_GAIN_L_RB = StsGetParam(funcindex, "VRECT_SNS_GAIN_L_RB");
+    CParam *VRECT_SNS_GAIN_H_RB = StsGetParam(funcindex, "VRECT_SNS_GAIN_H_RB");
+    CParam *VRECT_SNS_OS_L_RB = StsGetParam(funcindex, "VRECT_SNS_OS_L_RB");
+    CParam *VRECT_SNS_OS_H_RB = StsGetParam(funcindex, "VRECT_SNS_OS_H_RB");
+    CParam *VRECT_SNS_DUMY1_RB = StsGetParam(funcindex, "VRECT_SNS_DUMY1_RB");
+    CParam *VRECT_SNS_DUMY2_RB = StsGetParam(funcindex, "VRECT_SNS_DUMY2_RB");
+    CParam *VRECT_SNS_DUMY3_RB = StsGetParam(funcindex, "VRECT_SNS_DUMY3_RB");
+    CParam *VRECT_SNS_DUMY4_RB = StsGetParam(funcindex, "VRECT_SNS_DUMY4_RB");
+    CParam *VOUT_SNS_GAIN_L_RB = StsGetParam(funcindex, "VOUT_SNS_GAIN_L_RB");
+    CParam *VOUT_SNS_GAIN_H_RB = StsGetParam(funcindex, "VOUT_SNS_GAIN_H_RB");
+    CParam *VOUT_SNS_OS_L_RB = StsGetParam(funcindex, "VOUT_SNS_OS_L_RB");
+    CParam *VOUT_SNS_OS_H_RB = StsGetParam(funcindex, "VOUT_SNS_OS_H_RB");
+    CParam *VOUT_SNS_DUMY1_RB = StsGetParam(funcindex, "VOUT_SNS_DUMY1_RB");
+    CParam *VOUT_SNS_DUMY2_RB = StsGetParam(funcindex, "VOUT_SNS_DUMY2_RB");
+    CParam *VOUT_SNS_DUMY3_RB = StsGetParam(funcindex, "VOUT_SNS_DUMY3_RB");
+    CParam *VOUT_SNS_DUMY4_RB = StsGetParam(funcindex, "VOUT_SNS_DUMY4_RB");
+    CParam *VRECT2VOUT_GAIN_L_RB = StsGetParam(funcindex, "VRECT2VOUT_GAIN_L_RB");
+    CParam *VRECT2VOUT_GAIN_H_RB = StsGetParam(funcindex, "VRECT2VOUT_GAIN_H_RB");
+    CParam *VRECT2VOUT_OS_L_RB = StsGetParam(funcindex, "VRECT2VOUT_OS_L_RB");
+    CParam *VRECT2VOUT_OS_H_RB = StsGetParam(funcindex, "VRECT2VOUT_OS_H_RB");
+    CParam *GP2_SNS_GAIN_L_RB = StsGetParam(funcindex, "GP2_SNS_GAIN_L_RB");
+    CParam *GP2_SNS_GAIN_H_RB = StsGetParam(funcindex, "GP2_SNS_GAIN_H_RB");
+    CParam *GP2_SNS_OS_L_RB = StsGetParam(funcindex, "GP2_SNS_OS_L_RB");
+    CParam *GP2_SNS_OS_H_RB = StsGetParam(funcindex, "GP2_SNS_OS_H_RB");
+    CParam *GP4_SNS_GAIN_L_RB = StsGetParam(funcindex, "GP4_SNS_GAIN_L_RB");
+    CParam *GP4_SNS_GAIN_H_RB = StsGetParam(funcindex, "GP4_SNS_GAIN_H_RB");
+    CParam *GP4_SNS_OS_L_RB = StsGetParam(funcindex, "GP4_SNS_OS_L_RB");
+    CParam *GP4_SNS_OS_H_RB = StsGetParam(funcindex, "GP4_SNS_OS_H_RB");
+    CParam *VDD_SNS_GAIN_L_RB = StsGetParam(funcindex, "VDD_SNS_GAIN_L_RB");
+    CParam *VDD_SNS_GAIN_H_RB = StsGetParam(funcindex, "VDD_SNS_GAIN_H_RB");
+    CParam *VDD_SNS_OS_L_RB = StsGetParam(funcindex, "VDD_SNS_OS_L_RB");
+    CParam *VDD_SNS_OS_H_RB = StsGetParam(funcindex, "VDD_SNS_OS_H_RB");
+//}}AFX_STS_PARAM_PROTOTYPES
+    // TODO: Add your function code here
+
+	//--------------------------trim code readback-------------------------//
+	double BG_Code_RB[STS_SITE_NUM] = { 0 };
+	double  IZTC_Code_RB[STS_SITE_NUM] = { 0 };
+	double  OSC_96M_Code_RB[STS_SITE_NUM] = { 0 };
+	double  OSC_64K_Code_RB[STS_SITE_NUM] = { 0 };
+	double  V1P13_Code_RB[STS_SITE_NUM] = { 0 };
+	double  V2P26_Code_RB[STS_SITE_NUM] = { 0 };
+	double  V1P8_Code_RB[STS_SITE_NUM] = { 0 };
+	double  ISNS_GAIN_RX_Code_RB[STS_SITE_NUM] = { 0 };
+	double  ISNS_GAIN_TX_Code_RB[STS_SITE_NUM] = { 0 };
+	double  ISNS_OS_Code_RB[STS_SITE_NUM] = { 0 };
+	double  ISNS_D2S_OS_Code_RB[STS_SITE_NUM] = { 0 };
+	double  RTX_IPEAK_GAIN_Code_RB[STS_SITE_NUM] = { 0 };
+	double  AC1_IPEAK_OS_Code_RB[STS_SITE_NUM] = { 0 };
+	double  AC2_IPEAK_OS_Code_RB[STS_SITE_NUM] = { 0 };
+	double  MLDO_VOUT_GAIN_Code_RB[STS_SITE_NUM] = { 0 };
+	double  MLDO_VOUT_OS_Code_RB[STS_SITE_NUM] = { 0 };
+	double  ADC_VIN_BUF_Code_RB[STS_SITE_NUM] = { 0 };
+	double  ADC_VREF_BUF_Code_RB[STS_SITE_NUM] = { 0 };
+	double  VRECT_MNT_2O22_Code_RB[STS_SITE_NUM] = { 0 };
+	double  VOUT_MNT_2O20_Code_RB[STS_SITE_NUM] = { 0 };
+	double  LS_COMP_OFF_AC1_Code_RB[STS_SITE_NUM] = { 0 };
+	double  LS_COMP_OFF_AC2_Code_RB[STS_SITE_NUM] = { 0 };
+	double  MIN_OFF_TIME_AC1_Code_RB[STS_SITE_NUM] = { 0 };
+	double  MIN_OFF_TIME_AC2_Code_RB[STS_SITE_NUM] = { 0 };
+	double  MIN_ON_TIME_AC1_Code_RB[STS_SITE_NUM] = { 0 };
+	double  MIN_ON_TIME_AC2_Code_RB[STS_SITE_NUM] = { 0 };
+	double QDT_COMP_OS_Code_RB[STS_SITE_NUM] = { 0 };
+
+	double MNT_V2X_Code_RB[STS_SITE_NUM] = { 0 };
+	double Reserved0_Code_RB[STS_SITE_NUM] = { 0 };
+	double  Reserved1_Code_RB[STS_SITE_NUM] = { 0 };
+	double  Reserved2_Code_RB[STS_SITE_NUM] = { 0 };
+	double  Reserved3_Code_RB[STS_SITE_NUM] = { 0 };
+	double  Reserved4_Code_RB[STS_SITE_NUM] = { 0 };
+	double  Reserved5_Code_RB[STS_SITE_NUM] = { 0 };
+	double NA1_Code_RB[STS_SITE_NUM] = { 0 };
+	double NA2_Code_RB[STS_SITE_NUM] = { 0 };
+	double NA3_Code_RB[STS_SITE_NUM] = { 0 };
+	double NA4_Code_RB[STS_SITE_NUM] = { 0 };
+	double NA5_Code_RB[STS_SITE_NUM] = { 0 };
+	double PGM_Code_RB[STS_SITE_NUM] = { 0 };
+	double MTP_LOCK_Code_RB[STS_SITE_NUM] = { 0 };
+	double MTP_TRIM_LOCK_Code_RB[STS_SITE_NUM] = { 0 };
+	double I2C_ADDR_Code_RB[STS_SITE_NUM] = { 0 };
+	double CHIP_ID0_Code_RB[STS_SITE_NUM] = { 0 };
+	double CHIP_ID1_Code_RB[STS_SITE_NUM] = { 0 };
+
+	BOOL Burn_Same_As_Read_Flag[STS_SITE_NUM] = { 0 };
+	BOOL CRC_Read_Same_As_Burn_Flag[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x70_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x71_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x72_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x73_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x74_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x75_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x76_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x77_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x78_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x79_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x7a_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x7b_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x7c_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x7d_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x7e_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x7f_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x80_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x81_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x82_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x83_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x84_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x85_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x86_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x87_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x88_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x89_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x8a_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x8b_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x8c_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x8d_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x8e_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x8f_Read[STS_SITE_NUM] = { 0 };
+
+	ULONG Gain_Rx_SC_1ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Rx_SC_1ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Rx_SC_1ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Rx_SC_1ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Rx_LC_1ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Rx_LC_1ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Rx_LC_1ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Rx_LC_1ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Rx_1ball_dummy1[STS_SITE_NUM] = { 0 };
+	ULONG Rx_1ball_dummy2[STS_SITE_NUM] = { 0 };
+	ULONG Rx_1ball_dummy3[STS_SITE_NUM] = { 0 };
+	ULONG Rx_1ball_dummy4[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Rx_SC_4ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Rx_SC_4ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Rx_SC_4ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Rx_SC_4ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Rx_LC_4ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Rx_LC_4ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Rx_LC_4ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Rx_LC_4ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Rx_4ball_dummy1[STS_SITE_NUM] = { 0 };
+	ULONG Rx_4ball_dummy2[STS_SITE_NUM] = { 0 };
+	ULONG Rx_4ball_dummy3[STS_SITE_NUM] = { 0 };
+	ULONG Rx_4ball_dummy4[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Tx_1ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Tx_1ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Tx_1ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Tx_1ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Tx_1ball_dummy1[STS_SITE_NUM] = { 0 };
+	ULONG Tx_1ball_dummy2[STS_SITE_NUM] = { 0 };
+	ULONG Tx_1ball_dummy3[STS_SITE_NUM] = { 0 };
+	ULONG Tx_1ball_dummy4[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Tx_4ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Tx_4ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Tx_4ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Tx_4ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Tx_4ball_dummy1[STS_SITE_NUM] = { 0 };
+	ULONG Tx_4ball_dummy2[STS_SITE_NUM] = { 0 };
+	ULONG Tx_4ball_dummy3[STS_SITE_NUM] = { 0 };
+	ULONG Tx_4ball_dummy4[STS_SITE_NUM] = { 0 };
+	ULONG Gain_vrect_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_vrect_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_vrect_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_vrect_low[STS_SITE_NUM] = { 0 };
+	ULONG Vrect_dummy1[STS_SITE_NUM] = { 0 };
+	ULONG Vrect_dummy2[STS_SITE_NUM] = { 0 };
+	ULONG Vrect_dummy3[STS_SITE_NUM] = { 0 };
+	ULONG Vrect_dummy4[STS_SITE_NUM] = { 0 };
+	ULONG Gain_vout_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_vout_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_vout_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_vout_low[STS_SITE_NUM] = { 0 };
+	ULONG Vout_dummy1[STS_SITE_NUM] = { 0 };
+	ULONG Vout_dummy2[STS_SITE_NUM] = { 0 };
+	ULONG Vout_dummy3[STS_SITE_NUM] = { 0 };
+	ULONG Vout_dummy4[STS_SITE_NUM] = { 0 };
+	ULONG Gain_vrect2vout_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_vrect2vout_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_vrect2vout_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_vrect2vout_low[STS_SITE_NUM] = { 0 };
+	ULONG Gain_gp2_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_gp2_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_gp2_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_gp2_low[STS_SITE_NUM] = { 0 };
+	ULONG Gain_gp4_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_gp4_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_gp4_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_gp4_low[STS_SITE_NUM] = { 0 };
+	ULONG Gain_vdd_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_vdd_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_vdd_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_vdd_low[STS_SITE_NUM] = { 0 };
+	ULONG Data_lot_bit0[STS_SITE_NUM] = { 0 };
+	ULONG Data_lot_bit1[STS_SITE_NUM] = { 0 };
+	ULONG Data_lot_bit2[STS_SITE_NUM] = { 0 };
+	ULONG Data_lot_bit3[STS_SITE_NUM] = { 0 };
+	ULONG Data_lot_bit4[STS_SITE_NUM] = { 0 };
+	ULONG Data_lot_bit5[STS_SITE_NUM] = { 0 };
+	ULONG Data_lot_bit6[STS_SITE_NUM] = { 0 };
+	ULONG Data_lot_bit7[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit0[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit1[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit2[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit3[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit4[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit5[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit6[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit7[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit8[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit9[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit10[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit11[STS_SITE_NUM] = { 0 };
+	ULONG Wafer_x[STS_SITE_NUM] = { 0 };
+	ULONG Wafer_y[STS_SITE_NUM] = { 0 };
+	ULONG Pgm_version[STS_SITE_NUM] = { 0 };
+	ULONG Zero_code[STS_SITE_NUM] = { 0 };
+	ULONG ATE_reserved_0[STS_SITE_NUM] = { 0 };
+	ULONG ATE_reserved_1[STS_SITE_NUM] = { 0 };
+	ULONG ATE_reserved_2[STS_SITE_NUM] = { 0 };
+	ULONG ATE_reserved_3[STS_SITE_NUM] = { 0 };
+	ULONG ATE_reserved_4[STS_SITE_NUM] = { 0 };
+	ULONG ATE_reserved_5[STS_SITE_NUM] = { 0 };
+	ULONG ATE_reserved_6[STS_SITE_NUM] = { 0 };
+	ULONG ATE_reserved_7[STS_SITE_NUM] = { 0 };
+	ULONG Crc_readback_high[STS_SITE_NUM] = { 0 };
+	ULONG Crc_readback_low[STS_SITE_NUM] = { 0 };
+	ULONG Reserved_high[STS_SITE_NUM] = { 0 };
+	ULONG Reserved_low[STS_SITE_NUM] = { 0 };
+
+	cbite.SetOn(K1_PGND2AGND, K11_VRECT_Cap, K15_V5V_Cap, K13_V1P8_Cap, K20_SCL_PU, K21_SDA_PU, -1);
+	delay_ms(3);
+	VRECT_BST1_PGND_FOVI.Set(FV, V_TYP_VRECT, FOVIe_20V, FOVIe_100MA, FOVIe_RELAY_ON);
+	V5V_ACM.Set(FV, V_TYP_V5V, ACM_N2P18V, ACM_200MA, ACM_RELAY_ON);
+	entertestmode();
+	I2CWriteSameData(dev_addr, 0x1000, 0xC0);
+	I2CWriteSameData(dev_addr, 0x1002, 0x88);//����MCU��bit[7]����FORCE_OSC96M(bit[3])
+	I2CWriteSameData(dev_addr, 0x4918, 0x80);//��MTP���߿���Ȩ�л���AP
+	I2CWriteSameData(dev_addr, 0x0017, 0x04);//0x00 32bit read   0x04 byte read 
+	I2CWriteSameData(dev_addr, 0x0012, 0xFF);
+	I2CWriteSameData(dev_addr, 0x0010, 0x80);//select information
+	I2CWriteSameData(dev_addr, 0x001A, 0xA5);
+
+	//----------Read ADC trim code
+	I2C_READ_BYTE(dev_addr, 0x0013, Reg_0x70_Read);
+	I2C_READ_BYTE(dev_addr, 0x0014, Reg_0x71_Read);
+	I2C_READ_BYTE(dev_addr, 0x0015, Reg_0x72_Read);
+	I2C_READ_BYTE(dev_addr, 0x0016, Reg_0x73_Read);
+	I2C_READ_BYTE(dev_addr, 0x0013, Reg_0x74_Read);
+	I2C_READ_BYTE(dev_addr, 0x0014, Reg_0x75_Read);
+	I2C_READ_BYTE(dev_addr, 0x0015, Reg_0x76_Read);
+	I2C_READ_BYTE(dev_addr, 0x0016, Reg_0x77_Read);
+	I2C_READ_BYTE(dev_addr, 0x0013, Reg_0x78_Read);
+	I2C_READ_BYTE(dev_addr, 0x0014, Reg_0x79_Read);
+	I2C_READ_BYTE(dev_addr, 0x0015, Reg_0x7a_Read);
+	I2C_READ_BYTE(dev_addr, 0x0016, Reg_0x7b_Read);
+	I2C_READ_BYTE(dev_addr, 0x0013, Reg_0x7c_Read);
+	I2C_READ_BYTE(dev_addr, 0x0014, Reg_0x7d_Read);
+	I2C_READ_BYTE(dev_addr, 0x0015, Reg_0x7e_Read);
+	I2C_READ_BYTE(dev_addr, 0x0016, Reg_0x7f_Read);
+
+	I2C_READ_BYTE(dev_addr, 0x0013, Reg_0x80_Read);
+	I2C_READ_BYTE(dev_addr, 0x0014, Reg_0x81_Read);
+	I2C_READ_BYTE(dev_addr, 0x0015, Reg_0x82_Read);
+	I2C_READ_BYTE(dev_addr, 0x0016, Reg_0x83_Read);
+	I2C_READ_BYTE(dev_addr, 0x0013, Reg_0x84_Read);
+	I2C_READ_BYTE(dev_addr, 0x0014, Reg_0x85_Read);
+	I2C_READ_BYTE(dev_addr, 0x0015, Reg_0x86_Read);
+	I2C_READ_BYTE(dev_addr, 0x0016, Reg_0x87_Read);
+	I2C_READ_BYTE(dev_addr, 0x0013, Reg_0x88_Read);
+	I2C_READ_BYTE(dev_addr, 0x0014, Reg_0x89_Read);
+	I2C_READ_BYTE(dev_addr, 0x0015, Reg_0x8a_Read);
+	I2C_READ_BYTE(dev_addr, 0x0016, Reg_0x8b_Read);
+	I2C_READ_BYTE(dev_addr, 0x0013, Reg_0x8c_Read);
+	I2C_READ_BYTE(dev_addr, 0x0014, Reg_0x8d_Read);
+	I2C_READ_BYTE(dev_addr, 0x0015, Reg_0x8e_Read);
+	I2C_READ_BYTE(dev_addr, 0x0016, Reg_0x8f_Read);
+    //-------------Read ADC Calibration code
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_Rx_SC_1ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_Rx_SC_1ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_Rx_SC_1ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_Rx_SC_1ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_Rx_LC_1ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_Rx_LC_1ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_Rx_LC_1ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_Rx_LC_1ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Rx_1ball_dummy1);
+	I2C_READ_BYTE(dev_addr, 0x0014, Rx_1ball_dummy2);
+	I2C_READ_BYTE(dev_addr, 0x0015, Rx_1ball_dummy3);
+	I2C_READ_BYTE(dev_addr, 0x0016, Rx_1ball_dummy4);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_Rx_SC_4ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_Rx_SC_4ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_Rx_SC_4ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_Rx_SC_4ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_Rx_LC_4ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_Rx_LC_4ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_Rx_LC_4ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_Rx_LC_4ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Rx_4ball_dummy1);
+	I2C_READ_BYTE(dev_addr, 0x0014, Rx_4ball_dummy2);
+	I2C_READ_BYTE(dev_addr, 0x0015, Rx_4ball_dummy3);
+	I2C_READ_BYTE(dev_addr, 0x0016, Rx_4ball_dummy4);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_Tx_1ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_Tx_1ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_Tx_1ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_Tx_1ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Tx_1ball_dummy1);
+	I2C_READ_BYTE(dev_addr, 0x0014, Tx_1ball_dummy2);
+	I2C_READ_BYTE(dev_addr, 0x0015, Tx_1ball_dummy3);
+	I2C_READ_BYTE(dev_addr, 0x0016, Tx_1ball_dummy4);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_Tx_4ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_Tx_4ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_Tx_4ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_Tx_4ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Tx_4ball_dummy1);
+	I2C_READ_BYTE(dev_addr, 0x0014, Tx_4ball_dummy2);
+	I2C_READ_BYTE(dev_addr, 0x0015, Tx_4ball_dummy3);
+	I2C_READ_BYTE(dev_addr, 0x0016, Tx_4ball_dummy4);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_vrect_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_vrect_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_vrect_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_vrect_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Vrect_dummy1);
+	I2C_READ_BYTE(dev_addr, 0x0014, Vrect_dummy2);
+	I2C_READ_BYTE(dev_addr, 0x0015, Vrect_dummy3);
+	I2C_READ_BYTE(dev_addr, 0x0016, Vrect_dummy4);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_vout_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_vout_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_vout_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_vout_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Vout_dummy1);
+	I2C_READ_BYTE(dev_addr, 0x0014, Vout_dummy2);
+	I2C_READ_BYTE(dev_addr, 0x0015, Vout_dummy3);
+	I2C_READ_BYTE(dev_addr, 0x0016, Vout_dummy4);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_vrect2vout_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_vrect2vout_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_vrect2vout_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_vrect2vout_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_gp2_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_gp2_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_gp2_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_gp2_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_gp4_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_gp4_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_gp4_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_gp4_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_vdd_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_vdd_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_vdd_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_vdd_high);
+	//-------Read lot id
+	I2C_READ_BYTE(dev_addr, 0x0013, Data_lot_bit0);
+	I2C_READ_BYTE(dev_addr, 0x0014, Data_lot_bit1);
+	I2C_READ_BYTE(dev_addr, 0x0015, Data_lot_bit2);
+	I2C_READ_BYTE(dev_addr, 0x0016, Data_lot_bit3);
+	I2C_READ_BYTE(dev_addr, 0x0013, Data_lot_bit4);
+	I2C_READ_BYTE(dev_addr, 0x0014, Data_lot_bit5);
+	I2C_READ_BYTE(dev_addr, 0x0015, Data_lot_bit6);
+	I2C_READ_BYTE(dev_addr, 0x0016, Data_lot_bit7);
+	//Read wafer id
+	I2C_READ_BYTE(dev_addr, 0x0013, Data_wafer_bit0);
+	I2C_READ_BYTE(dev_addr, 0x0014, Data_wafer_bit1);
+	I2C_READ_BYTE(dev_addr, 0x0015, Data_wafer_bit2);
+	I2C_READ_BYTE(dev_addr, 0x0016, Data_wafer_bit3);
+	I2C_READ_BYTE(dev_addr, 0x0013, Data_wafer_bit4);
+	I2C_READ_BYTE(dev_addr, 0x0014, Data_wafer_bit5);
+	I2C_READ_BYTE(dev_addr, 0x0015, Data_wafer_bit6);
+	I2C_READ_BYTE(dev_addr, 0x0016, Data_wafer_bit7);
+	I2C_READ_BYTE(dev_addr, 0x0013, Data_wafer_bit8);
+	I2C_READ_BYTE(dev_addr, 0x0014, Data_wafer_bit9);
+	I2C_READ_BYTE(dev_addr, 0x0015, Data_wafer_bit10);
+	I2C_READ_BYTE(dev_addr, 0x0016, Data_wafer_bit11);
+	//------Read wafer x and y position and program version
+	I2C_READ_BYTE(dev_addr, 0x0013, Wafer_x);
+	I2C_READ_BYTE(dev_addr, 0x0014, Wafer_y);
+	I2C_READ_BYTE(dev_addr, 0x0015, Pgm_version);
+	I2C_READ_BYTE(dev_addr, 0x0016, Zero_code);
+	//----Read software reserved bit 
+	I2C_READ_BYTE(dev_addr, 0x0013, ATE_reserved_0);
+	I2C_READ_BYTE(dev_addr, 0x0014, ATE_reserved_1);
+	I2C_READ_BYTE(dev_addr, 0x0015, ATE_reserved_2);
+	I2C_READ_BYTE(dev_addr, 0x0016, ATE_reserved_3);
+	I2C_READ_BYTE(dev_addr, 0x0013, ATE_reserved_4);
+	I2C_READ_BYTE(dev_addr, 0x0014, ATE_reserved_5);
+	I2C_READ_BYTE(dev_addr, 0x0015, ATE_reserved_6);
+	I2C_READ_BYTE(dev_addr, 0x0016, ATE_reserved_7);
+	//------------Read CRC check code 
+	I2C_READ_BYTE(dev_addr, 0x0013, Crc_readback_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Crc_readback_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Reserved_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Reserved_high);
+
+	VRECT_BST1_PGND_FOVI.Set(FV, 0, FOVIe_20V, FOVIe_100MA, FOVIe_RELAY_ON);
+	V5V_ACM.Set(FV, 0, ACM_N2P18V, ACM_200MA, ACM_RELAY_ON);
+	delay_ms(5);
+	VRECT_BST1_PGND_FOVI.Set(FV, 0, FOVIe_20V, FOVIe_100MA, FOVIe_RELAY_OFF);
+	V5V_ACM.Set(FV, 0, ACM_N2P18V, ACM_200MA, ACM_RELAY_OFF);
+	//=======================================================CRC Check when readback=============================//
+
+#define CRC_SEED 0x0000 // pre val
+#define POLY16   0x1021 // ture 0x11021  CRC-16/XMODEM
+	int length = BANK_CNT * 8;
+	int a = 0;
+	unsigned char test_buff[136];
+	unsigned char CRC_Check_Cal[STS_SITE_NUM] = { 0 };
+	unsigned char CRC_Check_Cal_H[STS_SITE_NUM] = { 0 }; //Calculate CRC code based on readback data
+	unsigned char CRC_Check_Cal_L[STS_SITE_NUM] = { 0 }; // Calculate CRC code based on readback data
+	FOR_EACH_VALID_SITE(site)
+	{
+		test_buff[0] = (unsigned char)Reg_0x70_Read[site];
+		test_buff[1] = (unsigned char)Reg_0x71_Read[site];
+		test_buff[2] = (unsigned char)Reg_0x72_Read[site];
+		test_buff[3] = (unsigned char)Reg_0x73_Read[site];
+		test_buff[4] = (unsigned char)Reg_0x74_Read[site];
+		test_buff[5] = (unsigned char)Reg_0x75_Read[site];
+		test_buff[6] = (unsigned char)Reg_0x76_Read[site];
+		test_buff[7] = (unsigned char)Reg_0x77_Read[site];
+		test_buff[8] = (unsigned char)Reg_0x78_Read[site];
+		test_buff[9] = (unsigned char)Reg_0x79_Read[site];
+		test_buff[10] = (unsigned char)Reg_0x7a_Read[site];
+		test_buff[11] = (unsigned char)Reg_0x7b_Read[site];
+		test_buff[12] = (unsigned char)Reg_0x7c_Read[site];
+		test_buff[13] = (unsigned char)Reg_0x7d_Read[site];
+		test_buff[14] = (unsigned char)Reg_0x7e_Read[site];
+		test_buff[15] = (unsigned char)Reg_0x7f_Read[site];
+		test_buff[16] = (unsigned char)Reg_0x80_Read[site];
+		test_buff[17] = (unsigned char)Reg_0x81_Read[site];
+		test_buff[18] = (unsigned char)Reg_0x82_Read[site];
+		test_buff[19] = (unsigned char)Reg_0x83_Read[site];
+		test_buff[20] = (unsigned char)Reg_0x84_Read[site];
+		test_buff[21] = (unsigned char)Reg_0x85_Read[site];
+		test_buff[22] = (unsigned char)Reg_0x86_Read[site];
+		test_buff[23] = (unsigned char)Reg_0x87_Read[site];
+		test_buff[24] = (unsigned char)Reg_0x88_Read[site];
+		test_buff[25] = (unsigned char)Reg_0x89_Read[site];
+		test_buff[26] = (unsigned char)Reg_0x8a_Read[site];
+		test_buff[27] = (unsigned char)Reg_0x8b_Read[site];
+		test_buff[28] = (unsigned char)Reg_0x8c_Read[site];
+		test_buff[29] = (unsigned char)Reg_0x8d_Read[site];
+		test_buff[30] = (unsigned char)Reg_0x8e_Read[site];
+		test_buff[31] = (unsigned char)Reg_0x8f_Read[site];
+		test_buff[32] = (unsigned char)Gain_Rx_SC_1ball_low[site];// RX_ISNS Gain of Single Ball Low Byte
+		test_buff[33] = (unsigned char)Gain_Rx_SC_1ball_high[site];//RX_ ISNS Gain of Single Ball High Byte
+		test_buff[34] = (unsigned char)Offset_Rx_SC_1ball_low[site];// RX_SNS Offset of Single Ball Low Byte
+		test_buff[35] = (unsigned char)Offset_Rx_SC_1ball_high[site];//RX_ISNS Offset of Single Ball High Byte
+		test_buff[36] = (unsigned char)Gain_Rx_LC_1ball_low[site];//  RX_ISNS Gain of  Single Ball Low Byte
+		test_buff[37] = (unsigned char)Gain_Rx_LC_1ball_high[site];// RX_ISNS Gain of Single  Ball High Byte
+		test_buff[38] = (unsigned char)Offset_Rx_LC_1ball_low[site];// RX_ISNS Offset of  Single Ball Low Byte
+		test_buff[39] = (unsigned char)Offset_Rx_LC_1ball_high[site];//RX_ISNS Offset of Single  Ball High Byte
+		test_buff[40] = (unsigned char)Rx_1ball_dummy1[site];// RX_ISNS Dummy of Single  Ball 
+		test_buff[41] = (unsigned char)Rx_1ball_dummy2[site];// RX_ISNS Dummy of Single  Ball 
+		test_buff[42] = (unsigned char)Rx_1ball_dummy3[site];// RX_ISNS Dummy of Single  Ball 
+		test_buff[43] = (unsigned char)Rx_1ball_dummy4[site];//  RX_ISNS Dummy of Single  Ball 
+		test_buff[44] = (unsigned char)Gain_Rx_SC_4ball_low[site];// RX_ISNS Gain of Single Ball Low Byte
+		test_buff[45] = (unsigned char)Gain_Rx_SC_4ball_high[site];//RX_ ISNS Gain of Single Ball High Byte
+		test_buff[46] = (unsigned char)Offset_Rx_SC_4ball_low[site];// RX_SNS Offset of Single Ball Low Byte
+		test_buff[47] = (unsigned char)Offset_Rx_SC_4ball_high[site];//RX_ISNS Offset of Single Ball High Byte
+		test_buff[48] = (unsigned char)Gain_Rx_LC_4ball_low[site];//  RX_ISNS Gain of  Multiple Ball Low Byte
+		test_buff[49] = (unsigned char)Gain_Rx_LC_4ball_high[site];// RX_ISNS Gain of Multiple  Ball High Byte
+		test_buff[50] = (unsigned char)Offset_Rx_LC_4ball_low[site];// RX_ISNS Offset of  Multiple Ball Low Byte
+		test_buff[51] = (unsigned char)Offset_Rx_LC_4ball_high[site];//RX_ISNS Offset of Multiple  Ball High Byte
+		test_buff[52] = (unsigned char)Rx_4ball_dummy1[site];//  RX_ISNS Dummy of Multiple  Ball 
+		test_buff[53] = (unsigned char)Rx_4ball_dummy2[site];//  RX_ISNS Dummy of Multiple  Ball 
+		test_buff[54] = (unsigned char)Rx_4ball_dummy3[site];//  RX_ISNS Dummy of Multiple  Ball 
+		test_buff[55] = (unsigned char)Rx_4ball_dummy4[site];//  RX_ISNS Dummy of Multiple  Ball 
+		test_buff[56] = (unsigned char)Gain_Tx_1ball_low[site];//  RX_ISNS Gain of  Single Ball Low Byte
+		test_buff[57] = (unsigned char)Gain_Tx_1ball_high[site];// RX_ISNS Gain of Single  Ball High Byte
+		test_buff[58] = (unsigned char)Offset_Tx_1ball_low[site];// RX_ISNS Offset of  Single Ball Low Byte
+		test_buff[59] = (unsigned char)Offset_Tx_1ball_high[site];//RX_ISNS Offset of Single  Ball High Byte
+		test_buff[60] = (unsigned char)Tx_1ball_dummy1[site];// RX_ISNS Dummy of Single  Ball 
+		test_buff[61] = (unsigned char)Tx_1ball_dummy2[site];// RX_ISNS Dummy of Single  Ball 
+		test_buff[62] = (unsigned char)Tx_1ball_dummy3[site];// RX_ISNS Dummy of Single  Ball 
+		test_buff[63] = (unsigned char)Tx_1ball_dummy4[site];//  RX_ISNS Dummy of Single  Ball 
+		test_buff[64] = (unsigned char)Gain_Tx_4ball_low[site];//  RX_ISNS Gain of  Multiple Ball Low Byte
+		test_buff[65] = (unsigned char)Gain_Tx_4ball_high[site];// RX_ISNS Gain of Multiple  Ball High Byte
+		test_buff[66] = (unsigned char)Offset_Tx_4ball_low[site];// RX_ISNS Offset of  Multiple Ball Low Byte
+		test_buff[67] = (unsigned char)Offset_Tx_4ball_high[site];//RX_ISNS Offset of Multiple  Ball High Byte
+		test_buff[68] = (unsigned char)Tx_4ball_dummy1[site];//  RX_ISNS Dummy of Multiple  Ball 
+		test_buff[69] = (unsigned char)Tx_4ball_dummy2[site];//  RX_ISNS Dummy of Multiple  Ball 
+		test_buff[70] = (unsigned char)Tx_4ball_dummy3[site];//  RX_ISNS Dummy of Multiple  Ball 
+		test_buff[71] = (unsigned char)Tx_4ball_dummy4[site];//  RX_ISNS Dummy of Multiple  Ball 
+		test_buff[72] = (unsigned char)Gain_vrect_low[site]; //  VRECT_SNS  Gain  Low Byte
+		test_buff[73] = (unsigned char)Gain_vrect_high[site]; //  VRECT_SNS  Gain  High Byte
+		test_buff[74] = (unsigned char)Offset_vrect_low[site]; //  VRECT_SNS  Offset  Low Byte
+		test_buff[75] = (unsigned char)Offset_vrect_high[site]; //  VRECT_SNS  Offset  High Byte
+		test_buff[76] = (unsigned char)Vrect_dummy1[site]; //  VRECT_SNS  Gain  Low Byte
+		test_buff[77] = (unsigned char)Vrect_dummy2[site]; //  VRECT_SNS  Gain  High Byte
+		test_buff[78] = (unsigned char)Vrect_dummy3[site]; //  VRECT_SNS  Offset  Low Byte
+		test_buff[79] = (unsigned char)Vrect_dummy4[site]; //  VRECT_SNS  Offset  High Byte
+		test_buff[80] = (unsigned char)Gain_vout_low[site];     //  VOUT_SNS  Gain  Low Byte
+		test_buff[81] = (unsigned char)Gain_vout_high[site];     //  VOUT_SNS  Gain  High Byte
+		test_buff[82] = (unsigned char)Offset_vout_low[site];//  VOUT_SNS  Offset  Low Byte
+		test_buff[83] = (unsigned char)Offset_vout_high[site];//  VOUT_SNS  Offset  High Byte
+		test_buff[84] = (unsigned char)Vout_dummy1[site]; //  VRECT_SNS  Gain  Low Byte
+		test_buff[85] = (unsigned char)Vout_dummy2[site]; //  VRECT_SNS  Gain  High Byte
+		test_buff[86] = (unsigned char)Vout_dummy3[site]; //  VRECT_SNS  Offset  Low Byte
+		test_buff[87] = (unsigned char)Vout_dummy4[site]; //  VRECT_SNS  Offset  High Byte
+		test_buff[88] = (unsigned char)Gain_vrect2vout_low[site];     // VRECT to VOUT SNS Gain Low Byte
+		test_buff[89] = (unsigned char)Gain_vrect2vout_high[site];    // VRECT to VOUT SNS Gain High Byte
+		test_buff[90] = (unsigned char)Offset_vrect2vout_low[site];  // VRECT to VOUT SNS Offset Low Byte
+		test_buff[91] = (unsigned char)Offset_vrect2vout_high[site]; // VRECT to VOUT SNS Offset High Byte
+		test_buff[92] = (unsigned char)Gain_gp2_low[site];    // GP2_ADC0_SNS  Gain  Low Byte
+		test_buff[93] = (unsigned char)Gain_gp2_high[site];    // GP2_ADC0_SNS  Gain  High Byte
+		test_buff[94] = (unsigned char)Offset_gp2_low[site];  // GP2_ADC0_SNS   Offset  Low Byte
+		test_buff[95] = (unsigned char)Offset_gp2_high[site];  // GP2_ADC0_SNS  Offset  High Byte
+		test_buff[96] = (unsigned char)Gain_gp4_low[site];    // GP4  ADC1_SNS  Gain  Low Byte
+		test_buff[97] = (unsigned char)Gain_gp4_high[site];    // GP4_ADC1_SNS  Gain  High Byte
+		test_buff[98] = (unsigned char)Offset_gp4_low[site];  // GP4_ADC1_SNS   Offset  Low Byte
+		test_buff[99] = (unsigned char)Offset_gp4_high[site];  // G4_  ADC1_SNS  Offset  High Byte
+		test_buff[100] = (unsigned char)Gain_vdd_low[site];    // VDD  ADC1_SNS  Gain  Low Byte
+		test_buff[101] = (unsigned char)Gain_vdd_high[site];    // VDD  Gain  High Byte
+		test_buff[102] = (unsigned char)Offset_vdd_low[site];  // VDD   Offset  Low Byte
+		test_buff[103] = (unsigned char)Offset_vdd_high[site];  // VDD  ADC1_SNS  Offset  High Byte
+		test_buff[104] = (unsigned char)Data_lot_bit0[site]; // 'G'      GF3V35.1
+		test_buff[105] = (unsigned char)Data_lot_bit1[site]; // 'F'
+		test_buff[106] = (unsigned char)Data_lot_bit2[site]; // '3'
+		test_buff[107] = (unsigned char)Data_lot_bit3[site]; // 'V'
+		test_buff[108] = (unsigned char)Data_lot_bit4[site]; // '3'
+		test_buff[109] = (unsigned char)Data_lot_bit5[site]; // '5'
+		test_buff[110] = (unsigned char)Data_lot_bit6[site]; //  '.'
+		test_buff[111] = (unsigned char)Data_lot_bit7[site]; //  '1'
+		test_buff[112] = (unsigned char)Data_wafer_bit0[site];  // 'G'  
+		test_buff[113] = (unsigned char)Data_wafer_bit1[site];  // 'F'
+		test_buff[114] = (unsigned char)Data_wafer_bit2[site];  // '3'
+		test_buff[115] = (unsigned char)Data_wafer_bit3[site];  // 'V'
+		test_buff[116] = (unsigned char)Data_wafer_bit4[site];  // '3'
+		test_buff[117] = (unsigned char)Data_wafer_bit5[site];  // '5'
+		test_buff[118] = (unsigned char)Data_wafer_bit6[site];  //  '-'
+		test_buff[119] = (unsigned char)Data_wafer_bit7[site];  //  '0'
+		test_buff[120] = (unsigned char)Data_wafer_bit8[site];  //  '9'
+		test_buff[121] = (unsigned char)Data_wafer_bit9[site];  //  'F'
+		test_buff[122] = (unsigned char)Data_wafer_bit10[site]; // '7'
+		test_buff[123] = (unsigned char)Data_wafer_bit11[site]; // '7'
+		test_buff[124] = (unsigned char)Wafer_x[site]; // wafer X Axis
+		test_buff[125] = (unsigned char)Wafer_y[site]; // wafer Y Axis
+		test_buff[126] = (unsigned char)Pgm_version; // program version
+		test_buff[127] = 0x00;
+		test_buff[128] = (unsigned char)ATE_reserved_0[site];
+		test_buff[129] = (unsigned char)ATE_reserved_1[site];
+		test_buff[130] = (unsigned char)ATE_reserved_2[site];
+		test_buff[131] = (unsigned char)ATE_reserved_3[site];
+		test_buff[132] = (unsigned char)ATE_reserved_4[site];
+		test_buff[133] = (unsigned char)ATE_reserved_5[site];
+		test_buff[134] = (unsigned char)ATE_reserved_6[site];
+		test_buff[135] = (unsigned char)ATE_reserved_7[site];
+		CRC_Check_Cal[site] = (unsigned char)do_crc(test_buff, sizeof(test_buff));
+		CRC_Check_Cal_L[site] = ((int)CRC_Check_Cal[site]) & 255;
+		CRC_Check_Cal_H[site] = ((int)CRC_Check_Cal[site]) >> 8;
+	}
+	//------------------------------------CRC Check End------------------------------//
+
+
+	//=======================================================Data read back and save in treg readback variables=============//
+	FOR_EACH_VALID_SITE(site)
+	{
+		trim_reg.assy("reg0x0070").set_read_back((INT)Reg_0x70_Read[site], site);
+		trim_reg.assy("reg0x0071").set_read_back((INT)Reg_0x71_Read[site], site);
+		trim_reg.assy("reg0x0072").set_read_back((INT)Reg_0x72_Read[site], site);
+		trim_reg.assy("reg0x0073").set_read_back((INT)Reg_0x73_Read[site], site);
+		trim_reg.assy("reg0x0074").set_read_back((INT)Reg_0x74_Read[site], site);
+		trim_reg.assy("reg0x0075").set_read_back((INT)Reg_0x75_Read[site], site);
+		trim_reg.assy("reg0x0076").set_read_back((INT)Reg_0x76_Read[site], site);
+		trim_reg.assy("reg0x0077").set_read_back((INT)Reg_0x77_Read[site], site);
+		trim_reg.assy("reg0x0078").set_read_back((INT)Reg_0x78_Read[site], site);
+		trim_reg.assy("reg0x0079").set_read_back((INT)Reg_0x79_Read[site], site);
+		trim_reg.assy("reg0x007a").set_read_back((INT)Reg_0x7a_Read[site], site);
+		trim_reg.assy("reg0x007b").set_read_back((INT)Reg_0x7b_Read[site], site);
+		trim_reg.assy("reg0x007c").set_read_back((INT)Reg_0x7c_Read[site], site);
+		trim_reg.assy("reg0x007d").set_read_back((INT)Reg_0x7d_Read[site], site);
+		trim_reg.assy("reg0x007e").set_read_back((INT)Reg_0x7e_Read[site], site);
+		trim_reg.assy("reg0x007f").set_read_back((INT)Reg_0x7f_Read[site], site);
+
+		trim_reg.assy("reg0x0080").set_read_back((INT)Reg_0x80_Read[site], site);
+		trim_reg.assy("reg0x0081").set_read_back((INT)Reg_0x81_Read[site], site);
+		trim_reg.assy("reg0x0082").set_read_back((INT)Reg_0x82_Read[site], site);
+		trim_reg.assy("reg0x0083").set_read_back((INT)Reg_0x83_Read[site], site);
+		trim_reg.assy("reg0x0084").set_read_back((INT)Reg_0x84_Read[site], site);
+		trim_reg.assy("reg0x0085").set_read_back((INT)Reg_0x85_Read[site], site);
+		trim_reg.assy("reg0x0086").set_read_back((INT)Reg_0x86_Read[site], site);
+		trim_reg.assy("reg0x0087").set_read_back((INT)Reg_0x87_Read[site], site);
+		trim_reg.assy("reg0x0088").set_read_back((INT)Reg_0x88_Read[site], site);
+		trim_reg.assy("reg0x0089").set_read_back((INT)Reg_0x89_Read[site], site);
+		trim_reg.assy("reg0x008a").set_read_back((INT)Reg_0x8a_Read[site], site);
+		trim_reg.assy("reg0x008b").set_read_back((INT)Reg_0x8b_Read[site], site);
+		trim_reg.assy("reg0x008c").set_read_back((INT)Reg_0x8c_Read[site], site);
+		trim_reg.assy("reg0x008d").set_read_back((INT)Reg_0x8d_Read[site], site);
+		trim_reg.assy("reg0x008e").set_read_back((INT)Reg_0x8e_Read[site], site);
+		trim_reg.assy("reg0x008f").set_read_back((INT)Reg_0x8f_Read[site], site);
+	}
+	//-----------------------------Compare read back with programmed(best code need to burn)
+	FOR_EACH_VALID_SITE(site)
+	{
+		if (TTR_MODE == CP)
+		{
+			Burn_Same_As_Read_Flag[site] = trim_reg.assy("EFUSE_REGISTER").comp_prog_to_read(site);
+		}
+		else
+		{
+			Burn_Same_As_Read_Flag[site] = true;
+		}	
+
+		//----------------CRC read from MTP  same as  CRC which is Calculated by trim code of MTP
+		if (CRC_Check_Cal_L[site] == (unsigned char)Crc_readback_low[site] &&  CRC_Check_Cal_H[site] == (unsigned char)Crc_readback_high[site])
+		{
+			CRC_Read_Same_As_Burn_Flag[site] = true;
+		}	
+	}
+
+
+
+	//==============================transfer readback trim code to datalog===============//
+	FOR_EACH_VALID_SITE(site)
+	{
+		BG_Code_RB[site] = (double)trim_reg.trim("bandgap").get_read_back(site);
+		IZTC_Code_RB[site] = (double)trim_reg.trim("ztc").get_read_back(site);
+		OSC_96M_Code_RB[site] = (double)trim_reg.trim("osc_96m").get_read_back(site);
+		OSC_64K_Code_RB[site] = (double)trim_reg.trim("osc_64k").get_read_back(site);
+		V1P13_Code_RB[site] = (double)trim_reg.trim("mnt_1p13").get_read_back(site);
+		V2P26_Code_RB[site] = (double)trim_reg.trim("mnt_buf_v2p26").get_read_back(site);
+		V1P8_Code_RB[site] = (double)trim_reg.trim("v1p8_acc").get_read_back(site);
+		ISNS_GAIN_RX_Code_RB[site] = (double)trim_reg.trim("isns_gain_rx").get_read_back(site);
+		ISNS_GAIN_TX_Code_RB[site] = (double)trim_reg.trim("isns_gain_tx").get_read_back(site);
+		ISNS_OS_Code_RB[site] = (double)trim_reg.trim("isns_os").get_read_back(site);
+		ISNS_D2S_OS_Code_RB[site] = (double)trim_reg.trim("isns_d2s_os").get_read_back(site);
+		RTX_IPEAK_GAIN_Code_RB[site] = (double)trim_reg.trim("rtx_ipeak_gain").get_read_back(site);
+		AC1_IPEAK_OS_Code_RB[site] = (double)trim_reg.trim("rtx_ipeak_os_ac1").get_read_back(site);
+		AC2_IPEAK_OS_Code_RB[site] = (double)trim_reg.trim("rtx_ipeak_os_ac2").get_read_back(site);
+		MLDO_VOUT_GAIN_Code_RB[site] = (double)trim_reg.trim("mldo_vout_gain").get_read_back(site);
+		MLDO_VOUT_OS_Code_RB[site] = (double)trim_reg.trim("mldo_vout_os").get_read_back(site);
+		ADC_VIN_BUF_Code_RB[site] = (double)trim_reg.trim("adc_vin_buf").get_read_back(site);
+		ADC_VREF_BUF_Code_RB[site] = (double)trim_reg.trim("adc_vref_buf").get_read_back(site);
+		VRECT_MNT_2O22_Code_RB[site] = (double)trim_reg.trim("mnt_vrect").get_read_back(site);
+		VOUT_MNT_2O20_Code_RB[site] = (double)trim_reg.trim("mnt_vout").get_read_back(site);
+		LS_COMP_OFF_AC1_Code_RB[site] = (double)trim_reg.trim("rtx_ls_comp_off_ac1").get_read_back(site);
+		LS_COMP_OFF_AC2_Code_RB[site] = (double)trim_reg.trim("rtx_ls_comp_off_ac2").get_read_back(site);
+		MIN_OFF_TIME_AC1_Code_RB[site] = (double)trim_reg.trim("rtx_min_off_ac1").get_read_back(site);
+		MIN_OFF_TIME_AC2_Code_RB[site] = (double)trim_reg.trim("rtx_min_off_ac2").get_read_back(site);
+		MIN_ON_TIME_AC1_Code_RB[site] = (double)trim_reg.trim("min_on_time_ac1").get_read_back(site);
+		MIN_ON_TIME_AC2_Code_RB[site] = (double)trim_reg.trim("min_on_time_ac2").get_read_back(site);
+		QDT_COMP_OS_Code_RB[site] = (double)trim_reg.trim("QDT_comp_os").get_read_back(site);
+
+		NA1_Code_RB[site] = (double)trim_reg.sel("NA1").get_read_back(site);
+		NA2_Code_RB[site] = (double)trim_reg.sel("NA2").get_read_back(site);
+		NA3_Code_RB[site] = (double)trim_reg.sel("NA3").get_read_back(site);
+		NA4_Code_RB[site] = (double)trim_reg.sel("NA4").get_read_back(site);
+		NA5_Code_RB[site] = (double)trim_reg.sel("NA5").get_read_back(site);
+
+		Reserved0_Code_RB[site] = (double)trim_reg.sel("Reserved0").get_read_back(site);
+		Reserved1_Code_RB[site] = (double)trim_reg.sel("Reserved1").get_read_back(site);
+		Reserved2_Code_RB[site] = (double)trim_reg.sel("Reserved2").get_read_back(site);
+		Reserved3_Code_RB[site] = (double)trim_reg.sel("Reserved3").get_read_back(site);
+		Reserved4_Code_RB[site] = (double)trim_reg.sel("Reserved4").get_read_back(site);
+		Reserved5_Code_RB[site] = (double)trim_reg.sel("Reserved5").get_read_back(site);
+		
+		PGM_Code_RB[site] = (double)trim_reg.sel("PGM_VERSION").get_read_back(site);
+		MTP_LOCK_Code_RB[site] = (double)trim_reg.sel("mtp_lock").get_read_back(site);
+		MTP_TRIM_LOCK_Code_RB[site] = (double)trim_reg.sel("trim_mtp_lock").get_read_back(site);
+		I2C_ADDR_Code_RB[site] = (double)trim_reg.sel("i2c_address").get_read_back(site);
+		CHIP_ID0_Code_RB[site] = (double)trim_reg.sel("chip_id0").get_read_back(site);
+		CHIP_ID1_Code_RB[site] = (double)trim_reg.sel("chip_id1").get_read_back(site);
+	}
+
+	//-------------------------------------Datalog
+	FOR_EACH_VALID_SITE(site)
+	{
+		BG_RB->SetTestResult(site, 0, BG_Code_RB[site]);
+		IZTC_RB->SetTestResult(site, 0, IZTC_Code_RB[site]);
+		OSC_96M_RB->SetTestResult(site, 0, OSC_96M_Code_RB[site]);
+		OSC_64K_RB->SetTestResult(site, 0, OSC_64K_Code_RB[site]);
+		V1P13_RB->SetTestResult(site, 0, V1P13_Code_RB[site]);
+		V2P26_RB->SetTestResult(site, 0, V2P26_Code_RB[site]);
+		V1P8_RB->SetTestResult(site, 0, V1P8_Code_RB[site]);
+		ISNS_GAIN_RX_RB->SetTestResult(site, 0, ISNS_GAIN_RX_Code_RB[site]);
+		ISNS_GAIN_TX_RB->SetTestResult(site, 0, ISNS_GAIN_TX_Code_RB[site]);
+		ISNS_OS_RB->SetTestResult(site, 0, ISNS_OS_Code_RB[site]);
+		ISNS_D2S_OS_RB->SetTestResult(site, 0, ISNS_D2S_OS_Code_RB[site]);
+		RTX_IPEAK_GAIN_RB->SetTestResult(site, 0, RTX_IPEAK_GAIN_Code_RB[site]);
+		AC1_IPEAK_OS_RB->SetTestResult(site, 0, AC1_IPEAK_OS_Code_RB[site]);
+		AC2_IPEAK_OS_RB->SetTestResult(site, 0, AC2_IPEAK_OS_Code_RB[site]);
+
+		MLDO_VOUT_GAIN_RB->SetTestResult(site, 0, MLDO_VOUT_GAIN_Code_RB[site]);
+		MLDO_VOUT_OS_RB->SetTestResult(site, 0, MLDO_VOUT_OS_Code_RB[site]);
+		ADC_VIN_BUF_RB->SetTestResult(site, 0, ADC_VIN_BUF_Code_RB[site]);
+		ADC_VREF_BUF_RB->SetTestResult(site, 0, ADC_VREF_BUF_Code_RB[site]);
+		VRECT_MNT_2O22_RB->SetTestResult(site, 0, VRECT_MNT_2O22_Code_RB[site]);
+		VOUT_MNT_2O20_RB->SetTestResult(site, 0, VOUT_MNT_2O20_Code_RB[site]);
+		LS_COMP_OFF_AC1_RB->SetTestResult(site, 0, LS_COMP_OFF_AC1_Code_RB[site]);
+		LS_COMP_OFF_AC2_RB->SetTestResult(site, 0, LS_COMP_OFF_AC2_Code_RB[site]); 
+		MIN_OFF_TIME_AC1_RB->SetTestResult(site, 0, MIN_OFF_TIME_AC1_Code_RB[site]);
+		MIN_OFF_TIME_AC2_RB->SetTestResult(site, 0, MIN_OFF_TIME_AC2_Code_RB[site]);
+		MIN_ON_TIME_AC1_RB->SetTestResult(site, 0, MIN_ON_TIME_AC1_Code_RB[site]);
+		MIN_ON_TIME_AC2_RB->SetTestResult(site, 0, MIN_ON_TIME_AC2_Code_RB[site]);
+		QDT_COMP_OS_RB->SetTestResult(site, 0, QDT_COMP_OS_Code_RB[site]);
+
+		RESEVRED0_RB->SetTestResult(site, 0, Reserved0_Code_RB[site]);
+		RESEVRED1_RB->SetTestResult(site, 0, Reserved1_Code_RB[site]);
+		RESEVRED2_RB->SetTestResult(site, 0, Reserved2_Code_RB[site]);
+		RESEVRED3_RB->SetTestResult(site, 0, Reserved3_Code_RB[site]);
+		RESEVRED4_RB->SetTestResult(site, 0, Reserved4_Code_RB[site]);
+		RESEVRED5_RB->SetTestResult(site, 0, Reserved5_Code_RB[site]);
+		NA1_RB->SetTestResult(site, 0, NA1_Code_RB[site]);
+		NA2_RB->SetTestResult(site, 0, NA2_Code_RB[site]);
+		NA3_RB->SetTestResult(site, 0, NA3_Code_RB[site]);
+		NA4_RB->SetTestResult(site, 0, NA4_Code_RB[site]);
+		NA5_RB->SetTestResult(site, 0, NA5_Code_RB[site]);
+		PGM_VERSION_RB->SetTestResult(site, 0, PGM_Code_RB[site]);
+		MTP_LOCK_RB->SetTestResult(site, 0, MTP_LOCK_Code_RB[site]);
+		MTP_TRIM_LOCK_RB->SetTestResult(site, 0, MTP_TRIM_LOCK_Code_RB[site]);
+		I2C_ADDR_RB->SetTestResult(site, 0, I2C_ADDR_Code_RB[site]);
+		CHIP_ID0_RB->SetTestResult(site, 0, CHIP_ID0_Code_RB[site]);
+		CHIP_ID1_RB->SetTestResult(site, 0, CHIP_ID1_Code_RB[site]);
+		CRC_CHK_H_RB->SetTestResult(site, 0, CRC_Check_Cal_H[site]);
+		CRC_CHK_L_RB->SetTestResult(site, 0, CRC_Check_Cal_L[site]);
+		RX_ISNS_GAIN_SC_1Ball_L_RB->SetTestResult(site, 0, Gain_Rx_SC_1ball_low[site]);
+		RX_ISNS_GAIN_SC_1Ball_H_RB->SetTestResult(site, 0, Gain_Rx_SC_1ball_high[site]);
+		RX_ISNS_OS_SC_1Ball_L_RB->SetTestResult(site, 0, Offset_Rx_SC_1ball_low[site]);
+		RX_ISNS_OS_SC_1Ball_H_RB->SetTestResult(site, 0, Offset_Rx_SC_1ball_high[site]);
+		RX_ISNS_GAIN_LC_1Ball_L_RB->SetTestResult(site, 0, Gain_Rx_LC_1ball_low[site]);
+		RX_ISNS_GAIN_LC_1Ball_H_RB->SetTestResult(site, 0, Gain_Rx_LC_1ball_high[site]);
+		RX_ISNS_OS_LC_1Ball_L_RB->SetTestResult(site, 0, Offset_Rx_LC_1ball_low[site]);
+		RX_ISNS_OS_LC_1Ball_H_RB->SetTestResult(site, 0, Offset_Rx_LC_1ball_high[site]);
+		RX_1Ball_DUMY1_RB->SetTestResult(site, 0, Rx_1ball_dummy1[site]);
+		RX_1Ball_DUMY2_RB->SetTestResult(site, 0, Rx_1ball_dummy2[site]);
+		RX_1Ball_DUMY3_RB->SetTestResult(site, 0, Rx_1ball_dummy3[site]);
+		RX_1Ball_DUMY4_RB->SetTestResult(site, 0, Rx_1ball_dummy4[site]);
+		RX_ISNS_GAIN_SC_4Ball_L_RB->SetTestResult(site, 0, Gain_Rx_SC_4ball_low[site]);
+		RX_ISNS_GAIN_SC_4Ball_H_RB->SetTestResult(site, 0, Gain_Rx_SC_4ball_high[site]);
+		RX_ISNS_OS_SC_4Ball_L_RB->SetTestResult(site, 0, Offset_Rx_SC_4ball_low[site]);
+		RX_ISNS_OS_SC_4Ball_H_RB->SetTestResult(site, 0, Offset_Rx_SC_4ball_high[site]);
+		RX_ISNS_GAIN_LC_4Ball_L_RB->SetTestResult(site, 0, Gain_Rx_LC_4ball_low[site]);
+		RX_ISNS_GAIN_LC_4Ball_H_RB->SetTestResult(site, 0, Gain_Rx_LC_4ball_high[site]);
+		RX_ISNS_OS_LC_4Ball_L_RB->SetTestResult(site, 0, Offset_Rx_LC_4ball_low[site]);
+		RX_ISNS_OS_LC_4Ball_H_RB->SetTestResult(site, 0, Offset_Rx_LC_4ball_high[site]);
+		RX_4Ball_DUMY1_RB->SetTestResult(site, 0, Rx_4ball_dummy1[site]);
+		RX_4Ball_DUMY2_RB->SetTestResult(site, 0, Rx_4ball_dummy2[site]);
+		RX_4Ball_DUMY3_RB->SetTestResult(site, 0, Rx_4ball_dummy3[site]);
+		RX_4Ball_DUMY4_RB->SetTestResult(site, 0, Rx_4ball_dummy4[site]);
+		TX_ISNS_GAIN_1Ball_L_RB->SetTestResult(site, 0, Gain_Tx_1ball_low[site]);
+		TX_ISNS_GAIN_1Ball_H_RB->SetTestResult(site, 0, Gain_Tx_1ball_high[site]);
+		TX_ISNS_OS_1Ball_L_RB->SetTestResult(site, 0, Offset_Tx_1ball_low[site]);
+		TX_ISNS_OS_1Ball_H_RB->SetTestResult(site, 0, Offset_Tx_1ball_high[site]);
+		TX_1Ball_DUMY1_RB->SetTestResult(site, 0, Tx_1ball_dummy1[site]);
+		TX_1Ball_DUMY2_RB->SetTestResult(site, 0, Tx_1ball_dummy2[site]);
+		TX_1Ball_DUMY3_RB->SetTestResult(site, 0, Tx_1ball_dummy3[site]);
+		TX_1Ball_DUMY4_RB->SetTestResult(site, 0, Tx_1ball_dummy4[site]);
+		TX_ISNS_GAIN_4Ball_L_RB->SetTestResult(site, 0, Gain_Tx_4ball_low[site]);
+		TX_ISNS_GAIN_4Ball_H_RB->SetTestResult(site, 0, Gain_Tx_4ball_high[site]);
+		TX_ISNS_OS_4Ball_L_RB->SetTestResult(site, 0, Offset_Tx_4ball_low[site]);
+		TX_ISNS_OS_4Ball_H_RB->SetTestResult(site, 0, Offset_Tx_4ball_high[site]);
+		TX_4Ball_DUMY1_RB->SetTestResult(site, 0, Tx_4ball_dummy1[site]);
+		TX_4Ball_DUMY2_RB->SetTestResult(site, 0, Tx_4ball_dummy2[site]);
+		TX_4Ball_DUMY3_RB->SetTestResult(site, 0, Tx_4ball_dummy3[site]);
+		TX_4Ball_DUMY4_RB->SetTestResult(site, 0, Tx_4ball_dummy4[site]);
+		VRECT_SNS_GAIN_L_RB->SetTestResult(site, 0, Gain_vrect_low[site]);
+		VRECT_SNS_GAIN_H_RB->SetTestResult(site, 0, Gain_vrect_high[site]);
+		VRECT_SNS_OS_L_RB->SetTestResult(site, 0, Offset_vrect_low[site]);
+		VRECT_SNS_OS_H_RB->SetTestResult(site, 0, Offset_vrect_high[site]);
+		VRECT_SNS_DUMY1_RB->SetTestResult(site, 0, Vrect_dummy1[site]);
+		VRECT_SNS_DUMY2_RB->SetTestResult(site, 0, Vrect_dummy2[site]);
+		VRECT_SNS_DUMY3_RB->SetTestResult(site, 0, Vrect_dummy3[site]);
+		VRECT_SNS_DUMY4_RB->SetTestResult(site, 0, Vrect_dummy4[site]);
+		VOUT_SNS_GAIN_L_RB->SetTestResult(site, 0, Gain_vout_low[site]);
+		VOUT_SNS_GAIN_H_RB->SetTestResult(site, 0, Gain_vout_high[site]);
+		VOUT_SNS_OS_L_RB->SetTestResult(site, 0, Offset_vout_low[site]);
+		VOUT_SNS_OS_H_RB->SetTestResult(site, 0, Offset_vout_high[site]);
+		VOUT_SNS_DUMY1_RB->SetTestResult(site, 0, Vout_dummy1[site]);
+		VOUT_SNS_DUMY2_RB->SetTestResult(site, 0, Vout_dummy2[site]);
+		VOUT_SNS_DUMY3_RB->SetTestResult(site, 0, Vout_dummy3[site]);
+		VOUT_SNS_DUMY4_RB->SetTestResult(site, 0, Vout_dummy4[site]);
+		VRECT2VOUT_GAIN_L_RB->SetTestResult(site, 0, Gain_vrect2vout_low[site]);
+		VRECT2VOUT_GAIN_H_RB->SetTestResult(site, 0, Gain_vrect2vout_high[site]);
+		VRECT2VOUT_OS_L_RB->SetTestResult(site, 0, Offset_vrect2vout_low[site]);
+		VRECT2VOUT_OS_H_RB->SetTestResult(site, 0, Offset_vrect2vout_high[site]);
+		GP2_SNS_GAIN_L_RB->SetTestResult(site, 0, Gain_gp2_low[site]);
+		GP2_SNS_GAIN_H_RB->SetTestResult(site, 0, Gain_gp2_high[site]);
+		GP2_SNS_OS_L_RB->SetTestResult(site, 0, Offset_gp2_low[site]);
+		GP2_SNS_OS_H_RB->SetTestResult(site, 0, Offset_gp2_high[site]);
+		GP4_SNS_GAIN_L_RB->SetTestResult(site, 0, Gain_gp4_low[site]);
+		GP4_SNS_GAIN_H_RB->SetTestResult(site, 0, Gain_gp4_high[site]);
+		GP4_SNS_OS_L_RB->SetTestResult(site, 0, Offset_gp4_low[site]);
+		GP4_SNS_OS_H_RB->SetTestResult(site, 0, Offset_gp4_high[site]);
+		VDD_SNS_GAIN_L_RB->SetTestResult(site, 0, Gain_vdd_low[site]);
+		VDD_SNS_GAIN_H_RB->SetTestResult(site, 0, Gain_vdd_high[site]);
+		VDD_SNS_OS_L_RB->SetTestResult(site, 0, Offset_vdd_low[site]);
+		VDD_SNS_OS_H_RB->SetTestResult(site, 0, Offset_vdd_high[site]);
+	}
+    return 0;
+}
+
+
+DUT_API int MTP_TRIM_BURN(short funcindex, LPCTSTR funclabel)
+{
+//{{AFX_STS_PARAM_PROTOTYPES
+    CParam *CRC_CODE_CHECK_HByte = StsGetParam(funcindex, "CRC_CODE_CHECK_HByte");
+    CParam *CRC_CODE_CHECK_LByte = StsGetParam(funcindex, "CRC_CODE_CHECK_LByte");
+//}}AFX_STS_PARAM_PROTOTYPES
+	// TODO: Add your function code here
+
+	unsigned char  binary_arry_70_0x[4];
+	unsigned char  binary_arry_71_0x[4];
+	unsigned char  binary_arry_72_0x[4];
+	unsigned char  binary_arry_73_0x[4];
+	unsigned char  binary_arry_74_0x[4];
+	unsigned char  binary_arry_75_0x[4];
+	unsigned char  binary_arry_76_0x[4];
+	unsigned char  binary_arry_77_0x[4];
+	unsigned char  binary_arry_78_0x[4];
+	unsigned char  binary_arry_79_0x[4];
+	unsigned char  binary_arry_7a_0x[4];
+	unsigned char  binary_arry_7b_0x[4];
+	unsigned char  binary_arry_7c_0x[4];
+	unsigned char  binary_arry_7d_0x[4];
+	unsigned char  binary_arry_7e_0x[4];
+	unsigned char  binary_arry_7f_0x[4];
+	unsigned char  binary_arry_80_0x[4];
+	unsigned char  binary_arry_81_0x[4];
+	unsigned char  binary_arry_82_0x[4];
+	unsigned char  binary_arry_83_0x[4];
+	unsigned char  binary_arry_84_0x[4];
+	unsigned char  binary_arry_85_0x[4];
+	unsigned char  binary_arry_86_0x[4];
+	unsigned char  binary_arry_87_0x[4];
+	unsigned char  binary_arry_88_0x[4];
+	unsigned char  binary_arry_89_0x[4];
+	unsigned char  binary_arry_8a_0x[4];
+	unsigned char  binary_arry_8b_0x[4];
+	unsigned char  binary_arry_8c_0x[4];
+	unsigned char  binary_arry_8d_0x[4];
+	unsigned char  binary_arry_8e_0x[4];
+	unsigned char  binary_arry_8f_0x[4];
+
+	SEL_NODE &I2C_ADDR = trim_reg.sel("i2c_address");
+	SEL_NODE &TRIM_MTP_LOCK = trim_reg.sel("trim_mtp_lock");
+	SEL_NODE &MTP_LOCK = trim_reg.sel("mtp_lock");
+	SEL_NODE &NA1 = trim_reg.sel("NA1");
+	SEL_NODE &NA2 = trim_reg.sel("NA2");
+	SEL_NODE &NA3 = trim_reg.sel("NA3");
+	SEL_NODE &NA4 = trim_reg.sel("NA4");
+	SEL_NODE &NA5 = trim_reg.sel("NA5");
+	SEL_NODE &NA7 = trim_reg.sel("NA7");
+
+	FOR_EACH_VALID_SITE(site)
+	{
+		binary_arry_70_0x[site] = (unsigned char)trim_reg.assy("reg0x0070").get_working(site);
+		binary_arry_71_0x[site] = (unsigned char)trim_reg.assy("reg0x0071").get_working(site);
+		binary_arry_72_0x[site] = (unsigned char)trim_reg.assy("reg0x0072").get_working(site);
+		binary_arry_73_0x[site] = (unsigned char)trim_reg.assy("reg0x0073").get_working(site);
+		binary_arry_74_0x[site] = (unsigned char)trim_reg.assy("reg0x0074").get_working(site);
+		binary_arry_75_0x[site] = (unsigned char)trim_reg.assy("reg0x0075").get_working(site);
+		binary_arry_76_0x[site] = (unsigned char)trim_reg.assy("reg0x0076").get_working(site);
+		binary_arry_77_0x[site] = (unsigned char)trim_reg.assy("reg0x0077").get_working(site);
+		binary_arry_78_0x[site] = (unsigned char)trim_reg.assy("reg0x0078").get_working(site);
+		binary_arry_79_0x[site] = (unsigned char)trim_reg.assy("reg0x0079").get_working(site);
+		binary_arry_7a_0x[site] = (unsigned char)trim_reg.assy("reg0x007a").get_working(site);
+		binary_arry_7b_0x[site] = (unsigned char)trim_reg.assy("reg0x007b").get_working(site);
+		binary_arry_7c_0x[site] = (unsigned char)trim_reg.assy("reg0x007c").get_working(site);
+		binary_arry_7d_0x[site] = (unsigned char)trim_reg.assy("reg0x007d").get_working(site);
+		binary_arry_7e_0x[site] = (unsigned char)trim_reg.assy("reg0x007e").get_working(site);
+		binary_arry_7f_0x[site] = (unsigned char)trim_reg.assy("reg0x007f").get_working(site);
+		binary_arry_80_0x[site] = (unsigned char)trim_reg.assy("reg0x0080").get_working(site);
+		binary_arry_81_0x[site] = (unsigned char)trim_reg.assy("reg0x0081").get_working(site);
+		binary_arry_82_0x[site] = (unsigned char)trim_reg.assy("reg0x0082").get_working(site);
+		binary_arry_83_0x[site] = (unsigned char)trim_reg.assy("reg0x0083").get_working(site);
+		binary_arry_84_0x[site] = (unsigned char)trim_reg.assy("reg0x0084").get_working(site);
+		binary_arry_85_0x[site] = (unsigned char)trim_reg.assy("reg0x0085").get_working(site);
+		binary_arry_86_0x[site] = (unsigned char)trim_reg.assy("reg0x0086").get_working(site);
+		binary_arry_87_0x[site] = (unsigned char)trim_reg.assy("reg0x0087").get_working(site);
+		binary_arry_88_0x[site] = (unsigned char)trim_reg.assy("reg0x0088").get_working(site);
+		binary_arry_89_0x[site] = (unsigned char)trim_reg.assy("reg0x0089").get_working(site);
+		binary_arry_8a_0x[site] = (unsigned char)trim_reg.assy("reg0x008a").get_working(site);
+		binary_arry_8b_0x[site] = (unsigned char)trim_reg.assy("reg0x008b").get_working(site);
+		binary_arry_8c_0x[site] = (unsigned char)trim_reg.assy("reg0x008c").get_working(site);
+		binary_arry_8d_0x[site] = (unsigned char)trim_reg.assy("reg0x008d").get_working(site);
+		binary_arry_8e_0x[site] = (unsigned char)trim_reg.assy("reg0x008e").get_working(site);
+		binary_arry_8f_0x[site] = (unsigned char)trim_reg.assy("reg0x008f").get_working(site);
+	}
+
+	#define CRC_SEED 0x0000 // pre val
+	#define POLY16   0x1021 // ture 0x11021  CRC-16/XMODEM
+	int length = BANK_CNT * 8;
+	int a = 0;
+	unsigned short CRC_TRIM_BURN[STS_SITE_NUM];
+	unsigned char test_buff[136];
+
+	FOR_EACH_VALID_SITE(site)
+	{
+		test_buff[0] = binary_arry_70_0x[site];
+		test_buff[1] = binary_arry_71_0x[site];
+		test_buff[2] = binary_arry_72_0x[site];
+		test_buff[3] = binary_arry_73_0x[site];
+		test_buff[4] = binary_arry_74_0x[site];
+		test_buff[5] = binary_arry_75_0x[site];
+		test_buff[6] = binary_arry_76_0x[site];
+		test_buff[7] = binary_arry_77_0x[site];
+		test_buff[8] = binary_arry_78_0x[site];
+		test_buff[9] = binary_arry_79_0x[site];
+		test_buff[10] = binary_arry_7a_0x[site];
+		test_buff[11] = binary_arry_7b_0x[site];
+		test_buff[12] = binary_arry_7c_0x[site];
+		test_buff[13] = binary_arry_7d_0x[site];
+		test_buff[14] = binary_arry_7e_0x[site];
+		test_buff[15] = binary_arry_7f_0x[site];
+		test_buff[16] = binary_arry_80_0x[site];
+		test_buff[17] = binary_arry_81_0x[site];
+		test_buff[18] = binary_arry_82_0x[site];
+		test_buff[19] = binary_arry_83_0x[site];
+		test_buff[20] = binary_arry_84_0x[site];
+		test_buff[21] = binary_arry_85_0x[site];
+		test_buff[22] = binary_arry_86_0x[site];
+		test_buff[23] = binary_arry_87_0x[site];
+		test_buff[24] = binary_arry_88_0x[site];
+		test_buff[25] = binary_arry_89_0x[site];
+		test_buff[26] = binary_arry_8a_0x[site];
+		test_buff[27] = binary_arry_8b_0x[site];
+		test_buff[28] = binary_arry_8c_0x[site];
+		test_buff[29] = binary_arry_8d_0x[site];
+		test_buff[30] = binary_arry_8e_0x[site];
+		test_buff[31] = binary_arry_8f_0x[site];
+		test_buff[32] = Gain_SC_RX_1Ball_L[site];// RX_ISNS Gain of Single Ball Low Byte
+		test_buff[33] = Gain_SC_RX_1Ball_H[site];//RX_ ISNS Gain of Single Ball High Byte
+		test_buff[34] = Offset_SC_RX_1Ball_L[site];// RX_SNS Offset of Single Ball Low Byte
+		test_buff[35] = Offset_SC_RX_1Ball_H[site];//RX_ISNS Offset of Single Ball High Byte
+     	test_buff[36] = Gain_LC_RX_1Ball_L[site];// RX_ISNS Gain of Single Ball Low Byte
+		test_buff[37] = Gain_LC_RX_1Ball_H[site];//RX_ ISNS Gain of Single Ball High Byte
+		test_buff[38] = Offset_LC_RX_1Ball_L[site];// RX_SNS Offset of Single Ball Low Byte
+		test_buff[39] = Offset_LC_RX_1Ball_H[site];//RX_ISNS Offset of Single Ball High Byte
+		test_buff[40] = 0x00;// RX_ISNS Gain of Single Ball Low Byte
+		test_buff[41] = 0x00;//RX_ ISNS Gain of Single Ball High Byte
+		test_buff[42] = 0x00;// RX_SNS Offset of Single Ball Low Byte
+		test_buff[43] = 0x00;//RX_ISNS Offset of Single Ball High Byte
+		test_buff[44] = Gain_SC_RX_4Ball_L[site];//  RX_ISNS Gain of  Multiple Ball Low Byte
+		test_buff[45] = Gain_SC_RX_4Ball_H[site];// RX_ISNS Gain of Multiple  Ball High Byte
+		test_buff[46] = Offset_SC_RX_4Ball_L[site];// RX_ISNS Offset of  Multiple Ball Low Byte
+		test_buff[47] = Offset_SC_RX_4Ball_H[site];//RX_ISNS Offset of Multiple  Ball High Byte
+		test_buff[48] = Gain_LC_RX_4Ball_L[site];//  RX_ISNS Gain of  Multiple Ball Low Byte
+		test_buff[49] = Gain_LC_RX_4Ball_H[site];// RX_ISNS Gain of Multiple  Ball High Byte
+		test_buff[50] = Offset_LC_RX_4Ball_L[site];// RX_ISNS Offset of  Multiple Ball Low Byte
+		test_buff[51] = Offset_LC_RX_4Ball_H[site];//RX_ISNS Offset of Multiple  Ball High Byte
+		test_buff[52] = 0x00;// RX_ISNS Gain of Multiple Ball Low Byte
+		test_buff[53] = 0x00;//RX_ ISNS Gain of Multiple Ball High Byte
+		test_buff[54] = 0x00;// RX_SNS Offset of Multiple Ball Low Byte
+		test_buff[55] = 0x00;//RX_ISNS Offset of Multiple Ball High Byte
+		test_buff[56] = Gain_TX_1Ball_L[site];// TX_ISNS Gain of Single Ball Low Byte
+		test_buff[57] = Gain_TX_1Ball_H[site];//TX_ISNS Gain of Single Ball High Byte
+		test_buff[58] = Offset_TX_1Ball_L[site];// TX_ISNS Offset of Single Ball Low Byte
+		test_buff[59] = Offset_TX_1Ball_H[site];//TX_ISNS Offset of Single Ball High Byte
+		test_buff[60] = 0x00;// RX_ISNS Gain of Multiple Ball Low Byte
+		test_buff[61] = 0x00;//RX_ ISNS Gain of Multiple Ball High Byte
+		test_buff[62] = 0x00;// RX_SNS Offset of Multiple Ball Low Byte
+		test_buff[63] = 0x00;//RX_ISNS Offset of Multiple Ball High Byte
+		test_buff[64] = Gain_TX_4Ball_L[site];// TX_ISNS Gain of  Multiple Ball Low Byte
+		test_buff[65] = Gain_TX_4Ball_H[site];//TX_ISNS Gain of  Multiple Ball High Byte
+		test_buff[66] = Offset_TX_4Ball_L[site];// TX_ISNS Offset of  Multiple Ball Low Byte
+		test_buff[67] = Offset_TX_4Ball_H[site];//TX_ISNS Offset of  Multiple Ball High Byte
+		test_buff[68] = 0x00;// RX_ISNS Gain of Multiple Ball Low Byte
+		test_buff[69] = 0x00;//RX_ ISNS Gain of Multiple Ball High Byte
+		test_buff[70] = 0x00;// RX_SNS Offset of Multiple Ball Low Byte
+		test_buff[71] = 0x00;//RX_ISNS Offset of Multiple Ball High Byte
+		test_buff[72] = Vrect_Gain_L[site]; //  VRECT_SNS  Gain  Low Byte
+		test_buff[73] = Vrect_Gain_H[site]; //  VRECT_SNS  Gain  High Byte
+		test_buff[74] = Vrect_Offset_L[site]; //  VRECT_SNS  Offset  Low Byte
+		test_buff[75] = Vrect_Offset_H[site]; //  VRECT_SNS  Offset  High Byte
+		test_buff[76] = 0x00;// RX_ISNS Gain of Multiple Ball Low Byte
+		test_buff[77] = 0x00;//RX_ ISNS Gain of Multiple Ball High Byte
+		test_buff[78] = 0x00;// RX_SNS Offset of Multiple Ball Low Byte
+		test_buff[79] = 0x00;//RX_ISNS Offset of Multiple Ball High Byte
+		test_buff[80] = Vout_Gain_L[site];     //  VOUT_SNS  Gain  Low Byte
+		test_buff[81] = Vout_Gain_H[site];     //  VOUT_SNS  Gain  High Byte
+		test_buff[82] = Vout_Offset_L[site];//  VOUT_SNS  Offset  Low Byte
+		test_buff[83] = Vout_Offset_H[site];//  VOUT_SNS  Offset  High Byte
+		test_buff[84] = 0x00;// RX_ISNS Gain of Multiple Ball Low Byte
+		test_buff[85] = 0x00;//RX_ ISNS Gain of Multiple Ball High Byte
+		test_buff[86] = 0x00;// RX_SNS Offset of Multiple Ball Low Byte
+		test_buff[87] = 0x00;//RX_ISNS Offset of Multiple Ball High Byte
+		test_buff[88] = VRECT2VOUT_Gain_L[site];     // VRECT to VOUT SNS Gain Low Byte
+		test_buff[89] = VRECT2VOUT_Gain_H[site];    // VRECT to VOUT SNS Gain High Byte
+		test_buff[90] = VRECT2VOUT_Offset_L[site];  // VRECT to VOUT SNS Offset Low Byte
+		test_buff[91] = VRECT2VOUT_Offset_H[site]; // VRECT to VOUT SNS Offset High Byte
+		test_buff[92] = GP2_Gain_L[site];    // GP2_ADC0_SNS  Gain  Low Byte
+		test_buff[93] = GP2_Gain_H[site];    // GP2_ADC0_SNS  Gain  High Byte
+		test_buff[94] = GP2_Offset_L[site];  // GP2_ADC0_SNS   Offset  Low Byte
+		test_buff[95] = GP2_Offset_H[site];  // GP2_ADC0_SNS  Offset  High Byte
+		test_buff[96] = GP4_Gain_L[site];    // GP4  ADC1_SNS  Gain  Low Byte
+		test_buff[97] = GP4_Gain_H[site];    // GP4_ADC1_SNS  Gain  High Byte
+		test_buff[98] = GP4_Offset_L[site];  // GP4_ADC1_SNS   Offset  Low Byte
+		test_buff[99] = GP4_Offset_H[site];  // G4_  ADC1_SNS  Offset  High Byte
+		test_buff[100] = VDD_Gain_L[site];    // GP4  ADC1_SNS  Gain  Low Byte
+		test_buff[101] = VDD_Gain_H[site];    // GP4_ADC1_SNS  Gain  High Byte
+		test_buff[102] = VDD_Offset_L[site];  // GP4_ADC1_SNS   Offset  Low Byte
+		test_buff[103] = VDD_Offset_H[site];  // G4_  ADC1_SNS  Offset  High Byte
+		test_buff[104] = DATA_LOT_BIT0[site]; // 'G'      GF3V35.1
+		test_buff[105] = DATA_LOT_BIT1[site]; // 'F'
+		test_buff[106] = DATA_LOT_BIT2[site]; // '3'
+		test_buff[107] = DATA_LOT_BIT3[site]; // 'V'
+		test_buff[108] = DATA_LOT_BIT4[site]; // '3'
+		test_buff[109] = DATA_LOT_BIT5[site]; // '5'
+		test_buff[110] = DATA_LOT_BIT6[site]; //  '.'
+		test_buff[111] = DATA_LOT_BIT7[site]; //  '1'
+		test_buff[112] = DATA_WAFER_BIT0[site];  // 'G'  
+		test_buff[113] = DATA_WAFER_BIT1[site];  // 'F'
+		test_buff[114] = DATA_WAFER_BIT2[site];  // '3'
+		test_buff[115] = DATA_WAFER_BIT3[site];  // 'V'
+		test_buff[116] = DATA_WAFER_BIT4[site];  // '3'
+		test_buff[117] = DATA_WAFER_BIT5[site];  // '5'
+		test_buff[118] = DATA_WAFER_BIT6[site];  //  '-'
+		test_buff[119] = DATA_WAFER_BIT7[site];  //  '0'
+		test_buff[120] = DATA_WAFER_BIT8[site];  //  '9'
+		test_buff[121] = DATA_WAFER_BIT9[site];  //  'F'
+		test_buff[122] = DATA_WAFER_BIT10[site]; // '7'
+		test_buff[123] = DATA_WAFER_BIT11[site]; // '7'
+		test_buff[124] = axis_x[site]; // wafer X Axis
+		test_buff[125] = axis_y[site]; // wafer Y Axis
+		test_buff[126] = PGM_Version; // program version
+		test_buff[127] = 0x00;
+		test_buff[128] = 0x00;// ATE Reserved
+		test_buff[129] = 0x00;//A TE Reserved
+		test_buff[130] = 0x00;// ATE Reserved
+		test_buff[131] = 0x00;//A TE Reserved
+		test_buff[132] = 0x00;// ATE Reserved
+		test_buff[133] = 0x00;//A TE Reserved
+		test_buff[134] = 0x00;// ATE Reserved
+		test_buff[135] = 0x00;//ATE Reserved
+		CRC_TRIM_BURN[site] = do_crc(test_buff, sizeof(test_buff));
+		CRC_TRIM_BURN_L[site] = ((int)CRC_TRIM_BURN[site]) & 255;
+		CRC_TRIM_BURN_H[site] = ((int)CRC_TRIM_BURN[site]) >> 8;
+	}
+	//------------------------------------CRC Check End------------------------------//
+
+	////---------------------------------start to burn-----------------------------------------------------//
+	if (TRIM_FLOW == CP)
+	{
+			unsigned char porgram_version[STS_SITE_NUM] = { 0 };
+			FOR_EACH_VALID_SITE(site)
+			{
+				porgram_version[site] = PGM_Version;
+			}
+			cbite.SetOn(K1_PGND2AGND, K15_V5V_Cap, K20_SCL_PU, K21_SDA_PU, -1);
+			delay_ms(5);
+			V5V_ACM.Set(FV, 0, ACM_N2P18V, ACM_200MA, ACM_RELAY_ON);
+			delay_us(500);
+			V5V_ACM.Set(FV, V_TYP_V5V, ACM_N2P18V, ACM_200MA, ACM_RELAY_ON, 0.5);
+			delay_us(500);
+			entertestmode();
+			I2CWriteSameData(dev_addr, 0x1002, 0x8c);//i2c_disMCU, for burn only
+			I2CWriteSameData(dev_addr, 0x4918, 0x80);
+			I2CWriteSameData(dev_addr, 0x0012, 0xFF);//Select all SECTOR
+			I2CWriteSameData(dev_addr, 0x0010, 0x80);//bit7~bit0 (select information domain)
+			I2CWriteSameData(dev_addr, 0x0011, 0x00);
+			I2CWriteSameData(dev_addr, 0x001a, 0x5a);// mtp write start /enable 	
+			/////////////////////////////////////////////////////////////////////////
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, binary_arry_70_0x);// 0x001c
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, binary_arry_71_0x);// 0x001d
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, binary_arry_72_0x);// 0x001e
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, binary_arry_73_0x);// 0x001f
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, binary_arry_74_0x);// 0x001c
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, binary_arry_75_0x);// 0x001d
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, binary_arry_76_0x);// 0x001e
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, binary_arry_77_0x);// 0x001f
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, binary_arry_78_0x);// 0x001c
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, binary_arry_79_0x);// 0x001d
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, binary_arry_7a_0x);// 0x001e
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, binary_arry_7b_0x);// 0x001f
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, binary_arry_7c_0x);// 0x001c
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, binary_arry_7d_0x);// 0x001d
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, binary_arry_7e_0x);// 0x001e
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, binary_arry_7f_0x);// 0x001f
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, binary_arry_80_0x);// 0x001c
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, binary_arry_81_0x);// 0x001d
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, binary_arry_82_0x);// 0x001e
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, binary_arry_83_0x);// 0x001f
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, binary_arry_84_0x);// 0x001c
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, binary_arry_85_0x);// 0x001d
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, binary_arry_86_0x);// 0x001e
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, binary_arry_87_0x);// 0x001f
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, binary_arry_88_0x);// 0x001c
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, binary_arry_89_0x);// 0x001d
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, binary_arry_8a_0x);// 0x001e
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, binary_arry_8b_0x);// 0x001f
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, binary_arry_8c_0x);// 0x001c
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, binary_arry_8d_0x);// 0x001d
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, binary_arry_8e_0x);// 0x001e
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, binary_arry_8f_0x);// 0x001f
+			delay_us(500);
+			//Start from MTP=0x0008~0x0016    ADC_calibration
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, Gain_SC_RX_1Ball_L);// RX_ISNS Gain of Single Ball Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, Gain_SC_RX_1Ball_H);//RX_ ISNS Gain of Single Ball High Byte
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Offset_SC_RX_1Ball_L);// RX_SNS Offset of Single Ball Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Offset_SC_RX_1Ball_H);//RX_ISNS Offset of Single Ball High Byte
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, Gain_LC_RX_1Ball_L);// RX_ISNS Gain of Single Ball Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, Gain_LC_RX_1Ball_H);//RX_ ISNS Gain of Single Ball High Byte
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Offset_LC_RX_1Ball_L);// RX_SNS Offset of Single Ball Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Offset_LC_RX_1Ball_H);//RX_ISNS Offset of Single Ball High Byte
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, Gain_RX_1Ball_Dummy_H);// RX_ISNS Gain of Single Ball Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, Gain_RX_1Ball_Dummy_L);//RX_ ISNS Gain of Single Ball High Byte
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Offset_RX_1Ball_Dummy_H);// RX_SNS Offset of Single Ball Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Offset_RX_1Ball_Dummy_L);//RX_ISNS Offset of Single Ball High Byte
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, Gain_SC_RX_4Ball_L);//  RX_ISNS Gain of  Multiple Ball Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, Gain_SC_RX_4Ball_H);// RX_ISNS Gain of Multiple  Ball High Byte
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Offset_SC_RX_4Ball_L);// RX_ISNS Offset of  Multiple Ball Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Offset_SC_RX_4Ball_H);//RX_ISNS Offset of Multiple  Ball High Byte
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, Gain_LC_RX_4Ball_L);//  RX_ISNS Gain of  Multiple Ball Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, Gain_LC_RX_4Ball_H);// RX_ISNS Gain of Multiple  Ball High Byte
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Offset_LC_RX_4Ball_L);// RX_ISNS Offset of  Multiple Ball Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Offset_LC_RX_4Ball_H);//RX_ISNS Offset of Multiple  Ball High Byte
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, Gain_RX_4Ball_Dummy_H);// RX_ISNS Gain of Single Ball Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, Gain_RX_4Ball_Dummy_L);//RX_ ISNS Gain of Single Ball High Byte
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Offset_RX_4Ball_Dummy_H);// RX_SNS Offset of Single Ball Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Offset_RX_4Ball_Dummy_L);//RX_ISNS Offset of Single Ball High Byte
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, Gain_TX_1Ball_L);// TX_ISNS Gain of Single Ball Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, Gain_TX_1Ball_H);//TX_ ISNS Gain of Single Ball High Byte
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Offset_TX_1Ball_L);// TX_SNS Offset of Single Ball Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Offset_TX_1Ball_H);//TX_ISNS Offset of Single Ball High Byte
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, Gain_TX_1Ball_Dummy_L);// RX_ISNS Gain of Single Ball Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, Gain_TX_1Ball_Dummy_H);//RX_ ISNS Gain of Single Ball High Byte
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Offset_TX_1Ball_Dummy_L);// RX_SNS Offset of Single Ball Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Offset_TX_1Ball_Dummy_H);//RX_ISNS Offset of Single Ball High Byte
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, Gain_TX_4Ball_L);//  TX_ISNS Gain of  Multiple Ball Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, Gain_TX_4Ball_H);// TX_ISNS Gain of Multiple  Ball High Byte
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Offset_TX_4Ball_L);// TX_ISNS Offset of  Multiple Ball Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Offset_TX_4Ball_H);//TX_ISNS Offset of Multiple  Ball High Byte
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, Gain_TX_4Ball_Dummy_L);// RX_ISNS Gain of Single Ball Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, Gain_TX_4Ball_Dummy_H);//RX_ ISNS Gain of Single Ball High Byte
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Offset_TX_4Ball_Dummy_L);// RX_SNS Offset of Single Ball Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Offset_TX_4Ball_Dummy_H);//RX_ISNS Offset of Single Ball High Byte
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, Vrect_Gain_L); //  VRECT_SNS  Gain  Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, Vrect_Gain_H); //  VRECT_SNS  Gain  High Byte
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Vrect_Offset_L); //  VRECT_SNS  Offset  Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Vrect_Offset_H); //  VRECT_SNS  Offset  High Byte
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, Vrect_Gain_Dummy_L); //  VRECT_SNS  Gain  Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, Vrect_Gain_Dummy_H); //  VRECT_SNS  Gain  High Byte
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Vrect_Offset_Dummy_L); //  VRECT_SNS  Offset  Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Vrect_Offset_Dummy_H); //  VRECT_SNS  Offset  High Byte
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, Vout_Gain_L); //  VOUT_SNS  Gain  Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, Vout_Gain_H); //  VOUT_SNS  Gain  High Byte
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Vout_Offset_L); //  VOUT_SNS  Offset  Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Vout_Offset_H); //  VOUT_SNS  Offset  High Byte
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, Vout_Gain_Dummy_L); //  VRECT_SNS  Gain  Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, Vout_Gain_Dummy_H); //  VRECT_SNS  Gain  High Byte
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Vout_Offset_Dummy_L); //  VRECT_SNS  Offset  Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Vout_Offset_Dummy_H); //  VRECT_SNS  Offset  High Byte
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, VRECT2VOUT_Gain_L);     // VRECT to VOUT SNS Gain Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, VRECT2VOUT_Gain_H);    // VRECT to VOUT SNS Gain High Byte
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, VRECT2VOUT_Offset_L);  // VRECT to VOUT SNS Offset Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, VRECT2VOUT_Offset_H); // VRECT to VOUT SNS Offset High Byte
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, GP2_Gain_L); //  GP2 SNS  Gain  Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, GP2_Gain_H); // GP2 SNS  Gain  High Byte
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, GP2_Offset_L); //GP2 _SNS  Offset  Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, GP2_Offset_H); //GP2 SNS  Offset  High Byte
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, GP4_Gain_L); //  GP4_SNS  Gain  Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, GP4_Gain_H); // GP4_SNS  Gain  High Byte
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, GP4_Offset_L); //GP4_SNS  Offset  Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, GP4_Offset_H); //GP4_SNS  Offset  High Byte
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, VDD_Gain_L); //  VDD_SNS  Gain  Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, VDD_Gain_H); // VDD_SNS  Gain  High Byte
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, VDD_Offset_L); //VDD _SNS  Offset  Low Byte
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, VDD_Offset_H); //VDD SNS  Offset  High Byte
+			delay_us(500);
+			//Start from MTP=0x0018~0x0025,wafer_info == 1
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, DATA_LOT_BIT0); //  Data lot Bit0
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, DATA_LOT_BIT1); //  Data lot Bit1
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, DATA_LOT_BIT2); //  Data lot Bit2
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, DATA_LOT_BIT3); //   Data lot Bit3
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, DATA_LOT_BIT4); //  Data lot Bit4
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, DATA_LOT_BIT5); //  Data lot Bit5
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, DATA_LOT_BIT6); //  Data lot Bit6
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, DATA_LOT_BIT7);  //   Data lot Bit7
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, DATA_WAFER_BIT0); //  wafer id bit 1 data
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, DATA_WAFER_BIT1); // wafer id bit 2 data
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, DATA_WAFER_BIT2); //wafer id bit 3 data
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, DATA_WAFER_BIT3); //wafer id bit 4 data
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, DATA_WAFER_BIT4); // wafer id bit 4 data
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, DATA_WAFER_BIT5); // wafer id bit 5 data
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, DATA_WAFER_BIT6); //wafer id bit 6 data
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, DATA_WAFER_BIT7); //wafer id bit 7 data
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, DATA_WAFER_BIT8); //  wafer id bit 8 data
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, DATA_WAFER_BIT9); // wafer id bit 9 data
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, DATA_WAFER_BIT10); //wafer id bit 10 data
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, DATA_WAFER_BIT11); // wafer id bit 11 data
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, axis_x); //Wafer X ID
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, axis_y);//Wafer Y ID
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, porgram_version);// program version
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Code_0x00);
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, Code_0x00);
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, Code_0x00);
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Code_0x00);
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Code_0x00);
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, Code_0x00);
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, Code_0x00);
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Code_0x00);
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Code_0x00);
+			delay_us(500);
+			//------------------CRC Check , //Start from MTP=0x0026
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, CRC_TRIM_BURN_L);
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, CRC_TRIM_BURN_H);
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Code_0x00);
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Code_0x00);
+			delay_us(500);
+			//---software_reserve == 1)//Start from MTP=0x0027~0x030
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, Code_0x00);
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, Code_0x00);
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Code_0x00);
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Code_0x00);
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, Code_0x00);
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, Code_0x00);
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Code_0x00);
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Code_0x00);
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, Code_0x00);
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, Code_0x00);
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Code_0x00);
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Code_0x00);
+			delay_us(500);
+			dcm.I2CWriteData(dev_addr, 0x001C, 2, Code_0x00);
+			dcm.I2CWriteData(dev_addr, 0x001D, 2, Code_0x00);
+			dcm.I2CWriteData(dev_addr, 0x001E, 2, Code_0x00);
+			dcm.I2CWriteData(dev_addr, 0x001F, 2, Code_0x00);
+			delay_us(500);
+			///////////////////////////////////////power down////////////////////
+			V5V_ACM.Set(FV, 0, ACM_N2P18V, ACM_200MA, ACM_RELAY_ON, 0.5);
+			delay_us(500);
+			V5V_ACM.Set(FV, 0, ACM_N2P18V, ACM_200MA, ACM_RELAY_ON);
+	}
+	//---------------------------------burn end-----------------------------------------------------//
+
+
+	//======================================Copy working value to programmed ================================//
+	FOR_EACH_VALID_SITE(site)
+	{
+		trim_reg.assy("reg0x0070").copy_work_to_prog(site);
+		trim_reg.assy("reg0x0071").copy_work_to_prog(site);
+		trim_reg.assy("reg0x0072").copy_work_to_prog(site);
+		trim_reg.assy("reg0x0073").copy_work_to_prog(site);
+		trim_reg.assy("reg0x0074").copy_work_to_prog(site);
+		trim_reg.assy("reg0x0075").copy_work_to_prog(site);
+		trim_reg.assy("reg0x0076").copy_work_to_prog(site);
+		trim_reg.assy("reg0x0077").copy_work_to_prog(site);
+		trim_reg.assy("reg0x0078").copy_work_to_prog(site);
+		trim_reg.assy("reg0x0079").copy_work_to_prog(site);
+		trim_reg.assy("reg0x007a").copy_work_to_prog(site);
+		trim_reg.assy("reg0x007b").copy_work_to_prog(site);
+		trim_reg.assy("reg0x007c").copy_work_to_prog(site);
+		trim_reg.assy("reg0x007d").copy_work_to_prog(site);
+		trim_reg.assy("reg0x007e").copy_work_to_prog(site);
+		trim_reg.assy("reg0x007f").copy_work_to_prog(site);
+		trim_reg.assy("reg0x0080").copy_work_to_prog(site);
+		trim_reg.assy("reg0x0081").copy_work_to_prog(site);
+		trim_reg.assy("reg0x0082").copy_work_to_prog(site);
+		trim_reg.assy("reg0x0083").copy_work_to_prog(site);
+		trim_reg.assy("reg0x0084").copy_work_to_prog(site);
+		trim_reg.assy("reg0x0085").copy_work_to_prog(site);
+		trim_reg.assy("reg0x0086").copy_work_to_prog(site);
+		trim_reg.assy("reg0x0087").copy_work_to_prog(site);
+		trim_reg.assy("reg0x0088").copy_work_to_prog(site);
+		trim_reg.assy("reg0x0089").copy_work_to_prog(site);
+		trim_reg.assy("reg0x008a").copy_work_to_prog(site);
+		trim_reg.assy("reg0x008b").copy_work_to_prog(site);
+		trim_reg.assy("reg0x008c").copy_work_to_prog(site);
+		trim_reg.assy("reg0x008d").copy_work_to_prog(site);
+		trim_reg.assy("reg0x008e").copy_work_to_prog(site);
+		trim_reg.assy("reg0x008f").copy_work_to_prog(site);
+ 	}
+
+
+FOR_EACH_VALID_SITE(site)
+{
+	CRC_CODE_CHECK_LByte->SetTestResult(site, 0, CRC_TRIM_BURN_L[site]);
+	CRC_CODE_CHECK_HByte->SetTestResult(site, 0, CRC_TRIM_BURN_H[site]);
+	//if (CP_FLAG == 1)
+	//{
+	//	DATALOG.LogResult(site, DSIndex + 0, CRC_TRIM_BURN_L[site]);
+	//	DATALOG.LogResult(site, DSIndex + 1, CRC_TRIM_BURN_H[site]);
+	//}
+}
+
+return 0;
+}
+ 
+ 
+DUT_API int MTP_TRIM_READBACK(short funcindex, LPCTSTR funclabel)
+{
+//{{AFX_STS_PARAM_PROTOTYPES
+    CParam *BG_RB = StsGetParam(funcindex, "BG_RB");
+    CParam *IZTC_RB = StsGetParam(funcindex, "IZTC_RB");
+    CParam *OSC_96M_RB = StsGetParam(funcindex, "OSC_96M_RB");
+    CParam *OSC_64K_RB = StsGetParam(funcindex, "OSC_64K_RB");
+    CParam *V1P13_RB = StsGetParam(funcindex, "V1P13_RB");
+    CParam *V2P26_RB = StsGetParam(funcindex, "V2P26_RB");
+    CParam *V1P8_RB = StsGetParam(funcindex, "V1P8_RB");
+    CParam *ISNS_GAIN_RX_RB = StsGetParam(funcindex, "ISNS_GAIN_RX_RB");
+    CParam *ISNS_GAIN_TX_RB = StsGetParam(funcindex, "ISNS_GAIN_TX_RB");
+    CParam *ISNS_OS_RB = StsGetParam(funcindex, "ISNS_OS_RB");
+    CParam *ISNS_D2S_OS_RB = StsGetParam(funcindex, "ISNS_D2S_OS_RB");
+    CParam *RTX_IPEAK_GAIN_RB = StsGetParam(funcindex, "RTX_IPEAK_GAIN_RB");
+    CParam *AC1_IPEAK_OS_RB = StsGetParam(funcindex, "AC1_IPEAK_OS_RB");
+    CParam *AC2_IPEAK_OS_RB = StsGetParam(funcindex, "AC2_IPEAK_OS_RB");
+    CParam *MLDO_VOUT_GAIN_RB = StsGetParam(funcindex, "MLDO_VOUT_GAIN_RB");
+    CParam *MLDO_VOUT_OS_RB = StsGetParam(funcindex, "MLDO_VOUT_OS_RB");
+    CParam *ADC_VIN_BUF_RB = StsGetParam(funcindex, "ADC_VIN_BUF_RB");
+    CParam *ADC_VREF_BUF_RB = StsGetParam(funcindex, "ADC_VREF_BUF_RB");
+    CParam *VRECT_MNT_2O22_RB = StsGetParam(funcindex, "VRECT_MNT_2O22_RB");
+    CParam *VOUT_MNT_2O20_RB = StsGetParam(funcindex, "VOUT_MNT_2O20_RB");
+    CParam *LS_COMP_OFF_AC1_RB = StsGetParam(funcindex, "LS_COMP_OFF_AC1_RB");
+    CParam *LS_COMP_OFF_AC2_RB = StsGetParam(funcindex, "LS_COMP_OFF_AC2_RB");
+    CParam *MIN_OFF_TIME_AC1_RB = StsGetParam(funcindex, "MIN_OFF_TIME_AC1_RB");
+    CParam *MIN_OFF_TIME_AC2_RB = StsGetParam(funcindex, "MIN_OFF_TIME_AC2_RB");
+    CParam *MIN_ON_TIME_AC1_RB = StsGetParam(funcindex, "MIN_ON_TIME_AC1_RB");
+    CParam *MIN_ON_TIME_AC2_RB = StsGetParam(funcindex, "MIN_ON_TIME_AC2_RB");
+    CParam *QDT_COMP_OS_RB = StsGetParam(funcindex, "QDT_COMP_OS_RB");
+    CParam *RESEVRED0_RB = StsGetParam(funcindex, "RESEVRED0_RB");
+    CParam *RESEVRED1_RB = StsGetParam(funcindex, "RESEVRED1_RB");
+    CParam *RESEVRED2_RB = StsGetParam(funcindex, "RESEVRED2_RB");
+    CParam *RESEVRED3_RB = StsGetParam(funcindex, "RESEVRED3_RB");
+    CParam *RESEVRED4_RB = StsGetParam(funcindex, "RESEVRED4_RB");
+    CParam *RESEVRED5_RB = StsGetParam(funcindex, "RESEVRED5_RB");
+    CParam *NA1_RB = StsGetParam(funcindex, "NA1_RB");
+    CParam *NA2_RB = StsGetParam(funcindex, "NA2_RB");
+    CParam *NA3_RB = StsGetParam(funcindex, "NA3_RB");
+    CParam *NA4_RB = StsGetParam(funcindex, "NA4_RB");
+    CParam *NA5_RB = StsGetParam(funcindex, "NA5_RB");
+    CParam *PGM_VERSION_RB = StsGetParam(funcindex, "PGM_VERSION_RB");
+    CParam *MTP_LOCK_RB = StsGetParam(funcindex, "MTP_LOCK_RB");
+    CParam *MTP_TRIM_LOCK_RB = StsGetParam(funcindex, "MTP_TRIM_LOCK_RB");
+    CParam *I2C_ADDR_RB = StsGetParam(funcindex, "I2C_ADDR_RB");
+    CParam *CHIP_ID0_RB = StsGetParam(funcindex, "CHIP_ID0_RB");
+    CParam *CHIP_ID1_RB = StsGetParam(funcindex, "CHIP_ID1_RB");
+    CParam *CRC_CHK_H_RB = StsGetParam(funcindex, "CRC_CHK_H_RB");
+    CParam *CRC_CHK_L_RB = StsGetParam(funcindex, "CRC_CHK_L_RB");
+    CParam *RX_ISNS_GAIN_SC_1Ball_L_RB = StsGetParam(funcindex, "RX_ISNS_GAIN_SC_1Ball_L_RB");
+    CParam *RX_ISNS_GAIN_SC_1Ball_H_RB = StsGetParam(funcindex, "RX_ISNS_GAIN_SC_1Ball_H_RB");
+    CParam *RX_ISNS_OS_SC_1Ball_L_RB = StsGetParam(funcindex, "RX_ISNS_OS_SC_1Ball_L_RB");
+    CParam *RX_ISNS_OS_SC_1Ball_H_RB = StsGetParam(funcindex, "RX_ISNS_OS_SC_1Ball_H_RB");
+    CParam *RX_ISNS_GAIN_LC_1Ball_L_RB = StsGetParam(funcindex, "RX_ISNS_GAIN_LC_1Ball_L_RB");
+    CParam *RX_ISNS_GAIN_LC_1Ball_H_RB = StsGetParam(funcindex, "RX_ISNS_GAIN_LC_1Ball_H_RB");
+    CParam *RX_ISNS_OS_LC_1Ball_L_RB = StsGetParam(funcindex, "RX_ISNS_OS_LC_1Ball_L_RB");
+    CParam *RX_ISNS_OS_LC_1Ball_H_RB = StsGetParam(funcindex, "RX_ISNS_OS_LC_1Ball_H_RB");
+    CParam *RX_1Ball_DUMY1_RB = StsGetParam(funcindex, "RX_1Ball_DUMY1_RB");
+    CParam *RX_1Ball_DUMY2_RB = StsGetParam(funcindex, "RX_1Ball_DUMY2_RB");
+    CParam *RX_1Ball_DUMY3_RB = StsGetParam(funcindex, "RX_1Ball_DUMY3_RB");
+    CParam *RX_1Ball_DUMY4_RB = StsGetParam(funcindex, "RX_1Ball_DUMY4_RB");
+    CParam *RX_ISNS_GAIN_SC_4Ball_L_RB = StsGetParam(funcindex, "RX_ISNS_GAIN_SC_4Ball_L_RB");
+    CParam *RX_ISNS_GAIN_SC_4Ball_H_RB = StsGetParam(funcindex, "RX_ISNS_GAIN_SC_4Ball_H_RB");
+    CParam *RX_ISNS_OS_SC_4Ball_L_RB = StsGetParam(funcindex, "RX_ISNS_OS_SC_4Ball_L_RB");
+    CParam *RX_ISNS_OS_SC_4Ball_H_RB = StsGetParam(funcindex, "RX_ISNS_OS_SC_4Ball_H_RB");
+    CParam *RX_ISNS_GAIN_LC_4Ball_L_RB = StsGetParam(funcindex, "RX_ISNS_GAIN_LC_4Ball_L_RB");
+    CParam *RX_ISNS_GAIN_LC_4Ball_H_RB = StsGetParam(funcindex, "RX_ISNS_GAIN_LC_4Ball_H_RB");
+    CParam *RX_ISNS_OS_LC_4Ball_L_RB = StsGetParam(funcindex, "RX_ISNS_OS_LC_4Ball_L_RB");
+    CParam *RX_ISNS_OS_LC_4Ball_H_RB = StsGetParam(funcindex, "RX_ISNS_OS_LC_4Ball_H_RB");
+    CParam *RX_4Ball_DUMY1_RB = StsGetParam(funcindex, "RX_4Ball_DUMY1_RB");
+    CParam *RX_4Ball_DUMY2_RB = StsGetParam(funcindex, "RX_4Ball_DUMY2_RB");
+    CParam *RX_4Ball_DUMY3_RB = StsGetParam(funcindex, "RX_4Ball_DUMY3_RB");
+    CParam *RX_4Ball_DUMY4_RB = StsGetParam(funcindex, "RX_4Ball_DUMY4_RB");
+    CParam *TX_ISNS_GAIN_1Ball_L_RB = StsGetParam(funcindex, "TX_ISNS_GAIN_1Ball_L_RB");
+    CParam *TX_ISNS_GAIN_1Ball_H_RB = StsGetParam(funcindex, "TX_ISNS_GAIN_1Ball_H_RB");
+    CParam *TX_ISNS_OS_1Ball_L_RB = StsGetParam(funcindex, "TX_ISNS_OS_1Ball_L_RB");
+    CParam *TX_ISNS_OS_1Ball_H_RB = StsGetParam(funcindex, "TX_ISNS_OS_1Ball_H_RB");
+    CParam *TX_1Ball_DUMY1_RB = StsGetParam(funcindex, "TX_1Ball_DUMY1_RB");
+    CParam *TX_1Ball_DUMY2_RB = StsGetParam(funcindex, "TX_1Ball_DUMY2_RB");
+    CParam *TX_1Ball_DUMY3_RB = StsGetParam(funcindex, "TX_1Ball_DUMY3_RB");
+    CParam *TX_1Ball_DUMY4_RB = StsGetParam(funcindex, "TX_1Ball_DUMY4_RB");
+    CParam *TX_ISNS_GAIN_4Ball_L_RB = StsGetParam(funcindex, "TX_ISNS_GAIN_4Ball_L_RB");
+    CParam *TX_ISNS_GAIN_4Ball_H_RB = StsGetParam(funcindex, "TX_ISNS_GAIN_4Ball_H_RB");
+    CParam *TX_ISNS_OS_4Ball_L_RB = StsGetParam(funcindex, "TX_ISNS_OS_4Ball_L_RB");
+    CParam *TX_ISNS_OS_4Ball_H_RB = StsGetParam(funcindex, "TX_ISNS_OS_4Ball_H_RB");
+    CParam *TX_4Ball_DUMY1_RB = StsGetParam(funcindex, "TX_4Ball_DUMY1_RB");
+    CParam *TX_4Ball_DUMY2_RB = StsGetParam(funcindex, "TX_4Ball_DUMY2_RB");
+    CParam *TX_4Ball_DUMY3_RB = StsGetParam(funcindex, "TX_4Ball_DUMY3_RB");
+    CParam *TX_4Ball_DUMY4_RB = StsGetParam(funcindex, "TX_4Ball_DUMY4_RB");
+    CParam *VRECT_SNS_GAIN_L_RB = StsGetParam(funcindex, "VRECT_SNS_GAIN_L_RB");
+    CParam *VRECT_SNS_GAIN_H_RB = StsGetParam(funcindex, "VRECT_SNS_GAIN_H_RB");
+    CParam *VRECT_SNS_OS_L_RB = StsGetParam(funcindex, "VRECT_SNS_OS_L_RB");
+    CParam *VRECT_SNS_OS_H_RB = StsGetParam(funcindex, "VRECT_SNS_OS_H_RB");
+    CParam *VRECT_SNS_DUMY1_RB = StsGetParam(funcindex, "VRECT_SNS_DUMY1_RB");
+    CParam *VRECT_SNS_DUMY2_RB = StsGetParam(funcindex, "VRECT_SNS_DUMY2_RB");
+    CParam *VRECT_SNS_DUMY3_RB = StsGetParam(funcindex, "VRECT_SNS_DUMY3_RB");
+    CParam *VRECT_SNS_DUMY4_RB = StsGetParam(funcindex, "VRECT_SNS_DUMY4_RB");
+    CParam *VOUT_SNS_GAIN_L_RB = StsGetParam(funcindex, "VOUT_SNS_GAIN_L_RB");
+    CParam *VOUT_SNS_GAIN_H_RB = StsGetParam(funcindex, "VOUT_SNS_GAIN_H_RB");
+    CParam *VOUT_SNS_OS_L_RB = StsGetParam(funcindex, "VOUT_SNS_OS_L_RB");
+    CParam *VOUT_SNS_OS_H_RB = StsGetParam(funcindex, "VOUT_SNS_OS_H_RB");
+    CParam *VOUT_SNS_DUMY1_RB = StsGetParam(funcindex, "VOUT_SNS_DUMY1_RB");
+    CParam *VOUT_SNS_DUMY2_RB = StsGetParam(funcindex, "VOUT_SNS_DUMY2_RB");
+    CParam *VOUT_SNS_DUMY3_RB = StsGetParam(funcindex, "VOUT_SNS_DUMY3_RB");
+    CParam *VOUT_SNS_DUMY4_RB = StsGetParam(funcindex, "VOUT_SNS_DUMY4_RB");
+    CParam *VRECT2VOUT_GAIN_L_RB = StsGetParam(funcindex, "VRECT2VOUT_GAIN_L_RB");
+    CParam *VRECT2VOUT_GAIN_H_RB = StsGetParam(funcindex, "VRECT2VOUT_GAIN_H_RB");
+    CParam *VRECT2VOUT_OS_L_RB = StsGetParam(funcindex, "VRECT2VOUT_OS_L_RB");
+    CParam *VRECT2VOUT_OS_H_RB = StsGetParam(funcindex, "VRECT2VOUT_OS_H_RB");
+    CParam *GP2_SNS_GAIN_L_RB = StsGetParam(funcindex, "GP2_SNS_GAIN_L_RB");
+    CParam *GP2_SNS_GAIN_H_RB = StsGetParam(funcindex, "GP2_SNS_GAIN_H_RB");
+    CParam *GP2_SNS_OS_L_RB = StsGetParam(funcindex, "GP2_SNS_OS_L_RB");
+    CParam *GP2_SNS_OS_H_RB = StsGetParam(funcindex, "GP2_SNS_OS_H_RB");
+    CParam *GP4_SNS_GAIN_L_RB = StsGetParam(funcindex, "GP4_SNS_GAIN_L_RB");
+    CParam *GP4_SNS_GAIN_H_RB = StsGetParam(funcindex, "GP4_SNS_GAIN_H_RB");
+    CParam *GP4_SNS_OS_L_RB = StsGetParam(funcindex, "GP4_SNS_OS_L_RB");
+    CParam *GP4_SNS_OS_H_RB = StsGetParam(funcindex, "GP4_SNS_OS_H_RB");
+    CParam *VDD_SNS_GAIN_L_RB = StsGetParam(funcindex, "VDD_SNS_GAIN_L_RB");
+    CParam *VDD_SNS_GAIN_H_RB = StsGetParam(funcindex, "VDD_SNS_GAIN_H_RB");
+    CParam *VDD_SNS_OS_L_RB = StsGetParam(funcindex, "VDD_SNS_OS_L_RB");
+    CParam *VDD_SNS_OS_H_RB = StsGetParam(funcindex, "VDD_SNS_OS_H_RB");
+//}}AFX_STS_PARAM_PROTOTYPES
+    // TODO: Add your function code here
+
+	//--------------------------trim code readback-------------------------//
+	double BG_Code_RB[STS_SITE_NUM] = { 0 };
+	double  IZTC_Code_RB[STS_SITE_NUM] = { 0 };
+	double  OSC_96M_Code_RB[STS_SITE_NUM] = { 0 };
+	double  OSC_64K_Code_RB[STS_SITE_NUM] = { 0 };
+	double  V1P13_Code_RB[STS_SITE_NUM] = { 0 };
+	double  V2P26_Code_RB[STS_SITE_NUM] = { 0 };
+	double  V1P8_Code_RB[STS_SITE_NUM] = { 0 };
+	double  ISNS_GAIN_RX_Code_RB[STS_SITE_NUM] = { 0 };
+	double  ISNS_GAIN_TX_Code_RB[STS_SITE_NUM] = { 0 };
+	double  ISNS_OS_Code_RB[STS_SITE_NUM] = { 0 };
+	double  ISNS_D2S_OS_Code_RB[STS_SITE_NUM] = { 0 };
+	double  RTX_IPEAK_GAIN_Code_RB[STS_SITE_NUM] = { 0 };
+	double  AC1_IPEAK_OS_Code_RB[STS_SITE_NUM] = { 0 };
+	double  AC2_IPEAK_OS_Code_RB[STS_SITE_NUM] = { 0 };
+	double  MLDO_VOUT_GAIN_Code_RB[STS_SITE_NUM] = { 0 };
+	double  MLDO_VOUT_OS_Code_RB[STS_SITE_NUM] = { 0 };
+	double  ADC_VIN_BUF_Code_RB[STS_SITE_NUM] = { 0 };
+	double  ADC_VREF_BUF_Code_RB[STS_SITE_NUM] = { 0 };
+	double  VRECT_MNT_2O22_Code_RB[STS_SITE_NUM] = { 0 };
+	double  VOUT_MNT_2O20_Code_RB[STS_SITE_NUM] = { 0 };
+	double  LS_COMP_OFF_AC1_Code_RB[STS_SITE_NUM] = { 0 };
+	double  LS_COMP_OFF_AC2_Code_RB[STS_SITE_NUM] = { 0 };
+	double  MIN_OFF_TIME_AC1_Code_RB[STS_SITE_NUM] = { 0 };
+	double  MIN_OFF_TIME_AC2_Code_RB[STS_SITE_NUM] = { 0 };
+	double  MIN_ON_TIME_AC1_Code_RB[STS_SITE_NUM] = { 0 };
+	double  MIN_ON_TIME_AC2_Code_RB[STS_SITE_NUM] = { 0 };
+	double QDT_COMP_OS_Code_RB[STS_SITE_NUM] = { 0 };
+
+	double MNT_V2X_Code_RB[STS_SITE_NUM] = { 0 };
+	double Reserved0_Code_RB[STS_SITE_NUM] = { 0 };
+	double  Reserved1_Code_RB[STS_SITE_NUM] = { 0 };
+	double  Reserved2_Code_RB[STS_SITE_NUM] = { 0 };
+	double  Reserved3_Code_RB[STS_SITE_NUM] = { 0 };
+	double  Reserved4_Code_RB[STS_SITE_NUM] = { 0 };
+	double  Reserved5_Code_RB[STS_SITE_NUM] = { 0 };
+	double NA1_Code_RB[STS_SITE_NUM] = { 0 };
+	double NA2_Code_RB[STS_SITE_NUM] = { 0 };
+	double NA3_Code_RB[STS_SITE_NUM] = { 0 };
+	double NA4_Code_RB[STS_SITE_NUM] = { 0 };
+	double NA5_Code_RB[STS_SITE_NUM] = { 0 };
+	double PGM_Code_RB[STS_SITE_NUM] = { 0 };
+	double MTP_LOCK_Code_RB[STS_SITE_NUM] = { 0 };
+	double MTP_TRIM_LOCK_Code_RB[STS_SITE_NUM] = { 0 };
+	double I2C_ADDR_Code_RB[STS_SITE_NUM] = { 0 };
+	double CHIP_ID0_Code_RB[STS_SITE_NUM] = { 0 };
+	double CHIP_ID1_Code_RB[STS_SITE_NUM] = { 0 };
+
+	BOOL Burn_Same_As_Read_Flag[STS_SITE_NUM] = { 0 };
+	BOOL CRC_Read_Same_As_Burn_Flag[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x70_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x71_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x72_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x73_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x74_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x75_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x76_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x77_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x78_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x79_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x7a_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x7b_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x7c_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x7d_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x7e_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x7f_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x80_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x81_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x82_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x83_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x84_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x85_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x86_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x87_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x88_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x89_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x8a_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x8b_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x8c_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x8d_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x8e_Read[STS_SITE_NUM] = { 0 };
+	ULONG Reg_0x8f_Read[STS_SITE_NUM] = { 0 };
+
+	ULONG Gain_Rx_SC_1ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Rx_SC_1ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Rx_SC_1ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Rx_SC_1ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Rx_LC_1ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Rx_LC_1ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Rx_LC_1ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Rx_LC_1ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Rx_1ball_dummy1[STS_SITE_NUM] = { 0 };
+	ULONG Rx_1ball_dummy2[STS_SITE_NUM] = { 0 };
+	ULONG Rx_1ball_dummy3[STS_SITE_NUM] = { 0 };
+	ULONG Rx_1ball_dummy4[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Rx_SC_4ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Rx_SC_4ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Rx_SC_4ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Rx_SC_4ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Rx_LC_4ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Rx_LC_4ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Rx_LC_4ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Rx_LC_4ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Rx_4ball_dummy1[STS_SITE_NUM] = { 0 };
+	ULONG Rx_4ball_dummy2[STS_SITE_NUM] = { 0 };
+	ULONG Rx_4ball_dummy3[STS_SITE_NUM] = { 0 };
+	ULONG Rx_4ball_dummy4[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Tx_1ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Tx_1ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Tx_1ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Tx_1ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Tx_1ball_dummy1[STS_SITE_NUM] = { 0 };
+	ULONG Tx_1ball_dummy2[STS_SITE_NUM] = { 0 };
+	ULONG Tx_1ball_dummy3[STS_SITE_NUM] = { 0 };
+	ULONG Tx_1ball_dummy4[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Tx_4ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_Tx_4ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Tx_4ball_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_Tx_4ball_low[STS_SITE_NUM] = { 0 };
+	ULONG Tx_4ball_dummy1[STS_SITE_NUM] = { 0 };
+	ULONG Tx_4ball_dummy2[STS_SITE_NUM] = { 0 };
+	ULONG Tx_4ball_dummy3[STS_SITE_NUM] = { 0 };
+	ULONG Tx_4ball_dummy4[STS_SITE_NUM] = { 0 };
+	ULONG Gain_vrect_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_vrect_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_vrect_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_vrect_low[STS_SITE_NUM] = { 0 };
+	ULONG Vrect_dummy1[STS_SITE_NUM] = { 0 };
+	ULONG Vrect_dummy2[STS_SITE_NUM] = { 0 };
+	ULONG Vrect_dummy3[STS_SITE_NUM] = { 0 };
+	ULONG Vrect_dummy4[STS_SITE_NUM] = { 0 };
+	ULONG Gain_vout_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_vout_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_vout_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_vout_low[STS_SITE_NUM] = { 0 };
+	ULONG Vout_dummy1[STS_SITE_NUM] = { 0 };
+	ULONG Vout_dummy2[STS_SITE_NUM] = { 0 };
+	ULONG Vout_dummy3[STS_SITE_NUM] = { 0 };
+	ULONG Vout_dummy4[STS_SITE_NUM] = { 0 };
+	ULONG Gain_vrect2vout_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_vrect2vout_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_vrect2vout_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_vrect2vout_low[STS_SITE_NUM] = { 0 };
+	ULONG Gain_gp2_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_gp2_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_gp2_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_gp2_low[STS_SITE_NUM] = { 0 };
+	ULONG Gain_gp4_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_gp4_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_gp4_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_gp4_low[STS_SITE_NUM] = { 0 };
+	ULONG Gain_vdd_high[STS_SITE_NUM] = { 0 };
+	ULONG Gain_vdd_low[STS_SITE_NUM] = { 0 };
+	ULONG Offset_vdd_high[STS_SITE_NUM] = { 0 };
+	ULONG Offset_vdd_low[STS_SITE_NUM] = { 0 };
+	ULONG Data_lot_bit0[STS_SITE_NUM] = { 0 };
+	ULONG Data_lot_bit1[STS_SITE_NUM] = { 0 };
+	ULONG Data_lot_bit2[STS_SITE_NUM] = { 0 };
+	ULONG Data_lot_bit3[STS_SITE_NUM] = { 0 };
+	ULONG Data_lot_bit4[STS_SITE_NUM] = { 0 };
+	ULONG Data_lot_bit5[STS_SITE_NUM] = { 0 };
+	ULONG Data_lot_bit6[STS_SITE_NUM] = { 0 };
+	ULONG Data_lot_bit7[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit0[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit1[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit2[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit3[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit4[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit5[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit6[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit7[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit8[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit9[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit10[STS_SITE_NUM] = { 0 };
+	ULONG Data_wafer_bit11[STS_SITE_NUM] = { 0 };
+	ULONG Wafer_x[STS_SITE_NUM] = { 0 };
+	ULONG Wafer_y[STS_SITE_NUM] = { 0 };
+	ULONG Pgm_version[STS_SITE_NUM] = { 0 };
+	ULONG Zero_code[STS_SITE_NUM] = { 0 };
+	ULONG ATE_reserved_0[STS_SITE_NUM] = { 0 };
+	ULONG ATE_reserved_1[STS_SITE_NUM] = { 0 };
+	ULONG ATE_reserved_2[STS_SITE_NUM] = { 0 };
+	ULONG ATE_reserved_3[STS_SITE_NUM] = { 0 };
+	ULONG ATE_reserved_4[STS_SITE_NUM] = { 0 };
+	ULONG ATE_reserved_5[STS_SITE_NUM] = { 0 };
+	ULONG ATE_reserved_6[STS_SITE_NUM] = { 0 };
+	ULONG ATE_reserved_7[STS_SITE_NUM] = { 0 };
+	ULONG Crc_readback_high[STS_SITE_NUM] = { 0 };
+	ULONG Crc_readback_low[STS_SITE_NUM] = { 0 };
+	ULONG Reserved_high[STS_SITE_NUM] = { 0 };
+	ULONG Reserved_low[STS_SITE_NUM] = { 0 };
+
+	cbite.SetOn(K1_PGND2AGND, K11_VRECT_Cap, K15_V5V_Cap, K13_V1P8_Cap, K20_SCL_PU, K21_SDA_PU, -1);
+	delay_ms(3);
+	VRECT_BST1_PGND_FOVI.Set(FV, V_TYP_VRECT, FOVIe_20V, FOVIe_100MA, FOVIe_RELAY_ON);
+	V5V_ACM.Set(FV, V_TYP_V5V, ACM_N2P18V, ACM_200MA, ACM_RELAY_ON);
+	entertestmode();
+	I2CWriteSameData(dev_addr, 0x1000, 0xC0);
+	I2CWriteSameData(dev_addr, 0x1002, 0x88);//����MCU��bit[7]����FORCE_OSC96M(bit[3])
+	I2CWriteSameData(dev_addr, 0x4918, 0x80);//��MTP���߿���Ȩ�л���AP
+	I2CWriteSameData(dev_addr, 0x0017, 0x04);//0x00 32bit read   0x04 byte read 
+	I2CWriteSameData(dev_addr, 0x0012, 0xFF);
+	I2CWriteSameData(dev_addr, 0x0010, 0x80);//select information
+	I2CWriteSameData(dev_addr, 0x001A, 0xA5);
+
+	//----------Read ADC trim code
+	I2C_READ_BYTE(dev_addr, 0x0013, Reg_0x70_Read);
+	I2C_READ_BYTE(dev_addr, 0x0014, Reg_0x71_Read);
+	I2C_READ_BYTE(dev_addr, 0x0015, Reg_0x72_Read);
+	I2C_READ_BYTE(dev_addr, 0x0016, Reg_0x73_Read);
+	I2C_READ_BYTE(dev_addr, 0x0013, Reg_0x74_Read);
+	I2C_READ_BYTE(dev_addr, 0x0014, Reg_0x75_Read);
+	I2C_READ_BYTE(dev_addr, 0x0015, Reg_0x76_Read);
+	I2C_READ_BYTE(dev_addr, 0x0016, Reg_0x77_Read);
+	I2C_READ_BYTE(dev_addr, 0x0013, Reg_0x78_Read);
+	I2C_READ_BYTE(dev_addr, 0x0014, Reg_0x79_Read);
+	I2C_READ_BYTE(dev_addr, 0x0015, Reg_0x7a_Read);
+	I2C_READ_BYTE(dev_addr, 0x0016, Reg_0x7b_Read);
+	I2C_READ_BYTE(dev_addr, 0x0013, Reg_0x7c_Read);
+	I2C_READ_BYTE(dev_addr, 0x0014, Reg_0x7d_Read);
+	I2C_READ_BYTE(dev_addr, 0x0015, Reg_0x7e_Read);
+	I2C_READ_BYTE(dev_addr, 0x0016, Reg_0x7f_Read);
+
+	I2C_READ_BYTE(dev_addr, 0x0013, Reg_0x80_Read);
+	I2C_READ_BYTE(dev_addr, 0x0014, Reg_0x81_Read);
+	I2C_READ_BYTE(dev_addr, 0x0015, Reg_0x82_Read);
+	I2C_READ_BYTE(dev_addr, 0x0016, Reg_0x83_Read);
+	I2C_READ_BYTE(dev_addr, 0x0013, Reg_0x84_Read);
+	I2C_READ_BYTE(dev_addr, 0x0014, Reg_0x85_Read);
+	I2C_READ_BYTE(dev_addr, 0x0015, Reg_0x86_Read);
+	I2C_READ_BYTE(dev_addr, 0x0016, Reg_0x87_Read);
+	I2C_READ_BYTE(dev_addr, 0x0013, Reg_0x88_Read);
+	I2C_READ_BYTE(dev_addr, 0x0014, Reg_0x89_Read);
+	I2C_READ_BYTE(dev_addr, 0x0015, Reg_0x8a_Read);
+	I2C_READ_BYTE(dev_addr, 0x0016, Reg_0x8b_Read);
+	I2C_READ_BYTE(dev_addr, 0x0013, Reg_0x8c_Read);
+	I2C_READ_BYTE(dev_addr, 0x0014, Reg_0x8d_Read);
+	I2C_READ_BYTE(dev_addr, 0x0015, Reg_0x8e_Read);
+	I2C_READ_BYTE(dev_addr, 0x0016, Reg_0x8f_Read);
+    //-------------Read ADC Calibration code
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_Rx_SC_1ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_Rx_SC_1ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_Rx_SC_1ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_Rx_SC_1ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_Rx_LC_1ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_Rx_LC_1ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_Rx_LC_1ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_Rx_LC_1ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Rx_1ball_dummy1);
+	I2C_READ_BYTE(dev_addr, 0x0014, Rx_1ball_dummy2);
+	I2C_READ_BYTE(dev_addr, 0x0015, Rx_1ball_dummy3);
+	I2C_READ_BYTE(dev_addr, 0x0016, Rx_1ball_dummy4);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_Rx_SC_4ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_Rx_SC_4ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_Rx_SC_4ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_Rx_SC_4ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_Rx_LC_4ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_Rx_LC_4ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_Rx_LC_4ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_Rx_LC_4ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Rx_4ball_dummy1);
+	I2C_READ_BYTE(dev_addr, 0x0014, Rx_4ball_dummy2);
+	I2C_READ_BYTE(dev_addr, 0x0015, Rx_4ball_dummy3);
+	I2C_READ_BYTE(dev_addr, 0x0016, Rx_4ball_dummy4);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_Tx_1ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_Tx_1ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_Tx_1ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_Tx_1ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Tx_1ball_dummy1);
+	I2C_READ_BYTE(dev_addr, 0x0014, Tx_1ball_dummy2);
+	I2C_READ_BYTE(dev_addr, 0x0015, Tx_1ball_dummy3);
+	I2C_READ_BYTE(dev_addr, 0x0016, Tx_1ball_dummy4);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_Tx_4ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_Tx_4ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_Tx_4ball_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_Tx_4ball_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Tx_4ball_dummy1);
+	I2C_READ_BYTE(dev_addr, 0x0014, Tx_4ball_dummy2);
+	I2C_READ_BYTE(dev_addr, 0x0015, Tx_4ball_dummy3);
+	I2C_READ_BYTE(dev_addr, 0x0016, Tx_4ball_dummy4);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_vrect_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_vrect_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_vrect_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_vrect_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Vrect_dummy1);
+	I2C_READ_BYTE(dev_addr, 0x0014, Vrect_dummy2);
+	I2C_READ_BYTE(dev_addr, 0x0015, Vrect_dummy3);
+	I2C_READ_BYTE(dev_addr, 0x0016, Vrect_dummy4);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_vout_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_vout_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_vout_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_vout_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Vout_dummy1);
+	I2C_READ_BYTE(dev_addr, 0x0014, Vout_dummy2);
+	I2C_READ_BYTE(dev_addr, 0x0015, Vout_dummy3);
+	I2C_READ_BYTE(dev_addr, 0x0016, Vout_dummy4);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_vrect2vout_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_vrect2vout_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_vrect2vout_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_vrect2vout_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_gp2_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_gp2_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_gp2_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_gp2_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_gp4_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_gp4_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_gp4_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_gp4_high);
+	I2C_READ_BYTE(dev_addr, 0x0013, Gain_vdd_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Gain_vdd_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Offset_vdd_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Offset_vdd_high);
+	//-------Read lot id
+	I2C_READ_BYTE(dev_addr, 0x0013, Data_lot_bit0);
+	I2C_READ_BYTE(dev_addr, 0x0014, Data_lot_bit1);
+	I2C_READ_BYTE(dev_addr, 0x0015, Data_lot_bit2);
+	I2C_READ_BYTE(dev_addr, 0x0016, Data_lot_bit3);
+	I2C_READ_BYTE(dev_addr, 0x0013, Data_lot_bit4);
+	I2C_READ_BYTE(dev_addr, 0x0014, Data_lot_bit5);
+	I2C_READ_BYTE(dev_addr, 0x0015, Data_lot_bit6);
+	I2C_READ_BYTE(dev_addr, 0x0016, Data_lot_bit7);
+	//Read wafer id
+	I2C_READ_BYTE(dev_addr, 0x0013, Data_wafer_bit0);
+	I2C_READ_BYTE(dev_addr, 0x0014, Data_wafer_bit1);
+	I2C_READ_BYTE(dev_addr, 0x0015, Data_wafer_bit2);
+	I2C_READ_BYTE(dev_addr, 0x0016, Data_wafer_bit3);
+	I2C_READ_BYTE(dev_addr, 0x0013, Data_wafer_bit4);
+	I2C_READ_BYTE(dev_addr, 0x0014, Data_wafer_bit5);
+	I2C_READ_BYTE(dev_addr, 0x0015, Data_wafer_bit6);
+	I2C_READ_BYTE(dev_addr, 0x0016, Data_wafer_bit7);
+	I2C_READ_BYTE(dev_addr, 0x0013, Data_wafer_bit8);
+	I2C_READ_BYTE(dev_addr, 0x0014, Data_wafer_bit9);
+	I2C_READ_BYTE(dev_addr, 0x0015, Data_wafer_bit10);
+	I2C_READ_BYTE(dev_addr, 0x0016, Data_wafer_bit11);
+	//------Read wafer x and y position and program version
+	I2C_READ_BYTE(dev_addr, 0x0013, Wafer_x);
+	I2C_READ_BYTE(dev_addr, 0x0014, Wafer_y);
+	I2C_READ_BYTE(dev_addr, 0x0015, Pgm_version);
+	I2C_READ_BYTE(dev_addr, 0x0016, Zero_code);
+	//----Read software reserved bit 
+	I2C_READ_BYTE(dev_addr, 0x0013, ATE_reserved_0);
+	I2C_READ_BYTE(dev_addr, 0x0014, ATE_reserved_1);
+	I2C_READ_BYTE(dev_addr, 0x0015, ATE_reserved_2);
+	I2C_READ_BYTE(dev_addr, 0x0016, ATE_reserved_3);
+	I2C_READ_BYTE(dev_addr, 0x0013, ATE_reserved_4);
+	I2C_READ_BYTE(dev_addr, 0x0014, ATE_reserved_5);
+	I2C_READ_BYTE(dev_addr, 0x0015, ATE_reserved_6);
+	I2C_READ_BYTE(dev_addr, 0x0016, ATE_reserved_7);
+	//------------Read CRC check code 
+	I2C_READ_BYTE(dev_addr, 0x0013, Crc_readback_low);
+	I2C_READ_BYTE(dev_addr, 0x0014, Crc_readback_high);
+	I2C_READ_BYTE(dev_addr, 0x0015, Reserved_low);
+	I2C_READ_BYTE(dev_addr, 0x0016, Reserved_high);
+
+	VRECT_BST1_PGND_FOVI.Set(FV, 0, FOVIe_20V, FOVIe_100MA, FOVIe_RELAY_ON);
+	V5V_ACM.Set(FV, 0, ACM_N2P18V, ACM_200MA, ACM_RELAY_ON);
+	delay_ms(5);
+	VRECT_BST1_PGND_FOVI.Set(FV, 0, FOVIe_20V, FOVIe_100MA, FOVIe_RELAY_OFF);
+	V5V_ACM.Set(FV, 0, ACM_N2P18V, ACM_200MA, ACM_RELAY_OFF);
+	//=======================================================CRC Check when readback=============================//
+
+#define CRC_SEED 0x0000 // pre val
+#define POLY16   0x1021 // ture 0x11021  CRC-16/XMODEM
+	int length = BANK_CNT * 8;
+	int a = 0;
+	unsigned char test_buff[136];
+	unsigned char CRC_Check_Cal[STS_SITE_NUM] = { 0 };
+	unsigned char CRC_Check_Cal_H[STS_SITE_NUM] = { 0 }; //Calculate CRC code based on readback data
+	unsigned char CRC_Check_Cal_L[STS_SITE_NUM] = { 0 }; // Calculate CRC code based on readback data
+	FOR_EACH_VALID_SITE(site)
+	{
+		test_buff[0] = (unsigned char)Reg_0x70_Read[site];
+		test_buff[1] = (unsigned char)Reg_0x71_Read[site];
+		test_buff[2] = (unsigned char)Reg_0x72_Read[site];
+		test_buff[3] = (unsigned char)Reg_0x73_Read[site];
+		test_buff[4] = (unsigned char)Reg_0x74_Read[site];
+		test_buff[5] = (unsigned char)Reg_0x75_Read[site];
+		test_buff[6] = (unsigned char)Reg_0x76_Read[site];
+		test_buff[7] = (unsigned char)Reg_0x77_Read[site];
+		test_buff[8] = (unsigned char)Reg_0x78_Read[site];
+		test_buff[9] = (unsigned char)Reg_0x79_Read[site];
+		test_buff[10] = (unsigned char)Reg_0x7a_Read[site];
+		test_buff[11] = (unsigned char)Reg_0x7b_Read[site];
+		test_buff[12] = (unsigned char)Reg_0x7c_Read[site];
+		test_buff[13] = (unsigned char)Reg_0x7d_Read[site];
+		test_buff[14] = (unsigned char)Reg_0x7e_Read[site];
+		test_buff[15] = (unsigned char)Reg_0x7f_Read[site];
+		test_buff[16] = (unsigned char)Reg_0x80_Read[site];
+		test_buff[17] = (unsigned char)Reg_0x81_Read[site];
+		test_buff[18] = (unsigned char)Reg_0x82_Read[site];
+		test_buff[19] = (unsigned char)Reg_0x83_Read[site];
+		test_buff[20] = (unsigned char)Reg_0x84_Read[site];
+		test_buff[21] = (unsigned char)Reg_0x85_Read[site];
+		test_buff[22] = (unsigned char)Reg_0x86_Read[site];
+		test_buff[23] = (unsigned char)Reg_0x87_Read[site];
+		test_buff[24] = (unsigned char)Reg_0x88_Read[site];
+		test_buff[25] = (unsigned char)Reg_0x89_Read[site];
+		test_buff[26] = (unsigned char)Reg_0x8a_Read[site];
+		test_buff[27] = (unsigned char)Reg_0x8b_Read[site];
+		test_buff[28] = (unsigned char)Reg_0x8c_Read[site];
+		test_buff[29] = (unsigned char)Reg_0x8d_Read[site];
+		test_buff[30] = (unsigned char)Reg_0x8e_Read[site];
+		test_buff[31] = (unsigned char)Reg_0x8f_Read[site];
+		test_buff[32] = (unsigned char)Gain_Rx_SC_1ball_low[site];// RX_ISNS Gain of Single Ball Low Byte
+		test_buff[33] = (unsigned char)Gain_Rx_SC_1ball_high[site];//RX_ ISNS Gain of Single Ball High Byte
+		test_buff[34] = (unsigned char)Offset_Rx_SC_1ball_low[site];// RX_SNS Offset of Single Ball Low Byte
+		test_buff[35] = (unsigned char)Offset_Rx_SC_1ball_high[site];//RX_ISNS Offset of Single Ball High Byte
+		test_buff[36] = (unsigned char)Gain_Rx_LC_1ball_low[site];//  RX_ISNS Gain of  Single Ball Low Byte
+		test_buff[37] = (unsigned char)Gain_Rx_LC_1ball_high[site];// RX_ISNS Gain of Single  Ball High Byte
+		test_buff[38] = (unsigned char)Offset_Rx_LC_1ball_low[site];// RX_ISNS Offset of  Single Ball Low Byte
+		test_buff[39] = (unsigned char)Offset_Rx_LC_1ball_high[site];//RX_ISNS Offset of Single  Ball High Byte
+		test_buff[40] = (unsigned char)Rx_1ball_dummy1[site];// RX_ISNS Dummy of Single  Ball 
+		test_buff[41] = (unsigned char)Rx_1ball_dummy2[site];// RX_ISNS Dummy of Single  Ball 
+		test_buff[42] = (unsigned char)Rx_1ball_dummy3[site];// RX_ISNS Dummy of Single  Ball 
+		test_buff[43] = (unsigned char)Rx_1ball_dummy4[site];//  RX_ISNS Dummy of Single  Ball 
+		test_buff[44] = (unsigned char)Gain_Rx_SC_4ball_low[site];// RX_ISNS Gain of Single Ball Low Byte
+		test_buff[45] = (unsigned char)Gain_Rx_SC_4ball_high[site];//RX_ ISNS Gain of Single Ball High Byte
+		test_buff[46] = (unsigned char)Offset_Rx_SC_4ball_low[site];// RX_SNS Offset of Single Ball Low Byte
+		test_buff[47] = (unsigned char)Offset_Rx_SC_4ball_high[site];//RX_ISNS Offset of Single Ball High Byte
+		test_buff[48] = (unsigned char)Gain_Rx_LC_4ball_low[site];//  RX_ISNS Gain of  Multiple Ball Low Byte
+		test_buff[49] = (unsigned char)Gain_Rx_LC_4ball_high[site];// RX_ISNS Gain of Multiple  Ball High Byte
+		test_buff[50] = (unsigned char)Offset_Rx_LC_4ball_low[site];// RX_ISNS Offset of  Multiple Ball Low Byte
+		test_buff[51] = (unsigned char)Offset_Rx_LC_4ball_high[site];//RX_ISNS Offset of Multiple  Ball High Byte
+		test_buff[52] = (unsigned char)Rx_4ball_dummy1[site];//  RX_ISNS Dummy of Multiple  Ball 
+		test_buff[53] = (unsigned char)Rx_4ball_dummy2[site];//  RX_ISNS Dummy of Multiple  Ball 
+		test_buff[54] = (unsigned char)Rx_4ball_dummy3[site];//  RX_ISNS Dummy of Multiple  Ball 
+		test_buff[55] = (unsigned char)Rx_4ball_dummy4[site];//  RX_ISNS Dummy of Multiple  Ball 
+		test_buff[56] = (unsigned char)Gain_Tx_1ball_low[site];//  RX_ISNS Gain of  Single Ball Low Byte
+		test_buff[57] = (unsigned char)Gain_Tx_1ball_high[site];// RX_ISNS Gain of Single  Ball High Byte
+		test_buff[58] = (unsigned char)Offset_Tx_1ball_low[site];// RX_ISNS Offset of  Single Ball Low Byte
+		test_buff[59] = (unsigned char)Offset_Tx_1ball_high[site];//RX_ISNS Offset of Single  Ball High Byte
+		test_buff[60] = (unsigned char)Tx_1ball_dummy1[site];// RX_ISNS Dummy of Single  Ball 
+		test_buff[61] = (unsigned char)Tx_1ball_dummy2[site];// RX_ISNS Dummy of Single  Ball 
+		test_buff[62] = (unsigned char)Tx_1ball_dummy3[site];// RX_ISNS Dummy of Single  Ball 
+		test_buff[63] = (unsigned char)Tx_1ball_dummy4[site];//  RX_ISNS Dummy of Single  Ball 
+		test_buff[64] = (unsigned char)Gain_Tx_4ball_low[site];//  RX_ISNS Gain of  Multiple Ball Low Byte
+		test_buff[65] = (unsigned char)Gain_Tx_4ball_high[site];// RX_ISNS Gain of Multiple  Ball High Byte
+		test_buff[66] = (unsigned char)Offset_Tx_4ball_low[site];// RX_ISNS Offset of  Multiple Ball Low Byte
+		test_buff[67] = (unsigned char)Offset_Tx_4ball_high[site];//RX_ISNS Offset of Multiple  Ball High Byte
+		test_buff[68] = (unsigned char)Tx_4ball_dummy1[site];//  RX_ISNS Dummy of Multiple  Ball 
+		test_buff[69] = (unsigned char)Tx_4ball_dummy2[site];//  RX_ISNS Dummy of Multiple  Ball 
+		test_buff[70] = (unsigned char)Tx_4ball_dummy3[site];//  RX_ISNS Dummy of Multiple  Ball 
+		test_buff[71] = (unsigned char)Tx_4ball_dummy4[site];//  RX_ISNS Dummy of Multiple  Ball 
+		test_buff[72] = (unsigned char)Gain_vrect_low[site]; //  VRECT_SNS  Gain  Low Byte
+		test_buff[73] = (unsigned char)Gain_vrect_high[site]; //  VRECT_SNS  Gain  High Byte
+		test_buff[74] = (unsigned char)Offset_vrect_low[site]; //  VRECT_SNS  Offset  Low Byte
+		test_buff[75] = (unsigned char)Offset_vrect_high[site]; //  VRECT_SNS  Offset  High Byte
+		test_buff[76] = (unsigned char)Vrect_dummy1[site]; //  VRECT_SNS  Gain  Low Byte
+		test_buff[77] = (unsigned char)Vrect_dummy2[site]; //  VRECT_SNS  Gain  High Byte
+		test_buff[78] = (unsigned char)Vrect_dummy3[site]; //  VRECT_SNS  Offset  Low Byte
+		test_buff[79] = (unsigned char)Vrect_dummy4[site]; //  VRECT_SNS  Offset  High Byte
+		test_buff[80] = (unsigned char)Gain_vout_low[site];     //  VOUT_SNS  Gain  Low Byte
+		test_buff[81] = (unsigned char)Gain_vout_high[site];     //  VOUT_SNS  Gain  High Byte
+		test_buff[82] = (unsigned char)Offset_vout_low[site];//  VOUT_SNS  Offset  Low Byte
+		test_buff[83] = (unsigned char)Offset_vout_high[site];//  VOUT_SNS  Offset  High Byte
+		test_buff[84] = (unsigned char)Vout_dummy1[site]; //  VRECT_SNS  Gain  Low Byte
+		test_buff[85] = (unsigned char)Vout_dummy2[site]; //  VRECT_SNS  Gain  High Byte
+		test_buff[86] = (unsigned char)Vout_dummy3[site]; //  VRECT_SNS  Offset  Low Byte
+		test_buff[87] = (unsigned char)Vout_dummy4[site]; //  VRECT_SNS  Offset  High Byte
+		test_buff[88] = (unsigned char)Gain_vrect2vout_low[site];     // VRECT to VOUT SNS Gain Low Byte
+		test_buff[89] = (unsigned char)Gain_vrect2vout_high[site];    // VRECT to VOUT SNS Gain High Byte
+		test_buff[90] = (unsigned char)Offset_vrect2vout_low[site];  // VRECT to VOUT SNS Offset Low Byte
+		test_buff[91] = (unsigned char)Offset_vrect2vout_high[site]; // VRECT to VOUT SNS Offset High Byte
+		test_buff[92] = (unsigned char)Gain_gp2_low[site];    // GP2_ADC0_SNS  Gain  Low Byte
+		test_buff[93] = (unsigned char)Gain_gp2_high[site];    // GP2_ADC0_SNS  Gain  High Byte
+		test_buff[94] = (unsigned char)Offset_gp2_low[site];  // GP2_ADC0_SNS   Offset  Low Byte
+		test_buff[95] = (unsigned char)Offset_gp2_high[site];  // GP2_ADC0_SNS  Offset  High Byte
+		test_buff[96] = (unsigned char)Gain_gp4_low[site];    // GP4  ADC1_SNS  Gain  Low Byte
+		test_buff[97] = (unsigned char)Gain_gp4_high[site];    // GP4_ADC1_SNS  Gain  High Byte
+		test_buff[98] = (unsigned char)Offset_gp4_low[site];  // GP4_ADC1_SNS   Offset  Low Byte
+		test_buff[99] = (unsigned char)Offset_gp4_high[site];  // G4_  ADC1_SNS  Offset  High Byte
+		test_buff[100] = (unsigned char)Gain_vdd_low[site];    // VDD  ADC1_SNS  Gain  Low Byte
+		test_buff[101] = (unsigned char)Gain_vdd_high[site];    // VDD  Gain  High Byte
+		test_buff[102] = (unsigned char)Offset_vdd_low[site];  // VDD   Offset  Low Byte
+		test_buff[103] = (unsigned char)Offset_vdd_high[site];  // VDD  ADC1_SNS  Offset  High Byte
+		test_buff[104] = (unsigned char)Data_lot_bit0[site]; // 'G'      GF3V35.1
+		test_buff[105] = (unsigned char)Data_lot_bit1[site]; // 'F'
+		test_buff[106] = (unsigned char)Data_lot_bit2[site]; // '3'
+		test_buff[107] = (unsigned char)Data_lot_bit3[site]; // 'V'
+		test_buff[108] = (unsigned char)Data_lot_bit4[site]; // '3'
+		test_buff[109] = (unsigned char)Data_lot_bit5[site]; // '5'
+		test_buff[110] = (unsigned char)Data_lot_bit6[site]; //  '.'
+		test_buff[111] = (unsigned char)Data_lot_bit7[site]; //  '1'
+		test_buff[112] = (unsigned char)Data_wafer_bit0[site];  // 'G'  
+		test_buff[113] = (unsigned char)Data_wafer_bit1[site];  // 'F'
+		test_buff[114] = (unsigned char)Data_wafer_bit2[site];  // '3'
+		test_buff[115] = (unsigned char)Data_wafer_bit3[site];  // 'V'
+		test_buff[116] = (unsigned char)Data_wafer_bit4[site];  // '3'
+		test_buff[117] = (unsigned char)Data_wafer_bit5[site];  // '5'
+		test_buff[118] = (unsigned char)Data_wafer_bit6[site];  //  '-'
+		test_buff[119] = (unsigned char)Data_wafer_bit7[site];  //  '0'
+		test_buff[120] = (unsigned char)Data_wafer_bit8[site];  //  '9'
+		test_buff[121] = (unsigned char)Data_wafer_bit9[site];  //  'F'
+		test_buff[122] = (unsigned char)Data_wafer_bit10[site]; // '7'
+		test_buff[123] = (unsigned char)Data_wafer_bit11[site]; // '7'
+		test_buff[124] = (unsigned char)Wafer_x[site]; // wafer X Axis
+		test_buff[125] = (unsigned char)Wafer_y[site]; // wafer Y Axis
+		test_buff[126] = (unsigned char)Pgm_version; // program version
+		test_buff[127] = 0x00;
+		test_buff[128] = (unsigned char)ATE_reserved_0[site];
+		test_buff[129] = (unsigned char)ATE_reserved_1[site];
+		test_buff[130] = (unsigned char)ATE_reserved_2[site];
+		test_buff[131] = (unsigned char)ATE_reserved_3[site];
+		test_buff[132] = (unsigned char)ATE_reserved_4[site];
+		test_buff[133] = (unsigned char)ATE_reserved_5[site];
+		test_buff[134] = (unsigned char)ATE_reserved_6[site];
+		test_buff[135] = (unsigned char)ATE_reserved_7[site];
+		CRC_Check_Cal[site] = (unsigned char)do_crc(test_buff, sizeof(test_buff));
+		CRC_Check_Cal_L[site] = ((int)CRC_Check_Cal[site]) & 255;
+		CRC_Check_Cal_H[site] = ((int)CRC_Check_Cal[site]) >> 8;
+	}
+	//------------------------------------CRC Check End------------------------------//
+
+
+	//=======================================================Data read back and save in treg readback variables=============//
+	FOR_EACH_VALID_SITE(site)
+	{
+		trim_reg.assy("reg0x0070").set_read_back((INT)Reg_0x70_Read[site], site);
+		trim_reg.assy("reg0x0071").set_read_back((INT)Reg_0x71_Read[site], site);
+		trim_reg.assy("reg0x0072").set_read_back((INT)Reg_0x72_Read[site], site);
+		trim_reg.assy("reg0x0073").set_read_back((INT)Reg_0x73_Read[site], site);
+		trim_reg.assy("reg0x0074").set_read_back((INT)Reg_0x74_Read[site], site);
+		trim_reg.assy("reg0x0075").set_read_back((INT)Reg_0x75_Read[site], site);
+		trim_reg.assy("reg0x0076").set_read_back((INT)Reg_0x76_Read[site], site);
+		trim_reg.assy("reg0x0077").set_read_back((INT)Reg_0x77_Read[site], site);
+		trim_reg.assy("reg0x0078").set_read_back((INT)Reg_0x78_Read[site], site);
+		trim_reg.assy("reg0x0079").set_read_back((INT)Reg_0x79_Read[site], site);
+		trim_reg.assy("reg0x007a").set_read_back((INT)Reg_0x7a_Read[site], site);
+		trim_reg.assy("reg0x007b").set_read_back((INT)Reg_0x7b_Read[site], site);
+		trim_reg.assy("reg0x007c").set_read_back((INT)Reg_0x7c_Read[site], site);
+		trim_reg.assy("reg0x007d").set_read_back((INT)Reg_0x7d_Read[site], site);
+		trim_reg.assy("reg0x007e").set_read_back((INT)Reg_0x7e_Read[site], site);
+		trim_reg.assy("reg0x007f").set_read_back((INT)Reg_0x7f_Read[site], site);
+
+		trim_reg.assy("reg0x0080").set_read_back((INT)Reg_0x80_Read[site], site);
+		trim_reg.assy("reg0x0081").set_read_back((INT)Reg_0x81_Read[site], site);
+		trim_reg.assy("reg0x0082").set_read_back((INT)Reg_0x82_Read[site], site);
+		trim_reg.assy("reg0x0083").set_read_back((INT)Reg_0x83_Read[site], site);
+		trim_reg.assy("reg0x0084").set_read_back((INT)Reg_0x84_Read[site], site);
+		trim_reg.assy("reg0x0085").set_read_back((INT)Reg_0x85_Read[site], site);
+		trim_reg.assy("reg0x0086").set_read_back((INT)Reg_0x86_Read[site], site);
+		trim_reg.assy("reg0x0087").set_read_back((INT)Reg_0x87_Read[site], site);
+		trim_reg.assy("reg0x0088").set_read_back((INT)Reg_0x88_Read[site], site);
+		trim_reg.assy("reg0x0089").set_read_back((INT)Reg_0x89_Read[site], site);
+		trim_reg.assy("reg0x008a").set_read_back((INT)Reg_0x8a_Read[site], site);
+		trim_reg.assy("reg0x008b").set_read_back((INT)Reg_0x8b_Read[site], site);
+		trim_reg.assy("reg0x008c").set_read_back((INT)Reg_0x8c_Read[site], site);
+		trim_reg.assy("reg0x008d").set_read_back((INT)Reg_0x8d_Read[site], site);
+		trim_reg.assy("reg0x008e").set_read_back((INT)Reg_0x8e_Read[site], site);
+		trim_reg.assy("reg0x008f").set_read_back((INT)Reg_0x8f_Read[site], site);
+	}
+	//-----------------------------Compare read back with programmed(best code need to burn)
+	FOR_EACH_VALID_SITE(site)
+	{
+		if (TTR_MODE == CP)
+		{
+			Burn_Same_As_Read_Flag[site] = trim_reg.assy("EFUSE_REGISTER").comp_prog_to_read(site);
+		}
+		else
+		{
+			Burn_Same_As_Read_Flag[site] = true;
+		}	
+
+		//----------------CRC read from MTP  same as  CRC which is Calculated by trim code of MTP
+		if (CRC_Check_Cal_L[site] == (unsigned char)Crc_readback_low[site] &&  CRC_Check_Cal_H[site] == (unsigned char)Crc_readback_high[site])
+		{
+			CRC_Read_Same_As_Burn_Flag[site] = true;
+		}	
+	}
+
+
+
+	//==============================transfer readback trim code to datalog===============//
+	FOR_EACH_VALID_SITE(site)
+	{
+		BG_Code_RB[site] = (double)trim_reg.trim("bandgap").get_read_back(site);
+		IZTC_Code_RB[site] = (double)trim_reg.trim("ztc").get_read_back(site);
+		OSC_96M_Code_RB[site] = (double)trim_reg.trim("osc_96m").get_read_back(site);
+		OSC_64K_Code_RB[site] = (double)trim_reg.trim("osc_64k").get_read_back(site);
+		V1P13_Code_RB[site] = (double)trim_reg.trim("mnt_1p13").get_read_back(site);
+		V2P26_Code_RB[site] = (double)trim_reg.trim("mnt_buf_v2p26").get_read_back(site);
+		V1P8_Code_RB[site] = (double)trim_reg.trim("v1p8_acc").get_read_back(site);
+		ISNS_GAIN_RX_Code_RB[site] = (double)trim_reg.trim("isns_gain_rx").get_read_back(site);
+		ISNS_GAIN_TX_Code_RB[site] = (double)trim_reg.trim("isns_gain_tx").get_read_back(site);
+		ISNS_OS_Code_RB[site] = (double)trim_reg.trim("isns_os").get_read_back(site);
+		ISNS_D2S_OS_Code_RB[site] = (double)trim_reg.trim("isns_d2s_os").get_read_back(site);
+		RTX_IPEAK_GAIN_Code_RB[site] = (double)trim_reg.trim("rtx_ipeak_gain").get_read_back(site);
+		AC1_IPEAK_OS_Code_RB[site] = (double)trim_reg.trim("rtx_ipeak_os_ac1").get_read_back(site);
+		AC2_IPEAK_OS_Code_RB[site] = (double)trim_reg.trim("rtx_ipeak_os_ac2").get_read_back(site);
+		MLDO_VOUT_GAIN_Code_RB[site] = (double)trim_reg.trim("mldo_vout_gain").get_read_back(site);
+		MLDO_VOUT_OS_Code_RB[site] = (double)trim_reg.trim("mldo_vout_os").get_read_back(site);
+		ADC_VIN_BUF_Code_RB[site] = (double)trim_reg.trim("adc_vin_buf").get_read_back(site);
+		ADC_VREF_BUF_Code_RB[site] = (double)trim_reg.trim("adc_vref_buf").get_read_back(site);
+		VRECT_MNT_2O22_Code_RB[site] = (double)trim_reg.trim("mnt_vrect").get_read_back(site);
+		VOUT_MNT_2O20_Code_RB[site] = (double)trim_reg.trim("mnt_vout").get_read_back(site);
+		LS_COMP_OFF_AC1_Code_RB[site] = (double)trim_reg.trim("rtx_ls_comp_off_ac1").get_read_back(site);
+		LS_COMP_OFF_AC2_Code_RB[site] = (double)trim_reg.trim("rtx_ls_comp_off_ac2").get_read_back(site);
+		MIN_OFF_TIME_AC1_Code_RB[site] = (double)trim_reg.trim("rtx_min_off_ac1").get_read_back(site);
+		MIN_OFF_TIME_AC2_Code_RB[site] = (double)trim_reg.trim("rtx_min_off_ac2").get_read_back(site);
+		MIN_ON_TIME_AC1_Code_RB[site] = (double)trim_reg.trim("min_on_time_ac1").get_read_back(site);
+		MIN_ON_TIME_AC2_Code_RB[site] = (double)trim_reg.trim("min_on_time_ac2").get_read_back(site);
+		QDT_COMP_OS_Code_RB[site] = (double)trim_reg.trim("QDT_comp_os").get_read_back(site);
+
+		NA1_Code_RB[site] = (double)trim_reg.sel("NA1").get_read_back(site);
+		NA2_Code_RB[site] = (double)trim_reg.sel("NA2").get_read_back(site);
+		NA3_Code_RB[site] = (double)trim_reg.sel("NA3").get_read_back(site);
+		NA4_Code_RB[site] = (double)trim_reg.sel("NA4").get_read_back(site);
+		NA5_Code_RB[site] = (double)trim_reg.sel("NA5").get_read_back(site);
+
+		Reserved0_Code_RB[site] = (double)trim_reg.sel("Reserved0").get_read_back(site);
+		Reserved1_Code_RB[site] = (double)trim_reg.sel("Reserved1").get_read_back(site);
+		Reserved2_Code_RB[site] = (double)trim_reg.sel("Reserved2").get_read_back(site);
+		Reserved3_Code_RB[site] = (double)trim_reg.sel("Reserved3").get_read_back(site);
+		Reserved4_Code_RB[site] = (double)trim_reg.sel("Reserved4").get_read_back(site);
+		Reserved5_Code_RB[site] = (double)trim_reg.sel("Reserved5").get_read_back(site);
+		
+		PGM_Code_RB[site] = (double)trim_reg.sel("PGM_VERSION").get_read_back(site);
+		MTP_LOCK_Code_RB[site] = (double)trim_reg.sel("mtp_lock").get_read_back(site);
+		MTP_TRIM_LOCK_Code_RB[site] = (double)trim_reg.sel("trim_mtp_lock").get_read_back(site);
+		I2C_ADDR_Code_RB[site] = (double)trim_reg.sel("i2c_address").get_read_back(site);
+		CHIP_ID0_Code_RB[site] = (double)trim_reg.sel("chip_id0").get_read_back(site);
+		CHIP_ID1_Code_RB[site] = (double)trim_reg.sel("chip_id1").get_read_back(site);
+	}
+
+	//-------------------------------------Datalog
+	FOR_EACH_VALID_SITE(site)
+	{
+		BG_RB->SetTestResult(site, 0, BG_Code_RB[site]);
+		IZTC_RB->SetTestResult(site, 0, IZTC_Code_RB[site]);
+		OSC_96M_RB->SetTestResult(site, 0, OSC_96M_Code_RB[site]);
+		OSC_64K_RB->SetTestResult(site, 0, OSC_64K_Code_RB[site]);
+		V1P13_RB->SetTestResult(site, 0, V1P13_Code_RB[site]);
+		V2P26_RB->SetTestResult(site, 0, V2P26_Code_RB[site]);
+		V1P8_RB->SetTestResult(site, 0, V1P8_Code_RB[site]);
+		ISNS_GAIN_RX_RB->SetTestResult(site, 0, ISNS_GAIN_RX_Code_RB[site]);
+		ISNS_GAIN_TX_RB->SetTestResult(site, 0, ISNS_GAIN_TX_Code_RB[site]);
+		ISNS_OS_RB->SetTestResult(site, 0, ISNS_OS_Code_RB[site]);
+		ISNS_D2S_OS_RB->SetTestResult(site, 0, ISNS_D2S_OS_Code_RB[site]);
+		RTX_IPEAK_GAIN_RB->SetTestResult(site, 0, RTX_IPEAK_GAIN_Code_RB[site]);
+		AC1_IPEAK_OS_RB->SetTestResult(site, 0, AC1_IPEAK_OS_Code_RB[site]);
+		AC2_IPEAK_OS_RB->SetTestResult(site, 0, AC2_IPEAK_OS_Code_RB[site]);
+
+		MLDO_VOUT_GAIN_RB->SetTestResult(site, 0, MLDO_VOUT_GAIN_Code_RB[site]);
+		MLDO_VOUT_OS_RB->SetTestResult(site, 0, MLDO_VOUT_OS_Code_RB[site]);
+		ADC_VIN_BUF_RB->SetTestResult(site, 0, ADC_VIN_BUF_Code_RB[site]);
+		ADC_VREF_BUF_RB->SetTestResult(site, 0, ADC_VREF_BUF_Code_RB[site]);
+		VRECT_MNT_2O22_RB->SetTestResult(site, 0, VRECT_MNT_2O22_Code_RB[site]);
+		VOUT_MNT_2O20_RB->SetTestResult(site, 0, VOUT_MNT_2O20_Code_RB[site]);
+		LS_COMP_OFF_AC1_RB->SetTestResult(site, 0, LS_COMP_OFF_AC1_Code_RB[site]);
+		LS_COMP_OFF_AC2_RB->SetTestResult(site, 0, LS_COMP_OFF_AC2_Code_RB[site]); 
+		MIN_OFF_TIME_AC1_RB->SetTestResult(site, 0, MIN_OFF_TIME_AC1_Code_RB[site]);
+		MIN_OFF_TIME_AC2_RB->SetTestResult(site, 0, MIN_OFF_TIME_AC2_Code_RB[site]);
+		MIN_ON_TIME_AC1_RB->SetTestResult(site, 0, MIN_ON_TIME_AC1_Code_RB[site]);
+		MIN_ON_TIME_AC2_RB->SetTestResult(site, 0, MIN_ON_TIME_AC2_Code_RB[site]);
+		QDT_COMP_OS_RB->SetTestResult(site, 0, QDT_COMP_OS_Code_RB[site]);
+
+		RESEVRED0_RB->SetTestResult(site, 0, Reserved0_Code_RB[site]);
+		RESEVRED1_RB->SetTestResult(site, 0, Reserved1_Code_RB[site]);
+		RESEVRED2_RB->SetTestResult(site, 0, Reserved2_Code_RB[site]);
+		RESEVRED3_RB->SetTestResult(site, 0, Reserved3_Code_RB[site]);
+		RESEVRED4_RB->SetTestResult(site, 0, Reserved4_Code_RB[site]);
+		RESEVRED5_RB->SetTestResult(site, 0, Reserved5_Code_RB[site]);
+		NA1_RB->SetTestResult(site, 0, NA1_Code_RB[site]);
+		NA2_RB->SetTestResult(site, 0, NA2_Code_RB[site]);
+		NA3_RB->SetTestResult(site, 0, NA3_Code_RB[site]);
+		NA4_RB->SetTestResult(site, 0, NA4_Code_RB[site]);
+		NA5_RB->SetTestResult(site, 0, NA5_Code_RB[site]);
+		PGM_VERSION_RB->SetTestResult(site, 0, PGM_Code_RB[site]);
+		MTP_LOCK_RB->SetTestResult(site, 0, MTP_LOCK_Code_RB[site]);
+		MTP_TRIM_LOCK_RB->SetTestResult(site, 0, MTP_TRIM_LOCK_Code_RB[site]);
+		I2C_ADDR_RB->SetTestResult(site, 0, I2C_ADDR_Code_RB[site]);
+		CHIP_ID0_RB->SetTestResult(site, 0, CHIP_ID0_Code_RB[site]);
+		CHIP_ID1_RB->SetTestResult(site, 0, CHIP_ID1_Code_RB[site]);
+		CRC_CHK_H_RB->SetTestResult(site, 0, CRC_Check_Cal_H[site]);
+		CRC_CHK_L_RB->SetTestResult(site, 0, CRC_Check_Cal_L[site]);
+		RX_ISNS_GAIN_SC_1Ball_L_RB->SetTestResult(site, 0, Gain_Rx_SC_1ball_low[site]);
+		RX_ISNS_GAIN_SC_1Ball_H_RB->SetTestResult(site, 0, Gain_Rx_SC_1ball_high[site]);
+		RX_ISNS_OS_SC_1Ball_L_RB->SetTestResult(site, 0, Offset_Rx_SC_1ball_low[site]);
+		RX_ISNS_OS_SC_1Ball_H_RB->SetTestResult(site, 0, Offset_Rx_SC_1ball_high[site]);
+		RX_ISNS_GAIN_LC_1Ball_L_RB->SetTestResult(site, 0, Gain_Rx_LC_1ball_low[site]);
+		RX_ISNS_GAIN_LC_1Ball_H_RB->SetTestResult(site, 0, Gain_Rx_LC_1ball_high[site]);
+		RX_ISNS_OS_LC_1Ball_L_RB->SetTestResult(site, 0, Offset_Rx_LC_1ball_low[site]);
+		RX_ISNS_OS_LC_1Ball_H_RB->SetTestResult(site, 0, Offset_Rx_LC_1ball_high[site]);
+		RX_1Ball_DUMY1_RB->SetTestResult(site, 0, Rx_1ball_dummy1[site]);
+		RX_1Ball_DUMY2_RB->SetTestResult(site, 0, Rx_1ball_dummy2[site]);
+		RX_1Ball_DUMY3_RB->SetTestResult(site, 0, Rx_1ball_dummy3[site]);
+		RX_1Ball_DUMY4_RB->SetTestResult(site, 0, Rx_1ball_dummy4[site]);
+		RX_ISNS_GAIN_SC_4Ball_L_RB->SetTestResult(site, 0, Gain_Rx_SC_4ball_low[site]);
+		RX_ISNS_GAIN_SC_4Ball_H_RB->SetTestResult(site, 0, Gain_Rx_SC_4ball_high[site]);
+		RX_ISNS_OS_SC_4Ball_L_RB->SetTestResult(site, 0, Offset_Rx_SC_4ball_low[site]);
+		RX_ISNS_OS_SC_4Ball_H_RB->SetTestResult(site, 0, Offset_Rx_SC_4ball_high[site]);
+		RX_ISNS_GAIN_LC_4Ball_L_RB->SetTestResult(site, 0, Gain_Rx_LC_4ball_low[site]);
+		RX_ISNS_GAIN_LC_4Ball_H_RB->SetTestResult(site, 0, Gain_Rx_LC_4ball_high[site]);
+		RX_ISNS_OS_LC_4Ball_L_RB->SetTestResult(site, 0, Offset_Rx_LC_4ball_low[site]);
+		RX_ISNS_OS_LC_4Ball_H_RB->SetTestResult(site, 0, Offset_Rx_LC_4ball_high[site]);
+		RX_4Ball_DUMY1_RB->SetTestResult(site, 0, Rx_4ball_dummy1[site]);
+		RX_4Ball_DUMY2_RB->SetTestResult(site, 0, Rx_4ball_dummy2[site]);
+		RX_4Ball_DUMY3_RB->SetTestResult(site, 0, Rx_4ball_dummy3[site]);
+		RX_4Ball_DUMY4_RB->SetTestResult(site, 0, Rx_4ball_dummy4[site]);
+		TX_ISNS_GAIN_1Ball_L_RB->SetTestResult(site, 0, Gain_Tx_1ball_low[site]);
+		TX_ISNS_GAIN_1Ball_H_RB->SetTestResult(site, 0, Gain_Tx_1ball_high[site]);
+		TX_ISNS_OS_1Ball_L_RB->SetTestResult(site, 0, Offset_Tx_1ball_low[site]);
+		TX_ISNS_OS_1Ball_H_RB->SetTestResult(site, 0, Offset_Tx_1ball_high[site]);
+		TX_1Ball_DUMY1_RB->SetTestResult(site, 0, Tx_1ball_dummy1[site]);
+		TX_1Ball_DUMY2_RB->SetTestResult(site, 0, Tx_1ball_dummy2[site]);
+		TX_1Ball_DUMY3_RB->SetTestResult(site, 0, Tx_1ball_dummy3[site]);
+		TX_1Ball_DUMY4_RB->SetTestResult(site, 0, Tx_1ball_dummy4[site]);
+		TX_ISNS_GAIN_4Ball_L_RB->SetTestResult(site, 0, Gain_Tx_4ball_low[site]);
+		TX_ISNS_GAIN_4Ball_H_RB->SetTestResult(site, 0, Gain_Tx_4ball_high[site]);
+		TX_ISNS_OS_4Ball_L_RB->SetTestResult(site, 0, Offset_Tx_4ball_low[site]);
+		TX_ISNS_OS_4Ball_H_RB->SetTestResult(site, 0, Offset_Tx_4ball_high[site]);
+		TX_4Ball_DUMY1_RB->SetTestResult(site, 0, Tx_4ball_dummy1[site]);
+		TX_4Ball_DUMY2_RB->SetTestResult(site, 0, Tx_4ball_dummy2[site]);
+		TX_4Ball_DUMY3_RB->SetTestResult(site, 0, Tx_4ball_dummy3[site]);
+		TX_4Ball_DUMY4_RB->SetTestResult(site, 0, Tx_4ball_dummy4[site]);
+		VRECT_SNS_GAIN_L_RB->SetTestResult(site, 0, Gain_vrect_low[site]);
+		VRECT_SNS_GAIN_H_RB->SetTestResult(site, 0, Gain_vrect_high[site]);
+		VRECT_SNS_OS_L_RB->SetTestResult(site, 0, Offset_vrect_low[site]);
+		VRECT_SNS_OS_H_RB->SetTestResult(site, 0, Offset_vrect_high[site]);
+		VRECT_SNS_DUMY1_RB->SetTestResult(site, 0, Vrect_dummy1[site]);
+		VRECT_SNS_DUMY2_RB->SetTestResult(site, 0, Vrect_dummy2[site]);
+		VRECT_SNS_DUMY3_RB->SetTestResult(site, 0, Vrect_dummy3[site]);
+		VRECT_SNS_DUMY4_RB->SetTestResult(site, 0, Vrect_dummy4[site]);
+		VOUT_SNS_GAIN_L_RB->SetTestResult(site, 0, Gain_vout_low[site]);
+		VOUT_SNS_GAIN_H_RB->SetTestResult(site, 0, Gain_vout_high[site]);
+		VOUT_SNS_OS_L_RB->SetTestResult(site, 0, Offset_vout_low[site]);
+		VOUT_SNS_OS_H_RB->SetTestResult(site, 0, Offset_vout_high[site]);
+		VOUT_SNS_DUMY1_RB->SetTestResult(site, 0, Vout_dummy1[site]);
+		VOUT_SNS_DUMY2_RB->SetTestResult(site, 0, Vout_dummy2[site]);
+		VOUT_SNS_DUMY3_RB->SetTestResult(site, 0, Vout_dummy3[site]);
+		VOUT_SNS_DUMY4_RB->SetTestResult(site, 0, Vout_dummy4[site]);
+		VRECT2VOUT_GAIN_L_RB->SetTestResult(site, 0, Gain_vrect2vout_low[site]);
+		VRECT2VOUT_GAIN_H_RB->SetTestResult(site, 0, Gain_vrect2vout_high[site]);
+		VRECT2VOUT_OS_L_RB->SetTestResult(site, 0, Offset_vrect2vout_low[site]);
+		VRECT2VOUT_OS_H_RB->SetTestResult(site, 0, Offset_vrect2vout_high[site]);
+		GP2_SNS_GAIN_L_RB->SetTestResult(site, 0, Gain_gp2_low[site]);
+		GP2_SNS_GAIN_H_RB->SetTestResult(site, 0, Gain_gp2_high[site]);
+		GP2_SNS_OS_L_RB->SetTestResult(site, 0, Offset_gp2_low[site]);
+		GP2_SNS_OS_H_RB->SetTestResult(site, 0, Offset_gp2_high[site]);
+		GP4_SNS_GAIN_L_RB->SetTestResult(site, 0, Gain_gp4_low[site]);
+		GP4_SNS_GAIN_H_RB->SetTestResult(site, 0, Gain_gp4_high[site]);
+		GP4_SNS_OS_L_RB->SetTestResult(site, 0, Offset_gp4_low[site]);
+		GP4_SNS_OS_H_RB->SetTestResult(site, 0, Offset_gp4_high[site]);
+		VDD_SNS_GAIN_L_RB->SetTestResult(site, 0, Gain_vdd_low[site]);
+		VDD_SNS_GAIN_H_RB->SetTestResult(site, 0, Gain_vdd_high[site]);
+		VDD_SNS_OS_L_RB->SetTestResult(site, 0, Offset_vdd_low[site]);
+		VDD_SNS_OS_H_RB->SetTestResult(site, 0, Offset_vdd_high[site]);
+	}
+    return 0;
+}
+ 

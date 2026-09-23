@@ -1,0 +1,26 @@
+=== t33 postReplace 期望（**现盘 payload 版**）===
+生成时刻 : 2026-09-16T22:35:36+08:00
+生成方式 : 由脚本 `gate-logs-t33/t33_postreplace_expectation_live.py` 现算写入（无人工手抄）
+
+对象（payload）: team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp
+  size   = 43806 B
+  sha256 = 66abc088ae6bd5f9b9d7201673003fc0be2450fd6f1f222c6a4a902cbe4f0cc4
+对象（部署态）: D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp
+  size   = 469714 B
+  sha256 = 15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a
+契约: team/artifacts/acceptance-20260916-dali10/setup-contract.json
+  revision = 39 ; size = 377694 B
+  aliasResolution[bst2sw].resolution.closedRelayNumbers = [48, 60, 61, 76]
+
+预期（用门禁自身函数 check_contract_closures 现算；scope = DEFAULT_TM_SCOPE）：
+  [payload(候选)] errors=0
+      TM600_HS_RDSON   expected=[48, 60, 61, 76, 83]       missing=[]
+      TM601_LS_RDSON   expected=[60, 61, 154, 155]         missing=[]
+  [deployed(部署态)] errors=2
+      TM600_HS_RDSON   expected=[48, 60, 61, 76, 83]       missing=[48, 76]
+      TM601_LS_RDSON   expected=[60, 61, 154, 155]         missing=[]
+      - TM600_HS_RDSON: 契约声明必需的继电器 K48 **未出现在 cbite.SetOn 中** (契约来源: aliasResolution[bst2sw].closedRelayNumbers (declared by tmDeltas.TM600.aliasesUsed) | 契约侧
+      - TM600_HS_RDSON: 契约声明必需的继电器 K76 **未出现在 cbite.SetOn 中** (契约来源: aliasResolution[bst2sw].closedRelayNumbers (declared by tmDeltas.TM600.aliasesUsed) | 契约侧
+
+结论：payload 侧 missing=[] ⇒ **落盘后预期 bst-sw GREEN**；部署态 missing=[48,76] ⇒ 当前 NEW-RED（真因）。
+注：本文件**不覆盖**旧日志 `t33-postreplace-expectation.log`（后者对象为旧 payload 39,457 B，作历史留痕）。

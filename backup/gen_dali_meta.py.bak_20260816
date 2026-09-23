@@ -1,0 +1,366 @@
+# -*- coding: utf-8 -*-
+# DALI TestItemMeta 生成器 — 以 OVERVIEW (Dali_testmode.xlsx) 为 DFT 权威源
+# 产出: DALI/meta/dali_tm_meta.json (全部 51 函数 TestItemMeta)
+# 权威核心: 每函数的 capAuthority 四权威集 (check E 的输入):
+#   powered_pins  本函数被 FV/FI 供电的 PIN (DFT 意图: vset/iset/Power列/Dynamic裸PIN)
+#   mi_pins       本函数测电流的 PIN (Check/Dynamic 列 I(pin)) → Cap 豁免
+#   ramp_pins     本函数 ramp/扫描源 PIN (vset 同 pin ≥2 不同值) → Cap 豁免
+#   testpad_pins  测试垫偏置 PIN (AMUX/VDM/ATEST/DTEST0/NTC) → 不查 Cap
+# 用法:
+#   python gen_dali_meta.py               # 生成 dali_tm_meta.json + audit 报告
+#   python gen_dali_meta.py --dump        # 打印每函数派生结果 (人工审核)
+#   python gen_dali_meta.py --audit       # 输出全函数 4 集对照表
+#   python gen_dali_meta.py --require-all # 全覆盖门: 每个 test.cpp 函数必须有 OVERVIEW 记录
+#                                        #   (无记录 → ERROR 退出; 末尾覆盖率 <100% → FAIL)
+#                                        #   写新测试项目后的收尾双查必带此参数
+#
+# 数据源 (2026-08-10):
+#   OVERVIEW  = Dali_testmode.xlsx /OVERVIEW 表 (DFT 意图层, 权威)
+#   test.cpp  = 函数名单 (51 个 DUT_API int TMxxx) — 仅提供函数名与 Item 编号
+#   StdAfx.h  = Cap 继电器定义 (cap family: VCC/VBAT/VAC/VBUS)
+# 原则: 信息源层级 — DFT 意图层(OVERVIEW) > 对象名反推 (不参考 AI.cpp, 已废弃)
+
+import io, json, re, sys
+import openpyxl
+
+PROJ = r'D:\Newtest\CLAUDE_PROCESS'
+XLSX = PROJ + r'\DALI\Dali_testmode.xlsx'
+SRC  = r'D:\PROJECT6-DALI\devel\source\test.cpp'
+DEFS = r'D:\PROJECT6-DALI\devel\source\StdAfx.h'
+OUT  = PROJ + r'\DALI\meta\dali_tm_meta.json'
+LEGACY = PROJ + r'\DALI\meta\tm000_102.json'
+
+# Cap 家族: PIN token → Cap 继电器名 (cap_defs 权威, StdAfx.h #define)
+# VAC1/VAC2/VAC3/VAC123 均属 VAC 家族 (K21_VAC_Cap)
+TESTPAD_NODES = frozenset(['ATEST0', 'ATEST1', 'ATEST2', 'VDM', 'AMUX', 'DTEST0', 'NTC'])
+
+
+def read_enc(path):
+    with open(path, 'rb') as f:
+        raw = f.read()
+    for enc in ('utf-8-sig', 'utf-8', 'gbk', 'latin-1'):
+        try:
+            return raw.decode(enc)
+        except (UnicodeDecodeError, ValueError):
+            continue
+    return raw.decode('utf-8', errors='replace')
+
+
+def load_overview():
+    """OVERVIEW → {Item: row}, row 为 dict (列名→值, 已去 None 换空串)"""
+    wb = openpyxl.load_workbook(XLSX, read_only=True, data_only=True)
+    ws = wb['OVERVIEW']
+    rows = list(ws.iter_rows(values_only=True))
+    header = [str(h).strip() if h is not None else '' for h in rows[0]]
+    rec = {}
+    for r in rows[1:]:
+        if not r[0] or not str(r[0]).startswith('TM'):
+            continue
+        row = {}
+        for i, h in enumerate(header):
+            v = r[i] if i < len(r) else None
+            row[h] = '' if v is None else v
+        rec[str(r[0])] = row
+    return rec
+
+
+# Trim 函数名 → OVERVIEW Item 编号 (Trim_* 命名不符合 TM\d+_ 前缀, 2026-08-10 纳入)
+TRIM_ITEM_MAP = {
+    'Trim_IZTC_RES':   '133',   # TM133 IZTC_RES (ATEST0_MUX=8)
+    'Trim_BG_RES_DIV': '135',   # TM135 BG_RES_DIV (ATEST0_MUX=10)
+    'Trim_VBG':        '139',   # TM139 VBG (ATEST0_MUX=12)
+}
+
+
+def load_testcpp_fns():
+    """test.cpp -> {Item编号: 函数名} (仅名单, 非权威内容源)
+    支持 'TM<digits>_*' 与 Trim_* 命名 (Trim 函数按 TRIM_ITEM_MAP 映射到 Item)"""
+    out = {}
+    for line in read_enc(SRC).splitlines():
+        m = re.match(r'DUT_API int ((?:TM\d+(?:_\d+)?_\w+|Trim_\w+))\(short funcindex', line)
+        if m:
+            name = m.group(1)
+            tm = re.match(r'TM(\d+(?:_\d+)?)_', name)
+            item = tm.group(1) if tm else TRIM_ITEM_MAP.get(name)
+            if item:
+                out.setdefault(item, name)
+    return out
+
+
+def parse_scope(s):
+    """'--require-scope' 参数解析: '403,406,408-425' → {'403','406','408',...}
+    支持逗号分隔 + 'a-b' 范围; 'TM' 前缀自动剥离"""
+    out = set()
+    for part in s.split(','):
+        part = part.strip().lstrip('TM')
+        if '-' in part:
+            a, b = part.split('-', 1)
+            a, b = int(a), int(b)
+            if b < a:
+                raise ValueError(f'scope 范围错误: {a}-{b}')
+            out.update(str(i) for i in range(a, b + 1))
+        elif part:
+            out.add(part)
+    return out
+
+
+def load_cap_defs():
+    """StdAfx.h #define Kxx_<PIN>_Cap → {PIN: relay}"""
+    caps = {}
+    for m in re.finditer(r'#define\s+(K\d+_(\w+)_Cap)\s+\d+', read_enc(DEFS)):
+        caps.setdefault(m.group(2), m.group(1))
+    return caps
+
+
+def _split_multi(v):
+    return [s.strip() for s in str(v).split('\n') if s.strip()]
+
+
+def _pin_of(expr):
+    """'I(VBUS)'/'V(ATEST0)'/裸 'VAC1' → 'VBUS'/'ATEST0'/'VAC1' (大写)"""
+    m = re.match(r'[IV]\(([^)]+)\)', expr)
+    if m:
+        return m.group(1).upper()
+    return expr.upper()
+
+
+def is_toggle(row):
+    """toggle 测试判定 (Vth/CMP/UV/PRST/HT/SNK_DET 比较器 / Indirect / 观测 DTEST0)"""
+    name = str(row['Name']).upper()
+    ck = str(row['Check'])
+    if ('_VTH' in name or '_CMP' in name or '_UV' in name or '_PRST' in name
+            or '_HT_' in name or '_MAX_CMP' in name or '_SNK_DET' in name
+            or 'SNK_DET' in name or 'Path_ON' in str(row['Name']).lower()
+            or 'V(DTEST0)' in ck or str(row['Test']) == 'Indirect'):
+        return True
+    return False
+
+
+def derive(row):
+    """从 OVERVIEW 行派生 capAuthority 四权威集
+    powered_pins 语义 = 本函数被 FV 供电的供电轨 (vset + Power列 + Dynamic裸PIN);
+    iset 负载 (VMCU/VCC 输出) 是测量目标非供电轨, 不参与 Cap 闭合判定。
+    (与 OVERVIEW Power 列只列供电轨的语义一致, 2026-08-10 校准)"""
+    code = '\n'.join(_split_multi(row['Code1']) + _split_multi(row['Code2'])
+                     + _split_multi(row['Code3']))
+    vs, is_ = {}, {}
+    for cmd, pin, val in re.findall(r'(vset|iset)\[(\w+),([-\d.eE+]+)', code):
+        (vs if cmd == 'vset' else is_).setdefault(pin.upper(), set()).add(val)
+    pw = {_pin_of(x) for x in _split_multi(row['Power'])}
+    dy_raw = _split_multi(row['Dynamic'])
+    dy_bare = {_pin_of(x) for x in dy_raw if not re.match(r'[IV]\(', x)}
+    dy_pins = {_pin_of(x) for x in dy_raw}
+    ck = _split_multi(row['Check'])
+    ck_pins = {_pin_of(x) for x in ck if re.match(r'[IV]\(', x)}
+
+    forced = set(vs) | pw | dy_bare
+    mi = {_pin_of(x) for x in (dy_raw + ck) if re.match(r'I\(', x)}
+    # ramp: 仅 toggle 测试中 vset 同 pin ≥2 个不同值 (Vth/CMP ramp 扫描源);
+    # 非 toggle (如 shipmode 掉电序列) 的 2 值不算 ramp (供电→闭 Cap)
+    toggle = is_toggle(row)
+    ramp = {p for p, vals in vs.items() if toggle and len(vals) >= 2}
+    helper = str(row['HELPER']).upper()
+    if toggle and 'RAMP' in helper:
+        for p in vs:
+            base = re.sub(r'[0-9]+$', '', p)
+            if p in helper or base in helper:
+                ramp.add(p)
+    testpad = forced & TESTPAD_NODES
+    return {
+        'powered_pins': sorted(forced),
+        'mi_pins': sorted(mi),
+        'ramp_pins': sorted(ramp),
+        'testpad_pins': sorted(testpad),
+        '_vs': {p: sorted(v) for p, v in vs.items()},
+        '_iset': sorted(is_),
+        '_pw': sorted(pw),
+        '_dy': sorted(dy_pins),
+        '_ck': sorted(ck_pins),
+    }
+
+
+def build_param(row):
+    """Check 列 → params (check/MV→'MV', I/MI→'MI')"""
+    params = []
+    for x in _split_multi(row['Check']):
+        m = re.match(r'([IV])\(([^)]+)\)', x)
+        if m:
+            params.append({'check': 'MI' if m.group(1) == 'I' else 'MV',
+                           'checkPin': m.group(2).upper(),
+                           'dftItem': str(row['Item'])})
+    return params
+
+
+def build_hwinit(row):
+    """Code 列 vset/iset/en_tm/field/delay → hardwareInit 列表"""
+    code = '\n'.join(_split_multi(row['Code1']) + _split_multi(row['Code2'])
+                     + _split_multi(row['Code3']))
+    hw = []
+    for m in re.finditer(r'(vset|iset)\[(\w+),([-\d.eE+]+),([\d.e+-]+),([01])\]', code):
+        cmd, pin, val, t, ig = m.groups()
+        hw.append({'cmd': cmd, 'pin': pin.lower(), 'value': float(val),
+                   'time': t, 'ignore': int(ig)})
+    for m in re.finditer(r'(en_tm|en_scan|wait_warmup)\[\]', code):
+        hw.append({'cmd': m.group(1)})
+    for m in re.finditer(r'field\[', code):
+        hw.append({'cmd': 'field'})
+    return hw
+
+
+def classify_testtype(row):
+    """Test/Trim/Purpose 列 → testType"""
+    if row['Trim']:
+        return 'trim'
+    if is_toggle(row):
+        return 'toggle'   # Vth/CMP/UV/PRST 比较器 toggle (含 ramp)
+    return 'normal'
+
+
+def load_legacy():
+    """合并 tm000_102.json 手工丰富字段 (sources/softwareInit/measure/powerOn/relaySetOn/merged)"""
+    import os
+    if not os.path.exists(LEGACY):
+        return {}, {}
+    with open(LEGACY, encoding='utf-8') as f:
+        data = json.load(f)
+    rich = {fn['functionName']: fn for fn in data.get('functions', [])}
+    return rich, data.get('merged', [])
+
+
+def main():
+    dump = '--dump' in sys.argv
+    audit = '--audit' in sys.argv
+    require_all = '--require-all' in sys.argv
+    require_scope = None
+    if '--require-scope' in sys.argv:
+        i = sys.argv.index('--require-scope')
+        require_scope = parse_scope(sys.argv[i + 1])
+    ov = load_overview()
+    fns = load_testcpp_fns()
+    cap_defs = load_cap_defs()
+    legacy, merged = load_legacy()
+
+    missing = []   # test.cpp 有函数但 OVERVIEW 无记录 (require-all 门: 必须反馈, 禁止静默跳过)
+    functions = []
+    audit_lines = []
+    for item in sorted(fns, key=lambda x: [int(p) for p in x.split('_')]):
+        name = fns[item]
+        row = ov.get('TM' + item)
+        if not row:
+            print(f'[WARN] {item} {name}: 无 OVERVIEW 记录, 跳过')
+            missing.append((item, name))
+            continue
+        ca = derive(row)
+        fn = {
+            'functionName': name,
+            'testType': classify_testtype(row),
+            'dftItem': str(row['Item']),
+            'overview': {
+                'level': str(row['Level']), 'name': str(row['Name']),
+                'desc': str(row['Description'])[:160],
+                'expectValue': row['ExpectValue'], 'unit': row['Unit'],
+                'test': row['Test'], 'helper': str(row['HELPER'])[:200],
+            },
+            'params': build_param(row),
+            'hardwareInit': build_hwinit(row),
+            'capAuthority': {k: ca[k] for k in
+                             ('powered_pins', 'mi_pins', 'ramp_pins', 'testpad_pins')},
+        }
+        # 合并 legacy 手工丰富字段 (TM000~102: sources/softwareInit/measure/powerOn/relaySetOn)
+        if name in legacy:
+            lg = legacy[name]
+            for k in ('sources', 'softwareInit', 'measure', 'powerOn', 'relaySetOn', 'dftItems'):
+                if k in lg:
+                    fn[k] = lg[k]
+        functions.append(fn)
+        # 与 Cap 家族交集审计
+        fam_hit = sorted({pt for pt in cap_defs for p in ca['powered_pins']
+                          if p == pt or p.startswith(pt) or pt.startswith(p)})
+        fam_exempt = sorted({pt for pt in fam_hit
+                             if any(p == pt or p.startswith(pt) or pt.startswith(p)
+                                    for p in ca['mi_pins'] + ca['ramp_pins'])
+                             or any(p == pt or p.startswith(pt) or pt.startswith(p)
+                                    for p in ca['testpad_pins'])})
+        need = sorted(set(fam_hit) - set(fam_exempt))
+        audit_lines.append((item, name, ','.join(ca['powered_pins']),
+                            ','.join(ca['mi_pins']), ','.join(ca['ramp_pins']),
+                            ','.join(ca['testpad_pins']), ','.join(need)))
+
+    if dump:
+        for item, name, pw, mi, rp, tp, need in audit_lines:
+            print(f'{item:8s} {name:34s} pw[{pw}] mi[{mi}] ramp[{rp}] tp[{tp}] need_cap[{need}]')
+        return
+
+    if audit:
+        print('%-8s %-34s %-24s %-16s %-14s %-14s %s' %
+              ('Item', 'fn', 'powered', 'mi', 'ramp', 'testpad', 'cap_need'))
+        for line in audit_lines:
+            print('%-8s %-34s %-24s %-16s %-14s %-14s %s' % line)
+        return
+
+    meta = {
+        '_comment': 'DALI 51 函数 TestItemMeta — OVERVIEW(DFT意图层)权威生成, capAuthority 供 verify_relay_trace 检查E',
+        'source': 'Dali_testmode.xlsx /OVERVIEW (DFT意图层)',
+        'capFamilies': cap_defs,
+        'merged': merged,
+        'functions': functions,
+    }
+    with open(OUT, 'w', encoding='utf-8') as f:
+        json.dump(meta, f, ensure_ascii=False, indent=2)
+    print(f'[ok] 生成 {OUT}: {len(functions)} 个函数')
+    print('[ok] Cap 家族: ' + json.dumps(cap_defs))
+    if audit_lines:
+        need_all = set()
+        for _, _, _, _, _, _, need in audit_lines:
+            need_all.update(need.split(',') if need else [])
+        need_all.discard('')
+        print(f'[ok] 需闭 Cap 家族分布: {sorted(need_all)}')
+
+    # ===== meta 全覆盖门 (--require-all): 每个测试项目必须有 meta =====
+    # 保证后续测试项目都有 meta 文件, check E 以 meta capAuthority 为权威不降级 (用户要求 2026-08-10)
+    n_fns = len(fns)
+    if require_all:
+        if missing:
+            print('*** FAIL (--require-all) *** test.cpp 函数缺 OVERVIEW 记录, 无 meta:')
+            for item, name in missing:
+                print(f'  - {item} {name}: 无 OVERVIEW 记录 → 补 Dali_testmode.xlsx /OVERVIEW 后重跑')
+            sys.exit(1)
+        if len(functions) != n_fns:
+            print(f'*** FAIL (--require-all) *** meta 覆盖 {len(functions)}/{n_fns} < 100%')
+            sys.exit(1)
+        print(f'[ok] --require-all: meta 全覆盖 {len(functions)}/{n_fns} 函数 PASS')
+    elif missing:
+        print(f'[warn] 未带 --require-all, {len(missing)} 个函数缺 meta (仅 WARN)')
+
+    # ===== 反向覆盖门 (--require-scope): OVERVIEW isCodeGen=Y 项必须已写入 test.cpp =====
+    # 堵 "OVERVIEW 有记录但一直没写进 test.cpp" 的漏项洞 (2026-08-10, TM403-425 批次正是漏点)。
+    # 双向: ① 批次内 isCodeGen=Y 项缺 test.cpp 函数 → FAIL
+    #       ② 批次内 test.cpp 函数缺 meta → FAIL (正向, 与 --require-all 同一目标)
+    if require_scope:
+        scope_items = set()
+        for item in sorted(require_scope, key=lambda x: [int(p) for p in x.split('_')]):
+            row = ov.get('TM' + item)
+            if row and str(row.get('isCodeGen', '')).strip() == 'Y':
+                scope_items.add(item)
+        not_written = sorted(scope_items - set(fns),
+                             key=lambda x: [int(p) for p in x.split('_')])
+        if not_written:
+            print('*** FAIL (--require-scope) *** OVERVIEW isCodeGen=Y 但 test.cpp 未写入:')
+            for item in not_written:
+                name = ov.get('TM' + item, {}).get('Name', '')
+                print(f'  - TM{item} {name}: OVERVIEW 标记为应生成, 但 test.cpp 无 DUT_API 函数')
+            sys.exit(1)
+        written = sorted(set(fns) & require_scope,
+                         key=lambda x: [int(p) for p in x.split('_')])
+        no_meta = [item for item in written
+                   if not any(f['dftItem'] == 'TM' + item for f in functions)]
+        if no_meta:
+            print(f'*** FAIL (--require-scope) *** 批次内函数缺 meta 记录: {no_meta}')
+            sys.exit(1)
+        print(f'[ok] --require-scope: 批次 isCodeGen=Y 项 {len(scope_items)} 全写入 '
+              f'+ {len(written)} 个 test.cpp 函数全有 meta  PASS')
+
+
+if __name__ == '__main__':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+    main()

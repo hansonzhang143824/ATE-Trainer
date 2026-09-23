@@ -1,0 +1,787 @@
+{
+  "purpose": "setup-architect's own freeze anchors. Kept in a file this author owns, because the shared gate-logs-t28/t28-anchors.json is rewritten wholesale by another member's generator (my namespace there was preserved but truncated to 1 of 8 entries on 2026-09-16 21:56:03).",
+  "freezeRule": "filename + recomputed sha256 + recomputed time, taken by ONE command; any remembered value is unverified",
+  "generatedAt": "2026-09-17 06:38:08",
+  "anchors": {
+    "setup-contract.json": {
+      "path": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+      "sizeBytes": 377694,
+      "sha256": "18587b83307d47e0d6f287ee28e812b6c8f25781d2e449b293e45b50282b6d9f",
+      "measuredAt": "2026-09-16 22:10:11",
+      "writesStopped": true
+    },
+    "setup-contract-build.py": {
+      "path": "team/artifacts/acceptance-20260916-dali10/setup-contract-build.py",
+      "sizeBytes": 213515,
+      "sha256": "33899111438f2f603d17d562fadd322a52bcae374d4f28820eb57a667731a051",
+      "measuredAt": "2026-09-16 22:10:10",
+      "writesStopped": true
+    },
+    "setup-contract-pin.json": {
+      "path": "team/artifacts/acceptance-20260916-dali10/setup-contract-pin.json",
+      "sizeBytes": 11273,
+      "sha256": "6972e3ba0f5b2fea49da4893a98a80c79c7f8a421905019d95c4fe197f9e799e",
+      "measuredAt": "2026-09-16 22:10:11",
+      "writesStopped": true
+    },
+    "implementation-input-pin.json": {
+      "path": "team/artifacts/acceptance-20260916-dali10/implementation-input-pin.json",
+      "sizeBytes": 19735,
+      "sha256": "04dfbb1b6967b4fb94700a7347864ed9aea1e1f35ae959bfa90e474c6415a574",
+      "measuredAt": "2026-09-16 22:23:08",
+      "writesStopped": false
+    },
+    "acceptance-report.json": {
+      "path": "team/artifacts/acceptance-20260916-dali10/acceptance-report.json",
+      "sizeBytes": 68826,
+      "sha256": "9399ca305ef73421709db29fbeb6d7ff0522b23280904309841eaca42995a8b3",
+      "measuredAt": "2026-09-16 23:22:23",
+      "writesStopped": false
+    },
+    "t35-contract-reconciliation.md": {
+      "path": "team/artifacts/acceptance-20260916-dali10/t35-contract-reconciliation.md",
+      "sizeBytes": 59700,
+      "sha256": "32ad955c7b7c322a1d4946f657ba114586adf66b86e21f931f181b0bc61128fc",
+      "measuredAt": "2026-09-16 22:17:17",
+      "writesStopped": false
+    },
+    "t41-tm601-bst-path-determination.md": {
+      "path": "team/artifacts/acceptance-20260916-dali10/t41-tm601-bst-path-determination.md",
+      "sizeBytes": 38351,
+      "sha256": "230c309000dfcc5674ed9762133ba4d59a5f35f8ff1c0282588a5f1f182ee16d",
+      "measuredAt": "2026-09-16 22:17:17",
+      "writesStopped": false
+    },
+    "implementation-payload-TM600-TM601.cpp": {
+      "path": "team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp",
+      "sizeBytes": 43806,
+      "sha256": "66abc088ae6bd5f9b9d7201673003fc0be2450fd6f1f222c6a4a902cbe4f0cc4",
+      "measuredAt": "2026-09-16 21:09:24",
+      "writesStopped": true
+    },
+    "test-plan.json": {
+      "path": "team/artifacts/acceptance-20260916-dali10/test-plan.json",
+      "sizeBytes": 185689,
+      "sha256": "707ce845c5459b41b528059eab7f26b1a8e597e34daf8df40929346942a8ee69",
+      "measuredAt": "2026-09-16 21:54:50",
+      "writesStopped": false
+    },
+    "scripts/gate_baseline.json": {
+      "path": "scripts/gate_baseline.json",
+      "sizeBytes": 28,
+      "sha256": "021015da84e6fd4c54a595796e1bad73e18c57db94f856871d5667044302cb1d",
+      "measuredAt": "2026-09-13 22:45:34",
+      "writesStopped": false
+    },
+    "DEPLOYED_tree/source/test.cpp": {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "sizeBytes": 469714,
+      "sha256": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a",
+      "measuredAt": "2026-09-16 18:53:33",
+      "note": "read-only reference object for the two-object comparison"
+    },
+    "gate-logs-t54/bst-sw.log": {
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t54/bst-sw.log",
+      "sizeBytes": 1991,
+      "sha256": "bde9f7a56bb744a73c29b782dcf7ecd6a43301ff9ff97a7345de216eb5b73c17",
+      "measuredAt": "2026-09-16 21:35:20",
+      "note": "historical evidence; annotated in t34 L46; do not re-run"
+    },
+    "peer/build-report.json": {
+      "path": "team/artifacts/acceptance-20260916-dali10/build-report.json",
+      "sizeBytes": 35743,
+      "sha256": "f4943cca8d02d7b911f71c7228bb93fc6fd1b107fb29ee3681937bb30db14d00",
+      "measuredAt": "2026-09-17 01:15:42",
+      "owner": "compile-diagnostician",
+      "note": "peer artifact; size/sha recomputed by me, content not reviewed",
+      "liveness": "THE PEER REPORT IS A LIVE FILE: it must not be labelled FROZEN and its in-report self-computed hashes must not be cited. To pin the identity of a particular version, read the receipt and recompute it.",
+      "identitySource": "gate-logs-t54/build-report.receipt.json (current: 1878 B / 22b43ef7697da3bb92c0bf29ef30a2e5205d257b0ff6d6cea2a8212ee01fbf8f @ 2026-09-17 01:15:42; the receipt is REGENERATED on every run, so its own size and time must be recomputed too) plus the append-only history gate-logs-t54/build-report.receipts.jsonl (current: 55652 B / c9087fdf582bf3133541d5dd811db1a463ae98701666e3be3a8f508dad39e56f; 35 rows)",
+      "identitySourceNote": "the receipt and its history ledger are themselves live files - cite them by path and recompute; same rule as 'a pointer must not hard-code a size'"
+    }
+  },
+  "runRule": "evidence strength: behaviour/production implementation > authoritative netlist > IR/derived tables > contract-derived fields",
+  "freezeNote": "contract FROZEN at rev 39; gate-read field [48,60,61,76]; further changes need prior written notice + reviewer verdict",
+  "correctionConvention": "CORRECTION CONVENTION (agreed with rule-reviewer; proposed for both sides): a correction never deletes the original text - at the SAME place state 'old value + why it was wrong + authoritative value + the revision it takes effect from', and record it cumulatively in the version notes (the v22 -> v25 pattern). FROZEN is reserved for artifacts whose writes have STOPPED; everything else is cited as 'recomputed at <time>' only.",
+  "identityRule": "size is not identity; the only identity is the recomputed sha256 (demonstrated: my anchors file had 3,579 B twice with different hashes).",
+  "t34Carrier": "team/artifacts/acceptance-20260916-dali10/acceptance-report.json ('t34' is a TASK LABEL and appears in NO filename)",
+  "owner": "setup-architect",
+  "citeRule": "per-owner citation (endorsing test-strategy-architect's section 2.3): cite this file as 'owner=setup-architect + path + recomputed-at-time'; never cite a hash without recomputing, and never assume today's content survives tomorrow's write - this file was written four times today with two of those writes at the same byte size.",
+  "pathMap": {
+    "t34": "team/artifacts/acceptance-20260916-dali10/acceptance-report.json (NO independent t34 file; 't34' is a task label)",
+    "t35": "team/artifacts/acceptance-20260916-dali10/t35-contract-reconciliation.md",
+    "t41": "team/artifacts/acceptance-20260916-dali10/t41-tm601-bst-path-determination.md",
+    "t49/t53": "team/artifacts/acceptance-20260916-dali10/setup-contract-build.py",
+    "contract": "team/artifacts/acceptance-20260916-dali10/setup-contract.json (+ setup-contract-pin.json)",
+    "planSide": "team/artifacts/acceptance-20260916-dali10/test-plan.json (owner: test-strategy-architect) + implementation-input-pin.json (owner: setup-architect)",
+    "payload": "team/artifacts/acceptance-20260916-dali10/implementation-payload-TM600-TM601.cpp (canonical, writes stopped)",
+    "anchors": "gate-logs-t28/setupArchitect-anchors.json (owner: setup-architect) / gate-logs-t28/t28-anchors.json (owner: compile-diagnostician)",
+    "ledger": "gate-logs-t28/setupArchitect-freeze-snapshots.json (owner: setup-architect, append-only)",
+    "why": "this map exists because three false MISSING cases in this run came from name/path ambiguity"
+  },
+  "scopeRule": {
+    "statement": "Any assertion of the form 'the whole tree', 'no such file' or 'does not exist' must state the scan scope explicitly, including sub-directories. A top-level listing is not a tree scan. Two instances in this run came from my own partial scans (a basename-only search, and a top-level-only 'no blocked filename' claim); the counterparty had the mirrored instance.",
+    "readPathClause": "A query must declare the PATH/SCOPE/VOCABULARY it used, not just its result. A wrong key does not raise: it returns a CREDIBLE VALUE - reading a non-existent key for the plan's history yielded 0 entries, which looks exactly like an ordinary count, while the correct key `revisionHistory` yields 25. The same silent-plausible-failure shape covers a wrong scope (an out-of-domain zero) and a wrong vocabulary (a hit count that is not an assertion audit).",
+    "family": "together with the requirement that a checker carries its own projectionSpec, and that an out-of-domain zero declares its domain: THE QUERY MUST CARRY ITS FRAME.",
+    "practice": "in my messages and records, report counts as 'path/key -> value' (e.g. 'revisionHistory -> 25'), never as a bare number",
+    "instances": {
+      "mine": "I read `history` on the plan and reported 0; the real key is `revisionHistory` with 25 entries - a path error, not a content difference",
+      "consequence": "my ledger already carried that 0; this write appends a correction rather than rewriting history"
+    }
+  },
+  "granularityRule": "When citing a record as evidence, verify that the record's granularity covers the fact you assert. A key-level record (e.g. preservedPeerKeys) cannot support an entry-level claim; a revision string cannot support a content claim; an equal size cannot support identity; an mtime cannot support ordering. Counterparties in this run have both made and withdrawn such inferences, so the rule applies symmetrically.",
+  "namespaceDisputeFinal": "TWO-PART, shared: the top-level key IS preserved; the preserved content is one entry and the earlier eight are absent with no copy anywhere. 'the shared file drops my keys' is inaccurate; 'the shared file did not preserve my entry content' holds. Both statements stand side by side; neither replaces the other.",
+  "namespaceLossPrecision": "the owner's fix script reports that 6~8 entries were collapsed into 1; the exact count is not recoverable (never captured); the current content is 1 entry",
+  "generatorVersionOfBeforeAfter": "measured on the FIXED generator: fix script mtime 22:22:38 and generator mtime 22:22:54 both predate the BEFORE measurement at 22:24:15",
+  "defectFamilyRoots": {
+    "rootA": "mechanism cannot see it -> remedy: writing/review layer; danger object: the mechanism",
+    "rootB": "label is inconsistent with structural liveness -> remedy: label discipline (a field's authority is set by its consumers, not its wording); danger object: the reader",
+    "attribution": "the two-root split was proposed by schematic-expert; example (1) moved from root A to root B accordingly"
+  },
+  "draftScriptRuling": "backups/t86_attribution_and_path.py stays as written (narrative reference); it would only need correcting if the string became an operand of a live tool",
+  "withdrawalScopeRule": "WITHDRAWAL SCOPE RULE (proposed by rule-reviewer, adopted here with both instances): when a conclusion is withdrawn, retract ONLY the step that over-reached - do not overturn the whole conclusion. Instance 1 (theirs): they first ruled that the peer namespace was preserved (over-reaching from a KEY-level record to an ENTRY-level fact) and then, on seeing that the entries were reduced, withdrew the whole ruling - which implicitly denied that the key had been preserved. Both moves were over-simple; the correct form is the two-part statement: (1) the top-level key IS preserved; (2) the preserved CONTENT is one entry, and the earlier eight are absent with no copy anywhere. Instance 2 (mine): when their first ruling arrived I withdrew my whole claim ('the shared file drops my keys') although only its phrasing was imprecise - the accurate form is the conjunction: 'drops my keys' is inaccurate while 'did not preserve my entry content' holds.",
+  "pathBase": "all paths in this file are relative to the repository root D:/Newtest/DSH/ATE-Coding-Plat unless stated otherwise; run-directory artifacts carry the team/artifacts/acceptance-20260916-dali10/ prefix",
+  "pathMapCorrection": "an earlier revision named gate-logs-t28/t28-anchors.snapshots.json, which does not exist; the real files are t28-anchors.snapshots.meta.json and t28-anchors.snapshots.jsonl (raised by test-strategy-architect)",
+  "baselineTriad": "BASELINE TRIAD (adopted from compile-diagnostician's baselineTriad): a source can be AUTHORITATIVE (the gate consumes it - the contract's closedRelayNumbers), INDEPENDENT (maintained by a party other than the one being reviewed), and NEUTRAL (owned by no party in the exchange) - the three are different properties. In this run: the contract is authoritative and neutral, the peer's report is independent of me but its own product, and my anchors file is neither independent nor neutral for a reviewer - which is exactly why rule-reviewer declined to use it as a baseline.",
+  "controlExperimentSpec": {
+    "purpose": "turn category (ii) - 'the current generator does not lose current content' - from the owner's self-statement into a reproducible positive result",
+    "designCorrection": "the injected peer entries MUST use a prefix OTHER than 'setupArchitect-'. Reason (raised by rule-reviewer): 'setupArchitect-' sits inside DO_NOT_TOUCH_PREFIXES and therefore takes the pass-through preservation path, so an experiment conducted inside my own namespace would never execute the union-accumulation branch. A foreign prefix (e.g. 'qaProbeAnchors') is what exercises the code path under test.",
+    "steps": [
+      "take an OFFLINE copy of gate-logs-t28/t28-anchors.json (never the live shared file)",
+      "inject 3 entries under a foreign namespace, e.g. qaProbeAnchors.anchors = {a,b,c}, keeping the existing setupArchitectFreezeAnchors in place",
+      "run the generator once against that offline copy",
+      "recompute: qaProbeAnchors.anchors should still contain all 3 entries (union accumulation), and setupArchitectFreezeAnchors should still be present"
+    ],
+    "optionalStrongerVariant": "inject exactly ONE entry under the probe namespace and re-run: it must survive (this is the direct contrast with the old collapse-to-one behaviour, i.e. it shows the old bug would not recur)",
+    "expectedOutcome": "3 of 3 probe entries preserved plus my namespace preserved (or 1 of 1 for the variant)",
+    "prohibitedInference": "this can only evidence category (ii) - no loss of current content. It must NEVER be cited as evidence for category (iii) recovery: the earlier eight entries have no byte copy, so restoration is untestable in principle.",
+    "cost": "one offline run by the owner plus one recomputation by each side",
+    "status": "executed by the owner (both the 3-entry run and the optional single-entry variant) and independently reproduced by me for the 3-entry case; the pre-fix contrast remains unexecuted and unavailable",
+    "optionalStrongerVariantWithdrawn": "WITHDRAWN by its proposer (rule-reviewer) after both the owner and I pointed out that testing the PRE-FIX collapse behaviour would require modifying code or building an old-version generator, i.e. it lies outside a pure offline probe. The pre-fix behaviour is therefore covered only by the owner's own fix script (product-level written evidence) and its output was never snapshotted, so it is not measurable. The original wording of this field is retained above rather than deleted.",
+    "executionByOwner": {
+      "firstRun": {
+        "design": "foreign prefix qaProbeAnchors, 3 injected entries",
+        "log": "gate-logs-t54/t54-reviewer-experiment-union.log",
+        "result": "3 of 3 survived, my namespace retained"
+      },
+      "variantRun": {
+        "design": "one injected entry only (the optional stronger variant)",
+        "log": "gate-logs-t54/t54-reviewer-experiment-union-variant.log",
+        "result": "1 of 1 survived; my namespace retained",
+        "offlineCopyStart": "12,183 B / 6edfc659e930d5bd...",
+        "offlineCopyAfter": "12,318 B / 62d828cbb45a7fac...",
+        "generatorExit": 0
+      },
+      "generatorVersionAtRunTime": "gate-logs-t28/t28_make_anchors.py = 11,739 B / c8ca47eab8531084b9e00c9f347c434a80509a2f409efc27a8a7d7118d3587b6 @2026-09-17T00:33:14 - the version that matters is the one used WHEN THE RUN HAPPENED, not the current one (the file has since been edited again)",
+      "restorationProof": "live file 12,183 B / 32 entries / contains no probe or VARIANT marker / foreign count 1 - the shared source was not polluted",
+      "prohibitedInference": "only category (ii); never (iii)",
+      "zeroModificationReproduction": "available now: the generator accepts --in and --out, so a third party can re-run with no modification (no copy-and-patch). Verified by the owner: exit 0, stderr 0, 3 of 3 probe entries preserved, live file hash unchanged."
+    },
+    "variantPrecision": "The optional 'single entry' variant WAS executed and the single entry survived - that is a statement about the CURRENT generator's behaviour. It is NOT a contrast with the pre-fix collapse-to-one behaviour, because no old-version generator exists to run: that contrast was NOT executed and must not be implied.",
+    "reproductionRoutes": [
+      "zero-modification: --in copy --out sandbox (available after the --in/--out addition)",
+      "copy-and-patch: copy the generator and patch the two lines (workspace root, output path) - the route I used for the first independent reproduction"
+    ]
+  },
+  "unionProbeReproduction": {
+    "claim": "category (ii): the current generator does not lose the content present at run time (union accumulation)",
+    "how": "I copied the owner's generator VERBATIM to my own scratch (backups/probe-union/t28_make_anchors_offline.py, 11263 B / 22ebfec070219ec1d75f8f8ebc89ac6b935425b4492f66ae24d48c79f2be76d9), patched EXACTLY TWO lines - the workspace root (line 15) and the output path (line 103), both marked 'PATCHED FOR OFFLINE PROBE' - built an OFFLINE copy of the shared file with three foreign-prefix entries injected (namespace 'qaProbeAnchors'), ran the patched generator once, and recomputed.",
+    "result": {
+      "probeEntriesBefore": 3,
+      "probeEntriesAfter": 3,
+      "foreignEntriesBefore": 1,
+      "foreignEntriesAfter": 1,
+      "namespacesKept": [
+        "qaProbeAnchors",
+        "setupArchitectFreezeAnchors"
+      ],
+      "verdict": "REPRODUCED - no loss of current content"
+    },
+    "whyForeignPrefix": "'setupArchitect-' is inside DO_NOT_TOUCH_PREFIXES and therefore takes the pass-through path; the union branch is only exercised by a foreign prefix (design correction raised by rule-reviewer)",
+    "liveFileUntouched": "the shared file was re-measured after the probe: 11,941 B / 89b41cf7cab4594ae9d81ab6838607835f4465cf3b0074d505e3f82c79b65ceb, and it contains no probe markers - the probe ran entirely on my offline copy",
+    "prohibitedInference": "this evidences (ii) only; it must never be cited for (iii) recovery - the earlier eight entries have no byte copy, so restoration is untestable in principle",
+    "limitation": "the probe uses my copy of their generator with two patched lines; the union logic itself is unmodified. Running their script as-is would have written to their live artifact, which is why the copy was made.",
+    "ownerSideEvidence": "their own run and evidence files were verified too: gate-logs-t54/t54_prefix_and_union_experiment.py (3,248 B) and t54-prefix-union-experiment.log (743 B) record injection -> 4 entries -> re-run -> 4 entries with all three sentinels present"
+  },
+  "disciplineArchive": [
+    "(a) a name is a recomputable fact, not a style choice: function/relay/pin names are always taken from the source, never retyped or relayed",
+    "(b) a typo in a message and a defect in an artifact are two different things: correction requests apply to ARTIFACTS, and any citation must give path + recomputation",
+    "(c) a misspelled name is a derived-text defect (search and cross-reference silently miss it) - the same family as the union residue and the omitted K60",
+    "(d) a fix must cure the criterion: replacing a one-off correction with 'derive from the source' plus a post-fix sweep is the root cure (that was the point of the four reminders)"
+  ],
+  "prefixGuardIsMechanism": "owner's generator DO_NOT_TOUCH_PREFIXES = 'setupArchitect-', 't34-carrier', 't34-CARRIER' (already implemented, not a promise)",
+  "byteCopySnapshot": {
+    "dir": "team/artifacts/acceptance-20260916-dali10/backups/setuparch-20260916-230435",
+    "files": 14,
+    "peerVerified": 14,
+    "manifestSha256": "e46d9d5ad8f1ac2b7dc041ee51807c0cebd22669f9ebf51c3c359e28906e7e9a",
+    "note": "read-only evidence; peer verified 14/14; re-verified by me after their check"
+  },
+  "reproducibleCriterion": {
+    "name": "reproducible criterion (proposed by setup-architect, adopted by the plan side as its section 2.8)",
+    "statement": "A criterion given as prose can only be BELIEVED; a criterion given as a command plus expected output can be CHECKED. Every gate or acceptance claim should carry the command that produced it and the output that proves it.",
+    "instances": [
+      "pin alignment: one command printing the byte-match flag, size, hash, mtime and plan status, with expected output '185689 True 185689 2026-09-16 21:54:50 v25 ... NOT FINAL' - both sides re-ran it independently",
+      "the t34 locator command plus a direct call of the gate's own closure function, showing missing=[] errors=0 on the payload"
+    ],
+    "costOfNotDoingIt": "the review side can only trust narration, which produced this run's friction: 'a declaration goes stale as soon as it is made', the same-size/three-hash case, and coordinates that looked stale but had merely moved",
+    "boundaryCaveat": [
+      "reproducibility proves only that THE COMMAND YIELDS THAT OUTPUT FOR THAT INPUT. It is NOT an electrical or acceptance conclusion. This binds to the standing rule 'a gate PASS is not an electrical sign-off' so that reproducibility cannot be misread as evidence about the hardware.",
+      "proposed by the plan side; adopted here"
+    ],
+    "status": "adopted by the plan side (their section 2.8, with both instances); being raised with the captain as a run convention",
+    "twoPartTest": "'Reproducible' means BOTH (a) independent of the working directory, and (b) the expected output asserts only invariants - snapshot values may be printed but must be labelled as recomputed, not as assertions. Missing (a), the command fails elsewhere; missing (b), it misreports as soon as a snapshot value expires. Raised by rule-reviewer, who re-ran my corrected command successfully from a temporary directory."
+  },
+  "wrongStringTaxonomy": {
+    "name": "three-class taxonomy for a known wrong string in derived text (purified by schematic-expert, adopted by rule-reviewer and here)",
+    "classes": [
+      "class 1 - live deliverable: it MUST be correct (the live acceptance-report.json was corrected at 23:09:01)",
+      "class 2 - retired or backup copy: it does not take part in acceptance; REGISTER the defect (e.g. backups/t86_attribution_and_path.py, which carries an explanatory comment instead of a silent rewrite)",
+      "class 3 - deliberately retained old string: it must NOT be 'corrected' (the misspelling inside a fix script is the search target; the contract's superseded fields record history)"
+    ],
+    "decisionRule": "register, do not rewrite; one fewer write is one fewer drift. Registering is required; rewriting is only warranted when the string is an operand of a live tool.",
+    "classificationOfT86": "class 2. Evidence, stated precisely: no runner references it - a search of every .ps1 in the tree returns nothing, and no manifest or runner lists the script. The four files that DO contain its name are my own documentation artefacts (two of my rule/registry scripts, my anchors file and my ledger), which cite it as a subject rather than execute it. The misspelled token appears in a narrative sentence, not as an operand constant, so the exception ('still executed and its search depends on the misspelling') does not apply. Hence: keep the historical string plus the explanatory comment; the reviewer's explicit answer is do not change it.",
+    "reviewerAnswer": "do not change backups/t86_attribution_and_path.py (explicit answer); registration plus the explanatory comment is the correct handling",
+    "evidenceWordingCorrected": [
+      "an earlier wording of this field said 'no runner, script or manifest references it'; that was too broad - my own documentation artefacts do contain the name as a citation. The classification (class 2) is unchanged."
+    ]
+  },
+  "nameFactRule": {
+    "name": "name-class facts: derive first, then assert (proposed by rule-reviewer after independently reproducing my check)",
+    "statement": "Facts of the name class - function, relay, pin, macro names - are always produced by DERIVING them from a source (the deployed source file or the contract) and then ASSERTING against the artefact (hit / no hit). Copying a name from a message, from memory, or from another artefact's prose is forbidden.",
+    "why": "an assertion that carries its derivation is reproducible by any third party; an assertion that carries a quoted token is only as good as the quote. This run's four misspelling reminders all traced to quoting rather than deriving.",
+    "siblingRules": [
+      "hashes are recomputed on citation",
+      "counts carry their domain",
+      "line-number locators are not cited as identity"
+    ],
+    "independentReproduction": "rule-reviewer reproduced it without copying any token: derived TM643_VBAT_LOOP_INDICTOR from DUT_API int (TM643_\\w+), generated the variant by replacing VBAT with VAT, and measured 1 hit / 0 variant hits on the carrier - PASS"
+  },
+  "byteDeltaCrossCheck": {
+    "name": "byte-delta cross-check (instance, kept per the reviewer's request)",
+    "statement": "The pre-fix carrier measured 68,163 B and the post-fix carrier 68,164 B - a delta of exactly one byte, which matches inserting the missing 'V' in VAT -> VBAT. The increment of the file equals the increment of the edit, so the change is causally consistent without relying on anyone's self-report.",
+    "why": "this is byte-level evidence whose granularity matches the claim, i.e. a positive instance inside the same family as R2's granularity rule",
+    "usageRule": "Whenever an edit claims 'changed N characters' or 'changed one place', and the file's byte delta is recomputable, use the delta as corroboration: it is stronger than a self-report, and weaker than a direct source comparison. Instance: 68,163 -> 68,164 B for inserting one 'V'."
+  },
+  "structuralVerificationRule": {
+    "name": "verify annotations structurally, not by proximity (companion practice to R2(vi); proposed by rule-reviewer, adopted here)",
+    "statement": "Any check of an annotation or companion field must be decided by STRUCTURE - which key owns it, which keys are its siblings - and never by TEXT PROXIMITY. 'Adjacent' is not 'belongs'.",
+    "family": "same family as 'a filename string is not file existence' and 'a key is not an entry'",
+    "instanceTruePositive": "my first sweep looked for annotation words inside a text window and produced a false positive on coverage[9]; the switch to a structural walk (require the sibling key to exist) both removed the false positive AND is what surfaced the genuine stale assertion in coverage[9]. So the same check demonstrates the method works and that it catches real problems.",
+    "evidence": "rule-reviewer independently re-ran the structural check: coverage has 12 items; exactly [2] and [9] carry artifactSha256IsHistorical: true, both with currentCanonicalArtifact.sha256 = 66abc088ae6bd5f9... (the canonical payload)",
+    "identityAddendum": "Identity claims are settled by READING THE OBJECT, not by comparing metadata about it. Two readings of a size are not evidence that they describe the same object; reading the content is itself the mechanised form of the discipline 'do not assert identity without proof' (raised by rule-reviewer after committing that error twice in this run: 874/11854 and 824/2388, both later withdrawn)."
+  },
+  "staleTokenCriterion": {
+    "name": "the defect criterion for stale tokens (stated by rule-reviewer, adopted here)",
+    "statement": "The defect is AN ASSERTION left in present-tense terms, not the mere PRESENCE of an old token. An old token is compliant when its context marks it as history, correction or withdrawal.",
+    "workedCheck": "old tokens in the carrier and their contexts: '39,457' appears 4 times - once inside a version-chain sentence (35,014 -> 36,381 -> 38,147 -> 39,457, a historical evolution) and three times already marked superseded/CORRECTED; '2d0984d9' appears 6 times - two unlabelled, one a historical fact statement ('was never applied') and one the value of coverage[2].artifactSha256 whose label is a SIBLING key; 'K109 x1' appears 4 times, all inside 'previously stated, now withdrawn' text. Conclusion: no present-tense assertion of an old value remains.",
+    "why": "counting tokens over-reports; the criterion must be applied per occurrence, which mirrors the run's enumerate-then-classify rule",
+    "finerSubForm": "token presence is not semantic reference: the same word can refer to a different object (in the instance, 'superseded' at character 224 of the disposition value refers to ANOTHER field being downgraded). So the check must first classify WHOM the token refers to - same root as 'co-occurrence is not relationship' and 'the right domain is not the right formula'."
+  },
+  "projectionSpec": {
+    "version": 1,
+    "exclude": [
+      "generatedAt"
+    ],
+    "serialization": "json.dumps(body, ensure_ascii=False, sort_keys=True) with Python's DEFAULT separators (', ', ': ')",
+    "encoding": "utf-8",
+    "note": "the projection must state BOTH the exclusion list and the serialization, otherwise the same criterion reproduces as several different values (measured on the peer report: five plausible conventions gave five different hashes)"
+  },
+  "bodySha256": "fd9d1fd235225991eb0cf40aa25795ed89367ed4605cfe9c71ae3c36ee74875c",
+  "attributionRule": {
+    "name": "attribute by measurement, not by memory or inference (joint rule, one instance from each side)",
+    "statement": "Attribution and values alike must be MEASURED. The outgoing message log is part of the evidence base, not memory.",
+    "instanceCounterparty": "the plan side asserted three times that it had never claimed a particular expectation value; the setup side produced the original sentence from its own outgoing log, and the plan side withdrew - it had defended a position from memory.",
+    "instanceMine": "I attributed a diagnostician reading to a stale rev-28 copy BY INFERENCE without measuring it, and withdrew it after the owner supplied the evidence anchor (the log's self-reported rev=32).",
+    "sharedFailureMode": "treating a remembered or inferred attribution as a measurement",
+    "whyItMatters": "recorded with one instance from each side so the rule reads as a structural risk of multi-agent collaboration rather than one member's slip",
+    "recordedBy": "the plan side as its section 2.5b, using the joint-two-instances form; archived here for citation"
+  },
+  "certaintyTieringPattern": {
+    "name": "certainty tiering: proven / approximate / measured (recommended form, promoted by rule-reviewer)",
+    "statement": "State the same fact in three separately-graded tiers instead of one blanket caveat: what is PROVEN (with its evidence), what is APPROXIMATE (with its interval and why it cannot be exact), and what is MEASURED (the current, recomputable reading). This is stronger than a single 'residual caveat' because a caveat only flags that evidence is limited, whereas tiering says how certain each layer is.",
+    "whenToUse": "any claim whose certainty differs between layers - a loss whose existence is proven but whose magnitude is not, an attribution supported by self-report plus interval compatibility, a value read at one moment and quoted later",
+    "instances": [
+      {
+        "where": "ledger entry[32].namespaceLossPrecision (and the anchors field of the same name)",
+        "proven": "a collapse occurred - evidenced by the owner's own fix script (gate-logs-t54/t54_fix_preservation_union.py, 4,012 B / 915f989e...)",
+        "approximate": "how many entries were lost - the owner wrote '6~8', because the exact count was never captured; must not be quoted as exactly 8",
+        "measured": "the preserved content is exactly one entry - measured independently by both sides"
+      },
+      {
+        "where": "t34 L48 (the rev-32 attribution caveat)",
+        "proven": "nothing beyond the log's self-report",
+        "approximate": "the gate's input was rev 32 - supported only by the log's self-report plus interval compatibility (rev=32 falls inside (rev28, current])",
+        "measured": "the current contract revision and the channel-5 expectation are measured, but the rev-32 bytes no longer exist and cannot be examined",
+        "note": "this instance shows the pattern also serves to say that one tier is EMPTY - 'no byte-level proof exists' becomes explicit rather than implied"
+      }
+    ],
+    "whyItPropagates": "the same three tiers already appear, unnamed, in the rev-32 caveat and in the namespace precision block; naming the pattern lets either be cited and reproduced without restating the reasoning"
+  },
+  "snapshotValueKeyConvention": {
+    "name": "snapshot-value key convention (proposed by rule-reviewer from my recordedValuesAreSnapshots key)",
+    "statement": "A pointer or mirror field that records another file's size/hash must declare that its value is a snapshot of a moment, not an identity of the file now. Preferred forms: a boolean self-declaration on the record (`recordedValuesAreSnapshots`) and/or a time-baked key name (`mirrorSizeAtMirrorTime`) accompanied by a timestamp (`mirrorAt`) and an expiry note (`mirrorSizeNote: value expires; recompute`).",
+    "why": "the discipline stops being 'do not hard-code a size' (a prohibition someone must remember) and becomes 'a hard-coded size must declare itself a snapshot' (a property of the record itself). Same prescription as a live file plus an external receipt.",
+    "instances": [
+      {
+        "where": "t34-carrier-pointer.json",
+        "key": "recordedValuesAreSnapshots",
+        "value": "the size/sha256 in this pointer were true at 2026-09-16 22:40:03; the carrier is a live file - recompute before citing"
+      },
+      {
+        "where": "gate-logs-t28/t28-anchors.json (owner's mirror block, after the drift finding)",
+        "keys": [
+          "mirrorSizeAtMirrorTime = 175358",
+          "mirrorAt = 2026-09-17T00:33:15+08:00",
+          "mirrorSizeNote = value expires; recompute"
+        ],
+        "verifiedAtItsMoment": "my ledger measured 175,358 B at that time and 196,874 B later, so the pair (value, timestamp) is a true historical reading whose difference from the live file grows and shrinks over time"
+      }
+    ],
+    "usageRule": "apply to any pointer/mirror/ledger record of another party's file; the name or a sibling field must state that the value expires",
+    "reviewerNote": "rule-reviewer intends to fold this into R2's companion practices"
+  },
+  "prohibitedInferenceConvention": {
+    "name": "prohibited-inference convention (every result carries what it must NOT be cited as)",
+    "statement": "Any experimental result or measurement conclusion states, in the artefact itself, which inferences it does NOT support. Evidence is granted; over-reach is forbidden in writing.",
+    "why": "readers of a later round see only the conclusion, so the boundary must travel with it - the same reason a citation carries its provenance flag",
+    "instances": [
+      {
+        "where": "my controlExperimentSpec.prohibitedInference",
+        "text": "the union probe evidences category (ii) 'no loss of current content' only; it must never be cited as evidence of category (iii) recovery, because the earlier eight entries have no byte copy"
+      },
+      {
+        "where": "rule-reviewer's review-side field mustNotBeCitedAs",
+        "text": "the same shape on the review side - the two forms have converged"
+      },
+      {
+        "where": "t34 L48 rev-32 caveat",
+        "text": "log self-report plus interval compatibility; it must not be claimed that the gate's input was byte-proven to be rev 32"
+      },
+      {
+        "where": "the three-way classification",
+        "text": "'after == before' must not be read as 'still dropping' - the accurate reading is 'no longer losing, but not restoring'"
+      }
+    ],
+    "unifiedForm": "result + what it evidences + what it must not be cited as",
+    "reviewerNote": "raised for enshrinement by rule-reviewer; the review side already uses the same form under a different field name"
+  },
+  "knownSpecsRegister": {
+    "name": "numbered spec register (raised by rule-reviewer)",
+    "statement": "Designs, experiments and specs are stored with an identifier so that later parties can cite 'spec item N' instead of restating the design; knowledge moves out of messages into citable artefacts.",
+    "instances": [
+      "controlExperimentSpec (my ledger entry[42] + this file)",
+      "reproducibleCriterion",
+      "snapshotValueKeyConvention",
+      "certaintyTieringPattern",
+      "mirrorRecordIdentitySpec"
+    ],
+    "version": 1,
+    "renameProtocol": "Renaming a field is append-only: add the new name and annotate the old one (see fieldNameCanonicalisation for the worked case knownSpecsRegister/specRegister). An L2 citation of a name is only as stable as this table's version, so a citing party should also recompute that the field exists."
+  },
+  "baselineFourQuestions": {
+    "questions": [
+      "1 authoritative - is it consumed by the gate by construction?",
+      "2 ownership-neutral - does it belong to no single party?",
+      "3 independent of me - is it produced by a different member?",
+      "4 content independently recomputed - has a third party verified its content?"
+    ],
+    "contract": {
+      "1": true,
+      "2": true,
+      "3": true,
+      "4": false,
+      "note": "the contract is an AUTHORED artifact: it is authoritative and ownership-neutral, but its gate-read field was wrong during rev 24-28 ([110,61]) before being narrowed to [48,60,61,76]. Ownership-neutral is therefore NOT a synonym for content-verified."
+    },
+    "peerReport": {
+      "1": false,
+      "2": false,
+      "3": true,
+      "4": false,
+      "note": "produced by the owning member; independent of me, not of its author"
+    },
+    "myAnchors": {
+      "1": false,
+      "2": false,
+      "3": true,
+      "4": false,
+      "note": "my own ledger; for a reviewer it is neither independent nor neutral - which is why rule-reviewer refused it as a baseline"
+    },
+    "conclusion": "baseline = the contract as an AUTHORITATIVE, OWNERSHIP-NEUTRAL INPUT, cited by revision (recomputed sha256) with key fields cross-checked at the same evidence level. It is not an independent baseline.",
+    "raisedBy": "compile-diagnostician (refining my earlier three-property summary)",
+    "whyItMatters": "conflating 'ownership-neutral' with 'content-verified' would turn 'a value someone wrote' into 'an independent fact' - the same failure family as size/identity, revision/content and preservedPeerKeys/entries"
+  },
+  "baselineTriadSuperseded": "the earlier three-property summary ('authoritative / independent / neutral') is superseded by baselineFourQuestions: authority and ownership-neutrality are separate questions, and 'content independently recomputed' is a fourth that the contract does NOT satisfy",
+  "fieldAddressingRule": {
+    "statement": "Address fields BY NAME (alias name, key name), never by list position: a position is an assumption about ordering, not an identity. Instance: I read aliasResolution[1] expecting bst2sw and got sw2pgnd; the correct by-name value is [48,60,61,76].",
+    "numberingDomainClause": "When a sequence must be addressed positionally, declare WHICH numbering system is in use. An artefact can carry both a 0-based array index and a 1-based business ordinal (or a stored snapshotIndex), and both are commonly written 'entry[N]'. Instance: my ledger's entries[25] has snapshotIndex 26, so 'entry[26]' denotes different objects under the two systems - rule-reviewer read the entry with snapshotIndex 27 when using index 26. Criterion (raised by rule-reviewer): 'entry[N]' without a declared numbering is an undeclared unit/domain, the same family as a count without its domain.",
+    "threeLayersAffectReading": [
+      "field name (chainManifest sits at entry level while entryCanonicalSha256 sits under ledgerSelfProof)",
+      "nesting level (the same field at a different depth is a different read)",
+      "numbering system (0-based index versus 1-based ordinal/snapshotIndex)"
+    ],
+    "peerSelfCorrection": "rule-reviewer logged this as its ninth self-correction (it also read entryCanonicalSha256 at the top level, a nesting-level slip)",
+    "liveFileClause": "On an append-only LIVE file, always locate records BY FIELD/KEY, never read them by index. 'The record I want' must be expressed as 'the record that contains field X', not as 'record N'. Reason: an index is a POSITION and positions shift as entries are appended; a field is CONTENT and content does not shift. Reading by index on a live file means reading with an unstable predicate.",
+    "mechanisation": "Because rule-reviewer hit this twice (entries[26]/entries[25] first, then entries[30]), and because it is silent and has an impact surface, it is mechanised rather than merely remembered: my verification scripts locate records by field or by the stored snapshotIndex, never by array position.",
+    "peerEncounter": "rule-reviewer's third instance: reading entries[30] returned False twice, nearly producing the false report 'premiseWithdrawn is not on file'; a field search located it at 0-based idx 29 / snapshotIndex 30. Two causes compounded: the off-by-one between 0-based index and 1-based snapshotIndex, and the ledger being appended between the two probes. They logged it as their tenth self-correction.",
+    "samePrescription": "replace a position with a content identifier - the same fix as the numbering-system clause, the domain/unit rule and the 'do not cite line numbers as identity' rule",
+    "selfAudit": {
+      "scope": "870 python files under the workspace (excluding .git and node_modules)",
+      "patterns": [
+        "aliasResolution[<digit>]",
+        "entries[<digit>]",
+        "(resolutions|anchors|limitations|aliases)[<digit>]"
+      ],
+      "results": {
+        "contractPosition": 20,
+        "ledgerPosition": 14,
+        "genericListPosition": 0
+      },
+      "classification": "no hit lies in an ACTIVE gate or verification script. The contract-position hits are my own backup/patch scripts plus one hit inside the owner's own audit script (its regex, i.e. a self-reference). The ledger-position hits are documentation scripts of mine that quote the numbering problem, plus an unrelated `entries[0]` in scripts/gen_cbit_defines.py which addresses a different structure. Some of my historical patch scripts did use aliasResolution[3] - see the nuance below.",
+      "nuanceThatMakesTheRuleNecessary": "position addressing can be ACCIDENTALLY CORRECT: bst2sw happens to sit at index 3, so my older scripts addressing aliasResolution[3] were right, while my erroneous read used [1] and got sw2pgnd. A practice whose correctness depends on the current ordering is not a determination - which is precisely the hazard the rule names."
+    },
+    "peerAudit": {
+      "owner": "compile-diagnostician",
+      "result": "their active directories show one contract-position occurrence, and it is their own audit script's regex; their 12 backups hits are other parties' historical scripts",
+      "perScript": "three of their gate-field scripts address the field by name (position = False); one does not read the field directly because it goes through the gate function",
+      "discriminativePower": "measured with data: aliasResolution holds 12 entries; bst2sw is at index 3; by name the value is [48,60,61,76]; by position [1] it is sw2pgnd [154,155,60,61] - the two differ, so the rule has real discriminative power in this run"
+    },
+    "fourLayerSummary": {
+      "layers": {
+        "1_fieldName": "which NAME - chainManifest versus ledgerSelfProof.entryCanonicalSha256",
+        "2_nestingLevel": "from which LAYER - the same field at top level or nested is a different read",
+        "3_numberingSystem": "under which NUMBERING - 0-based array index versus 1-based ordinal/snapshotIndex",
+        "4_carrierStability": "which LOCATING PREDICATE - on a live append-only file locate by field, on a static file positional reads are admissible"
+      },
+      "whyItIsNowComplete": "any one of the four missing can produce a SILENT misread, so 'address by name' alone is not enough",
+      "criterion": "a record's identity must be expressed as a CONTENT PREDICATE (which field/key, under which numbering, at which level), never as a position",
+      "raisedBy": "rule-reviewer, who counted the layers and observed that my rule covers four while only three are named in threeLayersAffectReading",
+      "labellingCorrection": "My own file named the triple `threeLayersAffectReading` (name, level, numbering) while the rule as a whole covers FOUR layers, since carrier stability lives in `liveFileClause`. The label is a count without its domain - the very family this run keeps repairing - so the four-layer statement is recorded here and the triple keeps its original name to avoid rewriting history."
+    }
+  },
+  "gateReadFieldByNam": [
+    48,
+    60,
+    61,
+    76
+  ],
+  "readerRuleCheckCriterion": "A detector for reader rules must detect an ASSERTION, not the co-occurrence of two strings: co-occurrence is not relationship. Qualified form - in the same sentence or clause: (1) the old value is NAMED and DEMOTED (superseded / old / omitted / previously written), (2) the new value is BOUND AS AUTHORITATIVE (authoritative / in force), (3) an external anchor sits in the same sentence or immediately adjacent, and (4) the text does NOT say 'this document is authoritative'. The earlier co-occurrence-style instrument (two value strings plus an anchor word in one paragraph) was falsified by schematic-expert's survey and is superseded by this relational form.",
+  "evidenceStrengthRegister": {
+    "name": "evidence strength register (grouping suggested by rule-reviewer; canonical criterion sentence mine)",
+    "canonicalCriterion": "An assertion that carries its derivation is reproducible by any third party; an assertion that carries a quotation is only as strong as the quoted text.",
+    "whyItIsATheoremNotAProhibition": "'Do not copy names' is a prohibition someone must remember. The sentence above is a STRENGTH THEOREM: the evidentiary strength of a quotation equals the strength of the quoted text, so it implies WHY derivation is required - an assertion not reproducible by a third party rests on somebody's credibility. Empirical attribution: all four misspelling reminders in this run came from quoting rather than deriving.",
+    "members": [
+      {
+        "rule": "nameFactRule",
+        "oneLiner": "name-class facts are derived from a source and asserted, never copied from a message or memory",
+        "locator": "this file: nameFactRule"
+      },
+      {
+        "rule": "hashOnCitation",
+        "oneLiner": "hashes are recomputed at citation time, never carried over"
+      },
+      {
+        "rule": "countsCarryDomain",
+        "oneLiner": "a count is meaningless without its domain or unit"
+      },
+      {
+        "rule": "lineNumbersAreNotIdentity",
+        "oneLiner": "line-number locators are not an identity for content"
+      },
+      {
+        "rule": "scopeRule",
+        "oneLiner": "whole-tree or non-existence claims state their scan scope, including sub-directories",
+        "locator": "this file: scopeRule"
+      },
+      {
+        "rule": "byteDeltaCrossCheck",
+        "oneLiner": "when an edit claims a character-level change and the byte delta is recomputable, prefer the byte delta as corroboration",
+        "locator": "this file: byteDeltaCrossCheck"
+      },
+      {
+        "rule": "citationFormRule",
+        "oneLiner": "cite the stable field name (or recompute); never carry a live container's measurement",
+        "locator": "this file: citationFormRule"
+      }
+    ],
+    "reviewerInstance": "rule-reviewer applied the same shape when it measured the number of citations of its own t57 before editing it - a derived assertion any third party can reproduce with one command",
+    "reviewerAdoptedAddition": "membership extended with citationFormRule, proposed by test-strategy-architect"
+  },
+  "citationFormRule": {
+    "name": "cite the field name, not the container's measurement (proposed by test-strategy-architect from the live-file experience)",
+    "statement": "Once a rule or artefact has a stable name, cite it BY NAME or recompute it; never cite a live container's size, entry count or hash as part of the citation. The field name survives every write; a measurement is stale by construction.",
+    "consequenceForWayfinding": "wayfinding information is precisely the naming of invariant things - field name, owner, path. Measurements belong to the READER's recomputation, not to the citation.",
+    "tiesTo": [
+      "scopeRule",
+      "snapshotValueKeyConvention",
+      "structuralVerificationRule"
+    ],
+    "evidenceFromThisRun": "two citations of my ledger and anchors file were overtaken within minutes (the ledger gained ten entries and ~33 KB in about two minutes; an earlier case gained sixteen entries across three messages)",
+    "practice": "in messages: cite rule fields by name (e.g. 'the ledger's schema.peerReceiptCiteRule'), and when a value is needed, label it as recomputed now with its time rather than carrying it forward",
+    "identifierVsReadingClause": {
+      "correction": "The rule does NOT mean 'never cite numbers'. It means: a CONTAINER's measurements (size, entry count, hash) must not travel as an IDENTITY, because they expire by construction; whereas the CONTENT of a carrier may still be stated by value, because that is exactly what a reader opens the file to see.",
+      "whatItConstrains": "what is used as an identifier",
+      "whatItDoesNotConstrain": "what is used as reading material",
+      "reconciles": "this is why the 'measured now' reading in my t34 L55 stays (it is labelled as a reading for that moment) while container sizes never travel inside a citation",
+      "criterionWhenInDoubt": "ask whether the value is standing in for the object (then it must not be carried) or being shown as content (then it may be stated, with its moment)",
+      "raisedBy": "test-strategy-architect as an operational completion of the rule"
+    },
+    "cleanestMeasurementOnTheTimingTopic": {
+      "series": [
+        "46 entries / 159,366 B",
+        "56 / 192,597",
+        "69 / 234,150",
+        "72 / 244,558 (measured by the peer)"
+      ],
+      "reading": "four readings of one container, each true at its own moment, of a container that is SUPPOSED to grow - so the evening's apparent disagreements were never about facts, only about moments",
+      "note": "my own later measurement of the same file is a fifth point, which is the same statement again"
+    }
+  },
+  "markerCoLocationRule": {
+    "criterionExtended": "an annotation must be co-located with the content it constrains; state that must be machine-consumable must have its own field",
+    "remediationUpgrade": "human-readable prefix inside the value + a sibling machine-consumable status key (a-prime); only adds a key, so no existing deep-path reference breaks"
+  },
+  "mirrorRecordIdentitySpec": {
+    "name": "mirrorRecordIdentitySpec (named so later parties can cite it; relayed from schematic-expert via test-strategy-architect)",
+    "statement": "A record that points at another party's live file may hard-code ONLY wayfinding facts - path, owner, permission and version requirements. The target's MEASUREMENTS (size, hash) must not be hard-coded without declaring them a snapshot of a moment. Identity, when needed, is answered by a content hash taken AT the mirroring moment (`mirroredContentSha256` + `mirroredAt`), which never expires because it names a revision rather than a current state; any recorded measurement carries an expiry note.",
+    "evidenceThatSizeCannotIdentify": "four measurements of the same recorded value `mirrorSize = 97,636` against its target gave errors -2,775, +42,516, +54,861 and +61,730 - the error CHANGES SIGN, so on an append-only target the value is neither an upper nor a lower bound and cannot support even 'at least / at most'. This is not an accuracy problem but a structural failure as a comparison basis. It matches the run's earlier 'same size, three different hashes' finding.",
+    "whyContentHashAndNotSize": "size cannot identify content (the same size recurred with three different hashes in this run), whereas a content hash names a specific revision and therefore never expires",
+    "minimalForm": {
+      "add": [
+        "mirroredContentSha256 = <hash of the mirrored content at mirror time>",
+        "mirroredAt = <timestamp>"
+      ],
+      "keep": "the existing size field, with an in-place note: 'mirror-time value; must be recomputed (error changes sign)'",
+      "never": "delete the original value - the R1 convention still applies"
+    },
+    "ownerStatus": "the owner had ALREADY remediated the field further than this minimal form: it is now `mirrorSizeAtMirrorTime` (time baked into the name) with `mirrorSizeNote: 'value expires; recompute'` and `mirrorAt`. The one element still missing there is the content hash, which I forwarded to the owner as an addition.",
+    "mySideStatus": "my artifacts hold no mirror record of another party's size: all occurrences of that field name in my files are references to the owner's field, inside my snapshot-value convention and audit records"
+  },
+  "sandboxIsolationRule": {
+    "name": "sandbox isolation rule (raised by compile-diagnostician, forced by schematic-expert's observation)",
+    "statement": "Isolating a tool's OUTPUT is not isolating the tool. A run that redirects only the output still READS the canonical live input, so injected test fixtures silently have no effect. Complete isolation means redirecting BOTH the input and the output - here `--in <copy>` together with `--out <sandbox>`.",
+    "howItWasFound": "after adding --out, the owner's first sandboxed re-run showed zero injected probe entries taking effect; the generator was still reading the canonical live file",
+    "verifiedEffect": "with --in and --out together: exit 0, stderr length 0, probe entries 3 of 3 preserved, my namespace retained, and the live file's hash unchanged before and after",
+    "consequenceForReproduction": "third parties can now re-run the experiment with ZERO modification (no copy-and-patch); my earlier reproduction - copying the generator and patching exactly two lines - remains valid but is no longer the only route",
+    "siblingRules": [
+      "scopeRule (state the domain scanned)",
+      "fieldAddressingRule (address by name, declare numbering)",
+      "prohibitedInferenceConvention"
+    ]
+  },
+  "valueFrameCriterion": {
+    "name": "value-frame criterion (my observation that the two disciplines are one coin; promoted to a named criterion by rule-reviewer)",
+    "statement": "Any reasoning that involves a value changing over time must declare BOTH ends: (A) the RECORDING end - when recording another party's or a volatile value, declare that the value is a snapshot of a moment (timestamp + expiry declaration); (B) the COMPARISON end - when comparing two readings, first establish that both saw the SAME OBJECT (identity evidence).",
+    "criterion": "Missing (A) and the record is misread once it expires; missing (B) and two readings are mistaken for 'the evolution of one object'. Both are instances of a value lacking its frame, but in opposite directions: production side versus consumption side.",
+    "why": "it joins the two disciplines already on file into one statement: snapshotValueKeyConvention (A) and structuralVerificationRule.identityAddendum (B)",
+    "instances": {
+      "peerOnA": "rule-reviewer cited the mirrorSize delta without declaring the moment (I had recorded the timestamp; the citation dropped it)",
+      "peerOnB": "rule-reviewer treated 824 B and 2,388 B as one file's evolution; they are two different files at three time points",
+      "mineOnB": "I compared two readings of the shared file and inferred a rev-28 attribution without identity evidence, and withdrew it after the owner's anchor",
+      "note": "the same family has one lapse on each side of the coin, which is why the two-ended form is worth enshrining"
+    },
+    "reviewerProposal": "to be enlisted alongside R2",
+    "judgmentEnd": {
+      "addition": "The criterion had a recording end and a comparison end. rule-reviewer's fifteenth self-correction adds a THIRD: a JUDGMENT must carry the state under which it was made. A judgment such as 'this is not a current defect' or 'no hash is required' is only valid while its premise holds; once the state changes, the judgment expires and must be withdrawn or updated.",
+      "instance": "rule-reviewer had judged the mirror record's option (c-prime) 'not a current defect, only needs its purpose declared'. The owner then ADDED the content hash, so the premise ('no content hash exists') disappeared and the judgment expired - hence their withdrawal, logged as their fifteenth self-correction.",
+      "criterion": "the validity period of 'X is not necessary' equals the validity period of the premise 'X has not been provided'",
+      "sameRootAs": "a value must carry its moment - here a JUDGMENT must carry its premise's moment, otherwise the judgment silently outlives the state it was about",
+      "whyItIsEasyToMiss": "a withdrawn value looks stale; a withdrawn JUDGMENT keeps reading as a present assessment, because nothing in its wording says when it was formed"
+    },
+    "threeEndsSummary": "recording end (declare a value's moment) | comparison end (prove both readings saw the same object) | judgment end (carry the state under which the judgment was made)"
+  },
+  "peerRuleRegistry": {
+    "name": "peer rule registry (wayfinding pointer only - names, no paraphrased content)",
+    "carrier": "review-handoff-note-plan-side.md, owned by test-strategy-architect (the note's own section listing its authoritative rules)",
+    "rule": "Rules that a peer has NAMED are cited BY NAME from their carrier; this file records only WHERE they live, never a second wording. The per-rule single-authoritative-carrier principle exists because two wordings drift independently, and copying a rule is not reinforcement but an extra object that must be kept true.",
+    "names": [
+      "macro expansion rather than token search",
+      "strip method",
+      "enumerate then classify",
+      "four carrier forms (including the imperative sub-key)",
+      "locator stability plus the claim-absence criterion",
+      "review then report",
+      "attribution must be measured",
+      "in-band annotation criterion",
+      "citation stability",
+      "a criterion must carry its command and expected output",
+      "count citations before touching",
+      "deploy byte copies",
+      "annotate only, never rearrange",
+      "wayfinding versus measurement plus the third class (deliberate record)",
+      "zero-spill two-part statement",
+      "a checker carries its own projectionSpec",
+      "ordinal identity",
+      "trade-offs about one's own measurements",
+      "the three-layer query discipline: name, read path, filtered view",
+      "the two-registers division: prose carries the reasoning, named fields carry citable identity",
+      "a change in citation form is the only evidence that a rule is in effect",
+      "a suggestion superseded by a stronger implementation should be withdrawn, not defended"
+    ],
+    "note": "this list is deliberately names-only; any reader who needs the content reads the carrier and recomputes it there",
+    "declinedDuplication": "I offered to add a second copy of one of these rules on my side; the peer declined, because requesting the copy is itself what produces the drift the principle guards against - recorded so the decision is not re-litigated",
+    "maintenanceNote": "Newly named peer rules are appended here BY NAME ONLY, so this pointer does not silently go stale. A stale pointer is a defect of exactly the kind this run keeps repairing; no paraphrase is ever stored, because the carrier remains the peer's note.",
+    "withdrawnSuggestion": "The peer withdrew its suggestion that I also hold the two-registers rule, on the ground that requesting the copy is itself what produces the drift the principle guards against. Recorded so the decision is not re-litigated."
+  },
+  "fieldNameCanonicalisation": {
+    "statement": "One thing must have one name across my carriers. A field-name difference between carriers is the same hazard as two wordings of one rule: a reader searching one name concludes absence in the other carrier.",
+    "mapping": {
+      "knownSpecsRegister": "canonical name; used at the top level of this anchors file",
+      "specRegister": "the SAME content under a different name inside the ledger entry entries[60] - a name mismatch on my side, recorded rather than rewritten (entries are immutable)"
+    },
+    "instance": "rule-reviewer searched for `knownSpecsRegister` inside ledger entries and found nothing; a deep path search located the content at entries[60].specRegister. Their search domain was 'entry top-level keys', and they correctly declined to conclude absence - the mismatch was mine, not a gap in their view.",
+    "rule": "future writes use the canonical name; where an older entry carries the other name, the mapping is stated here instead of rewriting history",
+    "alsoNoted": "structuralVerificationRule.identityAddendum exists only in this anchors file by design (it is a rule field), which matches the reviewer's reading"
+  },
+  "identityBasedPruningRule": {
+    "name": "identity-based pruning (established by the owner's receipt-history fix)",
+    "statement": "An append-only log that records an artefact's identity should append ONLY when the identity changes, and should say so in a reason field (identity-change versus routine-reverify, not appended). Growth is then bounded by the number of distinct identities rather than by the number of checks.",
+    "precondition": "Identity de-duplication is possible ONLY when the identity projection is stable. The owner verified the body hash (projectionSpec v2, with serialization/encoding/bodyDefinition declared) is stable across seconds; without that, there would be no way to decide whether an identity had changed. So a stable projection is a PRECONDITION for pruning, not an independent nicety.",
+    "instance": {
+      "before": "54 rows / 107,127 B with only 5 distinct body hashes - 49 rows recorded an UNCHANGED identity",
+      "fix": "(a) append only on identity change; (b) add a reason field distinguishing identity-change from routine-reverify",
+      "selfProof": "three consecutive runs across second boundaries gave 54 -> 54 -> 54 rows, all skipped",
+      "raisedBy": "my observation that the history grew on every verification run; the owner mechanised it rather than deferring it"
+    },
+    "family": "same economy as 'one fewer write is one fewer drift', applied to automated logging",
+    "declareThePolicyClause": {
+      "observation": "A log that deliberately does not grow is AMBIGUOUS unless the policy is written into the artefact: 'no new rows' can mean 'nothing ran' just as easily as 'nothing changed'. The owner therefore added an `appendPolicy` field to the receipt declaring 'append only on identity change', after schematic-expert observed the policy had never been written down.",
+      "instance": "gate-logs-t54/build-report.receipt.json carries appendPolicy; the receipts ledger showed zero growth in that round, which is now interpretable rather than suspicious",
+      "asymmetryWorthNoting": "This is the mirror image of the over-reporting counts this run fixed earlier: there, a growing count looked like more activity; here, a static count can look like inactivity. Both are cured the same way - by declaring the rule that governs the number, next to the number.",
+      "criterion": "any log whose growth is conditional must declare the condition in the artefact itself, so that its silence is decidable",
+      "raisedBy": "schematic-expert observed the missing declaration; the owner implemented it"
+    }
+  },
+  "independentConvergenceRegister": {
+    "statement": "Instances where both sides independently established the SAME rule for the same reason on the same day; two independent arrivals are evidence that the mechanism is needed, not merely convenient.",
+    "instances": [
+      "an append-only snapshot ledger for the authoritative source (each side converged on its own ledger format)",
+      "chain self-proof inside the ledger (each side recorded a pre/post anchor or a previous-line hash)",
+      "addressing by NAME rather than by position/index - I established fieldAddressingRule after misreading aliasResolution[1]; the reviewer established the same practice as its tenth self-correction after an index mix-up on its own ledger",
+      "THREE-PARTY instance (naming): put the moment in the NAME - I phrased it as 'a deliberate record must name its moment', the owner implemented it as `mirrorSizeAtMirrorTime` (the identifier itself carries the time), and the plan side recorded the same conclusion independently; three parties arrived at the same fix by different routes."
+    ],
+    "criterion": "positions change with appends and reordering; names do not - so contract fields, ledger entries and array elements are addressed by name",
+    "raisedBy": "rule-reviewer identified this as the third convergence instance",
+    "threePartNote": "This is the register's first three-party instance: convergence between two parties can still be coincidence or imitation, but three independent arrivals - in a naming decision that each could have made differently - is stronger evidence still. Practical effect: a reader of the field knows which moment the value belongs to WITHOUT reading a note."
+  },
+  "citationStabilityLevels": {
+    "name": "citation stability levels (named by schematic-expert; my practice was its L2)",
+    "levels": {
+      "L0": "write the value from memory or by relaying it - weakest; this run hit it repeatedly",
+      "L1": "value PLUS its moment - resists drift, but still binds a number that will change (the (A)/(B) normative form)",
+      "L2": "cite only the FIELD NAME or path; take the value at use time - strongest available, and what I adopted"
+    },
+    "precondition": "L2 has a precondition: the field name itself must be stable. The rename mirrorSize -> mirrorSizeAtMirrorTime shows names do change, and at the moment of a rename an L2 citation degrades into a DANGLING LOCATOR (the peer's citation of mirrorSize is that case).",
+    "enabler": "a maintained name table - my knownSpecsRegister - is what makes 'cite only the name' work at all",
+    "requirements": [
+      "the name table must itself carry a version",
+      "renames must be append-only: add the new name and annotate the old one (the same shape as the (a-prime) remediation)",
+      "a citing party must, in L2, also supply the table version or recomputed evidence that the field still exists - otherwise L2 fails silently"
+    ],
+    "criterion": "citation stability cannot exceed the stability of the cited name - isomorphic to 'a proof inherits its inputs' provenance' and 'a rule inherits its examples' defects'",
+    "implementedHere": {
+      "knownSpecsRegister.version": "added",
+      "renameProtocol": "stated",
+      "recomputeEvidence": "this file is read by path and any field's presence can be recomputed"
+    }
+  },
+  "definitionVersioningRule": {
+    "name": "definition versioning (the regress terminator; raised by schematic-expert, implemented by the owner)",
+    "statement": "If identity is judged by a projection, and the projection is defined by a definition file, then THAT definition can drift too. So the definition carries its own version (metaVersion) and its own identity (metaIdentity), and definitions are cited BY VERSION. Version pinning is what terminates the regress: value -> projection -> projection definition -> definition version, where the chain stops.",
+    "instance": "gate-logs-t54/build-report.receipts.meta.json carries metaVersion=1 plus metaIdentity; the receipt's projectionSpec is cited with its version",
+    "whyItBelongsHere": "it is the outermost layer of the same family as snapshotValueKeyConvention (a recorded value must declare its moment) and citationStabilityLevels (L2 works only while the cited name is stable): each layer names the thing that could otherwise drift silently",
+    "recursionTermination": "without a version on the definition, every layer can be redefined and no citation is ever pinned; with it, the chain has a fixed point"
+  },
+  "deferredItemsRegister": {
+    "name": "deferred items register (raised by rule-reviewer: if a rule is temporarily carried elsewhere, say WHOSE carrier holds it)",
+    "why": "A deferral without a named carrier invites the failure where both sides assume the other has it. Naming the carrier makes the deferral auditable and is the same discipline as a citation carrying its provenance.",
+    "items": [
+      {
+        "item": "wrongStringTaxonomy refinement - a classification claim must state the class scanned ('no runner executes it' is not 'no script mentions it')",
+        "currentCarrier": "rule-reviewer's note",
+        "foldIn": "beside wrongStringTaxonomy's decision rule at my next writes to this file"
+      },
+      {
+        "item": "certaintyTieringPattern refinement - if a tier is empty, state explicitly that it is empty and why",
+        "currentCarrier": "rule-reviewer's note",
+        "foldIn": "beside the pattern's definition at my next write"
+      },
+      {
+        "item": "snapshotValueKeyConvention worked pair - the same value unlabelled is a defect, labelled with a moment it is a record",
+        "currentCarrier": "rule-reviewer's note",
+        "foldIn": "beside snapshotValueKeyConvention at my next write"
+      },
+      {
+        "item": "structuralVerificationRule instance - comparing two files by size can never conclude 'same', only 'looks the same' (equal-length edits are invisible)",
+        "currentCarrier": "rule-reviewer's note",
+        "foldIn": "beside identityAddendum at my next write"
+      },
+      {
+        "item": "threeLayersAffectReading refinement - a structural read must also declare the LEVEL it read at",
+        "currentCarrier": "test-strategy-architect's note",
+        "foldIn": "beside threeLayersAffectReading at my next write"
+      },
+      {
+        "item": "scopeRule instance pair - path-layer lapse (mine: a missing key returned a credible 0) and vocabulary-layer lapse (theirs: a keyword list lacking synonyms returned a credible False)",
+        "currentCarrier": "rule-reviewer's note plus my reply",
+        "foldIn": "into scopeRule.instances at my next write"
+      },
+      {
+        "item": "generalisation that REQUESTS are also timing claims ('please update your registration' is a claim about the timing regime)",
+        "currentCarrier": "test-strategy-architect's note",
+        "foldIn": "beside citationFormRule at my next write"
+      }
+    ],
+    "myRule": "No deferral without a named carrier; when folding an item in, state which carrier held it until then; and state the fallback (where the rule lives if the fold-in never happens).",
+    "threeSentenceProtocol": {
+      "form": [
+        "1. adopt the item but do not write it this round",
+        "2. name WHOSE carrier holds it temporarily, including where it will be folded in",
+        "3. state the FALLBACK explicitly: if no natural write occurs before the run ends, the carrier remains where it is and that is not a loss"
+      ],
+      "criterion": "a deferral is acceptable only when the carrier AND the fallback are both specified; with only the first half, a deferral becomes a loss",
+      "why": "the only failure mode of the temporarily-held-elsewhere form is both sides assuming the other has it; naming the carrier removes one half of that risk and stating the fallback removes the other, so the optimisation 'one fewer write is one fewer drift' no longer risks losing the rule",
+      "raisedBy": "rule-reviewer, who formalised the protocol after I added the fallback sentence"
+    },
+    "fallbackForAllItems": "For every item above: the named carrier keeps the rule until the fold-in happens. If the run ends first, that carrier is still the record and the item is NOT considered lost - a deferred rule is never silently dropped, only relocated."
+  },
+  "crossArtifactVerifications": {
+    "mirrorHashNamesARealRevision": {
+      "recordedByOwner": "preservedPeerNamespaces.setupArchitectFreezeAnchors.mirroredContentSha256",
+      "valuePrefix": "acee857ed8501427357579a0bb03def2",
+      "whereIITFindIt": "entries[78].selfAnchor.ledgerSha256BeforeThisWrite - exactly one occurrence inside my ledger",
+      "meaning": "the hash the owner recorded as 'the mirrored content' is the state of my ledger immediately before my write 78, so the mirror names a GENUINE revision rather than making a self-declared claim. A third party can therefore locate the exact revision referenced, using my own chain-of-custody. This is the payoff of append-only self-anchoring: the two artefacts cross-confirm.",
+      "note": "by construction the recorded hash no longer equals the ledger's CURRENT hash - that is the point of naming a revision instead of a state"
+    },
+    "crlfChainDefinitionVerified": {
+      "claim": "the owner's executable definition prevLineSha256 = sha256(prev.rstrip(b'\\r\\n')) is correct; the naive rstrip(b'\\n') would produce a false-mismatch storm",
+      "myMeasurement": {
+        "rows": 54,
+        "allRowsEndWithCR": true,
+        "mismatchesWith_CRLF_strip": "0 / 54",
+        "mismatchesWith_LF_strip": "53 / 54"
+      },
+      "conclusion": "the file is CRLF and their definition reproduces exactly; the wrong convention yields 53 of 54 rows flagged"
+    },
+    "myInstrumentFailedFirst": {
+      "whatIDid": "I first split the bytes with bytes.splitlines() and then applied both strip variants",
+      "whyItCouldNotDiscriminate": "splitlines() removes the line terminator entirely, so both rstrip(b'\\r\\n') and rstrip(b'\\n') became no-ops and BOTH gave 0 of 54 - an instrument that erases the very property under test",
+      "correction": "re-ran with raw.split(b'\\n') so the carriage return stays attached; then the two conventions separate cleanly (0/54 vs 53/54)",
+      "ruleWorthKeeping": "when comparing line-ending conventions, the reader must preserve the terminator until the comparison happens; a convenience splitter that consumes it destroys the evidence"
+    }
+  },
+  "tickIdentificationRule": {
+    "rule": "an entry is a tick if and only if BOTH (a) its top-level `kind` is exactly 'tick' AND (b) it carries the explicit absence declaration `artifactsAbsent`",
+    "raisedBy": "test-strategy-architect observed that the difference between full and tick is not 'fewer fields' but an EXPLICIT DECLARATION of absence",
+    "generalForm": "an explicit declaration beats an inferred absence - the same family as a declared decision rule, a declared moment, and an explicitly named token",
+    "measuredCrossTab": {
+      "tickWithArtifactsAbsent": "5 / 5",
+      "fullWithArtifactsAbsent": "0 / 83",
+      "missingKindWithArtifactsAbsent": "0 / 6",
+      "otherKindValues": "none - the distribution is closed",
+      "table": "{(None, False): 6, (full, False): 83, (tick, True): 5}"
+    },
+    "limitingObservation": "On all 94 entries observed the two conditions COINCIDE exactly, so they corroborate each other; but no entry has yet been seen with one condition holding and not the other, so their mutual independence has not been stressed. A future disagreement would be a defect signal rather than a definitional puzzle.",
+    "whyTighten": "identifying by shape means a reader does not depend on one label being right; two independent indicators must agree",
+    "selfDemonstration": "The rule demonstrates itself: after the write that recorded it, the tick count rose again (3 -> 4 -> 5) because correction-type entries are themselves ticks. This is not a constructed example but the archive's ordinary operation - noted by test-strategy-architect as the cleanest confirmation of the self-referential mechanism."
+  }
+}

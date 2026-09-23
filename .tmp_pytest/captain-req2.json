@@ -1,0 +1,135 @@
+{
+  "state": "INPUT_SYNC",
+  "dispatch": null,
+  "dispatches": [
+    {
+      "role": "dft-expert",
+      "tms": [
+        "TM103",
+        "TM106",
+        "TM108",
+        "TM109"
+      ],
+      "trialDirs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm103-ptc",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm106-ptc",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm108-ptc",
+        "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-ptc-v2"
+      ]
+    }
+  ],
+  "reason": "先完成本批次缺失的输入材料。",
+  "waitingTms": [],
+  "tmStates": [
+    {
+      "tm": "TM103",
+      "trial": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm103-ptc",
+      "state": "INPUT_SYNC",
+      "dispatch": "dft-expert",
+      "reason": "upstream artifacts are stale or missing",
+      "registeredStage": "INPUT_SYNC",
+      "registeredOwner": "captain",
+      "registeredGate": "scripts/prepare_input_sync_v2.py"
+    },
+    {
+      "tm": "TM105",
+      "trial": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm105-ptc",
+      "state": "COMPLETE",
+      "dispatch": null,
+      "reason": "all PTC stages delivered and independently reviewed"
+    },
+    {
+      "tm": "TM106",
+      "trial": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm106-ptc",
+      "state": "INPUT_SYNC",
+      "dispatch": "dft-expert",
+      "reason": "upstream artifacts are stale or missing",
+      "registeredStage": "INPUT_SYNC",
+      "registeredOwner": "captain",
+      "registeredGate": "scripts/prepare_input_sync_v2.py"
+    },
+    {
+      "tm": "TM108",
+      "trial": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm108-ptc",
+      "state": "INPUT_SYNC",
+      "dispatch": "dft-expert",
+      "reason": "upstream artifacts are stale or missing",
+      "registeredStage": "INPUT_SYNC",
+      "registeredOwner": "captain",
+      "registeredGate": "scripts/prepare_input_sync_v2.py"
+    },
+    {
+      "tm": "TM109",
+      "trial": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-ptc-v2",
+      "state": "INPUT_SYNC",
+      "dispatch": "dft-expert",
+      "reason": "upstream artifacts are stale or missing",
+      "registeredStage": "INPUT_SYNC",
+      "registeredOwner": "captain",
+      "registeredGate": "scripts/prepare_input_sync_v2.py"
+    },
+    {
+      "tm": "TM425",
+      "trial": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm425-ptc",
+      "state": "COMPLETE",
+      "dispatch": null,
+      "reason": "all PTC stages delivered and independently reviewed"
+    }
+  ],
+  "registeredStage": "INPUT_SYNC",
+  "registeredOwner": "captain",
+  "registeredGate": "scripts/prepare_input_sync_v2.py",
+  "batchId": "dali-20260919-132504-tm103-tm105-tm106-tm108-tm109-tm425",
+  "batchDefinition": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\ptc-batches\\dali-20260919-132504-tm103-tm105-tm106-tm108-tm109-tm425.json",
+  "selection": {
+    "kind": "explicit",
+    "tms": [
+      "TM103",
+      "TM105",
+      "TM106",
+      "TM108",
+      "TM109",
+      "TM425"
+    ]
+  },
+  "project": "DALI",
+  "command": "captain-open-delivery",
+  "prepareResults": [
+    {
+      "tm": "TM103",
+      "trial": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm103-ptc",
+      "exitCode": 0,
+      "output": "NEEDS-DERIVED-ARTIFACTS: D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm103-ptc\\input-manifest.json\nDISPATCH=dft-expert\nNEEDS-DERIVED-ARTIFACTS: D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm103-ptc\\input-manifest.json\nDISPATCH=dft-expert"
+    },
+    {
+      "tm": "TM105",
+      "trial": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm105-ptc",
+      "exitCode": 0,
+      "output": "READY: D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm105-ptc\\input-manifest.json\nDISPATCH=\nREADY: D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm105-ptc\\input-manifest.json\nDISPATCH="
+    },
+    {
+      "tm": "TM106",
+      "trial": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm106-ptc",
+      "exitCode": 0,
+      "output": "NEEDS-DERIVED-ARTIFACTS: D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm106-ptc\\input-manifest.json\nDISPATCH=dft-expert\nNEEDS-DERIVED-ARTIFACTS: D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm106-ptc\\input-manifest.json\nDISPATCH=dft-expert"
+    },
+    {
+      "tm": "TM108",
+      "trial": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm108-ptc",
+      "exitCode": 0,
+      "output": "NEEDS-DERIVED-ARTIFACTS: D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm108-ptc\\input-manifest.json\nDISPATCH=dft-expert\nNEEDS-DERIVED-ARTIFACTS: D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm108-ptc\\input-manifest.json\nDISPATCH=dft-expert"
+    },
+    {
+      "tm": "TM109",
+      "trial": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-ptc-v2",
+      "exitCode": 0,
+      "output": "NEEDS-DERIVED-ARTIFACTS: D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-ptc-v2\\input-manifest.json\nDISPATCH=dft-expert\nNEEDS-DERIVED-ARTIFACTS: D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-ptc-v2\\input-manifest.json\nDISPATCH=dft-expert"
+    },
+    {
+      "tm": "TM425",
+      "trial": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm425-ptc",
+      "exitCode": 0,
+      "output": "READY: D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm425-ptc\\input-manifest.json\nDISPATCH=\nREADY: D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm425-ptc\\input-manifest.json\nDISPATCH="
+    }
+  ]
+}

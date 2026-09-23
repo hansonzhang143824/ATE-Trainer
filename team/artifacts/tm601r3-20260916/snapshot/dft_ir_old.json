@@ -1,0 +1,3218 @@
+{
+ "runId": "acceptance-20260916-dali10",
+ "generatedAt": "2026-09-16T14:15:18+08:00",
+ "producedBy": "dft-expert (t1)",
+ "scope": [
+  "TM000",
+  "TM001",
+  "TM102",
+  "TM103",
+  "TM108",
+  "TM109",
+  "TM135",
+  "TM600",
+  "TM601",
+  "TM1205"
+ ],
+ "scopeNote": "Ten accepted TM bases. TM000_1, TM001_2, TM001_3, TM108_1 are grouped variants sharing a base and are recorded under items[].variants, not as separate scope entries.",
+ "source": {
+  "path": "project/DALI/Dali_testmode.xlsx",
+  "sha256": "d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e",
+  "locator": "sheet=OVERVIEW rows 2-251 (header row 1); 14 in-scope rows for the 10 TM bases",
+  "role": "authoritative DFT intent source of record; every consequential field below cites this sheet plus at least one corroborating source",
+  "readPath": "python byte mode (DLP/TSZ-authorized plaintext); PowerShell Get-Content and grep only see ciphertext",
+  "columnHeaders": [
+   "Item",
+   "Level",
+   "Name",
+   "Description",
+   "ExpectValue",
+   "Unit",
+   "Test",
+   "Special",
+   "Purpose",
+   "Trim",
+   "Notes",
+   "Code1",
+   "Code2",
+   "Code3",
+   "Power",
+   "Dynamic",
+   "Check",
+   "isCodeGen",
+   "isRun",
+   "Assign",
+   "State AMS Validation",
+   "State Bench Validation",
+   "is CP test?",
+   "CP comment",
+   "State ATE Validation",
+   "HELPER"
+  ],
+  "sourceRanking": [
+   "OVERVIEW (Dali_testmode.xlsx)",
+   "per-TM reg_config/*.sv",
+   "DFT.csv",
+   "DFT_restored.csv",
+   "dali_tm_meta.json (derived)",
+   "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp (existing implementation)"
+  ],
+  "secondaryIntentSource": {
+   "path": "project/DALI/input/DFT.csv",
+   "sha256": "b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4",
+   "locator": "RFC4180 parse, 35 records (cells contain embedded newlines); header Item,Function Name,ShortName,ExpectValue,Unit,Trim,Record,Hardware_initial,Software_initial,Dynamic,Check,Type",
+   "note": "row-per-TM variant of the same intent layer; conflicts with OVERVIEW are recorded in blockingDecisions"
+  },
+  "tertiarySources": [
+   {
+    "path": "project/DALI/input/DFT_restored.csv",
+    "sha256": "0e0c31106586eacc0ef919b2c5a42d78c036e714d905ec9a7121dbffadcd8bc2",
+    "locator": "35 records",
+    "note": "recovered copy of DFT.csv; differs from DFT.csv in the TM600/TM601 rows (size 16824 vs 16862 bytes)"
+   },
+   {
+    "path": "project/DALI/meta/dali_tm_meta.json",
+    "sha256": "1f5eeb5e33372e197dbcb5d0ac2739e3166729f7210a5f7ca46a423dfcd9f7f1",
+    "locator": "99 functions",
+    "note": "derived registry generated from OVERVIEW by gen_testitems_meta.py (corroborating only); contains no TM600/TM601 entry"
+   },
+   {
+    "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+    "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+    "locator": "8878 lines; 105 DUT_API definitions",
+    "note": "current implementation in the only writable tree; used here only as evidence of what already exists"
+   },
+   {
+    "path": "docs/PROGRESS.md",
+    "sha256": "efc810564b5d66a7282b9952a6acac6d2360d64ff2fc8ee284109efa0331a6d8",
+    "locator": "TM600 sections (lines 1106-1121, 1182, 1234)",
+    "note": "project history; records TM600 HS_RDSON as previously produced with a floating high-current path"
+   },
+   {
+    "path": "knowledge/references/L4-Golden-code/tm600-normal-highcurrent.cpp",
+    "sha256": "8cdb0be1dd8381008a6a6ca84743170d6e1cf6f5c84f21a1e2e947a0187b72ce",
+    "locator": "DUT_API TM600_RDSON_TEST (139 lines)",
+    "note": "declared unique correct TM600 case (param_type_index.md); the root-level TM600_*.cpp drafts and TM601_LS_RDSON.cpp are archived as non-golden"
+   },
+   {
+    "path": "knowledge/references/L4-Golden-code/TM1205_TRX_BST_UV_GD.cpp",
+    "sha256": "67d0c3f1c4e5c907fcf2b41fdaa058dc9655142e5ed64438f06c215529c4b01d",
+    "locator": "DUT_API TM1205_TRX_BST_UV_GD (112 lines)",
+    "note": "dedicated TM1205 golden case"
+   },
+   {
+    "path": "knowledge/references/L4-Golden-code/TM1205_TRX_BST_UV_GD.md",
+    "sha256": "1feb55df7c8f1dbc1b2c38344c38283d0b87645744d5f9ca549d3a2efdde902d",
+    "locator": "diff-pair role decomposition (§2 polarity, §3 ramp-source cap exclusion, §4 timing)",
+    "note": "md companion of the TM1205 golden case; cited for the negative-domain polarity and the per-path re-SetOn rules"
+   }
+  ],
+  "readOutputs": [
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/overview-dft.json",
+    "locator": "14 in-scope OVERVIEW rows + DFT.csv/DFT_restored records"
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/overview-dump.txt",
+    "locator": "human-readable dump of the same"
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/DFT-full.json",
+    "locator": "full RFC4180 parse of DFT.csv (35 records)"
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/DFT_restored-full.json",
+    "locator": "full RFC4180 parse of DFT_restored.csv (35 records)"
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/csv-full-dump.txt",
+    "locator": "human-readable CSV dump + cross-file diff notes"
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/meta-scope.json",
+    "locator": "11 in-scope meta entries"
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/regconfig-scope.json",
+    "locator": "15 reg_config .sv bodies used as evidence"
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/source-refs.json",
+    "locator": "per-file reference hits for RDSON/TM600/TM601/TM1205/... in both trees"
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/testcpp-blocks.txt",
+    "locator": "extracted implementation blocks for the 8 present TMs plus 3 'NOT FOUND' verdicts"
+   },
+   {
+    "path": "team/artifacts/acceptance-20260916-dali10/dft-raw/compact-dump.txt",
+    "locator": "compact meta + reg_config + PROGRESS cross-check"
+   }
+  ],
+  "method": [
+   "OVERVIEW is treated as the DFT intent source of record; DFT.csv / DFT_restored.csv / meta are corroborating sources.",
+   "Every disagreement is recorded verbatim in blockingDecisions/conflicts; nothing was averaged, no source was silently made to agree with another.",
+   "Presence/absence of each TM in test.cpp was verified by regex over the DLP plaintext (105 DUT_API definitions).",
+   "Hash convention: sha256 of the on-disk bytes read through the python (DLP-authorized) channel."
+  ],
+  "plaintextAnchors": [
+   {
+    "path": "project/DALI/Dali_testmode.xlsx",
+    "sha256": "D9D721A3A6606232BB463C8147D4955BEA623BF81996E9FF85CCB8E463C7788E",
+    "sizeBytes": 12210607,
+    "role": "OVERVIEW sheet = DFT intent source of record (sheet 3 of 22)",
+    "note": "python byte-mode read; on-disk head PK\\x03\\x04 (zip/OOXML container)"
+   },
+   {
+    "path": "project/DALI/input/DFT.csv",
+    "sha256": "B92D203FA6F152120A316B9E32C037F7C1C978E96424EDF5A871F02E5CFE0FD4",
+    "sizeBytes": 16862,
+    "role": "secondary intent source (row-per-TM variant)",
+    "note": "python byte-mode read yields plaintext starting with the header \"Item,Function Name,...\" while PowerShell/grep see a TSZ# ciphertext head — this sha256 is the plaintext anchor, NOT a ciphertext hash"
+   },
+   {
+    "path": "project/DALI/input/DFT_restored.csv",
+    "sha256": "0E0C31106586EACC0EF919B2C5A42D78C036E714D905EC9A7121DBFFADCD8BC2",
+    "sizeBytes": 16824,
+    "role": "recovered copy of DFT.csv; differs in the TM600/TM601 rows",
+    "note": "plaintext anchor"
+   },
+   {
+    "path": "project/DALI/reg_config/tm600.sv",
+    "sha256": "290574BCD198CB5E85429F8AE37F91CE97DA31713CFC7075B9D07E57014BADA0",
+    "sizeBytes": 1495,
+    "role": "TM600 register evidence (1495 B)",
+    "note": "python plaintext anchor"
+   },
+   {
+    "path": "project/DALI/reg_config/tm601.sv",
+    "sha256": "D250B43CDABA3513B031F6DFC5FFC4743F5C6058787709F7286122152948FADE",
+    "sizeBytes": 1378,
+    "role": "TM601 register evidence (1378 B)",
+    "note": "python plaintext anchor"
+   },
+   {
+    "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+    "sha256": "5C9CB3F9339F6DB373AFCFF7504EF6B34924A4CA3042B5926CB612C819AC3317",
+    "sizeBytes": 434629,
+    "role": "current implementation in the only writable tree",
+    "note": "python plaintext anchor"
+   }
+  ],
+  "hashConvention": "all sha256 values in this artifact were computed over the bytes read through the python (DLP-authorized) channel, i.e. the PLAINTEXT anchor; uppercase for the plaintextAnchors block, lowercase elsewhere. The grep tool may also show plaintext in this session but is not used as a hash anchor."
+ },
+ "items": [
+  {
+   "tm": "TM000",
+   "symbol": "TM000_IQ_STANDBY",
+   "symbolHint": "TM000_IQ_STANDBY",
+   "overviewItem": "TM000 (base) + TM000_1 (variant)",
+   "name": "Iq_Standby",
+   "level": "Top",
+   "description": "Sleep Quiescent current, w/o VAC_PLUG module on (base) and w/i VAC_PLUG module on (variant)",
+   "testType": [
+    "normal",
+    "grouped"
+   ],
+   "testTypeNote": "low-current quiescent-current class; grouped identity = base TM000 + variant TM000_1",
+   "channels": [
+    {
+     "role": "supply+measure",
+     "pins": [
+      "VBAT"
+     ],
+     "sense": "MI (I(VBAT))"
+    }
+   ],
+   "stimuli": [
+    {
+     "kind": "vset",
+     "pin": "vbat",
+     "value": 4.4,
+     "unit": "V",
+     "rampTime": "100e-6",
+     "ignore": 0,
+     "note": "OVERVIEW Code1; DFT.csv Hardware_initial agrees on 4.4 V, differs from meta 4.4 V (same)"
+    },
+    {
+     "kind": "field",
+     "pin": "(none)",
+     "note": "Code2: field[(VAC1_APORT_DET_ENABLE,0),(VAC2_APORT_DET_ENABLE,0),(VAC_SNK_DET_SEL,0)] for base; must be followed by an explicit register write (see variants)"
+    },
+    {
+     "kind": "delay",
+     "pin": "(none)",
+     "rampTime": "10e-3",
+     "note": "Code3 delay[10e-3] before measuring I(VBAT)"
+    }
+   ],
+   "measurements": [
+    {
+     "kind": "MI",
+     "pin": "VBAT",
+     "unit": "uA",
+     "note": "OVERVIEW Check=I(VBAT); per-site current after 10 ms settle"
+    }
+   ],
+   "limits": [
+    {
+     "expression": "ExpectValue='23 w/o digital iq.' (base, no numeric tolerance given)",
+     "unit": "uA",
+     "sourceRank": 1,
+     "note": "OVERVIEW ExpectValue is prose with no tolerance; DFT.csv ExpectValue is EMPTY — no machine limit exists. 'de test' bench datapoint = 22uA (base) / 31.5u (variant); both are datapoints, not limits."
+    }
+   ],
+   "sequence": [
+    "cbite.SetOn(-1) (release; VBAT reaches the DUT through K8 default-NC)",
+    "power VBAT (base: no VAC plug enabled; variant: VAC_PLUG module on)",
+    "write the APORT detect register, delay 10 ms",
+    "MeasureVI on VBAT, MI; log Iq_Standby / Iq_Standby_PLUG"
+   ],
+   "registerWritesFromOverview": [],
+   "variants": [
+    {
+     "item": "TM000",
+     "scopeKind": "base",
+     "description": "Sleep Quiescent current w/o VAC_PLUG module on",
+     "fieldDirective": "field[(VAC1_APORT_DET_ENABLE,0),(VAC2_APORT_DET_ENABLE,0),(VAC_SNK_DET_SEL,0)]",
+     "benchDatapoint": "22uA",
+     "expectValueProse": "23 w/o digital iq.",
+     "implementationRegisterWrite": [
+      {
+       "kind": "I2CWriteSameData",
+       "reg": "0x07",
+       "value": "0x00",
+       "fields": "APORT all off",
+       "note": "bit map inferred in test.cpp and NOT confirmed against a reg_config file — TM000 has no reg_config/tm000.sv"
+      }
+     ],
+     "evidence": [
+      {
+       "path": "project/DALI/Dali_testmode.xlsx",
+       "sha256": "d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e",
+       "locator": "sheet=OVERVIEW!row 2 (Item=TM000)"
+      },
+      {
+       "path": "project/DALI/input/DFT.csv",
+       "sha256": "b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4",
+       "locator": "CSV record 2 (Item=TM000, ShortName=IQ_Standby1_DSM)",
+       "note": "DFT.csv uses a different short name (IQ_Standby1_DSM) and Check=VBAT/Type=MI"
+      },
+      {
+       "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+       "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+       "locator": "DUT_API TM000_IQ_STANDBY (lines 1350-1425)"
+      }
+     ]
+    },
+    {
+     "item": "TM000_1",
+     "scopeKind": "variant",
+     "description": "Sleep Quiescent current w/i VAC_PLUG module on",
+     "fieldDirective": "field[(VAC1_APORT_DET_ENABLE,1),(VAC2_APORT_DET_ENABLE,1),(VAC_SNK_DET_SEL,0)]",
+     "benchDatapoint": "31.5u",
+     "implementationRegisterWrite": [
+      {
+       "kind": "I2CWriteSameData",
+       "reg": "0x07",
+       "value": "0x06",
+       "fields": "bit1|bit2 APORT detect enable",
+       "note": "bit map inferred in test.cpp and NOT confirmed against a reg_config file"
+      }
+     ],
+     "evidence": [
+      {
+       "path": "project/DALI/Dali_testmode.xlsx",
+       "sha256": "d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e",
+       "locator": "sheet=OVERVIEW!row 3 (Item=TM000_1)"
+      },
+      {
+       "path": "project/DALI/input/DFT.csv",
+       "sha256": "b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4",
+       "locator": "CSV record 3 (Item=TM000_1, ShortName=IQ_Standby2_DSM)"
+      },
+      {
+       "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+       "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+       "locator": "DUT_API TM000_IQ_STANDBY (merges TM000 and TM000_1 in one function, lines 1350-1425)"
+      }
+     ]
+    }
+   ],
+   "groupedIdentity": "TM000_1 shares the TM000 base and is folded into the single function TM000_IQ_STANDBY (test.cpp:1350-1425). Parameter names: Iq_Standby, Iq_Standby_PLUG.",
+   "evidence": [
+    {
+     "path": "project/DALI/Dali_testmode.xlsx",
+     "sha256": "d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e",
+     "locator": "sheet=OVERVIEW!rows 2-3 (Item=TM000, TM000_1)"
+    },
+    {
+     "path": "project/DALI/input/DFT.csv",
+     "sha256": "b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4",
+     "locator": "CSV records 2-3",
+     "note": "DFT.csv Hardware_initial is vbat=4.2 V while OVERVIEW is 4.4 V — see conflicts"
+    },
+    {
+     "path": "project/DALI/input/DFT_restored.csv",
+     "sha256": "0e0c31106586eacc0ef919b2c5a42d78c036e714d905ec9a7121dbffadcd8bc2",
+     "locator": "CSV records 2-3 (identical to DFT.csv for TM000)"
+    },
+    {
+     "path": "project/DALI/meta/dali_tm_meta.json",
+     "sha256": "1f5eeb5e33372e197dbcb5d0ac2739e3166729f7210a5f7ca46a423dfcd9f7f1",
+     "locator": "functions[functionName=TM000_IQ_STANDBY]",
+     "note": "derived registry (generated from OVERVIEW by gen_testitems_meta.py) — corroborating, not primary"
+    },
+    {
+     "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+     "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+     "locator": "DUT_API TM000_IQ_STANDBY (lines 1350-1425)"
+    }
+   ],
+   "ambiguities": [
+    "TM000 has no reg_config/*.sv file: the 0x07 bit map used by the current implementation (APORT enables) is an inference documented in the code, not a source fact.",
+    "OVERVIEW 'ExpectValue' is prose ('23 w/o digital iq.') and DFT.csv leaves ExpectValue empty; no numeric limit with tolerance exists for this TM in any DFT source.",
+    "Deterministic 'grouped' identity: TM000 == TM000_1 base+variant, but the DFT.csv names them IQ_Standby1_DSM / IQ_Standby2_DSM instead."
+   ],
+   "confidence": "high",
+   "implementationState": {
+    "presentInDebugTestCpp": true,
+    "functionName": "TM000_IQ_STANDBY",
+    "lines": "1350-1425"
+   }
+  },
+  {
+   "tm": "TM001",
+   "symbol": "TM001_IIN_SUSPEND",
+   "symbolHint": "TM001_IIN_SUSPEND",
+   "overviewItem": "TM001 (base) + TM001_2 + TM001_3 (variants sharing the TM001 base)",
+   "name": "Iin_Suspend",
+   "level": "Top",
+   "description": "Operation Quiescent current (base). TM001_2 = Shipmode Iq; TM001_3 = Iq_Operation (noted 'Covered by bench test.')",
+   "testType": [
+    "normal",
+    "grouped"
+   ],
+   "testTypeNote": "low-current quiescent-current class; grouped identity = base TM001 + variants TM001_2/TM001_3",
+   "channels": [
+    {
+     "role": "supply+measure",
+     "pins": [
+      "VBAT"
+     ],
+     "sense": "MI (I(VBAT))"
+    },
+    {
+     "role": "supply",
+     "pins": [
+      "VAC1"
+     ],
+     "sense": "not measured (variants only)"
+    }
+   ],
+   "stimuli": [
+    {
+     "kind": "vset",
+     "pin": "vbat",
+     "value": 3.7,
+     "unit": "V",
+     "rampTime": "100e-6",
+     "ignore": 0,
+     "note": "OVERVIEW Code1"
+    },
+    {
+     "kind": "en_tm",
+     "pin": "(none)",
+     "note": "Code2 en_tm[] — entertestmode() before any register write"
+    },
+    {
+     "kind": "field",
+     "pin": "(none)",
+     "note": "Code2 field[(WAKE_UP,1),(AC1_GATE_ON,1)]"
+    },
+    {
+     "kind": "delay",
+     "pin": "(none)",
+     "rampTime": "10e-3",
+     "note": "Code3 delay[10e-3] then '// Check IQ from VBAT'"
+    }
+   ],
+   "measurements": [
+    {
+     "kind": "MI",
+     "pin": "VBAT",
+     "unit": "uA",
+     "note": "OVERVIEW Check=I(VBAT)"
+    }
+   ],
+   "limits": [
+    {
+     "expression": "no numeric limit in any DFT source; bench datapoint 'de test'=1.118mA (base)",
+     "unit": "uA",
+     "sourceRank": 1,
+     "note": "OVERVIEW ExpectValue empty, DFT.csv ExpectValue empty. 1.118 mA is a bench datapoint. Note the unit inconsistency: OVERVIEW Unit=uA but the datapoint is 1.118 mA."
+    }
+   ],
+   "sequence": [
+    "cbite.SetOn(-1); VBAT supply",
+    "entertestmode(); set WAKE_UP=1 (and AC1_GATE_ON=1 per DFT)",
+    "delay 10 ms, MeasureVI(VBAT) MI"
+   ],
+   "registerWritesFromOverview": [],
+   "variants": [
+    {
+     "item": "TM001",
+     "scopeKind": "base",
+     "description": "Operation Quiescent current",
+     "fieldDirective": "field[(WAKE_UP,1),(AC1_GATE_ON,1)]",
+     "implementationRegisterWrite": [
+      {
+       "kind": "I2CWriteSameData",
+       "reg": "0x10",
+       "value": "0x43",
+       "fields": "WAKE_UP=1",
+       "note": "test.cpp carries an explicit TODO: AC1_GATE_ON bit position is unknown and NOT written"
+      }
+     ],
+     "evidence": [
+      {
+       "path": "project/DALI/Dali_testmode.xlsx",
+       "sha256": "d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e",
+       "locator": "sheet=OVERVIEW!row 4 (Item=TM001)"
+      },
+      {
+       "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+       "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+       "locator": "DUT_API TM001_IIN_SUSPEND (lines 1425-1478)"
+      }
+     ]
+    },
+    {
+     "item": "TM001_2",
+     "scopeKind": "variant",
+     "description": "Shipmode iq.",
+     "fieldDirective": "field[(SHIPMODE_EN,1)] then vset[vac1,0]; delay[60e-3]",
+     "implementationRegisterWrite": [
+      {
+       "kind": "I2CWriteSameData",
+       "reg": "0x29",
+       "value": "0x01",
+       "fields": "SHIPMODE_EN=1",
+       "note": "matches reg_config/tm001_2.sv; test.cpp does NOT close K21_VAC_Cap (it opens it) — see conflicts"
+      }
+     ],
+     "evidence": [
+      {
+       "path": "project/DALI/Dali_testmode.xlsx",
+       "sha256": "d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e",
+       "locator": "sheet=OVERVIEW!row 5 (Item=TM001_2)"
+      },
+      {
+       "path": "project/DALI/reg_config/tm001_2.sv",
+       "sha256": "c18bf482a83af2af118686b821487533ae58ea8ed857e556aa0f1953d94b7553",
+       "locator": "I2CWriteSameData(DEV_ADDR,0x29,0x01)"
+      },
+      {
+       "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+       "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+       "locator": "DUT_API TM001_2_IQ_SHIPMODE (lines 1478-1538)"
+      }
+     ]
+    },
+    {
+     "item": "TM001_3",
+     "scopeKind": "variant",
+     "description": "Iq_Operation — OVERVIEW Notes: 'Covered by bench test.'",
+     "fieldDirective": "(none in OVERVIEW)",
+     "evidence": [
+      {
+       "path": "project/DALI/Dali_testmode.xlsx",
+       "sha256": "d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e",
+       "locator": "sheet=OVERVIEW!row 6 (Item=TM001_3)"
+      },
+      {
+       "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+       "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+       "locator": "DUT_API TM001_3_IQ_OPERATION (lines 1538-1591)"
+      }
+     ]
+    }
+   ],
+   "groupedIdentity": "TM001_2 (Iq_Shipmode) and TM001_3 (Iq_Operation) share the TM001 base; the acceptance scope names only TM001, and there is no TM001_1 variant in OVERVIEW.",
+   "evidence": [
+    {
+     "path": "project/DALI/Dali_testmode.xlsx",
+     "sha256": "d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e",
+     "locator": "sheet=OVERVIEW!rows 4-6 (Item=TM001, TM001_2, TM001_3)"
+    },
+    {
+     "path": "project/DALI/input/DFT.csv",
+     "sha256": "b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4",
+     "locator": "no TM001 record exists in DFT.csv (35 records: TM000, TM000_1, TM100, TM101, TM103, TM105, TM106, TM108, TM109, ... )",
+     "note": "TM001 is in scope but has NO DFT.csv row — OVERVIEW is the only intent source"
+    },
+    {
+     "path": "project/DALI/meta/dali_tm_meta.json",
+     "sha256": "1f5eeb5e33372e197dbcb5d0ac2739e3166729f7210a5f7ca46a423dfcd9f7f1",
+     "locator": "functions[functionName=TM001_IIN_SUSPEND]",
+     "note": "derived registry (generated from OVERVIEW by gen_testitems_meta.py) — corroborating, not primary"
+    },
+    {
+     "path": "project/DALI/meta/dali_tm_meta.json",
+     "sha256": "1f5eeb5e33372e197dbcb5d0ac2739e3166729f7210a5f7ca46a423dfcd9f7f1",
+     "locator": "functions[functionName=TM001_2_IQ_SHIPMODE]",
+     "note": "derived registry (generated from OVERVIEW by gen_testitems_meta.py) — corroborating, not primary"
+    },
+    {
+     "path": "project/DALI/meta/dali_tm_meta.json",
+     "sha256": "1f5eeb5e33372e197dbcb5d0ac2739e3166729f7210a5f7ca46a423dfcd9f7f1",
+     "locator": "functions[functionName=TM001_3_IQ_OPERATION]",
+     "note": "derived registry (generated from OVERVIEW by gen_testitems_meta.py) — corroborating, not primary"
+    },
+    {
+     "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+     "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+     "locator": "DUT_API TM001_IIN_SUSPEND (lines 1425-1478)"
+    }
+   ],
+   "ambiguities": [
+    "TM001 has no DFT.csv row and no reg_config/tm001.sv; the WAKE_UP register mapping is not source-backed.",
+    "AC1_GATE_ON register/bit is an explicit open TODO inside test.cpp:1425-1478 (not resolved by any DFT source in this workspace).",
+    "OVERVIEW Unit=uA but the only numeric bench datapoint is 1.118 mA.",
+    "TM001_2's DFT.cfg (Code1 vset[vac1,5] with en_tm, Code2 SHIPMODE_EN then vset[vac1,0]) matches reg_config/tm001_2.sv, but the current test.cpp implementation instead closes K21_VAC_Cap — a possible divergence to confirm with the schematic owner."
+   ],
+   "confidence": "medium",
+   "implementationState": {
+    "presentInDebugTestCpp": true,
+    "functionName": "TM001_IIN_SUSPEND",
+    "lines": "1425-1478"
+   }
+  },
+  {
+   "tm": "TM102",
+   "symbol": "TM102_HSKP_LP_ATEST0",
+   "symbolHint": "TM102_HSKP_LP_ATEST0",
+   "overviewItem": "TM102",
+   "name": "LP_VBG_BF",
+   "level": "HSKP",
+   "description": "low power bg_buf (ATEST0 voltage measurement via VDM)",
+   "testType": [
+    "normal"
+   ],
+   "channels": [
+    {
+     "role": "supply",
+     "pins": [
+      "VBAT"
+     ],
+     "sense": "none"
+    },
+    {
+     "role": "test-pad",
+     "pins": [
+      "VDM"
+     ],
+     "sense": "MV (V(ATEST0) observed on the VDM pad, i.e. V(VDM))"
+    }
+   ],
+   "stimuli": [
+    {
+     "kind": "vset",
+     "pin": "vbat",
+     "value": 4.0,
+     "unit": "V",
+     "rampTime": "100e-6",
+     "ignore": 0,
+     "note": "OVERVIEW Code1 / reg_config/tm102.sv / DFT.csv Hardware_initial (4.2 V in DFT.csv — see conflicts)"
+    },
+    {
+     "kind": "vset",
+     "pin": "vdm",
+     "value": 1.2,
+     "unit": "V",
+     "rampTime": "100e-6",
+     "ignore": 0,
+     "note": "Code2: pre-charge the external pad before connecting the DUT output (OVERVIEW Notes: weak drive capability, the external pin must be powered first)"
+    },
+    {
+     "kind": "en_tm",
+     "pin": "(none)",
+     "note": "Code2 en_tm[]"
+    },
+    {
+     "kind": "field",
+     "pin": "(none)",
+     "note": "Code2 field[(EN_ATEST0,1),(ATEST0_MUX,2)]"
+    },
+    {
+     "kind": "vset_off",
+     "pin": "vdm",
+     "note": "Code2 vset_off[vdm] — release VDM so the DUT drives the pad (FI=0 high-Z)"
+    },
+    {
+     "kind": "delay",
+     "pin": "(none)",
+     "rampTime": "1e-3",
+     "note": "Code3 delay[1e-3]"
+    }
+   ],
+   "measurements": [
+    {
+     "kind": "MV",
+     "pin": "ATEST0",
+     "unit": "V",
+     "note": "measured on the VDM pad after the source is released to high-Z"
+    }
+   ],
+   "limits": [
+    {
+     "expression": "ExpectValue=1.27 (nominal, no tolerance given)",
+     "unit": "V",
+     "sourceRank": 1,
+     "note": "OVERVIEW ExpectValue=1.27 numeric; 'de test' bench datapoint = 1.178 V."
+    }
+   ],
+   "sequence": [
+    "connect (K13_VBAT_Cap closed for a stable supply; VDM reaches the DUT through K59 default-NC)",
+    "VBAT=4 V on",
+    "entertestmode(); pre-charge VDM=1.2 V; EN_ATEST0=1 + ATEST0_MUX=2; release VDM (FI,0)",
+    "delay 1 ms; MeasureVI; MVRET"
+   ],
+   "registerWritesFromOverview": [
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x57",
+     "value": "0x02",
+     "fields": "EN_ATEST0=1 (per reg_config/tm102.sv)"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x5E",
+     "value": "0x02",
+     "fields": "ATEST0_MUX=2 -> LP_VBG_BF (per reg_config/tm102.sv)"
+    }
+   ],
+   "variants": [],
+   "evidence": [
+    {
+     "path": "project/DALI/Dali_testmode.xlsx",
+     "sha256": "d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e",
+     "locator": "sheet=OVERVIEW!row 9 (Item=TM102)"
+    },
+    {
+     "path": "project/DALI/input/DFT.csv",
+     "sha256": "b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4",
+     "locator": "no TM102 record exists in DFT.csv (TM100/TM101/TM103 are present, TM102 is not)"
+    },
+    {
+     "path": "project/DALI/reg_config/tm102.sv",
+     "sha256": "687ffbf66fcdd5bdeb90e25b287b9f4592503e140e387dfee2f5690fc9a344dd",
+     "locator": "ramp_vsrc_val(4,100e-6) / vdm=1.2V / 0x57=0x02 / 0x5E=0x02 / vset_off[vdm] / delay 1e-3"
+    },
+    {
+     "path": "project/DALI/meta/dali_tm_meta.json",
+     "sha256": "1f5eeb5e33372e197dbcb5d0ac2739e3166729f7210a5f7ca46a423dfcd9f7f1",
+     "locator": "functions[functionName=TM102_HSKP_LP_ATEST0]",
+     "note": "derived registry (generated from OVERVIEW by gen_testitems_meta.py) — corroborating, not primary"
+    },
+    {
+     "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+     "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+     "locator": "DUT_API TM102_HSKP_LP_ATEST0 (lines 1722-1785)"
+    }
+   ],
+   "ambiguities": [
+    "The acceptance-plan symbolHint is TM102_HSKP_LP_ATEST0 but the OVERVIEW Name is LP_VBG_BF (the parameter name used by test.cpp / meta is LP_VBG_BF). Symbol vs parameter naming must be fixed by the test-plan stage.",
+    "OVERVIEW ExpectValue=1.27 V has no tolerance in any DFT source."
+   ],
+   "confidence": "high",
+   "implementationState": {
+    "presentInDebugTestCpp": true,
+    "functionName": "TM102_HSKP_LP_ATEST0",
+    "lines": "1722-1785"
+   }
+  },
+  {
+   "tm": "TM103",
+   "symbol": "TM103_HSKP_LP_HR_0P5U",
+   "symbolHint": "TM103_HSKP_LP_HR_0P5U",
+   "overviewItem": "TM103",
+   "name": "LP_HR_0P5U",
+   "level": "HSKP",
+   "description": "IBP 0.5UA HR (ATEST0 current measurement through the VDM force path)",
+   "testType": [
+    "normal"
+   ],
+   "testTypeNote": "static MV on the ATEST0/VDM pad; ATEST-mux class",
+   "channels": [
+    {
+     "role": "supply",
+     "pins": [
+      "VBAT"
+     ],
+     "sense": "none"
+    },
+    {
+     "role": "force+measure",
+     "pins": [
+      "VDM"
+     ],
+     "sense": "MI (I(ATEST0) is measured as the current the VDM source must supply at 1 V)"
+    }
+   ],
+   "stimuli": [
+    {
+     "kind": "vset",
+     "pin": "vbat",
+     "value": 4.0,
+     "unit": "V",
+     "rampTime": "100e-6",
+     "ignore": 0,
+     "note": "OVERVIEW Code1 / reg_config/tm103.sv (DFT.csv says 4.2 V — see conflicts)"
+    },
+    {
+     "kind": "en_tm",
+     "pin": "(none)",
+     "note": "Code2 en_tm[]"
+    },
+    {
+     "kind": "field",
+     "pin": "(none)",
+     "note": "Code2 field[(EN_ATEST0,1),(ATEST0_MUX,4)]"
+    },
+    {
+     "kind": "vset",
+     "pin": "vdm",
+     "value": 1.0,
+     "unit": "V",
+     "rampTime": "100e-6",
+     "ignore": 0,
+     "note": "Code2 vset[vdm,1] — VDM is the forcing pin; I(ATEST0) is the measured quantity"
+    },
+    {
+     "kind": "delay",
+     "pin": "(none)",
+     "rampTime": "1e-3",
+     "note": "Code3 delay[1e-3]"
+    }
+   ],
+   "measurements": [
+    {
+     "kind": "MI",
+     "pin": "ATEST0",
+     "unit": "uA",
+     "note": "I(VDM) == I(ATEST0); the forced voltage is 1 V and the measured current is the DUT's IBP_HR current"
+    }
+   ],
+   "limits": [
+    {
+     "expression": "ExpectValue=0.5",
+     "unit": "uA",
+     "sourceRank": 1,
+     "note": "OVERVIEW 0.5 uA, DFT.csv 0.5 uA (agree); 'de test' bench datapoint 0.5uA. No tolerance given."
+    }
+   ],
+   "sequence": [
+    "connect (K13_VBAT_Cap; VDM through K59 default-NC)",
+    "VBAT=4 V on",
+    "entertestmode(); EN_ATEST0=1 + ATEST0_MUX=4",
+    "VDM=1 V FV, 10 uA range (smallest), MeasureVI -> MIRET",
+    "power down in three steps"
+   ],
+   "registerWritesFromOverview": [
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x57",
+     "value": "0x02",
+     "fields": "EN_ATEST0=1 (per reg_config/tm103.sv)"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x5E",
+     "value": "0x04",
+     "fields": "ATEST0_MUX=4 -> IBP_HR_0.5UA (per reg_config/tm103.sv)"
+    }
+   ],
+   "variants": [],
+   "evidence": [
+    {
+     "path": "project/DALI/Dali_testmode.xlsx",
+     "sha256": "d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e",
+     "locator": "sheet=OVERVIEW!row 10 (Item=TM103)"
+    },
+    {
+     "path": "project/DALI/input/DFT.csv",
+     "sha256": "b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4",
+     "locator": "CSV record 6 (Item=TM103, ShortName=LP_HR_0P5U, ExpectValue=0.5, Unit=uA, Check=AMUX, Type=MI)",
+     "note": "DFT.csv says Hardware_initial vset[vbat,4.2] + vset[amux,1] and writes 0x56=0x22 for field[(EN_ATEST0,1),(ATEST0_MUX,4)] — a DIFFERENT register pair from reg_config/tm103.sv"
+    },
+    {
+     "path": "project/DALI/reg_config/tm103.sv",
+     "sha256": "64767755a612140a3b2b2359ad1120eb9c364dba61e53aa8cc58c179d993ab79",
+     "locator": "vbat=4V / 0x57=0x02 / 0x5E=0x04 / vdm=1V / delay 1e-3"
+    },
+    {
+     "path": "project/DALI/meta/dali_tm_meta.json",
+     "sha256": "1f5eeb5e33372e197dbcb5d0ac2739e3166729f7210a5f7ca46a423dfcd9f7f1",
+     "locator": "functions[functionName=TM103_HSKP_LP_HR_0P5U]",
+     "note": "derived registry (generated from OVERVIEW by gen_testitems_meta.py) — corroborating, not primary"
+    },
+    {
+     "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+     "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+     "locator": "DUT_API TM103_HSKP_LP_HR_0P5U (lines 1795-1853)"
+    }
+   ],
+   "ambiguities": [
+    "DFT.csv observes ATEST0 through an AMUX pin (vset[amux,1]) while OVERVIEW+reg_config observe it through VDM; the pin carrying ATEST0 is therefore source-dependent and must be settled by the schematic owner (t2/t3).",
+    "DFT.csv's register directive 0x56=0x22 does not match reg_config/tm103.sv's 0x57=0x02 + 0x5E=0x04."
+   ],
+   "confidence": "high",
+   "implementationState": {
+    "presentInDebugTestCpp": true,
+    "functionName": "TM103_HSKP_LP_HR_0P5U",
+    "lines": "1795-1853"
+   }
+  },
+  {
+   "tm": "TM108",
+   "symbol": "TM108_HSKP_VAC1_PRST",
+   "symbolHint": "TM108_HSKP_VAC1_PRST",
+   "overviewItem": "TM108 (base) + TM108_1 (DMO/A output variant)",
+   "name": "VAC1_PRST",
+   "level": "HSKP",
+   "description": "VAC1 PRST COMP threshold, observed as a DTEST0/nQON logic toggle while VAC1 is ramped",
+   "testType": [
+    "toggle",
+    "grouped"
+   ],
+   "testTypeNote": "AWG ramp-threshold (UVLO/PRST) toggle; grouped identity = base TM108 + DMO/A variant TM108_1",
+   "channels": [
+    {
+     "role": "supply",
+     "pins": [
+      "VBAT"
+     ],
+     "sense": "none"
+    },
+    {
+     "role": "ramp",
+     "pins": [
+      "VAC1"
+     ],
+     "sense": "scanned source (voltage at the toggle instant is the result)"
+    },
+    {
+     "role": "observer",
+     "pins": [
+      "DTEST0 -> nQON pad"
+     ],
+     "sense": "logic level read through nQON_HG1_ACM with K65_nQON_PU pull-up"
+    }
+   ],
+   "stimuli": [
+    {
+     "kind": "vset",
+     "pin": "vbat",
+     "value": 3.0,
+     "unit": "V",
+     "rampTime": "100e-6",
+     "ignore": 0,
+     "note": "OVERVIEW Code1 / reg_config/tm108.sv (DFT.csv says 4.2 V — see conflicts)"
+    },
+    {
+     "kind": "ramp_up",
+     "pin": "vac1",
+     "value": 10.0,
+     "unit": "V",
+     "rampTime": "1e-3",
+     "ignore": 0,
+     "note": "OVERVIEW Code2 vset[vac1,10,1e-3,0] as written; the OVERVIEW Notes describe the real intent as 'ramp up/down vac1 from 3~5V, 1V/ms'"
+    },
+    {
+     "kind": "ramp_down",
+     "pin": "vac1",
+     "value": 0.0,
+     "unit": "V",
+     "rampTime": "1e-3",
+     "ignore": 0,
+     "note": "OVERVIEW Code2 vset[vac1,0,1e-3,0]"
+    },
+    {
+     "kind": "en_tm",
+     "pin": "(none)",
+     "note": "Code2 en_tm[]"
+    },
+    {
+     "kind": "field",
+     "pin": "(none)",
+     "note": "Code2 field[(DMUX_EN,1),(DMUX_SEL,22)] -> a2d_vac1_prst routed to DTEST0"
+    },
+    {
+     "kind": "delay",
+     "pin": "(none)",
+     "rampTime": "1e-3",
+     "note": "Code3 delay[1e-3]"
+    }
+   ],
+   "measurements": [
+    {
+     "kind": "MV",
+     "pin": "DTEST0",
+     "unit": "V",
+     "note": "toggle threshold captured on the ramp source: rising threshold and falling threshold; hysteresis = rise - fall (x1e3 mV)"
+    }
+   ],
+   "limits": [
+    {
+     "expression": "ExpectValue 'rising vth 4.4V, hys 0.35V' (OVERVIEW + meta)",
+     "unit": "V",
+     "sourceRank": 1,
+     "note": "OVERVIEW/meta authoritative value: rise 4.4 V, hys 0.35 V."
+    },
+    {
+     "expression": "DFT.csv record 9 ExpectValue 'rising vth 4.15V, hys 0.35V'",
+     "unit": "V",
+     "sourceRank": 2,
+     "note": "DFT.csv rising threshold 4.15 V vs OVERVIEW 4.4 V — 250 mV discrepancy, recorded as conflict C-02 (not averaged, not silently chosen)."
+    }
+   ],
+   "sequence": [
+    "cbite.SetOn(K13_VBAT_Cap, K65_nQON_PU, -1); delay 3 ms (VAC1 is the scanned input: K21_VAC_Cap must stay open)",
+    "VBAT=3 V on; entertestmode(); DMUX_SEL=22 + DMUX_EN=1",
+    "library ramp capture: rampv_capv(VAC1 source, observer nQON source, 0->10 V TRIG_FALLING -> rise; 10->0 V TRIG_RISING -> fall)",
+    "hys = (rise - fall) x 1e3; power down in three steps"
+   ],
+   "registerWritesFromOverview": [
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x56",
+     "value": "0x16",
+     "fields": "DMUX_SEL=22 (a2d_vac1_prst) per reg_config/tm108.sv"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x57",
+     "value": "0x08",
+     "fields": "DMUX_EN=1 per reg_config/tm108.sv"
+    }
+   ],
+   "variants": [
+    {
+     "item": "TM108",
+     "scopeKind": "base",
+     "description": "VAC1 PRST COMP threshold, DTEST0/nQON toggle observation",
+     "benchDatapoint": "r 4.059 / f 3.738 (hys ~0.321 V)",
+     "helper": "ramp VAC , INT toggle",
+     "evidence": [
+      {
+       "path": "project/DALI/Dali_testmode.xlsx",
+       "sha256": "d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e",
+       "locator": "sheet=OVERVIEW!row 15 (Item=TM108)"
+      },
+      {
+       "path": "project/DALI/reg_config/tm108.sv",
+       "sha256": "4d0ea5c30fe5369e98a6d81215bbfb5b5f41bf44ea1c5dbc8df94af75bb92dc1",
+       "locator": "0x56=0x16 / 0x57=0x08 / vac1 ramp 10V then 0V, 1e-3"
+      },
+      {
+       "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+       "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+       "locator": "DUT_API TM108_HSKP_VAC1_PRST (lines 2148-2225)"
+      }
+     ]
+    },
+    {
+     "item": "TM108_1",
+     "scopeKind": "variant",
+     "description": "Same threshold measured through the DMO/A output instead of DTEST0",
+     "fieldDirective": "key1_open[]; field[(DMUX_EN,1),(DMUX_SEL,22)]; field[(D2A_DMO_CHANNEL_SEL,1),(D2A_DMA_CHANNEL_SEL,1),(DM_CHANNEL_SEL_OVER_WRITE,1),(D2A_DMA_EN,1),(D2A_DMO_EN,1)]",
+     "evidence": [
+      {
+       "path": "project/DALI/Dali_testmode.xlsx",
+       "sha256": "d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e",
+       "locator": "sheet=OVERVIEW!row 16 (Item=TM108_1)"
+      },
+      {
+       "path": "project/DALI/reg_config/tm108_1.sv",
+       "sha256": "85eebbfab1bdb7a4b0f546dae28fc8294c04505372a3e3425a8a4b85a743494f",
+       "locator": "DMO/A observer enable group"
+      }
+     ]
+    }
+   ],
+   "groupedIdentity": "TM108 and TM108_1 share the TM108 base with different observation paths (DTEST0 vs DMO/A). Only the TM108 base is named in the acceptance scope.",
+   "evidence": [
+    {
+     "path": "project/DALI/Dali_testmode.xlsx",
+     "sha256": "d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e",
+     "locator": "sheet=OVERVIEW!rows 15-16 (Item=TM108, TM108_1)"
+    },
+    {
+     "path": "project/DALI/input/DFT.csv",
+     "sha256": "b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4",
+     "locator": "CSV record 9 (Item=TM108, Function Name=VAC_PRST, ExpectValue rising 4.15V/hys 0.35V, Check=INT, Type=Toggle,MV)",
+     "note": "DFT.csv observes INT and writes 0x55=0x97 for field[(EN_DTEST0,1),(DTEST0_MUX,23)] — a different DMUX_SEL from reg_config/tm108.sv (22)"
+    },
+    {
+     "path": "project/DALI/input/DFT_restored.csv",
+     "sha256": "0e0c31106586eacc0ef919b2c5a42d78c036e714d905ec9a7121dbffadcd8bc2",
+     "locator": "CSV record 9 (identical to DFT.csv for TM108)"
+    },
+    {
+     "path": "project/DALI/reg_config/tm108.sv",
+     "sha256": "4d0ea5c30fe5369e98a6d81215bbfb5b5f41bf44ea1c5dbc8df94af75bb92dc1",
+     "locator": "0x56=0x16 (DMUX_SEL=22) / 0x57=0x08"
+    },
+    {
+     "path": "project/DALI/meta/dali_tm_meta.json",
+     "sha256": "1f5eeb5e33372e197dbcb5d0ac2739e3166729f7210a5f7ca46a423dfcd9f7f1",
+     "locator": "functions[functionName=TM108_HSKP_VAC1_PRST]",
+     "note": "derived registry (generated from OVERVIEW by gen_testitems_meta.py) — corroborating, not primary"
+    },
+    {
+     "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+     "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+     "locator": "DUT_API TM108_HSKP_VAC1_PRST (lines 2148-2225)"
+    }
+   ],
+   "ambiguities": [
+    "DMUX_SEL is 22 per OVERVIEW+reg_config/tm108.sv but the DFT.csv comment says DTEST0_MUX=23 -> the register value must be settled by t3/t4 (recorded as conflict C-04).",
+    "OVERVIEW Code2 writes vset[vac1,10,1e-3] (full 0..10 V sweep) while the Notes specify '3~5V, 1V/ms'; the implemented ramp is 0..10 V.",
+    "Observability: DFT.csv checks the INT pin, OVERVIEW/implementation observe DTEST0/nQON — the identity of the physical observation pin is a t2/t3 decision."
+   ],
+   "confidence": "high",
+   "implementationState": {
+    "presentInDebugTestCpp": true,
+    "functionName": "TM108_HSKP_VAC1_PRST",
+    "lines": "2148-2225"
+   }
+  },
+  {
+   "tm": "TM109",
+   "symbol": "TM109_HSKP_VAC2_PRST",
+   "symbolHint": "TM109_HSKP_VAC2_PRST",
+   "overviewItem": "TM109",
+   "name": "VAC2_PRST",
+   "level": "HSKP",
+   "description": "VAC2 PRST COMP threshold, observed as a DTEST0/nQON logic toggle while VAC2 is ramped",
+   "testType": [
+    "toggle"
+   ],
+   "testTypeNote": "AWG ramp-threshold (UVLO/PRST) toggle, observed as a DTEST0/nQON logic flip",
+   "channels": [
+    {
+     "role": "supply",
+     "pins": [
+      "VBAT"
+     ],
+     "sense": "none"
+    },
+    {
+     "role": "ramp",
+     "pins": [
+      "VAC2"
+     ],
+     "sense": "scanned source"
+    },
+    {
+     "role": "observer",
+     "pins": [
+      "DTEST0 -> nQON pad"
+     ],
+     "sense": "logic level read with K65_nQON_PU pull-up"
+    }
+   ],
+   "stimuli": [
+    {
+     "kind": "vset",
+     "pin": "vbat",
+     "value": 3.0,
+     "unit": "V",
+     "rampTime": "100e-6",
+     "ignore": 0,
+     "note": "OVERVIEW Code1 / reg_config/tm109.sv (DFT.csv says 4.2 V — see conflicts)"
+    },
+    {
+     "kind": "ramp_up",
+     "pin": "vac2",
+     "value": 10.0,
+     "unit": "V",
+     "rampTime": "1e-3",
+     "ignore": 0,
+     "note": "Code2 vset[vac2,10,1e-3,0]"
+    },
+    {
+     "kind": "ramp_down",
+     "pin": "vac2",
+     "value": 0.0,
+     "unit": "V",
+     "rampTime": "1e-3",
+     "ignore": 0,
+     "note": "Code2 vset[vac2,0,1e-3,0]"
+    },
+    {
+     "kind": "en_tm",
+     "pin": "(none)",
+     "note": "Code2 en_tm[]"
+    },
+    {
+     "kind": "field",
+     "pin": "(none)",
+     "note": "Code2 field[(DMUX_EN,1),(DMUX_SEL,21)] -> a2d_vac2_prst"
+    },
+    {
+     "kind": "delay",
+     "pin": "(none)",
+     "rampTime": "1e-3",
+     "note": "Code3 delay[1e-3]"
+    }
+   ],
+   "measurements": [
+    {
+     "kind": "MV",
+     "pin": "DTEST0",
+     "unit": "V",
+     "note": "rising/falling toggle thresholds captured on the ramp source; hys = rise - fall (x1e3 mV)"
+    }
+   ],
+   "limits": [
+    {
+     "expression": "ExpectValue 'rising vth 4.4V, hys 0.35V' (OVERVIEW + meta)",
+     "unit": "V",
+     "sourceRank": 1
+    },
+    {
+     "expression": "DFT.csv record 10 ExpectValue 'rising vth 4.15V, hys 0.35V'",
+     "unit": "V",
+     "sourceRank": 2,
+     "note": "Same 250 mV discrepancy as TM108 — conflict C-02."
+    }
+   ],
+   "sequence": [
+    "cbite.SetOn(K13_VBAT_Cap, K65_nQON_PU, K19_ACM0_VAC2, -1); delay 3 ms",
+    "VBAT=3 V on; entertestmode(); DMUX_SEL=21 + DMUX_EN=1",
+    "rampv_capv dual sweep (0->10 V TRIG_FALLING = rise, 10->0 V TRIG_RISING = fall)",
+    "hys x1e3; three-step power-down"
+   ],
+   "registerWritesFromOverview": [
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x56",
+     "value": "0x15",
+     "fields": "DMUX_SEL=21 (a2d_vac2_prst) per reg_config/tm109.sv"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x57",
+     "value": "0x08",
+     "fields": "DMUX_EN=1 per reg_config/tm109.sv"
+    }
+   ],
+   "variants": [],
+   "evidence": [
+    {
+     "path": "project/DALI/Dali_testmode.xlsx",
+     "sha256": "d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e",
+     "locator": "sheet=OVERVIEW!row 17 (Item=TM109)"
+    },
+    {
+     "path": "project/DALI/input/DFT.csv",
+     "sha256": "b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4",
+     "locator": "CSV record 10 (Item=TM109, ExpectValue rising 4.15V/hys 0.35V, Dynamic=vset[vac3,...], Check=INT)",
+     "note": "DFT.csv Dynamic drives VAC3 while the item is VAC2 — a source-internal inconsistency in DFT.csv itself"
+    },
+    {
+     "path": "project/DALI/input/DFT_restored.csv",
+     "sha256": "0e0c31106586eacc0ef919b2c5a42d78c036e714d905ec9a7121dbffadcd8bc2",
+     "locator": "CSV record 10 (identical to DFT.csv for TM109)"
+    },
+    {
+     "path": "project/DALI/reg_config/tm109.sv",
+     "sha256": "235d9cee0da964489d53c9c70d2b3e932f98be24442ce9cd8d247716e7ad80d5",
+     "locator": "0x56=0x15 (DMUX_SEL=21) / 0x57=0x08"
+    },
+    {
+     "path": "project/DALI/meta/dali_tm_meta.json",
+     "sha256": "1f5eeb5e33372e197dbcb5d0ac2739e3166729f7210a5f7ca46a423dfcd9f7f1",
+     "locator": "functions[functionName=TM109_HSKP_VAC2_PRST]",
+     "note": "derived registry (generated from OVERVIEW by gen_testitems_meta.py) — corroborating, not primary"
+    },
+    {
+     "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+     "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+     "locator": "DUT_API TM109_HSKP_VAC2_PRST (lines 2225-2303)"
+    }
+   ],
+   "ambiguities": [
+    "DFT.csv record 10 ramps vac3 (not vac2) and uses DTEST0_MUX=22 (the TM108 value) — duplicate/garbled row; OVERVIEW + reg_config/tm109.sv (DMUX_SEL=21, vac2) is used as primary.",
+    "Same INT-vs-DTEST0/nQON observation-pin question as TM108."
+   ],
+   "confidence": "high",
+   "implementationState": {
+    "presentInDebugTestCpp": true,
+    "functionName": "TM109_HSKP_VAC2_PRST",
+    "lines": "2225-2303"
+   }
+  },
+  {
+   "tm": "TM135",
+   "symbol": "Trim_BG_RES_DIV",
+   "symbolHint": "Trim_BG_RES_DIV",
+   "overviewItem": "TM135",
+   "name": "VREF_1P0",
+   "level": "BG",
+   "description": "VREF_1P0 ACC — bandgap resistor-divider trim (TRIM_BG_RES_DIV), target 1.000 V measured on ATEST0/VDM",
+   "testType": [
+    "trim"
+   ],
+   "trim": {
+    "flag": true,
+    "node": "bg_res_div",
+    "steps": 8,
+    "target_mV": 1000,
+    "stepParams": [
+     "BG_RES_DIV_step0..step7"
+    ],
+    "readbackParams": [
+     "BG_RES_DIV_pre_value",
+     "BG_RES_DIV_pre_bit",
+     "BG_RES_DIV_post_bit",
+     "BG_RES_DIV_updated",
+     "BG_RES_DIV_guessed",
+     "BG_RES_DIV_target",
+     "BG_RES_DIV_post_value",
+     "BG_RES_DIV_post_rt"
+    ],
+    "evidence": [
+     {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+      "locator": "DUT_API Trim_BG_RES_DIV (lines 3921-3987) header comment: 'treg: bg_res_div, 8步(ASSY F1 bits 2-4), Target=1000mV'"
+     },
+     {
+      "path": "knowledge/references/L4-Golden-code/sub-measure-template.cpp",
+      "sha256": "8cdb0be1dd8381008a6a6ca84743170d6e1cf6f5c84f21a1e2e947a0187b72ce",
+      "locator": "sub-measure template (measured via the sub.cpp measure_bg_res_div helper)"
+     }
+    ]
+   },
+   "channels": [
+    {
+     "role": "supply",
+     "pins": [
+      "VBAT"
+     ],
+     "sense": "none"
+    },
+    {
+     "role": "test-pad",
+     "pins": [
+      "VDM"
+     ],
+     "sense": "MV (V(ATEST0) via VDM held high-Z)"
+    }
+   ],
+   "stimuli": [
+    {
+     "kind": "vset",
+     "pin": "vbat",
+     "value": 5.0,
+     "unit": "V",
+     "rampTime": "100e-6",
+     "ignore": 0,
+     "note": "OVERVIEW Code1 / reg_config/tm135.sv"
+    },
+    {
+     "kind": "en_tm",
+     "pin": "(none)",
+     "note": "Code1 en_tm[]"
+    },
+    {
+     "kind": "field",
+     "pin": "(none)",
+     "note": "Code2 field[(WAKE_UP,1)] then field[(EN_ATEST0,1),(ATEST0_MUX,10)]"
+    },
+    {
+     "kind": "delay",
+     "pin": "(none)",
+     "rampTime": "1e-3",
+     "note": "Code3 delay[1e-3]"
+    },
+    {
+     "kind": "vset_off",
+     "pin": "vdm",
+     "note": "vset_off[vdm] before the trim readback (implementation: FI,0 high-Z)"
+    }
+   ],
+   "measurements": [
+    {
+     "kind": "MV",
+     "pin": "ATEST0",
+     "unit": "mV",
+     "note": "measure_bg_res_div writes EFUSE_REG_F1 and returns mV (MVRET x 1e3); trim driver compares against the 1000 mV target"
+    }
+   ],
+   "limits": [
+    {
+     "expression": "ExpectValue=1 (VREF_1P0 target); trim target 1000 mV",
+     "unit": "V",
+     "sourceRank": 1,
+     "note": "OVERVIEW 1 V; 'de test' 0.9853 V; aetest note 'Bench Passed, 0.998V, able to trim'. No tolerance given."
+    }
+   ],
+   "sequence": [
+    "connect K13_VBAT_Cap",
+    "VBAT=5 V on",
+    "entertestmode(); WAKE_UP=1; EN_ATEST0=1 + ATEST0_MUX=10",
+    "release VDM to high-Z",
+    "TRIM_NODE.execute(measure_bg_res_div, spec, ...) — per-step EFUSE write + VDM MV readback",
+    "three-step power-down"
+   ],
+   "registerWritesFromOverview": [
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x10",
+     "value": "0x43",
+     "fields": "WAKE_UP=1 per reg_config/tm135.sv"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x57",
+     "value": "0x02",
+     "fields": "EN_ATEST0=1 per reg_config/tm135.sv"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x5E",
+     "value": "0x0A",
+     "fields": "ATEST0_MUX=10 -> BG_RES_DIV per reg_config/tm135.sv"
+    }
+   ],
+   "variants": [],
+   "evidence": [
+    {
+     "path": "project/DALI/Dali_testmode.xlsx",
+     "sha256": "d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e",
+     "locator": "sheet=OVERVIEW!row 45 (Item=TM135, Trim=Y, Notes='TRIM_BG_RES_DIV')"
+    },
+    {
+     "path": "project/DALI/input/DFT.csv",
+     "sha256": "b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4",
+     "locator": "no TM135 record exists in DFT.csv"
+    },
+    {
+     "path": "project/DALI/reg_config/tm135.sv",
+     "sha256": "9a4d6989ba080e9c69fa8d79b9976d3f0f98f8f9ec587773f297afa4363a0a94",
+     "locator": "vbat=5V / 0x10=0x43 / 0x57=0x02 / 0x5E=0x0A / delay 1e-3"
+    },
+    {
+     "path": "project/DALI/meta/dali_tm_meta.json",
+     "sha256": "1f5eeb5e33372e197dbcb5d0ac2739e3166729f7210a5f7ca46a423dfcd9f7f1",
+     "locator": "functions[functionName=Trim_BG_RES_DIV]",
+     "note": "derived registry (generated from OVERVIEW by gen_testitems_meta.py) — corroborating, not primary"
+    },
+    {
+     "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+     "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+     "locator": "DUT_API Trim_BG_RES_DIV (lines 3921-3987)"
+    },
+    {
+     "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+     "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+     "locator": "DUT_API measure_bg_res_div (declared in sub.h; defined in sub.cpp around line 2978)"
+    }
+   ],
+   "ambiguities": [
+    "Step count: the DFT sources do not state the trim step count; 8 steps is taken from the test.cpp comment 'ASSY F1 bits 2-4'. The authoritative step definition lives in the TReg/EFUSE definition, which this task must not edit — flagged for t3/t4 to confirm.",
+    "OVERVIEW ExpectValue=1 V vs 'de test' 0.9853 V: the 1 V figure is a target, not a measured limit; no tolerance exists in any DFT source."
+   ],
+   "confidence": "high",
+   "implementationState": {
+    "presentInDebugTestCpp": true,
+    "functionName": "Trim_BG_RES_DIV",
+    "lines": "3921-3987"
+   }
+  },
+  {
+   "tm": "TM600",
+   "symbol": "TM600_HS_RDSON",
+   "symbolHintFromPlan": "RDSON_TEST_HS (acceptance-plan.json placeholder, superseded by CR-01)",
+   "overviewItem": "TM600",
+   "name": "HS_RDSON",
+   "level": "BUBO",
+   "description": "high side powerfet rdson — Rds,on=(PMID-SW)/ISW with a floating high-current force and a differential Kelvin sense across PMID-SW",
+   "testType": [
+    "normal",
+    "high-current",
+    "differential"
+   ],
+   "testTypeNote": "floating high-current force + differential Kelvin sense + force-sense (four-wire) discipline; MV&MI per the DFT",
+   "baseline": "missing-from-debug-test.cpp",
+   "channels": [
+    {
+     "role": "floating force (high current)",
+     "pins": [
+      "PMID (High)",
+      "SW (Low)"
+     ],
+     "sense": "force a current between PMID and SW; per the .sv sources SW carries iset[sw,1A]"
+    },
+    {
+     "role": "differential Kelvin sense",
+     "pins": [
+      "PMID",
+      "SW"
+     ],
+     "sense": "MV of the differential pair that the force path shares (Kelvin) — see conflict C-01 for the FV/FI role assignment"
+    },
+    {
+     "role": "supply",
+     "pins": [
+      "VBAT",
+      "BST-SW",
+      "VDRV"
+     ],
+     "sense": "none"
+    },
+    {
+     "role": "bootstrap rail",
+     "pins": [
+      "BST",
+      "SW"
+     ],
+     "sense": "BST-SW must stay ~5 V while the HS FET is forced on"
+    }
+   ],
+   "stimuli": [
+    {
+     "kind": "vset",
+     "pin": "vbat",
+     "value": 3.5,
+     "unit": "V",
+     "rampTime": "100e-6",
+     "ignore": 0,
+     "note": "reg_config/tm600.sv (DFT.csv says 4.2 V while also declaring pmid=15 V — see conflicts)"
+    },
+    {
+     "kind": "vset",
+     "pin": "pmid",
+     "value": 5.0,
+     "unit": "V",
+     "rampTime": "100e-6",
+     "ignore": 0,
+     "note": "reg_config/tm600.sv vsvPMID=5 V"
+    },
+    {
+     "kind": "vset",
+     "pin": "bst_sw",
+     "value": 5.0,
+     "unit": "V",
+     "rampTime": "1e-3",
+     "ignore": 0,
+     "note": "reg_config/tm600.sv: the BST-SW differential rail is held at 5 V"
+    },
+    {
+     "kind": "vset",
+     "pin": "vdrv",
+     "value": 5.0,
+     "unit": "V",
+     "rampTime": "100e-6",
+     "ignore": 0,
+     "note": "reg_config/tm600.sv"
+    },
+    {
+     "kind": "en_tm",
+     "pin": "(none)",
+     "note": "reg_config/tm600.sv entertestmode()"
+    },
+    {
+     "kind": "field",
+     "pin": "(none)",
+     "note": "reg_config/tm600.sv field[(WAKE_UP,1)] + field[(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(D2A_BUBO_TM_HSON,1)]"
+    },
+    {
+     "kind": "delay",
+     "pin": "(none)",
+     "rampTime": "1e-3",
+     "note": "reg_config/tm600.sv after the register writes"
+    },
+    {
+     "kind": "iset",
+     "pin": "sw",
+     "value": 1.0,
+     "unit": "A",
+     "rampTime": "1e-3",
+     "ignore": 0,
+     "note": "reg_config/tm600.sv iset[sw,1,1e-3,0] — force 1 A; the DFT.csv equivalent is iset[pmid2sw,1,1e-3,0] (25% vs 50% of the DFT.csv load, see C-01)"
+    },
+    {
+     "kind": "delay",
+     "pin": "(none)",
+     "rampTime": "2e-3",
+     "note": "reg_config/tm600.sv after the current is applied"
+    }
+   ],
+   "measurements": [
+    {
+     "kind": "MV",
+     "pin": "PMID-SW",
+     "unit": "V",
+     "note": "differential voltage across the high-side FET"
+    },
+    {
+     "kind": "MI",
+     "pin": "SW",
+     "unit": "A",
+     "note": "current flowing through the high-side FET (R-VIR: RON must use measured V and measured I, not the programmed value)"
+    },
+    {
+     "kind": "MV",
+     "pin": "BST_SW",
+     "unit": "V",
+     "note": "floating-source compliance monitor named by OVERVIEW Check"
+    }
+   ],
+   "limits": [
+    {
+     "expression": "ExpectValue=11 (OVERVIEW, Test=direct, Special='Y / 2 FLOAT')",
+     "unit": "mΩ",
+     "sourceRank": 1,
+     "note": "OVERVIEW is the DFT intent source and the meta source of record."
+    },
+    {
+     "expression": "DFT.csv record 19 ExpectValue=10 (unit string 'mohm')",
+     "unit": "mΩ",
+     "sourceRank": 2,
+     "note": "10 vs 11 mΩ — conflict C-01. No averaging or silent choice is permitted."
+    }
+   ],
+   "sequence": [
+    "Step 1 connect: floating-high-current + Kelvin pair relays, VBAT/BST-SW/VDRV caps, bootstrap pair held at 5 V",
+    "Step 2 power on: VBAT=3.5 V, PMID=5 V, BST-SW=5 V, VDRV=5 V (BST must lead/swing with PMID so BST-SW stays positive)",
+    "Step 3 registers: entertestmode(); WAKE_UP=1; D2A_BUBO_EN_FORCE_ON=1; D2A_BUBO_TM_DIS_CLK=1; D2A_BUBO_TM_HSON=1 (HS FET forced on); delay 1 ms",
+    "Step 4 measure: apply iset 1 A into the PMID->SW loop, delay 2 ms, measure the differential V(PMID-SW) and the loop I, then RON = V/I x 1e3 mΩ",
+    "Step 5 power down: keep the FET on while BST and PMID ramp down together (BST always leading by ~5 V); unified RELAY_OFF"
+   ],
+   "registerWritesFromOverview": [],
+   "registerWritesFromRegConfig": [
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x10",
+     "value": "0x43",
+     "fields": "WAKE_UP=1",
+     "note": "reg_config/tm600.sv (authoritative register sequence for TM600)"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x59",
+     "value": "0x20",
+     "fields": "bit5=1",
+     "note": "reg_config/tm600.sv"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x5A",
+     "value": "0x02",
+     "fields": "D2A_BUBO_TM_HSON=1 (HS FET on)",
+     "note": "reg_config/tm600.sv — CONFLICT C-03: DFT.csv writes 0x59=0x01 and 0x61=0x0B instead"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x61",
+     "value": "0x4B",
+     "fields": "D2A_BUBO_EN_FORCE_ON=1 + D2A_BUBO_TM_DIS_CLK=1",
+     "note": "reg_config/tm600.sv — DFT.csv writes 0x61=0x0B here"
+    }
+   ],
+   "highCurrentPlan": {
+    "forceChannel": "floating current source between PMID and SW",
+    "forceValue": "1 A (reg_config/tm600.sv iset[sw,1,1e-3,0]); DFT.csv alternative iset[pmid2sw,1,1e-3,0] — 25% vs 50% of the 4 A DFT.csv static operating point",
+    "compliance": "UNKNOWN — neither tm600.sv nor the DFT sources state a clamp/compliance limit; the golden case uses SetClamp(50,50) = 50% x 1 V = 0.5 V (max measurable RON 500 mΩ). Must be fixed by t3/t4.",
+    "thermalNote": "1 A pulses with a 2 ms settle; RON must be computed from measured V and I (R-VIR) and the pulse must stay short enough to avoid self-heating (L3-method/RDSON: 50-500 us pulses for characterisation).",
+    "discharge": "No explicit discharge step exists in the DFT sources. Power-down must not leave the bootstrap capacitor charged above the FET's rails: ramp BST and PMID down together with BST leading, then drop VDRV, then unified RELAY_OFF (per the TM600 golden case)."
+   },
+   "variants": [],
+   "evidence": [
+    {
+     "path": "project/DALI/Dali_testmode.xlsx",
+     "sha256": "d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e",
+     "locator": "sheet=OVERVIEW!row 132 (Item=TM600, ExpectValue=11, Unit=mΩ, Test=direct, Special='Y 2 FLOAT', Notes='Rds,on=(PMID-SW)/ISW')",
+     "note": "OVERVIEW row 132 = spreadsheet row 132 (header on row 1); extracted via openpyxl"
+    },
+    {
+     "path": "project/DALI/input/DFT.csv",
+     "sha256": "b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4",
+     "locator": "CSV record 19 (Item=TM600, Function Name=RDSON_TEST, ShortName=HS_RDSON, ExpectValue=10, Unit=mohm, Type=MV&MI, Check=PMID-SW)"
+    },
+    {
+     "path": "project/DALI/input/DFT_restored.csv",
+     "sha256": "0e0c31106586eacc0ef919b2c5a42d78c036e714d905ec9a7121dbffadcd8bc2",
+     "locator": "CSV record 19",
+     "note": "DFT_restored differs from DFT.csv: pmid=15 V, bst2sw=5 V, 0x58=0x00 + 0x10=0x43 + 0x59=0x01 + 0x61=0x0B, iset[pmid2sw,1,1e-3], ExpectValue=10, Unit=mΩ, Check=PMID-SW — see conflict C-05"
+    },
+    {
+     "path": "project/DALI/reg_config/tm600.sv",
+     "sha256": "290574bcd198cb5e85429f8ae37f91ce97da31713cfc7075b9d07e57014bada0",
+     "locator": "full body: vbat=3.5/pmid=5/bst_sw=5/vdrv=5; 0x10=0x43; 0x59=0x20; 0x5A=0x02; 0x61=0x4B; delay 1e-3; iset[sw,1,1e-3]; delay 2e-3",
+     "note": "TM600 register sequence of record (matches the current BUBO bit map used by TM640/TM607-609)"
+    },
+    {
+     "path": "knowledge/references/L4-Golden-code/tm600-normal-highcurrent.cpp",
+     "sha256": "8cdb0be1dd8381008a6a6ca84743170d6e1cf6f5c84f21a1e2e947a0187b72ce",
+     "locator": "TM600_RDSON_TEST (139 lines)",
+     "note": "golden case: staircase power-up with BST leading PMID by 5 V, FPVI floating force, SetClamp(50,50), RON = MVRET/MIRET x 1e3"
+    },
+    {
+     "path": "docs/PROGRESS.md",
+     "sha256": "efc810564b5d66a7282b9952a6acac6d2360d64ff2fc8ee284109efa0331a6d8",
+     "locator": "lines 1106-1121 and 1182 and 1234",
+     "note": "TM600 HS_RDSON is recorded as an already produced test item with a floating high-current reference"
+    },
+    {
+     "path": "project/DALI/meta/dali_tm_meta.json",
+     "sha256": "1f5eeb5e33372e197dbcb5d0ac2739e3166729f7210a5f7ca46a423dfcd9f7f1",
+     "locator": "functions[*].functionName — search for TM600 returns 0 of 99 entries",
+     "note": "ABSENCE EVIDENCE: the derived registry has no TM600 entry"
+    }
+   ],
+   "ambiguities": [
+    "C-01: which physical pin carries the forced current (SW per tm600.sv vs PMID_SW per DFT.csv) and the role of the 2 FLOAT flag.",
+    "C-03: two different register maps (tm600.sv vs DFT.csv).",
+    "Control/compliance limit for the 1 A floating force is stated nowhere in the DFT sources.",
+    "What 'Y / 2 FLOAT' in OVERVIEW Special means: two floating nodes, or a 2 A floating force? (10 WARN in the PROGRESS reference concern the FPVI/current-range choice, not the flag semantics.)"
+   ],
+   "confidence": "medium",
+   "implementationState": {
+    "presentInDebugTestCpp": false,
+    "note": "0 matches for TM600/RDSON in the 8878-line plaintext of ForCodexDebug/source/test.cpp; the highest DUT_API entries are TM1004-TM1100 then TM1205"
+   },
+   "symbolRuling": "CR-01 (captain): TM<item>_<SHORTNAME> per scripts/gen_testitems_meta.py:91",
+   "mvMiRequirement": {
+    "type": "MV&MI",
+    "source": "project/DALI/input/DFT.csv record index 18 (0-based), Type=MV&MI",
+    "requirement": "a force path (current forced through the DUT pin pair) is mandatory AND the differential voltage must be read simultaneously on the same pair with a separate Kelvin sense (force/sense separation); RON = V_measured / I_measured x 1e3 mΩ — the programmed current must never be substituted for the measured one (R-VIR).",
+    "forcePath": {
+     "role": "floating force (high current)",
+     "pins": [
+      "PMID (High)",
+      "SW (Low)"
+     ],
+     "sense": "force a current between PMID and SW; per the .sv sources SW carries iset[sw,1A]"
+    },
+    "sensePath": {
+     "role": "differential Kelvin sense",
+     "pins": [
+      "PMID",
+      "SW"
+     ],
+     "sense": "MV of the differential pair that the force path shares (Kelvin) — see conflict C-01 for the FV/FI role assignment"
+    },
+    "notes": [
+     "The DFT does not state whether force and sense share physical pins; with only one floating resource available, the verification must confirm Kelvin separation or explicitly declare the shared-pin limitation.",
+     "Because the force and sense pins differ between sources (BD-02), the final force/sense assignment is a t3/t4 decision."
+    ]
+   },
+   "forceAndSense": {
+    "force": {
+     "pins": [
+      "PMID",
+      "SW"
+     ],
+     "polarity": "PMID = High, SW = Low",
+     "source": "reg_config/tm600.sv iset[sw,1,1e-3,0] (HS FET forced on: current enters PMID, exits SW, returns through the floating source)",
+     "csvAlternative": "DFT.csv record index 18: iset[pmid2sw,1,1e-3,0] — same pair, the rail is named by its two ends",
+     "consistentWithCheckNode": true,
+     "checkNode": "PMID-SW (DFT.csv Check, OVERVIEW Notes Rds,on=(PMID-SW)/ISW)",
+     "ruledPair": "pmid2sw",
+     "ruledBy": "captain (R-03)",
+     "authoritativePair": "pmid2sw",
+     "note": "ruled pair pmid2sw; the reg_config/tm600.sv instrument node is SW (iset[sw,1,1e-3,0]) and DFT.csv names the same loop pmid2sw. Instrument-side pin notation vs loop-end notation — see instrumentPin.",
+     "instrumentPin": {
+      "node": "SW",
+      "evidence": "reg_config/tm600.sv:38-42 (`NVT_STIM.isrcSW.ramp_isrc_val(1, 1e-3); // iset[sw,1,1e-3,0] // pin SW current set to 1A)"
+     },
+     "rulingStatus": "resolved",
+     "polarityConfirmed": "PMID = High, SW = Low (CR-03 confirms PMID↔SW for TM600); fixture path S1_FPVIe_FH0->PMID_F_S1 uses relay 83",
+     "rulingRef": "CR-03"
+    },
+    "sense": {
+     "pins": [
+      "PMID",
+      "SW"
+     ],
+     "polarity": "differential",
+     "source": "DFT.csv Check=PMID-SW (MV&MI: differential voltage read while the force current flows)",
+     "decomposition": "RON_HS = V(PMID-SW) / I(PMID→SW) x 1e3 mΩ",
+     "ruledPair": "PMID-SW",
+     "ruledBy": "captain (R-03)",
+     "rulingStatus": "resolved"
+    },
+    "selfConsistency": "CONSISTENT: the forced loop PMID→SW is exactly the pair whose drop is sensed, so the sensed drop is the HS FET drop.",
+    "rulingApplied": "R-03: TM600 force pmid2sw / sense PMID-SW — force and sense are the same physical pair (Kelvin separation still to be confirmed by t2)"
+   }
+  },
+  {
+   "tm": "TM601",
+   "symbol": "TM601_LS_RDSON",
+   "symbolHintFromPlan": "RDSON_TEST_LS (acceptance-plan.json placeholder, superseded by CR-01)",
+   "overviewItem": "TM601",
+   "name": "LS_RDSON",
+   "level": "BUBO",
+   "description": "low side powerfet rdson — Rds,on=(SW-PGND)/IPMID2SW with a floating force and differential Kelvin sense across the low-side FET",
+   "testType": [
+    "normal",
+    "high-current",
+    "differential"
+   ],
+   "testTypeNote": "floating high-current force + differential Kelvin sense + force-sense (four-wire) discipline; MV&MI per the DFT",
+   "baseline": "missing-from-debug-test.cpp",
+   "channels": [
+    {
+     "role": "floating force (high current, low-side loop)",
+     "pins": [
+      "PGND (High)",
+      "SW (Low)"
+     ],
+     "sense": "force the 1 A loop through PGND(High) -> floating source -> SW(Low) -> LS FET",
+     "ruledPair": "sw2pgnd"
+    },
+    {
+     "role": "differential Kelvin sense",
+     "pins": [
+      "PGND (High)",
+      "SW (Low)"
+     ],
+     "sense": "MV of the same physical pair (fixture sense channel at relays 154/155 HIGH and 60/61 LOW)"
+    },
+    {
+     "role": "supply",
+     "pins": [
+      "VBAT",
+      "VDRV",
+      "VBUS"
+     ],
+     "sense": "none"
+    }
+   ],
+   "stimuli": [
+    {
+     "kind": "vset",
+     "pin": "vbat",
+     "value": 3.5,
+     "unit": "V",
+     "rampTime": "100e-6",
+     "ignore": 0,
+     "note": "reg_config/tm601.sv (DFT.csv says 4.2 V — conflict C-05)"
+    },
+    {
+     "kind": "vset",
+     "pin": "vdrv",
+     "value": 5.0,
+     "unit": "V",
+     "rampTime": "100e-6",
+     "ignore": 0,
+     "note": "reg_config/tm601.sv"
+    },
+    {
+     "kind": "vset",
+     "pin": "vbus",
+     "value": 5.0,
+     "unit": "V",
+     "rampTime": "100e-6",
+     "ignore": 0,
+     "note": "reg_config/tm601.sv (DFT.csv says pmid=9 V instead)"
+    },
+    {
+     "kind": "en_tm",
+     "pin": "(none)",
+     "note": "reg_config/tm601.sv entertestmode()"
+    },
+    {
+     "kind": "field",
+     "pin": "(none)",
+     "note": "reg_config/tm601.sv field[(WAKE_UP,1)] + field[(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(D2A_BUBO_TM_LSON,1)]"
+    },
+    {
+     "kind": "delay",
+     "pin": "(none)",
+     "rampTime": "5e-3",
+     "note": "reg_config/tm601.sv delay 5e-3 before the current is applied (longer than TM600's 1 ms)"
+    },
+    {
+     "kind": "iset",
+     "pin": "pmid_sw",
+     "value": 1.0,
+     "unit": "A",
+     "rampTime": "1e-3",
+     "ignore": 0,
+     "note": "reg_config/tm601.sv iset[pmid_sw,1,1e-3,0]; DFT.csv instead uses iset[sw2pgnd,1,1e-6,0] (a 1 us ramp — see C-01/C-05)"
+    },
+    {
+     "kind": "delay",
+     "pin": "(none)",
+     "rampTime": "2e-3",
+     "note": "reg_config/tm601.sv after the current is applied"
+    }
+   ],
+   "measurements": [
+    {
+     "kind": "MV",
+     "pin": "SW-PGND",
+     "unit": "V",
+     "note": "differential voltage across the low-side FET"
+    },
+    {
+     "kind": "MI",
+     "pin": "PMID_SW",
+     "unit": "A",
+     "note": "current through the low-side FET (R-VIR: use measured I, never the programmed value)"
+    }
+   ],
+   "limits": [
+    {
+     "expression": "ExpectValue=7.5 (OVERVIEW, Test=direct, no Special flag)",
+     "unit": "mΩ",
+     "sourceRank": 1,
+     "note": "OVERVIEW/meta are the source of record."
+    },
+    {
+     "expression": "DFT.csv record 20 ExpectValue=8 (unit string 'mohm')",
+     "unit": "mΩ",
+     "sourceRank": 2,
+     "note": "7.5 vs 8 mΩ — conflict C-01. No averaging or silent choice."
+    }
+   ],
+   "sequence": [
+    "Step 1 connect: floating force pair (PMID/SW) + Kelvin/SW-PGND sense pair + VBAT/VDRV caps",
+    "Step 2 power on: VBAT=3.5 V, VDRV=5 V, VBUS=5 V",
+    "Step 3 registers: entertestmode(); WAKE_UP=1; D2A_BUBO_EN_FORCE_ON=1; D2A_BUBO_TM_DIS_CLK=1; D2A_BUBO_TM_LSON=1 (LS FET forced on); delay 5 ms",
+    "Step 4 measure: apply iset 1 A, delay 2 ms, measure V(SW-PGND) and the loop current, then RON = V/I x 1e3 mΩ",
+    "Step 5 power down: reverse-order ramp-down with FET conduction maintained, then unified RELAY_OFF"
+   ],
+   "registerWritesFromOverview": [],
+   "registerWritesFromRegConfig": [
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x10",
+     "value": "0x43",
+     "fields": "WAKE_UP=1",
+     "note": "reg_config/tm601.sv (authoritative register sequence for TM601)"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x59",
+     "value": "0x20",
+     "fields": "bit5=1",
+     "note": "reg_config/tm601.sv"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x5A",
+     "value": "0x01",
+     "fields": "D2A_BUBO_TM_LSON=1 (LS FET on)",
+     "note": "reg_config/tm601.sv — CONFLICT C-03: DFT.csv writes 0x59=0x02 and 0x61=0x0B"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x61",
+     "value": "0x4B",
+     "fields": "D2A_BUBO_EN_FORCE_ON=1 + D2A_BUBO_TM_DIS_CLK=1",
+     "note": "reg_config/tm601.sv"
+    }
+   ],
+   "highCurrentPlan": {
+    "forceChannel": "floating current source between PMID and SW, with the low-side FET forced on so the current returns through SW-PGND",
+    "forceValue": "1 A (reg_config/tm601.sv iset[pmid_sw,1,1e-3]); DFT.csv alternative iset[sw2pgnd,1,1e-6]",
+    "compliance": "UNKNOWN — no clamp/compliance value in tm601.sv or the DFT sources. t3/t4 must fix it.",
+    "thermalNote": "LS-only conduction raises the die temperature more than the HS case for the same current; keep the pulse short (the golden discipline is a 2 ms settle at most) and compute RON from measured V and I.",
+    "discharge": "No explicit discharge step in the DFT sources; the low-side FET must remain on while the sources are ramped down so SW does not float above VBUS."
+   },
+   "variants": [],
+   "evidence": [
+    {
+     "path": "project/DALI/Dali_testmode.xlsx",
+     "sha256": "d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e",
+     "locator": "sheet=OVERVIEW!row 133 (Item=TM601, ExpectValue=7.5, Unit=mΩ, Test=direct, Notes='Rds,on=(SW-PGND)/IPMID2SW')"
+    },
+    {
+     "path": "project/DALI/input/DFT.csv",
+     "sha256": "b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4",
+     "locator": "CSV record 20 (Item=TM601, ShortName=LS_RDSON, ExpectValue=8, Unit=mohm, Type=MV&MI, Check=PGND-SW, Dynamic=iset[sw2pgnd,1,1e-6,0])"
+    },
+    {
+     "path": "project/DALI/input/DFT_restored.csv",
+     "sha256": "0e0c31106586eacc0ef919b2c5a42d78c036e714d905ec9a7121dbffadcd8bc2",
+     "locator": "CSV record 20",
+     "note": "DFT_restored differs: pmid=9 V, 0x10=0x43 + 0x58=0x20 + 0x59=0x02 + 0x61=0x0B, iset[sw2pgnd,1,1e-6], ExpectValue=8, Unit=mΩ, Check=PGND-SW — see conflict C-05"
+    },
+    {
+     "path": "project/DALI/reg_config/tm601.sv",
+     "sha256": "d250b43cdaba3513b031f6dfc5ffc4743f5c6058787709f7286122152948fade",
+     "locator": "full body: vbat=3.5/vdrv=5/vbus=5; 0x10=0x43; 0x59=0x20; 0x5A=0x01; 0x61=0x4B; delay 5e-3; iset[pmid_sw,1,1e-3]; delay 2e-3"
+    },
+    {
+     "path": "knowledge/references/L4-Golden-code/tm600-normal-highcurrent.cpp",
+     "sha256": "8cdb0be1dd8381008a6a6ca84743170d6e1cf6f5c84f21a1e2e947a0187b72ce",
+     "locator": "TM600_RDSON_TEST (139 lines)",
+     "note": "structure/golden for the force path; there is NO dedicated TM601/LS golden case in the knowledge tree (param_type_index.md records the TM601_LS_RDSON process draft as archived and non-golden)"
+    },
+    {
+     "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+     "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+     "locator": "DUT_API (nearest sibling) TM640_BOOST_HS_OCP / TM607_BUCK_LS_ZCD (LS-side precedent, lines ~7503-7590 and the LS_ZCD golden)"
+    },
+    {
+     "path": "project/DALI/meta/dali_tm_meta.json",
+     "sha256": "1f5eeb5e33372e197dbcb5d0ac2739e3166729f7210a5f7ca46a423dfcd9f7f1",
+     "locator": "functions[*].functionName — search for TM601 returns 0 of 99 entries (TM607/TM608/TM609 are present)",
+     "note": "ABSENCE EVIDENCE: the derived registry has no TM601 entry"
+    }
+   ],
+   "ambiguities": [
+    "The sense and force pins disagree across sources: OVERVIEW 'SW-PGND / IPMID2SW', DFT.csv 'PGND-SW / iset[sw2pgnd]', reg_config/tm601.sv 'iset[pmid_sw]'. Resolve with the schematic owner (t2) before implementation.",
+    "DFT.csv's LS row states the HSON field name and PGND-SW check (i.e. HS semantics) while asserting a low-side measurement — the row is self-contradictory.",
+    "No LS golden case exists; TM601 must be derived from the TM600 golden with the LS topology, which requires the t2 schematic facts for the SW/PGND sense pair.",
+    "Compliance/clamp value unknown (same as TM600)."
+   ],
+   "confidence": "medium",
+   "implementationState": {
+    "presentInDebugTestCpp": false,
+    "note": "0 matches for TM601/RDSON in the plaintext of ForCodexDebug/source/test.cpp"
+   },
+   "symbolRuling": "CR-01 (captain): TM<item>_<SHORTNAME> per scripts/gen_testitems_meta.py:91",
+   "mvMiRequirement": {
+    "type": "MV&MI",
+    "source": "project/DALI/input/DFT.csv record index 19 (0-based), Type=MV&MI",
+    "requirement": "a force path (current forced through the DUT pin pair) is mandatory AND the differential voltage must be read simultaneously on the same pair with a separate Kelvin sense (force/sense separation); RON = V_measured / I_measured x 1e3 mΩ — the programmed current must never be substituted for the measured one (R-VIR).",
+    "forcePath": {
+     "role": "floating force (high current, low-side loop)",
+     "pins": [
+      "PGND (High)",
+      "SW (Low)"
+     ],
+     "sense": "force the 1 A loop through PGND(High) -> floating source -> SW(Low) -> LS FET",
+     "ruledPair": "sw2pgnd"
+    },
+    "sensePath": {
+     "role": "differential Kelvin sense",
+     "pins": [
+      "PGND (High)",
+      "SW (Low)"
+     ],
+     "sense": "MV of the same physical pair (fixture sense channel at relays 154/155 HIGH and 60/61 LOW)"
+    },
+    "notes": [
+     "CR-03 ruled the pairs AND the polarity: PGND = High, SW = Low for both force and sense.",
+     "The earlier \"PMID = High / SW = Low\" phrasing was TM600-only and does not hold for TM601 (it is preserved in force.priorReading).",
+     "Kelvin separation: the fixture provides distinct F and S channels on both ends (154/155 vs 60/61), so favour four-wire measurement; t3 must still confirm the relay aliases."
+    ]
+   },
+   "forceAndSense": {
+    "force": {
+     "pins": [
+      "PGND (High)",
+      "SW (Low)"
+     ],
+     "ruledPair": "sw2pgnd",
+     "polarity": "PGND = HIGH end, SW = LOW end (captain ruling CR-03; the earlier \"PMID = High, SW = Low\" wording was TM600-only and is explicitly NOT valid for TM601)",
+     "source": "DFT.csv record index 19: iset[sw2pgnd,1,1e-6,0] (magnitude 1 A, ramp 1 µs per ruling R-04)",
+     "authoritativePair": "sw2pgnd",
+     "instrumentPin": {
+      "node": "PMID_SW",
+      "evidence": "reg_config/tm601.sv iset[pmid_sw,1,1e-3,0] — instrument-side pin notation only; it is NOT a statement that current is pushed from PMID"
+     },
+     "consistentWithCheckNode": true,
+     "checkNode": "PGND-SW (DFT.csv Check) / SW-PGND (OVERVIEW Notes Rds,on=(SW-PGND)/IPMID2SW)",
+     "ruledBy": "captain (R-03)",
+     "rulingStatus": "resolved",
+     "priorReading": "the earlier revision of this artifact recorded the .sv PMID↔SW pair as the force path and flagged it as inconsistent with the SW-PGND check node; that reading is WITHDRAWN by ruling R-03 (the force path is sw2pgnd, PMID is only a powered rail)",
+     "supersededNotation": {
+      "svgRawNotation": "reg_config/tm601.sv iset[pmid_sw,1,1e-3,0] (instrument-side pin name isrcPMID_SW)",
+      "status": "SUPERSEDED-BY-RULING — do not wire TM601 from the .sv notation",
+      "replacedBy": "sw2pgnd (force) / SW-PGND (sense), with PGND = HIGH end and SW = LOW end (captain ruling CR-03)",
+      "preservedForAudit": "the original .sv token is kept verbatim in this field and in instrumentPin; it is evidence of what the .sv file says, not of the wiring",
+      "reason": "the fixture routes the FPVIe force channel to PGND (relays 154/155, HIGH) and SW (relays 60/61, LOW); no FPVIe path to PGND-as-LOW or SW-as-HIGH exists"
+     },
+     "correctionNotice": "the previous revision of this artifact stated force pins [SW, PGND] without the polarity assignment; CR-03 fixes the polarity as PGND=High / SW=Low. The DFT.csv token iset[sw2pgnd] is preserved unchanged in authorityChain.",
+     "authorityChain": {
+      "overview": "rows 132/133 state the check nodes (TM600 PMID-SW, TM601 SW-PGND) but no force value",
+      "dftCsv_raw": "DFT.csv record index 19: iset[sw2pgnd,1,1e-6,0] (kept verbatim; 3rd field = ramp time per CR-05)",
+      "svg_raw": "reg_config/tm601.sv: iset[pmid_sw,1,1e-3,0] (kept verbatim; superseded for wiring per CR-03)",
+      "fixture": "schematic-ir.json paths[]: F S1_FPVIe_FH0->PGND_F_S1 [154,155] HIGH; F S1_FPVIe_FL0->SW_F_S1 [60,61] LOW",
+      "ruling": "CR-03 (captain, fixture-confirmed)"
+     }
+    },
+    "sense": {
+     "pins": [
+      "PGND (High)",
+      "SW (Low)"
+     ],
+     "polarity": "differential",
+     "source": "DFT.csv Check=PGND-SW and OVERVIEW Notes Rds,on=(SW-PGND)/IPMID2SW (MV&MI)",
+     "decomposition": "RON_LS = V(SW-PGND) / I(SW→PGND) x 1e3 mΩ",
+     "ruledPair": "SW-PGND",
+     "ruledBy": "captain CR-03",
+     "rulingStatus": "resolved-with-fixture-evidence",
+     "polarityNote": "sense channel mirrors the force channel: S1_FPVIe_SH0->PGND_S_S1 [154,155] HIGH, S1_FPVIe_SL0->SW_S_S1 [60,61] LOW"
+    },
+    "selfConsistency": "RESOLVED by ruling R-03: the force pair (sw2pgnd) and the sense pair (SW-PGND) are the same physical low-side conduction path, so the sensed drop IS the LS RDSON drop. The earlier \"INCONSISTENT\" verdict was based on reading the .sv instrument pin name isrcPMID_SW as the physical force pair; that reading is withdrawn.",
+    "rulingApplied": "R-03: TM601 force sw2pgnd / sense SW-PGND (adopt DFT.csv, NOT the .sv PMID↔SW pair)",
+    "fixtureEvidence": {
+     "source": "team/artifacts/acceptance-20260916-dali10/schematic-ir.json",
+     "sha256": "a83110d992071733367f356fd3f4d7007136e5a8b526cfa606e2310b53bc1da4",
+     "generatedBy": "schematic-expert (AgentTeams ate-dali-acceptance, task t2)",
+     "paths": [
+      {
+       "pathId": "S1_FPVIe_FH0->PGND_F_S1",
+       "role": "F (force)",
+       "sourceDomain": "HIGH",
+       "components": "S1_FPVIe_FH0",
+       "dutPin": "PGND_F_S1",
+       "resources": [
+        "154",
+        "155"
+       ],
+       "confidence": "direct",
+       "verifiedBy": "dft-expert (looked up directly in schematic-ir.json paths[])"
+      },
+      {
+       "pathId": "S1_FPVIe_FL0->SW_F_S1",
+       "role": "F (force)",
+       "sourceDomain": "LOW",
+       "components": "S1_FPVIe_FL0",
+       "dutPin": "SW_F_S1",
+       "resources": [
+        "60",
+        "61"
+       ],
+       "confidence": "direct",
+       "verifiedBy": "dft-expert (looked up directly in schematic-ir.json paths[])"
+      },
+      {
+       "pathId": "S1_FPVIe_SH0->PGND_S_S1",
+       "role": "S (sense)",
+       "sourceDomain": "HIGH",
+       "components": "S1_FPVIe_SH0",
+       "dutPin": "PGND_S_S1",
+       "resources": [
+        "154",
+        "155"
+       ],
+       "confidence": "direct",
+       "verifiedBy": "dft-expert (looked up directly in schematic-ir.json paths[])"
+      },
+      {
+       "pathId": "S1_FPVIe_SL0->SW_S_S1",
+       "role": "S (sense)",
+       "sourceDomain": "LOW",
+       "components": "S1_FPVIe_SL0",
+       "dutPin": "SW_S_S1",
+       "resources": [
+        "60",
+        "61"
+       ],
+       "confidence": "direct",
+       "verifiedBy": "dft-expert (looked up directly in schematic-ir.json paths[])"
+      }
+     ],
+     "absentCounterparts": [
+      "S1_FPVIe_FH0->SW_F_S1",
+      "S1_FPVIe_FL0->PGND_F_S1"
+     ],
+     "absentMeaning": "no FPVIe path exists with PGND as the LOW end or SW as the HIGH end — the polarity is not symmetric in the fixture",
+     "pmidPathsReservedForTM600": {
+      "S1_FPVIe_FH0->PMID_F_S1": {
+       "from": "S1_FPVIe_FH0",
+       "to": "PMID_F_S1",
+       "resources": [
+        "83"
+       ]
+      },
+      "S1_FPVIe_SH0->PMID_S_S1": {
+       "from": "S1_FPVIe_SH0",
+       "to": "PMID_S_S1",
+       "resources": [
+        "83"
+       ]
+      }
+     },
+     "verification": "dft-expert looked up each cited path id in schematic-ir.json and confirmed from/to, sourceRole, sourceDomain, resources and confidence"
+    },
+    "polarityConclusion": "TM601 force = PGND(High)↔SW(Low); TM601 sense = PGND(High)↔SW(Low); PMID↔SW is TM600's pair (F S1_FPVIe_FH0->PMID_F_S1, relay 83)"
+   }
+  },
+  {
+   "tm": "TM1205",
+   "symbol": "TM1205_TRX_BST_UV_GD",
+   "symbolHint": "TM1205_TRX_BST_UV_GD",
+   "overviewItem": "TM1205",
+   "name": "TRX_BST_UV_GD",
+   "level": "TRX",
+   "description": "Test BST1-SW1 and BST2-SW2 UVLO thresholds (two floating differential pairs sharing one floating source, time-multiplexed)",
+   "testType": [
+    "toggle",
+    "differential",
+    "awg",
+    "grouped"
+   ],
+   "testTypeNote": "bootstrap BST-SW differential pair threshold (AWG dual sweep, negative domain) with two time-multiplexed paths sharing one floating source; the 'grouped' tag marks the two-path identity",
+   "channels": [
+    {
+     "role": "supply",
+     "pins": [
+      "VBAT"
+     ],
+     "sense": "none"
+    },
+    {
+     "role": "floating differential ramp (path 1)",
+     "pins": [
+      "SW1 (High)",
+      "BST1 (Low)"
+     ],
+     "sense": "one floating channel across BST1-SW1; output is V(SW1)-V(BST1) = -|BST1-SW1|"
+    },
+    {
+     "role": "floating differential ramp (path 2)",
+     "pins": [
+      "SW2 (High)",
+      "BST2 (Low)"
+     ],
+     "sense": "same floating channel re-routed to BST2-SW2"
+    },
+    {
+     "role": "observer",
+     "pins": [
+      "DTEST0 -> nQON pad"
+     ],
+     "sense": "logic toggle with K65_nQON_PU pull-up; DMUX_SEL 57 selects path 1, 58 selects path 2"
+    }
+   ],
+   "stimuli": [
+    {
+     "kind": "vset",
+     "pin": "vbat",
+     "value": 4.0,
+     "unit": "V",
+     "rampTime": "100e-6",
+     "ignore": 0,
+     "note": "OVERVIEW Code1 / reg_config/tm1205.sv"
+    },
+    {
+     "kind": "ramp_up",
+     "pin": "bst1_sw1",
+     "value": 4.0,
+     "unit": "V",
+     "rampTime": "1000e-6",
+     "ignore": 0,
+     "note": "OVERVIEW Code2 vset[bst1_sw1,4,1000e-6,0] — the modelled ramp is 4 V over 1 ms"
+    },
+    {
+     "kind": "ramp_down",
+     "pin": "bst1_sw1",
+     "value": 0.0,
+     "unit": "V",
+     "rampTime": "1000e-6",
+     "ignore": 0,
+     "note": "OVERVIEW Code2 vset[bst1_sw1,0,1000e-6,0]"
+    },
+    {
+     "kind": "ramp_up",
+     "pin": "bst2_sw2",
+     "value": 4.0,
+     "unit": "V",
+     "rampTime": "1000e-6",
+     "ignore": 0,
+     "note": "OVERVIEW Code2"
+    },
+    {
+     "kind": "ramp_down",
+     "pin": "bst2_sw2",
+     "value": 0.0,
+     "unit": "V",
+     "rampTime": "1000e-6",
+     "ignore": 0,
+     "note": "OVERVIEW Code2"
+    },
+    {
+     "kind": "field_renew",
+     "pin": "(none)",
+     "note": "Code1: wake_up=1 (twice) + field_renew[(D2A_OVRD_SEL,47),(ovrd_value,3)] + (D2A_OVRD_SEL,45),(3) + (D2A_OVRD_SEL,48),(3) + D2A_TRX_TM_BOOTGD_DEG_BYPASS=1; delay 1e-3"
+    },
+    {
+     "kind": "field_renew",
+     "pin": "(none)",
+     "note": "Code2: DMUX_EN=1 with DMUX_SEL=57 (path 1) then DMUX_SEL=58 (path 2)"
+    }
+   ],
+   "measurements": [
+    {
+     "kind": "MV",
+     "pin": "DTEST0",
+     "unit": "V",
+     "note": "release and UVLO-trigger thresholds for BST1-SW1 and BST2-SW2; six parameters: BST1_UV_Rise/_Fall/_Hys and BST2_UV_Rise/_Fall/_Hys"
+    }
+   ],
+   "limits": [
+    {
+     "expression": "OVERVIEW ExpectValue is EMPTY",
+     "unit": "V",
+     "sourceRank": 1,
+     "note": "No numeric limit exists for TM1205 in any DFT source (OVERVIEW, DFT.csv, meta all blank). The item name TRX_BST_UV_GD says 'UV', so the limits must come from the datasheet/spec — recorded as an open question."
+    }
+   ],
+   "sequence": [
+    "cbite.SetOn(path-1 floating-pair relays + K13_VBAT_Cap + K65_nQON_PU, -1); delay 3 ms (BST-SW differential caps must NOT be closed: they would slow the ramp)",
+    "floating source level 0, then VBAT=4 V on",
+    "entertestmode(); WAKE_UP=1; D2A_OVRD_SEL 47/45/48 = 3; BOOTGD_DEG_BYPASS=1; delay 1 ms",
+    "path 1: DMUX_SEL=57; rampv_capv 0 -> -4 V (BST1-SW1 0->4 V, TRIG_FALLING captures release) and -4 -> 0 V (4->0 V, TRIG_RISING captures the UVLO trigger); rise/fall = fabs(value); hys x1e3",
+    "re-route with a second cbite.SetOn(...) for path 2, delay 3 ms, then DMUX_SEL=58 and repeat the dual sweep",
+    "floating source back to 0, then power down with unified RELAY_OFF"
+   ],
+   "registerWritesFromOverview": [],
+   "registerWritesFromRegConfig": [
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x10",
+     "value": "0x43",
+     "fields": "wake_up=1",
+     "note": "reg_config/tm1205.sv"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x67",
+     "value": "0x2F",
+     "fields": "D2A_OVRD_SEL=47",
+     "note": "reg_config/tm1205.sv"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x68",
+     "value": "0x30",
+     "fields": "ovrd_value=3",
+     "note": "reg_config/tm1205.sv"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x67",
+     "value": "0x2D",
+     "fields": "D2A_OVRD_SEL=45",
+     "note": "reg_config/tm1205.sv"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x68",
+     "value": "0x30",
+     "fields": "ovrd_value=3",
+     "note": "reg_config/tm1205.sv"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x67",
+     "value": "0x30",
+     "fields": "D2A_OVRD_SEL=48",
+     "note": "reg_config/tm1205.sv"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x68",
+     "value": "0x30",
+     "fields": "ovrd_value=3",
+     "note": "reg_config/tm1205.sv"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x5C",
+     "value": "0x02",
+     "fields": "D2A_TRX_TM_BOOTGD_DEG_BYPASS=1",
+     "note": "reg_config/tm1205.sv"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x56",
+     "value": "0x39",
+     "fields": "DMUX_SEL=57 (path 1 BST1-SW1)",
+     "note": "reg_config/tm1205.sv"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x57",
+     "value": "0x08",
+     "fields": "DMUX_EN=1",
+     "note": "reg_config/tm1205.sv"
+    },
+    {
+     "kind": "I2CWriteSameData",
+     "reg": "0x56",
+     "value": "0x3A",
+     "fields": "DMUX_SEL=58 (path 2 BST2-SW2)",
+     "note": "reg_config/tm1205.sv"
+    }
+   ],
+   "variants": [],
+   "evidence": [
+    {
+     "path": "project/DALI/Dali_testmode.xlsx",
+     "sha256": "d9d721a3a6606232bb463c8147d4955bea623bf81996e9ff85ccb8e463c7788e",
+     "locator": "sheet=OVERVIEW!row 241 (Item=TM1205, Level=TRX, Name=TRX_BST_UV_GD, Code1/Code2/Code3 carrying the OVRD and DMUX sequences)"
+    },
+    {
+     "path": "project/DALI/input/DFT.csv",
+     "sha256": "b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4",
+     "locator": "no TM1205 record exists in DFT.csv"
+    },
+    {
+     "path": "project/DALI/reg_config/tm1205.sv",
+     "sha256": "67bb9bd49159e5cab4b7e11ac4cda3ac732182003d7f7e6c647c4d2fae0f479a",
+     "locator": "full body: vbat=4V; 0x10=0x43; 0x67/0x68 OVRD triples; 0x5C=0x02; 0x56=0x39 + 0x57=0x08; bst1_sw1 4V then 0V; 0x56=0x3A + 0x57=0x08; bst2_sw2 4V then 0V"
+    },
+    {
+     "path": "knowledge/references/L4-Golden-code/TM1205_TRX_BST_UV_GD.cpp",
+     "sha256": "67d0c3f1c4e5c907fcf2b41fdaa058dc9655142e5ed64438f06c215529c4b01d",
+     "locator": "DUT_API TM1205_TRX_BST_UV_GD (112 lines)",
+     "note": "dedicated golden case: negative-domain dual sweep, fabs() restore, per-path SetOn, DMUX re-select order"
+    },
+    {
+     "path": "knowledge/references/param_type_index.md",
+     "sha256": "84e290928b8dbcf5b234d7ec0bf1c3d8131477db62d9894a89d36526a3e9f00c",
+     "locator": "RDSON row + the note that TM601_LS_RDSON is an archived non-golden process draft",
+     "note": "cited to establish that NO dedicated TM601 golden case exists"
+    },
+    {
+     "path": "project/DALI/meta/dali_tm_meta.json",
+     "sha256": "1f5eeb5e33372e197dbcb5d0ac2739e3166729f7210a5f7ca46a423dfcd9f7f1",
+     "locator": "functions[functionName=TM1205_TRX_BST_UV_GD]",
+     "note": "derived registry (generated from OVERVIEW by gen_testitems_meta.py) — corroborating, not primary"
+    },
+    {
+     "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+     "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+     "locator": "DUT_API TM1205_TRX_BST_UV_GD (lines 8752-8877)"
+    }
+   ],
+   "ambiguities": [
+    "No ExpectValue or tolerance for TM1205 exists in OVERVIEW, DFT.csv or meta (all blank): the limits must come from an external spec that this workspace does not contain.",
+    "OVERVIEW expresses the stimulus as a single-ended vset on bst1_sw1/bst2_sw2 (4 V / 1 ms) while the implementation and the golden case use one floating channel across each BST-SW pair in the negative domain; the two are electrically equivalent only if the source is floating.",
+    "The 4 V ramp target is not stated as a threshold, only as a scan range."
+   ],
+   "confidence": "high",
+   "implementationState": {
+    "presentInDebugTestCpp": true,
+    "functionName": "TM1205_TRX_BST_UV_GD",
+    "lines": "8752-8877"
+   }
+  }
+ ],
+ "conflicts": [
+  {
+   "id": "C-01",
+   "severity": "blocker",
+   "topic": "TM600/TM601 RDSON limit and force-path identity",
+   "sources": [
+    {
+     "source": "OVERVIEW (Dali_testmode.xlsx) rows 132-133",
+     "value": "TM600 HS_RDSON ExpectValue=11 mΩ, Special='Y / 2 FLOAT', Rds,on=(PMID-SW)/ISW; TM601 LS_RDSON ExpectValue=7.5 mΩ, Rds,on=(SW-PGND)/IPMID2SW"
+    },
+    {
+     "source": "DFT.csv records 19-20",
+     "value": "TM600 ExpectValue=10 mohm with iset[pmid2sw,1,1e-3] and Check=PMID-SW; TM601 ExpectValue=8 mohm with iset[sw2pgnd,1,1e-6] and Check=PGND-SW",
+     "recordIndex": "0-based 18 (TM600) / 19 (TM601) = 1-based 19 / 20",
+     "plaintextSha256": "B92D203FA6F152120A316B9E32C037F7C1C978E96424EDF5A871F02E5CFE0FD4",
+     "plaintextSize": 16862
+    },
+    {
+     "source": "reg_config/tm600.sv / tm601.sv",
+     "value": "TM600 forces iset[sw,1,1e-3]; TM601 forces iset[pmid_sw,1,1e-3]"
+    }
+   ],
+   "impact": "The limit feeding the spec file and the pins carrying/exposing the 1 A force are both unresolved; implementing either choice silently would invalidate the other source.",
+   "requiredDecision": "User/Captain ruling: (a) which ExpectValue is the limit (OVERVIEW 11/7.5 mΩ or DFT.csv 10/8 mΩ), and (b) which source pins carry the forced current and the Kelvin sense.",
+   "mergePolicy": "no-average, no-silent-choice (project rule)",
+   "recordIndexNote": "DFT.csv record index 18/19 (0-based) = csvRecord 19/20 (1-based); plaintext anchor: 16862 bytes, sha256 B92D203FA6F152120A316B9E32C037F7C1C978E96424EDF5A871F02E5CFE0FD4 (python byte-mode read; PowerShell sees a TSZ# ciphertext head)",
+   "forceMagnitudeDisambiguation": "The two sources do NOT agree on the forced magnitude either: OVERVIEW (rows 132/133) states no force at all; reg_config/tm600.sv and tm601.sv force 1 A (iset[sw,1,1e-3] / iset[pmid_sw,1,1e-3]); DFT.csv record 18 forces 1 A (iset[pmid2sw,1,1e-3]) but DFT.csv record 19 literally writes 1e-6 (see dftCsvDefects DD-01) and its TM600 static operating point implies 4 A. \"1 A\" is therefore the .sv value for BOTH parts and must not be read as an agreed force. | CAPTAIN CONFIRMATION (CR-03/CR-05): OVERVIEW rows 132/133 give NO force value; the 1 A figure comes from reg_config/tm600.sv + reg_config/tm601.sv and from DFT.csv record 18, and the iset field semantics were ruled by the captain (record 19 is likewise 1 A with a 1 µs ramp). \"1 A\" must therefore never be cited as an OVERVIEW number.",
+   "scopeStatement": "This conflict covers: (a) the limit value (OVERVIEW 11/7.5 mΩ vs DFT.csv 10/8 mohm); (b) the force and Kelvin-sense pin pairs; (c) the forced magnitude; (d) the compliance limit (never stated by any source).",
+   "bd07Status": "BD-07 (TM600 OVERVIEW Special=\"Y / 2 FLOAT\") remains OPEN — the two-floating-node reading is an implementation assumption, not a source fact"
+  },
+  {
+   "id": "C-02",
+   "severity": "high",
+   "topic": "TM108/TM109 VAC PRST rising threshold",
+   "sources": [
+    {
+     "source": "OVERVIEW rows 15/17 + meta",
+     "value": "rising vth 4.4 V, hys 0.35 V"
+    },
+    {
+     "source": "DFT.csv records 9-10",
+     "value": "rising vth 4.15 V, hys 0.35 V"
+    }
+   ],
+   "impact": "250 mV (5.7%) limit difference on two toggle thresholds; also DFT.csv record 10 ramps VAC3 instead of VAC2.",
+   "requiredDecision": "Confirm which threshold is the spec limit; confirm the DFT.csv TM109 row is a copy/paste artifact.",
+   "mergePolicy": "OVERVIEW is primary (ranking: OVERVIEW > DFT.csv); DFT.csv value retained verbatim as sourceRank 2"
+  },
+  {
+   "id": "C-03",
+   "severity": "high",
+   "topic": "TM600/TM601 register map divergence",
+   "sources": [
+    {
+     "source": "reg_config/tm600.sv",
+     "value": "0x10=0x43, 0x59=0x20, 0x5A=0x02, 0x61=0x4B, iset[sw,1]"
+    },
+    {
+     "source": "reg_config/tm601.sv",
+     "value": "0x10=0x43, 0x59=0x20, 0x5A=0x01, 0x61=0x4B, iset[pmid_sw,1]"
+    },
+    {
+     "source": "DFT.csv record 19",
+     "value": "0x58=0x00, 0x10=0x43, 0x59=0x01, 0x61=0x0B"
+    },
+    {
+     "source": "DFT.csv record 20",
+     "value": "0x10=0x43, 0x58=0x20, 0x59=0x02, 0x61=0x0B"
+    }
+   ],
+   "impact": "Two different register encodings for the same two functions. The .sv files agree with the present BUBO bit map (0x5A holds the HSON/LSON bit) used by TM640/TM607-609, whereas the DFT.csv rows appear to use an older map. Writing the wrong pair would configure the opposite FET.",
+   "requiredDecision": "t4/t5 must take reg_config/tm600.sv + tm601.sv as the register authority (they are the compiled AMS sequences for exactly these TMs) and record the DFT.csv values as superseded — or escalate to the DFT owner if the CSV is claimed to be newer.",
+   "mergePolicy": "evidence-based ranking: per-TM reg_config .sv > DFT.csv prose",
+   "independentCorroboration": {
+    "by": "ate-implementer (independent enumeration of live test.cpp)",
+    "finding": "0x5A is the FET-select register and the shipped generation is LS=0x01 / HS=0x02",
+    "evidence": [
+     "TM607_BUCK_LS_ZCD  test.cpp:7018  0x5A=0x01  // D2A_BUBO_TM_LSON=1",
+     "TM608_BOOST_HS_ZCD test.cpp:7109  0x5A=0x02  // D2A_BUBO_TM_HSON=1",
+     "TM609_BOOST_HS_NEG test.cpp:7202  0x5A=0x02  // D2A_BUBO_TM_HSON=1",
+     "TM640_BOOST_HS_OCP test.cpp:7534  0x5A=0x02  // + LOW_ILIMT_OFF=1",
+     "TM640_BOOST_HS_OCP test.cpp:7541  0x5A=0x06  // + BOOST_OCP_EN=1"
+    ],
+    "strength": "four shipped TMs (not just TM640/TM607 as this IR originally cited); HS=0x02 also holds in TM608 and TM609",
+    "effect": "C-03/BD-03 now rests on shipped-code evidence in addition to reg_config/tm600.sv+tm601.sv; the DFT.csv 0x58/0x59/0x61 rows are the older map"
+   },
+   "resolution": {
+    "ruledBy": "captain",
+    "ruledAt": "2026-09-16T14:15:18+08:00",
+    "decision": "the per-TM reg_config .sv mapping is authoritative",
+    "authoritative": {
+     "path": "project/DALI/reg_config/tm600.sv + tm601.sv",
+     "writes": "0x10=0x43; 0x59=0x20; 0x61=0x4B; TM600 0x5A=0x02 (D2A_BUBO_TM_HSON=1); TM601 0x5A=0x01 (D2A_BUBO_TM_LSON=1)"
+    },
+    "superseded": {
+     "path": "project/DALI/input/DFT.csv records 18/19",
+     "writes": "0x58/0x59/0x61 older map — retained verbatim in this artifact as the superseded alternative"
+    },
+    "corroboration": "four shipped TMs (not just TM640/TM607 as this IR originally cited); HS=0x02 also holds in TM608 and TM609"
+   },
+   "status": "resolved-by-ruling (alternative retained verbatim)"
+  },
+  {
+   "id": "C-04",
+   "severity": "medium",
+   "topic": "TM108/TM109 DMUX_SEL value",
+   "sources": [
+    {
+     "source": "OVERVIEW rows 15/17 + reg_config/tm108.sv / tm109.sv",
+     "value": "DMUX_SEL=22 for VAC1, DMUX_SEL=21 for VAC2 (0x56=0x16 / 0x56=0x15)"
+    },
+    {
+     "source": "DFT.csv records 9-10 comments",
+     "value": "DTEST0_MUX=23 for TM108 and DTEST0_MUX=22 for TM109"
+    }
+   ],
+   "impact": "Selecting the wrong internal MUX path measures a different comparator.",
+   "requiredDecision": "t3/t4 to confirm the DTEST0/DMUX mux map against the ATEST/DTEST map sheets.",
+   "mergePolicy": "per-TM reg_config .sv ranks above the DFT.csv comment"
+  },
+  {
+   "id": "C-05",
+   "severity": "medium",
+   "topic": "DFT.csv vs DFT_restored.csv differ for TM600/TM601",
+   "sources": [
+    {
+     "source": "DFT.csv records 19-20",
+     "value": "TM600 pmid=15 V, bst2sw=5 V, 0x58=0x00, 0x59=0x01, 0x61=0x0B, iset[pmid2sw,1,1e-3], ExpectValue=10, Unit='mohm'"
+    },
+    {
+     "source": "DFT_restored.csv records 19-20",
+     "value": "TM600 pmid=15 V, bst2sw=5 V, 0x58=0x00, 0x59=0x01, 0x61=0x0B, iset[pmid2sw,1,1e-3], ExpectValue=10, Unit='mΩ' — and TM601 pmid=9 V, 0x58=0x20, 0x59=0x02, 0x61=0x0B, iset[sw2pgnd,1,1e-6], ExpectValue=8, Unit='mΩ'"
+    }
+   ],
+   "impact": "The two CSVs are not identical (different sha256, different size); only the TM601 unit/format differs materially, but the file pair must not be treated as interchangeable since the byte-level difference is real.",
+   "requiredDecision": "Record both; use DFT.csv for quoting unless a later ruling prefers the restored copy.",
+   "mergePolicy": "no-silent-choice; both recorded",
+   "recordIndexNote": "same 0-based indices 18/19 for the DFT_restored.csv comparison"
+  },
+  {
+   "id": "C-06",
+   "severity": "medium",
+   "topic": "VAC_PLUG module state in TM000 vs TM001",
+   "sources": [
+    {
+     "source": "OVERVIEW rows 2-3 (TM000/TM000_1)",
+     "value": "expects the VAC_PLUG module OFF (base, 22uA) and ON (variant, 31.5u)"
+    },
+    {
+     "source": "OVERVIEW row 5 (TM001_2)",
+     "value": "expects shipmode with en_tm[] + SHIPMODE_EN=1"
+    },
+    {
+     "source": "test.cpp TM000_IQ_STANDBY",
+     "value": "the VAC_PLUG ON/OFF state is produced by writing register 0x07 (bit map inferred, not source-backed); TM001's t est.cpp does not implement AC1_GATE_ON at all"
+    },
+    {
+     "source": "test.cpp TM001_2_IQ_SHIPMODE",
+     "value": "closes K21_VAC_Cap while reg_config/tm001_2.sv does not mention the cap relay"
+    }
+   ],
+   "impact": "The APORT/VAC_PLUG enable bits and the TM001 AC1_GATE_ON bit have no DFT-source-backed register map; a wrong bit yields a wrong quiescent-current limit compliance.",
+   "requiredDecision": "t3/t4 to obtain the register bit map, or formally record these as inferred and mark the corresponding implementation as READ-BACKED (not source-backed).",
+   "mergePolicy": "declared inference"
+  }
+ ],
+ "blockingDecisions": [
+  {
+   "id": "BD-01",
+   "conflict": "C-01",
+   "question": "Which RDSON ExpectValue is the spec limit: OVERVIEW 11 mΩ (TM600) / 7.5 mΩ (TM601), or DFT.csv 10 mΩ / 8 mΩ?",
+   "status": "closed",
+   "impact": "spec limits for the two new test items",
+   "owner": "Captain / user",
+   "resolution": {
+    "ruledBy": "user",
+    "decision": "OVERVIEW 11 mΩ (TM600) / 7.5 mΩ (TM601) is the limit; DFT.csv 10/8 mohm retained as a registered alternative",
+    "affects": "spec limits for TM600_HS_RDSON / TM601_LS_RDSON",
+    "rulingRef": "CR-02"
+   },
+   "resolutionRuledAt": "2026-09-16T14:15:18+08:00",
+   "rulingRef": null
+  },
+  {
+   "id": "BD-02",
+   "conflict": "C-01",
+   "question": "Which pins carry the 1 A floating force and the Kelvin differential sense for TM600 and TM601?",
+   "status": "closed",
+   "impact": "relay/path selection and the measured differential pair",
+   "owner": "schematic-expert (t2) then setup-architect (t3)",
+   "resolution": {
+    "ruledBy": "captain",
+    "decision": "TM600 force pmid2sw / sense PMID-SW; TM601 force sw2pgnd / sense SW-PGND (FS-01 narrowed to a t2 wiring question)",
+    "affects": "relay/path selection and the sensed differential pair",
+    "rulingRef": "CR-03"
+   },
+   "resolutionRuledAt": "2026-09-16T14:15:18+08:00",
+   "rulingRef": null
+  },
+  {
+   "id": "BD-03",
+   "conflict": "C-03",
+   "question": "Which register map is authoritative for TM600/TM601: reg_config/tm600.sv+tm601.sv (0x59=0x20, 0x5A=0x02/0x01, 0x61=0x4B) or the DFT.csv rows (0x58/0x59/0x61)?",
+   "status": "closed",
+   "impact": "which FET is forced on — wrong choice measures the opposite device",
+   "owner": "test-strategy-architect (t4) with DFT-owner confirmation",
+   "resolution": {
+    "ruledBy": "captain",
+    "decision": "reg_config/tm600.sv + tm601.sv authoritative (0x10=0x43, 0x59=0x20, 0x61=0x4B, TM600 0x5A=0x02 / TM601 0x5A=0x01); DFT.csv 0x58/0x59/0x61 superseded",
+    "affects": "which FET is forced on",
+    "rulingRef": "CR-04"
+   },
+   "resolutionRuledAt": "2026-09-16T14:15:18+08:00",
+   "rulingRef": null
+  },
+  {
+   "id": "BD-04",
+   "conflict": "C-02",
+   "question": "TM108/TM109 rising threshold: 4.4 V (OVERVIEW) or 4.15 V (DFT.csv)?",
+   "status": "open",
+   "impact": "toggle limit compliance",
+   "owner": "Captain / user",
+   "rulingRef": null
+  },
+  {
+   "id": "BD-05",
+   "conflict": "(none)",
+   "question": "What is the force compliance/clamp limit for the TM600/TM601 1 A floating force? No source states it (the golden case uses 50% x 1 V = 0.5 V).",
+   "status": "open",
+   "impact": "protection of a milliohm-level DUT path; RON upper measurable bound",
+   "owner": "setup-architect (t3)",
+   "rulingRef": null
+  },
+  {
+   "id": "BD-06",
+   "conflict": "(none)",
+   "question": "TM1205 has no ExpectValue/tolerance in ANY DFT source. What are the BST1-SW1/BST2-SW2 UVLO limits?",
+   "status": "open",
+   "impact": "TM1205 cannot be judged pass/fail without an external spec",
+   "owner": "Captain / user",
+   "rulingRef": null
+  },
+  {
+   "id": "BD-07",
+   "conflict": "(none)",
+   "question": "Is TM600's OVERVIEW Special='Y / 2 FLOAT' declaring two floating nodes or a 2 A floating force? (The .sv forces 1 A; the DFT.csv static operating point implies 4 A.)",
+   "status": "open",
+   "impact": "force magnitude and resource arbitration (a single floating source is scarce)",
+   "owner": "Captain / user",
+   "rulingRef": null
+  }
+ ],
+ "openQuestions": [
+  "PA-01 (RESOLVED by user ruling R-01): the limit is OVERVIEW 11 mΩ (sheet=OVERVIEW!row 132); DFT.csv 10 mohm (record index 18 / csvRecord 19) is retained verbatim in limitConflictPairs as the registered alternative and must not be used as the limit.",
+  "PA-02 (RESOLVED by user ruling R-01): the limit is OVERVIEW 7.5 mΩ (sheet=OVERVIEW!row 133); DFT.csv 8 mohm (record index 19 / csvRecord 20) is retained verbatim as the registered alternative.",
+  "FS-01 (RESOLVED with fixture evidence — no longer a t2 question and NOT a t5 blocker; captain CR-06 + this task's re-verification): the TM601 physical loop is SW↔PGND with PGND on the HIGH end — schematic-ir.json has FPVIe force/sense paths to PGND (relays 154/155, HIGH domain) and SW (relays 60/61, LOW domain), while PMID↔SW is TM600's pair (relay 83). tm601.sv's isrcPMID_SW is NOT the wiring of this loop and is retained only as raw .sv evidence. Consequence recorded in items.TM601: the dft-ir wording \"PMID(High)/SW(Low)\" does NOT hold for TM601. Residual: t3 must still map the pgnd2sw/sw2pgnd bus aliases to concrete relay groups.",
+  "DD-01 closed by ruling R-04 (third iset field = ramp time): TM601 = 1 A + 1 µs ramp, TM600 = 1 A + 1 ms ramp. The DFT.csv phrasing remains confusing and should be fixed at source eventually, but it no longer blocks anything.",
+  "CR-01 resolved the TM600/TM601 symbol names (TM600_HS_RDSON / TM601_LS_RDSON); the acceptance-plan placeholder hints RDSON_TEST_HS/LS are superseded.",
+  "BD-01..BD-07 above are unresolved; they are the questions that block a source-traceable plan.",
+  "TM000: no reg_config/tm000.sv exists, so the APORT/VAC_PLUG enable bit map used by test.cpp is an inference.",
+  "TM001: no reg_config/tm001.sv and no DFT.csv row; AC1_GATE_ON is an explicit TODO in test.cpp.",
+  "TM102: the acceptance plan's symbolHint (TM102_HSKP_LP_ATEST0) and the OVERVIEW Name (LP_VBG_BF) disagree.",
+  "TM103: three different register/observation stories (OVERVIEW+sv, DFT.csv AMUX row, current implementation).",
+  "TM108/TM109: is the observation pin INT or DTEST0/nQON? DFT.csv says INT; OVERVIEW/implementation use DTEST0 via nQON.",
+  "TM108_1: the DMO/A observation path has no dedicated DFT parameter list and no implementation; is it in scope?",
+  "TM135: trim step count (8) comes from a test.cpp comment, not from a DFT source; the TReg/EFUSE definition was not consulted (out of this task's boundary).",
+  "TM600/TM601: neither appears in dali_tm_meta.json (99 functions). Whether the meta registry must be regenerated for the gate to close is a separate, unresolved question raised by the implementer's recon note (team/artifacts/<run-id>/implementer-recon.md §5).",
+  "No numeric tolerance exists in any DFT source for TM000, TM001, TM102, TM108, TM109, TM135 or TM1205 limits; spec values/tolerances live outside this workspace's DFT layer."
+ ],
+ "verification": {
+  "schemaValidation": "to be run with scripts/validate_team_artifact.py dft-ir <this file>",
+  "coverageCheck": "scope has 10 entries; items has 10 entries; each item has >=1 evidence entry",
+  "absentFromDebugTestCpp": [
+   "TM600",
+   "TM601"
+  ],
+  "presentInDebugTestCpp": [
+   "TM000",
+   "TM001",
+   "TM102",
+   "TM103",
+   "TM108",
+   "TM109",
+   "TM135",
+   "TM1205"
+  ],
+  "metaRegistryHasEntry": [
+   "TM000",
+   "TM001",
+   "TM102",
+   "TM103",
+   "TM108",
+   "TM109",
+   "TM135",
+   "TM1205"
+  ],
+  "metaRegistryMissingEntry": [
+   "TM600",
+   "TM601"
+  ],
+  "dftCsvHasRecord": [
+   "TM000",
+   "TM103",
+   "TM108",
+   "TM109",
+   "TM600",
+   "TM601"
+  ],
+  "dftCsvMissingRecord": [
+   "TM001",
+   "TM102",
+   "TM135",
+   "TM1205"
+  ],
+  "develVsDebugIdentical": {
+   "test.cpp": true,
+   "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+   "verified": "both trees hashed in this session and by the implementer's recon; devel was not modified"
+  },
+  "plaintextAnchorDftCsv": {
+   "sizeBytes": 16862,
+   "sha256": "B92D203FA6F152120A316B9E32C037F7C1C978E96424EDF5A871F02E5CFE0FD4"
+  },
+  "symbolNames": {
+   "TM600": "TM600_HS_RDSON",
+   "TM601": "TM601_LS_RDSON",
+   "ruling": "CR-01"
+  },
+  "limitConflictPairCount": 2,
+  "forceSenseSplit": {
+   "TM600": "consistent (PMID-SW force, PMID-SW sense)",
+   "TM601": "INCONSISTENT across sources (PMID-SW force vs SW-PGND sense) — FS-01",
+   "dftCsvDefectCount": 1
+  },
+  "rulingsApplied": [
+   "R-01",
+   "R-02",
+   "R-03",
+   "R-04",
+   "R-05"
+  ],
+  "openBlockerIds": [
+   "BD-05",
+   "BD-06",
+   "BD-07"
+  ],
+  "captainRulings": [
+   "CR-01",
+   "CR-02",
+   "CR-03",
+   "CR-04",
+   "CR-05",
+   "CR-06"
+  ],
+  "fs01": "resolved-with-fixture-evidence"
+ },
+ "limitConflictPairs": {
+  "policy": "NO-FOLD: both values are recorded verbatim with their own locator; no averaging, no silent alignment to meta, neither value may be dropped. The choice is pending explicit user adjudication.",
+  "status": "resolved-by-user-ruling (values retained verbatim in both slots)",
+  "pairs": {
+   "TM600": {
+    "overview": {
+     "source": "project/DALI/Dali_testmode.xlsx (sheet OVERVIEW)",
+     "item": "TM600",
+     "level": "BUBO",
+     "name": "HS_RDSON",
+     "expectValue": 11,
+     "unit": "mΩ",
+     "test": "direct",
+     "special": "Y\n2 FLOAT",
+     "locator": "sheet=OVERVIEW!row 132 (Item=TM600)"
+    },
+    "dftCsv": {
+     "source": "project/DALI/input/DFT.csv",
+     "recordIndex0Based": 18,
+     "recordIndex1Based": 19,
+     "csvRecord": 19,
+     "item": "TM600",
+     "functionName": "RDSON_TEST",
+     "shortName": "HS_RDSON",
+     "expectValue": 10,
+     "unit": "mohm",
+     "check": "PMID-SW",
+     "dynamic": "iset[pmid2sw,1,1e-3,0]",
+     "type": "MV&MI",
+     "locator": "DFT.csv record index 18 (0-based) = csvRecord 19 (1-based); Item=TM600"
+    },
+    "delta": "TM600 11 mΩ (OVERVIEW) vs 10 mohm (DFT.csv) — 1 mΩ / 9.1% difference on a milliohm limit"
+   },
+   "TM601": {
+    "overview": {
+     "source": "project/DALI/Dali_testmode.xlsx (sheet OVERVIEW)",
+     "item": "TM601",
+     "level": "BUBO",
+     "name": "LS_RDSON",
+     "expectValue": 7.5,
+     "unit": "mΩ",
+     "test": "direct",
+     "special": null,
+     "locator": "sheet=OVERVIEW!row 133 (Item=TM601)"
+    },
+    "dftCsv": {
+     "source": "project/DALI/input/DFT.csv",
+     "recordIndex0Based": 19,
+     "recordIndex1Based": 20,
+     "csvRecord": 20,
+     "item": "TM601",
+     "functionName": null,
+     "shortName": "LS_RDSON",
+     "expectValue": 8,
+     "unit": "mohm",
+     "check": "PGND-SW",
+     "dynamic": "iset[sw2pgnd,1,1e-6,0]",
+     "type": "MV&MI",
+     "locator": "DFT.csv record index 19 (0-based) = csvRecord 20 (1-based); Item=TM601"
+    },
+    "delta": "TM601 7.5 mΩ (OVERVIEW) vs 8 mohm (DFT.csv) — 0.5 mΩ / 6.7% difference"
+   }
+  },
+  "supersedesStatus": "pending-user-adjudication (this is the post-ruling state)"
+ },
+ "pendingUserAdjudication": [
+  {
+   "id": "PA-01",
+   "topic": "TM600 HS_RDSON limit",
+   "status": "resolved-by-user-ruling",
+   "optionA": {
+    "value": 11,
+    "unit": "mΩ",
+    "provenance": "project/DALI/Dali_testmode.xlsx sheet=OVERVIEW!row 132"
+   },
+   "optionB": {
+    "value": 10,
+    "unit": "mohm",
+    "provenance": "project/DALI/input/DFT.csv record index 18 (0-based) = csvRecord 19"
+   },
+   "ruledValue": "OVERVIEW 11 mΩ",
+   "alternativeRetained": "DFT.csv 10 mohm / ",
+   "rule": "implementation and spec must use 11 mΩ; the DFT.csv 10 mohm value stays registered in this artifact as a retained alternative, never as the limit"
+  },
+  {
+   "id": "PA-02",
+   "topic": "TM601 LS_RDSON limit",
+   "status": "resolved-by-user-ruling",
+   "optionA": {
+    "value": 7.5,
+    "unit": "mΩ",
+    "provenance": "project/DALI/Dali_testmode.xlsx sheet=OVERVIEW!row 133"
+   },
+   "optionB": {
+    "value": 8,
+    "unit": "mohm",
+    "provenance": "project/DALI/input/DFT.csv record index 19 (0-based) = csvRecord 20"
+   },
+   "ruledValue": "OVERVIEW 7.5 mΩ",
+   "alternativeRetained": "DFT.csv 8 mohm",
+   "rule": "implementation and spec must use 7.5 mΩ; the DFT.csv 8 mohm value stays registered as a retained alternative"
+  }
+ ],
+ "captainRulings": [
+  {
+   "id": "CR-01",
+   "covers": [
+    "symbol naming"
+   ],
+   "ruledBy": "captain",
+   "topic": "TM600/TM601 symbol names",
+   "ruling": {
+    "TM600": "TM600_HS_RDSON",
+    "TM601": "TM601_LS_RDSON"
+   },
+   "reason": "naming hard rule in scripts/gen_testitems_meta.py:91 — DUT_API int TM<item>_<SHORTNAME>(short funcindex",
+   "status": "applied",
+   "basis": "naming hard rule in scripts/gen_testitems_meta.py line 91: DUT_API int ((?:TM\\d+(?:_\\d+)?_\\w+|Trim_\\w+))\\(short funcindex — i.e. TM<item>_<SHORTNAME>; TM600 ShortName=HS_RDSON and TM601 ShortName=LS_RDSON, so the symbols are TM600_HS_RDSON / TM601_LS_RDSON",
+   "supersedes": "acceptance-plan.json symbolHint RDSON_TEST_HS / RDSON_TEST_LS (placeholders)",
+   "appliedAt": "2026-09-16T14:15:18+08:00"
+  },
+  {
+   "id": "CR-02",
+   "covers": [
+    "BD-01",
+    "PA-01",
+    "PA-02",
+    "C-01 (limit half)"
+   ],
+   "ruledBy": "user",
+   "topic": "TM600/TM601 RDSON limits for this acceptance run",
+   "ruling": "this acceptance run uses the OVERVIEW limits: TM600 HS_RDSON = 11 mΩ, TM601 LS_RDSON = 7.5 mΩ (project/DALI/Dali_testmode.xlsx, sheet=OVERVIEW!rows 132-133). The DFT.csv values (TM600 10 mohm, TM601 8 mohm) are retained as a REGISTERED CONFLICT — rewriting, averaging or deleting them is forbidden.",
+   "reason": "project_config.json declares inputs.dft = project/DALI/Dali_testmode.xlsx, i.e. OVERVIEW is the DFT authority input",
+   "scope": "applies ONLY to this debug-copy acceptance run (D:/PROJECT6-DALI/ForCodexDebug); if a newer DFT version is discovered, this ruling must be reopened",
+   "status": "applied",
+   "ruledAt": "2026-09-16T14:15:18+08:00",
+   "evidence": [
+    {
+     "path": "project/DALI/Dali_testmode.xlsx",
+     "locator": "sheet=OVERVIEW!row 132 (TM600 ExpectValue=11, Unit=mΩ) / row 133 (TM601 ExpectValue=7.5, Unit=mΩ)"
+    },
+    {
+     "path": "project_config.json",
+     "locator": "inputs.dft"
+    },
+    {
+     "path": "project/DALI/input/DFT.csv",
+     "locator": "record index 18 (0-based) = csvRecord 19 ExpectValue=10+mohm; record index 19 = csvRecord 20 ExpectValue=8+mohm (retained, not adopted)"
+    }
+   ]
+  },
+  {
+   "id": "CR-03",
+   "covers": [
+    "BD-02",
+    "C-01 (pin half)",
+    "FS-01"
+   ],
+   "ruledBy": "captain",
+   "topic": "TM600/TM601 force and Kelvin-sense pairs",
+   "ruling": "TM600 force/sense = PMID↔SW. TM601 force/sense = SW↔PGND with **PGND as the HIGH end and SW as the LOW end**. The .sv notations isrcPMID_SW / iset[pmid_sw] are NOT adopted for TM601.",
+   "reason": "confirmed by fixture evidence in the schematic IR (t2): the FPVIe force channel reaches PGND_F_S1 through relays 154/155 (role F, HIGH domain) and SW_F_S1 through relays 60/61 (role F, LOW domain); the sense channel mirrors it (PGND_S_S1 154/155 HIGH, SW_S_S1 60/61 LOW). PMID↔SW is TM600's pairing (S1_FPVIe_FH0->PMID_F_S1, relay 83).",
+   "status": "applied",
+   "ruledAt": "2026-09-16T14:15:18+08:00",
+   "evidence": [
+    {
+     "path": "team/artifacts/acceptance-20260916-dali10/schematic-ir.json",
+     "sha256": "a83110d992071733367f356fd3f4d7007136e5a8b526cfa606e2310b53bc1da4",
+     "locator": "paths[] ids S1_FPVIe_FH0->PGND_F_S1, S1_FPVIe_FL0->SW_F_S1, S1_FPVIe_SH0->PGND_S_S1, S1_FPVIe_SL0->SW_S_S1"
+    }
+   ]
+  },
+  {
+   "id": "CR-04",
+   "covers": [
+    "BD-03",
+    "C-03"
+   ],
+   "ruledBy": "captain",
+   "topic": "TM600/TM601 register map",
+   "ruling": "per-TM reg_config .sv mapping is adopted: TM600 0x59=0x20, 0x5A=0x02, 0x61=0x4B; TM601 0x59=0x20, 0x5A=0x01, 0x61=0x4B (both also write 0x10=0x43).",
+   "reason": "the 0x5A bit pattern across four shipped TMs (TM607 0x5A=0x01 for the low-side FET, TM608/TM609/TM640 0x5A=0x02 for the high-side FET) plus the LS/HS bit-inversion fix recorded in docs/PROGRESS.md",
+   "status": "applied",
+   "ruledAt": "2026-09-16T14:15:18+08:00",
+   "evidence": [
+    {
+     "path": "project/DALI/reg_config/tm600.sv",
+     "locator": "0x59=0x20 / 0x5A=0x02 / 0x61=0x4B"
+    },
+    {
+     "path": "project/DALI/reg_config/tm601.sv",
+     "locator": "0x59=0x20 / 0x5A=0x01 / 0x61=0x4B"
+    },
+    {
+     "path": "docs/PROGRESS.md",
+     "locator": "LS/HS register bit inversion fix history"
+    },
+    {
+     "path": "project/DALI/input/DFT.csv",
+     "locator": "records 18/19 register rows — retained verbatim as the superseded alternative"
+    }
+   ]
+  },
+  {
+   "id": "CR-05",
+   "covers": [
+    "DD-01"
+   ],
+   "ruledBy": "captain",
+   "topic": "DFT.csv TM601 iset[sw2pgnd,1,1e-6,0] — unit/field semantics",
+   "ruling": "the third iset[] field is the ramp time, so TM601 = 1 A with a 1 µs ramp (NOT 1 µA).",
+   "reason": "reg_config/tm600.sv:38-42 is self-labelling in three mutually consistent lines; across the file the 2nd field takes only current-shaped values and the 3rd field only time-shaped values",
+   "status": "applied (DD-01 resolved)",
+   "ruledAt": "2026-09-16T14:15:18+08:00",
+   "evidence": [
+    {
+     "path": "project/DALI/reg_config/tm600.sv",
+     "locator": "lines 38-42 (`NVT_STIM.isrcSW.ramp_isrc_val(1, 1e-3);` // \"pin SW current set to 1A\" // iset[sw,1,1e-3,0])"
+    },
+    {
+     "path": "project/DALI/reg_config/*.sv",
+     "locator": "this task independently enumerated 125 iset[...] occurrences: all 4-field; 3rd slot values are time-shaped only (1e-3, 1e-6, 100e-6, 2e-3, 10e-3, 1e-5)"
+    }
+   ]
+  },
+  {
+   "id": "CR-06",
+   "covers": [
+    "FS-01"
+   ],
+   "ruledBy": "captain",
+   "topic": "TM601 physical loop — FS-01 resolution",
+   "ruling": "the TM601 loop is SW↔PGND with PGND on the HIGH end; tm601.sv's isrcPMID_SW is NOT the wiring of that loop (PMID↔SW belongs to TM600).",
+   "reason": "Captain validated FS-01 directly against the schematic IR paths[] (see CR-03 evidence); this task re-verified the same four path ids and their relay sets",
+   "status": "resolved-with-fixture-evidence",
+   "ruledAt": "2026-09-16T14:15:18+08:00",
+   "evidence": [
+    {
+     "path": "team/artifacts/acceptance-20260916-dali10/schematic-ir.json",
+     "sha256": "a83110d992071733367f356fd3f4d7007136e5a8b526cfa606e2310b53bc1da4",
+     "locator": "paths[] (182 paths)"
+    }
+   ]
+  }
+ ],
+ "revisions": [
+  {
+   "at": "2026-09-16T14:15:18+08:00",
+   "by": "dft-expert (t1 close-out, captain follow-up requirements)",
+   "changes": [
+    "added limitConflictPairs + pendingUserAdjudication (PA-01/PA-02): TM600 11 mΩ vs 10 mohm, TM601 7.5 mΩ vs 8 mohm recorded as paired verbatim evidence",
+    "added source.plaintextAnchors with python plaintext sha256 + byte counts (DFT.csv 16862 B / B92D203FA6F152120A316B9E32C037F7C1C978E96424EDF5A871F02E5CFE0FD4; xlsx 12210607 B / D9D721A3A6606232BB463C8147D4955BEA623BF81996E9FF85CCB8E463C7788E)",
+    "added source.hashConvention (plaintext anchoring; grep output is not a hash anchor)",
+    "added captainRulings CR-01 and renamed the symbols to TM600_HS_RDSON / TM601_LS_RDSON",
+    "added items[TM600/TM601].mvMiRequirement (force path + simultaneous Kelvin differential read; RON from measured V/I)",
+    "annotated conflict C-01/C-05 with the 0-based record indices 18/19 (1-based 19/20) and the DFT.csv plaintext anchor"
+   ]
+  },
+  {
+   "at": "2026-09-16T14:15:18+08:00",
+   "by": "dft-expert (t1 close-out 2, responding to ate-implementer independent review)",
+   "changes": [
+    "added items[TM600/TM601].forceAndSense (force pair vs Kelvin sense pair stated separately) and flagged the TM601 .sv force path as INCONSISTENT with its own SW-PGND check node (FS-01) — this corrects a real self-contradiction in the previous revision where channels[0]=PMID-SW and channels[1]=SW-PGND were both implied to be the measurement",
+    "added dftCsvDefects DD-01 (DFT.csv TM601 iset[sw2pgnd,1,1e-6,0] unit/ramp anomaly)",
+    "annotated C-01 with forceMagnitudeDisambiguation (the sources disagree on the forced magnitude too; 1 A is the .sv value for both parts, the CSV TM601 literal is 1e-6) and scopeStatement",
+    "annotated C-03 with independentCorroboration from ate-implementer (four shipped TMs: TM607 0x5A=0x01 LS, TM608/TM609/TM640 0x5A=0x02 HS)",
+    "added notices N-01 (artifact hash history; downstream must re-hash)"
+   ]
+  },
+  {
+   "at": "2026-09-16T14:15:18+08:00",
+   "by": "dft-expert (t1 close-out 3, applying post-revision rulings R-01..R-05)",
+   "changes": [
+    "PA-01/PA-02: limit conflicts now resolved-by-user-ruling (OVERVIEW 11 / 7.5 mΩ ruled; DFT.csv 10 / 8 mohm retained verbatim)",
+    "C-03/BD-03: resolution recorded — .sv mapping authoritative, DFT.csv register rows superseded (retained)",
+    "C-01/BD-02 + items[TM601].forceAndSense: force pair corrected to the ruled sw2pgnd; the earlier \"INCONSISTENT\" verdict WITHDRAWN (it came from reading the .sv instrument pin name isrcPMID_SW as the physical force pair); priorReading kept for audit",
+    "FS-01 narrowed and restated: now a t2 physical-wiring/Kelvin question, explicitly NOT a t5 blocker",
+    "DD-01 closed by ruling R-04 (third iset field = ramp time); 8 nV reasoning retained",
+    "added rulingsApplied (R-01..R-05) and blockingDecisionsSummary (closed BD-01/02/03, open BD-05/06/07)"
+   ]
+  },
+  {
+   "at": "2026-09-16T14:15:18+08:00",
+   "by": "dft-expert (t1 close-out 4, captain fourth augmentation request)",
+   "changes": [
+    "captainRulings += CR-02 (BD-01 user limit ruling, with the debug-copy-only scope and the reopen condition), CR-03 (BD-02 force/sense + polarity, fixture-confirmed), CR-04 (BD-03 register map), CR-05 (DD-01 iset field semantics), CR-06 (FS-01 resolution)",
+    "items.TM601.forceAndSense.force: marked SUPERSEDED-BY-RULING for the .sv notation (raw token preserved), polarity fixed to PGND=High / SW=Low, authorityChain and fixtureEvidence added",
+    "items.TM601.forceAndSense.fixtureEvidence: four schematic-ir paths re-verified by this task (from/to, role, domain, relays, confidence), plus the absent PGND-as-Low / SW-as-High counterparts and the PMID paths reserved for TM600",
+    "FS-01 → resolved-with-fixture-evidence (fs01Resolution block added); openQuestion restated as resolved with the t3 alias residual only",
+    "DD-01 status → resolved (CR-05); the 8 nV reasoning kept as the retainedReasoning",
+    "C-01.forceMagnitudeDisambiguation += captain confirmation that OVERVIEW gives no force value; BD-07 explicitly kept open",
+    "evidencePreservation block added (declares what was never modified)"
+   ]
+  }
+ ],
+ "dftCsvDefects": [
+  {
+   "id": "DD-01",
+   "path": "project/DALI/input/DFT.csv",
+   "recordIndex0Based": 19,
+   "csvRecord": 20,
+   "item": "TM601",
+   "field": "Dynamic = iset[sw2pgnd,1,1e-6,0]",
+   "defect": "the third argument of iset[] is the ramp/settle time in seconds in every other row of this file (e.g. iset[pmid2sw,1,1e-3,0], iset[sw,-2,1e-3,0], iset[sw,2,1e-3,0]). Read literally as a current, 1e-6 A would be 1 µA, giving 8 mΩ x 1 µA = 8 nV across the LS FET — far below any ATE measurement resolution and electrically useless for the test.",
+   "interpretation": "most likely a 1 µs ramp time (typo/unit slip), i.e. the force magnitude is 1 A as elsewhere; alternatively the whole row is a copy defect. Both readings are recorded; neither is adopted silently.",
+   "impact": "if 1e-6 were a force current the TM601 test could not produce a measurable result; the forced magnitude must be confirmed (see BD-02/BD-05) before implementation.",
+   "status": "resolved-by-ruling (R-04 / CR-05): the third iset[] field is the ramp time; TM601 = 1 A + 1 µs ramp (the earlier \"open — needs DFT-owner confirmation\" state is superseded)",
+   "resolution": {
+    "ruledBy": "captain",
+    "ruledAt": "2026-09-16T14:15:18+08:00",
+    "decision": "the third iset[] field is the ramp/settle time, so iset[sw2pgnd,1,1e-6,0] = 1 A with a 1 µs ramp",
+    "evidence_captain": "reg_config/tm600.sv:38-42 is self-labelling: `NVT_STIM.isrcSW.ramp_isrc_val(1, 1e-3);` // \"pin SW current set to 1A\" // iset[sw,1,1e-3,0]",
+    "evidence_this_task": "independent enumeration over project/DALI/reg_config/*.sv: 125 iset[...] occurrences, ALL 4-field; field 3 takes only time-shaped values (1e-3 x53, 1e-6 x48, 100e-6 x12, 2e-3 x6, 10e-3 x5, 1e-5 x1) and field 2 only current-shaped values; no 5-field row found in this workspace",
+    "retainedReasoning": "read literally as a current, 1e-6 A would be 1 µA giving 8 nV across 8 mΩ — below ATE resolution, which is why the ramp-time reading is the only coherent one",
+    "residualOddity": "ate-implementer reports TM627/TM628 use a 5-field variant iset[pmid2sw,-0,9,0,0]; outside TM600/TM601 scope, not re-verified here",
+    "statusTransition": "was: \"open — needs DFT-owner confirmation\" → now: resolved by R-04/CR-05"
+   }
+  }
+ ],
+ "notices": [
+  {
+   "id": "N-01",
+   "topic": "artifact hash changed after the first handoff — re-hash, do not trust quoted digests",
+   "history": [
+    {
+     "sha256": "f3faedc26675a4ad06d66569c19ec17ee1c06211336eb4feba4fb40e30d2e3c8",
+     "sizeBytes": 88109,
+     "note": "first build (t1 handoff)"
+    },
+    {
+     "sha256": "478f88a4576a4ca269705737b1859064d96b18f9c0eedfe1d3af764ea5a0f755",
+     "sizeBytes": 88101,
+     "note": "TM1205 md hash corrected"
+    },
+    {
+     "sha256": "85db02e38d49803e174c8c5645471041ea62911e651bafb9efd6dc777469521e",
+     "sizeBytes": 99058,
+     "note": "captain follow-up (PA-01/PA-02, plaintext anchors, CR-01 symbols, MV&MI)"
+    },
+    {
+     "sha256": "0a1c3b1e474c508c63d639d69e3b905ce94cb5b8085c98745c05a6625669597e",
+     "sizeBytes": 107133,
+     "note": "implementer-review response (forceAndSense split, DD-01, C-03 corroboration)"
+    },
+    {
+     "sha256": "CURRENT-REVISION",
+     "sizeBytes": null,
+     "note": "captain fourth augmentation (CR-02..CR-06 ruling records, TM601 polarity + fixture evidence, FS-01 resolved)"
+    }
+   ],
+   "instruction": "always re-hash the file before citing it; team/artifacts/acceptance-20260916-dali10/dft-raw/dft-ir-hashes.json holds the authoritative digest",
+   "selfHashNote": "the digest of THIS revision is not embedded here on purpose: embedding it would change the bytes it describes (unstable self-reference). The authoritative digest is team/artifacts/acceptance-20260916-dali10/dft-raw/dft-ir-hashes.json -> deliverable.sha256; the dft_ir_verify.py check compares that sidecar against the live file."
+  }
+ ],
+ "rulingsApplied": [
+  {
+   "id": "R-01",
+   "covers": [
+    "BD-01",
+    "PA-01",
+    "PA-02",
+    "C-01(limit half)"
+   ],
+   "ruledBy": "user",
+   "decision": "limits = OVERVIEW: TM600 11 mΩ, TM601 7.5 mΩ; DFT.csv 10/8 mohm retained verbatim as a registered alternative",
+   "effect": "spec/implementation use 11 / 7.5 mΩ; both provenances must still be cited side by side"
+  },
+  {
+   "id": "R-02",
+   "covers": [
+    "BD-03",
+    "C-03"
+   ],
+   "ruledBy": "captain",
+   "decision": "per-TM reg_config .sv register mapping is authoritative (TM600 0x5A=0x02 HS, TM601 0x5A=0x01 LS); DFT.csv register rows superseded",
+   "effect": "implementation uses the .sv writes; DFT.csv writes remain in the artifact as the superseded alternative"
+  },
+  {
+   "id": "R-03",
+   "covers": [
+    "BD-02",
+    "C-01(pin half)",
+    "FS-01(implementation half)"
+   ],
+   "ruledBy": "captain",
+   "decision": "TM600 force pmid2sw / sense PMID-SW; TM601 force sw2pgnd / sense SW-PGND (adopt DFT.csv, not the .sv PMID↔SW pair)",
+   "effect": "FS-01 no longer asserts a contradiction; it is narrowed to a t2 physical-wiring/Kelvin question and does not block t5"
+  },
+  {
+   "id": "R-04",
+   "covers": [
+    "DD-01"
+   ],
+   "ruledBy": "captain",
+   "decision": "the third iset[] field is the ramp time; TM601 = 1 A + 1 µs ramp, TM600 = 1 A + 1 ms ramp",
+   "effect": "DD-01 closed; the 8 nV argument retained as the reason the ramp reading is the only coherent one"
+  },
+  {
+   "id": "R-05",
+   "covers": [
+    "BD-07"
+   ],
+   "ruledBy": "implementer (working assumption, upstream)",
+   "decision": "TM600 OVERVIEW Special=\"Y / 2 FLOAT\" is read as two floating nodes — this is an assumption, not a source fact",
+   "effect": "labelled an assumption, not a source fact; BD-07 stays open in this artifact until a source confirms it"
+  }
+ ],
+ "blockingDecisionsSummary": {
+  "closed": [
+   "BD-01",
+   "BD-02",
+   "BD-03"
+  ],
+  "open": [
+   "BD-05",
+   "BD-06",
+   "BD-07"
+  ],
+  "openNotes": {
+   "BD-05": "TM600/TM601 force compliance/clamp still stated by no source (golden case uses 50% x 1 V = 0.5 V)",
+   "BD-06": "TM1205 has no ExpectValue/tolerance in any DFT source",
+   "BD-07": "TM600 OVERVIEW Special=\"Y / 2 FLOAT\" — the two-floating-node reading is an implementation assumption (R-05/implementer), NOT a source fact; stays OPEN"
+  }
+ },
+ "fs01Resolution": {
+  "status": "resolved-with-fixture-evidence",
+  "ruledBy": "captain (CR-06)",
+  "fixtureProof": {
+   "file": "team/artifacts/acceptance-20260916-dali10/schematic-ir.json",
+   "sha256": "a83110d992071733367f356fd3f4d7007136e5a8b526cfa606e2310b53bc1da4",
+   "paths": [
+    "S1_FPVIe_FH0->PGND_F_S1",
+    "S1_FPVIe_FL0->SW_F_S1",
+    "S1_FPVIe_SH0->PGND_S_S1",
+    "S1_FPVIe_SL0->SW_S_S1"
+   ]
+  },
+  "conclusion": "TM601 force/sense = SW↔PGND (PGND High, SW Low); PMID↔SW belongs to TM600",
+  "notBlocking": "no longer blocks t5; the only residual is the t3 alias→relay mapping"
+ },
+ "evidencePreservation": {
+  "policy": "EVIDENCE-PRESERVING AUGMENTATION: this revision only ADDS ruling/resolution records beside the original evidence.",
+  "neverModified": [
+   "limitConflictPairs[TM600/TM601].{overview,dftCsv} values, units (mΩ / mohm), locators — byte-identical to the sources",
+   "all DFT.csv tokens quoted in this artifact (iset[sw2pgnd,1,1e-6,0], iset[pmid2sw,1,1e-3,0], register rows)",
+   "all reg_config/*.sv tokens quoted in this artifact, including the superseded iset[pmid_sw,...]",
+   "all OVERVIEW cell-level locators",
+   "conflicts[].sources — each conflict keeps every source it ever cited"
+  ],
+  "supersededButPreserved": [
+   "items.TM601.forceAndSense.force svgRawNotation",
+   "items.TM601.forceAndSense.force priorReading",
+   "conflicts[C-01/C-03/C-05] alternative values"
+  ]
+ }
+}

@@ -1,0 +1,52 @@
+{
+  "subject": "team/artifacts/acceptance-20260916-dali10/build-report.json",
+  "at": "2026-09-17T07:01:41+08:00",
+  "size": 35743,
+  "sha256": "3f4b1fdf291d9aa2b9e68dfa2ecd822a709d776eb05ca7c7ef1dce16bcb7530d",
+  "sha256_lf_normalized": "a87b663f107e429fcb9cae0bd8734d43759e318980eb1bbe0c0bbe123ef42de0",
+  "topLevelEntries": 35,
+  "reproducibleBodySha256": "9804fbe2272477ecf51de6162401ae295dad7a6aa0f865a00f3bd16f9517fa24",
+  "reproducibleNote": "剔除 `generatedAt` 与 `receipts` 后的 body 哈希；projectionSpec v2 ⇒ 跨次生成稳定。（更正留痕：v1 曾以\"收据历史行 sha 在变\"为由，该理由不成立且已撤回。）",
+  "projectionSpec": {
+    "exclude": [
+      "generatedAt",
+      "receipts"
+    ],
+    "version": 2,
+    "serialization": "json.dumps(body, ensure_ascii=False, sort_keys=True)，分隔符为 Python json 默认，无尾随换行",
+    "encoding": "utf-8",
+    "bodyDefinition": "body = {k: v for k, v in json.loads(<file bytes>.decode('utf-8-sig')).items() if k not in exclude} ⇒ 再按上述 serialization/encoding 序列化后取 sha256",
+    "stabilityNote": "不稳定来源是 `generatedAt`（每次生成）与 `receipts`；均已排除 ⇒ v2 下跨次稳定。⚠️ 排除项 `receipts` 在当前正文中不存在（正文键路径穷举 0 命中）⇒ 属**预防性**，本身不构成升版本理由；**升 v2 的正当理由＝v1 未声明序列化与编码 ⇒ 第三方同字节也无法复现**。",
+    "note": "跨秒不变；跨版本不可混用 —— 排除项/序列化/编码任一变化都必须换版本号。"
+  },
+  "standardTriHash": "活档产物的标准三哈希（用途不同、不可互换）：sha256 = 身份（逐字节同盘）；sha256_lf_normalized = 跨序列化可比重（行尾无关）；reproducibleBodySha256 = 幂等判定（剔除 generatedAt、跨次可比）。",
+  "hashInvariance": {
+    "sha256": "逐字节同盘身份（含 generatedAt ⇒ 跨次重生成会变）",
+    "sha256_lf_normalized": "行尾不变（跨编辑器 / CRLF-LF 可比）",
+    "reproducibleBodySha256": "时间戳不变（跨秒/跨次可比；用于判内容是否变）"
+  },
+  "isFrozen": false,
+  "appendPolicy": "**本账本仅在身份（body 哈希，projectionSpec 口径）变化时追加**；**因此\"一段时间无增长\"不等于\"无运行\"** —— 新策略下运行可以发生而有意不记。**运行计数一律查 `runSeq`**。⚠️ **制度边界以事件表述、不锚行号**：生效点与【预策略段】规模见 `appendPolicyBoundary`。",
+  "appendPolicyBoundary": {
+    "note": "**事件表述的边界**（自哪个 runSeq 起生效）⇒ 作为**历史事件永久稳定**；**本字段不写『账本当前共多少行』** —— 那是**当前测量、必然漂**。【预策略段】规模见 `prePolicyCountsAtPolicyWrite`（**带限定名的历史读数**）。",
+    "effectiveFromRunSeq": 55,
+    "prePolicySegments": 54
+  },
+  "prePolicyCountsAtPolicyWrite": {
+    "note": "**预策略段（每次运行都追加的那一段）的规模 —— 取值为本字段首次写入时的测量**。⚠️ 名字自带限定：这是写入时刻的历史读数，不是账本当前总量。",
+    "lines": 54,
+    "distinctBodyIdentities": 5,
+    "asOf": "2026-09-17T06:29:06+08:00",
+    "frozen": true
+  },
+  "lastAppendDecision": {
+    "note": "**本次生成对历史账本的追加决策（每次都会重算、因此总是可见）** —— `reason` 只在真正追加的行里出现 ⇒ 在 skip 情形下**结构上不可达** ⇒ 故把决策放在本字段（收据每次重算），而**不改任何历史行**。",
+    "policy": "仅在身份（reproducibleBodySha256，projectionSpec 口径）变化时追加",
+    "appended": false,
+    "byIdentity": "9804fbe2272477ecf51de6162401ae295dad7a6aa0f865a00f3bd16f9517fa24",
+    "reason": "routine-reverify (identity unchanged => NOT appended)",
+    "ledgerLinesAtDecision": 54
+  },
+  "countUnitNote": "计数单位：`lineCount` 是**行的条数**；状态数须按 (size, sha256, reproducibleBodySha256, at) 去重后计。⚠️ `at` 只到**秒** ⇒ 同秒两次运行得到同 at 同 sha 两行 ⇒ 同 at 不构成同一性；故**状态数是运行次数的下界**；精确运行计数请用 `runSeq`；秒级 at 不是计数装置。⚠️ 自证请**按行计**（\"含该字段的行数 = N / M\"），不得按文件计。",
+  "note": "报告为**活档**；本收据每次生成后重算。引用某一版身份请用本文件，勿用报告内的自算哈希。"
+}

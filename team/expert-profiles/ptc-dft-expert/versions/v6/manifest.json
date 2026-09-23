@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "profileId": "ptc-dft-expert",
+  "version": "v6",
+  "publishedAt": "2026-09-22T09:54:04.047978Z",
+  "executionClass": "input-dft",
+  "evaluation": {
+    "verdict": "pass",
+    "failed": [],
+    "caseCount": 1,
+    "checks": [
+      {
+        "id": "assets",
+        "ok": true,
+        "detail": "all required assets present"
+      },
+      {
+        "id": "profile_metadata",
+        "ok": true,
+        "detail": "profile.yaml parsed and identified"
+      },
+      {
+        "id": "execution_class_registered",
+        "ok": true,
+        "detail": "executionClass 'input-dft' is registered in the plugin policy registry"
+      },
+      {
+        "id": "execution_class_matches_profile_map",
+        "ok": true,
+        "detail": "plugin maps ptc-dft-expert to 'input-dft'"
+      },
+      {
+        "id": "declared_readable",
+        "ok": true,
+        "detail": "readable: ['project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx', 'project/DALI/Output_Global_Material/dft/<TM>']"
+      },
+      {
+        "id": "declared_writable",
+        "ok": true,
+        "detail": "writable: ['project/DALI/Output_Global_Material/dft/<TM>', 'project/DALI/ErrorLog/dft-expert.log']"
+      },
+      {
+        "id": "declared_requiredGates",
+        "ok": true,
+        "detail": "requiredGates: ['scripts/validate_dft_outputs.py']"
+      },
+      {
+        "id": "readable_has_no_retired_artifact",
+        "ok": true,
+        "detail": "readable declares no retired artifact"
+      },
+      {
+        "id": "output_contract",
+        "ok": true,
+        "detail": "object schema with required=['tm', 'sourceSha256', 'sourceLocation', 'rawIntent', 'testCondition', 'parseStatus', 'openItems']"
+      },
+      {
+        "id": "case_index_matches_disk",
+        "ok": true,
+        "detail": "index ['TM106'] vs cases/ ['TM106']"
+      },
+      {
+        "id": "case_TM106",
+        "ok": true,
+        "detail": "case is complete and inside the allowed read scope"
+      },
+      {
+        "id": "preset_agreement",
+        "ok": true,
+        "detail": "preset.yml name matches displayName 'PTC DFT Expert'"
+      },
+      {
+        "id": "boundary_regression",
+        "ok": true,
+        "detail": "plugin boundary suite passed"
+      },
+      {
+        "id": "case_gate_TM106",
+        "ok": true,
+        "detail": "python scripts/validate_dft_outputs.py --tm TM106 produced exit 0"
+      }
+    ]
+  },
+  "files": {
+    "CHANGELOG.md": "cf9ed80da82a13deaecfd2c69a54925612d3964b4efa64de91b03f546b213e0e",
+    "cases/TM106/expected.json": "77aaa946bbc3c9c01c46edd65dad394877b64b1b4e3dd29f521f6d3b1f2b1933",
+    "evaluation/expected-results.json": "1efa0ec7b1606d2d701c0c3c5d500345ee151d7299ab11fd5499280697cfe047",
+    "instructions.md": "2a7a080c06e888750824b55419dd3d6d231cf2992626271c950fda53f2c3f4d5",
+    "output-contract.schema.json": "00b8f2bfcf6a5e4f531be83ee9b48c4a213feee5dededa226cc166544f895a4a",
+    "profile.yaml": "3256959f4bb60241df9598ad691be5d0d1ed4d9275f1ed89ee6cabb8968179dd",
+    "status.json": "faec3ea016644521bf0d7b1c7adbbe593d7120f3c73841a541071cd2f8d29ecd"
+  },
+  "digest": "a84c136d9d1ef772114817a3d4b8a82451dd6bf17387b6b8aa743e270df57b1b"
+}

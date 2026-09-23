@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "tm": "TM110",
+  "trial": "tm110-ptc",
+  "role": "test-method-expert",
+  "stage": "METHOD",
+  "status": "BLOCKED",
+  "verdict": "blocked_routed_to_owner",
+  "finding": {
+    "id": "TM110-METHOD-K65-001",
+    "type": "missing_functional_relay",
+    "summary": "The signed strategy omits K65 nQON pull-up required for DTEST0 toggle observation.",
+    "affectedEndpoint": "nQON",
+    "evidence": [
+      {
+        "path": "project/DALI/Output_Global_Material/schematic/SCH-Connect-Map.txt",
+        "locator": "line 891; nQON 上拉-固定5V R_nQON_PU_S1 需闭合: K65",
+        "fact": "The current schematic product identifies K65 as the relay for the nQON 5 V pull-up."
+      },
+      {
+        "path": "knowledge/hardware/relays.md",
+        "locator": "lines 140-150",
+        "fact": "Open-drain DTEST0/nQON toggle observation requires a pull-up; DALI uses K65_nQON_PU."
+      },
+      {
+        "path": "knowledge/standards/toggle-awg-rules.md",
+        "locator": "lines 32-34",
+        "fact": "Toggle observation requires its pull-up relay."
+      },
+      {
+        "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm110-ptc\\strategy\\tm110-resource-config-contract.json",
+        "locator": "resourceSummary.setOnRelayUnion and relayGroups[endpointId=nQON].setOnRelayIds",
+        "fact": "The signed SetOn union is [18]; no relay group includes K65."
+      },
+      {
+        "path": "project/DALI/Output_Global_Material/dft/TM110/dft-meta.json",
+        "locator": "rawIntent.Check and rawIntent.Code2",
+        "fact": "The TM observes V(DTEST0) during a two-way ramp."
+      }
+    ],
+    "impact": "METHOD cannot define an observable threshold capture within the signed relay boundary."
+  },
+  "signedInputBoundary": [
+    {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm110-ptc\\strategy\\tm110-resource-config-contract.json",
+      "sha256": "ead6459fc004ef4edb3e0fcb72c9a4a0823356135fcaa5ac637bdcfbfca5364e"
+    }
+  ],
+  "requiredOwnerAction": {
+    "owner": "test-strategy-architect",
+    "action": "Re-evaluate the nQON functional pull-up; if required, add K65 to each affected relay group and SetOn union, validate the revised strategy, and acknowledge this finding id in resolvedFindings.",
+    "findingId": "TM110-METHOD-K65-001"
+  },
+  "methodDeliverableWritten": false
+}

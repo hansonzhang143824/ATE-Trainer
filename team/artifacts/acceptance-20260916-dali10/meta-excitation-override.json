@@ -1,0 +1,456 @@
+{
+  "artifactId": "meta-excitation-override (t26)",
+  "task": "t26 - run-scope meta/model override: TM600/TM601 excitation aligned to the frozen ATE stimulus, mi_pins corrected, SW/SW1/SW2 kept as distinct nodes",
+  "generatedAt": "2026-09-16 18:54:49",
+  "scope": "RUN-SCOPE ONLY. The shared generator scripts/gen_testitems_meta.py is NOT modified and no other run's meta is touched; the override is applied to the two TM600/TM601 entries of project/DALI/meta/dali_tm_meta.json plus the matching lines of project/DALI/meta/test_conditions.yaml.",
+  "frozenInputs": {
+    "setupContract": {
+      "path": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+      "sizeBytes": 328805,
+      "sha256": "fd00a5082170293fcea29446c009fc432977d61a8f624ef17ac1c82f41515a18",
+      "revision": 24
+    },
+    "dftCsv": {
+      "path": "project/DALI/input/DFT.csv",
+      "sizeBytes": 16862,
+      "sha256": "b92d203fa6f152120a316b9e32c037f7c1c978e96424edf5a871f02e5cfe0fd4"
+    },
+    "schConnectMap": {
+      "path": "project/DALI/SCH-Connect-Map.txt",
+      "sizeBytes": 66403,
+      "sha256": "cc8009fbb27eef0cf29b45e4e50b05e1b5d7b5d49095a32005261a79d83cb427"
+    },
+    "overviewDump": {
+      "path": "project/DALI/_archive/_dump_OVERVIEW.txt",
+      "sizeBytes": 137912,
+      "sha256": "e38371ad684fdaa7da0b26fc573fe732deeb42aa4701a6d40a933cbbb13cc7b9"
+    }
+  },
+  "changedFiles": {
+    "meta": {
+      "path": "project/DALI/meta/dali_tm_meta.json",
+      "sizeBytes": 147520,
+      "sha256": "50efba4ec6c271923c5f956b9c2a9f2f19173f7c0900a24ce0ec2ac3704b1f42",
+      "beforeSha256": "1c8496645492f7b75abf3a89f95679291490399d62f4a1a34d6cc5d8b1aa2693",
+      "beforeSizeBytes": 146180
+    },
+    "testConditions": {
+      "path": "project/DALI/meta/test_conditions.yaml",
+      "sizeBytes": 11628,
+      "sha256": "c919b11ddb6d4df2093a9c0c63ca7fe782cfb01e15cb3b2996a3f58a3e238c79",
+      "beforeSha256": "4dd0468efeb1708faa42ea8ae364791bd59b50dbf61a7691165d6e3bcdac1279",
+      "beforeSizeBytes": 11627
+    }
+  },
+  "perFunction": [
+    {
+      "functionName": "TM600_HS_RDSON",
+      "hardwareInit_alignedTo": [
+        "vbat 4.2 V",
+        "pmid 15 V",
+        "bst_sw 5 V",
+        "vdrv 5 V"
+      ],
+      "hardwareInit_locators": [
+        "project/DALI/input/DFT.csv L90 vset[vbat,4.2,100e-6,0]",
+        "L91 vset[pmid,15,100e-6,0]",
+        "L92 vset[bst2sw,5,1e-3,0]",
+        "L93 vset[vdrv,5,100e-6,0]",
+        "setup-contract.json rev 24 /tmDeltas/TM600/ateStimulus"
+      ],
+      "superseded_layer": [
+        "OVERVIEW L982-985 (vbat 3.5 / pmid 5) - DFT intent layer replaced by BD-08 ATE values"
+      ],
+      "capAuthority": {
+        "powered_pins": [
+          "BST-SW",
+          "BST_SW",
+          "ISW",
+          "PMID",
+          "VBAT",
+          "VDRV"
+        ],
+        "powered_pins_changed": false,
+        "mi_pins": {
+          "before": [],
+          "after": [
+            "SW"
+          ],
+          "locator": "iset[sw,1,1e-3,0] (DFT.csv L90-93, OVERVIEW L988): the forced loop current returns through SW, so SW is a measured-current pin and the FR-001 reverse check must not demand a Cap relay for it"
+        }
+      },
+      "gateEffect": {
+        "before": "no Cap warning for this function",
+        "after": "no Cap warning (unchanged)"
+      }
+    },
+    {
+      "functionName": "TM601_LS_RDSON",
+      "hardwareInit_alignedTo": [
+        "vbat 4.2 V",
+        "pmid 9 V",
+        "vdrv 5 V"
+      ],
+      "hardwareInit_locators": [
+        "project/DALI/input/DFT.csv L98 vset[vbat,4.2,100e-6,0]",
+        "L99 vset[pmid,9,100e-6,0]",
+        "L100 vset[vdrv,5,100e-6,0]",
+        "setup-contract.json rev 24 /tmDeltas/TM601/ateStimulus"
+      ],
+      "removed": [
+        "vset vbus 5.0 (OVERVIEW L996) - simulation-domain rail, excluded by BD-08; the TM601 DFT.csv row never declares it"
+      ],
+      "superseded_layer": [
+        "OVERVIEW L994-996 (vbat 3.5 / vbus 5) - DFT intent layer replaced by BD-08 ATE values"
+      ],
+      "capAuthority": {
+        "powered_pins": {
+          "before": [
+            "ISW",
+            "SW",
+            "VBAT",
+            "VBUS",
+            "VDRV"
+          ],
+          "after": [
+            "ISW",
+            "SW",
+            "VBAT",
+            "VDRV"
+          ],
+          "locator": "VBUS is a simulation-domain rail: removing it is the direct consequence of the hardwareInit change; VBUS arrival on the schematic would need K3 (SCH-Connect-Map.txt L213/L421), which this item does not close"
+        },
+        "mi_pins": {
+          "before": [],
+          "after": [
+            "PMID_SW",
+            "SW"
+          ],
+          "locator": "iset[pmid_sw,1,1e-3,0] with the loop current returning through SW (OVERVIEW L999/L1003, DFT.csv L104 iset[sw2pgnd,1,1e-6,0])"
+        }
+      },
+      "gateEffect": {
+        "before": "2 findings: SW->K57_CAP_BST_SW, VBUS->K5_VBUS_Cap",
+        "after": "0 findings"
+      }
+    }
+  ],
+  "swSw1Sw2DistinctNodes": {
+    "rule": "SW, SW1 and SW2 are different nodes and must never be folded into one cap family by name-prefix matching.",
+    "locators": [
+      "project/DALI/SCH-Connect-Map.txt L174 CH0 Low -> SW 需闭合: K60,K61",
+      "L177 CH0 High -> SW1 需闭合: K46",
+      "L183 CH0 High -> SW2 需闭合: K46,K49"
+    ],
+    "twoLayers": "The fix has TWO independent layers and neither replaces the other:",
+    "dataLayer": "this run-scope override keeps meta tokens exact (SW only, no SW1/SW2 in powered_pins) and puts SW into mi_pins. On the FINAL tree this alone is sufficient: an A/B probe with the OLD pre-t25 matcher restored still passes with the same 2 TM643 warnings (see abProbeFamIntersect).",
+    "ruleLayer": "scripts/verify_relay_trace.py fam_intersect() uses token-boundary matching (t25). It fixes the RECURRENCE PATH: if another project/run puts SW back into powered_pins while a cap token carries a numeric suffix (SW1_BST1/SW2_BST2), the old pure-prefix implementation would name a node that is not supplied. Its A/B evidence stands on its own (whole-tree: only K44/K45 removed, 0 added; exhaustive check: NEW hit set is always a subset of OLD).",
+    "correctionRecord": "an earlier revision of this artifact implied the t25 token-boundary fix alone explained why gate-logs-t20 shows TM601 SW->K45_CAP_SW1_BST1 / K44_CAP_SW2_BST2 while t25/t26 do not. That attribution is CORRECTED (raised by compile-diagnostician and reproduced here): on the final tree the effect comes from the data layer, while the rule layer guards against recurrence. The script-side fix must NOT be reverted.",
+    "abProbeFamIntersect": {
+      "probeFile": "D:/Newtest/DSH/ATE-Coding-Plat\\team/artifacts/acceptance-20260916-dali10/t26-regen-probe/verify_relay_trace.OLDfam.py",
+      "probeSizeBytes": 19542,
+      "probeSha256": "183e33ebe0a4bf3e284606b4a96ac5e19a43292f786f71e87878705b01d425fb",
+      "method": "copy verify_relay_trace.py with fam_intersect replaced by the pre-t25 pure-prefix body, run it with --meta against the CURRENT meta and test.cpp",
+      "oldMatcherExitCode": 0,
+      "oldMatcherWarnings": [
+        "TM643_VBAT_LOOP_INDICTOR: BST_SW -> K57_CAP_BST_SW",
+        "TM643_VBAT_LOOP_INDICTOR: VBUS -> K5_VBUS_Cap"
+      ],
+      "newMatcherExitCode": 0,
+      "newMatcherWarnings": [
+        "same two TM643 warnings"
+      ],
+      "conclusion": "identical results on the final tree -> the token-boundary fix is NOT what removes the K44/K45 findings in t26; the data layer is. The rule-layer fix remains necessary as recurrence protection and must not be rolled back.",
+      "logFile": "team/artifacts/acceptance-20260916-dali10/t26-regen-probe/ab-old.log"
+    }
+  },
+  "gates": {
+    "command": "pwsh -NoProfile -File scripts/run_gates.ps1 -LogDir team/artifacts/acceptance-20260916-dali10/gate-logs-t26",
+    "exitCode": 0,
+    "result": "no NEW-RED - closing gate PASSES",
+    "green": [
+      "material-audit",
+      "material",
+      "material-status",
+      "awg",
+      "meta",
+      "smoke",
+      "input-sync",
+      "relay-trace",
+      "merge",
+      "bst-sw",
+      "path-def"
+    ],
+    "knownRed": [
+      "cbit"
+    ],
+    "newRed": [],
+    "relayTrace": {
+      "status": "GREEN",
+      "exitCode": 0,
+      "detailLog": "meta 覆盖 101/101; structural 0; functional 182; FR-001 reverse 2",
+      "warningsRemaining": [
+        "TM643_VBAT_LOOP_INDICTOR: BST_SW -> K57_CAP_BST_SW (other TM, unchanged before/after)",
+        "TM643_VBAT_LOOP_INDICTOR: VBUS -> K5_VBUS_Cap (other TM, unchanged before/after)"
+      ],
+      "findingsRemovedByT26": [
+        "TM601_LS_RDSON: SW -> K57_CAP_BST_SW",
+        "TM601_LS_RDSON: VBUS -> K5_VBUS_Cap"
+      ],
+      "addedByT26": [],
+      "earlierRunNote": "an earlier t26 run (before the payload landed its 126-name fix at 18:53:33) reported relay-trace exit=1 with two '虚构继电器名 126' errors for TM600/TM601. Those came from the deployed test.cpp naming a relay '126'; test.cpp now writes K126_V1P5_CAP (StdAfx.h defines K126_V1P5_CAP 126) and the red is gone. t26 did not touch test.cpp."
+    },
+    "regressionAcrossDirs": {
+      "gate-logs-t20": "8 relay-trace findings incl. TM601 SW->K45_Cap_SW1_BST1 and SW->K44_Cap_SW2_BST2 (prefix mis-hit)",
+      "gate-logs-t25": "6 findings (t25 token-boundary fix removed the SW1/SW2 mis-hits)",
+      "gate-logs-t26": "2 warnings, TM643 only; TM600/TM601 clean"
+    },
+    "otherTmImpact": "none: TM643's two warnings are identical before and after; all other gates keep their status.",
+    "inputSyncNote": "editing dali_tm_meta.json requires refreshing test_conditions.yaml _sync.metaSha256 (done: 1c849664... -> 50efba4e...) or the input-sync gate reports DRIFT.",
+    "evidenceTiming": {
+      "payloadWriteMtime": "2026-09-16 18:53:33 (test.cpp 469714 B / 15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a)",
+      "currentLogs": "2026-09-16 19:02:01-19:02:04 (all 12 logs in gate-logs-t26) -> AFTER the write, so they describe the current tree",
+      "superseded": "the earlier relay-trace log at 18:53:16 predates the write; its '虚构继电器名 126' findings no longer describe the tree"
+    }
+  },
+  "k57Conclusion": {
+    "verdict": "PER-FUNCTION: TM600_HS_RDSON MUST KEEP K57_CAP_BST_SW closed (both the rule layer and the engineering layer require it). TM601_LS_RDSON is exempted at the rule layer and may run zero-Cap-closure, but keeping K57 closed is harmless. Net instruction to the payload: change nothing - test.cpp already closes K57 in both functions, which is correct.",
+    "ruleLayer": {
+      "TM600": "REQUIRED - its powered rail token is BST_SW, and the exemption set (mi_pins) contains only SW, so fam_intersect({'SW'},'BST_SW') is empty; deleting K57 would raise a new FR-001 warning.",
+      "TM601": "NOT REQUIRED - both its powered rail token (SW) and its mi_pins (PMID_SW, SW) meet the SW_BST alias, so the exemption fires."
+    },
+    "engineeringLayer": {
+      "statement": "K57 is genuinely justified for TM600",
+      "why": "TM600's BST-SW rail IS statically supplied: DFT.csv L92 vset[bst2sw,5,1e-3,0] / OVERVIEW L984 vset[bst_sw,5,1e-3,0]; t22 already ruled 'BST_SW is a real supply rail -> keep the reservoir cap'.",
+      "exemptionCaveat": "for TM601 the exemption only silences the rule; it does not make the relay wrong. Gate silence is not evidence that a cap is unnecessary."
+    },
+    "withdrawals": [
+      "an earlier revision said 'K57 must NOT be closed / zero-Cap-closure item' for BOTH functions - WRONG for TM600, withdrawn;",
+      "a later revision said the reverse check no longer requires K57 for TM600 as well - also WRONG, corrected here after rule-reviewer's token-level analysis, which I re-derived independently."
+    ],
+    "ledgerRequirement": "the implementation manifest, if it discusses K57, must state: TM600 required (rule + engineering), TM601 exempted at the rule layer but retained."
+  },
+  "payloadFindingNotInScope": {
+    "finding": "CLOSED - not a payload defect and not a blocker.",
+    "resolution": "rule-reviewer parsed StdAfx.h with the gate's own regex: 491 defines resolve, K126_V1P5_CAP -> 126 (StdAfx.h:299); a read-only replay of the gate's fn_blocks/parse_setons/name-authenticity rules over the deployed test.cpp yields ZERO fictitious name tokens in the whole tree.",
+    "explanation": "the two '虚构继电器名 126' lines in the early logs came from the PRE-WRITE tree using a bare number 126, which can never match a name table; the written K126_V1P5_CAP is the correct fix.",
+    "action": "none required"
+  },
+  "independentReview": {
+    "required": true,
+    "reviewer": "rule-reviewer",
+    "selfApproved": false,
+    "status": "round 1 returned ACCEPT on the meta/model override with one MEDIUM finding (K57, now corrected in this revision) plus two non-blocking recommendations (R-3 regeneration detectability, R-4 K126 redundancy); boundary 2 (payload/126) was closed as not-a-blocker.",
+    "reviewArtifact": "review/t26-independent-review.md",
+    "reviewedRevision": "t26-correction-1 (9937 B / 16614e98...)",
+    "note": "review must use the current revision (t26-correction-7). The substantive K57/RS/边界 conclusions are those already accepted for t26-correction-6; this revision only repairs the review ledger."
+  },
+  "unchanged": [
+    "D:/PROJECT6-DALI/ForCodexDebug (read-only here; no write performed)",
+    "D:/PROJECT6-DALI/devel",
+    "scripts/gen_testitems_meta.py",
+    "scripts/verify_relay_trace.py",
+    "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+    "team/artifacts/acceptance-20260916-dali10/test-plan.json",
+    "test.cpp"
+  ],
+  "revision": "t26-correction-8",
+  "correctedAt": "2026-09-16 19:11:05",
+  "rootCause": {
+    "statement": "The TM601 VBUS false positive came from the EXACT token 'VBUS' in capAuthority.powered_pins (derived from the OVERVIEW layer by scripts/gen_testitems_meta.py:147-187, which BD-08 superseded). It is NOT caused by the relay token BUSH0_AMUX.",
+    "evidence": [
+      "compile-diagnostician (t25, independently reviewed): fam_intersect(pins containing 'BUSH0_AMUX','VBUS') = [] and the token 'BUSH0_AMUX' does not occur in powered_pins.",
+      "t26: the warning disappeared exactly when 'VBUS' was removed from TM601 powered_pins and vset vbus was dropped from hardwareInit."
+    ]
+  },
+  "regenerationBehaviour": {
+    "question": "t22 UNKNOWN 3 - does re-running the metadata generator overwrite the run-scope correction?",
+    "answer": "YES. The override is NOT durable across regeneration.",
+    "method": "scripts/gen_testitems_meta.py --out <probe file> (the live meta was NOT overwritten), then a field-by-field compare of TM600_HS_RDSON / TM601_LS_RDSON.",
+    "probeOutput": "team/artifacts/acceptance-20260916-dali10/t26-regen-probe/dali_tm_meta.regen.json",
+    "probeHash": "146180 B / 1c8496645492f7b75abf3a89f95679291490399d62f4a1a34d6cc5d8b1aa2693",
+    "keyFinding": "the regenerated file is BYTE-IDENTICAL to the pre-override meta (the same hash as the 'before' value of this task), i.e. regeneration restores vbat 3.5 / pmid 5 (TM600), vset vbus (TM601), VBUS in powered_pins and EMPTY mi_pins.",
+    "consequences": [
+      "any pipeline re-run (gen_testitems_meta.py and/or gen_test_conditions.py) silently wipes this run-scope fix;",
+      "the two reds it removed (TM601 SW->K57_CAP_BST_SW and TM601 VBUS->K5_VBUS_Cap) would come back;",
+      "therefore the fix must either be re-applied as an explicit post-generation step recorded in the implementation manifest, or be landed in the generator (scripts/gen_testitems_meta.py is OUT of t26 scope), or be protected by a gate assertion.",
+      "recommended guard: assert for TM600/TM601 that hardwareInit vset matches the frozen ATE (4.2/15/5/5 and 4.2/9/5), that no simulation-domain rail appears, and that mi_pins contains the measured current pin - so a silent revert turns red instead of passing quietly."
+    ],
+    "determinismNote": "the probe also proves the generator is deterministic: its output reproduces the pre-override meta byte-for-byte.",
+    "reapplyAfterRegeneration": true,
+    "inputSyncDetectability": {
+      "current": "the input-sync gate checks DFT<->meta and meta<->yaml stamp consistency; it does NOT detect that the run-scope override was reverted by a regeneration.",
+      "recommendation": "add a run-scope assertion (token/locator level) so a silent revert of TM600/TM601 back to the OVERVIEW values turns red instead of passing - rule-reviewer R-3. Gate-script change is OUT of t26 scope."
+    }
+  },
+  "k57TokenAnalysis": {
+    "whyItMatters": "K57 has two alias tokens and cap_defs keeps them as SEPARATE entries, each evaluated for exemption independently: BST_SW (from K57_CAP_BST_SW) and SW_BST (from K_SW_BST_Cap), same channel 57, same physical relay.",
+    "helper": "scripts/verify_relay_trace.py fam_intersect() - token-boundary match that decides the per-PIN exemption at L356",
+    "measured": [
+      {
+        "function": "TM600_HS_RDSON",
+        "powered_pins": [
+          "BST-SW",
+          "BST_SW",
+          "ISW",
+          "PMID",
+          "VBAT",
+          "VDRV"
+        ],
+        "k57_token": "BST_SW",
+        "mi_pins": [
+          "SW"
+        ],
+        "fam_intersect": {
+          "SW": [],
+          "BST_SW": []
+        },
+        "result": "fam_intersect({'SW'},'BST_SW') = EMPTY -> exemption does NOT fire -> the reverse check STILL REQUIRES K57"
+      },
+      {
+        "function": "TM601_LS_RDSON",
+        "powered_pins": [
+          "ISW",
+          "SW",
+          "VBAT",
+          "VDRV"
+        ],
+        "k57_token": "SW_BST",
+        "mi_pins": [
+          "PMID_SW",
+          "SW"
+        ],
+        "fam_intersect": {
+          "PMID_SW,SW": [
+            "SW"
+          ],
+          "BST_SW": []
+        },
+        "result": "fam_intersect({'PMID_SW','SW'},'SW_BST') = {'SW'} -> exemption FIRES -> no requirement"
+      }
+    ],
+    "maskingEffect": "the current payload closes K57 in both functions, and the gate's 'already closed' branch (L354) is evaluated BEFORE the exemption, so TM600's requirement is silently satisfied today. Removing K57 from TM600 would un-mask it and add a NEW warning - the opposite of what an earlier revision of this artifact predicted."
+  },
+  "minimalEndpointNote": {
+    "finding": "K126_V1P5_CAP (cap_pin token V1P5) is closed by both functions, but neither powered_pins set contains V1P5, so no rule requires it.",
+    "assessment": "redundant closure - not an error, no gate effect",
+    "recommendation": "implementer: review whether it is needed for the V1P5 rail; if not, drop it under the minimal-endpoint discipline. Low priority (rule-reviewer R-4).",
+    "locators": [
+      "test.cpp L9081 (TM600)",
+      "test.cpp L9255 (TM601)"
+    ]
+  },
+  "recommendedGateAssertions": {
+    "purpose": "T26-F2 remediation 2/3: make the run-scope fix DETECTABLE, so a regeneration that reverts it fails loudly instead of silently passing input-sync.",
+    "where": "scripts/check_input_sync.py (a gate-script change - OUT of t26 scope; needs a Captain-assigned task)",
+    "assertions": [
+      {
+        "id": "RS-1",
+        "assert": "project/DALI/meta/dali_tm_meta.json TM601_LS_RDSON.capAuthority.powered_pins does NOT contain 'VBUS'",
+        "reason": "VBUS is a simulation-domain rail excluded by BD-08; its reappearance means the OVERVIEW-derived layer won back."
+      },
+      {
+        "id": "RS-2",
+        "assert": "TM600_HS_RDSON.capAuthority.mi_pins contains 'SW' AND TM601_LS_RDSON.capAuthority.mi_pins contains 'PMID_SW' and 'SW'",
+        "reason": "the measured loop-current pins are what make the FR-001 exemption correct; losing them re-adds the TM601 SW->K57 warning."
+      },
+      {
+        "id": "RS-3",
+        "assert": "TM600_HS_RDSON.hardwareInit vset == vbat 4.2 / pmid 15 / bst_sw 5 / vdrv 5 and TM601_LS_RDSON vset == vbat 4.2 / pmid 9 / vdrv 5, with no vbus entry",
+        "reason": "the frozen ATE stimulus (setup-contract rev 24) must not silently revert to the OVERVIEW values 3.5/5."
+      },
+      {
+        "id": "RS-4",
+        "assert": "test_conditions.yaml _sync.metaSha256 equals sha256(dali_tm_meta.json)",
+        "reason": "already enforced today; keep it so an unsynced edit is caught (it is NOT sufficient on its own - see T26-F2)."
+      }
+    ],
+    "evidenceForNeed": "t26-regen-probe/dali_tm_meta.regen.json is byte-identical to the pre-override meta, so a plain regeneration erases all three corrections while input-sync still reports PASS."
+  },
+  "additiveNote": "FACTUAL CORRECTION ONLY (2nd pass): the stale key reviewLagNote is REMOVED. rule-reviewer pointed out twice that it misstated the rounds (it claimed round 2 reviewed t26-correction-1, and cited 9937 B / 16614e98... as 'correction-1' although that file was the pre-correction artifact; correction-1 is 11511 B / 238b2b6c...). Its replacement reviewLedger is taken from measured on-disk mtimes/hashes of the review artifacts. No conclusion, K57 wording, RS spec, boundary or gate evidence changes.",
+  "inputSyncGreenWhileUndetectable": {
+    "observation": "the input-sync gate currently reports completely healthy:",
+    "logLine": "INPUT SYNC: **IN SYNC** — 输入与派生文件全部同版本, 无需修改任何产物。  (gate-logs-t26/input-sync.log, last lines; 18-line log)",
+    "whyItMatters": "this is exactly why T26-F2/R-3 is a real risk and not a false alarm: if gen_testitems_meta.py were re-run, the yaml _sync.metaSha256 stamp would be refreshed in the same breath, so input-sync would STILL say IN SYNC while all three run-scope corrections had been erased (proved byte-for-byte by t26-regen-probe/dali_tm_meta.regen.json = 146,180 B / 1c849664...).",
+    "status": "risk located, not yet mitigated; mitigation is a gate-script change outside t26 scope -> captain's disposition",
+    "mitigationSpecReady": "recommendedGateAssertions RS-1..RS-4"
+  },
+  "reviewRound4": {
+    "artifactUnderReview": "t26-correction-3 (17081 B / d45194221c47545e4305cad78c7f0f283db8011e3d92ad59cb11dca5f01735b7)",
+    "verdict": "ACCEPT - no new findings; T26-F1 closed",
+    "reviewArtifact": "review/t26-independent-review-4.md",
+    "reviewerCorroboration": "rule-reviewer extracted fam_intersect from scripts/verify_relay_trace.py verbatim and ran it independently: fam_intersect(['SW'],'BST_SW')=[]; fam_intersect(['SW'],'SW_BST')=['SW']; fam_intersect(['PMID_SW','SW'],'SW_BST')=['SW']; negative control fam_intersect(['SW1','SW1_BST1','SW2_BST2'],'SW')=[] -> identical to this artifact's table.",
+    "confirmedByReviewer": [
+      "T26-F1 closed: per-function K57 wording, token-level reasons, withdrawals, ledgerRequirement corrected",
+      "R-3/R-4 landed; inputSyncDetectability honestly states the gap; minimalEndpointNote records the K126 redundancy (low)",
+      "boundary 2 CLOSED (491 defines parse, zero fictitious names tree-wide)",
+      "gate logs 19:02:00-19:02:04 postdate the payload write 18:53:33; RELAY TRACE PASSED with only TM643 warnings; cbit KNOWN-RED",
+      "meta 50efba4e... and yaml c919b11d... unchanged and consistent with this artifact"
+    ],
+    "remainingRisk": "the regeneration-masking risk (R-3/T26-F2) is located but unresolved; remediation needs a Captain-assigned task (gate script or generator).",
+    "payloadConclusionUnchanged": "TM601 may run zero-Cap-closure; TM600 must keep K57_CAP_BST_SW."
+  },
+  "reviewLedger": {
+    "whyCorrected": "an earlier reviewLagNote claimed round 2 reviewed t26-correction-1 and that t26-correction-3 had not been reviewed. rule-reviewer showed both statements are wrong; the table below is taken from the review artifacts' measured mtimes and hashes on disk.",
+    "rounds": [
+      {
+        "file": "review/t26-independent-review.md",
+        "sizeBytes": 9895,
+        "sha256": "cf91657cf54389c49c8af9574aa8f92655f006fa118a9b04cf96c7acc4184c72",
+        "mtime": "2026-09-16 18:57:27",
+        "reviewedRevision": "t26-correction-1",
+        "outcome": "ACCEPT + R-1 (K57 rule layer) + R-3 + R-4; boundary 2 closed"
+      },
+      {
+        "file": "review/t26-independent-review-2.md",
+        "sizeBytes": 6781,
+        "sha256": "fe30c0b4f5bb0efdfa41cb231ec07a02f93d92c8f869c8876316c928e7ab56dc",
+        "mtime": "2026-09-16 18:59:45",
+        "reviewedRevision": "t26-correction-2",
+        "outcome": "T26-F1 raised (this is where F1 was first filed)"
+      },
+      {
+        "file": "review/t26-independent-review-3.md",
+        "sizeBytes": 8282,
+        "sha256": "986ccc2992cd35b5e613e68925eb42ae1752564a0675b0e34c8d4569c59afcda",
+        "mtime": "2026-09-16 19:01:14",
+        "reviewedRevision": "t26-correction-2",
+        "outcome": "re-review: F1 repeated + T26-F2 added"
+      },
+      {
+        "file": "review/t26-independent-review-4.md",
+        "sizeBytes": 5387,
+        "sha256": "a64bfbb3d251072e9b00b1ff272ca7b98304dc8ba76c9973cd6d6b69bf04bc1f",
+        "mtime": "2026-09-16 19:03:03",
+        "reviewedRevision": "t26-correction-3",
+        "outcome": "ACCEPT - T26-F1 closed, no new findings"
+      },
+      {
+        "file": "review/t26-correction-3-confirmation.md",
+        "sizeBytes": 6494,
+        "sha256": "5064702ad44c64cedf6ee096788341ae722553000400ce6206e64bec168e40e1",
+        "mtime": "2026-09-16 19:04:28",
+        "reviewedRevision": "t26-correction-3",
+        "outcome": "item-by-item confirmation: three checks PASS"
+      },
+      {
+        "file": "review/t26-correction-5-acceptance.md",
+        "sizeBytes": 7288,
+        "sha256": "aec620e25bb97c22389248f5df5f2d3a74cde192fbfc41f2878095afece48c9b",
+        "mtime": "2026-09-16 19:06:57",
+        "reviewedRevision": "t26-correction-5",
+        "outcome": "ACCEPT - (i) K57 satisfies T26-F1, (ii) R-3/R-4 landed and the RS-1..RS-4 spec is usable, (iii) no residual 'K57 is optional' wording; only the review ledger itself was flagged as factually wrong (fixed here)"
+      },
+      {
+        "file": "review/t26-correction-6-increment-acceptance.md",
+        "sizeBytes": 6467,
+        "sha256": "9af2a940503d057ecc95dd62b45b84f0835eb5448115bec811f70ae5a6a61163",
+        "mtime": "2026-09-16 19:08:30",
+        "reviewedRevision": "t26-correction-6",
+        "outcome": "ACCEPT of the additive increment (the current revision at the time of this record)"
+      }
+    ],
+    "neverRaised": "F1 was never raised against t26-correction-3 or t26-correction-5; the earlier note misattributed the rounds and understated the coverage already given.",
+    "artifactAtThisRecord": "t26-correction-7"
+  }
+}

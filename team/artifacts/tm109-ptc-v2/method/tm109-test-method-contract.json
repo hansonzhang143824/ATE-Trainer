@@ -1,0 +1,554 @@
+{
+  "schemaVersion": 2,
+  "artifactId": "TM109-test-method-contract",
+  "tm": "TM109",
+  "trial": "tm109-ptc-v2",
+  "role": "test-method-expert",
+  "stage": "METHOD",
+  "verdict": "deliverable_ready",
+  "signedInputs": {
+    "strategyContractPath": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-ptc-v2\\strategy\\tm109-resource-config-contract.json",
+    "strategyContractSha256": "a48e55a350b5bdd1167f812823643bc2a860bdf0174cefe7ba950611e2070901",
+    "strategyHandoffPath": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-ptc-v2\\strategy\\deliverable-ready.json",
+    "dftMetaPath": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-meta.json",
+    "dftSourceSha256": "84c2d7cfe619a5a397b5f779514d43c9248ccd039a50cf8c91a637dcc1fc10cd",
+    "registerEvidencePath": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-ptc-v2\\strategy\\register-config-evidence.json",
+    "registerEvidenceSha256": "da86a402cfcae2f844d3b7d1100ce503001245fa36e77c8590a35b67db63d621"
+  },
+  "classification": {
+    "projectType": {
+      "value": "general test project",
+      "flowLocator": "knowledge/standards/test-types.md:60,71,78-83",
+      "indexLocator": "knowledge/references/func_type_index.md:20,36",
+      "evidenceLocator": "project/DALI/Output_Global_Material/dft/TM109/dft-meta.json:rawIntent.Name,Description,Code2,Trim"
+    },
+    "parameterType": {
+      "value": "UVLO/PRST threshold AWG",
+      "flowLocator": "knowledge/standards/test-types.md:36,78-83",
+      "indexLocator": "knowledge/references/param_type_index.md:UVLO and threshold AWG rows",
+      "evidenceLocator": "project/DALI/Output_Global_Material/dft/TM109/dft-meta.json:rawIntent.Name=VAC2_PRST,Description,ExpectValue,Code2"
+    }
+  },
+  "methodFamily": "PRST voltage threshold two-way AWG capture",
+  "resourceBoundary": {
+    "sourceTablesByEndpoint": {
+      "VBAT": "VBAT_PD3_FXVI",
+      "VAC2": "VAC123_AMUX_ACM",
+      "nQON": "NQON_HG1_ACM"
+    },
+    "forceSensePhysicalProofs": {
+      "VBAT": [
+        {
+          "sourcePort": "S3_FXVIe_PLUS_FH5",
+          "dutPin": "VBAT_F_S1",
+          "requiredOn": [],
+          "locator": "Path-Proofs.json accepted_path_proofs[source_port=S3_FXVIe_PLUS_FH5;dut_pin=VBAT_F_S1]"
+        },
+        {
+          "sourcePort": "S3_FXVIe_PLUS_SH5",
+          "dutPin": "VBAT_S_S1",
+          "requiredOn": [],
+          "locator": "Path-Proofs.json accepted_path_proofs[source_port=S3_FXVIe_PLUS_SH5;dut_pin=VBAT_S_S1]"
+        }
+      ],
+      "VAC2": [
+        {
+          "sourcePort": "S5_ACM200_FH0",
+          "dutPin": "VAC2_F_S1",
+          "requiredOn": [
+            19
+          ],
+          "locator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH0;dut_pin=VAC2_F_S1]"
+        },
+        {
+          "sourcePort": "S5_ACM200_SH0",
+          "dutPin": "VAC2_S_S1",
+          "requiredOn": [
+            19
+          ],
+          "locator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH0;dut_pin=VAC2_S_S1]"
+        }
+      ],
+      "nQON": [
+        {
+          "sourcePort": "S5_ACM200_FH9",
+          "dutPin": "nQON_F_S1",
+          "requiredOn": [],
+          "locator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH9;dut_pin=nQON_F_S1]"
+        },
+        {
+          "sourcePort": "S5_ACM200_SH9",
+          "dutPin": "nQON_S_S1",
+          "requiredOn": [],
+          "locator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH9;dut_pin=nQON_S_S1]"
+        }
+      ]
+    },
+    "setOnClosure": {
+      "relays": [
+        13,
+        19,
+        65
+      ],
+      "exclusive": true,
+      "oneCall": true
+    },
+    "relayGroups": [
+      {
+        "groupId": "TM109-all-endpoints",
+        "purpose": "One simultaneous VBAT supply, VAC2 sweep, and nQON monitor configuration",
+        "setOnRelayIds": [
+          13,
+          19,
+          65
+        ],
+        "pathRequiredOnRelayIds": [
+          19
+        ],
+        "functionalRelayIds": [
+          13,
+          65
+        ],
+        "physicalProofLocators": [
+          "Path-Proofs.json accepted_path_proofs[source_port=S3_FXVIe_PLUS_FH5;dut_pin=VBAT_F_S1]",
+          "Path-Proofs.json accepted_path_proofs[source_port=S3_FXVIe_PLUS_SH5;dut_pin=VBAT_S_S1]",
+          "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH0;dut_pin=VAC2_F_S1]",
+          "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH0;dut_pin=VAC2_S_S1]",
+          "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH9;dut_pin=nQON_F_S1]",
+          "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH9;dut_pin=nQON_S_S1]"
+        ],
+        "isolation": "K8, K18, K64 stay unactuated for their selected NC paths"
+      }
+    ],
+    "registerConfiguration": {
+      "evidencePath": "team/artifacts/tm109-ptc-v2/strategy/register-config-evidence.json",
+      "evidenceSha256": "da86a402cfcae2f844d3b7d1100ce503001245fa36e77c8590a35b67db63d621",
+      "sourcePath": "project/DALI/reg_config/tm109.sv",
+      "sourceSha256": "235d9cee0da964489d53c9c70d2b3e932f98be24442ce9cd8d247716e7ad80d5",
+      "orderedWrites": [
+        {
+          "sourceLine": 14,
+          "sourceText": "I2CWriteSameData(DEV_ADDR, 0x56, 0x15);  // Write reg 0x56 = 21",
+          "address": "0X56",
+          "value": "0X15"
+        },
+        {
+          "sourceLine": 15,
+          "sourceText": "I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // Write reg 0x57 = 8",
+          "address": "0X57",
+          "value": "0X08"
+        }
+      ]
+    },
+    "monitorLogicalLabel": "V(DTEST0)",
+    "monitorPhysicalPin": "nQON",
+    "prohibition": "METHOD does not change sources, routes, relays or register bytes."
+  },
+  "methodEvidence": [
+    {
+      "source": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-meta.json",
+      "applicability": "direct",
+      "reason": "Current canonical OVERVIEW values and scan candidates"
+    },
+    {
+      "source": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-ptc-v2\\strategy\\tm109-resource-config-contract.json",
+      "applicability": "direct",
+      "reason": "Signed resource and relay boundary"
+    },
+    {
+      "source": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-ptc-v2\\strategy\\register-config-evidence.json",
+      "applicability": "direct",
+      "reason": "Verified register mapping bound by signed strategy"
+    },
+    {
+      "source": "knowledge/references/L1-chip/UVLO.md",
+      "applicability": "direct",
+      "reason": "PRST comparator threshold and hysteresis mechanism"
+    },
+    {
+      "source": "knowledge/references/L3-method/UVLO.md",
+      "applicability": "direct",
+      "reason": "Two sweeps produce Rise and Fall; Hys is their difference"
+    },
+    {
+      "source": "knowledge/references/L4-Golden-code/UVLO.md",
+      "applicability": "partial",
+      "reason": "Use only dual-sweep and logging pattern; DALI signed values, resources, relays and user trigger direction govern"
+    },
+    {
+      "source": "team/artifacts/ptc-temporary-decisions.md:49-52,110-128",
+      "applicability": "direct",
+      "reason": "vset direct supply, reference-only values, trigger direction and scan-range rule"
+    }
+  ],
+  "goldenApplicability": {
+    "verdict": "partial",
+    "source": "knowledge/references/L4-Golden-code/UVLO.md",
+    "adopt": [
+      "two-way threshold capture",
+      "per-site Rise/Fall/Hys calculation",
+      "zero sources before relay release"
+    ],
+    "exclude": [
+      "Golden numeric scan endpoints",
+      "Golden relay/source selections",
+      "Golden register bytes",
+      "Golden opposite trigger polarity"
+    ]
+  },
+  "methodPhases": [
+    {
+      "order": 1,
+      "phase": "relay_prepare",
+      "actions": [
+        "Hold all sources at 0 V/off",
+        "Close the signed [13,19,65] setOnClosure in one call before force; K13 stabilizes VBAT, K19 selects VAC2, K65 pulls up nQON"
+      ],
+      "commandedSetOnRelayIds": [
+        13,
+        19,
+        65
+      ],
+      "actualNodeVoltages": {
+        "VBAT_V": 0.0,
+        "VAC2_V": 0.0,
+        "nQON_V": "observed, not forced"
+      },
+      "registerState": "unchanged",
+      "exitCondition": "the signed relay closure is commanded",
+      "evidenceLocator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-ptc-v2\\strategy\\tm109-resource-config-contract.json:resourceAllocation,setOnClosure,registerConfiguration; D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-meta.json:rawIntent",
+      "bstSwDifferential": "NOT_APPLICABLE: signed DFT endpoints and Force/Sense routes are VBAT, VAC2 and nQON only"
+    },
+    {
+      "order": 2,
+      "phase": "vbat_power_on",
+      "actions": [
+        "Directly power signed VBAT source to 3 V from vset[vbat,3,100e-6,0]; 100e-6 denotes direct power-on under user ruling"
+      ],
+      "commandedSetOnRelayIds": [
+        13,
+        19,
+        65
+      ],
+      "actualNodeVoltages": {
+        "VBAT_V": 3.0,
+        "VAC2_V": 0.0,
+        "nQON_V": "observed, not forced"
+      },
+      "registerState": "unchanged",
+      "exitCondition": "VBAT reaches commanded 3 V",
+      "evidenceLocator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-meta.json:rawIntent.Code1; team/artifacts/ptc-temporary-decisions.md:49-50",
+      "bstSwDifferential": "NOT_APPLICABLE: signed DFT endpoints and Force/Sense routes are VBAT, VAC2 and nQON only"
+    },
+    {
+      "order": 3,
+      "phase": "test_mode_and_registers",
+      "actions": [
+        "Enter signed test mode from en_tm[]",
+        "Apply only registerConfiguration.orderedWrites in the signed order and text; do not infer additional bytes or readback APIs"
+      ],
+      "commandedSetOnRelayIds": [
+        13,
+        19,
+        65
+      ],
+      "actualNodeVoltages": {
+        "VBAT_V": 3.0,
+        "VAC2_V": 0.0,
+        "nQON_V": "observed, not forced"
+      },
+      "registerState": {
+        "testModeEnabled": true,
+        "orderedWrites": [
+          {
+            "sourceLine": 14,
+            "sourceText": "I2CWriteSameData(DEV_ADDR, 0x56, 0x15);  // Write reg 0x56 = 21",
+            "address": "0X56",
+            "value": "0X15"
+          },
+          {
+            "sourceLine": 15,
+            "sourceText": "I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // Write reg 0x57 = 8",
+            "address": "0X57",
+            "value": "0X08"
+          }
+        ]
+      },
+      "exitCondition": "signed DMUX fields effective",
+      "evidenceLocator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-ptc-v2\\strategy\\tm109-resource-config-contract.json:registerConfiguration; D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-ptc-v2\\strategy\\register-config-evidence.json",
+      "bstSwDifferential": "NOT_APPLICABLE: signed DFT endpoints and Force/Sense routes are VBAT, VAC2 and nQON only"
+    },
+    {
+      "order": 4,
+      "phase": "scan_start",
+      "actions": [
+        "Place VAC2 at the user-selected scan start 3 V",
+        "Keep nQON capture source observation-only with signed K65 pull-up"
+      ],
+      "commandedSetOnRelayIds": [
+        13,
+        19,
+        65
+      ],
+      "actualNodeVoltages": {
+        "VBAT_V": 3.0,
+        "VAC2_V": 3.0,
+        "nQON_V": "logic observed"
+      },
+      "registerState": "signed configuration active",
+      "exitCondition": "VAC2 stable at scan start",
+      "evidenceLocator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-meta.json:rawIntent.Notes,ExpectValue,Code2; team/artifacts/ptc-temporary-decisions.md:118-128",
+      "bstSwDifferential": "NOT_APPLICABLE: signed DFT endpoints and Force/Sense routes are VBAT, VAC2 and nQON only"
+    },
+    {
+      "order": 5,
+      "phase": "rise_capture",
+      "actions": [
+        "Scan VAC2 3→5 V using the DFT 1e-3 timing token",
+        "Capture nQON falling transition with TRIG_FALLING as Rise"
+      ],
+      "commandedSetOnRelayIds": [
+        13,
+        19,
+        65
+      ],
+      "actualNodeVoltages": {
+        "VBAT_V": 3.0,
+        "VAC2_V": {
+          "fromV": 3.0,
+          "toV": 5.0
+        },
+        "nQON_V": "logic transition observed"
+      },
+      "registerState": "signed configuration active",
+      "exitCondition": "per-site Rise captured or acquisition marked invalid",
+      "evidenceLocator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-meta.json:rawIntent; knowledge/standards/toggle-awg-rules.md:28-30",
+      "bstSwDifferential": "NOT_APPLICABLE: signed DFT endpoints and Force/Sense routes are VBAT, VAC2 and nQON only"
+    },
+    {
+      "order": 6,
+      "phase": "fall_capture",
+      "actions": [
+        "Scan VAC2 5→3 V using the DFT 1e-3 timing token",
+        "Capture nQON rising transition with TRIG_RISING as Fall"
+      ],
+      "commandedSetOnRelayIds": [
+        13,
+        19,
+        65
+      ],
+      "actualNodeVoltages": {
+        "VBAT_V": 3.0,
+        "VAC2_V": {
+          "fromV": 5.0,
+          "toV": 3.0
+        },
+        "nQON_V": "logic transition observed"
+      },
+      "registerState": "signed configuration active",
+      "exitCondition": "per-site Fall captured or acquisition marked invalid",
+      "evidenceLocator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-meta.json:rawIntent; knowledge/standards/toggle-awg-rules.md:28-30",
+      "bstSwDifferential": "NOT_APPLICABLE: signed DFT endpoints and Force/Sense routes are VBAT, VAC2 and nQON only"
+    },
+    {
+      "order": 7,
+      "phase": "post_scan_results",
+      "actions": [
+        "Apply DFT delay[1e-3] after the scan",
+        "For each valid site calculate Hys=(Rise−Fall)*1000 mV and log all three measurements plus acquisition validity"
+      ],
+      "commandedSetOnRelayIds": [
+        13,
+        19,
+        65
+      ],
+      "actualNodeVoltages": {
+        "VBAT_V": 3.0,
+        "VAC2_V": 3.0,
+        "nQON_V": "logic observed"
+      },
+      "registerState": "signed configuration active",
+      "exitCondition": "site results logged",
+      "evidenceLocator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-meta.json:rawIntent.Code3; knowledge/standards/units.md:42-57",
+      "bstSwDifferential": "NOT_APPLICABLE: signed DFT endpoints and Force/Sense routes are VBAT, VAC2 and nQON only"
+    }
+  ],
+  "measurementPlan": {
+    "technique": "rampv_capv twice with nQON observation",
+    "rampSourceTable": "VAC123_AMUX_ACM",
+    "monitorSourceTable": "NQON_HG1_ACM",
+    "scanPinIdentity": {
+      "scanPin": "VAC2",
+      "notesPinLabelAsWritten": "VAC1",
+      "notesLabelMatchesScanPin": false,
+      "authority": "DFT Code2, Dynamic, Name and signed strategy fix VAC2; Notes supplies a numeric range candidate only"
+    },
+    "scanRangeResolution": {
+      "predictionV": 4.4,
+      "vsetRange": {
+        "lowV": 0.0,
+        "highV": 10.0,
+        "locator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-meta.json:rawIntent.Code2"
+      },
+      "notesRange": {
+        "lowV": 3.0,
+        "highV": 5.0,
+        "locator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-meta.json:rawIntent.Notes"
+      },
+      "selectedRange": {
+        "lowV": 3.0,
+        "highV": 5.0,
+        "source": "NOTES"
+      },
+      "selectionReason": "Both candidates contain 4.4 V; Notes midpoint is 0.4 V away and vset midpoint is 0.6 V away. Choose Notes by the user rule at team/artifacts/ptc-temporary-decisions.md:118-128."
+    },
+    "sweeps": [
+      {
+        "result": "VAC2_PRST_Rise",
+        "rampPin": "VAC2",
+        "startV": 3.0,
+        "stopV": 5.0,
+        "timingToken": "1e-3",
+        "trigger": "TRIG_FALLING",
+        "capturePin": "nQON"
+      },
+      {
+        "result": "VAC2_PRST_Fall",
+        "rampPin": "VAC2",
+        "startV": 5.0,
+        "stopV": 3.0,
+        "timingToken": "1e-3",
+        "trigger": "TRIG_RISING",
+        "capturePin": "nQON"
+      }
+    ],
+    "sampling": {
+      "window": "selected 3→5 V and 5→3 V sweeps",
+      "siteHandling": "one Rise and one Fall per valid site",
+      "captureValidity": "Missing or ambiguous nQON transition invalidates that site's measurement; do not synthesize a threshold",
+      "implementationChoice": "Map the DFT timing token to supported instrument sampling without changing signed resource or register selections"
+    },
+    "calculation": {
+      "result": "VAC2_PRST_Hys",
+      "formula": "(Rise_V - Fall_V) * 1000",
+      "unit": "mV",
+      "perSite": true
+    },
+    "referenceValues": {
+      "rise": {
+        "value": 4.4,
+        "unit": "V"
+      },
+      "hys": {
+        "value": 0.35,
+        "unit": "V",
+        "logEquivalentMV": 350
+      },
+      "sourceLocator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-meta.json:rawIntent.ExpectValue",
+      "use": "REFERENCE_ONLY"
+    },
+    "numericPassFail": "NOT_SPECIFIED",
+    "limits": {
+      "status": "NOT_SPECIFIED",
+      "numericBounds": null,
+      "tolerance": null,
+      "rule": "Record Rise, Fall and Hys but do not compare them to reference text as a numeric acceptance verdict",
+      "authority": "user ruling; team/artifacts/ptc-temporary-decisions.md:49-52"
+    }
+  },
+  "bstSwApplicability": {
+    "status": "NOT_APPLICABLE",
+    "proof": "Canonical DFT declaredPins and signed strategy Force/Sense proofs contain VBAT, VAC2 and nQON only; no BST/SW route or differential pair."
+  },
+  "powerDownPlan": {
+    "normalSequence": [
+      "Drive VAC2 from the selected scan end 3 V to 0 V while VBAT remains at 3 V",
+      "Stop nQON capture",
+      "Drive VBAT to 0 V while source relays remain connected",
+      "Wait 1 ms per normal power-off rule, then switch signed sources to relay-off at zero",
+      "Open the signed [13,19,65] CBIT closure after sources are at zero/off",
+      "Execute DFT finish[] after safe zero/off state"
+    ],
+    "faultSequence": "On capture, register or source error run the same zero-before-disconnect sequence and log the failing phase/site; never fabricate a threshold.",
+    "endState": {
+      "VBAT_V": 0.0,
+      "VAC2_V": 0.0,
+      "activeSetOnRelayIds": [],
+      "sourceRelayState": "OFF"
+    },
+    "evidenceLocator": "skills/agents/power-off-agent.md normal three-step shutdown; DFT rawIntent.Code3; signed strategy setOnClosure"
+  },
+  "logPlan": {
+    "perValidSite": [
+      {
+        "name": "VAC2_PRST_Rise",
+        "unit": "V",
+        "kind": "raw captured threshold"
+      },
+      {
+        "name": "VAC2_PRST_Fall",
+        "unit": "V",
+        "kind": "raw captured threshold"
+      },
+      {
+        "name": "VAC2_PRST_Hys",
+        "unit": "mV",
+        "kind": "calculated (Rise-Fall)*1000"
+      }
+    ],
+    "context": [
+      "TM",
+      "site",
+      "capture validity",
+      "trigger direction",
+      "scan source/range",
+      "DFT source hash",
+      "strategy contract hash",
+      "commanded relay state",
+      "failing phase when applicable"
+    ],
+    "referenceValues": {
+      "rise": {
+        "value": 4.4,
+        "unit": "V"
+      },
+      "hys": {
+        "value": 0.35,
+        "unit": "V",
+        "logEquivalentMV": 350
+      },
+      "sourceLocator": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-meta.json:rawIntent.ExpectValue",
+      "use": "REFERENCE_ONLY"
+    },
+    "numericPassFail": "NOT_SPECIFIED",
+    "acquisitionFailure": "Record INVALID_CAPTURE with site and phase; this is execution validity, not numeric threshold pass/fail."
+  },
+  "openItems": [],
+  "evidence": [
+    {
+      "file": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM109\\dft-meta.json",
+      "locator": "rawIntent Code1/Code2/Code3/ExpectValue/Notes/Check"
+    },
+    {
+      "file": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-ptc-v2\\strategy\\tm109-resource-config-contract.json",
+      "locator": "resourceAllocation,setOnClosure,registerConfiguration,pinResolution"
+    },
+    {
+      "file": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\tm109-ptc-v2\\strategy\\register-config-evidence.json",
+      "locator": "orderedWrites,status,dftBinding"
+    },
+    {
+      "file": "knowledge/standards/toggle-awg-rules.md",
+      "locator": "lines 12-30"
+    },
+    {
+      "file": "team/artifacts/ptc-temporary-decisions.md",
+      "locator": "lines 49-52,110-128"
+    }
+  ],
+  "handoff": {
+    "nextRole": "rule-reviewer",
+    "numericPassFail": "NOT_SPECIFIED",
+    "methodReady": true
+  }
+}

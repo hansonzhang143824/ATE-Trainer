@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "PTC-HANDOFF-V1",
+  "event": "deliverable_ready",
+  "status": "success",
+  "stage": "IMPLEMENTATION",
+  "verdict": "deliverable_ready",
+  "tm": "TM425",
+  "nextRole": "rule-reviewer",
+  "artifact": "team/artifacts/tm425-ptc/implementation/implementation-manifest.json",
+  "sha256": "4fa81e08335cca3c7df226a2c68b720cbf23c8f1024b2c813a456776212838c7",
+  "source": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+  "sourceSha256": "2ed19d63e8d761efcfbf7eaf187ee4e36e9a492bc965c94759e568dd7ff2c90c",
+  "sources": [
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "sha256": "2ed19d63e8d761efcfbf7eaf187ee4e36e9a492bc965c94759e568dd7ff2c90c"
+    },
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/sub.cpp",
+      "sha256": "228be739e4160c75a7c206e438f70600a7846822f62ae173b3db13079107f038"
+    }
+  ],
+  "signedInputs": {
+    "methodContractPath": "team/artifacts/tm425-ptc/method/tm425-test-method-contract.json",
+    "methodContractSha256": "81408a784f65f179e86bd04eb405e91abb085ddb73d6d12ee6e4b52041463b6b"
+  }
+}

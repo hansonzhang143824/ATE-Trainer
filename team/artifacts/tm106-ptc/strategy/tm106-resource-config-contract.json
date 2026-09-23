@@ -1,0 +1,511 @@
+{
+  "schemaVersion": 3,
+  "artifactId": "TM106-resource-config-contract",
+  "tm": "TM106",
+  "trial": "tm106-ptc",
+  "role": "test-strategy-architect",
+  "stage": "STRATEGY",
+  "verdict": "deliverable_ready",
+  "revision": "register-config-source-v1",
+  "classification": {
+    "projectType": {
+      "value": "general test project",
+      "flowLocator": "knowledge/standards/test-types.md: project structure type table #7; threshold-test AWG rules 76-83",
+      "indexLocator": "knowledge/references/func_type_index.md:20,36",
+      "evidenceLocator": "project/DALI/Output_Global_Material/dft/TM106/dft-meta.json rawIntent Name/Notes/Check/Trim"
+    },
+    "parameterType": {
+      "value": "UVLO/PRST threshold AWG",
+      "flowLocator": "knowledge/standards/test-types.md:36,76-83",
+      "indexLocator": "knowledge/references/param_type_index.md:42,61,71",
+      "evidenceLocator": "project/DALI/Output_Global_Material/dft/TM106/dft-meta.json rawIntent Name/Description/ExpectValue/Notes"
+    }
+  },
+  "functionArchitecture": {
+    "value": "AWG voltage ramp with DTEST0 monitor"
+  },
+  "pinResolution": {
+    "logicalSignal": "V(DTEST0)",
+    "logicalLabel": "DTEST0",
+    "physicalDutPin": "nQON",
+    "monitorDutPin": "nQON",
+    "resolutionState": "RESOLVED",
+    "componentsStatisticLocator": "Components-Statistic.json semanticIndex.dutKelvinPins contains nQON",
+    "mappingEvidence": {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Input_GlobalMaterial\\DALI-special-information.json",
+      "plaintextSha256": "86d11d43f8602cba604605fc015ba75a2d04a079345a5084f7442053c796d188",
+      "logicalLabel": "DTEST0",
+      "matchedAlias": "V(DTEST0)",
+      "physicalDutPin": "nQON",
+      "authority": "project user ruling"
+    }
+  },
+  "monitorDutPin": "nQON",
+  "resourceAllocation": [
+    {
+      "dutPin": "VBAT",
+      "endpointId": "VBAT",
+      "selectionState": "SELECTED",
+      "sourceTable": "VBAT_PD3_FXVI",
+      "instrumentCategory": "FXVIe_PLUS",
+      "ports": [
+        "S3_FXVIe_PLUS_FH5",
+        "S3_FXVIe_PLUS_SH5"
+      ],
+      "selectedPath": "S3_FXVIe_PLUS_FH5 -> K8_PD3(NC) -> VBAT_F_S1; S3_FXVIe_PLUS_SH5 -> K8_PD3(NC) -> VBAT_S_S1",
+      "physicalProofs": [
+        {
+          "sourcePort": "S3_FXVIe_PLUS_FH5",
+          "dutPin": "VBAT_F_S1",
+          "requiredOn": [],
+          "locator": "Path-Proofs.json accepted_path_proofs[source_port=S3_FXVIe_PLUS_FH5;dut_pin=VBAT_F_S1]"
+        },
+        {
+          "sourcePort": "S3_FXVIe_PLUS_SH5",
+          "dutPin": "VBAT_S_S1",
+          "requiredOn": [],
+          "locator": "Path-Proofs.json accepted_path_proofs[source_port=S3_FXVIe_PLUS_SH5;dut_pin=VBAT_S_S1]"
+        }
+      ],
+      "requiredActuations": [],
+      "pathRelays": [
+        {
+          "id": "K8",
+          "name": "K8_PD3",
+          "state": "Relay-NC",
+          "role": "path relay"
+        }
+      ],
+      "evidenceChain": {
+        "dftEndpointLocator": "project/DALI/Output_Global_Material/dft/TM106/dft-meta.json rawIntent Code1/Code2; team/artifacts/tm106-ptc/input-manifest.json canonicalInputs.dft.declaredPins",
+        "sourceTableLocator": "Pin_Channel_define.h:12; StdAfx.h:61",
+        "schematicRouteLocator": "Path-Proofs.json accepted_path_proofs[source_port=S3_FXVIe_PLUS_FH5;dut_pin=VBAT_F_S1]; Path-Proofs.json accepted_path_proofs[source_port=S3_FXVIe_PLUS_SH5;dut_pin=VBAT_S_S1]",
+        "pathProofLocator": "Path-Proofs.json accepted_path_proofs[source_port=S3_FXVIe_PLUS_FH5;dut_pin=VBAT_F_S1]; Path-Proofs.json accepted_path_proofs[source_port=S3_FXVIe_PLUS_SH5;dut_pin=VBAT_S_S1]",
+        "relayDefinitionLocator": "Path-Proofs.json accepted proof cbit traceability; D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h",
+        "registerConfigurationLocator": "team/artifacts/tm106-ptc/strategy/register-config-evidence.json orderedWrites",
+        "functionalRelayLocator": "project/DALI/Output_Global_Material/schematic/SCH-Connect-Map.json:rawText line 914; knowledge/hardware/relays.md:120-138; knowledge/standards/relay-checklist.md:25-42; D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h:169,658"
+      },
+      "functionalRelays": [
+        {
+          "id": "K13",
+          "name": "K13_VBAT_Cap",
+          "state": "Relay-ON",
+          "role": "VBAT 4.7-uF supply stabilizing capacitor",
+          "evidenceLocator": "SCH-Connect-Map.json:rawText line 914; knowledge/hardware/relays.md:120-138; knowledge/standards/relay-checklist.md:25-42; StdAfx.h:169,658"
+        }
+      ],
+      "functionalActuations": [
+        13
+      ]
+    },
+    {
+      "dutPin": "VBUS",
+      "endpointId": "VBUS",
+      "selectionState": "SELECTED",
+      "sourceTable": "VBUS_DRVH1_ACM",
+      "instrumentCategory": "ACM200",
+      "ports": [
+        "S5_ACM200_FH10",
+        "S5_ACM200_SH10"
+      ],
+      "selectedPath": "S5_ACM200_FH10 -> K4_DRVH1(NC) -> VBUS_F_S1; S5_ACM200_SH10 -> K4_DRVH1(NC) -> VBUS_S_S1",
+      "physicalProofs": [
+        {
+          "sourcePort": "S5_ACM200_FH10",
+          "dutPin": "VBUS_F_S1",
+          "requiredOn": [],
+          "locator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH10;dut_pin=VBUS_F_S1]"
+        },
+        {
+          "sourcePort": "S5_ACM200_SH10",
+          "dutPin": "VBUS_S_S1",
+          "requiredOn": [],
+          "locator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH10;dut_pin=VBUS_S_S1]"
+        }
+      ],
+      "requiredActuations": [],
+      "pathRelays": [
+        {
+          "id": "K4",
+          "name": "K4_DRVH1",
+          "state": "Relay-NC",
+          "role": "path relay"
+        }
+      ],
+      "evidenceChain": {
+        "dftEndpointLocator": "project/DALI/Output_Global_Material/dft/TM106/dft-meta.json rawIntent Code1/Code2; team/artifacts/tm106-ptc/input-manifest.json canonicalInputs.dft.declaredPins",
+        "sourceTableLocator": "Pin_Channel_define.h:25; StdAfx.h:74",
+        "schematicRouteLocator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH10;dut_pin=VBUS_F_S1]; Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH10;dut_pin=VBUS_S_S1]",
+        "pathProofLocator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH10;dut_pin=VBUS_F_S1]; Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH10;dut_pin=VBUS_S_S1]",
+        "relayDefinitionLocator": "Path-Proofs.json accepted proof cbit traceability; D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h",
+        "registerConfigurationLocator": "team/artifacts/tm106-ptc/strategy/register-config-evidence.json orderedWrites"
+      }
+    },
+    {
+      "dutPin": "nQON",
+      "endpointId": "nQON",
+      "selectionState": "SELECTED",
+      "sourceTable": "NQON_HG1_ACM",
+      "instrumentCategory": "ACM200",
+      "ports": [
+        "S5_ACM200_FH9",
+        "S5_ACM200_SH9"
+      ],
+      "selectedPath": "S5_ACM200_FH9 -> K64_HG1(NC) -> nQON_F_S1; S5_ACM200_SH9 -> K64_HG1(NC) -> nQON_S_S1",
+      "physicalProofs": [
+        {
+          "sourcePort": "S5_ACM200_FH9",
+          "dutPin": "nQON_F_S1",
+          "requiredOn": [],
+          "locator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH9;dut_pin=nQON_F_S1]"
+        },
+        {
+          "sourcePort": "S5_ACM200_SH9",
+          "dutPin": "nQON_S_S1",
+          "requiredOn": [],
+          "locator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH9;dut_pin=nQON_S_S1]"
+        }
+      ],
+      "requiredActuations": [],
+      "pathRelays": [
+        {
+          "id": "K64",
+          "name": "K64_HG1",
+          "state": "Relay-NC",
+          "role": "path relay"
+        }
+      ],
+      "evidenceChain": {
+        "dftEndpointLocator": "project/DALI/Output_Global_Material/dft/TM106/dft-meta.json rawIntent Code1/Code2; team/artifacts/tm106-ptc/input-manifest.json canonicalInputs.dft.declaredPins",
+        "sourceTableLocator": "Pin_Channel_define.h:24; StdAfx.h:73",
+        "schematicRouteLocator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH9;dut_pin=nQON_F_S1]; Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH9;dut_pin=nQON_S_S1]",
+        "pathProofLocator": "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH9;dut_pin=nQON_F_S1]; Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH9;dut_pin=nQON_S_S1]",
+        "relayDefinitionLocator": "Path-Proofs.json accepted proof cbit traceability; D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h",
+        "registerConfigurationLocator": "team/artifacts/tm106-ptc/strategy/register-config-evidence.json orderedWrites",
+        "functionalRelayLocator": "project/DALI/Output_Global_Material/schematic/SCH-Connect-Map.json:rawText line 891; knowledge/hardware/relays.md:140-150; D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h:229"
+      },
+      "functionalRelays": [
+        {
+          "id": "K65",
+          "name": "K65_nQON_PU",
+          "state": "Relay-ON",
+          "role": "nQON open-drain toggle observation pull-up, fixed 5 V",
+          "evidenceLocator": "project/DALI/Output_Global_Material/schematic/SCH-Connect-Map.json:rawText line 891; D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h:229; knowledge/hardware/relays.md:140-150"
+        }
+      ],
+      "functionalActuations": [
+        65
+      ]
+    }
+  ],
+  "resourceSummary": {
+    "sourceTablesUnresolved": false,
+    "selectedEndpointCount": 3,
+    "setOnRelayUnion": [
+      13,
+      65
+    ],
+    "pathRequiredOnRelayUnion": [],
+    "functionalRelayUnion": [
+      13,
+      65
+    ]
+  },
+  "relayGroups": [
+    {
+      "groupId": "TM106-VBAT-route",
+      "endpointId": "VBAT",
+      "purpose": "accepted Force/Sense path and required VBAT supply stabilizing capacitor",
+      "pathRelays": [
+        {
+          "id": "K8",
+          "name": "K8_PD3",
+          "state": "Relay-NC",
+          "role": "path relay"
+        }
+      ],
+      "setOnRelayIds": [
+        13
+      ],
+      "physicalProofLocators": [
+        "Path-Proofs.json accepted_path_proofs[source_port=S3_FXVIe_PLUS_FH5;dut_pin=VBAT_F_S1]",
+        "Path-Proofs.json accepted_path_proofs[source_port=S3_FXVIe_PLUS_SH5;dut_pin=VBAT_S_S1]"
+      ],
+      "pathRequiredOnRelayIds": [],
+      "functionalRelayIds": [
+        13
+      ],
+      "functionalRelayLocator": "SCH-Connect-Map.json:rawText line 914; relays.md:120-138; relay-checklist.md:25-42; StdAfx.h:169,658"
+    },
+    {
+      "groupId": "TM106-VBUS-route",
+      "endpointId": "VBUS",
+      "purpose": "accepted force/sense physical path",
+      "pathRelays": [
+        {
+          "id": "K4",
+          "name": "K4_DRVH1",
+          "state": "Relay-NC",
+          "role": "path relay"
+        }
+      ],
+      "setOnRelayIds": [],
+      "physicalProofLocators": [
+        "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH10;dut_pin=VBUS_F_S1]",
+        "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH10;dut_pin=VBUS_S_S1]"
+      ]
+    },
+    {
+      "groupId": "TM106-nQON-route",
+      "endpointId": "nQON",
+      "purpose": "accepted Force/Sense path and nQON open-drain observation pull-up",
+      "pathRelays": [
+        {
+          "id": "K64",
+          "name": "K64_HG1",
+          "state": "Relay-NC",
+          "role": "path relay"
+        }
+      ],
+      "setOnRelayIds": [
+        65
+      ],
+      "physicalProofLocators": [
+        "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH9;dut_pin=nQON_F_S1]",
+        "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH9;dut_pin=nQON_S_S1]"
+      ],
+      "pathRequiredOnRelayIds": [],
+      "functionalRelayIds": [
+        65
+      ],
+      "functionalRelayLocator": "SCH-Connect-Map.json:rawText line 891; StdAfx.h:229; knowledge/hardware/relays.md:140-150"
+    }
+  ],
+  "relayDesignWorkflow": {
+    "sourceLocator": "knowledge/references/L3-method/relay-design-flow.md",
+    "steps": [
+      {
+        "step": 1,
+        "outcome": "Find all TM endpoints: VBAT 3-V supply, VBUS voltage-ramp pin, and DTEST0 resolved to physical nQON monitor.",
+        "evidenceLocator": "dft/TM106/dft-meta.json:rawIntent.Power,Dynamic,Check,Code1,Code2; Components-Statistic.json:semanticIndex.dutKelvinPins; input-manifest.json:canonicalInputs.specialPinInformation"
+      },
+      {
+        "step": 2,
+        "outcome": "Find accepted Force/Sense routes and alternatives for VBAT, VBUS, nQON in formal Path-Proofs.",
+        "evidenceLocator": "Path-Proofs.json:accepted_path_proofs selected and alternative ports in routeSelectionReview"
+      },
+      {
+        "step": 3,
+        "outcome": "No DFT differential pair or high-current requirement; selected non-scarce FXVIe_PLUS/ACM200 source-table branch.",
+        "evidenceLocator": "relay-design-flow.md:43-48,80; dft/TM106/dft-meta.json:rawIntent; Pin_Channel_define.h:12,15,24-25"
+      },
+      {
+        "step": 4,
+        "outcome": "Choose shortest supported Force/Sense pairs: selected path required-on []; documented FPVI alternatives need more actuations. Include K13/K65 functional needs separately.",
+        "evidenceLocator": "Path-Proofs.json:accepted_path_proofs selected and alternatives in routeSelectionReview; SCH-Connect-Map.json:rawText lines 891,914; relay-design-flow.md:50-52"
+      },
+      {
+        "step": 5,
+        "outcome": "Local conflict check: selected Force/Sense legs agree on every relay state; K13/K65 are endpoint attachments, not fabricated path required_on.",
+        "evidenceLocator": "Path-Proofs.json:selected accepted path states and required_on; SCH-Connect-Map.json:rawText lines 891,914; relay-design-flow.md:54-62"
+      },
+      {
+        "step": 6,
+        "outcome": "Global check: K13 stabilizes powered VBAT, K65 pulls up observed nQON, scanned VBUS capacitor K5 and P2P shorts stay OFF; selected paths have no shared-relay state conflict.",
+        "evidenceLocator": "dft/TM106/dft-meta.json:rawIntent; SCH-Connect-Map.json:rawText lines 877-891,913-915; relays.md:120-158; relay-checklist.md:25-48; Path-Proofs.json:selected path states"
+      },
+      {
+        "step": 7,
+        "outcome": "No time-multiplexing required: the three selected sources can share one compatible closure group.",
+        "evidenceLocator": "relay-design-flow.md:71-73; Path-Proofs.json:selected path state agreement; relayGroups per endpoint"
+      },
+      {
+        "step": 8,
+        "outcome": "Deliver one exclusive SetOn closure [13, 65]: path relays [] plus functional relays [13,65]; code emission remains with later stages.",
+        "evidenceLocator": "relay-design-flow.md:75,85-86; Path-Proofs.json:selected path required_on; SCH-Connect-Map.json:rawText lines 891,914; StdAfx.h:169,229"
+      }
+    ]
+  },
+  "registerDelta": [
+    {
+      "order": 1,
+      "call": "en_tm",
+      "source": "dft/TM106/dft-meta.json rawIntent Code2",
+      "raw": "en_tm[]"
+    },
+    {
+      "order": 2,
+      "call": "field",
+      "field": "DMUX_EN",
+      "value": 1,
+      "source": "dft/TM106/dft-meta.json rawIntent Code2"
+    },
+    {
+      "order": 3,
+      "call": "field",
+      "field": "DMUX_SEL",
+      "value": 19,
+      "source": "dft/TM106/dft-meta.json rawIntent Code2"
+    }
+  ],
+  "openItems": [],
+  "evidence": [
+    {
+      "file": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\Path-Proofs.json",
+      "locator": "status=PASS; accepted_path_proofs selected above"
+    },
+    {
+      "file": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h",
+      "locator": "source-table declarations"
+    },
+    {
+      "file": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h",
+      "locator": "instrument and relay definitions"
+    },
+    {
+      "file": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\SCH-Connect-Map.json",
+      "locator": "rawText line 891: nQON 5-V pull-up requires K65"
+    },
+    {
+      "file": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\knowledge\\hardware\\relays.md",
+      "locator": "lines 140-150: open-drain DTEST0/nQON observation requires K65"
+    },
+    {
+      "file": "D:\\PROJECT6-DALI\\ForCodexDebug\\source\\StdAfx.h",
+      "locator": "line 229: #define K65_nQON_PU 65"
+    },
+    {
+      "file": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\schematic\\SCH-Connect-Map.json",
+      "locator": "rawText line 914: VBAT 4.7-uF capacitor requires K13"
+    },
+    {
+      "file": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\knowledge\\hardware\\relays.md",
+      "locator": "lines 120-138: pure supply VBAT requires K13; ramp pin capacitor exception"
+    },
+    {
+      "file": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\knowledge\\standards\\relay-checklist.md",
+      "locator": "lines 25-42: FR-001 per-pin Cap rule"
+    },
+    {
+      "file": "D:\\PROJECT6-DALI\\ForCodexDebug\\source\\StdAfx.h",
+      "locator": "lines 169,658: K13_VBAT_Cap definition"
+    }
+  ],
+  "handoff": {
+    "nextRole": "test-method-expert",
+    "usableBoundaries": [
+      "Use only signed source tables, physicalProofs, and requiredActuations.",
+      "Method owns power timing, measurement and limits."
+    ]
+  },
+  "setOnClosure": {
+    "relays": [
+      13,
+      65
+    ],
+    "pathRequiredOn": [],
+    "functionalRelays": [
+      13,
+      65
+    ],
+    "exclusive": true,
+    "oneCall": true,
+    "evidenceLocator": "Path-Proofs.json:selected accepted paths required_on; SCH-Connect-Map.json:rawText lines 891,914; knowledge/hardware/relays.md:120-150; StdAfx.h:169,229"
+  },
+  "resolvedFindings": [
+    "TM106-METHOD-K13-001",
+    "TM106-METHOD-K65-001"
+  ],
+  "routeSelectionReview": {
+    "sourceLocator": "knowledge/references/L3-method/relay-design-flow.md:36-86",
+    "selected": {
+      "VBAT": {
+        "sourceTable": "VBAT_PD3_FXVI",
+        "requiredOn": [],
+        "proofs": [
+          "Path-Proofs.json accepted_path_proofs[source_port=S3_FXVIe_PLUS_FH5;dut_pin=VBAT_F_S1]",
+          "Path-Proofs.json accepted_path_proofs[source_port=S3_FXVIe_PLUS_SH5;dut_pin=VBAT_S_S1]"
+        ]
+      },
+      "VBUS": {
+        "sourceTable": "VBUS_DRVH1_ACM",
+        "requiredOn": [],
+        "proofs": [
+          "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH10;dut_pin=VBUS_F_S1]",
+          "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH10;dut_pin=VBUS_S_S1]"
+        ]
+      },
+      "nQON": {
+        "sourceTable": "NQON_HG1_ACM",
+        "requiredOn": [],
+        "proofs": [
+          "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_FH9;dut_pin=nQON_F_S1]",
+          "Path-Proofs.json accepted_path_proofs[source_port=S5_ACM200_SH9;dut_pin=nQON_S_S1]"
+        ]
+      }
+    },
+    "alternatives": [
+      {
+        "dutPin": "VBAT",
+        "sourcePorts": [
+          "S1_FPVIe_FH1",
+          "S1_FPVIe_SH1"
+        ],
+        "requiredOn": [
+          7
+        ],
+        "reasonNotSelected": "More path actuations than the selected FXVIe_PLUS route."
+      },
+      {
+        "dutPin": "VBUS",
+        "sourcePorts": [
+          "S1_FPVIe_FL0",
+          "S1_FPVIe_SL0"
+        ],
+        "requiredOn": [
+          3
+        ],
+        "reasonNotSelected": "More path actuations than the selected ACM200 route."
+      },
+      {
+        "dutPin": "nQON",
+        "sourcePorts": [
+          "S1_FPVIe_FH0",
+          "S1_FPVIe_SH0"
+        ],
+        "requiredOn": [
+          62
+        ],
+        "reasonNotSelected": "More path actuations than the selected ACM200 route."
+      }
+    ],
+    "alternativeEvidenceLocator": "project/DALI/Output_Global_Material/schematic/Path-Proofs.json:accepted_path_proofs keyed by each listed sourcePort and DUT Force/Sense pin"
+  },
+  "functionalSelectionReview": {
+    "VBAT": "Pure 3-V supply: close K13; no VBAT current capture or voltage scan exception.",
+    "VBUS": "Voltage-ramp pin: keep its capacitor K5 OFF under FR-001 ramp exception.",
+    "nQON": "DTEST0/nQON toggle observation: close fixed-5-V pull-up K65.",
+    "shortToGround": "No DFT endpoint asks for a P2P short; keep P2P relays OFF.",
+    "evidenceLocator": "dft/TM106/dft-meta.json:rawIntent.Power,Dynamic,Code1,Code2,Check; SCH-Connect-Map.json:rawText lines 877-891,913-915; relays.md:120-158; relay-checklist.md:25-48"
+  },
+  "registerConfiguration": {
+    "evidencePath": "team/artifacts/tm106-ptc/strategy/register-config-evidence.json",
+    "evidenceSha256": "261815addaf13cb686c0ffa8700121f7ef6b9ce7725fae19c637bebc77b27c11",
+    "sourcePath": "project/DALI/reg_config/tm106.sv",
+    "sourceSha256": "3c1a61b0ce4daf7a12174fa0bce71217467a3d4ff11d3a86830dc4b778977a6b",
+    "orderedWrites": [
+      {
+        "sourceLine": 14,
+        "sourceText": "I2CWriteSameData(DEV_ADDR, 0x56, 0x13);  // Write reg 0x56 = 19",
+        "address": "0X56",
+        "value": "0X13"
+      },
+      {
+        "sourceLine": 15,
+        "sourceText": "I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // Write reg 0x57 = 8",
+        "address": "0X57",
+        "value": "0X08"
+      }
+    ]
+  }
+}

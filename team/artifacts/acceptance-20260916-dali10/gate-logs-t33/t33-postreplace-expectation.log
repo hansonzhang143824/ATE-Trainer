@@ -1,0 +1,25 @@
+=== ① 他方四项数值断言复核（现算）===
+  t35-contract-reconciliation.md        49554 B  52ef07b7b9cbe415790ac215920735c1fd77d75245bbbdb63622044aff3a2233
+  payload (DELIVERED)                   39457 B  2d0984d992d5d8cb11868660b29cf2c7786ff27367bd7b24b80df4ccf48997f9
+       内容键 t29 PER-FUNCTION JUSTIFICATION ×1
+       内容键 K109_BUSL1_PB0               ×2
+       内容键 K110_ACM18_BST               ×2
+       内容键 SW12_U1REF_BST_ACM           ×12
+  DEPLOYED test.cpp                    469714 B  15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a
+       内容键 K109_BUSL1_PB0               ×0
+       内容键 K110_ACM18_BST               ×0
+
+=== ② 我方判据：现行 SetOn vs 两种契约口径（复核我上一条的结论）===
+  TM600_HS_RDSON 实际=[13, 57, 60, 61, 83, 85, 126]
+     pin-18 口径（契约 rev 24 现状）                      期望=[60, 61, 83, 110]  缺失=[110]
+     pin-5  口径（t42 判定后, 建议 rev 25）                期望=[48, 61, 76]       缺失=[48, 76]
+  TM601_LS_RDSON 实际=[13, 57, 60, 61, 85, 126, 154, 155]
+     rev 24 口径（其自身别名 sw2pgnd）                     期望=[60, 61, 154, 155] 缺失=[]
+     rev 25 口径（仍为 sw2pgnd，不应被 bst2sw 污染）          期望=[60, 61, 154, 155] 缺失=[]
+
+=== ③ 结论：落盘后「bst-sw 是否转绿」取决于契约口径（且仅 TM600 受影响）===
+  · 若契约仍为 rev 24（pin-18 口径 [110,61]）⇒ t29 落盘后 TM600 缺失=[] ⇒ bst-sw 转 GREEN
+  · 若契约已 rev 25（pin-5 口径 [48,76]）  ⇒ TM600 仍缺 [48,76]
+    ⚠️ 但按 Captain 裁定 (i)「rev 25 + payload 同一批」，payload 的 TM600 将闭 [48,76] ⇒ 批后应 GREEN
+  · **TM601 不受 bst2sw 约束**（其别名 sw2pgnd 在 rev 24 下已满足）⇒ 不得把 [48,76] 套给它（否则假红，
+    且会把实现推向 t38 已明确移除的"TM601 ACM 驱动"方向）

@@ -1,0 +1,52 @@
+
+1. 先列必要的
+
+必要内容1： Item 这个是测试项的名字，也是程序Function的名字。也是寄存器文档索引的匹配用到的名字。
+必要内同2：  Name这个是测试参数的名字，是Function内参数的定义的名字。一个Item可以对应1个或者多个参数名字。
+必要内容3： Trim， 如果是Y/Yes等都表示是trim参数，否则认定非Trim参数
+必要内容4：上电处理。
+vset[Pin, Value, pluse time, status]:
+这里说名一下vset是set 电压的意思，设置电压，单位是V
+Pin 就是芯片的Pin脚的名字， 如果是单个Pin，就是Pin对于AGND加电压，如果是PinA2PinB或PinA_PinB ，表示的是PinA相对于PinB的电压。
+Value是施加的电压值，正值表示，电压Pin高于AGND或者PinA电压高于PinB ,反之， Pin低于AGND，或者PinA电压低于PinB。
+pulse time是加电压用的时间。
+status 是上电的阶段，0表示第一阶段，1表示第二阶段。无论多少条0阶段的上电操作，都是执行完才会执行1阶段的。这一条备注必须告诉Method_Expert。
+pulse time如果是100e-6,解读时候，表示直接上电，直接忽略，用不到； 如果是 100e-3表示的是ramp缓慢上电，如果value只有一个值，那这个Value 就是ramp的终点就是，起点就是status-1，
+也就是上一个阶段的同名的Pin的值。比如vset[Pin,value1, 100e-6, 0], vset[Pin,value2, 100e-3,1] ,就表示Pin从value1 ramp到value2，但是不涉及任何时间。
+如果是同一个Pin连续出现2次电源设置同时status一样，比如vset[Pin,value1, 100e-6, 0], vset[Pin,value2, 100e-3,0]，也同样表示从value1 ramp到value2，如果有3段，那就是value1 ramp到value2， value2 ramp到value3.
+
+iset[Pin, Value, pluse time, status]:
+这里说名一下iset是set 电流的意思，设置电流，单位是A
+Pin 就是芯片的Pin脚的名字， 如果是单个Pin，就是Pin对于AGND加电流，如果是PinA2PinB或PinA_PinB ，表示的是PinA相对于PinB的电流。
+Value是施加的电压值，正值表示，电流从Pin灌入芯片从AGND流出或者从PinA灌入从PinB流出 ,反之，从 Pin抽电流，从AGND回流入芯片，或者从PinA抽电流，然后从PinB回流。
+pulse time是加电压用的时间。
+status 是上电的阶段，0表示第一阶段，1表示第二阶段。无论多少条0阶段的上电操作，都是执行完才会执行1阶段的。这一条备注必须告诉Method_Expert。
+pulse time如果是100e-6,解读时候，表示直接上电，直接忽略，用不到； 如果是 100e-3表示的是ramp缓慢上电，如果value只有一个值，那这个Value 就是ramp的终点就是，起点就是status-1，
+也就是上一个阶段的同名的Pin的值。比如iset[Pin,value1, 100e-6, 0], iset[Pin,value2, 100e-3,1] ,就表示Pin从value1 ramp到value2，但是不涉及任何时间。如果是同一个Pin连续出现2次电源设置
+同时status一样，比如iset[Pin,value1, 100e-6, 0], iset[Pin,value2, 100e-3,0]，也同样表示从value1 ramp到value2，如果有3段，那就是value1 ramp到value2， value2 ramp到value3.
+
+必要内容5：寄存器配置
+field[(WAKE_UP,1)]， 用field开头的表示的是寄存器配置。
+en_tm[] ：含义是entertestmode，直接等效替换。进入测试模式的意思。
+
+
+必要内容6：结果测量
+V(Pin) 表示在Pin上测量电压，I(Pin)表示在Pin上测量电流， 
+V(PinA_PinB),V(PinA-PinB),都表示测量 PinA和PinB之间的电压。
+I(PinA_PinB),I(PinA-PinB),都表示测量 PinA和PinB之间的电流。
+R(PinA_PinB),R(PinA-PinB),都表示测量 PinA和PinB之间的电阻。
+Toggle(Pin)不分大小写，表示Pin Toggle时候，ramp Pin的电压或者电流，根据ramp的模式是电压或者电流模式。
+
+不是必须的内容1：level 告诉测试项目属于芯片的哪个模块，有最好。
+不是必须的内容2：Description，描述测试的内容是什么，解释测试的内容，对应芯片功能
+不是必须的内容3：ExpectValue， 告诉测试工程师，仿真的预期值是多少。
+不是必须的内容4：Unit，描述测试参数的单位是什么
+不是必须的内容5：Dyanmic： 表示哪些Pin在上电后后继续有动作，用来辅助理解执行步骤的，与status做补充。
+不是必须的内容6：Helper：补充一些解释内容
+不是必须的内容6：de_test 补充de测试的值，用于参考。
+
+处理方法：
+1.首先必要内容，允许分散在各个列中，需要进行提取做归类处理。
+2. 后面需要通过 Item列的测试项目名字索引到寄存器配置文件，并脚本提取出需要的内容，并且实现保存
+3. 输出时候需要按照阶段进行罗列。
+4. 需要检查所有Pin是否有在原理图解析结果中不存在的，如果有需要报警出来。

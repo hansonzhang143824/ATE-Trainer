@@ -1,0 +1,2200 @@
+{
+  "generatedFor": "TM600/TM601 differential Kelvin sense instrument assignment (t3/t4 input)",
+  "runId": "acceptance-20260916-dali10",
+  "sources": [
+    {
+      "path": "project/DALI/SCH-Connect-Map.txt",
+      "locator": "columns 2-10 route headers + 需闭合 groups",
+      "sha256": "cc8009fbb27eef0cf29b45e4e50b05e1b5d7b5d49095a32005261a79d83cb427"
+    },
+    {
+      "path": "team/artifacts/acceptance-20260916-dali10/schematic-validation/path_proofs.json.txt",
+      "locator": "accepted_path_proofs for dut_base in PMID/SW/PGND",
+      "sha256": "eda90a922b2d9e68ed3ac3736986a64ba57ec4fe243701b0d7b2123796ba4863"
+    },
+    {
+      "path": "project/DALI/Component-Statistic.txt",
+      "locator": "任务二b 源表名映射",
+      "sha256": "30a11536a3781bac58f10cc400cf9f9c9f0c4b32469c81cfc583eb7d475beb74"
+    },
+    {
+      "path": "knowledge/sources/hardware-specs.md",
+      "locator": "module table lines 9-32",
+      "sha256": "9cb211105dab4f980de799a4702f359b35a1fc952ee27cffd55e3950f383eef4"
+    },
+    {
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h",
+      "locator": "_PIN_CHANNEL_DEFINE_* macros",
+      "sha256": "d5ce16a0ae79549424110755e99d9ae74cce79d18b8a1eaae3fd5588df285e35"
+    }
+  ],
+  "connectMapRouteHeaders": {
+    "PMID": [
+      {
+        "section": "列3: QTMUe → PIN (BUS继电器)",
+        "line": 505,
+        "annotation": "通路 (single line, no F/S split stated)",
+        "requiredOn": "K141,K83",
+        "raw": "PMID ← S10_CH0_A  [通路]  需闭合: K141,K83"
+      },
+      {
+        "section": "列4: QVMe → PIN (BUS继电器)",
+        "line": 614,
+        "annotation": "通路 (single line, no F/S split stated)",
+        "requiredOn": "K137,K83",
+        "raw": "PMID ← QVM高端  [通路]  需闭合: K137,K83"
+      },
+      {
+        "section": "列7: FXVIe_PLUS → PIN (Share继电器)",
+        "line": 820,
+        "annotation": "Kelvin",
+        "requiredOn": "无(默认导通)",
+        "raw": "PMID  [Kelvin]  需闭合: 无(默认导通)"
+      }
+    ],
+    "SW": [
+      {
+        "section": "列4: QVMe → PIN (BUS继电器)",
+        "line": 620,
+        "annotation": "通路 (single line, no F/S split stated)",
+        "requiredOn": "K138,K60,K61",
+        "raw": "SW ← QVM低端  [通路]  需闭合: K138,K60,K61"
+      },
+      {
+        "section": "列6: ACM200 → PIN (Share继电器)",
+        "line": 771,
+        "annotation": "Kelvin",
+        "requiredOn": "K61",
+        "raw": "SW  [Kelvin]  需闭合: K61"
+      }
+    ],
+    "PGND": [
+      {
+        "section": "列3: QTMUe → PIN (BUS继电器)",
+        "line": 501,
+        "annotation": "通路 (single line, no F/S split stated)",
+        "requiredOn": "K141,K154,K155",
+        "raw": "PGND ← S10_CH0_A  [通路]  需闭合: K141,K154,K155"
+      },
+      {
+        "section": "列4: QVMe → PIN (BUS继电器)",
+        "line": 610,
+        "annotation": "通路 (single line, no F/S split stated)",
+        "requiredOn": "K137,K154,K155",
+        "raw": "PGND ← QVM高端  [通路]  需闭合: K137,K154,K155"
+      },
+      {
+        "section": "列7: FXVIe_PLUS → PIN (Share继电器)",
+        "line": 817,
+        "annotation": "Kelvin",
+        "requiredOn": "K155",
+        "raw": "PGND  [Kelvin]  需闭合: K155"
+      }
+    ]
+  },
+  "connectMapChains": {
+    "PMID": [
+      {
+        "line": 506,
+        "raw": "S10_CH0_A -> K141(Relay-ON) -> K83(Relay-ON) -> K84(Relay-NC) -> PMID"
+      },
+      {
+        "line": 508,
+        "raw": "S10_CH0_A -> K141(Relay-ON) -> K58(Relay-ON) -> K59(Relay-ON) -> SDA"
+      },
+      {
+        "line": 510,
+        "raw": "S10_CH0_A -> K141(Relay-ON) -> K46(Relay-ON) -> K48(Relay-NC) -> K49(Relay-NC) -> SW1"
+      },
+      {
+        "line": 512,
+        "raw": "S10_CH0_A -> K141(Relay-ON) -> K46(Relay-ON) -> K48(Relay-NC) -> K49(Relay-ON) -> SW2"
+      },
+      {
+        "line": 514,
+        "raw": "S10_CH0_A -> K141(Relay-NC) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT"
+      },
+      {
+        "line": 516,
+        "raw": "S10_CH0_A -> K141(Relay-ON) -> K30(Relay-ON) -> K25(Relay-ON) -> VCC"
+      },
+      {
+        "line": 518,
+        "raw": "S10_CH0_A -> K141(Relay-ON) -> K156(Relay-ON) -> K157(Relay-NC) -> VCN"
+      },
+      {
+        "line": 520,
+        "raw": "S10_CH0_A -> K141(Relay-ON) -> K58(Relay-ON) -> K59(Relay-NC) -> VDM"
+      },
+      {
+        "line": 522,
+        "raw": "S10_CH0_A -> K141(Relay-NC) -> K123(Relay-ON) -> K124(Relay-ON) -> nRST"
+      },
+      {
+        "line": 527,
+        "raw": "S8_QVM_CH0+ -> K137(Relay-ON) -> K30(Relay-ON) -> K22(Relay-ON) -> ACDRV1"
+      },
+      {
+        "line": 529,
+        "raw": "S8_QVM_CH0+ -> K137(Relay-ON) -> K30(Relay-ON) -> K23(Relay-ON) -> ACDRV2"
+      },
+      {
+        "line": 531,
+        "raw": "S8_QVM_CH0+ -> K137(Relay-ON) -> K30(Relay-ON) -> K24(Relay-ON) -> ACDRV3"
+      },
+      {
+        "line": 533,
+        "raw": "S8_QVM_CH0+ -> K137(Relay-ON) -> K154(Relay-ON) -> K155(Relay-NC) -> AMUX"
+      },
+      {
+        "line": 535,
+        "raw": "S8_QVM_CH0- -> K138(Relay-ON) -> K17(Relay-ON) -> K18(Relay-ON) -> K20(Relay-ON) -> AMUX"
+      },
+      {
+        "line": 537,
+        "raw": "S8_QVM_CH0+ -> K137(Relay-ON) -> K46(Relay-ON) -> K48(Relay-ON) -> K76(Relay-ON) -> BST"
+      },
+      {
+        "line": 539,
+        "raw": "S8_QVM_CH0- -> K139(Relay-ON) -> K109(Relay-ON) -> K110(Relay-ON) -> BST"
+      },
+      {
+        "line": 541,
+        "raw": "S8_QVM_CH0- -> K138(Relay-ON) -> K41(Relay-ON) -> K42(Relay-NC) -> K43(Relay-NC) -> BST1"
+      },
+      {
+        "line": 543,
+        "raw": "S8_QVM_CH0- -> K138(Relay-ON) -> K41(Relay-ON) -> K42(Relay-NC) -> K43(Relay-ON) -> BST2"
+      },
+      {
+        "line": 545,
+        "raw": "S8_QVM_CH0+ -> K136(Relay-ON) -> K96(Relay-ON) -> K97(Relay-NC) -> K98(Relay-NC) -> CC1"
+      },
+      {
+        "line": 547,
+        "raw": "S8_QVM_CH0- -> K139(Relay-ON) -> K104(Relay-ON) -> K105(Relay-ON) -> CC2"
+      },
+      {
+        "line": 549,
+        "raw": "S8_QVM_CH0+ -> K137(Relay-ON) -> K156(Relay-ON) -> K157(Relay-ON) -> COMP"
+      },
+      {
+        "line": 551,
+        "raw": "S8_QVM_CH0+ -> K136(Relay-ON) -> K120(Relay-ON) -> K121(Relay-NC) -> DMA_PA7"
+      },
+      {
+        "line": 553,
+        "raw": "S8_QVM_CH0- -> K139(Relay-ON) -> K94(Relay-ON) -> K95(Relay-ON) -> DMO_PC6"
+      },
+      {
+        "line": 555,
+        "raw": "S8_QVM_CH0- -> K138(Relay-ON) -> K3(Relay-ON) -> K4(Relay-ON) -> DRVH1"
+      },
+      {
+        "line": 557,
+        "raw": "S8_QVM_CH0+ -> K137(Relay-ON) -> K62(Relay-ON) -> K64(Relay-ON) -> HG1"
+      },
+      {
+        "line": 559,
+        "raw": "S8_QVM_CH0+ -> K137(Relay-ON) -> K83(Relay-ON) -> K84(Relay-ON) -> HG2"
+      },
+      {
+        "line": 561,
+        "raw": "S8_QVM_CH0+ -> K136(Relay-ON) -> K101(Relay-ON) -> K102(Relay-NC) -> INT_PA0"
+      },
+      {
+        "line": 563,
+        "raw": "S8_QVM_CH0+ -> K137(Relay-ON) -> K35(Relay-ON) -> K36(Relay-NC) -> K37(Relay-NC) -> KLV1"
+      },
+      {
+        "line": 565,
+        "raw": "S8_QVM_CH0+ -> K137(Relay-ON) -> K35(Relay-ON) -> K36(Relay-NC) -> K37(Relay-ON) -> KLV2"
+      },
+      {
+        "line": 567,
+        "raw": "S8_QVM_CH0- -> K138(Relay-ON) -> K51(Relay-ON) -> K52(Relay-NC) -> LG1"
+      },
+      {
+        "line": 569,
+        "raw": "S8_QVM_CH0- -> K138(Relay-ON) -> K51(Relay-ON) -> K52(Relay-ON) -> LG2"
+      },
+      {
+        "line": 571,
+        "raw": "S8_QVM_CH0+ -> K136(Relay-ON) -> K106(Relay-ON) -> K107(Relay-NC) -> PA1"
+      },
+      {
+        "line": 573,
+        "raw": "S8_QVM_CH0- -> K139(Relay-ON) -> K118(Relay-ON) -> K119(Relay-NC) -> PA4"
+      },
+      {
+        "line": 575,
+        "raw": "S8_QVM_CH0- -> K139(Relay-ON) -> K114(Relay-ON) -> K115(Relay-NC) -> PA5"
+      },
+      {
+        "line": 577,
+        "raw": "S8_QVM_CH0+ -> K136(Relay-ON) -> K111(Relay-ON) -> K112(Relay-NC) -> PA6_PWM2"
+      },
+      {
+        "line": 579,
+        "raw": "S8_QVM_CH0- -> K139(Relay-ON) -> K109(Relay-ON) -> K110(Relay-NC) -> PB0_PWM1"
+      },
+      {
+        "line": 581,
+        "raw": "S8_QVM_CH0+ -> K136(Relay-ON) -> K106(Relay-ON) -> K107(Relay-ON) -> PB1"
+      },
+      {
+        "line": 583,
+        "raw": "S8_QVM_CH0- -> K139(Relay-ON) -> K114(Relay-ON) -> K115(Relay-ON) -> PB2"
+      },
+      {
+        "line": 585,
+        "raw": "S8_QVM_CH0+ -> K136(Relay-ON) -> K96(Relay-ON) -> K97(Relay-NC) -> K98(Relay-ON) -> PB3"
+      },
+      {
+        "line": 587,
+        "raw": "S8_QVM_CH0- -> K139(Relay-ON) -> K118(Relay-ON) -> K119(Relay-ON) -> PB4"
+      },
+      {
+        "line": 589,
+        "raw": "S8_QVM_CH0+ -> K136(Relay-ON) -> K123(Relay-ON) -> K124(Relay-NC) -> PB5"
+      },
+      {
+        "line": 591,
+        "raw": "S8_QVM_CH0- -> K139(Relay-ON) -> K99(Relay-ON) -> K100(Relay-NC) -> PB5"
+      },
+      {
+        "line": 593,
+        "raw": "S8_QVM_CH0+ -> K136(Relay-ON) -> K116(Relay-ON) -> K117(Relay-ON) -> PB6"
+      },
+      {
+        "line": 595,
+        "raw": "S8_QVM_CH0+ -> K136(Relay-ON) -> K116(Relay-ON) -> K117(Relay-NC) -> PB7"
+      },
+      {
+        "line": 597,
+        "raw": "S8_QVM_CH0+ -> K136(Relay-ON) -> K101(Relay-ON) -> K102(Relay-ON) -> PC3"
+      },
+      {
+        "line": 599,
+        "raw": "S8_QVM_CH0- -> K139(Relay-ON) -> K99(Relay-ON) -> K100(Relay-ON) -> PC4"
+      },
+      {
+        "line": 601,
+        "raw": "S8_QVM_CH0+ -> K136(Relay-ON) -> K111(Relay-ON) -> K112(Relay-ON) -> PC5"
+      },
+      {
+        "line": 603,
+        "raw": "S8_QVM_CH0- -> K139(Relay-ON) -> K94(Relay-ON) -> K95(Relay-NC) -> PC8"
+      },
+      {
+        "line": 605,
+        "raw": "S8_QVM_CH0+ -> K136(Relay-ON) -> K120(Relay-ON) -> K121(Relay-ON) -> PD2"
+      },
+      {
+        "line": 607,
+        "raw": "S8_QVM_CH0+ -> K136(Relay-ON) -> K7(Relay-ON) -> K8(Relay-ON) -> PD3"
+      },
+      {
+        "line": 609,
+        "raw": "S8_QVM_CH0- -> K139(Relay-ON) -> K104(Relay-ON) -> K105(Relay-NC) -> PD5"
+      },
+      {
+        "line": 615,
+        "raw": "S8_QVM_CH0+ -> K137(Relay-ON) -> K83(Relay-ON) -> K84(Relay-NC) -> PMID"
+      },
+      {
+        "line": 617,
+        "raw": "S8_QVM_CH0- -> K138(Relay-ON) -> K32(Relay-ON) -> K33(Relay-NC) -> SCL"
+      },
+      {
+        "line": 619,
+        "raw": "S8_QVM_CH0+ -> K137(Relay-ON) -> K58(Relay-ON) -> K59(Relay-ON) -> SDA"
+      },
+      {
+        "line": 821,
+        "raw": "F: S3_FXVIe_PLUS_FH1 -> K84(Relay-NC) -> PMID_F"
+      },
+      {
+        "line": 822,
+        "raw": "S: S3_FXVIe_PLUS_SH1 -> K84(Relay-NC) -> PMID_S"
+      },
+      {
+        "line": 824,
+        "raw": "F: S3_FXVIe_PLUS_FH0 -> K50(Relay-NC) -> SW1_F"
+      },
+      {
+        "line": 825,
+        "raw": "S: S3_FXVIe_PLUS_SH0 -> K50(Relay-NC) -> SW1_S"
+      },
+      {
+        "line": 827,
+        "raw": "F: S3_FXVIe_PLUS_FH0 -> K50(Relay-ON) -> SW2_F"
+      },
+      {
+        "line": 828,
+        "raw": "S: S3_FXVIe_PLUS_SH0 -> K50(Relay-ON) -> SW2_S"
+      },
+      {
+        "line": 830,
+        "raw": "F: S3_FXVIe_PLUS_FH6 -> K125(Relay-NC) -> V1P5_F"
+      },
+      {
+        "line": 831,
+        "raw": "S: S3_FXVIe_PLUS_SH6 -> K125(Relay-NC) -> V1P5_S"
+      },
+      {
+        "line": 833,
+        "raw": "F: S3_FXVIe_PLUS_FH5 -> K8(Relay-NC) -> VBAT_F"
+      },
+      {
+        "line": 834,
+        "raw": "S: S3_FXVIe_PLUS_SH5 -> K8(Relay-NC) -> VBAT_S"
+      },
+      {
+        "line": 836,
+        "raw": "F: S3_FXVIe_PLUS_FH2 -> K31(Relay-NC) -> VCC_F"
+      },
+      {
+        "line": 837,
+        "raw": "S: S3_FXVIe_PLUS_SH2 -> K31(Relay-NC) -> VCC_S"
+      },
+      {
+        "line": 839,
+        "raw": "F: S3_FXVIe_PLUS_FH2 -> K31(Relay-ON) -> VMCU_F"
+      },
+      {
+        "line": 840,
+        "raw": "S: S3_FXVIe_PLUS_SH2 -> K31(Relay-ON) -> VMCU_S"
+      },
+      {
+        "line": 842,
+        "raw": "F: S3_FXVIe_PLUS_FH4 -> K124(Relay-ON) -> nRST"
+      },
+      {
+        "line": 843,
+        "raw": "S: S3_FXVIe_PLUS_SH4 -> K124(Relay-ON) -> nRST"
+      },
+      {
+        "line": 848,
+        "raw": "S10_CH0_B -> K152(Relay-ON) -> VDM"
+      },
+      {
+        "line": 850,
+        "raw": "S10_CH0_A -> K66(Relay-ON) -> nQON"
+      },
+      {
+        "line": 854,
+        "raw": "S8_QVM_CH0- -> K140(Relay-ON) -> AGND"
+      },
+      {
+        "line": 859,
+        "raw": "S24_P1 -> SCL"
+      },
+      {
+        "line": 861,
+        "raw": "S24_P2 -> SDA"
+      }
+    ],
+    "SW": [
+      {
+        "line": 621,
+        "raw": "S8_QVM_CH0- -> K138(Relay-ON) -> K60(Relay-ON) -> K61(Relay-ON) -> SW"
+      },
+      {
+        "line": 623,
+        "raw": "S8_QVM_CH0+ -> K137(Relay-ON) -> K46(Relay-ON) -> K48(Relay-NC) -> K49(Relay-NC) -> SW1"
+      },
+      {
+        "line": 625,
+        "raw": "S8_QVM_CH0- -> K138(Relay-ON) -> K47(Relay-ON) -> K50(Relay-NC) -> SW1"
+      },
+      {
+        "line": 627,
+        "raw": "S8_QVM_CH0+ -> K137(Relay-ON) -> K46(Relay-ON) -> K48(Relay-NC) -> K49(Relay-ON) -> SW2"
+      },
+      {
+        "line": 629,
+        "raw": "S8_QVM_CH0- -> K138(Relay-ON) -> K47(Relay-ON) -> K50(Relay-ON) -> SW2"
+      },
+      {
+        "line": 631,
+        "raw": "S8_QVM_CH0- -> K138(Relay-ON) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-NC) -> VAC1"
+      },
+      {
+        "line": 633,
+        "raw": "S8_QVM_CH0- -> K138(Relay-ON) -> K17(Relay-ON) -> K18(Relay-NC) -> K19(Relay-ON) -> VAC2"
+      },
+      {
+        "line": 635,
+        "raw": "S8_QVM_CH0- -> K138(Relay-ON) -> K17(Relay-ON) -> K18(Relay-ON) -> K20(Relay-NC) -> VAC3"
+      },
+      {
+        "line": 637,
+        "raw": "S8_QVM_CH0- -> K138(Relay-ON) -> K32(Relay-ON) -> K33(Relay-ON) -> VAC_WL"
+      },
+      {
+        "line": 639,
+        "raw": "S8_QVM_CH0+ -> K136(Relay-ON) -> K7(Relay-ON) -> K8(Relay-NC) -> VBAT"
+      },
+      {
+        "line": 641,
+        "raw": "S8_QVM_CH0- -> K138(Relay-ON) -> K3(Relay-ON) -> K4(Relay-NC) -> VBUS"
+      },
+      {
+        "line": 643,
+        "raw": "S8_QVM_CH0+ -> K137(Relay-ON) -> K30(Relay-ON) -> K25(Relay-ON) -> VCC"
+      },
+      {
+        "line": 645,
+        "raw": "S8_QVM_CH0- -> K138(Relay-ON) -> K29(Relay-ON) -> K31(Relay-NC) -> VCC"
+      },
+      {
+        "line": 647,
+        "raw": "S8_QVM_CH0+ -> K137(Relay-ON) -> K156(Relay-ON) -> K157(Relay-NC) -> VCN"
+      },
+      {
+        "line": 649,
+        "raw": "S8_QVM_CH0- -> K138(Relay-ON) -> K60(Relay-ON) -> K61(Relay-NC) -> VCP"
+      },
+      {
+        "line": 651,
+        "raw": "S8_QVM_CH0+ -> K137(Relay-ON) -> K58(Relay-ON) -> K59(Relay-NC) -> VDM"
+      },
+      {
+        "line": 653,
+        "raw": "S8_QVM_CH0- -> K138(Relay-ON) -> K29(Relay-ON) -> K31(Relay-ON) -> VMCU"
+      },
+      {
+        "line": 655,
+        "raw": "S8_QVM_CH0+ -> K137(Relay-ON) -> K62(Relay-ON) -> K64(Relay-NC) -> nQON"
+      },
+      {
+        "line": 657,
+        "raw": "S8_QVM_CH0+ -> K136(Relay-ON) -> K123(Relay-ON) -> K124(Relay-ON) -> nRST"
+      },
+      {
+        "line": 664,
+        "raw": "F: S5_ACM200_FH1 -> K22(Relay-ON) -> ACDRV1_F"
+      },
+      {
+        "line": 665,
+        "raw": "S: S5_ACM200_SH1 -> K22(Relay-ON) -> ACDRV1_S"
+      },
+      {
+        "line": 667,
+        "raw": "F: S5_ACM200_FH1 -> K23(Relay-ON) -> ACDRV2_F"
+      },
+      {
+        "line": 668,
+        "raw": "S: S5_ACM200_SH1 -> K23(Relay-ON) -> ACDRV2_S"
+      },
+      {
+        "line": 670,
+        "raw": "F: S5_ACM200_FH1 -> K24(Relay-ON) -> ACDRV3_F"
+      },
+      {
+        "line": 671,
+        "raw": "S: S5_ACM200_SH1 -> K24(Relay-ON) -> ACDRV3_S"
+      },
+      {
+        "line": 673,
+        "raw": "F: S5_ACM200_FH5 -> K48(Relay-ON) -> K76(Relay-ON) -> BST_F"
+      },
+      {
+        "line": 674,
+        "raw": "S: S5_ACM200_SH5 -> K48(Relay-ON) -> K76(Relay-ON) -> BST_S"
+      },
+      {
+        "line": 676,
+        "raw": "F: S5_ACM200_FH4 -> K42(Relay-NC) -> K43(Relay-NC) -> BST1_F"
+      },
+      {
+        "line": 677,
+        "raw": "S: S5_ACM200_SH4 -> K42(Relay-NC) -> K43(Relay-NC) -> BST1_S"
+      },
+      {
+        "line": 679,
+        "raw": "F: S5_ACM200_FH4 -> K42(Relay-NC) -> K43(Relay-ON) -> BST2_F"
+      },
+      {
+        "line": 680,
+        "raw": "S: S5_ACM200_SH4 -> K42(Relay-NC) -> K43(Relay-ON) -> BST2_S"
+      },
+      {
+        "line": 682,
+        "raw": "F: S5_ACM200_FH13 -> K97(Relay-NC) -> K98(Relay-NC) -> CC1_F"
+      },
+      {
+        "line": 683,
+        "raw": "S: S5_ACM200_SH13 -> K97(Relay-NC) -> K98(Relay-NC) -> CC1_S"
+      },
+      {
+        "line": 685,
+        "raw": "F: S5_ACM200_FH16 -> K105(Relay-ON) -> CC2_F"
+      },
+      {
+        "line": 686,
+        "raw": "S: S5_ACM200_SH16 -> K105(Relay-ON) -> CC2_S"
+      },
+      {
+        "line": 688,
+        "raw": "F: S5_ACM200_FH11 -> K157(Relay-ON) -> COMP_F"
+      },
+      {
+        "line": 689,
+        "raw": "S: S5_ACM200_SH11 -> K157(Relay-ON) -> COMP_S"
+      },
+      {
+        "line": 691,
+        "raw": "F: S5_ACM200_FH23 -> K121(Relay-NC) -> DMA_F"
+      },
+      {
+        "line": 692,
+        "raw": "S: S5_ACM200_SH23 -> K121(Relay-NC) -> DMA_S"
+      },
+      {
+        "line": 694,
+        "raw": "F: S5_ACM200_FH12 -> K95(Relay-ON) -> DMO_F"
+      },
+      {
+        "line": 695,
+        "raw": "S: S5_ACM200_SH12 -> K95(Relay-ON) -> DMO_S"
+      },
+      {
+        "line": 697,
+        "raw": "F: S5_ACM200_FH10 -> K4(Relay-ON) -> DRVH1_F"
+      },
+      {
+        "line": 698,
+        "raw": "S: S5_ACM200_SH10 -> K4(Relay-ON) -> DRVH1_S"
+      },
+      {
+        "line": 700,
+        "raw": "F: S5_ACM200_FH9 -> K64(Relay-ON) -> HG1_F"
+      },
+      {
+        "line": 701,
+        "raw": "S: S5_ACM200_SH9 -> K64(Relay-ON) -> HG1_S"
+      },
+      {
+        "line": 703,
+        "raw": "F: S5_ACM200_FH15 -> K102(Relay-NC) -> INT_F"
+      },
+      {
+        "line": 704,
+        "raw": "S: S5_ACM200_SH15 -> K102(Relay-NC) -> INT_S"
+      },
+      {
+        "line": 706,
+        "raw": "F: S5_ACM200_FH6 -> K52(Relay-NC) -> LG1_F"
+      },
+      {
+        "line": 707,
+        "raw": "S: S5_ACM200_SH6 -> K52(Relay-NC) -> LG1_S"
+      },
+      {
+        "line": 709,
+        "raw": "F: S5_ACM200_FH6 -> K52(Relay-ON) -> LG2_F"
+      },
+      {
+        "line": 710,
+        "raw": "S: S5_ACM200_SH6 -> K52(Relay-ON) -> LG2_S"
+      },
+      {
+        "line": 712,
+        "raw": "F: S5_ACM200_FH17 -> K107(Relay-NC) -> PA1_F"
+      },
+      {
+        "line": 713,
+        "raw": "S: S5_ACM200_SH17 -> K107(Relay-NC) -> PA1_S"
+      },
+      {
+        "line": 715,
+        "raw": "F: S5_ACM200_FH22 -> K119(Relay-NC) -> PA4_F"
+      },
+      {
+        "line": 716,
+        "raw": "S: S5_ACM200_SH22 -> K119(Relay-NC) -> PA4_S"
+      },
+      {
+        "line": 718,
+        "raw": "F: S5_ACM200_FH20 -> K115(Relay-NC) -> PA5_F"
+      },
+      {
+        "line": 719,
+        "raw": "S: S5_ACM200_SH20 -> K115(Relay-NC) -> PA5_S"
+      },
+      {
+        "line": 721,
+        "raw": "F: S5_ACM200_FH19 -> K112(Relay-NC) -> PA6_F"
+      },
+      {
+        "line": 722,
+        "raw": "S: S5_ACM200_SH19 -> K112(Relay-NC) -> PA6_S"
+      },
+      {
+        "line": 724,
+        "raw": "F: S5_ACM200_FH18 -> K110(Relay-NC) -> PB0_F"
+      },
+      {
+        "line": 725,
+        "raw": "S: S5_ACM200_SH18 -> K110(Relay-NC) -> PB0_S"
+      },
+      {
+        "line": 727,
+        "raw": "F: S5_ACM200_FH17 -> K107(Relay-ON) -> PB1_F"
+      },
+      {
+        "line": 728,
+        "raw": "S: S5_ACM200_SH17 -> K107(Relay-ON) -> PB1_S"
+      },
+      {
+        "line": 730,
+        "raw": "F: S5_ACM200_FH20 -> K115(Relay-ON) -> PB2_F"
+      },
+      {
+        "line": 731,
+        "raw": "S: S5_ACM200_SH20 -> K115(Relay-ON) -> PB2_S"
+      },
+      {
+        "line": 733,
+        "raw": "F: S5_ACM200_FH13 -> K97(Relay-NC) -> K98(Relay-ON) -> PB3_F"
+      },
+      {
+        "line": 734,
+        "raw": "S: S5_ACM200_SH13 -> K97(Relay-NC) -> K98(Relay-ON) -> PB3_S"
+      },
+      {
+        "line": 736,
+        "raw": "F: S5_ACM200_FH22 -> K119(Relay-ON) -> PB4_F"
+      },
+      {
+        "line": 737,
+        "raw": "S: S5_ACM200_SH22 -> K119(Relay-ON) -> PB4_S"
+      },
+      {
+        "line": 739,
+        "raw": "F: S5_ACM200_FH14 -> K100(Relay-NC) -> PB5_F"
+      },
+      {
+        "line": 740,
+        "raw": "S: S5_ACM200_SH14 -> K100(Relay-NC) -> PB5_S"
+      },
+      {
+        "line": 742,
+        "raw": "F: S5_ACM200_FH21 -> K117(Relay-ON) -> PB6_F"
+      },
+      {
+        "line": 743,
+        "raw": "S: S5_ACM200_SH21 -> K117(Relay-ON) -> PB6_S"
+      },
+      {
+        "line": 745,
+        "raw": "F: S5_ACM200_FH21 -> K117(Relay-NC) -> PB7_F"
+      },
+      {
+        "line": 746,
+        "raw": "S: S5_ACM200_SH21 -> K117(Relay-NC) -> PB7_S"
+      },
+      {
+        "line": 748,
+        "raw": "F: S5_ACM200_FH15 -> K102(Relay-ON) -> PC3_F"
+      },
+      {
+        "line": 749,
+        "raw": "S: S5_ACM200_SH15 -> K102(Relay-ON) -> PC3_S"
+      },
+      {
+        "line": 751,
+        "raw": "F: S5_ACM200_FH14 -> K100(Relay-ON) -> PC4_F"
+      },
+      {
+        "line": 752,
+        "raw": "S: S5_ACM200_SH14 -> K100(Relay-ON) -> PC4_S"
+      },
+      {
+        "line": 754,
+        "raw": "F: S5_ACM200_FH19 -> K112(Relay-ON) -> PC5_F"
+      },
+      {
+        "line": 755,
+        "raw": "S: S5_ACM200_SH19 -> K112(Relay-ON) -> PC5_S"
+      },
+      {
+        "line": 757,
+        "raw": "F: S5_ACM200_FH12 -> K95(Relay-NC) -> PC8_F"
+      },
+      {
+        "line": 758,
+        "raw": "S: S5_ACM200_SH12 -> K95(Relay-NC) -> PC8_S"
+      },
+      {
+        "line": 760,
+        "raw": "F: S5_ACM200_FH23 -> K121(Relay-ON) -> PD2_F"
+      },
+      {
+        "line": 761,
+        "raw": "S: S5_ACM200_SH23 -> K121(Relay-ON) -> PD2_S"
+      },
+      {
+        "line": 763,
+        "raw": "F: S5_ACM200_FH16 -> K105(Relay-NC) -> PD5_F"
+      },
+      {
+        "line": 764,
+        "raw": "S: S5_ACM200_SH16 -> K105(Relay-NC) -> PD5_S"
+      },
+      {
+        "line": 766,
+        "raw": "F: S5_ACM200_FH2 -> K33(Relay-NC) -> S24_P1"
+      },
+      {
+        "line": 767,
+        "raw": "S: S5_ACM200_SH2 -> K33(Relay-NC) -> SCL_S"
+      },
+      {
+        "line": 769,
+        "raw": "F: S5_ACM200_FH7 -> K59(Relay-ON) -> S24_P2"
+      },
+      {
+        "line": 770,
+        "raw": "S: S5_ACM200_SH7 -> K59(Relay-ON) -> SDA_S"
+      },
+      {
+        "line": 772,
+        "raw": "F: S5_ACM200_FH8 -> K61(Relay-ON) -> SW_F"
+      },
+      {
+        "line": 773,
+        "raw": "S: S5_ACM200_SH8 -> K61(Relay-ON) -> SW_S"
+      },
+      {
+        "line": 775,
+        "raw": "F: S5_ACM200_FH5 -> K48(Relay-NC) -> K49(Relay-NC) -> SW1_F"
+      },
+      {
+        "line": 776,
+        "raw": "S: S5_ACM200_SH5 -> K48(Relay-NC) -> K49(Relay-NC) -> SW1_S"
+      },
+      {
+        "line": 778,
+        "raw": "F: S5_ACM200_FH5 -> K48(Relay-NC) -> K49(Relay-ON) -> SW2_F"
+      },
+      {
+        "line": 779,
+        "raw": "S: S5_ACM200_SH5 -> K48(Relay-NC) -> K49(Relay-ON) -> SW2_S"
+      },
+      {
+        "line": 781,
+        "raw": "F: S5_ACM200_FH2 -> K33(Relay-ON) -> VAC_WL_F"
+      },
+      {
+        "line": 782,
+        "raw": "S: S5_ACM200_SH2 -> K33(Relay-ON) -> VAC_WL_S"
+      },
+      {
+        "line": 784,
+        "raw": "F: S5_ACM200_FH10 -> K4(Relay-NC) -> VBUS_F"
+      },
+      {
+        "line": 785,
+        "raw": "S: S5_ACM200_SH10 -> K4(Relay-NC) -> VBUS_S"
+      },
+      {
+        "line": 787,
+        "raw": "F: S5_ACM200_FH1 -> K25(Relay-ON) -> VCC_F"
+      },
+      {
+        "line": 788,
+        "raw": "S: S5_ACM200_SH1 -> K25(Relay-ON) -> VCC_S"
+      },
+      {
+        "line": 790,
+        "raw": "F: S5_ACM200_FH11 -> K157(Relay-NC) -> VCN_FORCE"
+      },
+      {
+        "line": 791,
+        "raw": "S: S5_ACM200_SH11 -> K157(Relay-NC) -> VCN_S"
+      },
+      {
+        "line": 793,
+        "raw": "F: S5_ACM200_FH8 -> K61(Relay-NC) -> VCP_FORCE"
+      },
+      {
+        "line": 794,
+        "raw": "S: S5_ACM200_SH8 -> K61(Relay-NC) -> VCP_S"
+      },
+      {
+        "line": 796,
+        "raw": "F: S5_ACM200_FH7 -> K59(Relay-NC) -> VDM_F"
+      },
+      {
+        "line": 797,
+        "raw": "S: S5_ACM200_SH7 -> K59(Relay-NC) -> VDM_S"
+      },
+      {
+        "line": 799,
+        "raw": "F: S5_ACM200_FH9 -> K64(Relay-NC) -> nQON_F"
+      },
+      {
+        "line": 800,
+        "raw": "S: S5_ACM200_SH9 -> K64(Relay-NC) -> nQON_S"
+      },
+      {
+        "line": 806,
+        "raw": "F: S3_FXVIe_PLUS_FH3 -> K155(Relay-NC) -> AMUX_F"
+      },
+      {
+        "line": 807,
+        "raw": "S: S3_FXVIe_PLUS_SH3 -> K155(Relay-NC) -> AMUX_S"
+      },
+      {
+        "line": 809,
+        "raw": "F: S3_FXVIe_PLUS_FH1 -> K84(Relay-ON) -> HG2_F"
+      },
+      {
+        "line": 810,
+        "raw": "S: S3_FXVIe_PLUS_SH1 -> K84(Relay-ON) -> HG2_S"
+      },
+      {
+        "line": 812,
+        "raw": "F: S3_FXVIe_PLUS_FH4 -> K124(Relay-NC) -> PB5_F"
+      },
+      {
+        "line": 813,
+        "raw": "S: S3_FXVIe_PLUS_SH4 -> K124(Relay-NC) -> PB5_S"
+      },
+      {
+        "line": 815,
+        "raw": "F: S3_FXVIe_PLUS_FH5 -> K8(Relay-ON) -> PD3_F"
+      },
+      {
+        "line": 816,
+        "raw": "S: S3_FXVIe_PLUS_SH5 -> K8(Relay-ON) -> PD3_S"
+      }
+    ],
+    "PGND": [
+      {
+        "line": 502,
+        "raw": "S10_CH0_A -> K141(Relay-ON) -> K154(Relay-ON) -> K155(Relay-ON) -> PGND"
+      },
+      {
+        "line": 504,
+        "raw": "S10_CH0_A -> K141(Relay-ON) -> K35(Relay-ON) -> K36(Relay-ON) -> PGND_WL"
+      },
+      {
+        "line": 611,
+        "raw": "S8_QVM_CH0+ -> K137(Relay-ON) -> K154(Relay-ON) -> K155(Relay-ON) -> PGND"
+      },
+      {
+        "line": 613,
+        "raw": "S8_QVM_CH0+ -> K137(Relay-ON) -> K35(Relay-ON) -> K36(Relay-ON) -> PGND_WL"
+      },
+      {
+        "line": 818,
+        "raw": "F: S3_FXVIe_PLUS_FH3 -> K155(Relay-ON) -> PGND_F"
+      },
+      {
+        "line": 819,
+        "raw": "S: S3_FXVIe_PLUS_SH3 -> K155(Relay-ON) -> PGND_S"
+      }
+    ]
+  },
+  "channelSemantics": {
+    "S10_0": {
+      "name": "QTMU_S1",
+      "type": "QTMUe"
+    },
+    "S10_1": {
+      "name": "QTMU_S2",
+      "type": "QTMUe"
+    },
+    "S10_2": {
+      "name": "QTMU_S3",
+      "type": "QTMUe"
+    },
+    "S10_3": {
+      "name": "QTMU_S4",
+      "type": "QTMUe"
+    },
+    "S3_0": {
+      "name": "SW1_SW2_FXVI",
+      "type": "FXVIe_PLUS"
+    },
+    "S3_1": {
+      "name": "PMID_HG2_FXVI",
+      "type": "FXVIe_PLUS"
+    },
+    "S3_2": {
+      "name": "VCC_VMCU_FXVI",
+      "type": "FXVIe_PLUS"
+    },
+    "S3_3": {
+      "name": "AMUX_PGND_FXVI",
+      "type": "FXVIe_PLUS"
+    },
+    "S3_4": {
+      "name": "NRST_PB5_FXVI",
+      "type": "FXVIe_PLUS"
+    },
+    "S3_5": {
+      "name": "VBAT_PD3_FXVI",
+      "type": "FXVIe_PLUS"
+    },
+    "S3_6": {
+      "name": "V1P5_U34PS_FXVI",
+      "type": "FXVIe_PLUS"
+    },
+    "S3_7": {
+      "name": "AMPOUT_U2PS_FXVI",
+      "type": "FXVIe_PLUS"
+    },
+    "S5_0": {
+      "name": "VAC123_AMUX_ACM",
+      "type": "ACM200"
+    },
+    "S5_1": {
+      "name": "ACDRV123_VCC_ACM",
+      "type": "ACM200"
+    },
+    "S5_10": {
+      "name": "VBUS_DRVH1_ACM",
+      "type": "ACM200"
+    },
+    "S5_11": {
+      "name": "COMP_VCN_ACM",
+      "type": "ACM200"
+    },
+    "S5_12": {
+      "name": "PC8_PC6_ACM",
+      "type": "ACM200"
+    },
+    "S5_13": {
+      "name": "CC1_PB3_QPOINT_ACM",
+      "type": "ACM200"
+    },
+    "S5_14": {
+      "name": "PB5_PC4_ACM",
+      "type": "ACM200"
+    },
+    "S5_15": {
+      "name": "PA0_PC3_ACM",
+      "type": "ACM200"
+    },
+    "S5_16": {
+      "name": "PD5_CC2_ACM",
+      "type": "ACM200"
+    },
+    "S5_17": {
+      "name": "PA1_PB1_ACM",
+      "type": "ACM200"
+    },
+    "S5_18": {
+      "name": "PB0_BST_ACM",
+      "type": "ACM200"
+    },
+    "S5_19": {
+      "name": "PA6_PC5_ACM",
+      "type": "ACM200"
+    },
+    "S5_2": {
+      "name": "SCL_VACWL_ACM",
+      "type": "ACM200"
+    },
+    "S5_20": {
+      "name": "PA5_PB2_ACM",
+      "type": "ACM200"
+    },
+    "S5_21": {
+      "name": "PB7_PB6_ACM",
+      "type": "ACM200"
+    },
+    "S5_22": {
+      "name": "PA4_PB4_ACM",
+      "type": "ACM200"
+    },
+    "S5_23": {
+      "name": "PA7_PD2_ACM",
+      "type": "ACM200"
+    },
+    "S5_3": {
+      "name": "KLV12_PGNDWL_ACM",
+      "type": "ACM200"
+    },
+    "S5_4": {
+      "name": "BST12_U1PS_ACM",
+      "type": "ACM200"
+    },
+    "S5_5": {
+      "name": "SW12_U1REF_BST_ACM",
+      "type": "ACM200"
+    },
+    "S5_6": {
+      "name": "LG1_LG2_ACM",
+      "type": "ACM200"
+    },
+    "S5_7": {
+      "name": "VDM_SDA_ACM",
+      "type": "ACM200"
+    },
+    "S5_8": {
+      "name": "VCP_SW_ACM",
+      "type": "ACM200"
+    },
+    "S5_9": {
+      "name": "NQON_HG1_ACM",
+      "type": "ACM200"
+    },
+    "S8_0": {
+      "name": "QVM_S1",
+      "type": "QVMe"
+    },
+    "S8_1": {
+      "name": "QVM_S2",
+      "type": "QVMe"
+    },
+    "S8_2": {
+      "name": "QVM_S3",
+      "type": "QVMe"
+    },
+    "S8_3": {
+      "name": "QVM_S4",
+      "type": "QVMe"
+    }
+  },
+  "instrumentCapabilityRows": {
+    "FOVIe": [
+      "SM8223",
+      "8",
+      "4/组共用 FL+SL",
+      "±40/20/10/5/2/1V",
+      "±1A(脉冲)/100m/10m/1m/100µ/10µA(仅测)",
+      "✅分组",
+      ""
+    ],
+    "FXVIe": [
+      "SM8233",
+      "12",
+      "6/组共用 FL+SL",
+      "±30/10/3.6V",
+      "±1A(脉冲)/100m/10m/1m/100µ/10µA",
+      "✅分组",
+      ""
+    ],
+    "FXVIe_PLUS": [
+      "SM8245",
+      "12",
+      "6/组共用 FL+SL",
+      "±40/30/20/10/3.6V",
+      "±1A(脉冲)/100m/10m/1m/100µ/10µ/1µA",
+      "✅分组",
+      ""
+    ],
+    "ACM": [
+      "SM8226",
+      "24",
+      "6/组共用 DGS",
+      "-2V~+18V 单档",
+      "±500mA(脉冲)/200m/20m/2m/200µ/20µ/5µA",
+      "✅(DGS)",
+      ""
+    ],
+    "ACM200": [
+      "—",
+      "24",
+      "2浮动单元×2组/单元共用 FL",
+      "±40/20/10/3.6V",
+      "±200m/100m/10m/1m/100µ/10µ/1µA",
+      "✅分组",
+      ""
+    ],
+    "FPVIe": [
+      "SM8228",
+      "2",
+      "每通道独立浮动",
+      "±100/40/20/10/5/2/1V +100mV(测)",
+      "±10A/2A(脉冲)/1A/100m/10m/1m/100µ/10µA(测)",
+      "✅独立",
+      ""
+    ],
+    "QVMe": [
+      "SM8212",
+      "4",
+      "每通道独立浮动",
+      "高精10档 ±100V~±100mV / 高速3档",
+      "—(电压表)",
+      "✅独立",
+      ""
+    ],
+    "QTMUe": [
+      "—",
+      "4",
+      "4 单元×2 输入",
+      "5档 ±50/25/10/5V, -2~6V",
+      "—",
+      "时间测量",
+      ""
+    ]
+  },
+  "nodeVerdicts": {
+    "PMID": {
+      "node": "PMID",
+      "acceptedRoutes": [
+        {
+          "sourcePort": "S1_FPVIe_FH0",
+          "instrument": "FPVIe",
+          "role": "F",
+          "dutPin": "PMID_F_S1",
+          "net": "NetCap1_PMID_S1_1",
+          "requiredOn": [
+            83
+          ],
+          "chain": [
+            {
+              "relay": "K87_KELVIN0",
+              "state": "NC"
+            },
+            {
+              "relay": "K83_BUSH_PMID",
+              "state": "ON"
+            },
+            {
+              "relay": "K84_HG2",
+              "state": "NC"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S1_FPVIe_FH1",
+          "instrument": "FPVIe",
+          "role": "F",
+          "dutPin": "PMID_F_S1",
+          "net": "NetCap1_PMID_S1_1",
+          "requiredOn": [
+            83,
+            143,
+            144
+          ],
+          "chain": [
+            {
+              "relay": "K131_KELVIN1",
+              "state": "NC"
+            },
+            {
+              "relay": "K144_DCM_BUS1_H",
+              "state": "ON"
+            },
+            {
+              "relay": "K143_DCM_BUS0_H",
+              "state": "ON"
+            },
+            {
+              "relay": "K83_BUSH_PMID",
+              "state": "ON"
+            },
+            {
+              "relay": "K84_HG2",
+              "state": "NC"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S1_FPVIe_SH0",
+          "instrument": "FPVIe",
+          "role": "S",
+          "dutPin": "PMID_S_S1",
+          "net": "NetK84_HG2_S1_7",
+          "requiredOn": [
+            83
+          ],
+          "chain": [
+            {
+              "relay": "K88_KELVIN0",
+              "state": "NC"
+            },
+            {
+              "relay": "K83_BUSH_PMID",
+              "state": "ON"
+            },
+            {
+              "relay": "K84_HG2",
+              "state": "NC"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S1_FPVIe_SH1",
+          "instrument": "FPVIe",
+          "role": "S",
+          "dutPin": "PMID_S_S1",
+          "net": "NetK84_HG2_S1_7",
+          "requiredOn": [
+            83,
+            136,
+            137
+          ],
+          "chain": [
+            {
+              "relay": "K132_KELVIN1",
+              "state": "NC"
+            },
+            {
+              "relay": "K136_QVMH_BUS0",
+              "state": "ON"
+            },
+            {
+              "relay": "K137_QVMH_BUS1",
+              "state": "ON"
+            },
+            {
+              "relay": "K83_BUSH_PMID",
+              "state": "ON"
+            },
+            {
+              "relay": "K84_HG2",
+              "state": "NC"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S3_FXVIe_PLUS_FH1",
+          "instrument": "FXVIe_PLUS",
+          "role": "F",
+          "dutPin": "PMID_F_S1",
+          "net": "NetCap1_PMID_S1_1",
+          "requiredOn": [],
+          "chain": [
+            {
+              "relay": "K84_HG2",
+              "state": "NC"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S3_FXVIe_PLUS_SH1",
+          "instrument": "FXVIe_PLUS",
+          "role": "S",
+          "dutPin": "PMID_S_S1",
+          "net": "NetK84_HG2_S1_7",
+          "requiredOn": [],
+          "chain": [
+            {
+              "relay": "K84_HG2",
+              "state": "NC"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S10_CH0_A",
+          "instrument": "QTMU",
+          "role": "F",
+          "dutPin": "PMID_F_S1",
+          "net": "NetCap1_PMID_S1_1",
+          "requiredOn": [
+            83,
+            141
+          ],
+          "chain": [
+            {
+              "relay": "K141_QTMU_BUSA",
+              "state": "ON"
+            },
+            {
+              "relay": "K83_BUSH_PMID",
+              "state": "ON"
+            },
+            {
+              "relay": "K84_HG2",
+              "state": "NC"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S10_CH0_A",
+          "instrument": "QTMU",
+          "role": "S",
+          "dutPin": "PMID_S_S1",
+          "net": "NetK84_HG2_S1_7",
+          "requiredOn": [
+            83,
+            86,
+            141
+          ],
+          "chain": [
+            {
+              "relay": "K141_QTMU_BUSA",
+              "state": "ON"
+            },
+            {
+              "relay": "K87_KELVIN0",
+              "state": "NC"
+            },
+            {
+              "relay": "K86_KELVIN0_F",
+              "state": "ON"
+            },
+            {
+              "relay": "K88_KELVIN0",
+              "state": "NC"
+            },
+            {
+              "relay": "K83_BUSH_PMID",
+              "state": "ON"
+            },
+            {
+              "relay": "K84_HG2",
+              "state": "NC"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S8_QVM_CH0+",
+          "instrument": "QVM",
+          "role": "F",
+          "dutPin": "PMID_F_S1",
+          "net": "NetCap1_PMID_S1_1",
+          "requiredOn": [
+            83,
+            86,
+            137
+          ],
+          "chain": [
+            {
+              "relay": "K137_QVMH_BUS1",
+              "state": "ON"
+            },
+            {
+              "relay": "K88_KELVIN0",
+              "state": "NC"
+            },
+            {
+              "relay": "K86_KELVIN0_F",
+              "state": "ON"
+            },
+            {
+              "relay": "K87_KELVIN0",
+              "state": "NC"
+            },
+            {
+              "relay": "K83_BUSH_PMID",
+              "state": "ON"
+            },
+            {
+              "relay": "K84_HG2",
+              "state": "NC"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        }
+      ],
+      "instruments": [
+        "FPVIe",
+        "FXVIe_PLUS",
+        "QTMU",
+        "QVM"
+      ],
+      "hasForceAndSenseOnSameInstrument": [
+        "FPVIe",
+        "FXVIe_PLUS",
+        "QTMU"
+      ]
+    },
+    "SW": {
+      "node": "SW",
+      "acceptedRoutes": [
+        {
+          "sourcePort": "S5_ACM200_FH8",
+          "instrument": "ACM200",
+          "role": "F",
+          "dutPin": "SW_F_S1",
+          "net": "NetCap_SW_BST_S1_2",
+          "requiredOn": [
+            61
+          ],
+          "chain": [
+            {
+              "relay": "K61_SW",
+              "state": "ON"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S5_ACM200_SH8",
+          "instrument": "ACM200",
+          "role": "S",
+          "dutPin": "SW_S_S1",
+          "net": "NetK61_SW_S1_4",
+          "requiredOn": [
+            61
+          ],
+          "chain": [
+            {
+              "relay": "K61_SW",
+              "state": "ON"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S1_FPVIe_FL0",
+          "instrument": "FPVIe",
+          "role": "F",
+          "dutPin": "SW_F_S1",
+          "net": "NetCap_SW_BST_S1_2",
+          "requiredOn": [
+            60,
+            61
+          ],
+          "chain": [
+            {
+              "relay": "K89_KELVIN0",
+              "state": "NC"
+            },
+            {
+              "relay": "K60_BUSL_VCP",
+              "state": "ON"
+            },
+            {
+              "relay": "K61_SW",
+              "state": "ON"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S1_FPVIe_FL1",
+          "instrument": "FPVIe",
+          "role": "F",
+          "dutPin": "SW_F_S1",
+          "net": "NetCap_SW_BST_S1_2",
+          "requiredOn": [
+            133,
+            134
+          ],
+          "chain": [
+            {
+              "relay": "K133_KELVIN1",
+              "state": "ON"
+            },
+            {
+              "relay": "K134_PC1_Force",
+              "state": "ON"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S1_FPVIe_SL0",
+          "instrument": "FPVIe",
+          "role": "S",
+          "dutPin": "SW_S_S1",
+          "net": "NetK61_SW_S1_4",
+          "requiredOn": [
+            60,
+            61
+          ],
+          "chain": [
+            {
+              "relay": "K88_KELVIN0",
+              "state": "NC"
+            },
+            {
+              "relay": "K60_BUSL_VCP",
+              "state": "ON"
+            },
+            {
+              "relay": "K61_SW",
+              "state": "ON"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S1_FPVIe_SL1",
+          "instrument": "FPVIe",
+          "role": "S",
+          "dutPin": "SW_S_S1",
+          "net": "NetK61_SW_S1_4",
+          "requiredOn": [
+            132,
+            135
+          ],
+          "chain": [
+            {
+              "relay": "K132_KELVIN1",
+              "state": "ON"
+            },
+            {
+              "relay": "K135_PC1_Sense",
+              "state": "ON"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S10_CH0_B",
+          "instrument": "QTMU",
+          "role": "F",
+          "dutPin": "SW_F_S1",
+          "net": "NetCap_SW_BST_S1_2",
+          "requiredOn": [
+            60,
+            61,
+            142
+          ],
+          "chain": [
+            {
+              "relay": "K142_QTMU_BUSB",
+              "state": "ON"
+            },
+            {
+              "relay": "K60_BUSL_VCP",
+              "state": "ON"
+            },
+            {
+              "relay": "K61_SW",
+              "state": "ON"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S10_CH0_B",
+          "instrument": "QTMU",
+          "role": "S",
+          "dutPin": "SW_S_S1",
+          "net": "NetK61_SW_S1_4",
+          "requiredOn": [
+            130,
+            132,
+            135
+          ],
+          "chain": [
+            {
+              "relay": "K142_QTMU_BUSB",
+              "state": "NC"
+            },
+            {
+              "relay": "K133_KELVIN1",
+              "state": "NC"
+            },
+            {
+              "relay": "K130_KELVIN1_S",
+              "state": "ON"
+            },
+            {
+              "relay": "K132_KELVIN1",
+              "state": "ON"
+            },
+            {
+              "relay": "K135_PC1_Sense",
+              "state": "ON"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S8_QVM_CH0-",
+          "instrument": "QVM",
+          "role": "S",
+          "dutPin": "SW_S_S1",
+          "net": "NetK61_SW_S1_4",
+          "requiredOn": [
+            60,
+            61,
+            138
+          ],
+          "chain": [
+            {
+              "relay": "K138_QVML_BUS0",
+              "state": "ON"
+            },
+            {
+              "relay": "K60_BUSL_VCP",
+              "state": "ON"
+            },
+            {
+              "relay": "K61_SW",
+              "state": "ON"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        }
+      ],
+      "instruments": [
+        "ACM200",
+        "FPVIe",
+        "QTMU",
+        "QVM"
+      ],
+      "hasForceAndSenseOnSameInstrument": [
+        "ACM200",
+        "FPVIe",
+        "QTMU"
+      ]
+    },
+    "PGND": {
+      "node": "PGND",
+      "acceptedRoutes": [
+        {
+          "sourcePort": "S1_FPVIe_FH0",
+          "instrument": "FPVIe",
+          "role": "F",
+          "dutPin": "PGND_F_S1",
+          "net": "NetK93_AGND2PGND_S1_4",
+          "requiredOn": [
+            154,
+            155
+          ],
+          "chain": [
+            {
+              "relay": "K87_KELVIN0",
+              "state": "NC"
+            },
+            {
+              "relay": "K154_BUSH_AMUX",
+              "state": "ON"
+            },
+            {
+              "relay": "K155_FOVI_PGND",
+              "state": "ON"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S1_FPVIe_FH1",
+          "instrument": "FPVIe",
+          "role": "F",
+          "dutPin": "PGND_F_S1",
+          "net": "NetK93_AGND2PGND_S1_4",
+          "requiredOn": [
+            143,
+            144,
+            154,
+            155
+          ],
+          "chain": [
+            {
+              "relay": "K131_KELVIN1",
+              "state": "NC"
+            },
+            {
+              "relay": "K144_DCM_BUS1_H",
+              "state": "ON"
+            },
+            {
+              "relay": "K143_DCM_BUS0_H",
+              "state": "ON"
+            },
+            {
+              "relay": "K154_BUSH_AMUX",
+              "state": "ON"
+            },
+            {
+              "relay": "K155_FOVI_PGND",
+              "state": "ON"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S1_FPVIe_SH0",
+          "instrument": "FPVIe",
+          "role": "S",
+          "dutPin": "PGND_S_S1",
+          "net": "NetK93_AGND2PGND_S1_5",
+          "requiredOn": [
+            154,
+            155
+          ],
+          "chain": [
+            {
+              "relay": "K88_KELVIN0",
+              "state": "NC"
+            },
+            {
+              "relay": "K154_BUSH_AMUX",
+              "state": "ON"
+            },
+            {
+              "relay": "K155_FOVI_PGND",
+              "state": "ON"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S1_FPVIe_SH1",
+          "instrument": "FPVIe",
+          "role": "S",
+          "dutPin": "PGND_S_S1",
+          "net": "NetK93_AGND2PGND_S1_5",
+          "requiredOn": [
+            136,
+            137,
+            154,
+            155
+          ],
+          "chain": [
+            {
+              "relay": "K132_KELVIN1",
+              "state": "NC"
+            },
+            {
+              "relay": "K136_QVMH_BUS0",
+              "state": "ON"
+            },
+            {
+              "relay": "K137_QVMH_BUS1",
+              "state": "ON"
+            },
+            {
+              "relay": "K154_BUSH_AMUX",
+              "state": "ON"
+            },
+            {
+              "relay": "K155_FOVI_PGND",
+              "state": "ON"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S3_FXVIe_PLUS_FH3",
+          "instrument": "FXVIe_PLUS",
+          "role": "F",
+          "dutPin": "PGND_F_S1",
+          "net": "NetK93_AGND2PGND_S1_4",
+          "requiredOn": [
+            155
+          ],
+          "chain": [
+            {
+              "relay": "K155_FOVI_PGND",
+              "state": "ON"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S3_FXVIe_PLUS_SH3",
+          "instrument": "FXVIe_PLUS",
+          "role": "S",
+          "dutPin": "PGND_S_S1",
+          "net": "NetK93_AGND2PGND_S1_5",
+          "requiredOn": [
+            155
+          ],
+          "chain": [
+            {
+              "relay": "K155_FOVI_PGND",
+              "state": "ON"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S10_CH0_A",
+          "instrument": "QTMU",
+          "role": "F",
+          "dutPin": "PGND_F_S1",
+          "net": "NetK93_AGND2PGND_S1_4",
+          "requiredOn": [
+            141,
+            154,
+            155
+          ],
+          "chain": [
+            {
+              "relay": "K141_QTMU_BUSA",
+              "state": "ON"
+            },
+            {
+              "relay": "K154_BUSH_AMUX",
+              "state": "ON"
+            },
+            {
+              "relay": "K155_FOVI_PGND",
+              "state": "ON"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S10_CH0_A",
+          "instrument": "QTMU",
+          "role": "S",
+          "dutPin": "PGND_S_S1",
+          "net": "NetK93_AGND2PGND_S1_5",
+          "requiredOn": [
+            86,
+            141,
+            154,
+            155
+          ],
+          "chain": [
+            {
+              "relay": "K141_QTMU_BUSA",
+              "state": "ON"
+            },
+            {
+              "relay": "K87_KELVIN0",
+              "state": "NC"
+            },
+            {
+              "relay": "K86_KELVIN0_F",
+              "state": "ON"
+            },
+            {
+              "relay": "K88_KELVIN0",
+              "state": "NC"
+            },
+            {
+              "relay": "K154_BUSH_AMUX",
+              "state": "ON"
+            },
+            {
+              "relay": "K155_FOVI_PGND",
+              "state": "ON"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        },
+        {
+          "sourcePort": "S8_QVM_CH0+",
+          "instrument": "QVM",
+          "role": "F",
+          "dutPin": "PGND_F_S1",
+          "net": "NetK93_AGND2PGND_S1_4",
+          "requiredOn": [
+            86,
+            137,
+            154,
+            155
+          ],
+          "chain": [
+            {
+              "relay": "K137_QVMH_BUS1",
+              "state": "ON"
+            },
+            {
+              "relay": "K88_KELVIN0",
+              "state": "NC"
+            },
+            {
+              "relay": "K86_KELVIN0_F",
+              "state": "ON"
+            },
+            {
+              "relay": "K87_KELVIN0",
+              "state": "NC"
+            },
+            {
+              "relay": "K154_BUSH_AMUX",
+              "state": "ON"
+            },
+            {
+              "relay": "K155_FOVI_PGND",
+              "state": "ON"
+            }
+          ],
+          "kelvin": true,
+          "touchesPcNets": false,
+          "confidence": "direct"
+        }
+      ],
+      "instruments": [
+        "FPVIe",
+        "FXVIe_PLUS",
+        "QTMU",
+        "QVM"
+      ],
+      "hasForceAndSenseOnSameInstrument": [
+        "FPVIe",
+        "FXVIe_PLUS",
+        "QTMU"
+      ]
+    }
+  },
+  "pairAnalysis": {
+    "PMID_SW": {
+      "pair": "PMID<->SW",
+      "singleInstrumentKelvinPairs": [
+        {
+          "instrument": "QTMU",
+          "highTerminal": {
+            "pin": "PMID",
+            "port": "S10_CH0_A",
+            "requiredOn": [
+              83,
+              141
+            ]
+          },
+          "lowTerminal": {
+            "pin": "SW",
+            "port": "S10_CH0_B",
+            "requiredOn": [
+              60,
+              61,
+              142
+            ]
+          },
+          "unionRelays": [
+            60,
+            61,
+            83,
+            141,
+            142
+          ],
+          "sharedRelays": [],
+          "fourWireKelvinPreserved": true,
+          "touchesPcNets": false,
+          "note": "high/low terminals of one instrument channel pair_key=QTMU::"
+        }
+      ],
+      "pairCount": 1
+    },
+    "SW_PGND": {
+      "pair": "SW<->PGND",
+      "singleInstrumentKelvinPairs": [
+        {
+          "instrument": "QTMU",
+          "highTerminal": {
+            "pin": "SW",
+            "port": "S10_CH0_B",
+            "requiredOn": [
+              60,
+              61,
+              142
+            ]
+          },
+          "lowTerminal": {
+            "pin": "PGND",
+            "port": "S10_CH0_A",
+            "requiredOn": [
+              141,
+              154,
+              155
+            ]
+          },
+          "unionRelays": [
+            60,
+            61,
+            141,
+            142,
+            154,
+            155
+          ],
+          "sharedRelays": [],
+          "fourWireKelvinPreserved": true,
+          "touchesPcNets": false,
+          "note": "high/low terminals of one instrument channel pair_key=QTMU::"
+        }
+      ],
+      "pairCount": 1
+    },
+    "PGND_PMID": {
+      "pair": "PGND<->PMID",
+      "singleInstrumentKelvinPairs": [
+        {
+          "instrument": "FPVIe",
+          "highTerminal": {
+            "pin": "PGND",
+            "port": "S1_FPVIe_FH0",
+            "requiredOn": [
+              154,
+              155
+            ]
+          },
+          "lowTerminal": {
+            "pin": "PMID",
+            "port": "S1_FPVIe_FH0",
+            "requiredOn": [
+              83
+            ]
+          },
+          "unionRelays": [
+            83,
+            154,
+            155
+          ],
+          "sharedRelays": [],
+          "fourWireKelvinPreserved": true,
+          "touchesPcNets": false,
+          "note": "high/low terminals of one instrument channel pair_key=S1_FPVIe:0:HIGH"
+        },
+        {
+          "instrument": "FPVIe",
+          "highTerminal": {
+            "pin": "PGND",
+            "port": "S1_FPVIe_FH1",
+            "requiredOn": [
+              143,
+              144,
+              154,
+              155
+            ]
+          },
+          "lowTerminal": {
+            "pin": "PMID",
+            "port": "S1_FPVIe_FH1",
+            "requiredOn": [
+              83,
+              143,
+              144
+            ]
+          },
+          "unionRelays": [
+            83,
+            143,
+            144,
+            154,
+            155
+          ],
+          "sharedRelays": [
+            143,
+            144
+          ],
+          "fourWireKelvinPreserved": true,
+          "touchesPcNets": false,
+          "note": "high/low terminals of one instrument channel pair_key=S1_FPVIe:1:HIGH"
+        },
+        {
+          "instrument": "QTMU",
+          "highTerminal": {
+            "pin": "PGND",
+            "port": "S10_CH0_A",
+            "requiredOn": [
+              141,
+              154,
+              155
+            ]
+          },
+          "lowTerminal": {
+            "pin": "PMID",
+            "port": "S10_CH0_A",
+            "requiredOn": [
+              83,
+              141
+            ]
+          },
+          "unionRelays": [
+            83,
+            141,
+            154,
+            155
+          ],
+          "sharedRelays": [
+            141
+          ],
+          "fourWireKelvinPreserved": true,
+          "touchesPcNets": false,
+          "note": "high/low terminals of one instrument channel pair_key=QTMU::"
+        },
+        {
+          "instrument": "QVM",
+          "highTerminal": {
+            "pin": "PGND",
+            "port": "S8_QVM_CH0+",
+            "requiredOn": [
+              86,
+              137,
+              154,
+              155
+            ]
+          },
+          "lowTerminal": {
+            "pin": "PMID",
+            "port": "S8_QVM_CH0+",
+            "requiredOn": [
+              83,
+              86,
+              137
+            ]
+          },
+          "unionRelays": [
+            83,
+            86,
+            137,
+            154,
+            155
+          ],
+          "sharedRelays": [
+            86,
+            137
+          ],
+          "fourWireKelvinPreserved": true,
+          "touchesPcNets": false,
+          "note": "high/low terminals of one instrument channel pair_key=S8_QVM:0:"
+        }
+      ],
+      "pairCount": 4
+    }
+  },
+  "netShortGroups": [
+    "[DIRECT_NET_ALIAS] FPVIe0_FH_PC_S1 ↔ FPVIe0_SH_PC_S1  (DIRECT_WIRE, CONFIRMED)",
+    "[DIRECT_NET_ALIAS] FPVIe0_FL_PC_S1 ↔ FPVIe0_SL_PC_S1  (DIRECT_WIRE, CONFIRMED)"
+  ]
+}

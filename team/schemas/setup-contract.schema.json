@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "setup-contract.schema.json",
+  "type": "object",
+  "required": ["runId", "resources", "globalInitialization", "globalCleanup", "tmDeltas", "safetyInvariants"],
+  "properties": {
+    "runId": {"type": "string"},
+    "resources": {"type": "array", "items": {"type": "object", "required": ["name", "kind", "definitionSource"], "properties": {"name": {"type": "string"}, "kind": {"enum": ["relay", "source", "measure", "channel", "treg", "digital", "awg", "other"]}, "definitionSource": {"type": "string"}}, "additionalProperties": true}},
+    "globalInitialization": {"type": "array", "items": {"$ref": "#/$defs/action"}},
+    "globalCleanup": {"type": "array", "items": {"$ref": "#/$defs/action"}, "minItems": 1},
+    "tmDeltas": {"type": "object", "additionalProperties": {"type": "object"}},
+    "safetyInvariants": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "conflicts": {"type": "array", "items": {"type": "string"}},
+    "evidence": {"type": "array", "items": {"type": "object"}}
+  },
+  "$defs": {"action": {"type": "object", "required": ["order", "action", "resource", "reason"], "properties": {"order": {"type": "integer", "minimum": 1}, "action": {"type": "string"}, "resource": {"type": "string"}, "reason": {"type": "string"}}, "additionalProperties": true}},
+  "additionalProperties": true
+}

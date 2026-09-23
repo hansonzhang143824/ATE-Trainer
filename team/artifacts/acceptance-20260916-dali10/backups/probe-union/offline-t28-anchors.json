@@ -1,0 +1,263 @@
+{
+  "purpose": "t28/t30/t42 稳定锚点清单 —— 单一真源。引用方请直接读取本文件，勿手抄哈希。",
+  "generatedBy": "compile-diagnostician (t28/t30/t33 执行者)",
+  "anchorsObservedAt": "2026-09-17T00:16:30+08:00",
+  "determinismRule": "本文件内容**只由被登记文件的内容决定**（不含每行读取时间戳）⇒ 同一输入重复运行应产出逐字节相同的文件；若其哈希变化，说明被登记的某个文件确实变了 —— 这正是它作为\"漂移探测器\"的价值。",
+  "readingRule": "凡标注\"报告类文档\"的条目会随作者更正而漂移 ⇒ 引用时必须现算 + 标时刻；其余条目自交付后未再编辑，可作稳定锚点。本工作区源受 DLP 保护，一切读取/哈希必须用 python（rb），不得用 pwsh 文本工具。",
+  "anchors": [
+    {
+      "label": "t28 被审脚本",
+      "path": "scripts/check_input_sync.py",
+      "size": 17455,
+      "sha256": "e804c459b2d3088e72d455eb9e1b7893119cea47ad0a640735b6f5db42d784d1",
+      "note": "RS-1..RS-4 断言；t28 ACCEPT 锚点"
+    },
+    {
+      "label": "t28 红证证据",
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28-red-proof.json",
+      "size": 5351,
+      "sha256": "b97441a457119ca0ca11dca2b55a69e302c06cc6cc0b378f663bc77d4d78c529",
+      "note": "redProofPassed=true"
+    },
+    {
+      "label": "t28 红态日志(AFTER)",
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/redproof-after-fix.log",
+      "size": 6377,
+      "sha256": "6a17726003afaa6e6470c20e7e94ea18477e96c6590d76ad906e1970c3aae7e2",
+      "note": "47 行；含 6 条 RS-FAIL 相关行"
+    },
+    {
+      "label": "t28 绿态日志(BEFORE)",
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/redproof-before-fix.log",
+      "size": 1317,
+      "sha256": "c0bfc972d34b44915165f7d893f19d8a6f9fe9c8ce641d8c20ed168d17327786",
+      "note": "修复前 IN SYNC/exit 0"
+    },
+    {
+      "label": "t28 绿门日志",
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/input-sync-green.log",
+      "size": 1933,
+      "sha256": "538a00a425faca00bed76b8f01150e2c9df8d2504a87f83939b3fad562ea692f",
+      "note": "当前树 IN SYNC/exit 0"
+    },
+    {
+      "label": "t28 报告",
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28-summary.md",
+      "size": 19301,
+      "sha256": "ece9e913620f23a95d32a388a7760910276702ec7a58341f640a8e42c42d9a63",
+      "note": "**报告类文档：会随更正漂移 ⇒ 引用请现算**"
+    },
+    {
+      "label": "t30 被审脚本",
+      "path": "scripts/verify_bst_sw_sequence.py",
+      "size": 24964,
+      "sha256": "17092feac034902e463fc5f14c79dc48cb1195436eda14f26d25691e11d54c78",
+      "note": "契约闭合断言；t30 ACCEPT 锚点"
+    },
+    {
+      "label": "t30 阳性对照日志",
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t30/bst-sw-positive-control.log",
+      "size": 1262,
+      "sha256": "6333fd67bae609d3e16f90ceb267b28f1d50eb6182bd89ca439f83031d890537",
+      "note": "TM600 缺失=[110]/TM601=[]/exit 1"
+    },
+    {
+      "label": "t30 报告",
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t30/t30-summary.md",
+      "size": 22073,
+      "sha256": "55396d837df064841aeac69032c60df45a4dd960b1c8e436978feb3428bd28b4",
+      "note": "**路径确认：位于 gate-logs-t30/**（深树扫描可核）；§9 = (a)推导 locator/(b)pin-18 前提/(c)ACCEPT 边界 + 双盲区成因；**报告类 ⇒ 引用请现算**"
+    },
+    {
+      "label": "t30 报告定位记录",
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t30/t30-summary-locate.json",
+      "size": 1262,
+      "sha256": "49944c1613b4901c64f8e7ca46f0f2a3f460d65619c10ac93c100303d7e8a87f",
+      "note": "脚本现算的 path/size/sha256/mtime + 与真源交叉比对 + 口径更正落地检查（供引用方直接读取）"
+    },
+    {
+      "label": "门禁基线(未改)",
+      "path": "scripts/gate_baseline.json",
+      "size": 28,
+      "sha256": "021015da84e6fd4c54a595796e1bad73e18c57db94f856871d5667044302cb1d",
+      "note": "28 B；cbit 为 KNOWN-RED 依据"
+    },
+    {
+      "label": "门禁外壳",
+      "path": "scripts/run_gates.ps1",
+      "size": 9763,
+      "sha256": "dd2a4337f22d339a4a0f866c43d1843413db8f1d9e726c07bf8fbcaa5ab310b9",
+      "note": "L119 正则待修(另开小任务)"
+    },
+    {
+      "label": "relay-trace 门",
+      "path": "scripts/verify_relay_trace.py",
+      "size": 21068,
+      "sha256": "65e0c67f827bf4ff6e6d1b3a45bf3b76058815f8d4df501b19a3271f06410f9c",
+      "note": "t25 修复"
+    },
+    {
+      "label": "t33 报告",
+      "path": "team/artifacts/acceptance-20260916-dali10/build-report.json",
+      "size": 33808,
+      "sha256": "7fff5807f94fddedd0d842e7860bc78024517376b6738a41e192b7089f809dc4",
+      "note": "verdict=blocked；分两段：gate 运行 exit=1"
+    },
+    {
+      "label": "契约(冻结 rev 24)",
+      "path": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+      "size": 377694,
+      "sha256": "18587b83307d47e0d6f287ee28e812b6c8f25781d2e449b293e45b50282b6d9f",
+      "note": "只读权威"
+    },
+    {
+      "label": "DEPLOYED test.cpp",
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+      "size": 469714,
+      "sha256": "15c7d2b8d37b15648d552ad5dde14e57b5c0d520d05a41c8c41492a06236c01a",
+      "note": "编译输入（未落盘）；**缺 BST 侧 48/76**（真因·活危害）。⚠️ 旧注\"缺 K109/K110\"已撤：109/110 本不该闭，0 命中是对的"
+    },
+    {
+      "label": "生产树 devel test.cpp",
+      "path": "D:/PROJECT6-DALI/devel/source/test.cpp",
+      "size": 434629,
+      "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+      "note": "只读；零写入证据"
+    },
+    {
+      "label": "t42 取证脚本(我提供)",
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t33/t42_acm_pin_attribution_evidence.py",
+      "size": 4319,
+      "sha256": "cf3e884e9e7cc0c31403a2b534fa2e4268219fd765c3124e939c093782957b7e",
+      "note": "ACM 引脚归属取证；只读、零写入"
+    },
+    {
+      "label": "t42 取证日志(我提供)",
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t33/t42-acm-pin-attribution.log",
+      "size": 3578,
+      "sha256": "b3323433141d5cb4aac336634e4c212dcc31bef18bfc6a24d2959c100684d91d",
+      "note": "两套候选依据 + 判别点；**报告类 ⇒ 引用请现算**"
+    },
+    {
+      "label": "t42 结论复核(宏+网表)",
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t33/t42-conclusion-verify.log",
+      "size": 3977,
+      "sha256": "324767f921f65ac5f47959f6ee6723eba7a147305d449f36ff9f88f50e926d79",
+      "note": "复核 schematic-expert 的 [48,76] 判定；**报告类 ⇒ 引用请现算**"
+    },
+    {
+      "label": "t42 控制组复核 v2",
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t33/t42-controlgroup-verify.log",
+      "size": 2091,
+      "sha256": "243c680a29a5afce5c061a13cf93750fd2f12dcf4e555171c568f07ae442fb2c",
+      "note": "修正列口径(Designator→MemberName)后的 5 组控制组 + ch5/ch18 决定性分离；**报告类 ⇒ 引用请现算**"
+    },
+    {
+      "label": "t33 落盘后预期(两口径)",
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t33/t33-postreplace-expectation.log",
+      "size": 1986,
+      "sha256": "163b2ac70b76afa97c3b40fb224b4d3c873e44abfbed15c1b0887a60907bca8a",
+      "note": "落盘后 bst-sw 是否转绿取决于契约口径；**报告类 ⇒ 引用请现算**"
+    },
+    {
+      "label": "t44 行为证据交叉验证",
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t33/t44-crosscheck-behavioral.log",
+      "size": 2526,
+      "sha256": "915d2d492236832cfc47b1a4d37b39468ffe0bb621e7eec35d407c47e78097fb",
+      "note": "应 schematic-expert 之请复核 §1 行为证据 + §4 归因区分；**报告类 ⇒ 引用请现算**；⚠️ 其\"C) 调用点计数\"一节的 K48/K76=8 实为**总提及**，作废 ⇒ 见下一条"
+    },
+    {
+      "label": "t44 计数更正记录",
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t33/t44-count-correction.md",
+      "size": 6854,
+      "sha256": "d80ef16636cb6b0dd26cc78ce62b4209e0275d3d2e044dfc4bb06b6068ce790c",
+      "note": "**引用 K48/K76 计数时以本文件为准**：调用点各 4（总提及 8）；6 函数先例；节点汇聚不变式（FACT/INFERENCE 分开）"
+    },
+    {
+      "label": "t44 调用点重算日志",
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t33/t44-recount-callsites.log",
+      "size": 1901,
+      "sha256": "85292ea3025f9650132026d746f99bf5b56ee96d6ed2a6af889fd1d6dd70875a",
+      "note": "逐 token 的 SetOn 操作数 vs 注释 vs 总提及 + K110/K76 同网实测"
+    },
+    {
+      "label": "t42 权威端子表",
+      "path": "knowledge/hardware/relays.md",
+      "size": 13624,
+      "sha256": "8029ee13690ca2158e48ea002bad69f2d943d76126bb133b4e54b8401934fcdb",
+      "note": "G6K-2G-Y DPDT 端子定义（L18-31）"
+    },
+    {
+      "label": "t42 网表",
+      "path": "project/DALI/Dali-SCH.csv",
+      "size": 307157,
+      "sha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a",
+      "note": "端子级连通性来源"
+    },
+    {
+      "label": "t42 引脚宏",
+      "path": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h",
+      "size": 10934,
+      "sha256": "d5ce16a0ae79549424110755e99d9ae74cce79d18b8a1eaae3fd5588df285e35",
+      "note": "`_PIN_CHANNEL_DEFINE_SW12_U1REF_BST_ACM_ = \"S5_5,…\"`"
+    },
+    {
+      "label": "t33 过渡清单",
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t33/t33-transition-plan.md",
+      "size": 6584,
+      "sha256": "23e57bbce997123b5ccdcdee4d3ee40503654cbaf16531732461d7603d9a8a4a",
+      "note": "**报告类 ⇒ 引用请现算**；含 t42 三分支"
+    },
+    {
+      "label": "t33 修订归属规则",
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t33/t33-revision-attribution.md",
+      "size": 8391,
+      "sha256": "720b18e157bd944034f1a1530d285e90513b6d71d99a6c96286ff58f04b4c054",
+      "note": "**报告类 ⇒ 引用请现算**"
+    },
+    {
+      "label": "t33 K110 机制(三轮更正)",
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t33/t33-k110-mechanism.md",
+      "size": 5785,
+      "sha256": "bb3492e0d760c513df71ccd131cf7a796f522df0fe02c700b43bc469776186ec",
+      "note": "**报告类 ⇒ 引用请现算**"
+    },
+    {
+      "label": "t28 冻结/引用纪律记录",
+      "path": "team/artifacts/acceptance-20260916-dali10/gate-logs-t28/t28-freeze-correction.md",
+      "size": 9492,
+      "sha256": "df977f1201a128934866045fb72708663dc263f2c4c686b059cac55041b6c138",
+      "note": "**报告类 ⇒ 引用请现算**；§5 引用纪律"
+    }
+  ],
+  "preservedPeerNamespaces": {
+    "setupArchitectFreezeAnchors": {
+      "anchors": {
+        "acceptance-report.json": {
+          "path": "team/artifacts/acceptance-20260916-dali10/acceptance-report.json",
+          "sha256": "264a0fa43a1203adc72d2e46ce61ba9c46250542c7d6570f8dbba09441b9de90",
+          "sizeBytes": 50681,
+          "measuredAt": "2026-09-16 21:55:15"
+        }
+      },
+      "ledgerNote": " | t34 L34: gate's own check_contract_closures() gives missing=[] / errors=0 on the delivered payload at contract rev 36 (deployed tree: missing=[48,76]).",
+      "mirrorOf": "setupArchitect-freeze-snapshots.json",
+      "mirrorSize": 97636
+    },
+    "qaProbeAnchors": {
+      "anchors": {
+        "PROBE1.json": {
+          "note": "injected offline by setup-architect"
+        },
+        "PROBE2.json": {
+          "note": "injected offline by setup-architect"
+        },
+        "PROBE3.json": {
+          "note": "injected offline by setup-architect"
+        }
+      },
+      "injectedBy": "setup-architect (independent probe)",
+      "at": "2026-09-17 00:16:30"
+    }
+  }
+}

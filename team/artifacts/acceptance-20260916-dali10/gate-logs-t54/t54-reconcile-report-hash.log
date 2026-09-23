@@ -1,0 +1,21 @@
+=== 现刻 ===
+  size   = 31821
+  sha256 = 702fd4a3aa0e80eebc3cdb1a2ad90f44f2c86fb14e87ca6302c36f19a5c14307
+  mtime  = 2026-09-16 23:38:02
+
+=== 收据（生成器每次重算）===
+  at     = 2026-09-16T23:38:02+08:00
+  size   = 31821
+  sha256 = 702fd4a3aa0e80eebc3cdb1a2ad90f44f2c86fb14e87ca6302c36f19a5c14307
+  一致于现盘 = True
+
+=== 对其申报值的对账 ===
+  其 size 匹配现盘 = True
+  其 sha 前缀匹配现盘 = False
+  其 sha 前缀匹配收据 = False
+  我方历史（同 size）见过的 sha 前缀 = 18da8d72… / 收据现值见上
+  ⇒ 结论：**同 size、不同 sha**（生成器每次嵌时间戳 ⇒ 同尺寸不同字节，属正常）
+
+=== 生成器是否嵌时刻（解释同尺寸不同字节）===
+  含动态时间戳构造 = True
+    'at': _dt.datetime.now().astimezone().isoformat(timespec='seconds'),

@@ -1,0 +1,254 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "LLM semantic review",
+  "tm": "TM103",
+  "reviewPurpose": "Semantically verify that every field of the canonical OVERVIEW row for TM103 is covered by dft-meta.json and dft-conditions.yaml, and that each derived testCondition field is explained by a source locator.",
+  "rule": "Read the single OVERVIEW row of Dali_testmode.xlsx (plaintext sha256 896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b) and compare rawIntent with testCondition field by field. A source contradiction is preserved as an open item and reported, never resolved. No value may be inferred, no source substituted, no hash re-bound.",
+  "verdict": "PASS",
+  "readSources": [
+    {
+      "path": "project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx",
+      "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+      "hashMethod": "scripts/hash_ate_plaintext.py",
+      "withinInputRoot": true,
+      "sheet": "OVERVIEW"
+    }
+  ],
+  "reviewedArtifacts": [
+    {
+      "path": "project/DALI/Output_Global_Material/dft/TM103/dft-meta.json",
+      "sha256": "ac4bbdecf185070ccc11a09d7640e8eab9b07f3f84f4e2b7ae183a3c4d09e67e"
+    },
+    {
+      "path": "project/DALI/Output_Global_Material/dft/TM103/dft-conditions.yaml",
+      "sha256": "4da600208729435c042547a4300e3e5cbaf3aa19596f5afd6728e6f8a0f8654a"
+    }
+  ],
+  "fieldChecks": [
+    {
+      "field": "identity",
+      "rawIntent": {
+        "Item": "TM103",
+        "Level": "HSKP",
+        "Name": "LP_HR_0P5U",
+        "Description": "IBP 0.5UA HR ",
+        "Purpose": "Debug",
+        "Unit": "uA"
+      },
+      "derived": {
+        "testItem": "TM103",
+        "level": "HSKP",
+        "parameterName": "LP_HR_0P5U",
+        "description": "IBP 0.5UA HR ",
+        "purpose": "Debug",
+        "unit": "uA"
+      },
+      "match": true,
+      "evidence": "testCondition.identity copies OVERVIEW columns Item, Level, Name, Description, Purpose and Unit verbatim for the single row whose Item is TM103."
+    },
+    {
+      "field": "isTrim",
+      "rawIntent": {
+        "Trim": ""
+      },
+      "derived": {
+        "isTrim": false
+      },
+      "match": true,
+      "evidence": "OVERVIEW column Trim is empty for TM103, so the item is not a trim test."
+    },
+    {
+      "field": "staticPower",
+      "rawIntent": {
+        "Code1": "vset[vbat,4,100e-6,0]",
+        "Power": "VBAT"
+      },
+      "derived": {
+        "staticPower": [
+          {
+            "pin": "vbat",
+            "raw": "vset[vbat,4,100e-6,0]",
+            "directPowerOn": true
+          }
+        ]
+      },
+      "match": true,
+      "evidence": "OVERVIEW column Code1 declares vset[vbat,4,100e-6,0] as the static rail and the Power column names VBAT; the 100e-6 ramp slot makes it a direct power-on."
+    },
+    {
+      "field": "hasRamp",
+      "rawIntent": {
+        "Code1": "vset[vbat,4,100e-6,0]",
+        "Code2": "en_tm[]\nfield[(EN_ATEST0,1),(ATEST0_MUX,4)]\nvset[vdm,1,100e-6,0]",
+        "Test": "Direct",
+        "Dynamic": ""
+      },
+      "derived": {
+        "hasRamp": false,
+        "ramps": []
+      },
+      "match": true,
+      "evidence": "Every vset in OVERVIEW columns Code1 and Code2 uses the 100e-6 direct power-on form, the Test column is Direct and the Dynamic column is empty, so hasRamp is false with no ramp entries."
+    },
+    {
+      "field": "ramps",
+      "rawIntent": {
+        "Code2": "en_tm[]\nfield[(EN_ATEST0,1),(ATEST0_MUX,4)]\nvset[vdm,1,100e-6,0]"
+      },
+      "derived": {
+        "ramps": []
+      },
+      "match": true,
+      "evidence": "OVERVIEW column Code2 contains no sweep instruction for TM103, so no ramp is recorded."
+    },
+    {
+      "field": "dynamicPins",
+      "rawIntent": {
+        "Dynamic": ""
+      },
+      "derived": {
+        "dynamicPins": []
+      },
+      "match": true,
+      "evidence": "OVERVIEW column Dynamic is empty for TM103, so testCondition.dynamicPins is empty."
+    },
+    {
+      "field": "differentialVoltage",
+      "rawIntent": {
+        "Name": "LP_HR_0P5U",
+        "Description": "IBP 0.5UA HR ",
+        "Notes": "",
+        "Special": ""
+      },
+      "derived": {
+        "differentialVoltage": {
+          "state": "NOT_DECLARED"
+        }
+      },
+      "match": true,
+      "evidence": "No OVERVIEW column Name, Description, Notes or Special declares a differential voltage pair, so state is NOT_DECLARED."
+    },
+    {
+      "field": "highCurrent",
+      "rawIntent": {
+        "Name": "LP_HR_0P5U",
+        "Description": "IBP 0.5UA HR ",
+        "Notes": "",
+        "Special": ""
+      },
+      "derived": {
+        "highCurrent": {
+          "state": "NOT_DECLARED"
+        }
+      },
+      "match": true,
+      "evidence": "No OVERVIEW column Name, Description, Notes or Special declares a high-current mode, so state is NOT_DECLARED."
+    },
+    {
+      "field": "involvedPins",
+      "rawIntent": {
+        "Check": "I(ATEST0)",
+        "Code1": "vset[vbat,4,100e-6,0]",
+        "Code2": "vset[vdm,1,100e-6,0]"
+      },
+      "derived": {
+        "vsetPins": [
+          "vbat",
+          "vdm"
+        ],
+        "logicalCheck": "I(ATEST0)"
+      },
+      "match": true,
+      "evidence": "OVERVIEW columns Code1 and Code2 supply the vset pin names vbat and vdm; the Check column supplies the logical monitor label I(ATEST0), kept as a label and not converted into a physical DUT pin."
+    },
+    {
+      "field": "measurement.quantity",
+      "rawIntent": {
+        "Check": "I(ATEST0)",
+        "Unit": "uA"
+      },
+      "derived": {
+        "quantity": "CURRENT"
+      },
+      "match": true,
+      "evidence": "OVERVIEW column Check is I(ATEST0) with the Unit column uA, so quantity is CURRENT."
+    },
+    {
+      "field": "measurement.isToggle",
+      "rawIntent": {
+        "Check": "I(ATEST0)",
+        "Notes": "",
+        "HELPER": ""
+      },
+      "derived": {
+        "isToggle": false,
+        "resultTypes": [
+          "Measurement"
+        ]
+      },
+      "match": true,
+      "evidence": "The OVERVIEW Notes and HELPER columns are empty and the Check column asks for a current value, so isToggle is false and the result type is a Measurement."
+    },
+    {
+      "field": "registerFieldIntent",
+      "rawIntent": {
+        "Code2": "en_tm[]\nfield[(EN_ATEST0,1),(ATEST0_MUX,4)]\nvset[vdm,1,100e-6,0]"
+      },
+      "derived": {
+        "registerFieldIntent": [
+          "(EN_ATEST0,1),(ATEST0_MUX,4)"
+        ]
+      },
+      "match": true,
+      "evidence": "OVERVIEW column Code2 contains field[(EN_ATEST0,1),(ATEST0_MUX,4)], preserved as register-field intent in source order."
+    },
+    {
+      "field": "referenceValue",
+      "rawIntent": {
+        "ExpectValue": 0.5,
+        "Unit": "uA"
+      },
+      "derived": {
+        "referenceValue": 0.5
+      },
+      "match": true,
+      "evidence": "testCondition.referenceValue is the OVERVIEW ExpectValue 0.5 in Unit uA verbatim."
+    },
+    {
+      "field": "expectedValue",
+      "rawIntent": {
+        "ExpectValue": 0.5,
+        "Unit": "uA",
+        "de test": "0.5uA"
+      },
+      "derived": {
+        "expectedValue": 0.5
+      },
+      "match": true,
+      "evidence": "testCondition.expectedValue is the OVERVIEW ExpectValue 0.5 in Unit uA; the de test column reads 0.5uA, which agrees with it."
+    },
+    {
+      "field": "remarks",
+      "rawIntent": {
+        "Notes": ""
+      },
+      "derived": {
+        "remarks": ""
+      },
+      "match": true,
+      "evidence": "testCondition.remarks is the empty OVERVIEW Notes column copied verbatim."
+    },
+    {
+      "field": "notes",
+      "rawIntent": {
+        "Notes": ""
+      },
+      "derived": {
+        "notes": ""
+      },
+      "match": true,
+      "evidence": "testCondition.notes is the empty OVERVIEW Notes column copied verbatim."
+    }
+  ],
+  "discrepancies": []
+}

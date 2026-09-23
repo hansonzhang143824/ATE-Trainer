@@ -1,0 +1,47 @@
+========================================================================
+INPUT SYNC — 输入同步一致性门 (流水线之前)
+========================================================================
+
+[DFT 组]  Dali_testmode.xlsx → 派生产物
+  [OK  ] ① DFT↔meta       dali_tm_meta.regen.json       meta._syncStamp.dftSha256 vs sha256(DFT)
+  [OK  ] ② meta↔YAML      redproof-test_conditions.regen.yaml  yaml._sync.metaSha256 vs sha256(meta)
+  [OK  ] ③ YAML↔DFT       redproof-test_conditions.regen.yaml  yaml._sync.dftSha256 vs sha256(DFT) (跨 meta 追溯一致性)
+
+[SCH 组]  Dali-SCH.csv → 派生产物
+  [OK  ] ③ csv(manifest)  validation_manifest.json.txt  manifest.input.sha256 vs sha256(csv)
+  [OK  ] ③ map(产物)        SCH-Connect-Map.txt           manifest.artifacts.sch_connect_map_sha256 vs sha256(产物)
+  [OK  ] ③ statistic(产物)  Component-Statistic.txt       manifest.artifacts.component_statistic_sha256 vs sha256(产物)
+
+[RS 组]  t26 run-scope override → 派生产物
+  [RS-FAIL] RS-1 VBUS 移除     dali_tm_meta.regen.json       TM601_LS_RDSON.capAuthority.powered_pins 不含 'VBUS' —— 实际出现了 VBUS: ['ISW', 'SW', 'VBAT', 'VBUS', 'VDRV']。原因: OVERVIEW 派生层 vset[vbus] 回归 (BD-08 已排除该仿真域轨)
+  [RS-FAIL] RS-2 mi_pins 修正  dali_tm_meta.regen.json       TM600_HS_RDSON.mi_pins 含 'SW' 且 TM601_LS_RDSON.mi_pins 含 'PMID_SW' 与 'SW' —— TM600_HS_RDSON.mi_pins 缺 ['SW'] (实际 []); TM601_LS_RDSON.mi_pins 缺 ['PMID_SW', 'SW'] (实际 [])。原因: 生成器从 Check 列派生时漏掉被测电流 pin; 缺失会让 FR-001 反向检查重新对被测电流节点提出稳压电容要求 (K57/K5 假阳性回归)
+  [RS-FAIL] RS-3 ATE 激励对齐    dali_tm_meta.regen.json       TM600 vset == vbat 4.2 / pmid 15 / bst_sw 5 / vdrv 5; TM601 vset == vbat 4.2 / pmid 9 / vdrv 5; 两者均不含 vbus —— TM600_HS_RDSON vset[pmid]=5, 期望 15; TM600_HS_RDSON vset[vbat]=3.5, 期望 4.2; TM601_LS_RDSON.hardwareInit 含 vset[vbus]=['5'] (仿真域轨, 冻结 ATE 不含); TM601_LS_RDSON vset 轨道集合不符: 期望 ['pmid', 'vbat', 'vdrv'], 实际 ['vbat', 'vbus', 'vdrv'] 多余=['vbus'] 缺失=['pmid']。原因: 重生成会退回 OVERVIEW 仿真域值 (3.5/5), 与 setup-contract 冻结 ATE 冲突
+  [OK  ] RS-4 yaml↔meta 戳 dali_tm_meta.regen.json       test_conditions.yaml _sync.metaSha256 == sha256(dali_tm_meta.json) (MATCH)
+
+------------------------------------------------------------------------
+INPUT SYNC: **OUT OF SYNC** — 3 项需处理:
+  - [RS-FAIL] RS / dali_tm_meta.regen.json  (TM601_LS_RDSON.capAuthority.powered_pins 不含 'VBUS' —— 实际出现了 VBUS: ['ISW', 'SW', 'VBAT', 'VBUS', 'VDRV']。原因: OVERVIEW 派生层 vset[vbus] 回归 (BD-08 已排除该仿真域轨))
+  - [RS-FAIL] RS / dali_tm_meta.regen.json  (TM600_HS_RDSON.mi_pins 含 'SW' 且 TM601_LS_RDSON.mi_pins 含 'PMID_SW' 与 'SW' —— TM600_HS_RDSON.mi_pins 缺 ['SW'] (实际 []); TM601_LS_RDSON.mi_pins 缺 ['PMID_SW', 'SW'] (实际 [])。原因: 生成器从 Check 列派生时漏掉被测电流 pin; 缺失会让 FR-001 反向检查重新对被测电流节点提出稳压电容要求 (K57/K5 假阳性回归))
+  - [RS-FAIL] RS / dali_tm_meta.regen.json  (TM600 vset == vbat 4.2 / pmid 15 / bst_sw 5 / vdrv 5; TM601 vset == vbat 4.2 / pmid 9 / vdrv 5; 两者均不含 vbus —— TM600_HS_RDSON vset[pmid]=5, 期望 15; TM600_HS_RDSON vset[vbat]=3.5, 期望 4.2; TM601_LS_RDSON.hardwareInit 含 vset[vbus]=['5'] (仿真域轨, 冻结 ATE 不含); TM601_LS_RDSON vset 轨道集合不符: 期望 ['pmid', 'vbat', 'vdrv'], 实际 ['vbat', 'vbus', 'vdrv'] 多余=['vbus'] 缺失=['pmid']。原因: 重生成会退回 OVERVIEW 仿真域值 (3.5/5), 与 setup-contract 冻结 ATE 冲突)
+
+*** NEW-RED: meta 的 run 作用域修正已被抹除 (3 项) ***
+  - [RS-1 VBUS 移除] TM601_LS_RDSON.capAuthority.powered_pins 不含 'VBUS' —— 实际出现了 VBUS: ['ISW', 'SW', 'VBAT', 'VBUS', 'VDRV']。原因: OVERVIEW 派生层 vset[vbus] 回归 (BD-08 已排除该仿真域轨)
+      规则来源: meta-excitation-override.json:recommendedGateAssertions
+      实测值  : ["ISW", "SW", "VBAT", "VBUS", "VDRV"]
+  - [RS-2 mi_pins 修正] TM600_HS_RDSON.mi_pins 含 'SW' 且 TM601_LS_RDSON.mi_pins 含 'PMID_SW' 与 'SW' —— TM600_HS_RDSON.mi_pins 缺 ['SW'] (实际 []); TM601_LS_RDSON.mi_pins 缺 ['PMID_SW', 'SW'] (实际 [])。原因: 生成器从 Check 列派生时漏掉被测电流 pin; 缺失会让 FR-001 反向检查重新对被测电流节点提出稳压电容要求 (K57/K5 假阳性回归)
+      规则来源: meta-excitation-override.json:recommendedGateAssertions
+      实测值  : {"TM600_HS_RDSON": [], "TM601_LS_RDSON": []}
+  - [RS-3 ATE 激励对齐] TM600 vset == vbat 4.2 / pmid 15 / bst_sw 5 / vdrv 5; TM601 vset == vbat 4.2 / pmid 9 / vdrv 5; 两者均不含 vbus —— TM600_HS_RDSON vset[pmid]=5, 期望 15; TM600_HS_RDSON vset[vbat]=3.5, 期望 4.2; TM601_LS_RDSON.hardwareInit 含 vset[vbus]=['5'] (仿真域轨, 冻结 ATE 不含); TM601_LS_RDSON vset 轨道集合不符: 期望 ['pmid', 'vbat', 'vdrv'], 实际 ['vbat', 'vbus', 'vdrv'] 多余=['vbus'] 缺失=['pmid']。原因: 重生成会退回 OVERVIEW 仿真域值 (3.5/5), 与 setup-contract 冻结 ATE 冲突
+      规则来源: meta-excitation-override.json:recommendedGateAssertions
+      实测值  : {"TM600_HS_RDSON": {"bst_sw": "5", "pmid": "5", "vbat": "3.5", "vdrv": "5"}, "TM601_LS_RDSON": {"vbat": "3.5", "vbus": "5", "vdrv": "5"}}
+  ⇒ 这是"重生成静默抹除"被检出的现象, **不是**可忽略的漂移。
+     处置: 不要改基线/不要放宽断言 —— 重新施加 run 作用域 meta 修正
+     (见 team/artifacts/<run>/meta-excitation-override.json), 再复跑本门。
+
+重生成命令:
+  # RS 组: 重生成之后**必须重放本次 run 作用域 meta 修正** (顺序不可反)
+  #   1) python scripts/gen_testitems_meta.py && python scripts/gen_test_conditions.py
+  #   2) 按 team/artifacts/<run>/meta-excitation-override.json 重新施加覆盖, 并复跑本门
+  #   3) 覆盖与回退的判据: 该产物的 recommendedGateAssertions (RS-1..RS-4)
+重新生成后复跑本门: python scripts/check_input_sync.py
+------------------------------------------------------------------------

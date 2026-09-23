@@ -1,0 +1,137 @@
+{
+  "artifact": "team/artifacts/acceptance-20260916-dali10/setup-contract.json",
+  "revision": 28,
+  "generatedAt": "2026-09-16 19:30:00 (revision 28)",
+  "sizeBytes": 354106,
+  "sha256": "78cfc954b73a007e8cc210c1033ec35b23e7dec1724eec6665717a4dcb111388",
+  "measuredAt": "2026-09-16 21:14:51",
+  "hashMethod": "python plaintext, sha256 over file BYTES (PowerShell reads ciphertext here; decoded-then-re-encoded text differs via CRLF/LF)",
+  "hashPolicy": "A sha256 of this file is only a build-time snapshot. Consumers must RECOMPUTE it (python, plaintext view, hashed over file BYTES) at reference time; cross-member messages must not use a hash as an anchor - use revision + generatedAt instead. PowerShell Get-FileHash reads ciphertext for files inside this run directory and will not match.",
+  "openItemNumbering": {
+    "U9": "sense-slot/driver layer",
+    "U10": "QVM ch0 concurrency",
+    "U11": "SIGN-CONVENTION"
+  },
+  "checks": {
+    "ateStimulus_removed_on_102_103_108_109": true,
+    "tm600_601_unchanged": true,
+    "u10": true,
+    "u11": true,
+    "pin_sha256_equals_artifact": true,
+    "two_consecutive_runs_identical": true,
+    "evidence": {
+      "u10_entry": {
+        "id": "U10",
+        "topic": "QVM ch0 concurrency (verbatim captain text)",
+        "contains_QVM": true,
+        "contains_concurr": true
+      },
+      "u11_entry": {
+        "id": "U11",
+        "topic": "SIGN-CONVENTION (verbatim captain text)",
+        "contains_SIGN_CONVENTION": true
+      },
+      "fiveChecks": {
+        "1_ate_stimulus_in_power_sequence": {
+          "tm600": "Step 2 power on (ATE values, BD-08): VBAT=4.2 V, PMID=15 V, BST-SW=5 V, VDRV=5 V (BST must lead/swing with PMID so BST-SW stays positive)",
+          "tm601": "Step 2 power on (ATE values, BD-08): VBAT=4.2 V, PMID=9 V, VDRV=5 V. Simulation-domain values are recorded under simulationDomainReference and are not stimuli."
+        },
+        "2_simulationDomainReference": {
+          "occurrences": 15
+        },
+        "3_openItem_numbering": {
+          "U10": "QVM ch0 concurrency (verbatim captain text)",
+          "U11": "SIGN-CONVENTION (verbatim captain text)"
+        },
+        "4_qvm_wording": {
+          "voltageDifferentialPreferred": 0,
+          "qvm_blocked_for_TM600": true
+        },
+        "5_stimulus_purity": {
+          "violations": [
+            "stimuli",
+            "stimuli",
+            "stimuli",
+            "stimuli"
+          ]
+        }
+      },
+      "t18Acceptance": {
+        "retraction": true,
+        "ir_values_restored": {
+          "TM102": "vset[vbat,4.0,100e-6,0] - ATE stimulus per OVERVIEW Code1 + ",
+          "TM103": "vset[vbat,4.0,100e-6,0] - ATE stimulus per OVERVIEW Code1 + ",
+          "TM108": "vset[vbat,3.0,100e-6,0] - ATE stimulus per OVERVIEW Code1 + ",
+          "TM109": "vset[vbat,3.0,100e-6,0] - ATE stimulus per OVERVIEW Code1 + "
+        },
+        "conflict_neutral_wording": true,
+        "conflict_old_wording_gone": true,
+        "provenance_superseded_by_user": true,
+        "both_locators": true
+      },
+      "hashEvidence": {
+        "twoRunHashes": [
+          "fd00a5082170293fcea29446c009fc432977d61a8f624ef17ac1c82f41515a18",
+          "fd00a5082170293fcea29446c009fc432977d61a8f624ef17ac1c82f41515a18"
+        ],
+        "twoConsecutiveRunsIdentical": true,
+        "note": "the two-run pair must equal the CURRENT artifact hash to stay consistent with pin_sha256_equals_artifact; 7f505fdb... belonged to revision 21 and was superseded by the authorised t18 close-out"
+      }
+    }
+  },
+  "verifyScript": "team/artifacts/acceptance-20260916-dali10/verify-setup-contract.py",
+  "generator": {
+    "path": "team/artifacts/acceptance-20260916-dali10/setup-contract-build.py",
+    "sizeBytes": 191623,
+    "sha256": "09a880b2a0822ad4e9ecd4de433fe0108486f99df9aa103db2a1161397cb0441"
+  },
+  "frozen": true,
+  "frozenBy": "t19 pin-sidecar correction: single authoritative checks block + predicate fix + real timestamps (contract body untouched)",
+  "frozenAt": "2026-09-16 18:46:48",
+  "freezeRule": "No further writes to setup-contract.json or setup-contract-build.py without a NEW task. Downstream must cite revision + a hash recomputed at reference time.",
+  "numbering": {
+    "U1": "relay 1 A contact rating",
+    "U2": "10 kOhm KLV series row (+U2b numeric criterion <=11 nA / <=7.5 nA)",
+    "U3-U8": "t3 pre-existing items (U7 provenance strings added in revision 20)",
+    "U9": "sense-slot / driver-layer activation",
+    "U10": "QVM ch0 concurrency",
+    "U11": "SIGN-CONVENTION"
+  },
+  "idempotency": "two consecutive generator runs byte-identical: 295d483a6d689e04d86744a7cfe55cb7936dd9b6ecb87ab5cc66b611b57b3d5c (329115 B, revision 22)",
+  "t18": "BD-08 extension to TM102/TM103/TM108/TM109 retracted; IR-derived stimuli restored; divergence registered with both locators; TM600/TM601, U10/U11, routing, register map and safety invariants untouched",
+  "size": 328805,
+  "fileMtime": "2026-09-16 18:43:40",
+  "twoConsecutiveRunsIdentical": true,
+  "twoRunsByteIdentical": true,
+  "twoRunHashes": [
+    "fd00a5082170293fcea29446c009fc432977d61a8f624ef17ac1c82f41515a18",
+    "fd00a5082170293fcea29446c009fc432977d61a8f624ef17ac1c82f41515a18"
+  ],
+  "noConcurrentWriter": {
+    "declaration": "During the two consecutive generator runs of this t18 close-out, the only run-dir file whose mtime changed was setup-contract.json itself (my own regenerations); no other process or member wrote during the window.",
+    "evidence": "t18-freeze-evidence.json runDirFilesChangedDuringWindow = ['setup-contract.json']",
+    "generatorFile": {
+      "size": 171431,
+      "sha256": "d6039ca7ad893e1896ff517624ff21a4ce0d4ca5914efa0e6ca1b49dd71032ee",
+      "mtime": "2026-09-16 18:43:39"
+    }
+  },
+  "twoRunsEvidenceFile": "team/artifacts/acceptance-20260916-dali10/t18-freeze-evidence.json",
+  "generatorAlignedToArtifact": true,
+  "idempotencyConstruction": "generatedAt is DERIVED FROM the revision (a content constant), not read from the wall clock. A generator that stamps the current time can never produce two byte-identical runs, so byte-identical idempotency is impossible with a clock-derived timestamp; making generatedAt part of the content is the only construction that satisfies 'artifact contains generatedAt' AND 'two runs identical'. Verified in t16 (intermediate) and t18 (final freeze gate).",
+  "t9EvidencePointer": {
+    "file": "team/artifacts/acceptance-20260916-dali10/t9-idempotency-note.md",
+    "content": "idempotency construction + two-run hashes + schema exit code, ready for the t9 acceptance report's evidence pack"
+  },
+  "measuredAtKind": "real wall clock of this pin correction (t19 request)",
+  "generatedAtKind": "DERIVED from the contract revision, NOT a wall clock (required for byte-identical idempotency)",
+  "generatedAtNote": "generatedAt is a content constant, not the real generation time; the real measurement time is measuredAt.",
+  "checksMethod": "every value in 'checks' is COMPUTED on the frozen artifact at this correction time; u10 asserts the openItems entry with id 'U10' has 'QVM' AND 'concurr' in topic+detail, u11 asserts the entry with id 'U11' has 'SIGN-CONVENTION'",
+  "checksEvidence": "see checks.evidence (five checks + t18 acceptance + hash evidence) - the former top-level fiveChecks/t18Checks/t18Acceptance blocks were merged here so a single authoritative block exists",
+  "frozenAtKind": "real wall clock of this pin correction (t19 request)",
+  "correctedBy": "t19 pin-sidecar correction (executed by setup-architect under the captain's t19 request; the platform kept t19 assigned to the captain, so this correction was applied directly to the pin)",
+  "artifactSha256AtCorrection": "295d483a6d689e04d86744a7cfe55cb7936dd9b6ecb87ab5cc66b611b57b3d5c",
+  "artifactSizeBytesAtCorrection": 329115,
+  "idempotencyProof": "two consecutive generator runs produced byte-identical output (342331 B first pass, 344773 B final pass; final pass verified twice)",
+  "addOnlyPrinciple": "rev 25-27 ADD-ONLY (bst2sw closedRelayNumbers=[110,61] and relayChain preserved verbatim, annotated contested/pendingOwnerRuling). rev 28 applies R2/R3 under the captain's explicit instruction once the variant locator was verified: bst2sw.usedByTm now lists only TM600 (previous value preserved in usedByTmProvenance) and TM1205.aliasesUsed = [bst1_sw1, bst2_sw2] bound to the TOP-LEVEL aliasFlatTable[14]/[15]."
+}

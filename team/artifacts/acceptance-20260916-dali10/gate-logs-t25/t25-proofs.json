@@ -1,0 +1,651 @@
+{
+  "root": "D:\\Newtest\\DSH\\ATE-Coding-Plat",
+  "proofs": [
+    {
+      "name": "P1 F2: fam_intersect 新旧命中集对照 (powered=TM601_LS_RDSON)",
+      "verdict": "FIXED",
+      "evidence": [
+        "cap_pin 推导: K45_Cap_SW1_BST1 -> 'SW1_BST1', K44_Cap_SW2_BST2 -> 'SW2_BST2'",
+        "SW1_BST1: old=['SW'] new=[]",
+        "SW2_BST2: old=['SW'] new=[]",
+        "回归保护 SW(同轨)=['SW'] / VDRV(同轨)=['VDRV'] / SW1_BST1 家族成员 VAC1=['VAC1', 'VAC1_X']",
+        "观察到的另一次族折叠 (真实数据同一修法一并消除): cap token VAC ↔ powered VAC1/VAC2/VAC3 (old 命中 3 个, new 空) —— 实测: 规则输出零变化, 见 P7; VAC1 与 VAC1_X 仍按 token 边界同族",
+        "变化条数 2/11 (仅碰撞项变化)"
+      ]
+    },
+    {
+      "name": "P2 F3: VBUS 警告的真实根因 (不是 BUSH0_AMUX)",
+      "verdict": "ROOT-CAUSE-RESOLVED",
+      "evidence": [
+        "meta TM601_LS_RDSON.capAuthority.powered_pins = ['ISW', 'SW', 'VBAT', 'VBUS', 'VDRV']",
+        "meta TM601_LS_RDSON.capAuthority.testpad_pins = []",
+        "BUSH0_AMUX 相关 token 在 powered_pins 中出现次数 = 0",
+        "fam_intersect(powered, \"VBUS\") = ['VBUS']  (仅由 powered_pins 精确含 VBUS 触发)",
+        "fam_intersect(任何含 BUSH0_AMUX 的串, \"VBUS\") = []",
+        "规则输入通道只有 meta capAuthority (verify_relay_trace.py:311-328); 规则不读 #define 名、不读 Cap 附件继电器、不读 SCH-Connect-Map → K154/K155 无法进入 VBUS 判定",
+        "hardwareInit 含 vset vbus 5.0 = True",
+        "结论: powered_pins 里的 VBUS 来自 gen_testitems_meta.py:147-187 的 OVERVIEW 派生 (vset vbus 5.0), 与 K154_BUSH0_AMUX 无关。"
+      ]
+    },
+    {
+      "name": "P3 F3: VBUS/PGND/SW 真路径 locator (SCH-Connect-Map.txt)",
+      "verdict": "CONFIRMED",
+      "evidence": [
+        "L213: CH0 Low -> VBUS  [Kelvin]  需闭合: K3",
+        "L421: CH1 Low -> VBUS  [Kelvin]  需闭合: K138,K139,K145,K146,K3",
+        "L156: CH0 High -> PGND  [Kelvin]  需闭合: K154,K155",
+        "L174: CH0 Low -> SW  [Kelvin]  需闭合: K60,K61",
+        "L177: CH0 High -> SW1  [Kelvin]  需闭合: K46",
+        "L183: CH0 High -> SW2  [Kelvin]  需闭合: K46,K49",
+        "⇒ VBUS 到达需 K3; K154+K155 是 CH0 High->PGND, 不是 VBUS 供电依据"
+      ]
+    },
+    {
+      "name": "P4 全树影响面: F2 后 relay-trace 输出枚举",
+      "verdict": "MEASURED",
+      "evidence": [
+        "exit=1",
+        "WARN 行数=6",
+        "ERROR 行数=2",
+        "日志=D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\relay-trace-after-f2.log",
+        "WARN: TM643_VBAT_LOOP_INDICTOR: 静态供电 BST_SW 但未闭稳压电容 K57_CAP_BST_SW (FR-001 反向: 供电→闭; meta权威)",
+        "WARN: TM643_VBAT_LOOP_INDICTOR: 静态供电 VBUS 但未闭稳压电容 K5_VBUS_Cap (FR-001 反向: 供电→闭; meta权威)",
+        "WARN: TM601_LS_RDSON: 静态供电 SW 但未闭稳压电容 K57_CAP_BST_SW (FR-001 反向: 供电→闭; meta权威)",
+        "WARN: TM601_LS_RDSON: 静态供电 VBUS 但未闭稳压电容 K5_VBUS_Cap (FR-001 反向: 供电→闭; meta权威)",
+        "WARN: TM600_HS_RDSON: 虚构继电器名 126 (无 #define)",
+        "WARN: TM601_LS_RDSON: 虚构继电器名 126 (无 #define)",
+        "ERROR: TM600_HS_RDSON: 虚构继电器名 126 (无 #define)",
+        "ERROR: TM601_LS_RDSON: 虚构继电器名 126 (无 #define)"
+      ]
+    },
+    {
+      "name": "P5 反证纪律: 未供电 SW1/SW2 不再被要求闭 Cap",
+      "verdict": "PASS",
+      "evidence": [
+        "sw caps: [{'cap_token': 'SW1_BST1', 'old': ['SW'], 'new': []}, {'cap_token': 'SW2_BST2', 'old': ['SW'], 'new': []}]",
+        "locator: SCH-Connect-Map L177 (SW1 <- K46) / L183 (SW2 <- K46,K49) 均不在 powered_pins 中, 不构成供电轨"
+      ]
+    },
+    {
+      "name": "P6 全量穷举回归对照 (真实 cap token × 101 函数 × 4 权威集)",
+      "verdict": "PASS",
+      "evidence": [
+        "胶囊 token 总数=13 (来自 StdAfx.h #define 经 cap_pin())",
+        "检查对数=5252, 发生变化的对数=52",
+        "由\"命中\"变\"不命中\"(即删掉的假阳性)=40: [('TM001_2_IQ_SHIPMODE', 'powered_pins', 'VAC', ('VAC1',)), ('TM001_3_IQ_OPERATION', 'powered_pins', 'VAC', ('VAC1',)), ('TM105_HSKP_VSPRE_MAX_CMP', 'powered_pins', 'VAC', ('VAC1',)), ('TM105_HSKP_VSPRE_MAX_CMP', 'ramp_pins', 'VAC', ('VAC1',)), ('TM108_HSKP_VAC1_PRST', 'powered_pins', 'VAC', ('VAC1',)), ('TM108_HSKP_VAC1_PRST', 'ramp_pins', 'VAC', ('VAC1',))]",
+        "由\"不命中\"变\"命中\"(新增要求, 必须为 0)=0: []",
+        "受影响的函数=['TM001_2_IQ_SHIPMODE', 'TM001_3_IQ_OPERATION', 'TM105_HSKP_VSPRE_MAX_CMP', 'TM108_HSKP_VAC1_PRST', 'TM109_HSKP_VAC2_PRST', 'TM110_HSKP_VAC3_PRST', 'TM111_HSKP_VBAT_UV', 'TM112_HSKP_VBAT_HT_3P1V', 'TM114_VCC_VBUS_PATH_ACC', 'TM115_VCC_VAC_PATH_ACC', 'TM121_VAC_PATH_ON', 'TM128_VBAT_PATH_ON_VCC', 'TM129_VCC_VBAT_HT_2P8', 'TM130_VCC_VBAT_HT_3P7', 'TM207_IPD_VAC3', 'TM210_VAC1_SNK_DET_VTH_RELMODE', 'TM211_VAC2_SNK_DET_VTH_RELMODE', 'TM212_VAC1_SNK_DET_VTH_ABSMODE', 'TM213_VAC2_SNK_DET_VTH_ABSMODE', 'TM220_DMO_PD_R', 'TM222_DMA_PD_R', 'TM406_VBAT_LOW_VTH', 'TM408_VBAT_OVP', 'TM410_VTRIKLE_VTH1', 'TM411_VTRIKLE_VTH2', 'TM412_VRE_CHG_VTH1', 'TM413_VRE_CHG_VTH2', 'TM418_VAC1_FB', 'TM419_VAC2_FB', 'TM420_VAC3_FB', 'TM601_LS_RDSON', 'TM641_BST_UV']"
+      ]
+    },
+    {
+      "name": "P7 A/B 全树对照: 旧 fam_intersect vs 新 fam_intersect (同输入, 同规则)",
+      "verdict": "PASS",
+      "evidence": [
+        "old: [relay] 检查 test.cpp: 99 个函数有继电器 (结构规则 0 处, 功能规则 179 处, FR-001 反向 6 处), map Relay-ON=95 Relay-NC-only=45, meta 覆盖 101/101",
+        "new: [relay] 检查 test.cpp: 99 个函数有继电器 (结构规则 0 处, 功能规则 179 处, FR-001 反向 4 处), map Relay-ON=95 Relay-NC-only=45, meta 覆盖 101/101",
+        "old exit=1 / new exit=1",
+        "旧有新无 (被消除的假阳性/误判) = 2 条:",
+        "  - TM601_LS_RDSON: 静态供电 SW 但未闭稳压电容 K44_Cap_SW2_BST2 (FR-001 反向: 供电→闭; meta权威)",
+        "  - TM601_LS_RDSON: 静态供电 SW 但未闭稳压电容 K45_Cap_SW1_BST1 (FR-001 反向: 供电→闭; meta权威)",
+        "新有旧无 (新增告警, 必须为 0) = 0 条:",
+        "日志: D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\sandbox-ab\\old.log / D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\sandbox-ab\\new.log"
+      ]
+    }
+  ],
+  "relay_trace_after_f2": {
+    "exit": 1,
+    "warns": [
+      "TM643_VBAT_LOOP_INDICTOR: 静态供电 BST_SW 但未闭稳压电容 K57_CAP_BST_SW (FR-001 反向: 供电→闭; meta权威)",
+      "TM643_VBAT_LOOP_INDICTOR: 静态供电 VBUS 但未闭稳压电容 K5_VBUS_Cap (FR-001 反向: 供电→闭; meta权威)",
+      "TM601_LS_RDSON: 静态供电 SW 但未闭稳压电容 K57_CAP_BST_SW (FR-001 反向: 供电→闭; meta权威)",
+      "TM601_LS_RDSON: 静态供电 VBUS 但未闭稳压电容 K5_VBUS_Cap (FR-001 反向: 供电→闭; meta权威)",
+      "TM600_HS_RDSON: 虚构继电器名 126 (无 #define)",
+      "TM601_LS_RDSON: 虚构继电器名 126 (无 #define)"
+    ],
+    "errors": [
+      "TM600_HS_RDSON: 虚构继电器名 126 (无 #define)",
+      "TM601_LS_RDSON: 虚构继电器名 126 (无 #define)"
+    ],
+    "log": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\team\\artifacts\\acceptance-20260916-dali10\\gate-logs-t25\\relay-trace-after-f2.log"
+  },
+  "regression": {
+    "checkedPairs": 5252,
+    "changed": [
+      [
+        "TM001_2_IQ_SHIPMODE",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM001_3_IQ_OPERATION",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM105_HSKP_VSPRE_MAX_CMP",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM105_HSKP_VSPRE_MAX_CMP",
+        "ramp_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM108_HSKP_VAC1_PRST",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM108_HSKP_VAC1_PRST",
+        "ramp_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM109_HSKP_VAC2_PRST",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC2"
+        ],
+        []
+      ],
+      [
+        "TM109_HSKP_VAC2_PRST",
+        "ramp_pins",
+        "VAC",
+        [
+          "VAC2"
+        ],
+        []
+      ],
+      [
+        "TM110_HSKP_VAC3_PRST",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC3"
+        ],
+        []
+      ],
+      [
+        "TM110_HSKP_VAC3_PRST",
+        "ramp_pins",
+        "VAC",
+        [
+          "VAC3"
+        ],
+        []
+      ],
+      [
+        "TM111_HSKP_VBAT_UV",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM112_HSKP_VBAT_HT_3P1V",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM114_VCC_VBUS_PATH_ACC",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM115_VCC_VAC_PATH_ACC",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC",
+          "VAC1"
+        ],
+        [
+          "VAC"
+        ]
+      ],
+      [
+        "TM115_VCC_VAC_PATH_ACC",
+        "powered_pins",
+        "VAC1",
+        [
+          "VAC",
+          "VAC1"
+        ],
+        [
+          "VAC1"
+        ]
+      ],
+      [
+        "TM121_VAC_PATH_ON",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM121_VAC_PATH_ON",
+        "ramp_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM128_VBAT_PATH_ON_VCC",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM129_VCC_VBAT_HT_2P8",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM130_VCC_VBAT_HT_3P7",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM207_IPD_VAC3",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC3"
+        ],
+        []
+      ],
+      [
+        "TM207_IPD_VAC3",
+        "mi_pins",
+        "VAC",
+        [
+          "VAC3"
+        ],
+        []
+      ],
+      [
+        "TM210_VAC1_SNK_DET_VTH_RELMODE",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM210_VAC1_SNK_DET_VTH_RELMODE",
+        "ramp_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM211_VAC2_SNK_DET_VTH_RELMODE",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC2"
+        ],
+        []
+      ],
+      [
+        "TM211_VAC2_SNK_DET_VTH_RELMODE",
+        "ramp_pins",
+        "VAC",
+        [
+          "VAC2"
+        ],
+        []
+      ],
+      [
+        "TM212_VAC1_SNK_DET_VTH_ABSMODE",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM212_VAC1_SNK_DET_VTH_ABSMODE",
+        "ramp_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM213_VAC2_SNK_DET_VTH_ABSMODE",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC2"
+        ],
+        []
+      ],
+      [
+        "TM213_VAC2_SNK_DET_VTH_ABSMODE",
+        "ramp_pins",
+        "VAC",
+        [
+          "VAC2"
+        ],
+        []
+      ],
+      [
+        "TM220_DMO_PD_R",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM222_DMA_PD_R",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM406_VBAT_LOW_VTH",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM408_VBAT_OVP",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC",
+          "VAC1"
+        ],
+        [
+          "VAC"
+        ]
+      ],
+      [
+        "TM408_VBAT_OVP",
+        "powered_pins",
+        "VAC1",
+        [
+          "VAC",
+          "VAC1"
+        ],
+        [
+          "VAC1"
+        ]
+      ],
+      [
+        "TM410_VTRIKLE_VTH1",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC",
+          "VAC1"
+        ],
+        [
+          "VAC"
+        ]
+      ],
+      [
+        "TM410_VTRIKLE_VTH1",
+        "powered_pins",
+        "VAC1",
+        [
+          "VAC",
+          "VAC1"
+        ],
+        [
+          "VAC1"
+        ]
+      ],
+      [
+        "TM411_VTRIKLE_VTH2",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC",
+          "VAC1"
+        ],
+        [
+          "VAC"
+        ]
+      ],
+      [
+        "TM411_VTRIKLE_VTH2",
+        "powered_pins",
+        "VAC1",
+        [
+          "VAC",
+          "VAC1"
+        ],
+        [
+          "VAC1"
+        ]
+      ],
+      [
+        "TM412_VRE_CHG_VTH1",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC",
+          "VAC1"
+        ],
+        [
+          "VAC"
+        ]
+      ],
+      [
+        "TM412_VRE_CHG_VTH1",
+        "powered_pins",
+        "VAC1",
+        [
+          "VAC",
+          "VAC1"
+        ],
+        [
+          "VAC1"
+        ]
+      ],
+      [
+        "TM413_VRE_CHG_VTH2",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC",
+          "VAC1"
+        ],
+        [
+          "VAC"
+        ]
+      ],
+      [
+        "TM413_VRE_CHG_VTH2",
+        "powered_pins",
+        "VAC1",
+        [
+          "VAC",
+          "VAC1"
+        ],
+        [
+          "VAC1"
+        ]
+      ],
+      [
+        "TM418_VAC1_FB",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC1"
+        ],
+        []
+      ],
+      [
+        "TM419_VAC2_FB",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC2"
+        ],
+        []
+      ],
+      [
+        "TM420_VAC3_FB",
+        "powered_pins",
+        "VAC",
+        [
+          "VAC3"
+        ],
+        []
+      ],
+      [
+        "TM601_LS_RDSON",
+        "powered_pins",
+        "SW1_BST1",
+        [
+          "SW"
+        ],
+        []
+      ],
+      [
+        "TM601_LS_RDSON",
+        "powered_pins",
+        "SW2_BST2",
+        [
+          "SW"
+        ],
+        []
+      ],
+      [
+        "TM641_BST_UV",
+        "powered_pins",
+        "SW1_BST1",
+        [
+          "SW"
+        ],
+        []
+      ],
+      [
+        "TM641_BST_UV",
+        "powered_pins",
+        "SW2_BST2",
+        [
+          "SW"
+        ],
+        []
+      ],
+      [
+        "TM641_BST_UV",
+        "ramp_pins",
+        "SW1_BST1",
+        [
+          "SW"
+        ],
+        []
+      ],
+      [
+        "TM641_BST_UV",
+        "ramp_pins",
+        "SW2_BST2",
+        [
+          "SW"
+        ],
+        []
+      ]
+    ],
+    "falsePositivesRemoved": 40,
+    "newMatches": 0,
+    "capTokenCount": 13
+  },
+  "ab": {
+    "old": {
+      "exit": 1,
+      "warns": [
+        "TM600_HS_RDSON: 虚构继电器名 126 (无 #define)",
+        "TM601_LS_RDSON: 虚构继电器名 126 (无 #define)",
+        "TM601_LS_RDSON: 静态供电 SW 但未闭稳压电容 K44_Cap_SW2_BST2 (FR-001 反向: 供电→闭; meta权威)",
+        "TM601_LS_RDSON: 静态供电 SW 但未闭稳压电容 K45_Cap_SW1_BST1 (FR-001 反向: 供电→闭; meta权威)",
+        "TM601_LS_RDSON: 静态供电 SW 但未闭稳压电容 K57_CAP_BST_SW (FR-001 反向: 供电→闭; meta权威)",
+        "TM601_LS_RDSON: 静态供电 VBUS 但未闭稳压电容 K5_VBUS_Cap (FR-001 反向: 供电→闭; meta权威)",
+        "TM643_VBAT_LOOP_INDICTOR: 静态供电 BST_SW 但未闭稳压电容 K57_CAP_BST_SW (FR-001 反向: 供电→闭; meta权威)",
+        "TM643_VBAT_LOOP_INDICTOR: 静态供电 VBUS 但未闭稳压电容 K5_VBUS_Cap (FR-001 反向: 供电→闭; meta权威)"
+      ],
+      "summary": "[relay] 检查 test.cpp: 99 个函数有继电器 (结构规则 0 处, 功能规则 179 处, FR-001 反向 6 处), map Relay-ON=95 Relay-NC-only=45, meta 覆盖 101/101"
+    },
+    "new": {
+      "exit": 1,
+      "warns": [
+        "TM600_HS_RDSON: 虚构继电器名 126 (无 #define)",
+        "TM601_LS_RDSON: 虚构继电器名 126 (无 #define)",
+        "TM601_LS_RDSON: 静态供电 SW 但未闭稳压电容 K57_CAP_BST_SW (FR-001 反向: 供电→闭; meta权威)",
+        "TM601_LS_RDSON: 静态供电 VBUS 但未闭稳压电容 K5_VBUS_Cap (FR-001 反向: 供电→闭; meta权威)",
+        "TM643_VBAT_LOOP_INDICTOR: 静态供电 BST_SW 但未闭稳压电容 K57_CAP_BST_SW (FR-001 反向: 供电→闭; meta权威)",
+        "TM643_VBAT_LOOP_INDICTOR: 静态供电 VBUS 但未闭稳压电容 K5_VBUS_Cap (FR-001 反向: 供电→闭; meta权威)"
+      ],
+      "summary": "[relay] 检查 test.cpp: 99 个函数有继电器 (结构规则 0 处, 功能规则 179 处, FR-001 反向 4 处), map Relay-ON=95 Relay-NC-only=45, meta 覆盖 101/101"
+    }
+  }
+}

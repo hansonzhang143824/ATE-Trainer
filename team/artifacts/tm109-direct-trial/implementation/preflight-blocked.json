@@ -1,0 +1,131 @@
+{
+  "event": "preflight_blocked",
+  "status": "blocked",
+  "fromRole": "ate-implementer",
+  "nextRole": null,
+  "taskId": "TM109-IMPLEMENTATION",
+  "tm": "TM109",
+  "projectId": "DALI",
+  "stage": "IMPLEMENTATION",
+  "generatedAt": "2026-09-18 00:32:23 +08:00",
+  "verdict": "blocked",
+  "roleContractBasis": [
+    "team/roles/ate-implementer.md lines 5-6 (confirm destination project path and usable library API before any source write; otherwise write implementation/preflight-blocked.json and return BLOCKED)",
+    "team/roles/ate-implementer-t7-preflight.md (a missing required primitive blocks code write; exit 2 => return BLOCKED with the artifact path and do not write source)"
+  ],
+  "noSourceWritten": true,
+  "sourceWriteAttempted": true,
+  "sourceWriteAttemptOutcome": "denied by the session file sandbox before any byte was changed",
+  "blockers": [
+    {
+      "id": "B-1",
+      "class": "session capability (hard blocker, outside the role's control)",
+      "severity": "blocking",
+      "topic": "the authorized code scope is outside this session's writable sandbox, so test.cpp cannot be modified at all",
+      "fact": "The session file policy is workspace-write for D:\\Newtest\\DSH\\ATE-Coding-Plat only. The designated VS project source is D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp (confirmed destination, see destinationProject). Every write path into that directory is denied, and approval escalation is disabled for this session (a delegated subagent cannot widen its own permission scope).",
+      "evidenceArtifact": "team/artifacts/tm109-direct-trial/implementation/preflight-blocked.json#writeCapabilityProbe",
+      "attemptedMitigations": [
+        "harness write tool -> [sandbox: file access denied under workspace-write mode]",
+        "OS-level write-open of the existing target file -> Access to the path ... is denied (file ReadOnly attribute = False, so the denial is not an attribute)",
+        "creation of a new file inside the target directory -> denied",
+        "control probes: the same operation succeeds in the session workspace and in %TEMP%"
+      ],
+      "consequence": "no implementation of TM109 can be written into the VS project from this session; the stage cannot produce a source change"
+    },
+    {
+      "id": "B-2",
+      "class": "signed-scope defect (blocks a faithful code write even with write permission)",
+      "severity": "blocking",
+      "topic": "the signed method contract requires an actuation-state read-back that no symbol in the declared target-source scope can provide",
+      "requirement": "REQ-08-phase-exit-state-readback",
+      "contractEvidence": [
+        "methodPhases[MP-1].sample: 'read back and record the relay/source state'",
+        "methodPhases[MP-2].exitCondition: 'K19 and K70 read back actuated; K8_PD3, K102_PC3, K18, K20, K68 read back un-actuated'",
+        "methodPhases[MP-9].orderedActions[5]: 'read back every source level and relay state'",
+        "logPlan.rawValues: 'relay state read-backs (K19, K70, K8_PD3, K102_PC3, K18, K20, K68)'"
+      ],
+      "searchEvidence": "0 hits for cbite.GetState / cbite.GetOn / cbite.IsOn / cbite.GetRelay / RelayState / RelayStatus / GetRelayState / ReadRelay across every *.cpp and *.h under D:/PROJECT6-DALI/ForCodexDebug/source; the only cbite member reachable in that scope is SetOn (104 call sites in test.cpp, 142 file-wide). The sibling items TM107-TM110 read nothing back, and no item in test.cpp logs a relay state.",
+      "classifiedAs": "not reachable in the declared scope (the CBITe class body is not part of the declared target-source scope, so this is a scope-reachability finding, not a claim about the library itself)",
+      "consequence": "the MP-1/MP-2/MP-9 exit conditions and the logPlan relay read-back cannot be implemented faithfully; they must be either re-scoped by the method owner or supplied with a reachable primitive",
+      "owner": "test-method-expert (method contract) with test-strategy-architect / user ruling as closing source"
+    }
+  ],
+  "preflightGate": {
+    "command": "python scripts/verify_t7_preflight.py team/artifacts/tm109-direct-trial/implementation/preflight-capability.json",
+    "workingDirectory": "D:/Newtest/DSH/ATE-Coding-Plat",
+    "artifact": "team/artifacts/tm109-direct-trial/implementation/preflight-capability.json",
+    "artifactSha256": null,
+    "stdout": "BLOCKED: 8 requirements; method hash and target hashes verified",
+    "exitCode": 2,
+    "meaning": "one or more requested code side effects has no reachable declared symbol => per team/roles/ate-implementer-t7-preflight.md t7 returns BLOCKED with the artifact path and does not write source",
+    "requirementsSupported": 7,
+    "requirementsBlocked": 1,
+    "blockedRequirementIds": [
+      "REQ-08-phase-exit-state-readback"
+    ]
+  },
+  "writeCapabilityProbe": {
+    "command": "PowerShell: .NET write-open of the target file; Set-Content into the target directory; Set-Content into the session workspace; Set-Content into %TEMP% (plus one harness write-tool call)",
+    "verbatimOutput": [
+      "A1 existing-target-file write-open: DENIED -> Exception calling \"Open\" with \"4\" argument(s): \"Access to the path 'D:\\PROJECT6-DALI\\ForCodexDebug\\source\\test.cpp' is denied.\"",
+      "A2 target file ReadOnly attribute = False",
+      "B1 new file in target dir: DENIED -> Access to the path 'D:\\PROJECT6-DALI\\ForCodexDebug\\zz_probe_tm109.tmp' is denied.",
+      "C1 new file in session workspace: OK",
+      "D1 new file in %TEMP%: OK",
+      "HARNESS write tool -> [sandbox: file access denied under workspace-write mode]"
+    ],
+    "cleanup": "no probe file was created in the target directory or anywhere outside the session workspace; the two temporary probe files created inside the session workspace / %TEMP% were removed in the same command",
+    "interpretation": "the denial is the session sandbox boundary (workspace = D:\\Newtest\\DSH\\ATE-Coding-Plat), not a file attribute and not a project ACL"
+  },
+  "destinationProject": {
+    "projectRoot": "D:/PROJECT6-DALI/ForCodexDebug",
+    "sourceDir": "D:/PROJECT6-DALI/ForCodexDebug/source",
+    "designatedTargetSource": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+    "registeredItemSymbol": "TM109_HSKP_VAC2_PRST (test.cpp:2323, 1-based display lines)",
+    "confirmedFrom": [
+      "project_config.json inputs.vs_src_dir",
+      "team/artifacts/tm109-direct-trial/schematic/schematic-ir.json absolute paths of StdAfx.h / Pin_Channel_define.h"
+    ],
+    "libraryApiConfirmed": true,
+    "libraryApiNote": "the API surface required by the signed method exists and is reachable (VBAT_PD3_FXVI = S3_5, VAC123_AMUX_ACM = S5_0, PA0_PC3_ACM = S5_15, K19_ACM0_VAC2 = 19, K70_R5M_VAC_F = 70, entertestmode / I2CWriteSameData / DEV_ADDR, rampv_capv with a voltage-step parameter, SetOn(-1) safe empty set). Only the read-back side effect of B-2 has no reachable symbol.",
+    "targetSourceHashes": [
+      {
+        "path": "D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp",
+        "sha256": "456fba2ce30aea904ed852175dad5724cea06347d989beff0b7af752dc486eaa",
+        "bytes": 477760
+      },
+      {
+        "path": "D:/PROJECT6-DALI/ForCodexDebug/source/sub.cpp",
+        "sha256": "e86d49bef7ae725106311d8205df6dbc11184c7a0920eeaed416a515ac391470",
+        "bytes": 121909
+      },
+      {
+        "path": "D:/PROJECT6-DALI/ForCodexDebug/source/StdAfx.h",
+        "sha256": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+        "bytes": 56968
+      },
+      {
+        "path": "D:/PROJECT6-DALI/ForCodexDebug/source/Pin_Channel_define.h",
+        "sha256": "d5ce16a0ae79549424110755e99d9ae74cce79d18b8a1eaae3fd5588df285e35",
+        "bytes": 10934
+      }
+    ],
+    "unmodified": true
+  },
+  "notDone": [
+    "no source file was created, edited or deleted anywhere",
+    "no implementation-manifest.json exists, because the stage produced no code change to manifest",
+    "no relay, register value, limit, timing or capture value was selected or substituted",
+    "no downstream role was started and no helper agent was created"
+  ],
+  "carriedConditions": [
+    "RV-03 / MF-04: no numeric tolerance exists, so the item publishes unjudged values with a PENDING_LIMIT_RULING marker",
+    "RV-04 / MF-01 / MF-02: the signed RG-1 and RG-3 closures are empty; the FR-001 VBAT Cap2 closure is omitted and the INT observation is unproven. Both stay with test-strategy-architect (closing source schematic-expert or a user ruling)."
+  ],
+  "questionForOwner": "The IMPLEMENTATION stage must write D:/PROJECT6-DALI/ForCodexDebug/source/test.cpp, which lies outside this session's workspace-write scope and cannot be reached (escalation disabled): should the implementer be re-dispatched in a session whose writable scope includes D:/PROJECT6-DALI, or should the TM109 code be delivered as a patch inside the trial artifact directory instead?",
+  "evidencePaths": [
+    "team/artifacts/tm109-direct-trial/implementation/preflight-capability.json",
+    "team/artifacts/tm109-direct-trial/implementation/preflight-blocked.json",
+    "team/artifacts/tm109-direct-trial/implementation/self-check-tm109-implementation.md"
+  ]
+}

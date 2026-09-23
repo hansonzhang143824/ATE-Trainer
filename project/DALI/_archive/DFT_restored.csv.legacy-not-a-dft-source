@@ -1,0 +1,357 @@
+Item,Function Name,ShortName,ExpectValue,Unit,Trim,Record,Hardware_initial,Software_initial,Dynamic,Check,Type
+TM000,IQ_TEST,IQ_Standby1_DSM,,uA,,,"vset[vbat,4.2,100e-6,0]
+vset[vdrv,4.2,100e-6,0]","entertestmode();
+I2CWriteSameData(DEV_ADDR, 0x07, 0x00);",,VBAT,MI
+TM000_1,,IQ_Standby2_DSM,,uA,,,"vset[vbat,4.2,100e-6,0]
+vset[vdrv,4.2,100e-6,0]","entertestmode(
+I2CWriteSameData(DEV_ADDR, 0x10, 0x43); //		field[(WAKE_UP,1)]",,VBAT,MI
+TM100,INFRA_TEST,VS_PRE,2,V,,,"vset[vbat,4.2,100e-6,0]","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0x56, 0x1A);//		field[(EN_ATEST0,1),(ATEST0_MUX,3)], VS_PRE",,AMUX,MV
+TM101,,LP_VBG,1.19,V,,,"vset[vbat,4.2,100e-6,0]","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0x56, 0x12);//		field[(EN_ATEST0,1),(ATEST0_MUX,2)], LP_BG_BUF",,AMUX,MV
+TM103,,LP_HR_0P5U,0.5,uA,,,"vset[vbat,4.2,100e-6,0]
+vset[amux,1,100e-6,0]","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0x56, 0x22);//		field[(EN_ATEST0,1),(ATEST0_MUX,4)], LP_HR_0P5U",,AMUX,MI
+TM105,,VSPRE_MAX_CMP,,V,,,"vset[vbat,4.2,100e-6,0]","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0x55, 0x80);//		field[(EN_DTEST0,1),(DTEST0_MUX,0)], VSPRE_MAX_CMP","vset[vac1,4.75,100e-6,1]
+vset[vac1,5.35,1e-3,1]
+vset[vac1,4.55,100e-6,1]
+vset[vac1,4.05,1e-3,1]",INT,"Toggle, MV"
+TM106,VBUS_PRST,VBUS_PRST,"rising vth 3.91V, hys 0.2V",V,,,"vset[vbat,4.2,100e-6,0]","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0x55, 0x94);//		field[(EN_DTEST0,1),(DTEST0_MUX,20)]","vset[vbus,3.5,100e-6,1]
+vset[vbus,4.5,1e-3,1]
+vset[vbus,4.3,100e-6,1]
+vset[vbus,3.3,1e-3,1]",INT,"Toggle, MV"
+TM108,VAC_PRST,VAC1_PRST,"rising vth 4.15V, hys 0.35V",V,,,"vset[vbat,4.2,100e-6,0]","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0x55, 0x97);	//		field[(EN_DTEST0,1),(DTEST0_MUX,23)]","vset[vac1,3.8,100e-6,1]
+vset[vac1,4.4,1e-3,1]
+vset[vac1,4.1,100e-6,1]
+vset[vac1,3.5,1e-3,1]",INT,"Toggle, MV"
+TM109,,VAC2_PRST,"rising vth 4.15V, hys 0.35V",V,,,"vset[vbat,4.2,100e-6,0]","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0x55, 0x96);	//		field[(EN_DTEST0,1),(DTEST0_MUX,22)]","vset[vac3,3.8,100e-6,1]
+vset[vac3,4.4,1e-3,1]
+vset[vac3,4.1,100e-6,1]
+vset[vac3,3.5,1e-3,1]",INT,"Toggle, MV"
+TM110,,VAC3_PRST,"rising vth 4.15V, hys 0.35V",V,,,"vset[vbat,4.2,100e-6,0]","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0x55, 0x95);	//		field[(EN_DTEST0,1),(DTEST0_MUX,21)]","vset[vac3,3.8,100e-6,1]
+vset[vac3,4.4,1e-3,1]
+vset[vac3,4.1,100e-6,1]
+vset[vac3,3.5,1e-3,1]",INT,"Toggle, MV"
+TM114,VCC_Function,VCC_Acc1,4.8~5,V,,,"vset[vbus,5.2,100e-6,0]
+vset[vbat,3.7,100e-6,0]
+vset[vac1,5.2,100e-6,0]","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0x10, 0x43);
+	I2CWriteSameData(DEV_ADDR, 0x63, 0x01);//		field[(WAKE_UP,1),(REGN_VOL_SET,1)]","iset[vcc,0.03,1e-3,0]
+",VCC,MV
+TM116,,VCC_Acc3,3~3.4,V,,,"vset[vac1,4.5,1e-3,0]",,"iset[vcc,0.01,1e-3,0]
+",VCC,MV
+TM117,,VCC_Cap2,<150,mV,,,"vset[vbat,2.8,100e-6,0]",,"iset[vcc,0.02,1e-3,0]
+",VCC,MV
+TM118,,VCC_SHORT1,15~50,mA,,,"vset[vbat,4,100e-6,0]",,"vset[vcc,1,1e-3,0]",VCC,MI
+TM125,Trim_IZTC_RES,IZTC_1UA,1,uA,Y,,"vset[vbat,4.2,100e-6,0]
+vset[amux,1,100e-6,0]","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0x10, 0x43);",,AMUX,MI
+TM130,Trim_VBG,HP_VBG,1.223,V,Y,,"vset[vbat,4.2,100e-6,0]","	entertestmode();
+	//------Bandgap
+	I2CWriteSameData(DEV_ADDR, 0x56, 0x62);
+	I2CWriteSameData(DEV_ADDR, 0x67, 0x0A);
+	I2CWriteSameData(DEV_ADDR, 0x68, 0x30);//		field[(EN_ATEST0,1),(ATEST0_MUX,12),(D2A_OVRD_SEL,10),(OVRD_VALUE,3)]
+	delay_ms(2);",,AMUX,MV
+TM439_1,Trim_VBAT_CV_BUF,CV_BUF_TRIM,4.2V, ,Y,,"vset[vac1,5,100e-6,0]
+vset[vbat,4.2,1e-3,0]
+delay[10e-3]","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0xA, 0x11);
+	I2CWriteSameData(DEV_ADDR, 0xB, 0xE0);
+	I2CWriteSameData(DEV_ADDR, 0xE, 0x7F);
+	I2CWriteSameData(DEV_ADDR, 0x10, 0x43);
+	I2CWriteSameData(DEV_ADDR, 0x56, 0x4);
+	I2CWriteSameData(DEV_ADDR, 0x5A, 0x50);
+	I2CWriteSameData(DEV_ADDR, 0x61, 0x13);
+	I2CWriteSameData(DEV_ADDR, 0x65, 0x4);//		field[(WAKE_UP,1),(VBAT_CV,1),(IBAT_LIMIT,7),(IBUS_SET,127),(VBUS_LOOP_DISABLE,1),(EN_ATEST1,1),(D2A_BUBO_ATEST1,5),(DIS_NTC_DETECTION_ANALOG,1)]
+	delay_ms(1);
+	I2CWriteSameData(DEV_ADDR, 0x58, 0x20);//		field[(D2A_BUBO_TM_DIS_CLK,1)]
+	I2CWriteSameData(DEV_ADDR, 0x61, 0x1B);//		field[(D2A_BUBO_EN_FORCE_ON,1)]
+	delay_ms(1);
+	I2CWriteSameData(DEV_ADDR, 0x67, 0x03);//		
+	I2CWriteSameData(DEV_ADDR, 0x68, 0x30);//		over write vbat high than trikle
+	Inherit_register();
+	delay_ms(2);","res[serveloop_in,1]
+res[serveloop_out_vbat,1]
+vset_off[vbat]
+delay[10e-3]
+field[(TRIM_MNT_CV_BUF_HIGH,1)]
+delay[1e-3]
+field[(TRIM_MNT_CV_BUF_HIGH,2)]
+delay[1e-3]
+field[(TRIM_MNT_CV_BUF_HIGH,4)]
+delay[1e-3]
+field[(TRIM_MNT_CV_BUF_HIGH,8)]
+finish[0]",VBAT,MV
+TM600,RDSON_TEST,HS_RDSON,10,mΩ,,,"vset[vbat,4.2,100e-6,0]
+vset[pmid,15,100e-6,0]
+vset[bst2sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0x58, 0x00);
+	I2CWriteSameData(DEV_ADDR, 0x10, 0x43);
+	I2CWriteSameData(DEV_ADDR, 0x59, 0x01);
+	I2CWriteSameData(DEV_ADDR, 0x61, 0x0B);//		field[(WAKE_UP,1),(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_LSON,1),(BUBO_MODE,0)]","iset[pmid2sw,1,1e-3,0]",PMID-SW,MV&MI
+TM601,,LS_RDSON,8,mΩ,,,"vset[vbat,4.2,100e-6,0]
+vset[pmid,9,100e-6,0]
+vset[vdrv,5,100e-6,0]","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0x10, 0x43);
+	I2CWriteSameData(DEV_ADDR, 0x58, 0x20);
+	I2CWriteSameData(DEV_ADDR, 0x59, 0x02);
+	I2CWriteSameData(DEV_ADDR, 0x61, 0x0B);	//		field[(WAKE_UP,1),(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(D2A_BUBO_TM_HSON,1)]","iset[sw2pgnd,1,1e-6,0]",PGND-SW,MV&MI
+TM606,,BOOT_VOLTAGE_DROP,0.08,V,,,"vset[vbat,4.2,100e-6,0]
+vset[pmid,9,100e-6,0]
+vset[vdrv,5,100e-6,0]","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0x58, 0x00);
+	I2CWriteSameData(DEV_ADDR, 0x10, 0x43);
+	I2CWriteSameData(DEV_ADDR, 0x59, 0x01);
+	I2CWriteSameData(DEV_ADDR, 0x61, 0x0B);//		field[(WAKE_UP,1),(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_LSON,1),(BUBO_MODE,0)]","iset[bst,0.1,1e-6,0]",VDRV-BST,MV
+TM607,ZCD_NOC_Test,BUCK_LS_ZCD,0.1,A,,,"vset[vbat,4,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[vdrv,5,100e-6,0]
+vset[bst,5,100e-6,0]
+iset[sw2pgnd,0.5,1e-3,0]","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0x10, 0x43);
+	I2CWriteSameData(DEV_ADDR, 0x59, 0x01);
+	I2CWriteSameData(DEV_ADDR, 0x61, 0x0B);//		field[(WAKE_UP,1),(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_LSON,1),(BUBO_MODE,0)]
+	I2CWriteSameData(DEV_ADDR, 0x55, 0xB0);
+	I2CWriteSameData(DEV_ADDR, 0x58, 0x20);	//		field[(D2A_BUBO_TM_DIS_CLK,1),(EN_DTEST0,1),(DTEST0_MUX,48)]","iset[pgnd2sw,0.5,0,0]
+iset[pgnd2sw,-0.1,1e-3,0]",INT,"Toggle, MI"
+TM608,,BOOST_HS_ZCD,0.1,A,,,"vset[vbat,4.2,100e-6,0]
+vset[pmid,9,100e-6,0]
+vset[bst2sw,5,1e-3,0]
+iset[sw2pmid,0,1e-3,0]","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0x09, 0x09);
+	I2CWriteSameData(DEV_ADDR, 0x10, 0x43);
+	I2CWriteSameData(DEV_ADDR, 0x59, 0x02);
+	I2CWriteSameData(DEV_ADDR, 0x61, 0x0B);//		field[(WAKE_UP,1),(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_HSON,1),(BUBO_MODE,1)]
+	I2CWriteSameData(DEV_ADDR, 0x55, 0xB1);
+	I2CWriteSameData(DEV_ADDR, 0x58, 0x00);//D2A_BUBO_DIS_CLK=0
+	//		field[(D2A_BUBO_TM_DIS_CLK,1),(EN_DTEST0,1),(DTEST0_MUX,49)]","iset[sw2pmid,2,1e-6,0]
+iset[sw2pmid,0.9,1e-3,0]",INT,"Toggle, MI"
+TM609,,BOOST_HS_NEG,-3.3,A,,,"vset[vbat,3.5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst2sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]
+iset[sw2pmid,2,1e-3,0]","	entertestmode();
+	//---------------BOOST_NOC
+	I2CWriteSameData(DEV_ADDR, 0x09, 0x19);
+	I2CWriteSameData(DEV_ADDR, 0x10, 0x43);
+	I2CWriteSameData(DEV_ADDR, 0x58, 0x00);//D2A_BUBO_DIS_CLK=0
+	I2CWriteSameData(DEV_ADDR, 0x61, 0x0B);//		field[(WAKE_UP,1),(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(BUBO_MODE,1),(FPWM_EN,1)]
+	I2CWriteSameData(DEV_ADDR, 0x55, 0xB1);//		field[(EN_DTEST0,1),(DTEST0_MUX,49)]
+	I2CWriteSameData(DEV_ADDR, 0x59, 0x02);//		field[(D2A_BUBO_TM_HSON,1)]","iset[sw2pmid,2,0,0]
+iset[sw2pmid,3.2,1e-3,0]",INT,"Toggle, MI"
+TM623,Trim_BUCK_HS_Gain,BUCK_HS_CS_GAIN,0.3,V,Y,,"vset[vbat,5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst2sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]","en_tm[]
+field[(WAKE_UP,1),(D2A_BUBO_TM_HSON,1),(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(BUBO_MODE,0),(D2A_BUBO_TM_FORCE_EN_CS,1),(EN_ATEST0,1),(EN_ATEST1,1)(D2A_BUBO_ATEST0,13),(D2A_BUBO_ATEST1,9)]
+field[(DIS_NTC_DETECTION_ANALOG,1)]
+","iset[pmid2sw,3,1e-3,0]",AMUX-NTC,MV
+TM624,Trim_BUCK_HS_Offset,BUCK_LS_CS_GAIN,0.3,V,Y,,"vset[vbat,5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[vdrv,5,100e-6,0]
+vset[vac3,5,100e-6,0]
+","en_tm[]
+field[(WAKE_UP,1),(D2A_BUBO_TM_LSON,1),(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(BUBO_MODE,0),(D2A_BUBO_TM_FORCE_EN_CS,1),(EN_ATEST0,1),(EN_ATEST1,1)(D2A_BUBO_ATEST0,13),(D2A_BUBO_ATEST1,9)]
+field[(DIS_NTC_DETECTION_ANALOG,1)]","iset[pgnd2sw,3,1e-3,0]",AMUX-NTC,MV
+TM625,Trim_BOOST_HS_Gain,BOOST_HS_CS_GAIN,0.3,V,Y,,"vset[vbat,5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst2sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]","en_tm[]
+field[(WAKE_UP,1),(D2A_BUBO_TM_HSON,1),(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(BUBO_MODE,1),(FPWM_EN,1)(D2A_BUBO_TM_FORCE_EN_CS,1),(EN_ATEST0,1),(EN_ATEST1,1)(D2A_BUBO_ATEST0,13),(D2A_BUBO_ATEST1,9)]
+field[(DIS_NTC_DETECTION_ANALOG,1)]","iset[sw2pmid,3,1e-3,0]",AMUX-NTC,MV
+TM626,Trim_BOOST_LS_Gain,BOOST_LS_CS_GAIN,0.3,V,Y,,"vset[vbat,5,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[vdrv,5,100e-6,0]","en_tm[]
+field[(WAKE_UP,1),(D2A_BUBO_TM_LSON,1),(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(BUBO_MODE,1),(D2A_BUBO_TM_FORCE_EN_CS,1),(EN_ATEST0,1),(EN_ATEST1,1)(D2A_BUBO_ATEST0,13),(D2A_BUBO_ATEST1,9)]
+field[(DIS_NTC_DETECTION_ANALOG,1)]","iset[sw2pgnd,3,1e-3,0]",AMUX-NTC,MV
+TM627,,TRIKEL_CURRENT,0.2,A,,,"vset[vbat,4.1,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst2sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]","en_tm[]
+field[(WAKE_UP,1),(D2A_BUBO_TM_HSON,1),(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(BUBO_MODE,0),(D2A_BUBO_TM_FORCE_EN_CS,1),(ITRIKLE,0)]
+field[(D2A_OVRD_SEL,3)]
+delay[5e-5]
+field[(OVRD_VALUE,2)]
+field[(EN_DTEST0,1),(DTEST0_MUX,56)]
+field[(D2A_BUBO_TM_HSON,0),(D2A_BUBO_TM_LSON,1)]
+field[(EN_DTEST0,1),(DTEST0_MUX,50)]
+delay[1e-3]","		entertestmode();
+I2CWriteSameData(DEV_ADDR, 0x0B, 0x00);// (ITRIKLE,0)
+I2CWriteSameData(DEV_ADDR, 0x58, 0x20);
+I2CWriteSameData(DEV_ADDR, 0x10, 0x43);
+I2CWriteSameData(DEV_ADDR, 0x59, 0x82);
+I2CWriteSameData(DEV_ADDR, 0x61, 0x0B);
+I2CWriteSameData(DEV_ADDR, 0x67, 0x03);//		
+I2CWriteSameData(DEV_ADDR, 0x68, 0x20);//
+delay_ms(1);
+I2CWriteSameData(DEV_ADDR, 0x55, 0xB8);
+iset[pmid2sw,-0,9,0,0]
+iset[pmid2sw,-0.4,1e-3,0]
+
+entertestmode();
+I2CWriteSameData(DEV_ADDR, 0x0B, 0x00);// (ITRIKLE,0)
+I2CWriteSameData(DEV_ADDR, 0x58, 0x20);
+I2CWriteSameData(DEV_ADDR, 0x10, 0x43);
+I2CWriteSameData(DEV_ADDR, 0x59, 0x81);
+I2CWriteSameData(DEV_ADDR, 0x61, 0x0B);
+I2CWriteSameData(DEV_ADDR, 0x67, 0x03);//	
+I2CWriteSameData(DEV_ADDR, 0x68, 0x20);
+delay_ms(1);
+I2CWriteSameData(DEV_ADDR, 0x55, 0xB2);
+delay_ms(1);
+iset[pgnd2sw,-0.4,0,0]
+delay[6e-3]
+iset[pgnd2sw,0.1,1e-3,0]",INT toggle (Ipmid2sw+Ipgnd2sw)/2,MI
+TM628,,TRICKLE_CURRENT2,0.4,A,,,"vset[vbat,4.1,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst2sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]","en_tm[]
+field[(WAKE_UP,1),(D2A_BUBO_TM_HSON,1),(D2A_BUBO_EN_FORCE_ON,1),(D2A_BUBO_TM_DIS_CLK,1),(BUBO_MODE,0),(D2A_BUBO_TM_FORCE_EN_CS,1),(ITRIKLE,1)]
+field[(D2A_OVRD_SEL,3)]
+delay[5e-5]
+field[(OVRD_VALUE,2),(D2A_BUBO_EN_FORCE_ON,1)]
+field[(EN_DTEST0,1),(DTEST0_MUX,56)]
+field[(D2A_BUBO_TM_HSON,0),(D2A_BUBO_TM_LSON,1)]
+field[(EN_DTEST0,1),(DTEST0_MUX,50)]
+delay[1e-3]","		entertestmode();
+I2CWriteSameData(DEV_ADDR, 0x0B, 0x00);// (ITRIKLE,0)
+I2CWriteSameData(DEV_ADDR, 0x58, 0x20);
+I2CWriteSameData(DEV_ADDR, 0x10, 0x43);
+I2CWriteSameData(DEV_ADDR, 0x59, 0x82);
+I2CWriteSameData(DEV_ADDR, 0x61, 0x0B);
+I2CWriteSameData(DEV_ADDR, 0x67, 0x03);//		
+I2CWriteSameData(DEV_ADDR, 0x68, 0x20);//
+delay_ms(1);
+I2CWriteSameData(DEV_ADDR, 0x55, 0xB8);
+iset[pmid2sw,-0,9,0,0]
+iset[pmid2sw,-0.4,1e-3,0]
+
+entertestmode();
+I2CWriteSameData(DEV_ADDR, 0x0B, 0x00);// (ITRIKLE,0)
+I2CWriteSameData(DEV_ADDR, 0x58, 0x20);
+I2CWriteSameData(DEV_ADDR, 0x10, 0x43);
+I2CWriteSameData(DEV_ADDR, 0x59, 0x81);
+I2CWriteSameData(DEV_ADDR, 0x61, 0x0B);
+I2CWriteSameData(DEV_ADDR, 0x67, 0x03);//	
+I2CWriteSameData(DEV_ADDR, 0x68, 0x20);
+delay_ms(1);
+I2CWriteSameData(DEV_ADDR, 0x55, 0xB2);
+delay_ms(1);
+iset[pgnd2sw,-0.4,0,0]
+delay[6e-3]
+iset[pgnd2sw,0.1,1e-3,0]","INT Toggle,MI (Ipmid2sw+Ipgnd2sw)/2",MI
+TM629,BUCK_IPEAK_TEST,BUCK_ILIMIT,2.5(without trim 4),A,,,"vset[vbat,4.2,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst2sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0x10, 0x43);
+	I2CWriteSameData(DEV_ADDR, 0x59, 0x86);//		field[(WAKE_UP,1),(D2A_BUBO_TM_HSON,1),(BUBO_MODE,0),(D2A_BUBO_TM_FORCE_EN_CS,1),(D2A_BUBO_TM_LOW_ILIMT_OFF,1)]
+	I2CWriteSameData(DEV_ADDR, 0x65, 0x04);
+	I2CWriteSameData(DEV_ADDR, 0x67, 0x03);//		field[(DIS_NTC_DETECTION_ANALOG,1),(D2A_OVRD_SEL,3)]
+	delay_ms(1);
+	I2CWriteSameData(DEV_ADDR, 0x68, 0x30);//		field[(OVRD_VALUE,3)]
+	I2CWriteSameData(DEV_ADDR, 0x61, 0x0B);//		field[(D2A_BUBO_EN_FORCE_ON,1),],  field[(D2A_BUB0_ATEST1,10),(D2A_BUB0_ATEST0,8)]
+	delay_ms(1);
+	I2CWriteSameData(DEV_ADDR, 0x58, 0x20);//		field[(D2A_BUBO_TM_DIS_CLK,1)]
+	I2CWriteSameData(DEV_ADDR, 0x55, 0xB8);//		field[(EN_DTEST0,1),(DTEST0_MUX,56)]
+	delay_ms(1);
+	I2CWriteSameData(DEV_ADDR, 0x56, 0x06);	//		field[(EN_ATEST0,1),(EN_ATEST1,1)]
+	delay_ms(1);
+	I2CWriteSameData(DEV_ADDR, 0x61, 0x0B);//		field[(IPEAK_LIMIT,1)]
+	delay_ms(1);
+	I2CWriteSameData(DEV_ADDR, 0x59, 0x86);//		field[(D2A_BUBO_TM_LOW_ILIMT_OFF,1)]
+	delay_ms(1);","iset[pmid2sw,2,0,0]
+iset[pmid2sw,3,1e-3,0]
+
+I2CWriteSameData(DEV_ADDR, 0x56, 0x06);
+I2CWriteSameData(DEV_ADDR, 0x5A, 0xA8);
+
+I2CWriteSameData(DEV_ADDR, 0x59, 0x82);
+I2CWriteSameData(DEV_ADDR, 0x61, 0x0B);
+
+I2CWriteSameData(DEV_ADDR, 0x61, 0x0D);
+","INT Toggle
+AMUX-NTC, MV
+AMUX-NTC, MV
+AMUX-NTC, MV",MI
+TM630,BOOST_IPEAK_TEST,BOOST_ILIMT,2.5(without trim 4),A,,,"vset[vbat,4.2,100e-6,0]
+vset[pmid,5,100e-6,0]
+vset[bst2sw,5,1e-3,0]
+vset[vdrv,5,100e-6,0]","en_tm[]
+field[(WAKE_UP,1),(D2A_BUBO_TM_LSON,1),(BUBO_MODE,1),(D2A_BUBO_TM_FORCE_EN_CS,1),(D2A_BUBO_TM_LOW_ILIMT_OFF,1)]
+field[(DIS_NTC_DETECTION_ANALOG,1),(D2A_OVRD_SEL,3)]
+delay[5e-5]
+field[(OVRD_VALUE,3)]
+field[(D2A_BUBO_EN_FORCE_ON,1),]
+field[(D2A_BUBO_ATEST1,10),(D2A_BUBO_ATEST0,12)]
+delay[5e-5]
+field[(D2A_BUBO_TM_DIS_CLK,1)]
+field[(EN_DTEST0,1),(DTEST0_MUX,56)]
+delay[1e-3]
+field[(EN_ATEST0,1),(EN_ATEST1,1)]
+delay[5e-5]
+field[(IPEAK_LIMIT,0)]
+dealy[1e-5]
+field[(D2A_BUBO_TM_LOW_ILIMT_OFF,0)]
+delay[5e-3]
+field[(IPEAK_LIMIT,1)]
+delay[5e-3]
+field[(IPEAK_LIMIT,2)]
+delay[5e-3]
+field[(IPEAK_LIMIT,3)]","delay[1e-3]
+iset[sw2pgnd,4,1e-3,0]","INT Toggle
+AMUX-NTC, MV
+AMUX-NTC, MV
+AMUX-NTC, MV",MI
+TM702,Trim_IBUS_SNS_Gain,IBUS_SNS_GAIN_TRIM,iset*0.2,V,Y,,"vset[vbat,4.2,100e-6,0]
+vset[pmid,9,100e-6,1]","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0x09, 0x09);
+	I2CWriteSameData(DEV_ADDR, 0x10, 0x43);
+	I2CWriteSameData(DEV_ADDR, 0x56, 0xCE);
+	I2CWriteSameData(DEV_ADDR, 0x57, 0x07);
+	I2CWriteSameData(DEV_ADDR, 0x65, 0x04);","iset[vbus2pmid,2,1e-3,0]",AMUX-NTC,MV
+TM703,Trim_IBUS_SNS_EA_Offset,IBUS_SNS_VOS_TRIM,,V,Y,,"vset[vbat,4.2,100e-6,0]
+vset[pmid,9,100e-6,1]","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0x09, 0x09);
+	I2CWriteSameData(DEV_ADDR, 0x10, 0x43);
+	I2CWriteSameData(DEV_ADDR, 0x56, 0xCE);
+	I2CWriteSameData(DEV_ADDR, 0x57, 0x07);
+	I2CWriteSameData(DEV_ADDR, 0x65, 0x04);
+	I2CWriteSameData(DEV_ADDR, 0x64, 0x01);","iset[vbus2pmid,2,1e-3,0]
+field[(ATEST0_MUX,27)]",AMUX-NTC,MV
+TM704,IBUS_TERM,"IBUS_TERM_200mA_Rise
+IBUS_TERM_200mA_Fall
+IBUS_TERM_200mA_Hys",200,mA,,,"vset[vbat,4.2,100e-6,0]
+vset[vbus,9,100e-6,1]","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0x0A, 0x00);//---CV=4.5V
+	I2CWriteSameData(DEV_ADDR, 0x56, 0x01);
+	I2CWriteSameData(DEV_ADDR, 0x57, 0x00);
+	I2CWriteSameData(DEV_ADDR, 0x10, 0x43);
+	I2CWriteSameData(DEV_ADDR, 0x55, 0x99);//		field[(WAKE_UP,1),(EN_DTEST0,1),(DTEST0_MUX,25)]
+	I2CWriteSameData(DEV_ADDR, 0xF5, 0x40);//		field[(TRIM_IBUS_OFF_TERM_FLT,1)]
+	I2CWriteSameData(DEV_ADDR, 0x0B, 0x07);//		field[(ITERM,7)], 200mA
+	I2CWriteSameData(DEV_ADDR, 0x58, 0x20);//		field[(D2A_BUBO_TM_DIS_CLK,1)]
+	I2CWriteSameData(DEV_ADDR, 0x61, 0x0B);//		field[(D2A_BUBO_EN_FORCE_ON,1)]","delay[4e-3]
+iset[vbus2pmid,0.195,1e-3,0]
+iset[vbus2pmid,0.395,1e-3,0]
+delay[4e-3]
+iset[vbus2pmid,0.295,1e-3,0]
+iset[vbus2pmid,0.105,1e-3,0]","INT Toggle
+",MI
+TM900_AMUX,AMUX_VBAT_TEST,vbat channel acc,,,,,"vset[vbat,4.2,100e-6,0]
+","	entertestmode();
+	I2CWriteSameData(DEV_ADDR, 0x10, 0x43);
+	I2CWriteSameData(DEV_ADDR, 0x11, 0x10);//		field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,15)]
+	I2CWriteSameData(DEV_ADDR, 0x56, 0xFA);//		field[(EN_ATEST0,1),(ATEST0_MUX,31)]","	AMUX-MV
+I2CWriteSameData(DEV_ADDR, 0x56, 0x00);
+	I2CWriteSameData(DEV_ADDR, 0x10, 0x43);
+	I2CWriteSameData(DEV_ADDR, 0x11, 0x1F);//		field[(WAKE_UP,1),(AMUX_EN,1),(CHANNEL_MUX,15)]delay[3e-3]
+AMUX-MI
+I2CWriteSameData(DEV_ADDR, 0x11, 0x10);//		field[(CHANNEL_MUX,0)]
+AMUX-MI",AMUX,MV

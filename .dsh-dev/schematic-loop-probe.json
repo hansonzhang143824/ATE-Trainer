@@ -1,0 +1,59 @@
+{
+  "at": "2026-09-19T12:49:32.358Z",
+  "mode": "dispatch-profile",
+  "parentAgentId": "session-5fe0da46-7aaa-40d2-bb75-eb08ffda0096",
+  "parentHeader": {
+    "cwd": "D:\\Newtest\\DSH\\ATE-Coding-Flow",
+    "agentPreset": null
+  },
+  "ok": true,
+  "dispatched": true,
+  "refusalReason": null,
+  "receiptPath": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\team\\artifacts\\dispatch-receipts\\ptc-schematic-expert-probe-schematic-loop-8-TM106.json",
+  "receipt": {
+    "profileId": "ptc-schematic-expert",
+    "profileVersion": "v2",
+    "executionClass": "input-schematic",
+    "targetTms": [
+      "TM106"
+    ],
+    "label": "PTC schematic expert",
+    "digest": "43ed791a635513a4e62bab50ade1ecd5e8e01a21cf8955d3d882d5d050b7a940",
+    "childSessionId": "ee061659-0718-47bc-b30a-cef3af47dc7e"
+  },
+  "ownership": {
+    "ok": true,
+    "stage": "INPUT_SYNC",
+    "registryOwner": "captain",
+    "ownershipNote": "registry owner for INPUT_SYNC is captain; the profile's ownerRole is dispatched as a source role of that stage"
+  },
+  "runKeys": [
+    "dispose",
+    "id",
+    "localAgent",
+    "result"
+  ],
+  "runIdentity": {
+    "id": "ee061659-0718-47bc-b30a-cef3af47dc7e",
+    "agentId": null,
+    "subagentId": null,
+    "sessionId": null,
+    "status": null,
+    "stopReason": null
+  },
+  "settled": {
+    "keys": [
+      "output",
+      "stopReason",
+      "structured"
+    ],
+    "stopReason": "completed",
+    "output": "[{\"type\":\"reasoning\",\"text\":\"All three exit 0. Gate JSON status \\\"ready\\\". Note the declared test item TM106 — nothing to report specifically beyond the run. TM106 is probably the test item ID. I'm asked to reply with JSON {\\\"status\\\":\\\"done\\\",\\\"outputs\\\":[...],\\\"gates\\\":[...]}.\\n\\nI should call structured_output. But the user asked me to \\\"Reply with a JSON object {\\\"status\\\":\\\"done\\\",\\\"outputs\\\":[\\\"...\\\"],\\\"gates\\\":[\\\"...\\\"]}\\\". The structured_output tool schema has status, outputs, gates, question. So I'll call that.\\n\\nOutputs: the seven produced files. Gates: commands/exit codes.\\n\\nI'll "
+  },
+  "finalIdentity": {
+    "id": "ee061659-0718-47bc-b30a-cef3af47dc7e",
+    "agentId": null,
+    "subagentId": null,
+    "sessionId": null
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "tm": "TM106",
+  "status": "verified",
+  "source": {
+    "path": "project/DALI/reg_config/tm106.sv",
+    "sha256": "3c1a61b0ce4daf7a12174fa0bce71217467a3d4ff11d3a86830dc4b778977a6b",
+    "testItem": "TM106"
+  },
+  "dftBinding": {
+    "path": "D:\\Newtest\\DSH\\ATE-Coding-Plat\\project\\DALI\\Output_Global_Material\\dft\\TM106\\dft-meta.json",
+    "code2Fields": [
+      "(DMUX_EN,1),(DMUX_SEL,19)"
+    ],
+    "verifiedAgainstDftCode2": true
+  },
+  "orderedWrites": [
+    {
+      "sourceLine": 14,
+      "sourceText": "I2CWriteSameData(DEV_ADDR, 0x56, 0x13);  // Write reg 0x56 = 19",
+      "address": "0X56",
+      "value": "0X13"
+    },
+    {
+      "sourceLine": 15,
+      "sourceText": "I2CWriteSameData(DEV_ADDR, 0x57, 0x08);  // Write reg 0x57 = 8",
+      "address": "0X57",
+      "value": "0X08"
+    }
+  ],
+  "implementation": {
+    "renderer": "scripts/render_register_writes.py",
+    "rule": "Copy sourceText verbatim in order after signed entertestmode()."
+  }
+}

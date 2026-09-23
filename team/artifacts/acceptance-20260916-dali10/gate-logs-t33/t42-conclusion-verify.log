@@ -1,0 +1,49 @@
+=== ① StdAfx.h 复合宏（逐字，含行号）===
+  L211  #define K48_ACM5_AMP_REF 48
+  L377  #define K_FPVIH_TO_BST_A 46,48,76 // FPVIe[H] -> BST: K46_BUS0_FH_SW1 + K48_ACM5_AMP_REF + K76_ACM_BST
+  L452  #define K_FPVIL_TO_BST_B 109,110 // FPVIe[L] -> BST: K109_BUSL1_PB0 + K110_ACM18_BST
+  L514  #define K_BST_QTMU 141,46,48,76 // QTMU[S10_CH0_A] -> BST: K141_QTMUA_BUS0H + K46_BUS0_FH_SW1 + K48_ACM5_AMP_REF + K76_ACM_BST
+  L556  #define K_BST_QVMH 137,46,48,76 // QVM[高端] -> BST: K137_QVMH_BUS1 + K46_BUS0_FH_SW1 + K48_ACM5_AMP_REF + K76_ACM_BST
+  L620  #define K_BST_ACM 48,76 // ACM200[] -> BST: K48_ACM5_AMP_REF + K76_ACM_BST
+
+=== ② 全文件中 "ACM" 与 "BST" 同现的复合宏（看是否有任何一条用 K110）===
+  L204  #define K43_ACM4_BST2 43
+  L239  #define K76_ACM_BST 76
+  L279  #define K110_ACM18_BST 110
+  L377  #define K_FPVIH_TO_BST_A 46,48,76 // FPVIe[H] -> BST: K46_BUS0_FH_SW1 + K48_ACM5_AMP_REF + K76_ACM_BST
+  L449  #define K_FPVIL_TO_BST2_A 41,43 // FPVIe[L] -> BST2: K41_BUS0_FL_BST + K43_ACM4_BST2
+  L450  #define K_FPVIL_TO_BST2_B 138,139,145,146,41,43 // FPVIe[L] -> BST2: K138_QVML_BUS0 + K139_QVML_BUS1 + K145_DCM_BUS0_L + K146_DCM_BUS1_L + K41_BUS0_FL_BST + K43_ACM4_BST2
+  L451  #define K_FPVIL_TO_BST_A 109,110,138,139,145,146 // FPVIe[L] -> BST: K109_BUSL1_PB0 + K110_ACM18_BST + K138_QVML_BUS0 + K139_QVML_BUS1 + K145_DCM_BUS0_L + K146_DCM_BUS1_L
+  L452  #define K_FPVIL_TO_BST_B 109,110 // FPVIe[L] -> BST: K109_BUSL1_PB0 + K110_ACM18_BST
+  L514  #define K_BST_QTMU 141,46,48,76 // QTMU[S10_CH0_A] -> BST: K141_QTMUA_BUS0H + K46_BUS0_FH_SW1 + K48_ACM5_AMP_REF + K76_ACM_BST
+  L555  #define K_BST2_QVML 138,41,43 // QVM[低端] -> BST2: K138_QVML_BUS0 + K41_BUS0_FL_BST + K43_ACM4_BST2
+  L556  #define K_BST_QVMH 137,46,48,76 // QVM[高端] -> BST: K137_QVMH_BUS1 + K46_BUS0_FH_SW1 + K48_ACM5_AMP_REF + K76_ACM_BST
+  L557  #define K_BST_QVML 109,110,139 // QVM[低端] -> BST: K109_BUSL1_PB0 + K110_ACM18_BST + K139_QVML_BUS1
+  L619  #define K_BST2_ACM 43 // ACM200[] -> BST2: K43_ACM4_BST2
+  L620  #define K_BST_ACM 48,76 // ACM200[] -> BST: K48_ACM5_AMP_REF + K76_ACM_BST
+
+=== ③ 网表控制组复核（site-5 ACM200 F 脚）===
+  S5_ACM200_FH<n> 设计ator 的后缀集合 = []
+  规模 = 0（ACM200 规格 24 通道 ⇒ 后缀即通道号）
+  ch5 (K48.6)    K48_ACM_BST_S1.6         net=None                             peers=None
+  ch5 (K46.2)    K46_BUS_FH_BST_S1.2      net=None                             peers=None
+  ch18 (K110.6)  K110_BST_S1.6            net=NetK109_BUSL_PB0_S1_4            peers=['', 'K109_BUSL_PB0_S1', 'K110_BST_S1']
+  ch18 (K109.4)  K109_BUSL_PB0_S1.4       net=NetK109_BUSL_PB0_S1_4            peers=['', 'K109_BUSL_PB0_S1', 'K110_BST_S1']
+
+=== ④ 对 t30 的影响：现行 SetOn 对两套期望的满足度 ===
+  TM600_HS_RDSON 实际闭合 = [13, 57, 60, 61, 83, 85, 126]
+     契约现状 aliasResolution[bst2sw] (pin-18 口径)   期望=[60, 61, 83, 110] 缺失=[110]
+     t42 判定后 (pin-5 口径, 建议值)                    期望=[48, 61, 76]     缺失=[48, 76]
+     契约 ACM200 侧 pinRouteTable 列6               期望=[48, 76]         缺失=[48, 76]
+  TM601_LS_RDSON 实际闭合 = [13, 57, 60, 61, 85, 126, 154, 155]
+     契约现状 aliasResolution[bst2sw] (pin-18 口径)   期望=[60, 61, 83, 110] 缺失=[83, 110]
+     t42 判定后 (pin-5 口径, 建议值)                    期望=[48, 61, 76]     缺失=[48, 76]
+     契约 ACM200 侧 pinRouteTable 列6               期望=[48, 76]         缺失=[48, 76]
+
+=== ⑤ 我方 t30 断言的硬编码检查（契约驱动是否成立）===
+  源码中出现的候选字面量 = ['110']
+  含 0x                   = True
+  含 closedRelayNumbers   = True
+  含 relaySet             = True
+  含 needsClosed          = True
+  ⇒ 若源码中不出现 48/76/110 这类具体 K 号字面量，则期望集合完全来自契约 ⇒ 契约 rev 后自动更新

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schematic-ir.schema.json",
+  "title": "ATE schematic intermediate representation",
+  "type": "object",
+  "required": ["runId", "scope", "sources", "nets", "paths", "hazards", "openQuestions"],
+  "properties": {
+    "runId": {"type": "string", "minLength": 1},
+    "scope": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "sources": {"type": "array", "items": {"$ref": "#/$defs/evidence"}, "minItems": 1},
+    "nets": {"type": "array", "items": {"type": "object", "required": ["name", "members", "evidence"], "properties": {"name": {"type": "string"}, "members": {"type": "array", "items": {"type": "string"}}, "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}}}, "additionalProperties": true}},
+    "paths": {"type": "array", "items": {"type": "object", "required": ["id", "from", "to", "resources", "confidence"], "properties": {"id": {"type": "string"}, "from": {"type": "string"}, "to": {"type": "string"}, "resources": {"type": "array", "items": {"type": "string"}}, "confidence": {"enum": ["direct", "derived", "assumed"]}}, "additionalProperties": true}},
+    "hazards": {"type": "array", "items": {"type": "object", "required": ["kind", "description", "mitigationRequired"], "properties": {"kind": {"type": "string"}, "description": {"type": "string"}, "mitigationRequired": {"type": "boolean"}}, "additionalProperties": true}},
+    "validation": {"type": "object"},
+    "openQuestions": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {"evidence": {"type": "object", "required": ["path", "locator", "sha256"], "properties": {"path": {"type": "string"}, "locator": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[A-Fa-f0-9]{64}$"}}, "additionalProperties": true}},
+  "additionalProperties": true
+}

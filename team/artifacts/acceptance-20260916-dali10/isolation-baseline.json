@@ -1,0 +1,1194 @@
+{
+  "runId": "acceptance-20260916-dali10",
+  "capturedAt": "2026-09-16T13:40:32+08:00",
+  "purpose": "run-start isolation snapshot: proves D:/PROJECT6-DALI/devel is untouched and gives before-hashes for the debug copy",
+  "productionTree": {
+    "path": "D:/PROJECT6-DALI/devel",
+    "policy": "read-only",
+    "fileCount": 123,
+    "aggregateSha256": "9daceeed3769fa8d4b45c0ca4fcf721f36f2cc5dcb8120608352699660b5a8b3",
+    "files": {
+      "F12011-QA.LDF": {
+        "sha256": "c7edfe78b772082625f14395162c4f296f1abdc9e673d74d717a3a7ce79a0e85",
+        "size": 2648,
+        "mtime": 1786275069
+      },
+      "F12011-QA.pgs": {
+        "sha256": "23a4cf9bc95bf8cf86613dcaac0a0dc30865aadd7275a92ecc32db8f8bad8d76",
+        "size": 260021,
+        "mtime": 1786275069
+      },
+      "F12011.acvec": {
+        "sha256": "5a836ca327959dc9ebf76837e07fa31d68e89832638fb74a94c1f5dc1de0f9b5",
+        "size": 7879,
+        "mtime": 1786275069
+      },
+      "F12011.dll": {
+        "sha256": "8bc4f5ed1701db1714ae848dcc8e44bd1bd6a3592580d76c4110cdb17d2d0e70",
+        "size": 751104,
+        "mtime": 1789310413
+      },
+      "F12011.LDF": {
+        "sha256": "7bca75d4962776e70920b910f15a501da5029be126792798851408760e189f32",
+        "size": 2648,
+        "mtime": 1786275069
+      },
+      "F12011.pdb": {
+        "sha256": "36a42b4c84da48c29e3f6e4cdf9b4ceb3c36ccc4ac9dcbd250d21ec98e611bcc",
+        "size": 21393408,
+        "mtime": 1789308873
+      },
+      "F12011.pgs": {
+        "sha256": "2ca11c9efb7ec78cc1a8eae491d5b47481832f6202edc0d2d1ad10cf82c9db0e",
+        "size": 10916,
+        "mtime": 1786275217
+      },
+      "F12011.xls": {
+        "sha256": "cfb7a6a994d79dd1d56463275bd00c3047c2ddb6b799f1bf642d563c28da8784",
+        "size": 75776,
+        "mtime": 1787565169
+      },
+      "F12011_A1.acvec": {
+        "sha256": "466bc31ffa816599b3a4498594788edb1ea072833d3ac9372c84f57a9a47e77f",
+        "size": 171023,
+        "mtime": 1786275069
+      },
+      "NU1201.spec": {
+        "sha256": "c7783861f21654854560cfdcc447bc93d459784caec4f235d3547f7156d48c8b",
+        "size": 3779,
+        "mtime": 1788015849
+      },
+      "NU1201.treg": {
+        "sha256": "a40f74e859d45c9a3a0b355642a1dc4a34036673a29e2b8723a31c844d4e32fa",
+        "size": 26723,
+        "mtime": 1788016455
+      },
+      "PROJECT6-DALI.pfl": {
+        "sha256": "283050847c2079cd02201d5c889fe23b32e29e5ace521f26bc1985ba45b06d61",
+        "size": 1114,
+        "mtime": 1786275069
+      },
+      "source/BoardCheck.cpp": {
+        "sha256": "e35be3c40368e13af80bcb71b1349ad6ca7921fa39ce3e27e4b03bc26df21402",
+        "size": 197945,
+        "mtime": 1788411456
+      },
+      "source/BoardCheck.h": {
+        "sha256": "ad562c1c14929bbf71f5549269ce6c44c16352eb4d4299a130952f714d5d83ea",
+        "size": 32536,
+        "mtime": 1786522018
+      },
+      "source/Coutlier.cpp": {
+        "sha256": "5cad920e78504b3b96dc9a008d371016b239dbd4151c550cf979dc641578ae6c",
+        "size": 11649,
+        "mtime": 1786522018
+      },
+      "source/Coutlier.h": {
+        "sha256": "7d16c965b404247f81b3771faeaff0257c253144e212bd6691290bdcc2f749e7",
+        "size": 4446,
+        "mtime": 1786522018
+      },
+      "source/diags.cpp": {
+        "sha256": "085435bd604c8fb587e84f1bbd90052dda173e360b30c1dd602fc6ba15d0a660",
+        "size": 7171,
+        "mtime": 1786275069
+      },
+      "source/F12011.cpp": {
+        "sha256": "879600d46c3293cc5e176d1f49eac833af6d2c0751ff77ca6607df0e29003e31",
+        "size": 960,
+        "mtime": 1786275069
+      },
+      "source/F12011.dsp": {
+        "sha256": "bdb6a04ea55c837502897ee0f07f228c9f40f33df55324f07e8fe1099acadd01",
+        "size": 72604,
+        "mtime": 1789291221
+      },
+      "source/F12011.dsw": {
+        "sha256": "f7af7990ea6c08a12d42efa01ff2f2804b360a3e7f31e7746a5beae9f187fc49",
+        "size": 537,
+        "mtime": 1786275069
+      },
+      "source/F12011.sln": {
+        "sha256": "ae21376b5b6533c22adcb201f03e09212887699d7db78372f7edfd590baad2a1",
+        "size": 957,
+        "mtime": 1786275069
+      },
+      "source/F12011.v12.suo": {
+        "sha256": "a5447abf50cdc5ad4cb828abe7f59fbf99984023db634e88992f5e33bf2483b0",
+        "size": 43008,
+        "mtime": 1789295787
+      },
+      "source/F12011.vcproj": {
+        "sha256": "6f622c90730e48d04e0a9bc29f462f288e7023f611c1d49078d433d5d85125af",
+        "size": 7202,
+        "mtime": 1789291221
+      },
+      "source/F12011.vcxproj": {
+        "sha256": "7ece05445bcf9c8f4f11a88287f8dc3647460a17ed3021ca8d35a04c792b7bfa",
+        "size": 22108,
+        "mtime": 1789291221
+      },
+      "source/F12011.vcxproj.filters": {
+        "sha256": "d5edb625cafedc5845834d82c98bc46b36cde920192aae867a703b6bc133ce03",
+        "size": 3552,
+        "mtime": 1788360140
+      },
+      "source/F12011.vcxproj.user": {
+        "sha256": "aa08ab489639bcb8665ac9b1db3cb443ce42b6184c8842ac1a9227ea47f65246",
+        "size": 1021,
+        "mtime": 1789291221
+      },
+      "source/FMEA.cpp": {
+        "sha256": "4cd9b3bfa357cb11d328f5672782e5e8f3f742546c1a1299967537d8bd256618",
+        "size": 7557,
+        "mtime": 1786275069
+      },
+      "source/FMEA.h": {
+        "sha256": "4159bae8c096ea744648cece6d8ba1653dfd6283d71335553f549cf655b1ff89",
+        "size": 2080,
+        "mtime": 1786275069
+      },
+      "source/inireader.cpp": {
+        "sha256": "1dedaac73c9de5d3a6df2f5276f59d000f5ff77540414917ac6e423fb70c62a9",
+        "size": 36546,
+        "mtime": 1786275069
+      },
+      "source/inireader.h": {
+        "sha256": "14531298a57e8b43786174d6e2e9bf14ead7152350fc13dfb4ae5ab127419d78",
+        "size": 7399,
+        "mtime": 1786275069
+      },
+      "source/LogDataStruct.h": {
+        "sha256": "7d84cfd0a8b3e3ed8c5aa120f72387902542da22eed5aebeeedecce93eae4435",
+        "size": 18132,
+        "mtime": 1786275069
+      },
+      "source/mylib.h": {
+        "sha256": "1d1d85b88e30f56a7ce6f14fc3907106178982dbb014fe1be7d29a6e2d1d41a9",
+        "size": 21989,
+        "mtime": 1786275069
+      },
+      "source/Pin_Channel_define.h": {
+        "sha256": "d5ce16a0ae79549424110755e99d9ae74cce79d18b8a1eaae3fd5588df285e35",
+        "size": 10934,
+        "mtime": 1786275069
+      },
+      "source/resource.h": {
+        "sha256": "750e2f00a8bb27b33a45ba726a72ba325935354a0fed625dec91794d7c0f46dd",
+        "size": 646,
+        "mtime": 1786275069
+      },
+      "source/Shmoo.cpp": {
+        "sha256": "0d0e46a1f6bdf7a05e15884c73aaf53e3d3d00b1f10d3bff87acaff4f42a6314",
+        "size": 9071,
+        "mtime": 1786275069
+      },
+      "source/Shmoo.h": {
+        "sha256": "efb9dec48cb9a25ce2c23563b5e9269f82fc7b876663932f267894729a3b2b91",
+        "size": 1246,
+        "mtime": 1786275069
+      },
+      "source/spec.cpp": {
+        "sha256": "43c968bebf31aa81c078af75f8e12da78f7ca61e38c80b4e270bdd31018f7d45",
+        "size": 43529,
+        "mtime": 1786522018
+      },
+      "source/spec.h": {
+        "sha256": "42f12602f1aefba4c695c749d92d7832ff6c1ae5e047d11488d5712e0815bb07",
+        "size": 16870,
+        "mtime": 1786522018
+      },
+      "source/StdAfx.cpp": {
+        "sha256": "22edd78e8635b5c6e40b54140125cf40fa0439de0eece7032bd3dab29aa77b3d",
+        "size": 2320,
+        "mtime": 1786275069
+      },
+      "source/StdAfx.h": {
+        "sha256": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+        "size": 56968,
+        "mtime": 1788060005
+      },
+      "source/StdAfx.h.bak_20260816": {
+        "sha256": "85f415660470d1b4cbc98750545722f4f11630b7eabcc7a1bdc174b28d1abb0f",
+        "size": 66748,
+        "mtime": 1786370740
+      },
+      "source/StdAfx.h.bak_unify_busl_20260816": {
+        "sha256": "85f415660470d1b4cbc98750545722f4f11630b7eabcc7a1bdc174b28d1abb0f",
+        "size": 66748,
+        "mtime": 1786370740
+      },
+      "source/StdAfx.h.bak_unify_k7_20260816": {
+        "sha256": "1f9ac1ae98d33bc14bca7eb2dc188b96e385ee9b81e053fdeff5d1b21df713b8",
+        "size": 66371,
+        "mtime": 1786878920
+      },
+      "source/sub.cpp": {
+        "sha256": "e86d49bef7ae725106311d8205df6dbc11184c7a0920eeaed416a515ac391470",
+        "size": 121909,
+        "mtime": 1788104040
+      },
+      "source/sub.cpp.bak_tm403_425": {
+        "sha256": "733f39c5731b892ab2113da5b36cc3c548966647c20fdb0c3c618bff0f193d2b",
+        "size": 108673,
+        "mtime": 1786360261
+      },
+      "source/sub.h": {
+        "sha256": "fe4e2f504f63700233011ce7413a07469c63e1b74669c40788a2aaacc698887c",
+        "size": 9453,
+        "mtime": 1788057669
+      },
+      "source/tempchar.cpp": {
+        "sha256": "10b0baa322802355dfb9295f0c2a4da50a11044579de962159bc0683ef61a7d4",
+        "size": 84016,
+        "mtime": 1788057054
+      },
+      "source/tempchar.h": {
+        "sha256": "dbdbfcbdfa1f67b70f21663a88f288bf3fe2f8b56f7dd25e63f5385e144375ea",
+        "size": 13081,
+        "mtime": 1788056978
+      },
+      "source/test.cpp": {
+        "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+        "size": 434629,
+        "mtime": 1789310401
+      },
+      "source/test.cpp.bak_bst_sw_fix_20260826": {
+        "sha256": "a2b02de8b5953bb78c0ad84cec4b287abde43cf6e44cd059802b32a8ccd562c3",
+        "size": 354289,
+        "mtime": 1787736014
+      },
+      "source/test.cpp.bak_tm403_425": {
+        "sha256": "d89be15fd803b9bc83e9b93daaf97e7a0f2fc9fe3f2216a5f1138d9a887b3a85",
+        "size": 269010,
+        "mtime": 1786360261
+      },
+      "source/test.cpp.bak_tm607_609_20260819": {
+        "sha256": "aed0d05b256b068280e6d7bc094248810a622b55912c4f5cdbb81c198f39abd0",
+        "size": 327825,
+        "mtime": 1787153859
+      },
+      "source/test.cpp.bak_tm614_616_20260826": {
+        "sha256": "8b2848785940134de51e9b29951ea9a40f9c37f749e5b1d417efd7b7da309218",
+        "size": 342868,
+        "mtime": 1787721318
+      },
+      "source/Test_Method.cpp": {
+        "sha256": "045856d9832e62e0683a0807bfca1bc75d7abef6b46ac9ff3a218b8232715262",
+        "size": 135395,
+        "mtime": 1786522018
+      },
+      "source/Test_Method.h": {
+        "sha256": "a432f2b602f550a29dd6b76b78ac37245622a71efdcaa42d91ae77a40dc0ba56",
+        "size": 23381,
+        "mtime": 1786522018
+      },
+      "source/treg.cpp": {
+        "sha256": "ae86d1a1cdbd3ee1baed85d3435a46cb19d5803ae97c0faf0373e1ca91512489",
+        "size": 160192,
+        "mtime": 1786522018
+      },
+      "source/treg.h": {
+        "sha256": "e10c2ac7e2b53b043467ed1579e76de9c41bde2b6e7d5b787a3e0d8ccc262bbc",
+        "size": 51157,
+        "mtime": 1788060005
+      },
+      "source/Backup/test.cpp.before_TM1205_20260902_212452.bak": {
+        "sha256": "db088ac38206bfa68b62ba51d41c5b526cc97fd31a231f869666a707ffc513d8",
+        "size": 427706,
+        "mtime": 1788147742
+      },
+      "source/debug/BoardCheck.obj": {
+        "sha256": "6efeb911829f75a377f186c88accdbbb0c9c4908ba3f96197c4ec5e87c6b5d62",
+        "size": 5752086,
+        "mtime": 1789291298
+      },
+      "source/debug/Coutlier.obj": {
+        "sha256": "5c281bbdcf632065c2508d6db623fa4e0c155025fbd93369b9087369cc878dc9",
+        "size": 5622146,
+        "mtime": 1789291298
+      },
+      "source/debug/diags.obj": {
+        "sha256": "16576ee7d03b7d10d75cb003af9bc8300b9744a69610b25e5869d341547eeb39",
+        "size": 213315,
+        "mtime": 1789291297
+      },
+      "source/debug/F12011.Build.CppClean.log": {
+        "sha256": "86adc45e266e016028a0c660cef0ce2df8aca6af5b998c2d32017fa13d8fc865",
+        "size": 1562,
+        "mtime": 1789291289
+      },
+      "source/debug/F12011.exp": {
+        "sha256": "bff7627647b1f4f4d370acdb80d1348c5db2617bf5744e2138ba2e2a47c65fce",
+        "size": 16001,
+        "mtime": 1789308872
+      },
+      "source/debug/F12011.lib": {
+        "sha256": "7cf0cb81b45f665c8b1834ec85dfb1699fc1d425836c287e4de9a392a447a9ed",
+        "size": 27124,
+        "mtime": 1789308872
+      },
+      "source/debug/F12011.log": {
+        "sha256": "4334b7228dc0f27c7509a13d8315eb100978b629df8b234350bd76872571a038",
+        "size": 10762,
+        "mtime": 1789291301
+      },
+      "source/debug/F12011.obj": {
+        "sha256": "a6cef20df37fedc5bc53ac9c51452720a96b8896c7b6e28851a7abd0c4817df0",
+        "size": 4343,
+        "mtime": 1789291297
+      },
+      "source/debug/F12011.pch": {
+        "sha256": "22b97124c17c6f395b45a7789c7207a2ce5cc8cb3edc4d5cc14aa71740d99c1b",
+        "size": 24248320,
+        "mtime": 1789291292
+      },
+      "source/debug/F12011.pdb": {
+        "sha256": "36a42b4c84da48c29e3f6e4cdf9b4ceb3c36ccc4ac9dcbd250d21ec98e611bcc",
+        "size": 21393408,
+        "mtime": 1789308873
+      },
+      "source/debug/FMEA.obj": {
+        "sha256": "f3d6289e9377f91051825d12de055929269b89cfdb9e11263657797151c03f21",
+        "size": 532671,
+        "mtime": 1789291297
+      },
+      "source/debug/inireader.obj": {
+        "sha256": "5c51dea48a3cb24b47937bd01207422e29ec6efb26e78166bfb2fa2e5ef68e12",
+        "size": 376210,
+        "mtime": 1789291297
+      },
+      "source/debug/Shmoo.obj": {
+        "sha256": "3c5b8cadb532af8fef39c32b696b1bad1c29bdc4cf11a5cce5a143c7ad421534",
+        "size": 2615,
+        "mtime": 1789291297
+      },
+      "source/debug/spec.obj": {
+        "sha256": "5ff846fe5b7f3005e8528b81b90f4e6f20386d936bce6971be06b081ca54c9dd",
+        "size": 3927967,
+        "mtime": 1789291297
+      },
+      "source/debug/StdAfx.obj": {
+        "sha256": "eed2bdc4f00052ff880d3e07ed0cfc1a6c70c66f6bcc1828f065f19ed6e38a84",
+        "size": 440236,
+        "mtime": 1789291292
+      },
+      "source/debug/sub.obj": {
+        "sha256": "f1003674923e1fcd073c32e5ef77105ed14948a7dc8b2df35d862ccb24c408e6",
+        "size": 438917,
+        "mtime": 1789291297
+      },
+      "source/debug/tempchar.obj": {
+        "sha256": "ea17c47b7bd4acfff1551353d6f4fd731947228e2205f29b3cf82eee919df7db",
+        "size": 1810550,
+        "mtime": 1789291297
+      },
+      "source/debug/test.obj": {
+        "sha256": "a8f6b1228784312636f020b551fbae6049515d8aef68b2ceb21c3c33a42d27fa",
+        "size": 3714352,
+        "mtime": 1789308872
+      },
+      "source/debug/Test_Method.obj": {
+        "sha256": "e24db055cf0339187a6e1ada05290aa0a45946e78238d7443a7dd9104c2016c2",
+        "size": 601512,
+        "mtime": 1789291297
+      },
+      "source/debug/treg.obj": {
+        "sha256": "657de1bfef88d82e9a8e676b87873c13a2d9e6ae749ddd7246aff4c8f98b8a97",
+        "size": 901328,
+        "mtime": 1789291297
+      },
+      "source/debug/vc120.idb": {
+        "sha256": "37f20a8614282caab435a9940d36bfe374ad82a1156fb6530d4c3f9023644bcf",
+        "size": 781312,
+        "mtime": 1789308871
+      },
+      "source/debug/vc120.pdb": {
+        "sha256": "96c4c0161c6f021139f8af3193915a7008de50b5f88771b1e88a52e142b9acf4",
+        "size": 3936256,
+        "mtime": 1789308871
+      },
+      "source/debug/F12011.tlog/cl.command.1.tlog": {
+        "sha256": "8b677cffe0e32803d3f175b1caf0d41119b8fdd56c8c3c8105f012f0dae92946",
+        "size": 11746,
+        "mtime": 1789308872
+      },
+      "source/debug/F12011.tlog/CL.read.1.tlog": {
+        "sha256": "3b8c61d2259663b087da35fc1b4a071ef00425908deb82d9f537a718a533e348",
+        "size": 71460,
+        "mtime": 1789308872
+      },
+      "source/debug/F12011.tlog/CL.write.1.tlog": {
+        "sha256": "723bf08598ad3a4a156583c320f057a0f7738cc8ccfd3acde4d0cbd589846265",
+        "size": 5518,
+        "mtime": 1789308872
+      },
+      "source/debug/F12011.tlog/F12011.lastbuildstate": {
+        "sha256": "7bf3b3a47c8c046474cb54e65caf149cc3a6717a4077b002f0ed58d21248da63",
+        "size": 163,
+        "mtime": 1789308873
+      },
+      "source/debug/F12011.tlog/F12011.write.1u.tlog": {
+        "sha256": "bc679e1599a7266542251d4d94a159250929a69e750edb9908eb22ed3bc61736",
+        "size": 574,
+        "mtime": 1789308873
+      },
+      "source/debug/F12011.tlog/link.command.1.tlog": {
+        "sha256": "30dd2476799beeacb1852779789105e774042c1389d85e9bd9ad3f3273ea5322",
+        "size": 18762,
+        "mtime": 1789308873
+      },
+      "source/debug/F12011.tlog/link.read.1.tlog": {
+        "sha256": "e4c531dab8d72d687059ae0fbdd3d896d10c2cb9b409dd35126511211c7f1a00",
+        "size": 6216,
+        "mtime": 1789308873
+      },
+      "source/debug/F12011.tlog/link.write.1.tlog": {
+        "sha256": "62b801626b744000711e4d2c8b19ebea15157779cdbe5264d87ec682970ffa2d",
+        "size": 1564,
+        "mtime": 1789308873
+      },
+      "source/Release/BoardCheck.obj": {
+        "sha256": "82e9085870e01c3b999486ac0726c55e160f87616fbf101622a478b7fbeabf58",
+        "size": 3447324,
+        "mtime": 1789292225
+      },
+      "source/Release/Coutlier.obj": {
+        "sha256": "22ee45a1275f7ba91695304b86d915153b85aa0091ab965a5ef016b02cfe1272",
+        "size": 3247706,
+        "mtime": 1789292222
+      },
+      "source/Release/diags.obj": {
+        "sha256": "1537ae21b9bff197f8551ea837870b7a1362f8383a5842b4f5722e602a331c7e",
+        "size": 140454,
+        "mtime": 1789292221
+      },
+      "source/Release/F12011.Build.CppClean.log": {
+        "sha256": "41d48f39def183f276aafb7087d929139e72d42f6613a053480f50a3ab99db58",
+        "size": 956,
+        "mtime": 1788363349
+      },
+      "source/Release/F12011.exp": {
+        "sha256": "d319afc769d5bcb80f0f09bc03a846bf35af37230893a0443bacb6dc1f1449fa",
+        "size": 16003,
+        "mtime": 1789310413
+      },
+      "source/Release/F12011.lib": {
+        "sha256": "1bfd37591bc7c26a8e099e9a33a0b5eee9597be5a08864f79627f400c53add7b",
+        "size": 27124,
+        "mtime": 1789310413
+      },
+      "source/Release/F12011.obj": {
+        "sha256": "bc8a485120660efbfe01c1dca23c803ef3d79a2c801303149ff6b0a98184cbe6",
+        "size": 2652,
+        "mtime": 1789292221
+      },
+      "source/Release/F12011.pch": {
+        "sha256": "60da4f7bb5108b929db6d3df0940a4b035db10788d28dc7cc3713f31ae0fbfb7",
+        "size": 22609920,
+        "mtime": 1789292209
+      },
+      "source/Release/FMEA.obj": {
+        "sha256": "3631939d174963c18fa63a078f4660363cc4160f2e786e1d0bba79fcb6ee85af",
+        "size": 352783,
+        "mtime": 1789292221
+      },
+      "source/Release/inireader.obj": {
+        "sha256": "f2be5e5cdfe84eccbf9a4172ea3cd17b77adbb409a490b4d736ab27f07476f22",
+        "size": 272815,
+        "mtime": 1789292221
+      },
+      "source/Release/Shmoo.obj": {
+        "sha256": "9cdad7d078c7ae6261f870269aa14d57ec951b0855f7d9e599e1b3407792c243",
+        "size": 1633,
+        "mtime": 1789292221
+      },
+      "source/Release/spec.obj": {
+        "sha256": "4a4b70ffb8f21afb71c35f7f09e94a83dfca8b7e7244caf30a2076637804ca6b",
+        "size": 2278774,
+        "mtime": 1789292221
+      },
+      "source/Release/StdAfx.obj": {
+        "sha256": "7cb40f8e7052518b6b974fb3d2c8ef3c67b29e75d140288237dbb38a6735c0e2",
+        "size": 402964,
+        "mtime": 1789292209
+      },
+      "source/Release/sub.obj": {
+        "sha256": "04b1c3cce89ce7cc4957807fc0e97f2a2644ac746f25cbb222e9dac0be90f813",
+        "size": 270209,
+        "mtime": 1789292219
+      },
+      "source/Release/tempchar.obj": {
+        "sha256": "4ec78067ff015b6e395a9a75e0a2b749f1c973b31c5f8c58da727d3c4eaa3143",
+        "size": 1214267,
+        "mtime": 1789292219
+      },
+      "source/Release/test.obj": {
+        "sha256": "6db12ebe0a32ac808ddbcec93901d9e0de4941430b16c0292ff1d74af4402bdd",
+        "size": 2331633,
+        "mtime": 1789310412
+      },
+      "source/Release/Test_Method.obj": {
+        "sha256": "f82fc2ee77c70f3ae700eaaf55962ee690c09cfade8d308c62c18d92b71d1914",
+        "size": 422225,
+        "mtime": 1789292221
+      },
+      "source/Release/treg.obj": {
+        "sha256": "5dccf718dbb41fdbc871d782ec4813dcfb3bfca68f971fd5357e96dc71233fdd",
+        "size": 597594,
+        "mtime": 1789292217
+      },
+      "source/Release/vc120.pdb": {
+        "sha256": "0a78b079bbae914e43c66cb5cf08697a427b853d9d30f3a8eb087a7fdeaf7e0c",
+        "size": 3706880,
+        "mtime": 1789310411
+      },
+      "source/Release/F12011.tlog/cl.command.1.tlog": {
+        "sha256": "ef4c841391e3caa6f23fd00d4569fa0bce7d6d7807fd7b6ec6a9df45822aad5f",
+        "size": 12082,
+        "mtime": 1789310412
+      },
+      "source/Release/F12011.tlog/CL.read.1.tlog": {
+        "sha256": "263ec748a988d0e93dadb8d3e36e320da52981920a9ab737128d94c54640ba99",
+        "size": 71512,
+        "mtime": 1789310412
+      },
+      "source/Release/F12011.tlog/CL.write.1.tlog": {
+        "sha256": "3152be8b63ca94a8983c1de7f070a6558502d9edc54831ca12833fb9462e2f2f",
+        "size": 5360,
+        "mtime": 1789310412
+      },
+      "source/Release/F12011.tlog/F12011.lastbuildstate": {
+        "sha256": "46a7255fdc214a8fd266fdba55b29c9eaf459c87a296cf06b2141772f8f2b3ed",
+        "size": 165,
+        "mtime": 1789310940
+      },
+      "source/Release/F12011.tlog/F12011.write.1u.tlog": {
+        "sha256": "e8377c0f66cae78f855c16da6322fc6e011662127b5ae6f711a262368fbd3cee",
+        "size": 2060,
+        "mtime": 1789310413
+      },
+      "source/Release/F12011.tlog/link.command.1.tlog": {
+        "sha256": "6a81753a833e20f806f1eea80c31a997ecffbdab88319466a62959a1c7817661",
+        "size": 18850,
+        "mtime": 1789310413
+      },
+      "source/Release/F12011.tlog/link.read.1.tlog": {
+        "sha256": "633109d35c5163145346aff80b12dc9e329e839547bda2d68ae4e788ab8903ae",
+        "size": 6178,
+        "mtime": 1789310413
+      },
+      "source/Release/F12011.tlog/link.write.1.tlog": {
+        "sha256": "6ec709d3c4fa586e181beb236e14cc6bd290201f1b226f455fbcc32f663eee2c",
+        "size": 1454,
+        "mtime": 1789310413
+      },
+      "source/src/exGPIB.c": {
+        "sha256": "5afd070f51df133fe9c5541d93342dbe4d3e37085ba1252792a9af9589a2954f",
+        "size": 4957,
+        "mtime": 1786275069
+      },
+      "source/src/inireader.cpp": {
+        "sha256": "75fd17c30dc70a73190705b57c454d144d4d9cb26a36938e60c2710131e2ecc6",
+        "size": 32877,
+        "mtime": 1786275069
+      },
+      "source/src/inireader.h": {
+        "sha256": "5cc8ac6843052ac3aca221b13298c724b0dac7a8e1e742e75734788ee8e0ee41",
+        "size": 7392,
+        "mtime": 1786275069
+      },
+      "source/src/treg.cpp": {
+        "sha256": "1cefbf1128c9c9ff4010c6efc5ea74f24e451efffde6fd683d6444268ff87158",
+        "size": 155267,
+        "mtime": 1786275069
+      },
+      "source/src/treg.h": {
+        "sha256": "ae0d6d6221f8fdb5409e98956218211740170ad6bbfa70ef016d0efbf61450ff",
+        "size": 47730,
+        "mtime": 1786275069
+      },
+      "source/src/visa.h": {
+        "sha256": "d571006f25e4b429536e4e6a2c87cd7a74d7db6d2193dfd4f78fdec08a0e83af",
+        "size": 62890,
+        "mtime": 1786275069
+      },
+      "source/src/visa.lib": {
+        "sha256": "de45fe0d802b659e63453e6531237712691e70888cf2506c9782f6b109524ef2",
+        "size": 106986,
+        "mtime": 1786275069
+      },
+      "source/src/visatype.h": {
+        "sha256": "f5bec3f6201ddc78b51de95a9e38db01ca982defa79f926a963dc2d9f7289ef9",
+        "size": 7064,
+        "mtime": 1786275069
+      }
+    }
+  },
+  "debugCopy": {
+    "path": "D:/PROJECT6-DALI/ForCodexDebug/source",
+    "fileCount": 111,
+    "aggregateSha256": "ccd58311d00d2bdb40aa0c9c695c7d1f04ff6931644fe09982d13803d46d4611",
+    "files": {
+      "BoardCheck.cpp": {
+        "sha256": "e35be3c40368e13af80bcb71b1349ad6ca7921fa39ce3e27e4b03bc26df21402",
+        "size": 197945,
+        "mtime": 1788411456
+      },
+      "BoardCheck.h": {
+        "sha256": "ad562c1c14929bbf71f5549269ce6c44c16352eb4d4299a130952f714d5d83ea",
+        "size": 32536,
+        "mtime": 1786522018
+      },
+      "Coutlier.cpp": {
+        "sha256": "5cad920e78504b3b96dc9a008d371016b239dbd4151c550cf979dc641578ae6c",
+        "size": 11649,
+        "mtime": 1786522018
+      },
+      "Coutlier.h": {
+        "sha256": "7d16c965b404247f81b3771faeaff0257c253144e212bd6691290bdcc2f749e7",
+        "size": 4446,
+        "mtime": 1786522018
+      },
+      "diags.cpp": {
+        "sha256": "085435bd604c8fb587e84f1bbd90052dda173e360b30c1dd602fc6ba15d0a660",
+        "size": 7171,
+        "mtime": 1786275069
+      },
+      "F12011.cpp": {
+        "sha256": "879600d46c3293cc5e176d1f49eac833af6d2c0751ff77ca6607df0e29003e31",
+        "size": 960,
+        "mtime": 1786275069
+      },
+      "F12011.dsp": {
+        "sha256": "bdb6a04ea55c837502897ee0f07f228c9f40f33df55324f07e8fe1099acadd01",
+        "size": 72604,
+        "mtime": 1789291221
+      },
+      "F12011.dsw": {
+        "sha256": "f7af7990ea6c08a12d42efa01ff2f2804b360a3e7f31e7746a5beae9f187fc49",
+        "size": 537,
+        "mtime": 1786275069
+      },
+      "F12011.sln": {
+        "sha256": "ae21376b5b6533c22adcb201f03e09212887699d7db78372f7edfd590baad2a1",
+        "size": 957,
+        "mtime": 1786275069
+      },
+      "F12011.v12.suo": {
+        "sha256": "a5447abf50cdc5ad4cb828abe7f59fbf99984023db634e88992f5e33bf2483b0",
+        "size": 43008,
+        "mtime": 1789295787
+      },
+      "F12011.vcproj": {
+        "sha256": "6f622c90730e48d04e0a9bc29f462f288e7023f611c1d49078d433d5d85125af",
+        "size": 7202,
+        "mtime": 1789291221
+      },
+      "F12011.vcxproj": {
+        "sha256": "7ece05445bcf9c8f4f11a88287f8dc3647460a17ed3021ca8d35a04c792b7bfa",
+        "size": 22108,
+        "mtime": 1789291221
+      },
+      "F12011.vcxproj.filters": {
+        "sha256": "d5edb625cafedc5845834d82c98bc46b36cde920192aae867a703b6bc133ce03",
+        "size": 3552,
+        "mtime": 1788360140
+      },
+      "F12011.vcxproj.user": {
+        "sha256": "aa08ab489639bcb8665ac9b1db3cb443ce42b6184c8842ac1a9227ea47f65246",
+        "size": 1021,
+        "mtime": 1789291221
+      },
+      "FMEA.cpp": {
+        "sha256": "4cd9b3bfa357cb11d328f5672782e5e8f3f742546c1a1299967537d8bd256618",
+        "size": 7557,
+        "mtime": 1786275069
+      },
+      "FMEA.h": {
+        "sha256": "4159bae8c096ea744648cece6d8ba1653dfd6283d71335553f549cf655b1ff89",
+        "size": 2080,
+        "mtime": 1786275069
+      },
+      "inireader.cpp": {
+        "sha256": "1dedaac73c9de5d3a6df2f5276f59d000f5ff77540414917ac6e423fb70c62a9",
+        "size": 36546,
+        "mtime": 1786275069
+      },
+      "inireader.h": {
+        "sha256": "14531298a57e8b43786174d6e2e9bf14ead7152350fc13dfb4ae5ab127419d78",
+        "size": 7399,
+        "mtime": 1786275069
+      },
+      "LogDataStruct.h": {
+        "sha256": "7d84cfd0a8b3e3ed8c5aa120f72387902542da22eed5aebeeedecce93eae4435",
+        "size": 18132,
+        "mtime": 1786275069
+      },
+      "mylib.h": {
+        "sha256": "1d1d85b88e30f56a7ce6f14fc3907106178982dbb014fe1be7d29a6e2d1d41a9",
+        "size": 21989,
+        "mtime": 1786275069
+      },
+      "Pin_Channel_define.h": {
+        "sha256": "d5ce16a0ae79549424110755e99d9ae74cce79d18b8a1eaae3fd5588df285e35",
+        "size": 10934,
+        "mtime": 1786275069
+      },
+      "resource.h": {
+        "sha256": "750e2f00a8bb27b33a45ba726a72ba325935354a0fed625dec91794d7c0f46dd",
+        "size": 646,
+        "mtime": 1786275069
+      },
+      "Shmoo.cpp": {
+        "sha256": "0d0e46a1f6bdf7a05e15884c73aaf53e3d3d00b1f10d3bff87acaff4f42a6314",
+        "size": 9071,
+        "mtime": 1786275069
+      },
+      "Shmoo.h": {
+        "sha256": "efb9dec48cb9a25ce2c23563b5e9269f82fc7b876663932f267894729a3b2b91",
+        "size": 1246,
+        "mtime": 1786275069
+      },
+      "spec.cpp": {
+        "sha256": "43c968bebf31aa81c078af75f8e12da78f7ca61e38c80b4e270bdd31018f7d45",
+        "size": 43529,
+        "mtime": 1786522018
+      },
+      "spec.h": {
+        "sha256": "42f12602f1aefba4c695c749d92d7832ff6c1ae5e047d11488d5712e0815bb07",
+        "size": 16870,
+        "mtime": 1786522018
+      },
+      "StdAfx.cpp": {
+        "sha256": "22edd78e8635b5c6e40b54140125cf40fa0439de0eece7032bd3dab29aa77b3d",
+        "size": 2320,
+        "mtime": 1786275069
+      },
+      "StdAfx.h": {
+        "sha256": "ba8ab3de1b0c35cb7e9a477bd0b385f80671dc51011a08c9a5220518aab6aee6",
+        "size": 56968,
+        "mtime": 1788060005
+      },
+      "StdAfx.h.bak_20260816": {
+        "sha256": "85f415660470d1b4cbc98750545722f4f11630b7eabcc7a1bdc174b28d1abb0f",
+        "size": 66748,
+        "mtime": 1786370740
+      },
+      "StdAfx.h.bak_unify_busl_20260816": {
+        "sha256": "85f415660470d1b4cbc98750545722f4f11630b7eabcc7a1bdc174b28d1abb0f",
+        "size": 66748,
+        "mtime": 1786370740
+      },
+      "StdAfx.h.bak_unify_k7_20260816": {
+        "sha256": "1f9ac1ae98d33bc14bca7eb2dc188b96e385ee9b81e053fdeff5d1b21df713b8",
+        "size": 66371,
+        "mtime": 1786878920
+      },
+      "sub.cpp": {
+        "sha256": "e86d49bef7ae725106311d8205df6dbc11184c7a0920eeaed416a515ac391470",
+        "size": 121909,
+        "mtime": 1788104040
+      },
+      "sub.cpp.bak_tm403_425": {
+        "sha256": "733f39c5731b892ab2113da5b36cc3c548966647c20fdb0c3c618bff0f193d2b",
+        "size": 108673,
+        "mtime": 1786360261
+      },
+      "sub.h": {
+        "sha256": "fe4e2f504f63700233011ce7413a07469c63e1b74669c40788a2aaacc698887c",
+        "size": 9453,
+        "mtime": 1788057669
+      },
+      "tempchar.cpp": {
+        "sha256": "10b0baa322802355dfb9295f0c2a4da50a11044579de962159bc0683ef61a7d4",
+        "size": 84016,
+        "mtime": 1788057054
+      },
+      "tempchar.h": {
+        "sha256": "dbdbfcbdfa1f67b70f21663a88f288bf3fe2f8b56f7dd25e63f5385e144375ea",
+        "size": 13081,
+        "mtime": 1788056978
+      },
+      "test.cpp": {
+        "sha256": "5c9cb3f9339f6db373afcff7504ef6b34924a4ca3042b5926cb612c819ac3317",
+        "size": 434629,
+        "mtime": 1789310401
+      },
+      "test.cpp.bak_bst_sw_fix_20260826": {
+        "sha256": "a2b02de8b5953bb78c0ad84cec4b287abde43cf6e44cd059802b32a8ccd562c3",
+        "size": 354289,
+        "mtime": 1787736014
+      },
+      "test.cpp.bak_tm403_425": {
+        "sha256": "d89be15fd803b9bc83e9b93daaf97e7a0f2fc9fe3f2216a5f1138d9a887b3a85",
+        "size": 269010,
+        "mtime": 1786360261
+      },
+      "test.cpp.bak_tm607_609_20260819": {
+        "sha256": "aed0d05b256b068280e6d7bc094248810a622b55912c4f5cdbb81c198f39abd0",
+        "size": 327825,
+        "mtime": 1787153859
+      },
+      "test.cpp.bak_tm614_616_20260826": {
+        "sha256": "8b2848785940134de51e9b29951ea9a40f9c37f749e5b1d417efd7b7da309218",
+        "size": 342868,
+        "mtime": 1787721318
+      },
+      "Test_Method.cpp": {
+        "sha256": "045856d9832e62e0683a0807bfca1bc75d7abef6b46ac9ff3a218b8232715262",
+        "size": 135395,
+        "mtime": 1786522018
+      },
+      "Test_Method.h": {
+        "sha256": "a432f2b602f550a29dd6b76b78ac37245622a71efdcaa42d91ae77a40dc0ba56",
+        "size": 23381,
+        "mtime": 1786522018
+      },
+      "treg.cpp": {
+        "sha256": "ae86d1a1cdbd3ee1baed85d3435a46cb19d5803ae97c0faf0373e1ca91512489",
+        "size": 160192,
+        "mtime": 1786522018
+      },
+      "treg.h": {
+        "sha256": "e10c2ac7e2b53b043467ed1579e76de9c41bde2b6e7d5b787a3e0d8ccc262bbc",
+        "size": 51157,
+        "mtime": 1788060005
+      },
+      "Backup/test.cpp.before_TM1205_20260902_212452.bak": {
+        "sha256": "db088ac38206bfa68b62ba51d41c5b526cc97fd31a231f869666a707ffc513d8",
+        "size": 427706,
+        "mtime": 1788147742
+      },
+      "debug/BoardCheck.obj": {
+        "sha256": "6efeb911829f75a377f186c88accdbbb0c9c4908ba3f96197c4ec5e87c6b5d62",
+        "size": 5752086,
+        "mtime": 1789291298
+      },
+      "debug/Coutlier.obj": {
+        "sha256": "5c281bbdcf632065c2508d6db623fa4e0c155025fbd93369b9087369cc878dc9",
+        "size": 5622146,
+        "mtime": 1789291298
+      },
+      "debug/diags.obj": {
+        "sha256": "16576ee7d03b7d10d75cb003af9bc8300b9744a69610b25e5869d341547eeb39",
+        "size": 213315,
+        "mtime": 1789291297
+      },
+      "debug/F12011.Build.CppClean.log": {
+        "sha256": "86adc45e266e016028a0c660cef0ce2df8aca6af5b998c2d32017fa13d8fc865",
+        "size": 1562,
+        "mtime": 1789291289
+      },
+      "debug/F12011.exp": {
+        "sha256": "bff7627647b1f4f4d370acdb80d1348c5db2617bf5744e2138ba2e2a47c65fce",
+        "size": 16001,
+        "mtime": 1789308872
+      },
+      "debug/F12011.lib": {
+        "sha256": "7cf0cb81b45f665c8b1834ec85dfb1699fc1d425836c287e4de9a392a447a9ed",
+        "size": 27124,
+        "mtime": 1789308872
+      },
+      "debug/F12011.log": {
+        "sha256": "4334b7228dc0f27c7509a13d8315eb100978b629df8b234350bd76872571a038",
+        "size": 10762,
+        "mtime": 1789291301
+      },
+      "debug/F12011.obj": {
+        "sha256": "a6cef20df37fedc5bc53ac9c51452720a96b8896c7b6e28851a7abd0c4817df0",
+        "size": 4343,
+        "mtime": 1789291297
+      },
+      "debug/F12011.pch": {
+        "sha256": "22b97124c17c6f395b45a7789c7207a2ce5cc8cb3edc4d5cc14aa71740d99c1b",
+        "size": 24248320,
+        "mtime": 1789291292
+      },
+      "debug/F12011.pdb": {
+        "sha256": "36a42b4c84da48c29e3f6e4cdf9b4ceb3c36ccc4ac9dcbd250d21ec98e611bcc",
+        "size": 21393408,
+        "mtime": 1789308873
+      },
+      "debug/FMEA.obj": {
+        "sha256": "f3d6289e9377f91051825d12de055929269b89cfdb9e11263657797151c03f21",
+        "size": 532671,
+        "mtime": 1789291297
+      },
+      "debug/inireader.obj": {
+        "sha256": "5c51dea48a3cb24b47937bd01207422e29ec6efb26e78166bfb2fa2e5ef68e12",
+        "size": 376210,
+        "mtime": 1789291297
+      },
+      "debug/Shmoo.obj": {
+        "sha256": "3c5b8cadb532af8fef39c32b696b1bad1c29bdc4cf11a5cce5a143c7ad421534",
+        "size": 2615,
+        "mtime": 1789291297
+      },
+      "debug/spec.obj": {
+        "sha256": "5ff846fe5b7f3005e8528b81b90f4e6f20386d936bce6971be06b081ca54c9dd",
+        "size": 3927967,
+        "mtime": 1789291297
+      },
+      "debug/StdAfx.obj": {
+        "sha256": "eed2bdc4f00052ff880d3e07ed0cfc1a6c70c66f6bcc1828f065f19ed6e38a84",
+        "size": 440236,
+        "mtime": 1789291292
+      },
+      "debug/sub.obj": {
+        "sha256": "f1003674923e1fcd073c32e5ef77105ed14948a7dc8b2df35d862ccb24c408e6",
+        "size": 438917,
+        "mtime": 1789291297
+      },
+      "debug/tempchar.obj": {
+        "sha256": "ea17c47b7bd4acfff1551353d6f4fd731947228e2205f29b3cf82eee919df7db",
+        "size": 1810550,
+        "mtime": 1789291297
+      },
+      "debug/test.obj": {
+        "sha256": "a8f6b1228784312636f020b551fbae6049515d8aef68b2ceb21c3c33a42d27fa",
+        "size": 3714352,
+        "mtime": 1789308872
+      },
+      "debug/Test_Method.obj": {
+        "sha256": "e24db055cf0339187a6e1ada05290aa0a45946e78238d7443a7dd9104c2016c2",
+        "size": 601512,
+        "mtime": 1789291297
+      },
+      "debug/treg.obj": {
+        "sha256": "657de1bfef88d82e9a8e676b87873c13a2d9e6ae749ddd7246aff4c8f98b8a97",
+        "size": 901328,
+        "mtime": 1789291297
+      },
+      "debug/vc120.idb": {
+        "sha256": "37f20a8614282caab435a9940d36bfe374ad82a1156fb6530d4c3f9023644bcf",
+        "size": 781312,
+        "mtime": 1789308871
+      },
+      "debug/vc120.pdb": {
+        "sha256": "96c4c0161c6f021139f8af3193915a7008de50b5f88771b1e88a52e142b9acf4",
+        "size": 3936256,
+        "mtime": 1789308871
+      },
+      "debug/F12011.tlog/cl.command.1.tlog": {
+        "sha256": "8b677cffe0e32803d3f175b1caf0d41119b8fdd56c8c3c8105f012f0dae92946",
+        "size": 11746,
+        "mtime": 1789308872
+      },
+      "debug/F12011.tlog/CL.read.1.tlog": {
+        "sha256": "3b8c61d2259663b087da35fc1b4a071ef00425908deb82d9f537a718a533e348",
+        "size": 71460,
+        "mtime": 1789308872
+      },
+      "debug/F12011.tlog/CL.write.1.tlog": {
+        "sha256": "723bf08598ad3a4a156583c320f057a0f7738cc8ccfd3acde4d0cbd589846265",
+        "size": 5518,
+        "mtime": 1789308872
+      },
+      "debug/F12011.tlog/F12011.lastbuildstate": {
+        "sha256": "7bf3b3a47c8c046474cb54e65caf149cc3a6717a4077b002f0ed58d21248da63",
+        "size": 163,
+        "mtime": 1789308873
+      },
+      "debug/F12011.tlog/F12011.write.1u.tlog": {
+        "sha256": "bc679e1599a7266542251d4d94a159250929a69e750edb9908eb22ed3bc61736",
+        "size": 574,
+        "mtime": 1789308873
+      },
+      "debug/F12011.tlog/link.command.1.tlog": {
+        "sha256": "30dd2476799beeacb1852779789105e774042c1389d85e9bd9ad3f3273ea5322",
+        "size": 18762,
+        "mtime": 1789308873
+      },
+      "debug/F12011.tlog/link.read.1.tlog": {
+        "sha256": "e4c531dab8d72d687059ae0fbdd3d896d10c2cb9b409dd35126511211c7f1a00",
+        "size": 6216,
+        "mtime": 1789308873
+      },
+      "debug/F12011.tlog/link.write.1.tlog": {
+        "sha256": "62b801626b744000711e4d2c8b19ebea15157779cdbe5264d87ec682970ffa2d",
+        "size": 1564,
+        "mtime": 1789308873
+      },
+      "Release/BoardCheck.obj": {
+        "sha256": "c090a9ce33db989acaa5e46564337ce66e7a97869f29ec55c274fac4404a778a",
+        "size": 3447404,
+        "mtime": 1789536393
+      },
+      "Release/Coutlier.obj": {
+        "sha256": "6e3b512432626abb4af4fcca2f1c03b6bcbfc5634234946acf4a9651d9f74d92",
+        "size": 3247786,
+        "mtime": 1789536392
+      },
+      "Release/diags.obj": {
+        "sha256": "6f6813f142f5132bccce29a788bc60413d99fbb0afd39e88f7992bf1a5faf6a1",
+        "size": 140534,
+        "mtime": 1789536391
+      },
+      "Release/F12011.Build.CppClean.log": {
+        "sha256": "41d48f39def183f276aafb7087d929139e72d42f6613a053480f50a3ab99db58",
+        "size": 956,
+        "mtime": 1788363349
+      },
+      "Release/F12011.exp": {
+        "sha256": "e89852335c137ef0ce012d084cf19e63e2439ba22610fe3fa22cc54a078854e2",
+        "size": 16011,
+        "mtime": 1789536393
+      },
+      "Release/F12011.lib": {
+        "sha256": "02a483825a6d75619bc61e2eb9f02c5b6f839ee00410c6f7a890b45b0f20920f",
+        "size": 27124,
+        "mtime": 1789536393
+      },
+      "Release/F12011.obj": {
+        "sha256": "edeedbfb57168b8c655496d79e49fb52359d004b6bdcaf0bd5fb46d61e58df7a",
+        "size": 2700,
+        "mtime": 1789536391
+      },
+      "Release/F12011.pch": {
+        "sha256": "abcdea9a63dec80de18c9d2aef94e43ffd1044d7b738346e75af2f6d736b30c1",
+        "size": 24707072,
+        "mtime": 1789536385
+      },
+      "Release/FMEA.obj": {
+        "sha256": "85ef2620ce1928529a4fc547b1b1436f9a08c67d2ec6624a70edfe24f8667675",
+        "size": 352839,
+        "mtime": 1789536391
+      },
+      "Release/inireader.obj": {
+        "sha256": "2e20ca2d486f7927924e851bdf201e60449d58f6c6b8588210b0d38e19c37e28",
+        "size": 272871,
+        "mtime": 1789536391
+      },
+      "Release/Shmoo.obj": {
+        "sha256": "a7b738577cb77d594ae281368e4130c5e1e89325213df707cfeb8987c55dc44c",
+        "size": 1681,
+        "mtime": 1789536391
+      },
+      "Release/spec.obj": {
+        "sha256": "595300b894d267ab0445910df17a4c59d0da67fc370e2677c86a73a8a1431c67",
+        "size": 2278838,
+        "mtime": 1789536391
+      },
+      "Release/StdAfx.obj": {
+        "sha256": "cf49dded89ecadb296ca55715da3295a851b590367a7de03cc802f55e590e5c6",
+        "size": 403036,
+        "mtime": 1789536385
+      },
+      "Release/sub.obj": {
+        "sha256": "43e2cc2edacb4905214230236af5255d9c927e5417d6e69006bc78b368e806d8",
+        "size": 270305,
+        "mtime": 1789536390
+      },
+      "Release/tempchar.obj": {
+        "sha256": "deacb4a6595c00d8bf0552483bdb65abc7641463cf7e28a3e592697a905cf30e",
+        "size": 1214363,
+        "mtime": 1789536390
+      },
+      "Release/test.obj": {
+        "sha256": "fb852db0ddc91902690b6e7531b840420bde3c03957c1264894c9bd541a194f5",
+        "size": 2331777,
+        "mtime": 1789536390
+      },
+      "Release/Test_Method.obj": {
+        "sha256": "39cb27f5a84dfdd96457c584b6f6fd3dbabdd3cad17be1f28354276c9ffff379",
+        "size": 422297,
+        "mtime": 1789536389
+      },
+      "Release/treg.obj": {
+        "sha256": "3bcc79dfe154b30ee8ed2f79f19eb05304e8bd52e38f09b24eb64ea534a90100",
+        "size": 597658,
+        "mtime": 1789536389
+      },
+      "Release/vc120.pdb": {
+        "sha256": "d34c6ab5954cd8597c5196a0751fbac00a42b42817af3353f205d10d5c3f1e0d",
+        "size": 3805184,
+        "mtime": 1789536389
+      },
+      "Release/F12011.tlog/cl.command.1.tlog": {
+        "sha256": "d953830c396427b30f483080b31fa299c2e502c27e477cf3c6dcd49582399264",
+        "size": 24610,
+        "mtime": 1789536393
+      },
+      "Release/F12011.tlog/CL.read.1.tlog": {
+        "sha256": "a75cf1686bd74a1714d5f3e191773b1230f822eeb8425c801a99fd8cf4ed39e3",
+        "size": 143816,
+        "mtime": 1789536393
+      },
+      "Release/F12011.tlog/CL.write.1.tlog": {
+        "sha256": "3d8606a1ba20ee47fef77bc390b816a78e91ddf3107f1783a9efeaca1de25817",
+        "size": 11534,
+        "mtime": 1789536393
+      },
+      "Release/F12011.tlog/F12011.lastbuildstate": {
+        "sha256": "c7714f3fe219242eda18dd8a296b0df199449135690fa030cd4a1e9bc702ec5f",
+        "size": 173,
+        "mtime": 1789536492
+      },
+      "Release/F12011.tlog/F12011.write.1u.tlog": {
+        "sha256": "20108463efca22f85b806a94555bc5fa9acc08a91455bc60e07316f774f55552",
+        "size": 2402,
+        "mtime": 1789536394
+      },
+      "Release/F12011.tlog/link.command.1.tlog": {
+        "sha256": "3250168f686e23c8c8a07d321c0c6fa34a7c38d7ece01ddbc062db6351d35076",
+        "size": 37922,
+        "mtime": 1789536394
+      },
+      "Release/F12011.tlog/link.read.1.tlog": {
+        "sha256": "69868303d397b2fdcc52403c40ae77f2b8d4240552161136af8b071022e9f480",
+        "size": 12818,
+        "mtime": 1789536394
+      },
+      "Release/F12011.tlog/link.write.1.tlog": {
+        "sha256": "b7fe250683b9b3e5e94033370dc58100b5600a2d3bf419217a524b61cd91e132",
+        "size": 3146,
+        "mtime": 1789536394
+      },
+      "src/exGPIB.c": {
+        "sha256": "5afd070f51df133fe9c5541d93342dbe4d3e37085ba1252792a9af9589a2954f",
+        "size": 4957,
+        "mtime": 1786275069
+      },
+      "src/inireader.cpp": {
+        "sha256": "75fd17c30dc70a73190705b57c454d144d4d9cb26a36938e60c2710131e2ecc6",
+        "size": 32877,
+        "mtime": 1786275069
+      },
+      "src/inireader.h": {
+        "sha256": "5cc8ac6843052ac3aca221b13298c724b0dac7a8e1e742e75734788ee8e0ee41",
+        "size": 7392,
+        "mtime": 1786275069
+      },
+      "src/treg.cpp": {
+        "sha256": "1cefbf1128c9c9ff4010c6efc5ea74f24e451efffde6fd683d6444268ff87158",
+        "size": 155267,
+        "mtime": 1786275069
+      },
+      "src/treg.h": {
+        "sha256": "ae0d6d6221f8fdb5409e98956218211740170ad6bbfa70ef016d0efbf61450ff",
+        "size": 47730,
+        "mtime": 1786275069
+      },
+      "src/visa.h": {
+        "sha256": "d571006f25e4b429536e4e6a2c87cd7a74d7db6d2193dfd4f78fdec08a0e83af",
+        "size": 62890,
+        "mtime": 1786275069
+      },
+      "src/visa.lib": {
+        "sha256": "de45fe0d802b659e63453e6531237712691e70888cf2506c9782f6b109524ef2",
+        "size": 106986,
+        "mtime": 1786275069
+      },
+      "src/visatype.h": {
+        "sha256": "f5bec3f6201ddc78b51de95a9e38db01ca982defa79f926a963dc2d9f7289ef9",
+        "size": 7064,
+        "mtime": 1786275069
+      }
+    }
+  },
+  "baselineCrossCheck": {
+    "source": "team/artifacts/baseline-20260916/acceptance-inventory.json",
+    "status": "test.cpp/sub.cpp/StdAfx.h plaintext sha256 MATCH baseline (verified at run start)"
+  }
+}
