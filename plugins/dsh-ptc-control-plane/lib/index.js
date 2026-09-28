@@ -28,6 +28,7 @@ import { createFrameworkRehearsalManager } from './framework-rehearsal-manager.j
 import { createFrameworkRehearsalAdapters, openFrameworkRehearsalSnapshot, verifyFrameworkChain } from './framework-rehearsal.js';
 import { stageFrameworkRelease, activateStagedFrameworkRelease, loadFrameworkRelease, verifyFrameworkRuntimeCompatibility } from './framework-release.js';
 import { createFrameworkPublishedRun } from './framework-published-run.js';
+import { resolveAgentProfile, cloneAgentProfile, createAgentProfileRevision } from './agent-profile-runtime.js';
 
 export const name = 'dsh-ptc-control-plane';
 export const inject = ['webServer', 'agents', 'agentDefaultModel', 'agentPresets', 'subagents', 'tools'];
@@ -115,6 +116,44 @@ export function createTrainingRunHandler(workspaceRoot) {
   };
 }
 
+/** Strict configuration boundary for creating independent Agent definitions. */
+export function createAgentProfileHandler(workspaceRoot, action) {
+  return async (request, response) => {
+    if (request.method !== 'POST') return json(response, 405, { error: 'method_not_allowed' });
+    try {
+      const input = await readJsonBody(request);
+      let result;
+      if (action === 'clone') {
+        const allowed = ['sourceProfileId', 'targetProfileId', 'revisionId', 'displayName'];
+        if (!input || typeof input !== 'object' || Array.isArray(input)
+            || Object.keys(input).some(key => !allowed.includes(key))
+            || typeof input.sourceProfileId !== 'string' || typeof input.targetProfileId !== 'string') {
+          throw new Error('agent clone requires sourceProfileId and targetProfileId');
+        }
+        result = cloneAgentProfile(workspaceRoot, input);
+      } else if (action === 'revision') {
+        const allowed = ['profileId', 'revisionId'];
+        if (!input || typeof input !== 'object' || Array.isArray(input)
+            || Object.keys(input).some(key => !allowed.includes(key))
+            || typeof input.profileId !== 'string') {
+          throw new Error('agent revision requires profileId and optional revisionId');
+        }
+        result = createAgentProfileRevision(workspaceRoot, input.profileId, { revisionId: input.revisionId });
+      } else {
+        throw new Error('unknown agent profile action');
+      }
+      return json(response, 201, {
+        profileId: result.profileId, baseProfileId: result.baseProfileId,
+        revisionId: result.profileRevision, profileRevision: result.profileRevision,
+        contentDigest: result.contentDigest, manifestDigest: result.manifestDigest,
+        manifestPath: path.relative(workspaceRoot, result.manifestPath ?? '').split(path.sep).join('/'),
+      });
+    } catch (error) {
+      return json(response, error.statusCode ?? 400, { error: 'agent_profile_rejected', detail: String(error.message ?? error) });
+    }
+  };
+}
+
 export function createTrainingExecutionHandler(workspaceRoot, options = {}) {
   return async (request, response) => {
     if (request.method !== 'POST') {
@@ -161,8 +200,13 @@ export function createBusinessTrainingExecutionHandler(workspaceRoot, dispatcher
       const state = JSON.parse(fs.readFileSync(path.join(runDirectory, 'state.json'), 'utf8').replace(/^\uFEFF/, ''));
       if (context.mode !== 'training' || context.runId !== input.runId || context.projectId !== null
           || context.releaseId !== null || state.purpose !== 'business-training'
-          || state.target?.kind !== 'profile' || state.target.profileId !== 'ptc-dft-expert') {
-        throw new Error('business DFT execution requires a business-training ptc-dft-expert run');
+          || state.target?.kind !== 'profile') {
+        throw new Error('business DFT execution requires a business-training profile run');
+      }
+      const profile = resolveAgentProfile(workspaceRoot, state.target.profileId,
+        state.target.profileRevision ? { revisionId: state.target.profileRevision } : {});
+      if (state.target.profileId !== 'ptc-dft-expert' && profile.executionClass !== 'input-dft') {
+        throw new Error(`profile ${state.target.profileId} is not configured for input-dft execution`);
       }
       const result = await (options.executeTrainingRun ?? executeTrainingRun)(workspaceRoot,
         { runId: input.runId, testItems: input.testItems }, {
@@ -210,7 +254,8 @@ export function createProfileSmokeHandler(manager, action) {
       const input = await readJsonBody(request);
       if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error('smoke request must be an object');
       if (action === 'execute') {
-        if (Object.keys(input).some(key => !['runId', 'modelChoice'].includes(key))) {
+        if (Object.keys(input).some(key => !['runId', 'modelChoice', 'allowDynamicProfile'].includes(key))
+            || (input.allowDynamicProfile !== undefined && input.allowDynamicProfile !== true)) {
           throw new Error('smoke execute contains unsupported fields');
         }
         const started = manager.start(input);
@@ -721,6 +766,10 @@ export function apply(ctx, config = {}) {
         path: '/api/ptc-control/training-runs',
         handler: createTrainingRunHandler(workspaceRoot),
       });
+      const unregisterAgentProfiles = ['clone', 'revision'].map(action => webCtx.webServer.register({
+        kind: 'exact', path: `/api/ptc-control/agent-profiles/${action}`,
+        handler: createAgentProfileHandler(workspaceRoot, action),
+      }));
       const unregisterTrainingExecution = webCtx.webServer.register({
         kind: 'exact',
         path: '/api/ptc-control/training-runs/execute',
@@ -853,6 +902,7 @@ export function apply(ctx, config = {}) {
         unregisterBusinessTrainingExecution?.();
         unregisterBusinessPipelines.forEach(unregister => unregister?.());
         unregisterWorkflowRuntime.forEach(unregister => unregister?.());
+        unregisterAgentProfiles.forEach(unregister => unregister?.());
         unregisterTraining?.();
         unregisterState?.();
         guard?.();

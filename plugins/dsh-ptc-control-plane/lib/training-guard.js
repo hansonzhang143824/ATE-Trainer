@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { trainingAddressBook, trainingDftCommands } from './training-paths.js';
 import { verifyTrainingPolicySync } from './training-materials.js';
+import { resolveAgentProfile, PROFILE_ID } from './agent-profile-runtime.js';
 
 const LABEL_PREFIX = 'PTC training dft expert ';
 const DENIED = 'PTC training execution boundary: this child may access only its assigned training DFT input, products and verification paths.';
@@ -32,7 +33,10 @@ export function verifyTrainingReceipt(receipt) {
   try { trainingAddressBook(receipt?.runId); } catch { return false; }
   return Boolean(receipt && receipt.schemaVersion === 1 && receipt.kind === 'ptc-training-dispatch'
     && typeof receipt.runId === 'string' && typeof receipt.label === 'string'
-    && receipt.profileId === 'ptc-dft-expert' && Array.isArray(receipt.testItems)
+    && PROFILE_ID.test(receipt.profileId ?? '')
+    && (receipt.profileRevision === undefined || receipt.profileRevision === null
+      || /^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/.test(receipt.profileRevision))
+    && Array.isArray(receipt.testItems)
     && receipt.testItems.length > 0 && receipt.testItems.every((tm) => typeof tm === 'string' && /^TM[0-9]+$/.test(tm))
     && receipt.label === trainingDispatchLabel(receipt.runId, receipt.testItems)
     && /^[a-f0-9]{64}$/.test(receipt.digest ?? '') && receipt.digest === receiptDigest(receipt));
@@ -65,6 +69,22 @@ function resolveIdentity(workspaceRoot, agent) {
   if (!all.length && (typeof label !== 'string' || !label.startsWith(LABEL_PREFIX))) return { kind: 'unrelated' };
   if (all.length !== 1 || !all[0].valid) return { kind: 'mismatch', reason: 'missing, ambiguous or invalid training dispatch receipt' };
   const receipt = all[0].receipt;
+  // Historical DFT fixtures and legacy runs predate profile manifests. They
+  // retain the original run-local guard; every cloned/configured profile must
+  // resolve through its sealed manifest before gaining the same boundary.
+  if (receipt.profileId !== 'ptc-dft-expert') {
+  // Historical ptc-dft-expert receipts predate profile manifests and remain
+  // valid when their legacy profile directory is unavailable in a test or
+  // archived run. Dynamic profiles must always resolve their sealed manifest.
+  if (receipt.profileId !== 'ptc-dft-expert' || receipt.profileRevision) {
+    try {
+      resolveAgentProfile(workspaceRoot, receipt.profileId,
+        receipt.profileRevision ? { revisionId: receipt.profileRevision } : {});
+    } catch (error) {
+      return { kind: 'mismatch', reason: `profile revision cannot be resolved: ${error.message}` };
+    }
+  }
+  }
   if (REVOKED.has(runKey(workspaceRoot, receipt.runId))) return { kind: 'mismatch', reason: 'training execution revoked in host memory; tool access revoked' };
   if (receipt.executionStatus === 'closed') return { kind: 'mismatch', reason: 'training execution has ended; tool access revoked' };
   if (typeof receipt.childSessionId !== 'string' || !receipt.childSessionId) {

@@ -97,13 +97,15 @@ function readManifest(root, runId, expectedCacheKey) {
       || manifest.cacheKey !== fingerprint(manifest.files, manifest.policies)
       || (expectedCacheKey !== undefined && expectedCacheKey !== manifest.cacheKey)) throw new Error('invalid or changed material snapshot fingerprint');
   const prefix = `Training_Materials/runs/${runId}/`;
+  const profileId = manifest.profileId ?? 'ptc-dft-expert';
+  id(profileId, 'profileId');
   const expectedSources = new Map([
     ['Training_Materials/Input_GlobalMaterial/Dali_testmode.xlsx', ['input/Dali_testmode.xlsx', 'python-plaintext']],
     ['Training_Materials/Input_GlobalMaterial/DALI-special-information.json', ['input/DALI-special-information.json', 'python-plaintext']],
     ['User_input/DFT解析规则.txt', ['input/DFT解析规则.txt', 'python-plaintext']],
-    ['team/expert-profiles/ptc-dft-expert/instructions.md', ['profile/instructions.md', 'exact-bytes']],
-    ['team/expert-profiles/ptc-dft-expert/profile.yaml', ['profile/profile.yaml', 'exact-bytes']],
-    ['team/expert-profiles/ptc-dft-expert/output-contract.schema.json', ['profile/output-contract.schema.json', 'exact-bytes']],
+    [`team/expert-profiles/${profileId}/instructions.md`, ['profile/instructions.md', 'exact-bytes']],
+    [`team/expert-profiles/${profileId}/profile.yaml`, ['profile/profile.yaml', 'exact-bytes']],
+    [`team/expert-profiles/${profileId}/output-contract.schema.json`, ['profile/output-contract.schema.json', 'exact-bytes']],
   ]);
   if (new Set(manifest.files.map((entry) => entry.source)).size !== manifest.files.length
       || !manifest.files.some((entry) => entry.path === `${prefix}input/Dali_testmode.xlsx`)
@@ -216,7 +218,8 @@ function addressBook(root, manifest) {
     ...trainingAddressBook(manifest.runId),
     manifestFile: `Training_Materials/runs/${manifest.runId}/material-manifest.json`,
   };
-  return freeze({ schemaVersion: 2, runId: manifest.runId, testItems: manifest.testItems,
+  return freeze({ schemaVersion: 2, runId: manifest.runId, profileId: manifest.profileId ?? 'ptc-dft-expert',
+    profileRevision: manifest.profileRevision ?? null, testItems: manifest.testItems,
     ...paths, cacheKey: manifest.cacheKey, candidateSources: manifest.candidateSources,
     cacheCompatible: Object.values(manifest.candidateSources).every((candidate) => candidate.cacheCompatible),
     absolute: Object.fromEntries(Object.entries(paths).map(([key, value]) => [key, path.join(root, value)])),
@@ -232,17 +235,21 @@ function addressBook(root, manifest) {
  * Reentry verifies immutable snapshots and never overwrites products. A partial
  * preparation fails closed; use a new runId rather than repairing it in place.
  */
-export async function prepareTrainingMaterials(workspaceRoot, runId, testItems) {
+export async function prepareTrainingMaterials(workspaceRoot, runId, testItems, options = {}) {
   id(runId, 'runId');
   if (!Array.isArray(testItems) || !testItems.length || testItems.some((tm) => typeof tm !== 'string' || !/^TM[0-9]+$/.test(tm))) throw new Error('invalid testItems');
   const tms = [...new Set(testItems)].sort();
+  const profileId = id(options?.profileId ?? 'ptc-dft-expert', 'profileId');
+  const profileRevision = options?.profileRevision ?? null;
   const root = path.resolve(workspaceRoot);
   safe(root, root);
   const runRoot = safe(root, path.join(root, 'Training_Materials/runs', runId));
   const manifestFile = safe(root, path.join(runRoot, 'material-manifest.json'));
   if (exists(manifestFile)) {
     const manifest = readManifest(root, runId);
-    if (JSON.stringify(manifest.testItems) !== JSON.stringify(tms)) throw new Error('material snapshot identity differs');
+    if (JSON.stringify(manifest.testItems) !== JSON.stringify(tms)
+        || (manifest.profileId ?? 'ptc-dft-expert') !== profileId
+        || (manifest.profileRevision ?? null) !== profileRevision) throw new Error('material snapshot identity differs');
     await verifyTrainingMaterials(root, addressBook(root, manifest));
     for (const folder of ['input-sync/dft', 'verification']) safe(root, path.join(runRoot, folder));
     for (const tm of tms) for (const product of PRODUCTS) safe(root, path.join(runRoot, 'input-sync/dft', tm, product));
@@ -265,9 +272,9 @@ export async function prepareTrainingMaterials(workspaceRoot, runId, testItems) 
     ['Training_Materials/Input_GlobalMaterial/Dali_testmode.xlsx', 'input/Dali_testmode.xlsx', true, true],
     ['Training_Materials/Input_GlobalMaterial/DALI-special-information.json', 'input/DALI-special-information.json', false, true],
     ['User_input/DFT解析规则.txt', 'input/DFT解析规则.txt', false, true],
-    ['team/expert-profiles/ptc-dft-expert/instructions.md', 'profile/instructions.md', true, false],
-    ['team/expert-profiles/ptc-dft-expert/profile.yaml', 'profile/profile.yaml', false, false],
-    ['team/expert-profiles/ptc-dft-expert/output-contract.schema.json', 'profile/output-contract.schema.json', false, false],
+    [`team/expert-profiles/${profileId}/instructions.md`, 'profile/instructions.md', true, false],
+    [`team/expert-profiles/${profileId}/profile.yaml`, 'profile/profile.yaml', false, false],
+    [`team/expert-profiles/${profileId}/output-contract.schema.json`, 'profile/output-contract.schema.json', false, false],
   ];
   const files = [];
   for (const [sourcePath, destination, required, plaintext] of sources) {
@@ -289,6 +296,7 @@ export async function prepareTrainingMaterials(workspaceRoot, runId, testItems) 
       const priorManifestFile = safe(root, path.join(directory, 'material-manifest.json'));
       if (!exists(stateFile) || !exists(priorManifestFile)) continue;
       const state = json(stateFile); const previous = readManifest(root, name, cacheKey);
+      if ((previous.profileId ?? 'ptc-dft-expert') !== profileId) continue;
       if (state.status === 'completed' && previous.cacheKey === cacheKey && previous.runId === name) prior.push({ name, directory, previous, state, finishedAt: state.finishedAt ?? state.updatedAt ?? '' });
     } catch { /* Untrusted or incomplete runs are not cache candidates. */ }
   }
@@ -317,7 +325,8 @@ export async function prepareTrainingMaterials(workspaceRoot, runId, testItems) 
     candidateSources[tm] = { kind: completed ? 'run' : copied.length ? 'legacy' : 'none', ...(completed ? { runId: completed.name } : {}), cacheCompatible: Boolean(completed), copied };
   }
   fs.mkdirSync(safe(root, path.join(runRoot, 'verification')), { recursive: true });
-  const manifest = { schemaVersion: 2, runId, testItems: tms, createdAt: new Date().toISOString(), cacheKey, files, policies, candidateSources };
+  const manifest = { schemaVersion: 2, runId, profileId, profileRevision,
+    testItems: tms, createdAt: new Date().toISOString(), cacheKey, files, policies, candidateSources };
   fs.writeFileSync(manifestFile, `${JSON.stringify(manifest, null, 2)}\n`, { flag: 'wx', encoding: 'utf8' });
   const materials = addressBook(root, manifest);
   await verifyTrainingMaterials(root, materials);

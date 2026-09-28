@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { assertSafeRunPath, createRunContext, persistRunContext } from './run-context.js';
+import { resolveAgentProfile } from './agent-profile-runtime.js';
 
 const PROFILE_ID = /^[a-z][a-z0-9-]{1,63}$/;
 
@@ -26,12 +27,17 @@ function normalizeTarget(workspaceRoot, target) {
     if (typeof target.profileId !== 'string' || !PROFILE_ID.test(target.profileId)) {
       throw new Error('profile training requires a valid profileId');
     }
-    const profile = path.join(workspaceRoot, 'team', 'expert-profiles', target.profileId);
-    assertSafeRunPath(workspaceRoot, profile);
-    if (!fs.existsSync(profile) || !fs.statSync(profile).isDirectory()) {
-      throw new Error(`unknown expert profile: ${target.profileId}`);
+    const resolved = resolveAgentProfile(workspaceRoot, target.profileId,
+      target.profileRevision ? { revisionId: target.profileRevision } : {});
+    const normalized = { kind: 'profile', profileId: target.profileId };
+    // Legacy built-in profiles predate generated manifests. Preserve their
+    // historical state shape, while dynamic/cloned profiles bind a concrete
+    // revision and content digest into the immutable training identity.
+    if (resolved.manifestPath || target.profileRevision) {
+      normalized.profileRevision = resolved.profileRevision;
+      normalized.profileDigest = resolved.contentDigest;
     }
-    return Object.freeze({ kind: 'profile', profileId: target.profileId });
+    return Object.freeze(normalized);
   }
   if (target?.kind === 'pipeline') {
     const registry = readJson(assertSafeRunPath(workspaceRoot, path.join(workspaceRoot, 'team', 'ptc', 'ptc_stage_registry.json')));

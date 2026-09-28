@@ -7,6 +7,7 @@ import { prepareTrainingMaterials, verifyTrainingMaterials } from './training-ma
 import { trainingAddressBook } from './training-paths.js';
 import { signTrainingReceipt, verifyTrainingReceipt } from './training-guard.js';
 import { assertSafeRunPath } from './run-context.js';
+import { resolveAgentProfile } from './agent-profile-runtime.js';
 
 const execFile = promisify(execFileCallback);
 const RUN_ID = /^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/;
@@ -278,7 +279,7 @@ export function finalProductHashes(root, testItems, materials) {
 }
 
 async function settleModelExecution({ root, directory, stateFile, checking, dispatch, testItems, gate, materials,
-  productHashes, verifyMaterials, reviewInput, bindReviews }) {
+  productHashes, verifyMaterials, reviewInput, bindReviews, profileId }) {
   try {
     const child = await dispatch.result;
     // A cancelled child may still be draining an already-started tool. Do not
@@ -294,7 +295,7 @@ async function settleModelExecution({ root, directory, stateFile, checking, disp
     const evidence = {
       schemaVersion: 1,
       runId: checking.runId,
-      profileId: 'ptc-dft-expert',
+      profileId,
       childSessionId: dispatch.childSessionId,
       childResult: child,
       materialManifest: materials.manifestFile,
@@ -352,8 +353,17 @@ export async function executeTrainingRun(workspaceRoot, input, options = {}) {
   const context = readJson(runFile);
   const initial = readJson(stateFile);
   if (context.mode !== 'training' || context.runId !== runId) throw new Error('run context is not a matching training identity');
-  if (initial.target?.kind !== 'profile' || initial.target.profileId !== 'ptc-dft-expert') {
-    throw new Error('the first executable training slice supports only ptc-dft-expert');
+  if (initial.target?.kind !== 'profile') {
+    throw new Error('the first executable training slice requires a profile target');
+  }
+  const profileId = initial.target.profileId;
+  const profile = resolveAgentProfile(root, profileId,
+    initial.target.profileRevision ? { revisionId: initial.target.profileRevision } : {});
+  // The existing business adapter is DFT-shaped. A cloned DFT profile is
+  // equivalent when its config declares the same execution class; unrelated
+  // profiles still fail closed before any material is written.
+  if (profileId !== 'ptc-dft-expert' && profile.executionClass !== 'input-dft') {
+    throw new Error(`training execution supports only input-dft profiles; profile ${profileId} does not declare executionClass input-dft`);
   }
   if (initial.status !== 'created') throw new Error(`training run is not startable from status ${initial.status}`);
   fs.writeFileSync(lockFile, `${process.pid}\n`, { encoding: 'utf8', flag: 'wx' });
@@ -368,14 +378,16 @@ export async function executeTrainingRun(workspaceRoot, input, options = {}) {
   const prepareReviewInput = options.prepareReviewInput ?? prepareDftReviewInput;
   const bindReviews = options.bindReviews ?? bindDftSemanticReviews;
   try {
-    const materials = await (options.prepareMaterials ?? prepareTrainingMaterials)(root, runId, testItems);
+    const materials = await (options.prepareMaterials ?? prepareTrainingMaterials)(root, runId, testItems, {
+      profileId, profileRevision: profile.manifestPath ? profile.profileRevision : null,
+    });
     const reports = await runGateSet(root, testItems, gate, materials, verifyMaterials);
     const unchanged = materials.cacheCompatible === true && reports.every((report) => report.status === 'ready');
     const sourceView = unchanged ? null : await prepareSourceView(root, testItems, materials, verifyMaterials);
     const evidence = {
       schemaVersion: 1,
       runId,
-      profileId: 'ptc-dft-expert',
+      profileId,
       mode: unchanged ? 'UNCHANGED' : 'STALE',
       modelDispatched: false,
       materialManifest: materials.manifestFile,
@@ -420,7 +432,7 @@ export async function executeTrainingRun(workspaceRoot, input, options = {}) {
         const terminalEvidence = {
           schemaVersion: 1,
           runId,
-          profileId: 'ptc-dft-expert',
+          profileId,
           reviewMethod: 'deterministic-source-binding',
           modelDispatched: false,
           materialManifest: materials.manifestFile,
@@ -474,7 +486,7 @@ export async function executeTrainingRun(workspaceRoot, input, options = {}) {
       };
       writeJsonAtomic(stateFile, state);
       const completion = settleModelExecution({ root, directory, stateFile, checking, dispatch, testItems, gate,
-        materials, productHashes, verifyMaterials, reviewInput, bindReviews });
+        materials, productHashes, verifyMaterials, reviewInput, bindReviews, profileId });
       completion.catch(() => {});
       options.onBackground?.(completion);
       return { context, state, evidence, evidenceFile, completion, childSessionId: dispatch.childSessionId };

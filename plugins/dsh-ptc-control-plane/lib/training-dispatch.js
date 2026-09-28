@@ -36,9 +36,9 @@ function terminalSchema() {
   };
 }
 
-function persona() {
+function persona(profileId = 'ptc-dft-expert') {
   return [
-    'You are the semantic-review step of the DSH-native TRAINING ptc-dft-expert.',
+    `You are the semantic-review step of the DSH-native TRAINING ${profileId}.`,
     'The host has already frozen the profile and source, run the approved deterministic producers, and supplied their complete bounded evidence below.',
     'Review sourceEvidence against metaProjection and conditionsProjection. Check identity, raw source coverage, expected value, power sequence, register intent, measurement, involved pins, helper/ramp meaning, and contradictions.',
     'Before blocking a contradiction, inspect the assigned item intentResolution. When it has status=resolved, its authority and decision are the accepted project baseline for the listed conflict: record copied source wording as a non-blocking finding and judge generated facts against that decision. Block only when generated facts disagree with the resolved decision, or when no authoritative resolution exists.',
@@ -123,7 +123,8 @@ export function createTrainingDispatcher(ctx, workspaceRoot, options = {}) {
       const lifecycleFile = path.join(runDirectory, 'evidence', 'lifecycle.json');
       let receipt = {
         schemaVersion: 1, kind: 'ptc-training-dispatch', runId,
-        profileId: 'ptc-dft-expert', profileSource: 'draft-snapshot', testItems,
+        profileId: materials.profileId ?? 'ptc-dft-expert', profileRevision: materials.profileRevision ?? null,
+        profileSource: 'draft-snapshot', testItems,
         label, parentSessionId, childSessionId: null,
         addressBook: { reads: materials.inputRoot, writes: materials.dftRoot, verification: materials.verificationRoot },
         sourceView: { path: sourceView.path, sha256: sourceView.sha256, sourceSha256: sourceView.sourceSha256 },
@@ -184,7 +185,7 @@ export function createTrainingDispatcher(ctx, workspaceRoot, options = {}) {
           label, prompt: [{ type: 'text', text: taskPrompt(runId, testItems, materials, reviewInput) }],
           parent: parentHandle.agent, signal: lifecycle.signal,
           agentOptions: { provider: selection.provider, model: selection.model, maxTokens: responseMaxTokens },
-          persona: persona(), toolFilter: { allow: [] },
+          persona: persona(materials.profileId ?? 'ptc-dft-expert'), toolFilter: { allow: [] },
           maxDepth: 1, outputSchema: terminalSchema(),
         }), { label: 'subagents.start', disposeLate: dispose });
         if (typeof childRun.id !== 'string' || !childRun.id) throw new Error('DSH returned no child session id');

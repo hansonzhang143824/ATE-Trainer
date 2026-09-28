@@ -28,17 +28,20 @@ test('plugin registers exact same-origin state and training routes', () => {
   assert.equal(effects.length, 1);
   assert.equal(guards.length, 1);
   assert.equal(events[0].name, 'tools/pre-execute');
-  assert.equal(routes.length, 41);
+  assert.equal(routes.length, 43);
   assert.equal(routes[0].kind, 'exact');
   assert.equal(routes[0].path, '/api/ptc-control/state');
   assert.equal(typeof routes[0].handler, 'function');
   assert.equal(routes[1].kind, 'exact');
   assert.equal(routes[1].path, '/api/ptc-control/training-runs');
   assert.equal(typeof routes[1].handler, 'function');
-  assert.equal(routes[2].kind, 'exact');
-  assert.equal(routes[2].path, '/api/ptc-control/training-runs/execute');
-  assert.equal(typeof routes[2].handler, 'function');
-  assert.deepEqual(routes.slice(3).map((route) => route.path), [
+  assert.deepEqual(routes.slice(2, 4).map((route) => route.path), [
+    '/api/ptc-control/agent-profiles/clone', '/api/ptc-control/agent-profiles/revision',
+  ]);
+  assert.equal(routes[4].kind, 'exact');
+  assert.equal(routes[4].path, '/api/ptc-control/training-runs/execute');
+  assert.equal(typeof routes[4].handler, 'function');
+  assert.deepEqual(routes.slice(5).map((route) => route.path), [
     '/api/ptc-control/business/training-runs/execute', '/api/ptc-control/training-runs/stop',
     '/api/ptc-control/profile-smoke/execute',
     '/api/ptc-control/profile-smoke/stop',

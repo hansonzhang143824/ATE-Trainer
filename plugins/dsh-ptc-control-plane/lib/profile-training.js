@@ -7,6 +7,7 @@ import { assertSafeRunPath } from './run-context.js';
 import { trainingAddressBook } from './training-paths.js';
 import { createTrainingLifecycle } from './training-lifecycle.js';
 import { resolveTrainingModelChoice } from './training-model.js';
+import { resolveAgentProfile } from './agent-profile-runtime.js';
 
 const execFile = promisify(execFileCallback);
 const DIGEST = /^[a-f0-9]{64}$/;
@@ -26,7 +27,7 @@ function atomic(root, file, value) {
   try { fs.renameSync(temporary, file); } finally { if (fs.existsSync(temporary)) fs.unlinkSync(temporary); }
 }
 
-function identity(root, runId) {
+function identity(root, runId, options = {}) {
   const directory = assertSafeRunPath(root, trainingAddressBook(runId).runRoot);
   const context = read(assertSafeRunPath(root, path.join(directory, 'run.json')));
   const stateFile = assertSafeRunPath(root, path.join(directory, 'state.json'));
@@ -38,8 +39,15 @@ function identity(root, runId) {
       || state.target?.kind !== 'profile' || !PROFILE.test(profileId ?? '')) {
     throw new Error('not an isolated profile smoke-training identity');
   }
-  if (!ARITHMETIC_PROFILES.has(profileId)) {
+  if (!ARITHMETIC_PROFILES.has(profileId) && options.allowDynamicProfiles !== true) {
     throw new Error('profile is not one of the eight PTC arithmetic smoke experts');
+  }
+  if (!ARITHMETIC_PROFILES.has(profileId)) {
+    const profile = resolveAgentProfile(root, profileId, state.target?.profileRevision
+      ? { revisionId: state.target.profileRevision } : {});
+    if (state.target?.profileRevision && state.target.profileDigest !== profile.contentDigest) {
+      throw new Error('dynamic profile revision digest differs from training identity');
+    }
   }
   const profileRoot = assertSafeRunPath(root, path.join(root, 'team', 'expert-profiles', profileId));
   if (!fs.statSync(profileRoot).isDirectory()) throw new Error('profile directory is missing');
@@ -163,7 +171,7 @@ export function createProfileSmokeManager(ctx, workspaceRoot, options = {}) {
   const active = new Map();
   return {
     start(input) {
-      const record = identity(root, input?.runId);
+      const record = identity(root, input?.runId, { allowDynamicProfiles: input?.allowDynamicProfile === true });
       if (record.state.status !== 'created' || active.has(input.runId)) throw new Error('profile smoke run is not startable');
       const lock = assertSafeRunPath(root, path.join(record.directory, 'profile-smoke.lock'));
       fs.writeFileSync(lock, `${process.pid}\n`, { flag: 'wx' });

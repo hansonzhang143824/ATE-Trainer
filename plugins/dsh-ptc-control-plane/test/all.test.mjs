@@ -36,6 +36,7 @@ import './framework-rehearsal.test.mjs';
 import './framework-release.test.mjs';
 import './framework-published-run.test.mjs';
 import './profile-training.test.mjs';
+import './agent-profile-runtime.test.mjs';
 import './arithmetic-role-dispatch.test.mjs';
 import './simple-orchestration.test.mjs';
 import './simple-orchestration-source.test.mjs';
