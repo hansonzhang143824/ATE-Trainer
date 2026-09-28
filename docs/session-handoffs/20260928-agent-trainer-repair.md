@@ -38,7 +38,8 @@ This document is a bounded continuation record. Read it before acting in the new
     "Created docs/agent-trainer-repair-plan-20260928.md as an ASCII-stable pointer to the UTF-8 Chinese plan.",
     "Confirmed current implementation gaps: fixed smoke role allowlists, separate business path rather than one workflow mode switch, missing generic trainer service/bundle, project state currently unbound, and business pipeline source steps currently concurrent.",
     "Confirmed the latest 20260928 TM109 business run contains schematic and DFT artifacts and semantic review evidence, but it is not proof of final UI, publish, or engineering read-only acceptance.",
-    "No production execution code was changed in this review turn; the target prototype is the review gate."
+    "No production execution code was changed in this review turn; the target prototype is the review gate.",
+    "Computer Use verified the local prototype: SMOKE_ONLY/BUSINESS_ONLY highlighter and contract switch, schematic-before-DFT business order, run-record input/output and Skill+script tabs, Agent filtering, empty-project creation, dynamic workflow step insertion, SMOKE freeze/publish/engineering read-only, and BUSINESS_ONLY release blocking."
   ],
   "decisions": [
     "Do not delete historical smoke/business artifacts; isolate them from the formal project registry.",
@@ -61,7 +62,7 @@ This document is a bounded continuation record. Read it before acting in the new
     "Read-only audit of current source and state: current GET /api/ptc-control/state reports identity=unbound and project=null.",
     "Read-only audit of Training_Materials/runs/training-20260928t022905z-9ab45836 shows schematic and DFT input-sync artifacts, receipts, and semantic review files.",
     "Read-only audit of docs/session-handoffs/20260927-offline-coding-status-panel.md confirms the prior layout patch passed 11 targeted tests and Gate A/B/C, but no fresh end-to-end run followed it.",
-    "Prototype file was written as a standalone local HTML; JavaScript syntax, duplicate-id, required-interaction-string, and V1-layout checks passed. The in-app browser rejected file:// navigation by policy, so no false browser-click claim is made; the file is ready to open in Codex for user review."
+    "Prototype file was written as a standalone local HTML; JavaScript syntax, duplicate-id, required-interaction-string, and V1-layout checks passed. A temporary localhost preview was used for Computer Use verification; the file is ready to open in Codex for user review."
   ],
   "open_risks": [
     "The active runtime bundle and backend are mismatched after rollback; white Trainer routes may still return not found until the project/trainer service is wired.",
@@ -103,6 +104,7 @@ Repair the DSH Agent Trainer into an empty-project, user-configurable framework.
 - Confirmed current implementation gaps: fixed smoke role allowlists, separate business path rather than one workflow mode switch, missing generic trainer service/bundle, project state currently unbound, and business pipeline source steps currently concurrent.
 - Confirmed the latest 20260928 TM109 business run contains schematic and DFT artifacts and semantic review evidence, but it is not proof of final UI, publish, or engineering read-only acceptance.
 - No production execution code was changed in this review turn; the target prototype is the review gate.
+- Computer Use verified the local prototype: SMOKE_ONLY/BUSINESS_ONLY highlighter and contract switch, schematic-before-DFT business order, run-record input/output and Skill+script tabs, Agent filtering, empty-project creation, dynamic workflow step insertion, SMOKE freeze/publish/engineering read-only, and BUSINESS_ONLY release blocking.
 
 ## Decisions to preserve
 
@@ -128,7 +130,7 @@ Repair the DSH Agent Trainer into an empty-project, user-configurable framework.
 - Read-only audit of current source and state: current GET /api/ptc-control/state reports identity=unbound and project=null.
 - Read-only audit of Training_Materials/runs/training-20260928t022905z-9ab45836 shows schematic and DFT input-sync artifacts, receipts, and semantic review files.
 - Read-only audit of docs/session-handoffs/20260927-offline-coding-status-panel.md confirms the prior layout patch passed 11 targeted tests and Gate A/B/C, but no fresh end-to-end run followed it.
-- Prototype file was written as a standalone local HTML; JavaScript syntax, duplicate-id, required-interaction-string, and V1-layout checks passed. The in-app browser rejected file:// navigation by policy, so no false browser-click claim is made; the file is ready to open in Codex for user review.
+- Prototype file was written as a standalone local HTML; JavaScript syntax, duplicate-id, required-interaction-string, and V1-layout checks passed. A temporary localhost preview was used for Computer Use verification; the file is ready to open in Codex for user review.
 
 ## Open risks and unknowns
 
