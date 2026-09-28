@@ -173,5 +173,5 @@ D7/正式 Trainer 运行时已实现：恢复并接入 `trainer-api`、`trainer-
 
 - c9e748d：feat: add agent optimization candidate runs。
 - e43c2c9：docs: record agent optimization acceptance。
-- c0ae877：test: preserve agent optimization run evidence。
-- 上述提交均已推送到公司 GitLab 的 master，远端当前提交为 c0ae877。
+- 7fbf2c9：test: preserve agent optimization run evidence。
+- 上述提交均已推送到公司 GitLab 的 master，远端当前提交为 7fbf2c9。
