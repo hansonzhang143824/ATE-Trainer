@@ -44,3 +44,13 @@
 点击“工程模式”后页面显示“已激活版本 · 只读”，编辑和发布入口均不可修改；点击工程“运行一次”得到 `framework-3ff0355b-b03a-47c1-9718-7281de8875d2`，类型为 `FRAMEWORK_REPLAY`，终态“框架验证通过”、2/2 步通过，bundle SHA-256 与发布包一致。computer-use 截图显示正式工程模式及右侧“框架验证通过”。
 
 结论：正式 Agent Trainer 的创建、原生会话绑定、工作流 Agent 替换、输入合同阻断、合成运行、冻结、发布和工程回放按钮验收通过；TM109 业务合同仍按 BUSINESS_ONLY 单独验收，不由本合成页面结果替代。
+
+
+## D2 Agent 优化 computer-use 验收（2026-09-29）
+
+1. 在正式 Trainer 页面新建 Arithmetic Optimization Agent，创建并打开其原生会话；在候选资产编辑器中选择 instructions.md 保存 v1，点击“运行一次”，输入 {"a":1,"b":2}，页面显示运行 framework-df3d848a-9c2b-4938-99e3-35e6488fb12c、框架验证通过、实际输出 {"value":3}。
+2. 再次点击候选编辑按钮，明确选择 instructions.md，保存 v2 指令，页面显示候选 revision revision-86d019aa-22b9-4018-8e32-a5c43081e118。
+3. 输入 {"a":2,"b":3} 并点击“运行一次”，页面显示运行 framework-25b6132b-4be2-47cf-a3f6-cfe6271a5d32、purpose agent-optimization、实际输出 {"value":5}，bundle SHA-256 为 b5f2dcdb330f5c8eff24c08e697ef92c551d4cd43f15216a0b7109ea48f11e31。
+4. 点击“运行比较”，选择 v1 为“修改前”、v2 为“修改后”，再点击“比较版本与运行结果”；页面展示 before/after run、revision 和 bundle 信息，v2 的 change set 为 change-e6fb3ee9-a7cd-4a62-ba09-7438dcde296d，并能追溯到 v1 run。
+
+以上全部通过电脑操作完成。该验收验证的是候选 Agent 的动态能力与版本追踪，仍属于合成框架验证，businessGatePassed:false，不等同于 TM109 业务 release。

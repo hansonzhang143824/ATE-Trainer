@@ -159,3 +159,11 @@ D7/正式 Trainer 运行时已实现：恢复并接入 `trainer-api`、`trainer-
 - 工程回放 `framework-3ff0355b-b03a-47c1-9718-7281de8875d2` 以 `FRAMEWORK_REPLAY` 完成，保持同一 bundle SHA-256。
 
 本阶段尚未声称 GitLab 远程上传成功；本地选择性 checkpoint 仍需在当前工作区提交，远程 push 只有在可用的 GitLab `write_repository` PAT 和网络可达时才记录为成功。
+
+
+## D2 实现检查点（2026-09-29）
+
+- framework-agent-run.js 增加 agent-optimization purpose guard：必须是训练模式、Agent 目标，并同时提供 derivedFromRunId 和 changeSetId，否则拒绝不完整的优化运行。
+- trainer-service.js 与 client.js 传递并保存优化运行的 purpose、来源运行和 change set，保证候选修改、运行证据、版本摘要可以关联和回溯。
+- trainer-runtime.test.mjs 增加 2+3 优化候选测试；定向测试 4/4 通过，完整 node --test test/all.test.mjs 为 364/364 通过。
+- 正式页面 computer use 验收完成：v1 framework-df3d848a-9c2b-4938-99e3-35e6488fb12c 与 v2 framework-25b6132b-4be2-47cf-a3f6-cfe6271a5d32 均完成；v2 被记录为 agent-optimization，并通过运行比较确认 v1 未被覆盖。

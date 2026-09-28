@@ -188,3 +188,15 @@ TM109 必须至少产出以下文件，并在训练运行证据中生成一份�
 - 点击工程模式“运行一次”，工程回放 `framework-3ff0355b-b03a-47c1-9718-7281de8875d2` 终态为“框架验证通过”，运行类型为 `FRAMEWORK_REPLAY`，步骤仍绑定两个 `tm109-dft-copy`，包 SHA-256 为 `3eb3293caa44fc20da682288c8f319de1d553c9d3020f4fe33d5ff7b31a0d166`。
 
 该正式页面验收证明按钮、候选保存、输入合同阻断、Agent 替换、冻结、发布和工程只读回放均可操作。它仍然是合成训练框架验证；TM109 真实业务是否发布仍须满足本方案的 `BUSINESS_ONLY` 产物和哈希合同。
+
+
+## 2026-09-29 D2 Agent 优化候选运行验收补充
+
+本次通过正式 DSH Agent Trainer 页面（http://127.0.0.1:3080/）新建一个普通 Agent arith-optimization-agent，用真实页面编辑同一个 Agent 的 instructions.md，验证由 v1 的 1+2 优化到 v2 的 2+3。
+
+- v1 候选 revision 为 revision-90731f26-35b8-4b9d-9c58-ef18c38756f4；点击“运行一次”得到 framework-df3d848a-9c2b-4938-99e3-35e6488fb12c，输入 {"a":1,"b":2}，输出 {"value":3}，purpose 为 FRAMEWORK_TRAINING，bundle SHA-256 为 041f8ff09e5ff7d004b7993bfbca3f58f10515deb5792b32f83d54066b356ba5。
+- 通过页面编辑器保存 v2 指令后得到 revision revision-86d019aa-22b9-4018-8e32-a5c43081e118，change set 为 change-e6fb3ee9-a7cd-4a62-ba09-7438dcde296d。
+- v2 点击“运行一次”得到 framework-25b6132b-4be2-47cf-a3f6-cfe6271a5d32，输入 {"a":2,"b":3}，输出 {"value":5}，purpose 为 agent-optimization，derivedFromRunId 指向 v1，bundle SHA-256 为 b5f2dcdb330f5c8eff24c08e697ef92c551d4cd43f15216a0b7109ea48f11e31。
+- 通过“运行比较”按钮选择 v1/v2 后，页面展示 before/after run、revision、bundle hash 和 change set，证明 v1 运行证据仍然保留，v2 是同一 Agent 的独立候选优化运行；两次运行均为合成框架验证，businessGatePassed:false。
+
+agent-optimization 只表示候选 Agent 优化，不代表业务 release，也不改变 SMOKE_ONLY / BUSINESS_ONLY 的边界。
