@@ -167,3 +167,11 @@ D7/正式 Trainer 运行时已实现：恢复并接入 `trainer-api`、`trainer-
 - trainer-service.js 与 client.js 传递并保存优化运行的 purpose、来源运行和 change set，保证候选修改、运行证据、版本摘要可以关联和回溯。
 - trainer-runtime.test.mjs 增加 2+3 优化候选测试；定向测试 4/4 通过，完整 node --test test/all.test.mjs 为 364/364 通过。
 - 正式页面 computer use 验收完成：v1 framework-df3d848a-9c2b-4938-99e3-35e6488fb12c 与 v2 framework-25b6132b-4be2-47cf-a3f6-cfe6271a5d32 均完成；v2 被记录为 agent-optimization，并通过运行比较确认 v1 未被覆盖。
+
+
+## Git checkpoint（2026-09-29）
+
+- c9e748d：feat: add agent optimization candidate runs。
+- e43c2c9：docs: record agent optimization acceptance。
+- c0ae877：test: preserve agent optimization run evidence。
+- 上述提交均已推送到公司 GitLab 的 master，远端当前提交为 c0ae877。
