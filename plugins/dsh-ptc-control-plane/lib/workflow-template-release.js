@@ -4,6 +4,7 @@ import crypto from 'node:crypto';
 import { assertSafeRunPath } from './run-context.js';
 import { readWorkflowTemplateRun } from './workflow-template-run.js';
 import { loadFrozenWorkflowTemplate } from './workflow-template.js';
+import { resolveAgentProfile } from './agent-profile-runtime.js';
 
 const SHA = /^[a-f0-9]{64}$/;
 const ID = /^[a-z0-9][a-z0-9-]{1,127}$/;
@@ -30,9 +31,23 @@ function sourceBindings(root, record) {
     if (hash(raw) !== evidence.profileSnapshotSha256 || !SHA.test(step.evidenceSha256)) {
       throw new Error(`Agent snapshot or evidence changed: ${step.profileId}`);
     }
-    return { profileId: step.profileId, profileRunId: step.profileRunId,
+    if (step.agentRevision !== undefined && step.agentRevision !== null) {
+      const profile = resolveAgentProfile(root, step.profileId,
+        { revisionId: step.agentRevision, requireManifest: true });
+      if (profile.manifestDigest !== step.agentManifestSha256
+          || profile.contentDigest !== step.agentContentSha256) {
+        throw new Error(`Agent revision binding changed: ${step.profileId}`);
+      }
+    }
+    const binding = { profileId: step.profileId, profileRunId: step.profileRunId,
       profileSnapshotSha256: hash(raw), childEvidenceSha256: step.evidenceSha256,
       upstreamEvidenceSha256: step.upstreamEvidenceSha256 };
+    // Revisions are present for dynamic Agent profiles.  Keep the old release
+    // shape readable so historical SMOKE_ONLY releases remain replayable.
+    if (step.agentRevision !== undefined) binding.agentRevision = step.agentRevision;
+    if (step.agentManifestSha256 !== undefined) binding.agentManifestSha256 = step.agentManifestSha256;
+    if (step.agentContentSha256 !== undefined) binding.agentContentSha256 = step.agentContentSha256;
+    return binding;
   });
 }
 function verifySources(root, manifest) {

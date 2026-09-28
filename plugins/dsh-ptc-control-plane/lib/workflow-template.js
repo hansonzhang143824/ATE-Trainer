@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { assertSafeRunPath } from './run-context.js';
+import { resolveAgentProfile } from './agent-profile-runtime.js';
 
 const ID = /^[a-z][a-z0-9-]{1,63}$/;
 const SHA = /^[a-f0-9]{64}$/;
@@ -65,8 +66,8 @@ function normalize(root, input) {
       || input.profileIds.some(id => typeof id !== 'string' || !ID.test(id))
       || new Set(input.profileIds).size !== input.profileIds.length) fail('workflow needs unique ordered Agent ids');
   for (const profileId of input.profileIds) {
-    const directory = safe(root, 'team', 'expert-profiles', profileId);
-    if (!fs.existsSync(directory) || !fs.statSync(directory).isDirectory()) fail(`unknown Agent: ${profileId}`);
+    try { resolveAgentProfile(root, profileId); }
+    catch (error) { fail(`unknown Agent: ${profileId} (${error?.message ?? 'profile is not resolvable'})`); }
   }
   if (input.instruction !== '1+2等于几，把答案写在JSON里' || input.expectedAnswer !== 3) {
     fail('this round only permits the fixed 1+2 numeric JSON smoke contract');

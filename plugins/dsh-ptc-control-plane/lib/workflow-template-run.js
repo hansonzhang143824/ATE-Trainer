@@ -4,6 +4,7 @@ import crypto from 'node:crypto';
 import { assertSafeRunPath } from './run-context.js';
 import { createTrainingRun } from './training-run.js';
 import { loadFrozenWorkflowTemplate } from './workflow-template.js';
+import { resolveAgentProfile } from './agent-profile-runtime.js';
 
 const ID = /^[a-z0-9][a-z0-9-]{1,127}$/;
 const SHA = /^[a-f0-9]{64}$/;
@@ -57,6 +58,15 @@ export function readWorkflowTemplateRun(workspaceRoot, runId) {
       throw new Error('invalid workflow step status');
     }
     if (step.status === 'completed') verifyStep(root, step);
+    if (step.agentRevision !== undefined && step.agentRevision !== null
+        && (typeof step.agentRevision !== 'string' || step.agentRevision.length < 1 || step.agentRevision.length > 128)) {
+      throw new Error('invalid workflow Agent revision binding');
+    }
+    for (const field of ['agentManifestSha256', 'agentContentSha256']) {
+      if (step[field] !== undefined && step[field] !== null && !SHA.test(step[field])) {
+        throw new Error(`invalid workflow Agent ${field} binding`);
+      }
+    }
     if (index > 0 && step.status === 'completed'
         && step.upstreamEvidenceSha256 !== record.steps[index - 1].evidenceSha256) {
       throw new Error('workflow handoff binding changed');
@@ -113,14 +123,26 @@ export function createWorkflowTemplateRunner(workspaceRoot, profileSmoke, option
             verifyStep(root, prior);
             step.upstreamEvidenceSha256 = prior.evidenceSha256;
           }
-          const created = createTrainingRun(root, { target: { kind: 'profile', profileId: step.profileId },
+          // Resolve the Agent at dispatch time and persist the exact revision used
+          // by this workflow step.  A later clone/edit therefore cannot silently
+          // change an already completed smoke run or its published release.
+          const profile = resolveAgentProfile(root, step.profileId,
+            step.agentRevision ? { revisionId: step.agentRevision } : {});
+          // Legacy built-ins have no generated manifest; keep their historical
+          // null binding while cloned/configured profiles carry a concrete one.
+          step.agentRevision = profile.manifestPath ? profile.profileRevision : null;
+          step.agentManifestSha256 = profile.manifestPath ? profile.manifestDigest : null;
+          step.agentContentSha256 = profile.manifestPath ? profile.contentDigest : null;
+          const created = createTrainingRun(root, { target: { kind: 'profile', profileId: step.profileId,
+            ...(step.agentRevision ? { profileRevision: step.agentRevision } : {}) },
             purpose: 'smoke-training' });
           step.profileRunId = created.state.runId;
           step.status = 'running';
           record.currentProfileId = step.profileId;
           controller.activeProfileRunId = step.profileRunId;
           save();
-          const started = profileSmoke.start({ runId: step.profileRunId, modelChoice: options.modelChoice ?? 'default' });
+          const started = profileSmoke.start({ runId: step.profileRunId, modelChoice: options.modelChoice ?? 'default',
+            allowDynamicProfile: Boolean(step.agentRevision) });
           await started.completion;
           controller.activeProfileRunId = null;
           if (controller.stopped) break;
@@ -169,6 +191,7 @@ export function createWorkflowTemplateRunner(workspaceRoot, profileSmoke, option
         outputUse: 'diagnostic-only', currentProfileId: null, reason: null,
         createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
         steps: frozen.template.profileIds.map((profileId, index) => ({ index, profileId,
+          agentRevision: null, agentManifestSha256: null, agentContentSha256: null,
           status: 'pending', profileRunId: null, upstreamEvidenceSha256: null,
           evidencePath: null, evidenceSha256: null, answer: null })) };
       fs.writeFileSync(file, `${JSON.stringify(record, null, 2)}\n`, { flag: 'wx' });

@@ -37,6 +37,15 @@ export function readPublishedWorkflowRun(workspaceRoot, runId) {
         !== JSON.stringify(release.manifest.steps.map(step => step.profileId))) {
     throw new Error('published workflow run changed its release binding');
   }
+  for (let index = 0; index < state.steps.length; index++) {
+    const stateStep = state.steps[index];
+    const releaseStep = release.manifest.steps[index];
+    for (const field of ['agentRevision', 'agentManifestSha256', 'agentContentSha256']) {
+      if (releaseStep[field] !== undefined && stateStep[field] !== releaseStep[field]) {
+        throw new Error('published workflow Agent revision binding changed');
+      }
+    }
+  }
   const childSessions = new Set();
   for (const step of state.steps) {
     if (step.status !== 'completed') continue;
@@ -55,6 +64,9 @@ export function readPublishedWorkflowRun(workspaceRoot, runId) {
         || evidence.childSessionId !== step.childSessionId || evidence.answer !== 3
         || typeof evidence.answer !== 'number'
         || evidence.releaseManifestSha256 !== state.releaseManifestSha256
+        || (step.agentRevision !== null && evidence.agentRevision !== step.agentRevision)
+        || (step.agentManifestSha256 !== null && evidence.agentManifestSha256 !== step.agentManifestSha256)
+        || (step.agentContentSha256 !== null && evidence.agentContentSha256 !== step.agentContentSha256)
         || hash(responseBytes) !== evidence.responseSha256
         || result?.stopReason !== 'completed' || result?.structured?.answer !== 3
         || typeof step.childSessionId !== 'string' || !step.childSessionId
@@ -156,6 +168,9 @@ export function createPublishedWorkflowRunner(ctx, workspaceRoot, options = {}) 
             fs.writeFileSync(responseFile, json(result), { flag: 'wx' });
             const evidence = { schemaVersion: 1, kind: 'ptc-published-workflow-child',
               runId: state.runId, index: step.index, profileId: step.profileId,
+              agentRevision: step.agentRevision ?? null,
+              agentManifestSha256: step.agentManifestSha256 ?? null,
+              agentContentSha256: step.agentContentSha256 ?? null,
               childSessionId: child.id, answer: 3, releaseManifestSha256: state.releaseManifestSha256,
               upstreamEvidenceSha256: step.upstreamEvidenceSha256,
               responsePath: path.relative(root, responseFile).split(path.sep).join('/'),
@@ -200,6 +215,9 @@ export function createPublishedWorkflowRunner(ctx, workspaceRoot, options = {}) 
         status: 'created', smokePassed: false, currentProfileId: null, reason: null,
         createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
         steps: release.manifest.steps.map((entry, index) => ({ index, profileId: entry.profileId,
+          agentRevision: entry.agentRevision ?? null,
+          agentManifestSha256: entry.agentManifestSha256 ?? null,
+          agentContentSha256: entry.agentContentSha256 ?? null,
           status: 'pending', upstreamEvidenceSha256: null, childSessionId: null,
           evidencePath: null, evidenceSha256: null, answer: null })) };
       fs.writeFileSync(file, json(state), { flag: 'wx' });

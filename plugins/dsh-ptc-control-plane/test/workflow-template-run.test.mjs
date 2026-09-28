@@ -5,6 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { saveWorkflowTemplate, freezeWorkflowTemplate } from '../lib/workflow-template.js';
+import { cloneAgentProfile } from '../lib/agent-profile-runtime.js';
 import { createWorkflowTemplateRunner, readWorkflowTemplateRun } from '../lib/workflow-template-run.js';
 import { stageWorkflowTemplateRelease, activateWorkflowTemplateRelease,
   loadWorkflowTemplateRelease } from '../lib/workflow-template-release.js';
@@ -68,6 +69,16 @@ function fakeProfileSmoke(root, called, answer = 3) {
   }, stop() {} };
 }
 
+test('published workflow execution requires an activated release pointer', t => {
+  const root = fixture(t);
+  const ctx = {
+    agentDefaultModel: { currentSelection: () => ({ provider: 'fake', model: 'fake' }) },
+    agents: { create: async () => ({ agent: { whenIdle: async () => {} } }) },
+    subagents: { start: async () => ({}) },
+  };
+  assert.throws(() => createPublishedWorkflowRunner(ctx, root).start(), /ENOENT|no active|workflow release/i);
+});
+
 test('ordered arbitrary subset creates fresh real-child references and verified handoffs', async t => {
   const root = fixture(t);
   const version = frozen(root, ['strategy-expert', 'ptc-dft-expert', 'ptc-schematic-expert']);
@@ -84,6 +95,47 @@ test('ordered arbitrary subset creates fresh real-child references and verified 
   assert.equal(record.steps[2].upstreamEvidenceSha256, record.steps[1].evidenceSha256);
   fs.appendFileSync(path.join(root, record.steps[0].evidencePath), ' ');
   assert.throws(() => readWorkflowTemplateRun(root, started.runId), /evidence changed/);
+});
+
+test('a cloned Agent can replace a workflow step and the release records its immutable revision', async t => {
+  const root = fixture(t);
+  const clone = cloneAgentProfile(root, {
+    sourceProfileId: 'ptc-dft-expert', targetProfileId: 'custom-dft-agent', revisionId: 'draft-1',
+  });
+  assert.equal(clone.profileId, 'custom-dft-agent');
+  assert.equal(clone.baseProfileId, 'ptc-dft-expert');
+  const version = frozen(root, ['ptc-schematic-expert', 'custom-dft-agent']);
+  const called = [];
+  const training = createWorkflowTemplateRunner(root, fakeProfileSmoke(root, called))
+    .start({ templateId: 'pilot', versionSha256: version.versionSha256 });
+  await training.completion;
+  const record = readWorkflowTemplateRun(root, training.runId);
+  assert.equal(record.status, 'completed');
+  assert.equal(record.steps[1].profileId, 'custom-dft-agent');
+  assert.equal(record.steps[1].agentRevision, 'draft-1');
+  assert.match(record.steps[1].agentManifestSha256, /^[a-f0-9]{64}$/);
+  assert.match(record.steps[1].agentContentSha256, /^[a-f0-9]{64}$/);
+  assert.deepEqual(called, ['ptc-schematic-expert', 'custom-dft-agent']);
+
+  const staged = stageWorkflowTemplateRelease(root, training.runId);
+  const manifest = loadWorkflowTemplateRelease(root, staged.releaseId).manifest;
+  assert.equal(manifest.steps[1].profileId, 'custom-dft-agent');
+  assert.equal(manifest.steps[1].agentRevision, 'draft-1');
+  assert.equal(manifest.businessGatePassed, false);
+  activateWorkflowTemplateRelease(root, staged.releaseId, staged.manifestSha256);
+  let children = 0;
+  const published = createPublishedWorkflowRunner({
+    agentDefaultModel: { currentSelection: () => ({ provider: 'fake', model: 'fake' }) },
+    agents: { create: async () => ({ agent: { whenIdle: async () => {} }, dispose: async () => {} }) },
+    subagents: { start: async () => ({ id: `child-${++children}`,
+      result: Promise.resolve({ stopReason: 'completed', structured: { answer: 3 } }), dispose: async () => {} }) },
+  }, root).start();
+  await published.completion;
+  const replay = readPublishedWorkflowRun(root, published.runId);
+  assert.equal(replay.status, 'completed');
+  assert.equal(replay.steps[1].agentRevision, 'draft-1');
+  assert.equal(replay.steps[1].agentManifestSha256, manifest.steps[1].agentManifestSha256);
+  assert.equal(replay.steps[1].agentContentSha256, manifest.steps[1].agentContentSha256);
 });
 
 test('wrong numeric answer blocks downstream Agent', async t => {
