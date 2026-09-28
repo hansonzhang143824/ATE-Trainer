@@ -1,6 +1,6 @@
 # ATE Trainer 系统验证方案（讨论议题合并总结，2026-09-28）
 
-状态：待用户 review。本方案合并近期确定的四个验证维度：训练 → 发布 → 工程、单 Agent → 工作流、轻量化冒烟 → 真实业务，以及按 Agent 配置执行。本文只定义验证顺序、证据和通过条件；不改变已确认的原型交互。
+状态：已按方案完成开发与正式 3080 computer-use 验收；TM109 BUSINESS_ONLY 合同测试通过，正式界面验收为合成工作流与发布工程回放。本方案合并近期确定的四个验证维度：训练 → 发布 → 工程、单 Agent → 工作流、轻量化冒烟 → 真实业务，以及按 Agent 配置执行。本文只定义验证顺序、证据和通过条件；不改变已确认的原型交互。
 
 ## 1. 验证目标
 
@@ -175,3 +175,16 @@ TM109 必须至少产出以下文件，并在训练运行证据中生成一份�
 | 发布 → 工程 | smoke 工作流已冻结发布 | `SMOKE_ONLY` | releaseId/digest 固定、运行目录独立、草稿不泄漏 | 工程只调用发布快照 |
 
 每一行都必须留下 `runId`、revision、模式、状态、失败原因和对应的输入/输出或发布摘要证据，才能在 review 中勾选通过。
+
+
+## 2026-09-28 computer-use 正式验收补充
+
+正式 DSH Agent Trainer（`http://127.0.0.1:3080/`）已由 computer use 实际点击完成以下链路：
+
+- 新建 `tm109-dft-copy`（TM109 DFT Copy），创建 `tm109-replacement-flow`（TM109 Copy Replacement Flow）。
+- 在“工作流顺序”编辑器确认 step-1 和 step-2 都可以选择独立的 `tm109-dft-copy`，输入映射由服务端保存并校验。
+- 点击创建并打开原生会话；会话绑定成功。首次使用 `tm109-dft-copy → lab-consumer` 时，输入合同不匹配被明确阻断；替换为两个独立 Copy Agent 后再次点击运行，`framework-f4be7479-b94b-4df4-a715-3ba407f88159` 终态为“框架验证通过”，2/2 步通过。
+- 点击冻结、选择同包成功运行、生成自包含发布包并激活；发布包 `release-aea00034-4654-49cd-bb6c-5f376cab20e4` 的 `businessGatePassed` 保持 `false`，符合 SMOKE_ONLY 边界。
+- 点击工程模式“运行一次”，工程回放 `framework-3ff0355b-b03a-47c1-9718-7281de8875d2` 终态为“框架验证通过”，运行类型为 `FRAMEWORK_REPLAY`，步骤仍绑定两个 `tm109-dft-copy`，包 SHA-256 为 `3eb3293caa44fc20da682288c8f319de1d553c9d3020f4fe33d5ff7b31a0d166`。
+
+该正式页面验收证明按钮、候选保存、输入合同阻断、Agent 替换、冻结、发布和工程只读回放均可操作。它仍然是合成训练框架验证；TM109 真实业务是否发布仍须满足本方案的 `BUSINESS_ONLY` 产物和哈希合同。

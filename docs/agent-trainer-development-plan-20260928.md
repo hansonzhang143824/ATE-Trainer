@@ -1,6 +1,6 @@
 # ATE Trainer 开发计划（动态 Agent 能力与工作流替换，2026-09-28）
 
-状态：D1/D2/D4/D6 已实现，D5/D7 待业务合同与工程回放验收。本计划对应[系统验证方案](agent-trainer-validation-plan-20260928.md)，保持已确认的原型页面结构和交互入口，不先重做 UI。每个阶段都有独立验证和 Git checkpoint；未通过当前阶段不得进入下一阶段。
+状态：D1/D2/D3/D4/D5/D6/D7 已实现；已完成正式 3080 computer-use 按钮验收。本计划对应[系统验证方案](agent-trainer-validation-plan-20260928.md)，保持已确认的原型页面结构和交互入口，不先重做 UI。每个阶段都有独立验证和 Git checkpoint；未通过当前阶段不得进入下一阶段。
 
 ## 1. 开发目标
 
@@ -141,3 +141,21 @@
 - `b813127 feat: add dynamic Agent profile runtime`：实现配置驱动 profile resolver、独立 clone、revision manifest/pointer、动态 profile 的训练材料与 DFT capability 绑定、SMOKE API 和训练边界校验。
 - `0ef2f15 feat: support dynamic Agent workflow replacement`：实现候选工作流替换、Agent revision/content/manifest 摘要绑定、发布阶段复核和工程回放固定版本；没有 active 发布版本时工程回放在派发前拒绝。
 - 相关定向回归：Agent runtime、训练 guard/dispatch、workflow replacement 共 63 项通过；JavaScript `node --check` 通过。最终完整回归 `npm test`：357/357 通过。
+
+
+## 最终实现与验收补充（2026-09-28）
+
+D5 已实现：`business-output-contract.js` 固定 TM109 BUSINESS_ONLY 的 YAML/JSON/semantic review 输出与 SHA-256 evidence，缺失、非 PASS 或字节变化会阻断；定向合同测试 3/3 通过。
+
+D7/正式 Trainer 运行时已实现：恢复并接入 `trainer-api`、`trainer-host`、framework runner/adapter、project/bundle/release/runtime/schema/service/tools 和 preset；`trainerEnabled` 只在启用 Trainer 时额外注入 `sessions`、`sessionPersistence`。Trainer 注册 15 个同源 API，AJV 依赖写入 package manifest/lock。
+
+正式服务门禁结果：仓库规定的 `dsh-plugin-restart.ps1` gate A、gate B、gate C 均为 0，服务端口 3080 启动成功。Trainer/API、插件边界和 TM109 合同定向测试共 24/24 通过；正式页面 computer use 结果记录在 [agent-trainer-ui-acceptance-20260928.md](agent-trainer-ui-acceptance-20260928.md)。
+
+正式页面点击产生的关键证据：
+
+- `tm109-dft-copy` Agent 创建成功；`tm109-replacement-flow` 工作流创建成功。
+- 两个独立 Copy Agent 步骤运行 `framework-f4be7479-b94b-4df4-a715-3ba407f88159` 完成 2/2，框架验证通过。
+- 冻结 `frozen-2a7e5645-06fd-4e88-a913-2684dc955f5d`，发布 `release-aea00034-4654-49cd-bb6c-5f376cab20e4`。
+- 工程回放 `framework-3ff0355b-b03a-47c1-9718-7281de8875d2` 以 `FRAMEWORK_REPLAY` 完成，保持同一 bundle SHA-256。
+
+本阶段尚未声称 GitLab 远程上传成功；本地选择性 checkpoint 仍需在当前工作区提交，远程 push 只有在可用的 GitLab `write_repository` PAT 和网络可达时才记录为成功。
