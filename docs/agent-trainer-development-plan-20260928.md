@@ -1,6 +1,6 @@
 # ATE Trainer 开发计划（动态 Agent 能力与工作流替换，2026-09-28）
 
-状态：待用户 review。本计划对应[系统验证方案](agent-trainer-validation-plan-20260928.md)，保持已确认的原型页面结构和交互入口，不先重做 UI。每个阶段都有独立验证和 Git checkpoint；未通过当前阶段不得进入下一阶段。
+状态：D1/D2/D4/D6 已实现，D5/D7 待业务合同与工程回放验收。本计划对应[系统验证方案](agent-trainer-validation-plan-20260928.md)，保持已确认的原型页面结构和交互入口，不先重做 UI。每个阶段都有独立验证和 Git checkpoint；未通过当前阶段不得进入下一阶段。
 
 ## 1. 开发目标
 
@@ -135,3 +135,9 @@
 `could not read Username`；普通环境的代理 `127.0.0.1:9` 也会阻断 HTTPS。
 实际上传需要在网络可达的环境中使用新的 GitLab `write_repository` PAT，上传后再把
 远程分支和 SHA 补记到本节。工作区其余修改和未跟踪文件仍保持原状。
+
+### 已完成实现 checkpoint
+
+- `b813127 feat: add dynamic Agent profile runtime`：实现配置驱动 profile resolver、独立 clone、revision manifest/pointer、动态 profile 的训练材料与 DFT capability 绑定、SMOKE API 和训练边界校验。
+- `0ef2f15 feat: support dynamic Agent workflow replacement`：实现候选工作流替换、Agent revision/content/manifest 摘要绑定、发布阶段复核和工程回放固定版本；没有 active 发布版本时工程回放在派发前拒绝。
+- 相关定向回归：Agent runtime、训练 guard/dispatch、workflow replacement 共 63 项通过；JavaScript `node --check` 通过。最终完整回归 `npm test`：357/357 通过。
