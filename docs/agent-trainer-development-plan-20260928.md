@@ -102,7 +102,7 @@
 
 ## 5. 当前 Git 交付状态
 
-本计划要求每个阶段提交并推送 Git。当前仓库检查结果是：分支为 `master`，没有配置 remote，且当前工作区的 `.git/index` 对当前用户拒绝写入。因此本次计划文档可以写入本地，但暂时不能完成 commit/push；开始 D0 前必须先恢复 `.git` 写权限并配置明确的 remote。恢复后按 D0–D7 顺序逐阶段提交，不能一次性混合提交。
+本计划要求每个阶段提交并推送 Git。当前仓库分支为 `master`，remote 已配置为公司 GitLab：`https://gitlab.nuvoltatech.com.cn/NVT10241/ate-trainer.git`。普通执行环境对 `.git` 有显式拒绝写入的 ACL，提升后的受控执行可以完成选择性暂存和本地提交；工作区其他修改仍未纳入 checkpoint。按 D0–D7 顺序逐阶段提交，不能一次性混合提交。
 
 ## 6. Git 记录操作
 
@@ -123,10 +123,15 @@
 
 ### 当前 D0 checkpoint 状态
 
-2026-09-28 已尝试只暂存三份计划文档，但 Git 返回：
+2026-09-28 已只提交三份计划文档，缓存区空白检查通过：
 
 ```text
-fatal: Unable to create 'D:/Newtest/DSH/ATE-Coding-Flow/.git/index.lock': Permission denied
+1b82a08 docs: record Agent Trainer validation and development plans
 ```
 
-因此当前没有产生 commit SHA，也没有声称已上传；D0 保持 `blocked`，待 `.git` 写权限恢复后从暂存步骤重新开始。
+此前的 `329d2d6 test: verify GitLab upload` 只是上传链路探针，只包含
+`GIT_UPLOAD_TEST_20260928.txt`，远端分支为 `codex/git-upload-test`，不能视为 D0。
+当前 D0 已有本地 SHA，但尚未声称已上传：无凭据的 `git push --dry-run` 返回
+`could not read Username`；普通环境的代理 `127.0.0.1:9` 也会阻断 HTTPS。
+实际上传需要在网络可达的环境中使用新的 GitLab `write_repository` PAT，上传后再把
+远程分支和 SHA 补记到本节。工作区其余修改和未跟踪文件仍保持原状。
