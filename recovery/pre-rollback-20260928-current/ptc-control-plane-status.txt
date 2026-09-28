@@ -1,0 +1,75 @@
+ M plugins/dsh-ptc-control-plane/client/index.js
+ M plugins/dsh-ptc-control-plane/client/panel.js
+ M plugins/dsh-ptc-control-plane/client/state.js
+ M plugins/dsh-ptc-control-plane/lib/client.js
+ M plugins/dsh-ptc-control-plane/lib/pipeline-dispatch.js
+ M plugins/dsh-ptc-control-plane/lib/training-compile.js
+ M plugins/dsh-ptc-control-plane/lib/training-dispatch.js
+ M plugins/dsh-ptc-control-plane/lib/training-execution.js
+ M plugins/dsh-ptc-control-plane/lib/training-guard.js
+ M plugins/dsh-ptc-control-plane/lib/training-materials.js
+ M plugins/dsh-ptc-control-plane/lib/training-paths.js
+ M plugins/dsh-ptc-control-plane/lib/training-run.js
+ M plugins/dsh-ptc-control-plane/package.json
+ M plugins/dsh-ptc-control-plane/scripts/build-client.mjs
+ M plugins/dsh-ptc-control-plane/test/all.test.mjs
+ M plugins/dsh-ptc-control-plane/test/client-bundle.test.mjs
+ M plugins/dsh-ptc-control-plane/test/client-state.test.mjs
+ M plugins/dsh-ptc-control-plane/test/host-command.test.mjs
+ M plugins/dsh-ptc-control-plane/test/pipeline-dispatch.test.mjs
+ M plugins/dsh-ptc-control-plane/test/pipeline-execution.test.mjs
+ M plugins/dsh-ptc-control-plane/test/pipeline-guard.test.mjs
+ M plugins/dsh-ptc-control-plane/test/training-compile.test.mjs
+ M plugins/dsh-ptc-control-plane/test/training-dft-source-view.test.mjs
+ M plugins/dsh-ptc-control-plane/test/training-execution.test.mjs
+ M plugins/dsh-ptc-control-plane/test/training-run.test.mjs
+?? plugins/dsh-ptc-control-plane/client/issue-editor.js
+?? plugins/dsh-ptc-control-plane/client/native-sessions.js
+?? plugins/dsh-ptc-control-plane/client/workflow-status.js
+?? plugins/dsh-ptc-control-plane/lib/arithmetic-role-dispatch.js
+?? plugins/dsh-ptc-control-plane/lib/business-release-eligibility.js
+?? plugins/dsh-ptc-control-plane/lib/control-state.js
+?? plugins/dsh-ptc-control-plane/lib/framework-published-run.js
+?? plugins/dsh-ptc-control-plane/lib/framework-rehearsal-manager.js
+?? plugins/dsh-ptc-control-plane/lib/framework-rehearsal-source.js
+?? plugins/dsh-ptc-control-plane/lib/framework-rehearsal.js
+?? plugins/dsh-ptc-control-plane/lib/framework-release.js
+?? plugins/dsh-ptc-control-plane/lib/host-command.js
+?? plugins/dsh-ptc-control-plane/lib/index.js
+?? plugins/dsh-ptc-control-plane/lib/pipeline-execution.js
+?? plugins/dsh-ptc-control-plane/lib/pipeline-guard.js
+?? plugins/dsh-ptc-control-plane/lib/profile-training.js
+?? plugins/dsh-ptc-control-plane/lib/session-workspaces.js
+?? plugins/dsh-ptc-control-plane/lib/simple-orchestration-manager.js
+?? plugins/dsh-ptc-control-plane/lib/simple-orchestration-source.js
+?? plugins/dsh-ptc-control-plane/lib/simple-orchestration.js
+?? plugins/dsh-ptc-control-plane/lib/training-case-proposals.js
+?? plugins/dsh-ptc-control-plane/lib/training-issues.js
+?? plugins/dsh-ptc-control-plane/lib/training-model.js
+?? plugins/dsh-ptc-control-plane/lib/training-release.js
+?? plugins/dsh-ptc-control-plane/lib/workflow-template-published.js
+?? plugins/dsh-ptc-control-plane/lib/workflow-template-release.js
+?? plugins/dsh-ptc-control-plane/lib/workflow-template-run.js
+?? plugins/dsh-ptc-control-plane/lib/workflow-template.js
+?? plugins/dsh-ptc-control-plane/test/arithmetic-role-dispatch.test.mjs
+?? plugins/dsh-ptc-control-plane/test/business-release-eligibility.test.mjs
+?? plugins/dsh-ptc-control-plane/test/control-state.test.mjs
+?? plugins/dsh-ptc-control-plane/test/framework-published-run.test.mjs
+?? plugins/dsh-ptc-control-plane/test/framework-rehearsal-manager.test.mjs
+?? plugins/dsh-ptc-control-plane/test/framework-rehearsal-source.test.mjs
+?? plugins/dsh-ptc-control-plane/test/framework-rehearsal.test.mjs
+?? plugins/dsh-ptc-control-plane/test/framework-release.test.mjs
+?? plugins/dsh-ptc-control-plane/test/issue-editor.test.mjs
+?? plugins/dsh-ptc-control-plane/test/plugin.test.mjs
+?? plugins/dsh-ptc-control-plane/test/profile-training.test.mjs
+?? plugins/dsh-ptc-control-plane/test/session-workspaces.test.mjs
+?? plugins/dsh-ptc-control-plane/test/simple-orchestration-manager.test.mjs
+?? plugins/dsh-ptc-control-plane/test/simple-orchestration-source.test.mjs
+?? plugins/dsh-ptc-control-plane/test/simple-orchestration.test.mjs
+?? plugins/dsh-ptc-control-plane/test/training-case-proposals.test.mjs
+?? plugins/dsh-ptc-control-plane/test/training-dispatch.test.mjs
+?? plugins/dsh-ptc-control-plane/test/training-issues.test.mjs
+?? plugins/dsh-ptc-control-plane/test/training-release.test.mjs
+?? plugins/dsh-ptc-control-plane/test/workflow-status.test.mjs
+?? plugins/dsh-ptc-control-plane/test/workflow-template-run.test.mjs
+?? plugins/dsh-ptc-control-plane/test/workflow-template.test.mjs

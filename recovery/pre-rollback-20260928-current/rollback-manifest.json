@@ -1,0 +1,9 @@
+{
+  "schema": "rollback/v1",
+  "createdAt": "2026-09-28T12:40:51.6654522+08:00",
+  "target": "plugins/dsh-ptc-control-plane",
+  "source": "recovery/restore-20260927-2212/plugins/dsh-ptc-control-plane",
+  "sourceManifest": "recovery/restore-20260927-2212/manifest.json",
+  "preservedCurrent": "recovery/pre-rollback-20260928-current/plugins/dsh-ptc-control-plane",
+  "sourceNote": "Restored closest trustworthy pre-20260927 22:12 snapshot; key UI source was last modified 20260927 21:40."
+}
