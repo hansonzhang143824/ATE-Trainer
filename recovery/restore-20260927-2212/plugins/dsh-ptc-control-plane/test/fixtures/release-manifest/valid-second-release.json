@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "releaseId": "ptc-release-v2",
+  "createdAt": "2026-09-22T10:30:00Z",
+  "createdBy": "codem-publisher",
+  "previousReleaseId": "ptc-release-v1",
+  "snapshots": {
+    "profiles": [
+      "profiles/dft/instructions.md",
+      "profiles/dft/profile.yaml",
+      "profiles/schematic/instructions.md"
+    ],
+    "orchestration": [
+      "orchestration/ptc_stage_registry.json"
+    ],
+    "contracts": [
+      "contracts/handoff-input-sync-strategy.json"
+    ],
+    "policies": [
+      "policies/dispatcher-identity.json"
+    ],
+    "verification": [
+      "verification/pipeline-regression.json",
+      "verification/single-agent-evaluation.json"
+    ]
+  },
+  "files": [
+    { "path": "contracts/handoff-input-sync-strategy.json", "size": 89, "sha256": "9c5e1761543584878a430a67c0689b7d9682672c3aa4e346e68505709837c411" },
+    { "path": "orchestration/ptc_stage_registry.json", "size": 123, "sha256": "c7554afb6b3a3e12d3b4b0a1657145e6e5f20d83385c038d0f20e68f601fb7f4" },
+    { "path": "policies/dispatcher-identity.json", "size": 49, "sha256": "46757d8609b96e272d36d5faf5d079f19726cc99d6fdf8e4923fbfbf6e9dc709" },
+    { "path": "profiles/dft/instructions.md", "size": 102, "sha256": "010abf60557595e973085ff58af58826a623b2ce3df0c4aba196eff6a74684ff" },
+    { "path": "profiles/dft/profile.yaml", "size": 26, "sha256": "9e2dea128894c516173f2bee132c33abae8dc90aba2ab3587d892db1f85e506d" },
+    { "path": "profiles/schematic/instructions.md", "size": 67, "sha256": "afb495941a0eb1483bc820715a0a6c5cdbd0e6a4419df44140b6e8ae34566158" },
+    { "path": "verification/pipeline-regression.json", "size": 60, "sha256": "8936efc856adb7951edd4ca315511fdc832e00c8932f1408e3234d4b74028b87" },
+    { "path": "verification/single-agent-evaluation.json", "size": 51, "sha256": "a6135df7da82b75d4b4e59257b7f5c989cb79055c1dfd6199a1a1122d7a91736" }
+  ],
+  "bundleDigest": "54722d972df73f1aff74d1ec23dd100a6c785fab9d3ce72ce7b4c166cdad194a",
+  "releaseVerification": {
+    "result": "passed",
+    "singleAgentEvaluation": "passed",
+    "pipelineRegression": "passed"
+  }
+}

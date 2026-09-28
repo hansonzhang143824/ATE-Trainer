@@ -1,0 +1,8 @@
+- id: framework-worker-persona
+  name: '@deepseek-ai/dsh-persona'
+  config:
+    text: 'Execute only the explicit synthetic bundle instructions. Never load business files or claim business certification.'
+- id: framework-tool-presentation
+  name: "@deepseek-ai/dsh-agent-tool-presentation"
+  config:
+    mode: native

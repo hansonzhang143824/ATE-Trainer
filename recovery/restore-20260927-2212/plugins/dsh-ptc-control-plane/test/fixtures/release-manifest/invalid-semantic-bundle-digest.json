@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "releaseId": "ptc-release-v1",
+  "createdAt": "2026-09-22T08:00:00Z",
+  "createdBy": "codem-publisher",
+  "previousReleaseId": null,
+  "snapshots": {
+    "profiles": [
+      "profiles/dft/instructions.md",
+      "profiles/dft/profile.yaml"
+    ],
+    "orchestration": [
+      "orchestration/ptc_stage_registry.json"
+    ],
+    "contracts": [
+      "contracts/handoff-input-sync-strategy.json"
+    ],
+    "policies": [
+      "policies/dispatcher-identity.json"
+    ],
+    "verification": [
+      "verification/pipeline-regression.json",
+      "verification/single-agent-evaluation.json"
+    ]
+  },
+  "files": [
+    { "path": "contracts/handoff-input-sync-strategy.json", "size": 89, "sha256": "9c5e1761543584878a430a67c0689b7d9682672c3aa4e346e68505709837c411" },
+    { "path": "orchestration/ptc_stage_registry.json", "size": 123, "sha256": "c7554afb6b3a3e12d3b4b0a1657145e6e5f20d83385c038d0f20e68f601fb7f4" },
+    { "path": "policies/dispatcher-identity.json", "size": 49, "sha256": "46757d8609b96e272d36d5faf5d079f19726cc99d6fdf8e4923fbfbf6e9dc709" },
+    { "path": "profiles/dft/instructions.md", "size": 58, "sha256": "f1ed4f19a71adab71646a07be80ffcc699fe4575fcbc05a1be320240f213eb17" },
+    { "path": "profiles/dft/profile.yaml", "size": 26, "sha256": "9e2dea128894c516173f2bee132c33abae8dc90aba2ab3587d892db1f85e506d" },
+    { "path": "verification/pipeline-regression.json", "size": 33, "sha256": "5ba9c922a6ec0ef7d5577e3a4659ea128761c0ac79e73313d2b4bb645a2dd424" },
+    { "path": "verification/single-agent-evaluation.json", "size": 38, "sha256": "0b6888b0869d44f3ba866d952d10b8ed3b87e7ef637ade4bd0688af987129e94" }
+  ],
+  "bundleDigest": "46292a903bde19fff71ffb1ad6737d2cf22a6954dd181e3f5462ccad890d50b8",
+  "releaseVerification": {
+    "result": "passed",
+    "singleAgentEvaluation": "passed",
+    "pipelineRegression": "passed"
+  }
+}
