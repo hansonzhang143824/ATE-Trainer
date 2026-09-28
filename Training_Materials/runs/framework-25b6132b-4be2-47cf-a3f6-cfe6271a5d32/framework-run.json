@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "kind": "framework-run",
+  "runId": "framework-25b6132b-4be2-47cf-a3f6-cfe6271a5d32",
+  "requestId": "d8dc6269-6e6b-4d9c-92f8-c67bc3a769ed",
+  "projectId": "synthetic-lab",
+  "targetKind": "agent",
+  "targetId": "arith-optimization-agent",
+  "revisionId": "revision-86d019aa-22b9-4018-8e32-a5c43081e118",
+  "bundleSha256": "b5f2dcdb330f5c8eff24c08e697ef92c551d4cd43f15216a0b7109ea48f11e31",
+  "model": {
+    "provider": "deepseek-official",
+    "model": "deepseek-v4-flash"
+  },
+  "mode": "training",
+  "purpose": "agent-optimization",
+  "status": "completed",
+  "startedAt": "2026-09-28T16:07:50.224Z",
+  "updatedAt": "2026-09-28T16:07:54.636Z",
+  "completedAt": "2026-09-28T16:07:54.625Z",
+  "derivedFromRunId": "framework-df3d848a-9c2b-4938-99e3-35e6488fb12c",
+  "changeSetId": "change-e6fb3ee9-a7cd-4a62-ba09-7438dcde296d",
+  "releaseId": null,
+  "businessGatePassed": false,
+  "cancellationRequested": false,
+  "childTerminationConfirmed": true,
+  "output": {
+    "value": 5
+  },
+  "validation": {
+    "ok": true,
+    "errors": []
+  },
+  "error": null,
+  "steps": [
+    {
+      "stepId": "step-1",
+      "agentId": "arith-optimization-agent",
+      "status": "completed",
+      "parentSessionId": "framework-parent-framework-25b6132b-4be2-47cf-a3f6-cfe6271a5d32-step-1",
+      "childSessionId": "7f10c77e-4e59-47c3-b681-146b26db6e21",
+      "childTerminationConfirmed": true,
+      "actualLoadedRefs": [
+        {
+          "path": "agents/arith-optimization-agent/instructions.md",
+          "sha256": "18618d19cc1e38adb69964a854ef48cb94c617e8e80c881f3d5da637c8c44a25",
+          "size": 169
+        },
+        {
+          "path": "contracts/arith-optimization-agent-input.schema.json",
+          "sha256": "a0311c353aec0c57946a8ca657370a474532175265455995160cfe83d8ce2b4f",
+          "size": 84
+        },
+        {
+          "path": "contracts/arith-optimization-agent-output.schema.json",
+          "sha256": "a0311c353aec0c57946a8ca657370a474532175265455995160cfe83d8ce2b4f",
+          "size": 84
+        }
+      ],
+      "input": {
+        "a": 2,
+        "b": 3
+      },
+      "inputValidation": {
+        "ok": true,
+        "errors": []
+      },
+      "inputArtifact": {
+        "path": "Training_Materials/runs/framework-25b6132b-4be2-47cf-a3f6-cfe6271a5d32/step-1.input.json",
+        "sha256": "aabafd9f857452152dcdd789a8719893fc5971be8fa8628a9ed69937236e4a57"
+      },
+      "startedAt": "2026-09-28T16:07:50.273Z",
+      "model": {
+        "provider": "deepseek-official",
+        "model": "deepseek-v4-flash"
+      },
+      "effectiveTools": [
+        "structured_output"
+      ],
+      "toolSchemasSha256": "7c3299fdd262d26808374e602939e7dc6e89e8e8a0c77fec6507cc50c1a9fc26",
+      "output": {
+        "value": 5
+      },
+      "outputArtifact": {
+        "path": "Training_Materials/runs/framework-25b6132b-4be2-47cf-a3f6-cfe6271a5d32/step-1.output.json",
+        "sha256": "e585adc3ec3383ea36922fcf59342de07d07965c39f4799c6cb64f2880912f7d"
+      },
+      "validation": {
+        "ok": true,
+        "errors": []
+      },
+      "completedAt": "2026-09-28T16:07:54.615Z"
+    }
+  ],
+  "bundleArtifact": {
+    "path": "Training_Materials/runs/framework-25b6132b-4be2-47cf-a3f6-cfe6271a5d32/execution-bundle.json",
+    "sha256": "6addc5b1e468eba2edface72cb8ef2e39bfbebe2a6aed0945cbf1e30f8c2be6c"
+  },
+  "lastEvent": {
+    "phase": "terminal",
+    "seq": 18,
+    "runId": "framework-25b6132b-4be2-47cf-a3f6-cfe6271a5d32",
+    "at": "2026-09-28T16:07:54.625Z",
+    "type": "completed",
+    "status": "completed"
+  },
+  "controls": {
+    "pause": {
+      "allowed": false,
+      "reason": "No later step to pause"
+    },
+    "resume": {
+      "allowed": false,
+      "reason": "Only a paused run can resume"
+    },
+    "stop": {
+      "allowed": false,
+      "reason": "Run is terminal or already stopping"
+    }
+  },
+  "testResults": []
+}
