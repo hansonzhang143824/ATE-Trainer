@@ -260,10 +260,19 @@ export function createFrameworkRunner({ workspaceRoot, adapter, now = () => new 
       bundle.steps.forEach(step => frameworkId(step.stepId));
       if (bundle.runtimeApiVersion !== 'trainer-api-v1') fail('BUNDLE_INVALID', 'unsupported runtime API');
       for (const entry of live.values()) if (entry.run.projectId === bundle.projectId && entry.run.targetKind === bundle.targetKind && entry.run.targetId === bundle.targetId && (entry.run.cancellationRequested || entry.finished) && entry.run.childTerminationConfirmed !== true) fail('TERMINATION_UNCONFIRMED', 'previous target child has not confirmed termination');
+      const optimization = input.purpose === 'agent-optimization';
+      if (optimization && (input.mode !== 'training' || bundle.targetKind !== 'agent'
+        || typeof input.derivedFromRunId !== 'string' || !input.derivedFromRunId
+        || typeof input.changeSetId !== 'string' || !input.changeSetId)) {
+        fail('OPTIMIZATION_BINDING_INVALID', 'agent-optimization requires a training Agent run, a base run and a change set');
+      }
+      if (input.purpose !== undefined && input.purpose !== 'agent-optimization') {
+        fail('PURPOSE_INVALID', 'unsupported framework run purpose');
+      }
       const run = { schemaVersion: 1, kind: 'framework-run', runId: input.runId, requestId: input.requestId,
         projectId: bundle.projectId, targetKind: bundle.targetKind, targetId: bundle.targetId, revisionId: bundle.revisionId,
         bundleSha256: bundle.bundleSha256, model: clone(bundle.model), mode: input.mode,
-        purpose: input.mode === 'published' ? 'FRAMEWORK_REPLAY' : 'FRAMEWORK_TRAINING', status: 'queued',
+        purpose: input.mode === 'published' ? 'FRAMEWORK_REPLAY' : (optimization ? 'agent-optimization' : 'FRAMEWORK_TRAINING'), status: 'queued',
         startedAt: now(), updatedAt: now(), completedAt: null, derivedFromRunId: input.derivedFromRunId ?? null,
         changeSetId: input.changeSetId ?? null, releaseId: input.releaseId ?? null, businessGatePassed: false,
         cancellationRequested: false, childTerminationConfirmed: null, output: null, validation: null, error: null,

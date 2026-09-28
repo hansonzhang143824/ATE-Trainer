@@ -123,3 +123,63 @@ test('trainer service runs a registered workflow through the real runner boundar
     assert.equal(result.value.businessGatePassed, false);
   } finally { fs.rmSync(root, { recursive: true, force: true }); }
 });
+
+
+test('Agent optimization records an independent 2+3 candidate run', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'ptc-trainer-optimization-'));
+  let child = 0;
+  const arithmeticFiles = {
+    'agents/arithmetic-agent/instructions.md': 'v1: add input.a and input.b and return numeric value.\n',
+    'agents/arithmetic-agent/agent.json': JSON.stringify({ agentId: 'arithmetic-agent', name: 'Arithmetic Agent', instructionsRef: 'agents/arithmetic-agent/instructions.md', skillRefs: [], toolIds: [], inputSchemaRef: 'contracts/arithmetic-input.schema.json', outputSchemaRef: 'contracts/arithmetic-output.schema.json' }),
+    'contracts/arithmetic-input.schema.json': JSON.stringify({ $schema: 'https://json-schema.org/draft/2020-12/schema', type: 'object', properties: { a: { type: 'integer' }, b: { type: 'integer' } }, required: ['a', 'b'], additionalProperties: false }),
+    'contracts/arithmetic-output.schema.json': JSON.stringify({ $schema: 'https://json-schema.org/draft/2020-12/schema', type: 'object', properties: { value: { type: 'integer' }, revisionLabel: { type: 'string' } }, required: ['value', 'revisionLabel'], additionalProperties: false }),
+    'tests/arithmetic-agent.json': JSON.stringify({ testId: 'arithmetic-agent', targetKind: 'agent', targetId: 'arithmetic-agent', cases: [{ input: { a: 1, b: 2 }, expected: { value: 3, revisionLabel: 'v1' } }] }),
+  };
+  try {
+    const adapter = { async dispatch({ step, input, bundle, onStart }) {
+      const childSessionId = `optimization-child-${++child}`;
+      onStart({ childSessionId, parentSessionId: 'optimization-parent' });
+      const instructions = bundle.files.find(file => file.path === step.instructionsRef).content;
+      const revisionLabel = instructions.includes('v2') ? 'v2' : 'v1';
+      return { output: { value: input.a + input.b, revisionLabel }, childSessionId, childTerminationConfirmed: true, stopReason: 'completed' };
+    } };
+    const runner = createFrameworkRunner({ workspaceRoot: root, adapter, verifyBundle: bundles.verifyBundle, validateJson });
+    const service = createTrainerService({ workspaceRoot: root, runner,
+      repositories: { ...projects, ...bundles, ...releases }, modelResolver: () => ({ provider: 'fake', model: 'fake' }) });
+    await projects.ensureTrainerProject(root, { projectId: 'optimization-lab', seed: { files: arithmeticFiles } });
+    const page = (operation, input = {}) => service.invoke(operation,
+      { projectId: 'optimization-lab', targetKind: 'agent', targetId: 'arithmetic-agent', ...input }, { kind: 'page' });
+
+    const v1Started = await page('run', { requestId: 'optimization-v1', input: { a: 1, b: 2 } });
+    assert.equal(v1Started.ok, true, JSON.stringify(v1Started));
+    await runner.waitForRun({ runId: v1Started.value.runId });
+    const v1 = (await page('runs', { runId: v1Started.value.runId })).value;
+    assert.equal(v1.status, 'completed');
+    assert.equal(v1.purpose, 'FRAMEWORK_TRAINING');
+    assert.deepEqual(v1.output, { value: 3, revisionLabel: 'v1' });
+
+    const context = await page('context');
+    const saved = await page('apply-changes', { requestId: 'optimization-change-1', baseRevision: context.value.project.revisionId,
+      linkedRunId: v1.runId, reason: 'optimize arithmetic Agent executable behavior', changes: [
+        { path: 'agents/arithmetic-agent/instructions.md', content: 'v2: optimized arithmetic path; add input.a and input.b and return numeric value.\n' },
+        { path: 'tests/arithmetic-agent.json', content: JSON.stringify({ testId: 'arithmetic-agent', targetKind: 'agent', targetId: 'arithmetic-agent', cases: [{ input: { a: 1, b: 2 }, expected: { value: 3, revisionLabel: 'v1' } }, { input: { a: 2, b: 3 }, expected: { value: 5, revisionLabel: 'v2' } }] }) },
+      ] });
+    assert.equal(saved.ok, true, JSON.stringify(saved));
+    assert.notEqual(saved.value.revisionId, v1.revisionId);
+
+    const v2Started = await page('run', { requestId: 'optimization-v2', input: { a: 2, b: 3 }, purpose: 'agent-optimization', derivedFromRunId: v1.runId, changeSetId: saved.value.changeSetId });
+    assert.equal(v2Started.ok, true, JSON.stringify(v2Started));
+    await runner.waitForRun({ runId: v2Started.value.runId });
+    const v2 = (await page('runs', { runId: v2Started.value.runId })).value;
+    assert.equal(v2.status, 'completed');
+    assert.equal(v2.purpose, 'agent-optimization');
+    assert.equal(v2.derivedFromRunId, v1.runId);
+    assert.equal(v2.changeSetId, saved.value.changeSetId);
+    assert.notEqual(v2.revisionId, v1.revisionId);
+    assert.deepEqual(v2.output, { value: 5, revisionLabel: 'v2' });
+    assert.deepEqual(v2.testResults, [{ testId: 'arithmetic-agent', caseIndex: 1, ok: true, errors: [] }]);
+    const v1Again = (await page('runs', { runId: v1.runId })).value;
+    assert.deepEqual(v1Again.output, { value: 3, revisionLabel: 'v1' });
+    assert.notEqual(v1Again.bundleSha256, v2.bundleSha256);
+  } finally { fs.rmSync(root, { recursive: true, force: true }); }
+});

@@ -1852,7 +1852,7 @@ window.__ModuleLoader__.load({
 		function createTrainerStore({ api = createTrainerApi(), projectId = 'synthetic-lab', pollMs = 5000 } = {}) {
 		  const listeners = new Set();
 		  let state = { enabled: false, surfaceVisible: false, projectId, mode: 'training', target: null, project: null, binding: null,
-		    selectedRunId: null, run: null, runs: [], nextRunsCursor: null, events: [], eventsCursor: 0, assets: null, releases: [], frozenVersions: [],
+		    selectedRunId: null, optimizationChangeSetId: null, run: null, runs: [], nextRunsCursor: null, events: [], eventsCursor: 0, assets: null, releases: [], frozenVersions: [],
 		    loading: false, busy: false, error: null, readError: null, notice: '', detailsVisible: true };
 		  let generation = 0;
 		  let controller = null;
@@ -1952,7 +1952,7 @@ window.__ModuleLoader__.load({
 		  }
 		  function select(target, mode = state.mode, selectedRunId = null) {
 		    invalidate();
-		    update({ target, mode, selectedRunId, binding: null, run: null, events: [], eventsCursor: 0, assets: null, error: null, readError: null,
+		    update({ target, mode, selectedRunId, optimizationChangeSetId: null, binding: null, run: null, events: [], eventsCursor: 0, assets: null, error: null, readError: null,
 		      ...(target && state.target && trainerTargetKey(target) === trainerTargetKey(state.target) ? {} : { frozenVersion: null }) });
 		    void refresh();
 		  }
@@ -1969,6 +1969,7 @@ window.__ModuleLoader__.load({
 		      uncertainRequests.delete(retryKey);
 		      if (epoch === generation) {
 		        if (operation === 'assets') update({ assets: result });
+		        if (operation === 'apply-changes') update({ optimizationChangeSetId: result.changeSetId ?? null });
 		        if (operation === 'releases') update({ releases: result.releases ?? result });
 		        if (operation === 'freeze') update({ frozenVersion: result,
 		          frozenVersions: [...state.frozenVersions.filter(item => item.frozenVersionId !== result.frozenVersionId), { ...input, ...result }] });
@@ -2839,7 +2840,10 @@ window.__ModuleLoader__.load({
 		    let input;
 		    try { input = JSON.parse(inputText); } catch (error) { store.update({ error: '运行输入 JSON 无效：' + error.message }); return; }
 		    try {
-		      const result = await store.perform('run', { input, ...(state.selectedRunId ? { derivedFromRunId: state.selectedRunId } : {}) });
+		      const result = await store.perform('run', { input,
+		        ...(state.selectedRunId ? { derivedFromRunId: state.selectedRunId } : {}),
+		        ...(target.targetKind === 'agent' && state.selectedRunId && state.optimizationChangeSetId
+		          ? { purpose: 'agent-optimization', changeSetId: state.optimizationChangeSetId } : {}) });
 		      const current = store.getSnapshot();
 		      if (current.target && current.target.targetKind === target.targetKind && current.target.targetId === target.targetId && current.mode === state.mode) {
 		        store.select(target, state.mode, result.runId);

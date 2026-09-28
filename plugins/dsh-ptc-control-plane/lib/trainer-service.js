@@ -138,7 +138,7 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
         if (resolved.projectId !== args.projectId) fail('bundle_project_mismatch', 'Bundle project mismatch');
         const started=await runner.startRun({ runId: args._runId, requestId: args.requestId, bundle: resolved,
           input: args.input || {}, mode: args.mode === 'training' ? 'training' : 'published',
-          derivedFromRunId: args.derivedFromRunId, changeSetId: args.changeSetId, releaseId: bundle.releaseId || args.releaseId });
+          purpose: args.purpose, derivedFromRunId: args.derivedFromRunId, changeSetId: args.changeSetId, releaseId: bundle.releaseId || args.releaseId });
         if (binding) {
           const current=getBinding(binding.sessionId);
           atomic(bindingFile(binding.sessionId),{...current,selectedRunId:started.runId,bindingRevision:current.bindingRevision+1});
