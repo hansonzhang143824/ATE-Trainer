@@ -8,6 +8,7 @@ import { trainingAddressBook } from './training-paths.js';
 import { signTrainingReceipt, verifyTrainingReceipt } from './training-guard.js';
 import { assertSafeRunPath } from './run-context.js';
 import { resolveAgentProfile } from './agent-profile-runtime.js';
+import { createBusinessOutputHashRecord } from './business-output-contract.js';
 
 const execFile = promisify(execFileCallback);
 const RUN_ID = /^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/;
@@ -279,7 +280,7 @@ export function finalProductHashes(root, testItems, materials) {
 }
 
 async function settleModelExecution({ root, directory, stateFile, checking, dispatch, testItems, gate, materials,
-  productHashes, verifyMaterials, reviewInput, bindReviews, profileId }) {
+  productHashes, verifyMaterials, reviewInput, bindReviews, profileId, requireBusinessOutputContract }) {
   try {
     const child = await dispatch.result;
     // A cancelled child may still be draining an already-started tool. Do not
@@ -290,6 +291,10 @@ async function settleModelExecution({ root, directory, stateFile, checking, disp
     const reports = cancelled || !childDone ? [] : await runGateSet(root, testItems, gate, materials, verifyMaterials);
     const ready = !cancelled && reports.every((report) => report.status === 'ready');
     const completed = ready && childDone;
+    const outputHashes = completed && requireBusinessOutputContract
+      ? createBusinessOutputHashRecord({ workspaceRoot: root, runId: checking.runId,
+        testItems, outputRoot: materials.dftRoot, sourceInputSha256: reviewInput.sourceSha256,
+        profileId, profileRevision: materials.profileRevision }) : null;
     const finishedAt = new Date().toISOString();
     const evidenceFile = path.join(directory, 'evidence', 'dft-terminal.json');
     const evidence = {
@@ -303,6 +308,8 @@ async function settleModelExecution({ root, directory, stateFile, checking, disp
       reviewInput,
       finalProducts: completed ? productHashes(root, testItems, materials) : undefined,
       reports,
+      businessOutputHashes: outputHashes?.evidencePath ?? null,
+      businessOutputHashesSha256: outputHashes?.evidenceSha256 ?? null,
       verifiedAt: finishedAt,
     };
     writeJsonAtomic(evidenceFile, evidence);
@@ -315,6 +322,8 @@ async function settleModelExecution({ root, directory, stateFile, checking, disp
         childSessionId: dispatch.childSessionId,
         reason: completed ? undefined : (child?.structured?.question ?? child?.diagnostic ?? 'child_or_final_gate_did_not_complete'),
         evidence: path.relative(root, evidenceFile),
+        businessOutputHashes: outputHashes?.evidencePath ?? null,
+        businessOutputHashesSha256: outputHashes?.evidenceSha256 ?? null,
       },
       updatedAt: finishedAt,
       finishedAt,
@@ -377,12 +386,18 @@ export async function executeTrainingRun(workspaceRoot, input, options = {}) {
   const prepareSourceView = options.prepareSourceView ?? prepareDftSourceView;
   const prepareReviewInput = options.prepareReviewInput ?? prepareDftReviewInput;
   const bindReviews = options.bindReviews ?? bindDftSemanticReviews;
+  const requireBusinessOutputContract = options.requireBusinessOutputContract === true;
   try {
     const materials = await (options.prepareMaterials ?? prepareTrainingMaterials)(root, runId, testItems, {
       profileId, profileRevision: profile.manifestPath ? profile.profileRevision : null,
     });
     const reports = await runGateSet(root, testItems, gate, materials, verifyMaterials);
     const unchanged = materials.cacheCompatible === true && reports.every((report) => report.status === 'ready');
+    const unchangedOutputHashes = unchanged && requireBusinessOutputContract
+      ? createBusinessOutputHashRecord({ workspaceRoot: root, runId, testItems,
+        outputRoot: materials.dftRoot,
+        sourceInputSha256: reports.find(report => report.canonicalInput?.sha256)?.canonicalInput?.sha256,
+        profileId, profileRevision: materials.profileRevision }) : null;
     const sourceView = unchanged ? null : await prepareSourceView(root, testItems, materials, verifyMaterials);
     const evidence = {
       schemaVersion: 1,
@@ -397,6 +412,8 @@ export async function executeTrainingRun(workspaceRoot, input, options = {}) {
       sourceView,
       finalProducts: unchanged ? productHashes(root, testItems, materials) : undefined,
       reports,
+      businessOutputHashes: unchangedOutputHashes?.evidencePath ?? null,
+      businessOutputHashesSha256: unchangedOutputHashes?.evidenceSha256 ?? null,
       checkedAt: new Date().toISOString(),
     };
     const evidenceFile = path.join(directory, 'evidence', 'dft-preflight.json');
@@ -406,7 +423,9 @@ export async function executeTrainingRun(workspaceRoot, input, options = {}) {
       ...checking,
       status: unchanged ? 'completed' : 'needs_model',
       outcome: unchanged
-        ? { mode: 'UNCHANGED', modelDispatched: false, evidence: path.relative(root, evidenceFile) }
+        ? { mode: 'UNCHANGED', modelDispatched: false, evidence: path.relative(root, evidenceFile),
+          businessOutputHashes: unchangedOutputHashes?.evidencePath ?? null,
+          businessOutputHashesSha256: unchangedOutputHashes?.evidenceSha256 ?? null }
         : { mode: 'STALE', modelDispatched: false, reason: 'candidate_outputs_require_isolated_model_execution', evidence: path.relative(root, evidenceFile) },
       updatedAt: finishedAt,
       finishedAt: unchanged ? finishedAt : null,
@@ -427,6 +446,10 @@ export async function executeTrainingRun(workspaceRoot, input, options = {}) {
         await bindReviews(root, materials, reviewInput, deterministicReviews, verifyMaterials);
         const finalReports = await runGateSet(root, testItems, gate, materials, verifyMaterials);
         const completed = finalReports.every((report) => report.status === 'ready');
+        const outputHashes = completed && requireBusinessOutputContract
+          ? createBusinessOutputHashRecord({ workspaceRoot: root, runId, testItems,
+            outputRoot: materials.dftRoot, sourceInputSha256: reviewInput.sourceSha256,
+            profileId, profileRevision: materials.profileRevision }) : null;
         const terminalAt = new Date().toISOString();
         const terminalFile = path.join(directory, 'evidence', 'dft-terminal.json');
         const terminalEvidence = {
@@ -439,6 +462,8 @@ export async function executeTrainingRun(workspaceRoot, input, options = {}) {
           cacheKey: materials.cacheKey,
           reviewInput,
           reviews: deterministicReviews.reviews,
+          businessOutputHashes: outputHashes?.evidencePath ?? null,
+          businessOutputHashesSha256: outputHashes?.evidenceSha256 ?? null,
           finalProducts: completed ? productHashes(root, testItems, materials) : undefined,
           reports: finalReports,
           verifiedAt: terminalAt,
@@ -455,6 +480,8 @@ export async function executeTrainingRun(workspaceRoot, input, options = {}) {
             reviewMethod: 'deterministic-source-binding',
             reason: completed ? undefined : 'final_gate_did_not_complete',
             evidence: path.relative(root, terminalFile),
+            businessOutputHashes: outputHashes?.evidencePath ?? null,
+            businessOutputHashesSha256: outputHashes?.evidenceSha256 ?? null,
           },
           updatedAt: terminalAt,
           finishedAt: terminalAt,
@@ -486,7 +513,8 @@ export async function executeTrainingRun(workspaceRoot, input, options = {}) {
       };
       writeJsonAtomic(stateFile, state);
       const completion = settleModelExecution({ root, directory, stateFile, checking, dispatch, testItems, gate,
-        materials, productHashes, verifyMaterials, reviewInput, bindReviews, profileId });
+        materials, productHashes, verifyMaterials, reviewInput, bindReviews, profileId,
+        requireBusinessOutputContract });
       completion.catch(() => {});
       options.onBackground?.(completion);
       return { context, state, evidence, evidenceFile, completion, childSessionId: dispatch.childSessionId };

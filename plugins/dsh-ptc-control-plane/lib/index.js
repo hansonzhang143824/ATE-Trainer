@@ -29,6 +29,7 @@ import { createFrameworkRehearsalAdapters, openFrameworkRehearsalSnapshot, verif
 import { stageFrameworkRelease, activateStagedFrameworkRelease, loadFrameworkRelease, verifyFrameworkRuntimeCompatibility } from './framework-release.js';
 import { createFrameworkPublishedRun } from './framework-published-run.js';
 import { resolveAgentProfile, cloneAgentProfile, createAgentProfileRevision } from './agent-profile-runtime.js';
+import { mountTrainerHost } from './trainer-host.js';
 
 export const name = 'dsh-ptc-control-plane';
 export const inject = ['webServer', 'agents', 'agentDefaultModel', 'agentPresets', 'subagents', 'tools'];
@@ -211,6 +212,7 @@ export function createBusinessTrainingExecutionHandler(workspaceRoot, dispatcher
       const result = await (options.executeTrainingRun ?? executeTrainingRun)(workspaceRoot,
         { runId: input.runId, testItems: input.testItems }, {
           forceModelReview: true,
+          requireBusinessOutputContract: true,
           dispatchModel: requestForModel => dispatcher.dispatch({
             ...requestForModel,
             modelChoice: input.modelChoice ?? 'default',
@@ -699,7 +701,7 @@ export function apply(ctx, config = {}) {
     throw new Error('dsh-ptc-control-plane: workspaceRoot is required');
   }
   const workspaceRoot = path.resolve(config.workspaceRoot);
-  ctx.inject(inject, (webCtx) => {
+  ctx.inject(config.trainerEnabled === true ? [...inject, 'sessions', 'sessionPersistence'] : inject, (webCtx) => {
     webCtx.effect(() => {
       if (typeof webCtx?.tools?.guard !== 'function' || typeof webCtx?.on !== 'function') {
         throw new Error('dsh-ptc-control-plane: tools.guard and tools/pre-execute are required');
@@ -746,6 +748,7 @@ export function apply(ctx, config = {}) {
       });
       const rehearsals = createFrameworkRehearsalManager(workspaceRoot, createFrameworkRehearsalAdapters());
       const publishedFrameworkControllers = new Map();
+      const disposeTrainer = config.trainerEnabled === true ? mountTrainerHost(webCtx, config) : null;
       const trainingBoundary = exec => trainingGuardDecision(exec, workspaceRoot) ?? pipelineGuardDecision(exec, workspaceRoot);
       const preExecute = webCtx.on('tools/pre-execute', (exec, next) => {
         const reason = trainingBoundary(exec);
@@ -865,6 +868,7 @@ export function apply(ctx, config = {}) {
         handler: archivedLegacyExecution,
       });
       return () => {
+        disposeTrainer?.();
         for (const controller of publishedFrameworkControllers.values()) controller.stop('plugin shutting down');
         publishedFrameworkControllers.clear();
         rehearsals.shutdown();
@@ -901,7 +905,6 @@ export function apply(ctx, config = {}) {
         unregisterTrainingExecution?.();
         unregisterBusinessTrainingExecution?.();
         unregisterBusinessPipelines.forEach(unregister => unregister?.());
-        unregisterWorkflowRuntime.forEach(unregister => unregister?.());
         unregisterAgentProfiles.forEach(unregister => unregister?.());
         unregisterTraining?.();
         unregisterState?.();

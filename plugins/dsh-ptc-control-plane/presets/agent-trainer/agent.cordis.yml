@@ -1,0 +1,9 @@
+- id: framework-session
+  name: "D:/Newtest/DSH/ATE-Coding-Flow/plugins/dsh-ptc-control-plane/lib/trainer-preset.js"
+  config:
+    role: agent-trainer
+    workspaceRoot: "D:/Newtest/DSH/ATE-Coding-Flow"
+- id: framework-tool-presentation
+  name: "@deepseek-ai/dsh-agent-tool-presentation"
+  config:
+    mode: native
