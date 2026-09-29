@@ -73,6 +73,11 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
     const project = await call('ensureTrainerProject', { projectId: args.projectId });
     const items = args.targetKind === 'agent' ? project.agents : project.workflows;
     if (!(items || []).some(item => (item.agentId || item.workflowId) === args.targetId)) fail('target_missing', 'Target is not registered');
+    if (args.mode !== 'training') {
+      const releases = await call('listReleases', { projectId: args.projectId });
+      const active = (releases.active || []).some(item => item.targetKind === args.targetKind && item.targetId === args.targetId);
+      if (!active) fail('release_not_active', 'No active release for this target');
+    }
     const key = createHash('sha256').update(stable([args.projectId,args.mode,args.presetId,args.targetKind,args.targetId])).digest('hex');
     const cwd = path.join(storage, 'sessions', key);
     fs.mkdirSync(cwd, { recursive: true });
@@ -107,8 +112,15 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
     switch (operation) {
       case 'bind-session': return bind(args);
       case 'context': {
-        const project = await call('ensureTrainerProject', { projectId: args.projectId });
+        const sourceProject = await call('ensureTrainerProject', { projectId: args.projectId });
         const frozenVersions = repositories.listFrozenVersions ? (await call('listFrozenVersions',{projectId:args.projectId})).versions : [];
+        const active = args.mode === 'engineering'
+          ? (await call('listReleases', { projectId: args.projectId })).active || [] : null;
+        const activeIds = active ? new Set(active.map(item => `${item.targetKind}:${item.targetId}`)) : null;
+        const project = activeIds ? { ...sourceProject,
+          agents: (sourceProject.agents || []).filter(item => activeIds.has(`agent:${item.agentId}`)),
+          workflows: (sourceProject.workflows || []).filter(item => activeIds.has(`workflow:${item.workflowId}`)),
+        } : sourceProject;
         return { project, binding, frozenVersions, candidateRevision: project.revisionId, mode: args.mode,
           selectedRun: args.selectedRunId ? await ownedRun(args, binding) : null,
           capabilities: { edit: args.mode === 'training' && (!binding || binding.presetId === 'agent-trainer'), freeze: !binding && args.mode === 'training' } };
