@@ -214,3 +214,7 @@ agent-optimization 只表示候选 Agent 优化，不代表业务 release，也�
 ### 当前验收结论
 
 SMOKE_ONLY 基线 release `smoke-20260924t003644499z-58e16ff6` 的历史八专家发布/回放证据仍满足八专家 smoke contract。动态 Agent profile、工作流绑定、BUSINESS_ONLY 输出契约和工程发布过滤已完成代码与 focused test 验证。TM109 真实模型按钮已实际点击并产生 run-local 产物；完整 BUSINESS_ONLY 通过仍需在 Gate B/C 环境阻断解除后，再用按钮重跑并以 `state.json=completed`、`businessOutputHashes` 和 hash record 作为最终通过条件。
+
+### 工作流按钮第 1 次真实验证（2026-09-29）
+
+computer use 点击工作流按钮生成 `training-20260929t011949z-008c4aaa`。运行身份、`workflowId: tm109-input-sync`、`workflowRevision: business-v1` 和 schematic→DFT 两个绑定已写入 state；运行在材料准备前因 legacy profile 被错误要求 `versions/draft/manifest.json` 而阻断。该结果已定位为实现缺陷，修复后需重新点击同一按钮，验收条件仍为完整 pipeline terminal、TM109 hash record 和 completed 状态。

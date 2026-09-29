@@ -65,3 +65,5 @@
 4. 页面同时提供“运行真实 原理图 → DFT INPUT_SYNC”按钮；最终工作流通过条件仍是页面按钮运行后出现 `state.json=completed`、原理图和 DFT 终端、`evidence/tm109-output-hashes.json` 及对应 SHA-256。当前因 web profile Gate C 文件锁，未把未完成的工作流运行标记为通过。
 
 本轮 computer-use 证明了业务按钮的受理、禁用、运行记录和真实模型 dispatch；业务最终通过和复制 Agent 在页面下拉中的可选显示，待服务以最新源码正常重启后再完成一次闭环验收。
+
+第 2 个业务按钮也已实际点击，页面进入 disabled 状态并创建 `training-20260929t011949z-008c4aaa`。state 已证明工作流 ID、revision、handoff 和两个 Agent binding 被写入；本次在材料准备前暴露 legacy `draft` manifest 绑定缺陷，修复后需要再次点击并以 completed terminal/hash record 收口。

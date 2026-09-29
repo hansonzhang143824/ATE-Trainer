@@ -197,3 +197,7 @@ D7/正式 Trainer 运行时已实现：恢复并接入 `trainer-api`、`trainer-
 ### Git checkpoint 规则
 
 本轮先提交代码校验器和复制 profile，再提交验收记录；每个 checkpoint 使用精确文件列表、`git diff --cached --check`、focused tests 和远端 push 记录。历史 SMOKE/BUSINESS 运行目录不批量加入提交。
+
+### D4 补充修复：legacy profile 工作流绑定
+
+工作流冻结器现在区分两类 profile：内置历史 profile 没有 sealed manifest 时只冻结 `profileId`，复制/版本化 profile 有 manifest 时冻结 `profileRevision` 和 content digest。这样保持旧 profile 可运行，同时保证复制 Agent 的替换必须经过真实 revision 校验。focused training-run、pipeline-materials、agent-profile-runtime 测试通过。

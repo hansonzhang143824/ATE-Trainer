@@ -40,7 +40,14 @@ function normalizeAgentBindings(workspaceRoot, target) {
     if (role === 'dft-expert' && profile.executionClass !== 'input-dft') {
       throw new Error(`profile ${value.profileId} is not configured for input-dft execution`);
     }
-    bindings[role] = { profileId: value.profileId, profileRevision: profile.profileRevision };
+    const binding = { profileId: value.profileId };
+    // Built-in profiles may still be legacy definitions without a sealed
+    // revision manifest. Keep those bindings ID-only; cloned/revisioned
+    // profiles retain the concrete revision needed for frozen replay.
+    if (profile.manifestPath || value.profileRevision) {
+      binding.profileRevision = profile.profileRevision;
+    }
+    bindings[role] = binding;
   }
   return Object.freeze(bindings);
 }
