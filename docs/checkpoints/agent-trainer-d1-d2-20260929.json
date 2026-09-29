@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "stages": {
+    "D1": {"status": "passed", "registry": "team/ptc/ptc_stage_registry.json", "archive": "team/ptc/native-control-plane/archive/DFT-SCHEMATIC-LEGACY-20260923/"},
+    "D2": {"status": "passed", "entry": "http://127.0.0.1:3080/agent-trainer", "createdIds": ["agent-T1", "workflow-T1"]}
+  },
+  "test": "node plugins/dsh-ptc-control-plane/test/empty-system-d1-d2.test.mjs"
+}

@@ -1,0 +1,9 @@
+{
+  "stage": "D1",
+  "status": "passed",
+  "scope": "historical-material-isolation",
+  "registry": "team/ptc/ptc_stage_registry.json",
+  "assertions": ["stateMachine is empty", "stages is empty", "legacyPolicy is archive-only", "active project has only user-created arithmetic agents"],
+  "evidence": ["team/ptc/native-control-plane/archive/DFT-SCHEMATIC-LEGACY-20260923/", "Training_Materials/framework/projects/agent-trainer/current.json"],
+  "test": "node plugins/dsh-ptc-control-plane/test/empty-system-d1-d2.test.mjs"
+}
