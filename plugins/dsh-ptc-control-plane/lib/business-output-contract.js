@@ -12,6 +12,12 @@ const DIGEST = /^[a-f0-9]{64}$/;
 
 const sha256 = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const relPath = value => value.split(path.sep).join('/');
+function yamlScalarMatches(text, key, value) {
+  const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const escapedValue = String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const pattern = '(?:^|\\n)\\s*' + escapedKey + ':\\s*[\"\']?' + escapedValue + '[\"\']?\\s*(?:#.*)?$';
+  return new RegExp(pattern, 'm').test(text);
+}
 function safeResolve(root, relative, label) {
   const base = path.resolve(root);
   const target = path.resolve(base, relative);
@@ -55,16 +61,20 @@ function validateOutputSet({ root, runId, testItems, outputRoot, sourceInputSha2
       }
       if (name === 'dft-conditions.yaml') {
         const text = bytes.toString('utf8');
-        if (!text.includes(`tm: ${tm}`)) throw new Error(`${tm}/dft-conditions.yaml is not bound to ${tm}`);
-        if (sourceInputSha256 && !text.includes(`sourceSha256: ${sourceInputSha256}`)) throw new Error(`${tm}/dft-conditions.yaml source SHA-256 mismatch`);
+        if (!yamlScalarMatches(text, 'tm', tm)) throw new Error(`${tm}/dft-conditions.yaml is not bound to ${tm}`);
+        if (sourceInputSha256 && !yamlScalarMatches(text, 'sourceSha256', sourceInputSha256)) throw new Error(`${tm}/dft-conditions.yaml source SHA-256 mismatch`);
       }
     }
     const reviewFile = path.join(tmRoot, 'dft-semantic-review.json');
     const review = parseJson(reviewFile, `${tm}/dft-semantic-review.json`);
     if (review.tm !== tm || review.verdict !== 'PASS') throw new Error(`${tm}/semantic-review.json did not PASS`);
-    if (sourceInputSha256 && review.sourceSha256 !== sourceInputSha256) throw new Error(`${tm}/semantic-review.json source SHA-256 mismatch`);
+    const sourceBound = review.sourceSha256 === sourceInputSha256
+      || (Array.isArray(review.readSources)
+        && review.readSources.some(source => source.sha256 === sourceInputSha256 && source.withinInputRoot === true));
+    if (sourceInputSha256 && !sourceBound) throw new Error(`${tm}/semantic-review.json source SHA-256 mismatch`);
     const byName = Object.fromEntries(outputs.filter(item => item.tm === tm).map(item => [path.posix.basename(item.path), item.sha256]));
-    for (const name of ['dft-meta.json', 'dft-conditions.yaml']) if (review.artifactHashes?.[name] !== byName[name]) throw new Error(`${tm}/semantic-review.json hash mismatch for ${name}`);
+    const artifactHashes = review.artifactHashes ?? review.reviewedArtifacts ?? {};
+    for (const name of ['dft-meta.json', 'dft-conditions.yaml']) if (artifactHashes[name] !== byName[name]) throw new Error(`${tm}/semantic-review.json hash mismatch for ${name}`);
   }
   return { runRoot, outputs };
 }

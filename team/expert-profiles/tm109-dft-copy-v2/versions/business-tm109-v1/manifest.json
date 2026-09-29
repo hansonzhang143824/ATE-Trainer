@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "kind": "agent-profile-manifest",
+  "profileId": "tm109-dft-copy-v2",
+  "baseProfileId": "ptc-dft-expert",
+  "revisionId": "business-tm109-v1",
+  "contentDigest": "0e32c741ac02a97931bd1193e5642e46c97ace62d382fb58f4fe5ae5348b199a",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 1005,
+      "sha256": "ed1b3a0fd1c58a68a2e59c6e239558a5477f3c5ad7ca6afffe0ff11100ff24e6"
+    },
+    {
+      "path": "cases/TM106/expected.json",
+      "bytes": 1343,
+      "sha256": "77aaa946bbc3c9c01c46edd65dad394877b64b1b4e3dd29f521f6d3b1f2b1933"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 1939,
+      "sha256": "8dc704d9c1050cb42cd25e6592483cd8cf47710b77fcb4d1bf1c7624c6efb06b"
+    },
+    {
+      "path": "evaluation/expected-results.json",
+      "bytes": 326,
+      "sha256": "1efa0ec7b1606d2d701c0c3c5d500345ee151d7299ab11fd5499280697cfe047"
+    },
+    {
+      "path": "instructions.md",
+      "bytes": 14017,
+      "sha256": "3cd0a30d1af1fbc3686e7cb0a49112b8b616ab9ffc05536837d5d872e0fd4b36"
+    },
+    {
+      "path": "output-contract.schema.json",
+      "bytes": 9536,
+      "sha256": "572fc9c521ec185fc243085b867c9fbfe83b2a382ea63c0c83f68cee16e16b71"
+    },
+    {
+      "path": "profile.yaml",
+      "bytes": 1034,
+      "sha256": "9049462535fd0476183b21fb9e31290867a1cb160665ae88602c994212fb68b5"
+    }
+  ],
+  "executionClass": "input-dft",
+  "executionAdapter": "ptc-dft",
+  "capabilityContract": "ptc-dft-business-v1",
+  "ownerRole": "dft-expert",
+  "generatedAt": "2026-09-29T00:45:48.036Z",
+  "manifestDigest": "b0107f0dde8aa42cb009741f25099344c0579afa7a9176727f524942d82264f1"
+}

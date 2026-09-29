@@ -103,3 +103,33 @@ test('TM109 contract rejects missing or non-PASS semantic review', () => {
     sourceInputSha256: input.sourceInputSha256,
   }), /semantic-review.json did not PASS/);
 });
+
+test('TM109 contract accepts quoted YAML and profile semantic-review bindings', () => {
+  const input = fixture();
+  const conditionsFile = path.join(input.directory, 'dft-conditions.yaml');
+  const conditions = fs.readFileSync(conditionsFile, 'utf8')
+    .replace('tm: TM109', 'tm: "TM109"')
+    .replace(`sourceSha256: ${input.sourceInputSha256}`, `sourceSha256: "${input.sourceInputSha256}"`);
+  fs.writeFileSync(conditionsFile, conditions);
+  const reviewFile = path.join(input.directory, 'dft-semantic-review.json');
+  const review = {
+    schemaVersion: 1,
+    tm: 'TM109',
+    verdict: 'PASS',
+    readSources: [{ sha256: input.sourceInputSha256, withinInputRoot: true }],
+    reviewedArtifacts: {
+      'dft-meta.json': sha256(fs.readFileSync(path.join(input.directory, 'dft-meta.json'))),
+      'dft-conditions.yaml': sha256(Buffer.from(conditions, 'utf8')),
+    },
+  };
+  fs.writeFileSync(reviewFile, jsonBytes(review));
+  const result = createBusinessOutputHashRecord({
+    workspaceRoot: input.root,
+    runId: input.runId,
+    testItems: ['TM109'],
+    outputRoot: path.relative(input.root,
+      path.join(input.root, 'Training_Materials', 'runs', input.runId, 'input-sync', 'dft')),
+    sourceInputSha256: input.sourceInputSha256,
+  });
+  assert.equal(result.record.businessGatePassed, true);
+});

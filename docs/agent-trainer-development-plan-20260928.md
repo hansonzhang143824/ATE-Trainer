@@ -175,3 +175,25 @@ D7/正式 Trainer 运行时已实现：恢复并接入 `trainer-api`、`trainer-
 - e43c2c9：docs: record agent optimization acceptance。
 - 7fbf2c9：test: preserve agent optimization run evidence。
 - 上述提交均已推送到公司 GitLab 的 master，本地和远端均包含本次检查点。
+
+## 2026-09-29 目标模式开发补充
+
+### D3 动态 Agent 能力配置
+
+已完成 profile runtime 的 `executionClass`、`executionAdapter`、`capabilityContract` 读取和 manifest 记录。DFT 训练入口依据配置能力判断，不再用 `profileId === "ptc-dft-expert"` 作为唯一条件；生产 DFT profile 使用 `input-dft / ptc-dft / ptc-dft-business-v1`。缺少显式字段的旧测试 fixture 保留兼容读取，但生产 profile 必须声明完整能力。
+
+### D4 工作流冻结与 Agent 替换
+
+已完成业务工作流的 `workflowId/workflowRevision` 和 `agentBindings` 冻结。材料快照、dispatch、terminal、receipt 同时记录 profile revision/content digest；pipeline dispatch 会校验工作流步骤和 profile digest，复制的 DFT Agent 只有在能力契约一致时才可替换。`tm109-dft-copy-v2` 是当前独立复制样本，未发布前只能在训练/业务候选路径使用。
+
+### D5 BUSINESS_ONLY 输出契约修正
+
+已修正 `business-output-contract.js` 与 DFT profile 约定的不一致：YAML 标量允许合法引号；语义审查支持 `readSources` 的输入哈希和 `reviewedArtifacts` 的产物哈希。focused contract test 3/3 通过。下一步是解除 Gate B/C 环境阻断后，用页面按钮重新执行单 Agent 和 INPUT_SYNC 工作流，确认最终 state、terminal、hash record 全部闭合。
+
+### D6 工程发布隔离
+
+`trainer-service.js` 已在工程模式只返回 active release 中的 Agent/工作流，并对未发布目标返回 `release_not_active`。工程运行使用发布快照，训练草稿或未发布复制 Agent 不会改变已发布版本。
+
+### Git checkpoint 规则
+
+本轮先提交代码校验器和复制 profile，再提交验收记录；每个 checkpoint 使用精确文件列表、`git diff --cached --check`、focused tests 和远端 push 记录。历史 SMOKE/BUSINESS 运行目录不批量加入提交。

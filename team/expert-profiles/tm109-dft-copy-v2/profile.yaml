@@ -1,0 +1,27 @@
+schemaVersion: 1
+id: tm109-dft-copy-v2
+displayName: TM109 DFT Copy v2
+presetId: ptc-dft-expert
+executionClass: input-dft
+executionAdapter: ptc-dft
+capabilityContract: ptc-dft-business-v1
+stage: INPUT_SYNC
+ownerRole: dft-expert
+# The label the host renders for this expert's child session. It is DISPLAY text
+# whose only job is to satisfy the existing material-boundary recogniser, which
+# matches the DFT label by regex; identity itself comes from the pinned dispatch
+# receipt, never from this string. `<TM>` is replaced by the target TM list.
+runtimeLabel: PTC dft expert [<TM>]
+readable:
+  - project/DALI/Input_GlobalMaterial/Dali_testmode.xlsx
+  - project/DALI/Output_Global_Material/dft/<TM>
+writable:
+  - project/DALI/Output_Global_Material/dft/<TM>
+  - project/DALI/ErrorLog/dft-expert.log
+requiredGates:
+  - scripts/validate_dft_outputs.py
+
+# Business-only profile revision: 2026-09-27
+# Revision id: dft-business-input-sync-20260927
+# Current-day runtime revision: 2026-09-28
+# Revision id: dft-business-input-sync-20260928

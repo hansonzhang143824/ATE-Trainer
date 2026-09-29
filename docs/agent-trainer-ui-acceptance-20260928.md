@@ -54,3 +54,14 @@
 4. 点击“运行比较”，选择 v1 为“修改前”、v2 为“修改后”，再点击“比较版本与运行结果”；页面展示 before/after run、revision 和 bundle 信息，v2 的 change set 为 change-e6fb3ee9-a7cd-4a62-ba09-7438dcde296d，并能追溯到 v1 run。
 
 以上全部通过电脑操作完成。该验收验证的是候选 Agent 的动态能力与版本追踪，仍属于合成框架验证，businessGatePassed:false，不等同于 TM109 业务 release。
+
+## 2026-09-29 目标模式 computer-use 验收补充
+
+在 `http://127.0.0.1:3080/` 的 PTC 控制面板中完成以下真实点击：
+
+1. 展开 PTC 控制面板，确认当前发布版、训练运行数、SMOKE_ONLY 边界和 BUSINESS_ONLY TM109 区域可见。
+2. 点击“运行真实 DFT Agent”，页面立即将 TM 编号和两个业务按钮置为 disabled，并出现运行记录；对应 run 为 `training-20260929t004954z-d8c59524`，状态为 BLOCKED（语义审查超时）。
+3. 打开模型选择器并选择“DeepSeek V4 Flash”，再次点击“运行真实 DFT Agent”；页面出现新的运行记录 `training-20260929t005801z-ead22572`，模型子会话实际生成三个 TM109 输出文件，之后因旧验收器契约不兼容而 FAILED。修复验收器后，针对该 run 的输出 hash record 已在本地生成并通过 3/3 focused contract tests。
+4. 页面同时提供“运行真实 原理图 → DFT INPUT_SYNC”按钮；最终工作流通过条件仍是页面按钮运行后出现 `state.json=completed`、原理图和 DFT 终端、`evidence/tm109-output-hashes.json` 及对应 SHA-256。当前因 web profile Gate C 文件锁，未把未完成的工作流运行标记为通过。
+
+本轮 computer-use 证明了业务按钮的受理、禁用、运行记录和真实模型 dispatch；业务最终通过和复制 Agent 在页面下拉中的可选显示，待服务以最新源码正常重启后再完成一次闭环验收。

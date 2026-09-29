@@ -200,3 +200,17 @@ TM109 必须至少产出以下文件，并在训练运行证据中生成一份�
 - 通过“运行比较”按钮选择 v1/v2 后，页面展示 before/after run、revision、bundle hash 和 change set，证明 v1 运行证据仍然保留，v2 是同一 Agent 的独立候选优化运行；两次运行均为合成框架验证，businessGatePassed:false。
 
 agent-optimization 只表示候选 Agent 优化，不代表业务 release，也不改变 SMOKE_ONLY / BUSINESS_ONLY 的边界。
+
+## 2026-09-29 目标模式验收补充
+
+本轮按“单 Agent → 工作流 → 训练/发布/工程”目标模式继续验收，并保留 `SMOKE_ONLY` 与 `BUSINESS_ONLY` 两条边界。
+
+- **业务单 Agent 按钮验收**：已通过 computer use 点击“运行真实 DFT Agent”。默认模型运行 `training-20260929t004954z-d8c59524`，真实子会话已启动但因语义审查 60 秒预算阻塞；切换页面中的“DeepSeek V4 Flash”后再次点击，运行 `training-20260929t005801z-ead22572`，模型实际生成 TM109 的三个业务文件。第一次失败暴露了验收器对合法 YAML 引号和 Agent 约定字段的兼容缺陷，已修复校验器；对该运行的产物重新执行 contract 校验已生成 `evidence/tm109-output-hashes.json`，证据 SHA-256 为 `6783ca6d989e17bc1c115d19192b7b40e916748aaaf8a2de0f0d6bc53b614c1c`。
+- **业务输出判定**：校验器现在同时接受 `tm: TM109` 与 `tm: "TM109"`，语义审查既可使用历史 `sourceSha256/artifactHashes`，也可使用 profile 约定的 `readSources/reviewedArtifacts`。专门的 BUSINESS_ONLY contract 测试为 3/3 通过。
+- **复制 Agent**：已建立独立 `tm109-dft-copy-v2` profile，revision `business-tm109-v1`，保留完整 instructions、profile、Skill/脚本清单和输出契约；服务端目录发现已确认它是 `kind: dft`，可作为 TM109 工作流的候选 DFT Agent。它尚未发布为 SMOKE release，因此工程模式不会显示它。
+- **工程隔离**：服务端已将工程目录过滤到 active release，并在绑定未发布目标时返回 `release_not_active`。工程模式读取的是发布快照，不读取训练草稿；发布后的 replay 写入新的 `publish/runs/<runId>/`。
+- **Gate 限制**：本轮 sanctioned restart 的 Gate A 通过；Gate B 被仓库已有历史 schematic/training fixture 失败阻断，Gate C 又因现有 web profile 的 `cordis.yml` 被运行中的服务锁定而阻断，服务按脚本保护策略未被停止。该环境状态记录为阻断，不能作为功能通过证据。
+
+### 当前验收结论
+
+SMOKE_ONLY 基线 release `smoke-20260924t003644499z-58e16ff6` 的历史八专家发布/回放证据仍满足八专家 smoke contract。动态 Agent profile、工作流绑定、BUSINESS_ONLY 输出契约和工程发布过滤已完成代码与 focused test 验证。TM109 真实模型按钮已实际点击并产生 run-local 产物；完整 BUSINESS_ONLY 通过仍需在 Gate B/C 环境阻断解除后，再用按钮重跑并以 `state.json=completed`、`businessOutputHashes` 和 hash record 作为最终通过条件。
