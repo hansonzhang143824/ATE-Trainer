@@ -6,7 +6,7 @@ import crypto from 'node:crypto';
 import test from 'node:test';
 import { setTimeout as delay } from 'node:timers/promises';
 import { createPipelineDispatcher } from '../lib/pipeline-dispatch.js';
-import { signStageReceipt } from '../lib/pipeline-guard.js';
+import { signStageReceipt, stageDispatchLabel } from '../lib/pipeline-guard.js';
 
 const sha = value => crypto.createHash('sha256').update(value).digest('hex');
 const json = file => JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -113,6 +113,12 @@ test('source semantic review retries once after token exhaustion and keeps the r
     { attempt: 2, stopReason: 'completed', maxTokens: 16384 },
   ]);
   assert.equal(observations.length, 2);
+  // Both model attempts must keep the signed stage label.  Attempt numbers
+  // are evidence metadata, never a new authority identity.
+  assert.deepEqual(observations.map(options => options.label), [
+    stageDispatchLabel(f.request.runId, f.request.stage, f.request.owner),
+    stageDispatchLabel(f.request.runId, f.request.stage, f.request.owner),
+  ]);
   assert.equal(observations[0].agentOptions.maxTokens, 8192);
   assert.equal(observations[1].agentOptions.maxTokens, 16384);
   assert.doesNotMatch(observations[0].prompt[0].text, /RETRY:/);

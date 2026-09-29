@@ -286,8 +286,13 @@ export function createPipelineDispatcher(ctx, workspaceRoot, options = {}) {
           reviewAttempts = attempt;
           const attemptOptions = attempt === 1 ? agentOptions : { ...agentOptions, maxTokens: sourceReviewRetryTokens };
           const attemptPrompt = attempt === 1 ? promptText : `${promptText}\nRETRY: the previous attempt reached the output token limit before structured_output. Do not repeat analysis; call structured_output immediately with exactly three concise findings and a short reason.`;
+          // The descriptor label is part of the signed stage-authority binding.
+          // Keep it identical to the receipt label on every attempt.  Attempt
+          // numbers belong in lifecycle/evidence metadata; adding a suffix here
+          // makes the host guard see a different stage identity and reject every
+          // child tool call before its payload can run.
           child = await lifecycle.race(() => ctx.subagents.start('spawn', {
-            label: `${label}:attempt-${attempt}`, parent: parent.agent, signal: lifecycle.signal, agentOptions: attemptOptions,
+            label, parent: parent.agent, signal: lifecycle.signal, agentOptions: attemptOptions,
             // Schematic review receives a bounded, host-generated evidence
             // packet. It is deliberately tool-free so the review cannot hang on
             // a missing parent read tool; host products remain immutable and the
