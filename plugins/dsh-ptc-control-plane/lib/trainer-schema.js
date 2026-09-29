@@ -15,17 +15,30 @@ const text = { type: 'string', minLength: 1 };
 const refs = { type: 'array', items: text, uniqueItems: true };
 const modelDefinition = { type: 'object', required: ['provider', 'model'], properties: { provider: text, model: text, options: { type: 'object' }, credentialRef: text }, additionalProperties: false };
 const agentDefinition = { type: 'object', required: ['agentId', 'name', 'instructionsRef', 'inputSchemaRef', 'outputSchemaRef'], properties: {
-  agentId: id, name: text, instructionsRef: text, inputSchemaRef: text, outputSchemaRef: text, skillRefs: refs, toolIds: refs, model: modelDefinition,
+  agentId: id, name: text, responsibility: text, instructionsRef: text, processRef: text,
+  inputSchemaRef: text, outputSchemaRef: text, skillRefs: refs, scriptRefs: refs, toolIds: refs,
+  // These fields are persisted as part of the candidate contract.  Their
+  // shape is intentionally open: a generic trainer must preserve a team's
+  // permission and handoff vocabulary without hard-coding one business role.
+  permissions: { type: 'object' }, handoffRules: { type: 'object' }, model: modelDefinition,
+  // Optional business adapter identity.  The trainer remains generic; the
+  // business runtime uses this stable profile ID only when a workflow
+  // explicitly opts into BUSINESS_ONLY execution.
+  businessProfileId: id,
 }, additionalProperties: false };
 const skillDefinition = { type: 'object', required: ['skillId', 'entryRef'], properties: { skillId: id, entryRef: text, referenceRefs: refs, scriptRefs: refs }, additionalProperties: false };
+const outputBindingDefinition = { oneOf: [ { type: 'object', required: ['source', 'pointer'], properties: { source: { const: 'output' }, pointer: { type: 'string' } }, additionalProperties: false } ] };
 const bindingDefinition = { oneOf: [
   { type: 'object', required: ['source', 'pointer'], properties: { source: { const: 'input' }, pointer: { type: 'string' } }, additionalProperties: false },
   { type: 'object', required: ['source', 'stepId', 'pointer'], properties: { source: { const: 'step' }, stepId: id, pointer: { type: 'string' } }, additionalProperties: false },
   { type: 'object', required: ['source', 'value'], properties: { source: { const: 'literal' }, value: {} }, additionalProperties: false },
 ] };
-const workflowDefinition = { type: 'object', required: ['workflowId', 'steps'], properties: { workflowId: id, name: text, steps: {
-  type: 'array', minItems: 1, maxItems: 64, items: { type: 'object', required: ['stepId', 'agentId', 'inputBindings'], properties: {
-    stepId: id, agentId: id, inputBindings: { type: 'object', additionalProperties: bindingDefinition }, outputSchemaRef: text,
+const businessPipelineDefinition = { type: 'object', required: ['workflowId', 'workflowRevision', 'testItems', 'schematicProfileId', 'dftProfileId'], properties: {
+  workflowId: id, workflowRevision: text, testItems: { type: 'array', minItems: 1, items: text }, schematicProfileId: id, dftProfileId: id, modelChoice: text,
+}, additionalProperties: false };
+const workflowDefinition = { type: 'object', required: ['workflowId', 'steps'], properties: { workflowId: id, name: text, businessPipeline: businessPipelineDefinition, steps: {
+  type: 'array', minItems: 0, maxItems: 64, items: { type: 'object', required: ['stepId', 'agentId', 'inputBindings'], properties: {
+    stepId: id, agentId: id, inputBindings: { type: 'object', additionalProperties: bindingDefinition }, outputBindings: { type: 'object', additionalProperties: outputBindingDefinition }, outputSchemaRef: text,
     timeoutMs: { type: 'integer', minimum: 1, maximum: 480000 },
     agentVersion: { oneOf: [
       { type: 'object', required: ['kind'], properties: { kind: { const: 'candidate' } }, additionalProperties: false },
@@ -103,6 +116,8 @@ export function validateProjectFiles(files) {
     if (/^agents\/[^/]+\/agent.json$/.test(p)) {
       if (data.agentId !== p.split('/')[1] || typeof data.name !== 'string') errors.push(error(p, 'agent identity/name mismatch'));
       for (const key of ['instructionsRef', 'inputSchemaRef', 'outputSchemaRef']) requireRef(data[key], `${p}/${key}`);
+      if (data.processRef) requireRef(data.processRef, `${p}/processRef`);
+      for (const ref of data.scriptRefs ?? []) requireRef(ref, `${p}/scriptRefs`);
       for (const id of data.skillRefs ?? []) requireRef(`skills/${id}/skill.json`, p);
       for (const id of data.toolIds ?? []) requireRef(`tools/${id}.json`, p);
     }
@@ -121,7 +136,7 @@ export function validateProjectFiles(files) {
       requireRef(data.targetKind === 'agent' ? `agents/${data.targetId}/agent.json` : `workflows/${data.targetId}.json`, p);
     }
     if (/^workflows\/[^/]+.json$/.test(p)) {
-      if (data.workflowId !== p.slice(10, -5) || !Array.isArray(data.steps) || !data.steps.length || data.steps.length > 64) { errors.push(error(p, 'invalid workflow identity/steps')); continue; }
+      if (data.workflowId !== p.slice(10, -5) || !Array.isArray(data.steps) || data.steps.length > 64) { errors.push(error(p, 'invalid workflow identity/steps')); continue; }
       const seen = new Set();
       for (const step of data.steps) {
         if (!step.stepId || seen.has(step.stepId)) errors.push(error(p, 'stepId must be unique'));
@@ -139,3 +154,6 @@ export function validateProjectFiles(files) {
   }
   return { ok: errors.length === 0, errors };
 }
+
+
+

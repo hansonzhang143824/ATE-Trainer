@@ -174,6 +174,23 @@ test('manager start tracks preparation asynchronously, rejects duplicate starts 
   assert.throws(() => manager.start({ runId: '../outside', testItems: ['TM109'] }));
 });
 
+test('business pipeline gets the extended bounded material-gate budget while smoke keeps its default', async () => {
+  const f = fixture();
+  write(f.stateFile, { ...f.state, purpose: 'business-training' });
+  let adapterOptions; let engineOptions;
+  const observed = observedEngine();
+  const manager = createPipelineExecutionManager(f.root, { stop() {} }, {}, {
+    requiredPurpose: 'business-training', allowArchivedFullPipeline: true,
+    prepareMaterials: async () => f.materials,
+    createAdapters: (...args) => { adapterOptions = args.at(-1); return {}; },
+    createEngine: mockEngine(observed),
+  });
+  await manager.start({ runId: f.runId, testItems: ['TM109'] }).completion;
+  engineOptions = observed.engineOptions;
+  assert.equal(adapterOptions.hostCommandTimeoutMs, 120_000);
+  assert.equal(engineOptions.gateTimeoutMs, 120_000);
+});
+
 test('cancelling preparation keeps copy lock until it drains and cannot create a late expert', async () => {
   const f = fixture(); const pending = deferred(); const observed = observedEngine(); let stops = 0;
   const manager = createPipelineExecutionManager(f.root, { stop() { stops += 1; } }, {}, { allowArchivedFullPipeline: true, prepareMaterials: () => pending.promise,

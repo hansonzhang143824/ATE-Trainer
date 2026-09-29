@@ -6,8 +6,11 @@ import { trainerFail, trainerId, trainerJson, trainerLock, trainerRead, trainerS
 const releaseRoot = (root) => trainerSafe(root, 'publish');
 function evidenceCheck(bundle, evidence) {
   if (!evidence || evidence.projectId !== bundle.projectId || evidence.targetKind !== bundle.targetKind || evidence.targetId !== bundle.targetId
-    || evidence.bundleSha256 !== bundle.bundleSha256 || evidence.status !== 'completed' || evidence.validation?.ok !== true || evidence.businessGatePassed !== false
-    || !Array.isArray(evidence.steps) || evidence.steps.length !== bundle.steps.length || evidence.steps.some((s, i) => s.stepId !== bundle.steps[i].stepId || s.agentId !== bundle.steps[i].agentId || s.status !== 'completed')) {
+    || evidence.bundleSha256 !== bundle.bundleSha256 || (evidence.workflowRevision ?? null) !== (bundle.workflowRevision ?? null)
+    || evidence.status !== 'completed' || evidence.validation?.ok !== true || evidence.businessGatePassed !== false
+    || !Array.isArray(evidence.steps) || evidence.steps.length !== bundle.steps.length || evidence.steps.some((s, i) =>
+      s.stepId !== bundle.steps[i].stepId || s.agentId !== bundle.steps[i].agentId
+      || (s.agentRevision ?? null) !== (bundle.steps[i].agentRevision ?? null) || s.status !== 'completed')) {
     trainerFail('TRAINER_RELEASE_EVIDENCE', 'release requires completed framework validation of this exact target and bundle');
   }
   trainerId(evidence.runId);
@@ -31,10 +34,15 @@ export function stageRelease(root, { projectId, frozenVersionId, runEvidence }) 
   const releaseId = `release-${randomUUID()}`; const directory = releaseRoot(root);
   // Persist only release verification fields; session logs/headers are unnecessary.
   const evidence = { runId: runEvidence.runId, projectId, targetKind: bundle.targetKind, targetId: bundle.targetId, bundleSha256: bundle.bundleSha256,
-    status: runEvidence.status, validation: runEvidence.validation, businessGatePassed: false, steps: runEvidence.steps.map((s) => ({ stepId: s.stepId, agentId: s.agentId, status: s.status })) };
+    workflowRevision: bundle.workflowRevision ?? null,
+    status: runEvidence.status, validation: runEvidence.validation, businessGatePassed: false,
+    steps: runEvidence.steps.map((s) => ({ stepId: s.stepId, agentId: s.agentId, agentRevision: s.agentRevision ?? null, status: s.status })) };
   const evidenceBytes = Buffer.from(trainerJson(evidence));
   const metadata = { schemaVersion: 1, runtimeApiVersion: 'trainer-api-v1', projectId, releaseId, frozenVersionId,
-    targetKind: bundle.targetKind, targetId: bundle.targetId, revisionId: bundle.revisionId, bundleSha256: bundle.bundleSha256,
+    targetKind: bundle.targetKind, targetId: bundle.targetId, revisionId: bundle.revisionId,
+    workflowRevision: bundle.workflowRevision ?? null,
+    agentBindings: bundle.steps.map((step) => ({ stepId: step.stepId, agentId: step.agentId, agentRevision: step.agentRevision ?? null })),
+    bundleSha256: bundle.bundleSha256,
     evidenceSha256: trainerSha(evidenceBytes), verifiedRunId: evidence.runId, businessGatePassed: false };
   trainerWrite(directory, `versions/${releaseId}/bundle-manifest.json`, bundleManifestBytes(bundle));
   trainerWrite(directory, `versions/${releaseId}/verification.json`, evidenceBytes);

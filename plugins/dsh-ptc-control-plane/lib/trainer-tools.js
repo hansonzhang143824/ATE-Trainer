@@ -28,12 +28,31 @@ const used = {
   run:['requestId','targetKind','targetId','input','revisionId','frozenVersionId','derivedFromRunId','changeSetId'],
   control:['requestId','runId','action'],compare:['beforeRunId','afterRunId'],
 };
+
+const parameterSchema = field => {
+  if (field === 'changes') return {
+    type: 'array',
+    description: 'Array of {path,content}; exact UTF-8 replacement text, null deletes',
+    items: {
+      type: 'object',
+      properties: {
+        path: { type: 'string', required: true, description: 'Candidate-relative file path' },
+        content: { oneOf: [{ type: 'string' }, { type: 'null' }], required: true, description: 'Complete UTF-8 file contents; null deletes' },
+      },
+      additionalProperties: false,
+    },
+  };
+  if (field === 'paths') return { type: 'array', items: { type: 'string' }, description: 'Optional candidate-relative paths' };
+  if (field === 'input') return { type: 'object', additionalProperties: true, description: 'Synthetic framework input JSON' };
+  if (field === 'limit') return { type: 'integer', description: 'Maximum number of runs' };
+  if (field === 'cursor') return { type: 'string', description: 'Opaque pagination cursor' };
+  return { type: 'string', description: fields[field] || field };
+};
+
 export function createTrainerTools(service, { defineTool, principalOf, role = 'agent-trainer' }) {
   return Object.entries(TRAINER_TOOL_OPERATIONS).filter(([,op]) => role === 'agent-trainer' || !['apply-changes','validate'].includes(op)).map(([name,operation]) => {
     const parameters = {};
-    for (const field of used[operation]) parameters[field] = ['changes','input','paths','cursor','limit'].includes(field)
-      ? { type:'json', description: field === 'changes' ? 'Array of {path,content}; exact UTF-8 replacement text, null deletes' : field }
-      : { type:'string', description: fields[field] || field };
+    for (const field of used[operation]) parameters[field] = parameterSchema(field);
     return defineTool({ name, description: DESCRIPTIONS[name],parameters,
       output: { schema: {type:'json'}, render: (_args,value) => [{type:'text',text:JSON.stringify(value)}] },
       isConcurrencySafe: () => !['apply-changes','run','control'].includes(operation),
@@ -41,3 +60,4 @@ export function createTrainerTools(service, { defineTool, principalOf, role = 'a
     });
   });
 }
+

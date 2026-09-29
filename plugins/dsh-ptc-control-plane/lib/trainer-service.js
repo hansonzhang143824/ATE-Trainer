@@ -4,7 +4,7 @@ import { createHash, randomUUID } from 'node:crypto';
 
 const MUTATIONS = new Set(['apply-changes', 'run', 'control', 'freeze', 'stage-release', 'activate-release']);
 const TRAINING = new Set(['apply-changes', 'freeze']);
-const PAGE_ONLY = new Set(['freeze', 'stage-release', 'activate-release', 'bind-session', 'session-workspace']);
+const PAGE_ONLY = new Set(['freeze', 'stage-release', 'activate-release', 'bind-session', 'session-workspace', 'open-native-session']);
 const TOOL_PRESETS = new Set(['agent-trainer', 'framework-expert', 'framework-observer']);
 export const DEFAULT_TRAINER_PROJECT_ID = 'agent-trainer';
 const clone = value => JSON.parse(JSON.stringify(value));
@@ -31,7 +31,7 @@ function read(file, fallback) {
 }
 
 /** One authority for UI and preset tools. repositories contains B's named exports. */
-export function createTrainerService({ workspaceRoot, runner, repositories, modelResolver, sessionVerifier }) {
+export function createTrainerService({ workspaceRoot, runner, repositories, modelResolver, sessionVerifier, sessionToolCatalog, sessionFactory }) {
   const storage = path.join(workspaceRoot, 'Training_Materials/framework/control');
   let queue = Promise.resolve();
   const serial = task => { const next = queue.then(task, task); queue = next.catch(() => {}); return next; };
@@ -120,13 +120,34 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
       candidateRevision: project.revisionId, bindingSchemaVersion: 1, cwd };
     if (!args.sessionId) return { ...result, bindingRevision: 0 };
     if (!sessionVerifier || !(await sessionVerifier(args.sessionId, args.presetId))) fail('session_identity_mismatch', 'Native session must use the requested dedicated preset');
+    let effectiveTools;
+    if (args.presetId === 'agent-trainer') {
+      effectiveTools = sessionToolCatalog ? await sessionToolCatalog(args.sessionId) : null;
+      const required = ['trainer_context', 'trainer_assets', 'trainer_runs', 'trainer_events', 'trainer_apply_changes', 'trainer_validate', 'trainer_run', 'trainer_control', 'trainer_compare'];
+      if (!Array.isArray(effectiveTools) || !required.every(name => effectiveTools.includes(name))) {
+        fail('trainer_tools_missing', 'Native agent-trainer session is missing its dedicated Trainer tool catalog', { required, effectiveTools: Array.isArray(effectiveTools) ? effectiveTools : null });
+      }
+      effectiveTools = [...new Set(effectiveTools)].sort();
+    }
     if (args.selectedRunId) await ownedRun({ projectId: args.projectId, runId: args.selectedRunId });
     const old = getBinding(args.sessionId);
     if (old && (old.projectId !== args.projectId || old.presetId !== args.presetId || old.targetId !== args.targetId || old.targetKind !== args.targetKind || old.mode !== args.mode)) fail('session_binding_conflict', 'Native session identity cannot be reused for another target');
     if (old && args.baseBindingRevision !== old.bindingRevision) fail('binding_conflict', 'Refresh the binding before changing its selected run');
     const binding = { ...result, sessionId: args.sessionId, bindingRevision: (old?.bindingRevision || 0) + 1 };
+    if (effectiveTools) {
+      binding.effectiveTools = effectiveTools;
+      binding.toolCatalogSha256 = createHash('sha256').update(JSON.stringify(effectiveTools)).digest('hex');
+    }
     atomic(bindingFile(args.sessionId), binding);
     return binding;
+  }
+  async function openNativeSession(args) {
+    if (args.presetId !== 'agent-trainer') fail('invalid_binding', 'Native Trainer sessions must use the agent-trainer preset');
+    const workspace = await bind({ ...args, sessionId: undefined });
+    if (typeof sessionFactory !== 'function') fail('native_host_unavailable', 'The DSH native session factory is unavailable');
+    const sessionId = await sessionFactory({ cwd: workspace.cwd, presetId: args.presetId });
+    const binding = await bind({ ...args, sessionId });
+    return { sessionId, binding };
   }
   async function ownedRun(args, binding) {
     const run = await runner.readRun({ runId: id(args.runId || args.selectedRunId, 'runId') });
@@ -183,12 +204,14 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
   }
   async function execute(operation, args, binding) {
     if (operation === 'bind-session') return bind(args);
+    if (operation === 'open-native-session') return openNativeSession(args);
     id(args.projectId, 'projectId');
     if (TRAINING.has(operation) && args.mode !== 'training') fail('read_only_mode', 'Published and engineering sessions cannot modify candidates or versions');
     if (['stage-release','activate-release'].includes(operation) && args.mode === 'engineering') fail('read_only_mode','Activate versions from the publication page');
     const target = { projectId: args.projectId, targetKind: args.targetKind, targetId: args.targetId };
     switch (operation) {
       case 'bind-session': return bind(args);
+      case 'open-native-session': return openNativeSession(args);
       case 'session-workspace': {
         if (!['agent', 'workflow'].includes(args.targetKind)) fail('invalid_binding', 'Trainer workspace requires an agent or workflow target');
         id(args.targetId, 'targetId');

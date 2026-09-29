@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { randomUUID } from 'node:crypto';
 import * as projects from './trainer-project.js';
 import * as bundles from './trainer-bundle.js';
 import * as releases from './trainer-release.js';
@@ -9,6 +10,7 @@ import { createDshFrameworkAdapter } from './framework-dsh-adapter.js';
 import { createTrainerService, DEFAULT_TRAINER_PROJECT_ID } from './trainer-service.js';
 import { registerTrainerRuntime } from './trainer-runtime.js';
 import { createTrainerApiHandler, TRAINER_API_OPERATIONS } from './trainer-api.js';
+import { TRAINER_TOOL_OPERATIONS } from './trainer-tools.js';
 
 function presetOf(session) {
   const events = session?.events || [];
@@ -29,17 +31,25 @@ export function mountTrainerHost(ctx, config) {
     repositories: { ...projects, ...bundles, ...releases },
     modelResolver: async () => ({ provider: 'deepseek-official', model: 'deepseek-v4-flash' }),
     sessionVerifier: async (sessionId, presetId) => {
-      // The standalone localhost workbench has no injected DSH session
-      // service. Its explicit offline bridge still receives a server-bound
-      // agent-trainer binding, but uses a namespaced session identity so the
-      // same authorization and tool catalog checks remain in force.
-      if (presetId === 'agent-trainer' && typeof sessionId === 'string' && sessionId.startsWith('white-native-')) return true;
       const agent = ctx.agents.get(sessionId);
       if (agent) return ctx.agentPresets.composedPreset(agent.ctx) === presetId && presetOf(agent.session) === presetId;
       const session = ctx.sessions?.get(sessionId);
       if (session) return presetOf(session) === presetId;
       const persisted = await ctx.sessionPersistence?.inspect(sessionId);
       return presetOf(persisted) === presetId;
+    },
+    sessionToolCatalog: async sessionId => {
+      const agent = ctx.agents.get(sessionId);
+      if (!agent?.ctx?.tools?.schemas) return null;
+      return agent.ctx.tools.schemas(agent).map(tool => tool.name).filter(name => Object.hasOwn(TRAINER_TOOL_OPERATIONS, name));
+    },
+    sessionFactory: async ({ cwd, presetId }) => {
+      const created = await ctx.agents.create({
+        sessionId: `session-${randomUUID()}`,
+        meta: { cwd, agentPreset: presetId },
+        setup: async agentCtx => { await ctx.agentPresets.mount(agentCtx, presetId); },
+      });
+      return created.agent.id;
     },
   });
   const disposeRuntime = registerTrainerRuntime(workspaceRoot, service);

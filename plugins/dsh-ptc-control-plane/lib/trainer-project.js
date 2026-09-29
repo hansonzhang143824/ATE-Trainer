@@ -2,7 +2,6 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createHash, randomUUID } from 'node:crypto';
 import { assetPath, validateProjectFiles } from './trainer-schema.js';
-import { createSyntheticTrainerFixture } from './trainer-synthetic-fixture.js';
 
 export const trainerSha = (value) => createHash('sha256').update(value).digest('hex');
 export const trainerJson = (value) => `${JSON.stringify(value, null, 2)}\n`;
@@ -52,7 +51,11 @@ export function ensureTrainerProject(root, { projectId, seed } = {}) {
   const directory = trainerProjectRoot(root, projectId);
   return trainerLock(directory, () => {
     if (fs.existsSync(trainerSafe(directory, 'current.json'))) return readProject(root, { projectId });
-    const files = seed?.files ?? createSyntheticTrainerFixture().files; check(files);
+    // A product project starts blank.  Synthetic fixtures are test material
+    // and must be injected explicitly by a caller through `seed`; silently
+    // creating one here would expose historical/demo Agents in the live
+    // Trainer registry.
+    const files = seed?.files ?? {}; check(files);
     const revisionId = `revision-${randomUUID()}`;
     writeRevision(directory, revisionId, files);
     const project = { projectId, schemaVersion: 1, runtimeApiVersion: 'trainer-api-v1' };
@@ -80,8 +83,8 @@ export function readProject(root, { projectId } = {}) {
   const { revisionId, files } = readAssets(root, { projectId });
   const agents = []; const workflows = [];
   for (const [p, content] of Object.entries(files)) {
-    if (/^agents\/[^/]+\/agent.json$/.test(p)) { const a = JSON.parse(content); agents.push({ agentId: a.agentId, name: a.name }); }
-    if (/^workflows\/[^/]+\.json$/.test(p)) { const w = JSON.parse(content); workflows.push({ workflowId: w.workflowId, name: w.name ?? w.workflowId }); }
+    if (/^agents\/[^/]+\/agent.json$/.test(p)) { const a = JSON.parse(content); agents.push({ agentId: a.agentId, name: a.name, revisionId }); }
+    if (/^workflows\/[^/]+\.json$/.test(p)) { const w = JSON.parse(content); workflows.push({ workflowId: w.workflowId, name: w.name ?? w.workflowId, revisionId }); }
   }
   return { ...project, revisionId, agents, workflows };
 }

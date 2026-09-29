@@ -53,6 +53,26 @@ export function resolveFrameworkInput(step, input, completed) {
   }
   return result;
 }
+/** Only the declared output projection is visible to downstream step bindings.
+ * Use the same JSON Pointer and overlap checks as input mapping; keep the
+ * original model response separate so mapping never rewrites model evidence. */
+export function resolveFrameworkOutput(step, output) {
+  const bindings = step.outputBindings ?? {};
+  const inputBindings = Object.fromEntries(Object.entries(bindings).map(([destination, binding]) => {
+    if (binding?.source !== 'output' || typeof binding.pointer !== 'string') {
+      fail('OUTPUT_BINDING_INVALID', 'output binding requires an output source and JSON Pointer');
+    }
+    return [destination, { source: 'input', pointer: binding.pointer }];
+  }));
+  try { return resolveFrameworkInput({ inputBindings }, output, new Map()); }
+  catch (error) {
+    if (error.code?.startsWith('INPUT_BINDING_')) {
+      error.code = error.code.replace('INPUT_BINDING_', 'OUTPUT_BINDING_');
+      error.message = error.message.replace(/input binding/g, 'output binding');
+    }
+    throw error;
+  }
+}
 function controls(run) {
   const unfinished = !terminal.has(run.status);
   const more = run.steps.filter(step => step.status === 'pending').length > 0;
@@ -141,7 +161,7 @@ export function createFrameworkRunner({ workspaceRoot, adapter, now = () => new 
         step.inputValidation = await validate(entry, definition.inputSchemaRef, step.input, 'input', step.stepId);
         if (run.cancellationRequested) break;
         step.inputArtifact = store.write(entry.dir, `${step.stepId}.input.json`, step.input, true);
-        const refs = new Set([definition.instructionsRef, definition.inputSchemaRef, definition.outputSchemaRef]);
+        const refs = new Set([definition.instructionsRef, definition.inputSchemaRef, definition.outputSchemaRef, definition.processRef, ...(definition.scriptRefs ?? [])].filter(Boolean));
         for (const skillId of definition.skillRefs ?? []) {
           const skill = entry.bundle.skills?.[skillId];
           if (!skill) fail('BUNDLE_DEPENDENCY_MISSING', 'skill missing', { skillId });
@@ -211,9 +231,11 @@ export function createFrameworkRunner({ workspaceRoot, adapter, now = () => new 
         step.outputArtifact = store.write(entry.dir, `${step.stepId}.output.json`, step.output, true);
         event(entry, 'validating-output', { stepId: step.stepId, phase: 'validation' });
         step.validation = await validate(entry, definition.outputSchemaRef, step.output, 'output', step.stepId);
+        step.handoffOutput = resolveFrameworkOutput(definition, step.output);
+        step.handoffArtifact = store.write(entry.dir, `${step.stepId}.handoff.json`, step.handoffOutput, true);
         step.status = 'completed'; step.completedAt = now();
-        completed.set(step.stepId, clone(step.output));
-        run.output = clone(step.output);
+        completed.set(step.stepId, clone(step.handoffOutput));
+        run.output = clone(step.handoffOutput);
         event(entry, 'step-completed', { stepId: step.stepId, phase: 'handoff' });
       }
       if (run.cancellationRequested) finishCancellation(entry);
@@ -271,12 +293,15 @@ export function createFrameworkRunner({ workspaceRoot, adapter, now = () => new 
       }
       const run = { schemaVersion: 1, kind: 'framework-run', runId: input.runId, requestId: input.requestId,
         projectId: bundle.projectId, targetKind: bundle.targetKind, targetId: bundle.targetId, revisionId: bundle.revisionId,
+        workflowRevision: bundle.workflowRevision ?? null,
         bundleSha256: bundle.bundleSha256, model: clone(bundle.model), mode: input.mode,
         purpose: input.mode === 'published' ? 'FRAMEWORK_REPLAY' : (optimization ? 'agent-optimization' : 'FRAMEWORK_TRAINING'), status: 'queued',
         startedAt: now(), updatedAt: now(), completedAt: null, derivedFromRunId: input.derivedFromRunId ?? null,
         changeSetId: input.changeSetId ?? null, releaseId: input.releaseId ?? null, businessGatePassed: false,
         cancellationRequested: false, childTerminationConfirmed: null, output: null, validation: null, error: null,
-        steps: bundle.steps.map(step => ({ stepId: step.stepId, agentId: step.agentId, status: 'pending',
+        steps: bundle.steps.map(step => ({ stepId: step.stepId, agentId: step.agentId,
+          agentRevision: step.agentRevision ?? null, status: 'pending',
+          inputBindings: clone(step.inputBindings ?? {}), outputBindings: clone(step.outputBindings ?? {}),
           parentSessionId: null, childSessionId: null, childTerminationConfirmed: null, actualLoadedRefs: [] })),
       };
       const dir = store.create(run);

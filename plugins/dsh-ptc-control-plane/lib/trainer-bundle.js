@@ -24,6 +24,9 @@ export function verifyBundle(bundle) {
   try {
     if (bundle?.schemaVersion !== 1 || bundle.runtimeApiVersion !== 'trainer-api-v1' || !['agent', 'workflow'].includes(bundle.targetKind)) trainerFail('TRAINER_BUNDLE_INVALID', 'unsupported bundle identity');
     for (const id of [bundle.projectId, bundle.targetId, bundle.revisionId]) trainerId(id);
+    if (bundle.workflowRevision !== undefined && (bundle.targetKind !== 'workflow' || bundle.workflowRevision !== bundle.revisionId)) {
+      trainerFail('TRAINER_BUNDLE_INVALID', 'workflow revision must bind to the bundle revision');
+    }
     modelCheck(bundle.model);
     if (!/^[a-f0-9]{64}$/.test(bundle.bundleSha256) || sha(bundle) !== bundle.bundleSha256) trainerFail('TRAINER_INTEGRITY', 'bundle manifest digest mismatch');
     const files = Object.create(null); let previous = '';
@@ -41,7 +44,7 @@ export function verifyBundle(bundle) {
       trainerId(step.stepId); trainerId(step.agentId);
       if (seen.has(step.stepId)) trainerFail('TRAINER_BUNDLE_INVALID', 'duplicate step ID');
       seen.add(step.stepId);
-      for (const ref of [step.instructionsRef, step.inputSchemaRef, step.outputSchemaRef]) if (!Object.hasOwn(files, ref)) trainerFail('TRAINER_BUNDLE_INVALID', `missing step dependency ${ref}`);
+      for (const ref of [step.instructionsRef, step.inputSchemaRef, step.outputSchemaRef, step.processRef, ...(step.scriptRefs ?? [])].filter(Boolean)) if (!Object.hasOwn(files, ref)) trainerFail('TRAINER_BUNDLE_INVALID', `missing step dependency ${ref}`);
       for (const id of step.skillRefs) if (!Object.hasOwn(bundle.skills, id)) trainerFail('TRAINER_BUNDLE_INVALID', `missing skill ${id}`);
       for (const id of step.toolIds) if (!Object.hasOwn(bundle.tools, id)) trainerFail('TRAINER_BUNDLE_INVALID', `missing tool ${id}`);
       const toolNames = step.toolIds.map((id) => bundle.tools[id].toolId);
@@ -51,7 +54,21 @@ export function verifyBundle(bundle) {
     // The digest alone proves bytes, not that the resolved projection follows
     // its authored definitions. Rebuild from bundled files without live reads.
     const definition = resolveDefinition({ ...bundle, files });
-    if (!bundleManifestBytes(definition).equals(bundleManifestBytes(bundle))) trainerFail('TRAINER_BUNDLE_DEFINITION_MISMATCH', 'resolved steps, tools, skills, tests or closure differ from bundled definitions');
+    // Releases created before revision metadata was added remain readable;
+    // newly resolved bundles still carry the stronger workflow/Agent pins.
+    // Compare legacy manifests after removing only fields that the stored
+    // manifest demonstrably does not contain.
+    const comparable = JSON.parse(JSON.stringify(definition));
+    if (!Object.hasOwn(bundle, 'workflowRevision')) delete comparable.workflowRevision;
+    for (let i = 0; i < (bundle.steps || []).length; i++) {
+      if (!Object.hasOwn(bundle.steps[i], 'agentRevision')) delete comparable.steps[i].agentRevision;
+      // Output handoff projections were added after the first frozen
+      // workflow snapshots.  A legacy snapshot that has no authored
+      // outputBindings remains valid; newly authored mappings stay covered by
+      // the exact definition comparison above.
+      if (!Object.hasOwn(bundle.steps[i], 'outputBindings')) delete comparable.steps[i].outputBindings;
+    }
+    if (!bundleManifestBytes(comparable).equals(bundleManifestBytes(bundle))) trainerFail('TRAINER_BUNDLE_DEFINITION_MISMATCH', 'resolved steps, tools, skills, tests or closure differ from bundled definitions');
     return { ok: true, errors: [] };
   } catch (e) { return { ok: false, errors: [{ code: e.code ?? 'TRAINER_BUNDLE_INVALID', message: e.message, details: e.details }] }; }
 }
@@ -126,13 +143,20 @@ function resolveDefinition({ projectId, targetKind, targetId, revisionId, files,
       }
       for (const id of sourceStep.toolIds) { const tool = source.tools[id]; tools[key(id)] = { ...tool, scriptRef: `${prefix}${tool.scriptRef}` }; }
       if (step.outputSchemaRef) takeSchema(step.outputSchemaRef);
-      return { ...sourceStep, stepId: step.stepId, agentId: step.agentId, instructionsRef: `${prefix}${sourceStep.instructionsRef}`,
+      return { ...sourceStep, stepId: step.stepId, agentId: step.agentId,
+        agentRevision: version,
+        instructionsRef: `${prefix}${sourceStep.instructionsRef}`,
+        ...(sourceStep.processRef ? { processRef: `${prefix}${sourceStep.processRef}` } : {}),
+        ...(sourceStep.scriptRefs?.length ? { scriptRefs: sourceStep.scriptRefs.map((ref) => `${prefix}${ref}`) } : {}),
         inputSchemaRef: `${prefix}${sourceStep.inputSchemaRef}`, outputSchemaRef: step.outputSchemaRef ?? `${prefix}${sourceStep.outputSchemaRef}`,
-        skillRefs: sourceStep.skillRefs.map(key), toolIds: sourceStep.toolIds.map(key), inputBindings: step.inputBindings ?? {}, timeoutMs: step.timeoutMs ?? sourceStep.timeoutMs,
+        skillRefs: sourceStep.skillRefs.map(key), toolIds: sourceStep.toolIds.map(key), inputBindings: step.inputBindings ?? {},
+        ...(step.outputBindings !== undefined ? { outputBindings: step.outputBindings } : {}), timeoutMs: step.timeoutMs ?? sourceStep.timeoutMs,
         model: sourceStep.model ?? source.model, sourceBundleSha256: digest, frozenVersionId: version };
     }
     const agent = parse(`agents/${trainerId(step.agentId)}/agent.json`);
-    take(agent.instructionsRef); takeSchema(agent.inputSchemaRef); takeSchema(step.outputSchemaRef ?? agent.outputSchemaRef);
+    take(agent.instructionsRef); if (agent.processRef) take(agent.processRef);
+    for (const ref of agent.scriptRefs ?? []) take(ref);
+    takeSchema(agent.inputSchemaRef); takeSchema(step.outputSchemaRef ?? agent.outputSchemaRef);
     // Agent definition also declares its own output contract, even when a step overrides it.
     takeSchema(agent.outputSchemaRef);
     for (const id of agent.skillRefs ?? []) {
@@ -144,15 +168,30 @@ function resolveDefinition({ projectId, targetKind, targetId, revisionId, files,
       const tool = parse(`tools/${trainerId(id)}.json`); take(tool.scriptRef); tools[id] = tool;
     }
     if (agent.model) modelCheck(agent.model);
-    return { stepId: step.stepId, agentId: agent.agentId, instructionsRef: agent.instructionsRef, skillRefs: agent.skillRefs ?? [], inputSchemaRef: agent.inputSchemaRef,
-      outputSchemaRef: step.outputSchemaRef ?? agent.outputSchemaRef, inputBindings: step.inputBindings ?? {}, toolIds: agent.toolIds ?? [], timeoutMs: step.timeoutMs ?? 120000, ...(agent.model ? { model: agent.model } : {}) };
+    return { stepId: step.stepId, agentId: agent.agentId,
+      // A candidate Agent is resolved from one immutable project revision.
+      // Persist that revision on every workflow step so a run cannot silently
+      // switch to a later Agent edit.
+      agentRevision: revisionId,
+      instructionsRef: agent.instructionsRef,
+      ...(agent.responsibility ? { responsibility: agent.responsibility } : {}),
+      ...(agent.processRef ? { processRef: agent.processRef } : {}),
+      ...(agent.scriptRefs?.length ? { scriptRefs: agent.scriptRefs } : {}),
+      ...(agent.permissions ? { permissions: JSON.parse(JSON.stringify(agent.permissions)) } : {}),
+      ...(agent.handoffRules ? { handoffRules: JSON.parse(JSON.stringify(agent.handoffRules)) } : {}),
+      skillRefs: agent.skillRefs ?? [], inputSchemaRef: agent.inputSchemaRef,
+      outputSchemaRef: step.outputSchemaRef ?? agent.outputSchemaRef, inputBindings: step.inputBindings ?? {},
+      ...(step.outputBindings !== undefined ? { outputBindings: step.outputBindings } : {}),
+      toolIds: agent.toolIds ?? [], timeoutMs: step.timeoutMs ?? 120000, ...(agent.model ? { model: agent.model } : {}) };
   });
   const tests = [];
   for (const [p, text] of Object.entries(files)) if (p.startsWith('tests/') && p.endsWith('.json')) {
     const test = JSON.parse(text); if (test.targetKind === targetKind && test.targetId === targetId) { take(p); tests.push(test); }
   }
   const contentFor = (p) => Object.hasOwn(importedFiles, p) ? importedFiles[p] : files[p];
-  const bundle = { schemaVersion: 1, runtimeApiVersion: 'trainer-api-v1', projectId, targetKind, targetId, revisionId, model: JSON.parse(JSON.stringify(model)),
+  const bundle = { schemaVersion: 1, runtimeApiVersion: 'trainer-api-v1', projectId, targetKind, targetId, revisionId,
+    ...(targetKind === 'workflow' ? { workflowRevision: revisionId } : {}),
+    model: JSON.parse(JSON.stringify(model)),
     files: [...selected].sort().map((p) => ({ path: p, size: Buffer.byteLength(contentFor(p)), sha256: trainerSha(Buffer.from(contentFor(p))), content: contentFor(p) })), steps, skills, tools, tests,
     ...(Object.keys(usedBundles).length ? { dependencyBundles: usedBundles, frozenDependencies: usedFrozen } : {}) };
   return bundle;
@@ -163,7 +202,9 @@ export function freezeTarget(root, { projectId, targetKind, targetId, revisionId
   if (bundle.projectId !== projectId || bundle.targetKind !== targetKind || bundle.targetId !== targetId || (revisionId && bundle.revisionId !== revisionId)) trainerFail('TRAINER_TARGET_MISMATCH', 'freeze target/revision differs from exact bundle');
   const frozenVersionId = `frozen-${randomUUID()}`; const directory = trainerProjectRoot(root, projectId);
   trainerWrite(directory, `versions/${frozenVersionId}/bundle-manifest.json`, bundleManifestBytes(bundle));
-  const result = { frozenVersionId, bundleSha256: bundle.bundleSha256, revisionId: bundle.revisionId, targetKind, targetId };
+  const result = { frozenVersionId, bundleSha256: bundle.bundleSha256, revisionId: bundle.revisionId, targetKind, targetId,
+    workflowRevision: bundle.workflowRevision ?? null,
+    agentBindings: bundle.steps.map(step => ({ stepId: step.stepId, agentId: step.agentId, agentRevision: step.agentRevision ?? null })) };
   trainerWrite(directory, `versions/${frozenVersionId}/version.json`, trainerJson(result));
   return result;
 }
@@ -175,6 +216,11 @@ export function loadFrozenBundle(root, { projectId, frozenVersionId }) {
   if (trainerSha(bytes) !== version.bundleSha256) trainerFail('TRAINER_INTEGRITY', 'frozen manifest bytes changed');
   const bundle = { ...JSON.parse(bytes), bundleSha256: version.bundleSha256 }; assertBundle(bundle);
   if (bundle.projectId !== projectId || bundle.targetId !== version.targetId || bundle.targetKind !== version.targetKind || bundle.revisionId !== version.revisionId) trainerFail('TRAINER_INTEGRITY', 'frozen version binding mismatch');
+  const expectedBindings = bundle.steps.map(step => ({ stepId: step.stepId, agentId: step.agentId, agentRevision: step.agentRevision ?? null }));
+  if ((version.workflowRevision ?? null) !== (bundle.workflowRevision ?? null)
+      || JSON.stringify(version.agentBindings ?? expectedBindings) !== JSON.stringify(expectedBindings)) {
+    trainerFail('TRAINER_INTEGRITY', 'frozen version bindings changed');
+  }
   return bundle;
 }
 

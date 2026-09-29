@@ -173,7 +173,8 @@ const BUSINESS_AGENT_CATALOG = Object.freeze({
 });
 
 function listBusinessAgentCatalog(workspaceRoot, runs) {
-  const catalog = { ...BUSINESS_AGENT_CATALOG };
+  // Active product starts empty; legacy expert profiles remain archive-only.
+  const catalog = {};
   const profilesRoot = path.join(workspaceRoot, 'team', 'expert-profiles');
   try {
     for (const entry of fs.readdirSync(profilesRoot, { withFileTypes: true })) {

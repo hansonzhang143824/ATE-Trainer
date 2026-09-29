@@ -24,10 +24,11 @@ test('agent-trainer session-tool requires the bound preset and authorizes Traine
     runner,
     repositories: { ...projects, ...bundles, ...releases },
     modelResolver: () => ({ provider: 'fake', model: 'fake' }),
-    sessionVerifier: async (sessionId, presetId) => sessionId.startsWith('white-native-') && presetId === 'agent-trainer',
+    sessionVerifier: async (sessionId, presetId) => sessionId === 'native-session-tool-test' && presetId === 'agent-trainer',
+    sessionToolCatalog: async () => ['trainer_context', 'trainer_assets', 'trainer_runs', 'trainer_events', 'trainer_apply_changes', 'trainer_validate', 'trainer_run', 'trainer_control', 'trainer_compare'],
   });
   await projects.ensureTrainerProject(root, { projectId: 'pilot', seed: createSyntheticTrainerFixture() });
-  const sessionId = 'white-native-session-tool-test';
+  const sessionId = 'native-session-tool-test';
   const bound = await service.invoke('bind-session', {
     projectId: 'pilot', targetKind: 'agent', targetId: 'lab-producer', mode: 'training',
     presetId: 'agent-trainer', sessionId,

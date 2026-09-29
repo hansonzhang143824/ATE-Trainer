@@ -52,7 +52,7 @@ test('trainer runtime is opt-in and registers the complete page API when enabled
     const enabled = mounted(root, true);
     assert.deepEqual(enabled.injected, ['webServer', 'agents', 'agentDefaultModel', 'agentPresets', 'subagents', 'tools', 'sessions', 'sessionPersistence']);
     const trainer = enabled.routes.filter(route => route.path.startsWith('/api/ptc-control/trainer/'));
-    assert.equal(trainer.length, 17);
+    assert.equal(trainer.length, 18);
     assert.equal(trainer.find(route => route.path.endsWith('/context'))?.kind, 'exact');
     assert.equal(trainer.find(route => route.path.endsWith('/session-workspace'))?.kind, 'exact');
     assert.equal(trainer.find(route => route.path.endsWith('/session-tool'))?.kind, 'exact');

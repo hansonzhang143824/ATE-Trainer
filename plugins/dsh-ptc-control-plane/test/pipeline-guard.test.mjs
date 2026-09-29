@@ -66,3 +66,13 @@ test('review stages cannot overwrite the other review stage evidence', () => {
   assert.equal(f.decide('write', `${f.runRoot}/trials/tm109/review/implementation-review.json`), undefined);
   assert.ok(f.decide('write', `${f.runRoot}/trials/tm109/review/method-contract-review.json`));
 });
+
+test('dedicated Agent Trainer sessions bypass the pipeline stage guard', () => {
+  const f = fixture();
+  f.agent.id = 'unrelated-trainer-host-agent';
+  f.agent.session = { header: { cwd: f.root, agentPreset: 'agent-trainer' }, events: [] };
+  assert.equal(f.decide('trainer_context', ''), undefined);
+  f.agent.session.events = [{ type: 'agent-preset/selected', data: { agentPreset: 'agent-trainer' } }];
+  delete f.agent.session.header.agentPreset;
+  assert.equal(f.decide('trainer_assets', ''), undefined);
+});

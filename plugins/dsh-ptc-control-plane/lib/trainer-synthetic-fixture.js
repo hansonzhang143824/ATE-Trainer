@@ -26,31 +26,3 @@ export function createSyntheticTrainerFixture() {
   ]) files[`agents/${id}/agent.json`] = json({ agentId: id, name, instructionsRef: `agents/${id}/instructions.md`, skillRefs, toolIds, inputSchemaRef: `contracts/${prefix}-input.schema.json`, outputSchemaRef: `contracts/${prefix}-output.schema.json` });
   return { files };
 }
-
-/** Display identities only: no profile files, business stages or gates are read. */
-export const SYNTHETIC_ROLE_CATALOG = Object.freeze([
-  { agentId: 'ptc-dft-expert', name: 'DFT expert (synthetic)' },
-  { agentId: 'ptc-schematic-expert', name: 'Schematic expert (synthetic)' },
-  { agentId: 'strategy-expert', name: 'Strategy expert (synthetic)' },
-  { agentId: 'method-expert', name: 'Method expert (synthetic)' },
-  { agentId: 'rule-reviewer', name: 'Rule reviewer (synthetic)' },
-  { agentId: 'ate-implementer', name: 'ATE implementer (synthetic)' },
-  { agentId: 'compile-diagnostician', name: 'Compile diagnostician (synthetic)' },
-  { agentId: 'evolution-expert', name: 'Evolution expert (synthetic)' },
-]);
-
-export function createEightRoleSyntheticFixture({ roles = SYNTHETIC_ROLE_CATALOG, workflowId = 'synthetic-eight' } = {}) {
-  const files = {
-    'contracts/synthetic-value-input.schema.json': json(object({ value: { type: 'integer' } })),
-    'contracts/synthetic-value-output.schema.json': json(object({ value: { type: 'integer' }, marker: { type: 'string' } })),
-  };
-  const steps = roles.map(({ agentId, name }, index) => {
-    files[`agents/${agentId}/agent.json`] = json({ agentId, name, instructionsRef: `agents/${agentId}/instructions.md`, skillRefs: [], toolIds: [],
-      inputSchemaRef: 'contracts/synthetic-value-input.schema.json', outputSchemaRef: 'contracts/synthetic-value-output.schema.json' });
-    files[`agents/${agentId}/instructions.md`] = `Synthetic framework task only. Return a JSON object with value equal to input.value + 1 and marker exactly "${agentId}-v1". Do not read business materials or call business tools.\n`;
-    return { stepId: `synthetic-${index + 1}`, agentId, timeoutMs: 120000,
-      inputBindings: { '/value': index === 0 ? { source: 'input', pointer: '/value' } : { source: 'step', stepId: `synthetic-${index}`, pointer: '/value' } } };
-  });
-  files[`workflows/${workflowId}.json`] = json({ workflowId, name: 'Synthetic configured role sequence', steps });
-  return { files };
-}

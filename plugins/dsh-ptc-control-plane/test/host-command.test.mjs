@@ -180,9 +180,15 @@ test('non-Windows direct kill evidence never claims the whole descendant tree wa
 });
 
 test('invalid or excessive host budgets fail before any spawn', async () => {
-  for (const options of [{ timeoutMs: 30_001 }, { timeoutMs: 0 }, { killTimeoutMs: 3001 }, { drainTimeoutMs: 1001 }, { maxOutputBytes: 2 * 1024 * 1024 + 1 }]) {
+  for (const options of [{ timeoutMs: 120_001, maxTimeoutMs: 120_000 }, { timeoutMs: 30_001 }, { timeoutMs: 0 }, { killTimeoutMs: 3001 }, { drainTimeoutMs: 1001 }, { maxOutputBytes: 2 * 1024 * 1024 + 1 }]) {
     let spawned = false;
     await assert.rejects(runHostCommand('python', [], { ...options, spawn() { spawned = true; } }));
     assert.equal(spawned, false);
   }
+});
+
+test('business callers may opt into the bounded 120-second host budget', async () => {
+  const f = fixture(process => process.emit('close', 0));
+  const result = await runHostCommand('python', [], { ...f.options, timeoutMs: 120_000, maxTimeoutMs: 120_000 });
+  assert.equal(result.status, 'passed');
 });

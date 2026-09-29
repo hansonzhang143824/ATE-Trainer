@@ -23,6 +23,15 @@ export function stageDispatchLabel(runId, stage, role) { return `${PREFIX}${runI
 export function revokeStageDispatch(root, dispatchId) { REVOKED.add(key(root, dispatchId)); }
 export function signStageReceipt(value) { return signTrainingReceipt(value); }
 
+function sessionPreset(exec) {
+  const events = exec?.agent?.session?.events;
+  for (let index = Array.isArray(events) ? events.length - 1 : -1; index >= 0; index -= 1) {
+    const event = events[index];
+    if (event?.type === 'agent-preset/selected') return event.data?.agentPreset;
+  }
+  return exec?.agent?.session?.header?.agentPreset;
+}
+
 /** A restarted host never inherits an old child's still-open authority. */
 export function reconcileStageReceipts(workspaceRoot) {
   const root = path.resolve(workspaceRoot);
@@ -88,6 +97,10 @@ function validReceipt(root, file, receipt) {
 
 /** Additional deny-only guard for generic pipeline children, separate from DFT. */
 export function pipelineGuardDecision(exec, workspaceRoot) {
+  // Dedicated Agent Trainer sessions use the trainer tool boundary and its
+  // server-side session binding. They are not pipeline stage children, even if
+  // a stale child receipt happens to share the same host agent identity.
+  if (sessionPreset(exec) === 'agent-trainer') return undefined;
   const root = path.resolve(workspaceRoot);
   const label = exec.agent?.session?.events?.findLast?.(event => event?.type === 'subagent/descriptor')?.data?.label;
   const id = exec.agent?.id;

@@ -48,7 +48,7 @@ test('native session helper creates a DSH session in the API-approved workspace 
       get(name) { assert.equal(name, 'connection'); return { api: {
         agentPresets: { async list(input) { assert.deepEqual(input, {}); return { result: { ok: true, value: { presets: [{ id: 'standard' }] } } }; } },
         sessions: { async create(input) { assert.deepEqual(input, { workspaceId: 'ws-1', agentPreset: 'standard' });
-          bindings.set('s-1', { session: { async rename(title) { renamed.push(title); } } });
+          bindings.set('s-1', { session: { header: { agentPreset: 'standard' }, async rename(title) { renamed.push(title); } } });
           return { result: { ok: true, value: { sessionId: 's-1' } } }; } },
       } }; },
       sessions: { binding: id => bindings.get(id), open: id => opened.push(id), list: { subscribe() { return () => {}; } } },
@@ -62,6 +62,41 @@ test('native session helper creates a DSH session in the API-approved workspace 
     assert.deepEqual(opened, ['s-1', 's-1']);
     assert.equal(ptcSessionKey('workflow', 'dft'), 'workflow:dft');
     assert.throws(() => ptcSessionKey('business', 'TM109'));
+  } finally {
+    if (previousWindow === undefined) delete globalThis.window;
+    else globalThis.window = previousWindow;
+  }
+});
+
+test('native session helper discards a remembered session with the wrong preset', async () => {
+  const previousWindow = globalThis.window;
+  const storage = new Map([['ptc-native-session:agent:trainer:custom-agent-1:none', 'old']]);
+  globalThis.window = { localStorage: {
+    getItem: key => storage.get(key) ?? null,
+    setItem: (key, value) => storage.set(key, value),
+    removeItem: key => storage.delete(key),
+  }, setTimeout, clearTimeout };
+  try {
+    const opened = [];
+    const bindings = new Map([['old', { session: { header: { agentPreset: 'standard' } } }]]);
+    const scope = {
+      workspaces: { async create() { return { workspaceId: 'ws-2' }; } },
+      get() { return { api: {
+        agentPresets: { async list() { return { result: { ok: true, value: { presets: [{ id: 'agent-trainer' }] } } }; } },
+        sessions: { async create(input) {
+          assert.deepEqual(input, { workspaceId: 'ws-2', agentPreset: 'agent-trainer' });
+          bindings.set('new', { session: { header: { agentPreset: 'agent-trainer' }, async rename() {} } });
+          return { result: { ok: true, value: { sessionId: 'new' } } };
+        } },
+      } }; },
+      sessions: { binding: id => bindings.get(id), open: id => opened.push(id), list: { subscribe() { return () => {}; } } },
+    };
+    const result = await openPtcNativeSession(scope, { path: 'D:/ptc/agent' }, {
+      key: 'agent:trainer:custom-agent-1:none', title: 'Agent Trainer · custom-agent-1', agentPreset: 'agent-trainer',
+    });
+    assert.deepEqual(result, { sessionId: 'new', reused: false });
+    assert.deepEqual(opened, ['new']);
+    assert.equal(storage.get('ptc-native-session:agent:trainer:custom-agent-1:none'), 'new');
   } finally {
     if (previousWindow === undefined) delete globalThis.window;
     else globalThis.window = previousWindow;

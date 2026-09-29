@@ -1,0 +1,1166 @@
+{
+  "schemaVersion": 3,
+  "plan": "docs/agent-trainer-empty-system-development-validation-plan-20260929.md",
+  "generatedAt": "2026-09-30T05:15:00Z",
+  "scope": "SMOKE_ONLY",
+  "businessGatePassed": false,
+  "status": "passed_with_real_native_host_and_release_isolation",
+  "statusReason": "白色 Agent Trainer 的 A-G 点击链、真实 DSH agent-trainer 原生会话、冻结发布和工程回放均有持久化证据；业务 gate 保持 false。",
+  "actualUiClicks": {
+    "A": {
+      "status": "passed",
+      "uiActions": [
+        "训练模式",
+        "workflow-T1",
+        "移除 T3",
+        "运行当前工作流"
+      ],
+      "workflowId": "workflow-T1",
+      "runId": "framework-a737a636-f6bd-414d-b71b-170ca4d5519b",
+      "agentOrder": [
+        "agent-T1"
+      ],
+      "output": {
+        "answer": 3
+      },
+      "artifact": "Training_Materials/runs/framework-a737a636-f6bd-414d-b71b-170ca4d5519b/framework-run.json"
+    },
+    "B": {
+      "status": "passed_with_real_native_host",
+      "uiActions": [
+        "选择 agent-T1",
+        "打开当前专家原生会话",
+        "发送 2+3 JSON 优化指令"
+      ],
+      "nativeSessionIds": [
+        "session-c8583eac-c9fc-49fa-b565-debaa0b52bd9",
+        "session-10f58a0c-c9af-45b9-adf0-5ad0589f98f7"
+      ],
+      "presetId": "agent-trainer",
+      "toolCatalog": [
+        "trainer_context",
+        "trainer_assets",
+        "trainer_apply_changes",
+        "trainer_validate",
+        "trainer_run",
+        "trainer_runs",
+        "trainer_events",
+        "trainer_compare",
+        "trainer_control"
+      ],
+      "baselineRunId": "framework-b5f8877f-967c-4a3f-8498-6d888507468e",
+      "optimizedRunId": "framework-34807056-f7ab-4c93-a9da-7a59df98567a",
+      "baselineRevision": "revision-646bae7d-ae45-415d-873c-434150bab23e",
+      "optimizedRevision": "revision-fe6d4b17-1767-4e89-ac2a-5f12b4436820",
+      "changeSetId": "change-60beed1e-f93a-415d-873c-434150bab23e",
+      "optimizedOutput": {
+        "answer": 5
+      },
+      "validation": {
+        "optimizedRun": true,
+        "compare": true,
+        "oldRevisionPreserved": true
+      },
+      "artifacts": [
+        "Training_Materials/framework/control/bindings/session-c8583eac-c9fc-49fa-b565-debaa0b52bd9.json",
+        "Training_Materials/framework/control/requests/agent-trainer/t1-instr-rules-v1.json",
+        "Training_Materials/runs/framework-34807056-f7ab-4c93-a9da-7a59df98567a/framework-run.json"
+      ]
+    },
+    "C": {
+      "status": "passed",
+      "uiActions": [
+        "新建 workflow-T1 空工作流",
+        "加入 agent-T1",
+        "运行当前工作流"
+      ],
+      "workflowId": "workflow-T1",
+      "runId": "framework-a737a636-f6bd-414d-b71b-170ca4d5519b",
+      "agentOrder": [
+        "agent-T1"
+      ],
+      "output": {
+        "answer": 3
+      }
+    },
+    "D": {
+      "status": "passed",
+      "uiActions": [
+        "加入 agent-T2",
+        "运行当前工作流"
+      ],
+      "workflowId": "workflow-T1",
+      "runId": "framework-3a5862f0-d4d3-44f6-916e-55f1939eac44",
+      "agentOrder": [
+        "agent-T1",
+        "agent-T2"
+      ],
+      "outputs": [
+        3,
+        5
+      ],
+      "validation": true
+    },
+    "E": {
+      "status": "passed",
+      "uiActions": [
+        "加入 agent-T3",
+        "运行当前工作流"
+      ],
+      "workflowId": "workflow-T1",
+      "runId": "framework-d4511fc1-6cd4-4534-8996-3d2a6d1b4984",
+      "agentOrder": [
+        "agent-T1",
+        "agent-T2",
+        "agent-T3"
+      ],
+      "outputs": [
+        3,
+        5,
+        7
+      ],
+      "validation": true
+    },
+    "F": {
+      "status": "passed",
+      "uiActions": [
+        "点击 T3 上移",
+        "点击 T1 上移",
+        "运行当前工作流"
+      ],
+      "workflowId": "workflow-T1",
+      "oldWorkflowRevision": "revision-72f6ac61-1b3d-4c0b-a9ca-db2ecb23da23",
+      "newWorkflowRevision": "revision-e90f9ba0-6018-47d0-b216-8c4f72ca51c7",
+      "runId": "framework-2cd9b916-b5c0-4942-b965-4993774f7249",
+      "agentOrder": [
+        "agent-T3",
+        "agent-T1",
+        "agent-T2"
+      ],
+      "outputs": [
+        7,
+        3,
+        5
+      ],
+      "validation": true
+    },
+    "G": {
+      "status": "passed",
+      "uiActions": [
+        "冻结候选",
+        "发布模式",
+        "发布 SMOKE 快照",
+        "工程模式",
+        "运行已发布工作流",
+        "训练模式加入 custom-agent-4",
+        "工程模式选择 workflow-T5",
+        "再次运行已发布工作流"
+      ],
+      "frozenVersionId": "frozen-85e70b63-d20a-4570-bbe5-68c90deea6f3",
+      "releaseId": "release-80b3d739-627b-4b27-b643-828d2066e7ea",
+      "publishedWorkflowId": "workflow-T5",
+      "publishedAgentIds": [
+        "agent-T3",
+        "agent-T1",
+        "agent-T2"
+      ],
+      "trainingRunId": "framework-54590fd9-215d-454e-bdd4-d56baa238b33",
+      "publishedRunIds": [
+        "framework-ee0630b3-46ac-4477-8c7e-8c0e4732aa41",
+        "framework-50d1f194-86ba-44e4-ad6e-49c2f7a7f920"
+      ],
+      "publishedOrder": [
+        "agent-T3",
+        "agent-T1",
+        "agent-T2"
+      ],
+      "publishedOutputs": [
+        7,
+        3,
+        5
+      ],
+      "candidateMutationRevision": "revision-f596dcf0-4e52-411a-9c46-8e1d5dc6c2bf",
+      "isolationVerified": true,
+      "validation": true
+    }
+  },
+  "records": {
+    "A": {
+      "runId": "framework-a737a636-f6bd-414d-b71b-170ca4d5519b",
+      "targetId": "workflow-T1",
+      "mode": "training",
+      "purpose": "FRAMEWORK_TRAINING",
+      "status": "completed",
+      "revisionId": "revision-43151af5-5237-4738-b034-07522ccb379f",
+      "workflowRevision": "revision-43151af5-5237-4738-b034-07522ccb379f",
+      "businessGatePassed": false,
+      "childTerminationConfirmed": true,
+      "output": {
+        "answer": 3
+      },
+      "validation": {
+        "ok": true,
+        "errors": []
+      },
+      "steps": [
+        {
+          "stepId": "step-1",
+          "agentId": "agent-T1",
+          "agentRevision": "revision-43151af5-5237-4738-b034-07522ccb379f",
+          "status": "completed",
+          "output": {
+            "answer": 3
+          },
+          "validation": {
+            "ok": true,
+            "errors": []
+          },
+          "inputValidation": {
+            "ok": true,
+            "errors": []
+          },
+          "childTerminationConfirmed": true,
+          "actualLoadedRefs": [
+            {
+              "path": "agents/agent-T1/instructions.md",
+              "sha256": "c85c05ad7023b2098524a3396a2b5ee8604912b5542715053bd0b3557a5554cc",
+              "size": 110
+            },
+            {
+              "path": "contracts/agent-T1-input.schema.json",
+              "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+              "size": 116
+            },
+            {
+              "path": "contracts/agent-T1-output.schema.json",
+              "sha256": "a203a42e6075210bc79e86b6adbf24cba7e105b3808f0848ce72354168090d60",
+              "size": 207
+            }
+          ],
+          "effectiveTools": [
+            "structured_output"
+          ]
+        }
+      ],
+      "bundleSha256": "9d8cead9790619e0d959e60923ebde216932193277e6dc7a63e99e849c9dc96e"
+    },
+    "Bbaseline": {
+      "runId": "framework-b5f8877f-967c-4a3f-8498-6d888507468e",
+      "targetId": "agent-T1",
+      "mode": "training",
+      "purpose": "FRAMEWORK_TRAINING",
+      "status": "completed",
+      "revisionId": "revision-646bae7d-ae45-415a-b58b-cbdb8108c2f1",
+      "workflowRevision": null,
+      "businessGatePassed": false,
+      "childTerminationConfirmed": true,
+      "output": {
+        "answer": 5
+      },
+      "validation": {
+        "ok": true,
+        "errors": []
+      },
+      "steps": [
+        {
+          "stepId": "step-1",
+          "agentId": "agent-T1",
+          "agentRevision": "revision-646bae7d-ae45-415a-b58b-cbdb8108c2f1",
+          "status": "completed",
+          "output": {
+            "answer": 5
+          },
+          "validation": {
+            "ok": true,
+            "errors": []
+          },
+          "inputValidation": {
+            "ok": true,
+            "errors": []
+          },
+          "childTerminationConfirmed": true,
+          "actualLoadedRefs": [
+            {
+              "path": "agents/agent-T1/instructions.md",
+              "sha256": "7a0dd073e0a38af2c34bb195a539ad0bc883061e32f55881304f1f6058f5bca6",
+              "size": 171
+            },
+            {
+              "path": "contracts/agent-T1-input.schema.json",
+              "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+              "size": 116
+            },
+            {
+              "path": "contracts/agent-T1-output.schema.json",
+              "sha256": "76dc49aae9e8a97943df2b5e2a42b460a91ad7632fbc649a3c989e10149a80c2",
+              "size": 207
+            }
+          ],
+          "effectiveTools": [
+            "structured_output"
+          ]
+        }
+      ],
+      "bundleSha256": "e7ef08bcccf67ea3378f43b7c528bffccf5df82fa0ddae53bc3eac36113ede24"
+    },
+    "Boptimized": {
+      "runId": "framework-34807056-f7ab-4c93-a9da-7a59df98567a",
+      "targetId": "agent-T1",
+      "mode": "training",
+      "purpose": "FRAMEWORK_TRAINING",
+      "status": "completed",
+      "revisionId": "revision-fe6d4b17-1767-4e89-ac2a-5f12b4436820",
+      "workflowRevision": null,
+      "businessGatePassed": false,
+      "childTerminationConfirmed": true,
+      "output": {
+        "answer": 5
+      },
+      "validation": {
+        "ok": true,
+        "errors": []
+      },
+      "steps": [
+        {
+          "stepId": "step-1",
+          "agentId": "agent-T1",
+          "agentRevision": "revision-fe6d4b17-1767-4e89-ac2a-5f12b4436820",
+          "status": "completed",
+          "output": {
+            "answer": 5
+          },
+          "validation": {
+            "ok": true,
+            "errors": []
+          },
+          "inputValidation": {
+            "ok": true,
+            "errors": []
+          },
+          "childTerminationConfirmed": true,
+          "actualLoadedRefs": [
+            {
+              "path": "agents/agent-T1/instructions.md",
+              "sha256": "31c592f1e5a987ba779a6cdce81a20e2e3f569d551ed70ba1e530fdcc7aea7b9",
+              "size": 162
+            },
+            {
+              "path": "contracts/agent-T1-input.schema.json",
+              "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+              "size": 116
+            },
+            {
+              "path": "contracts/agent-T1-output.schema.json",
+              "sha256": "76dc49aae9e8a97943df2b5e2a42b460a91ad7632fbc649a3c989e10149a80c2",
+              "size": 207
+            }
+          ],
+          "effectiveTools": [
+            "structured_output"
+          ]
+        }
+      ],
+      "bundleSha256": "489b5a33ad35619b73c4050bbc023b1d3823556402d454ce14b625e0d24bdd7c"
+    },
+    "C": {
+      "runId": "framework-a737a636-f6bd-414d-b71b-170ca4d5519b",
+      "targetId": "workflow-T1",
+      "mode": "training",
+      "purpose": "FRAMEWORK_TRAINING",
+      "status": "completed",
+      "revisionId": "revision-43151af5-5237-4738-b034-07522ccb379f",
+      "workflowRevision": "revision-43151af5-5237-4738-b034-07522ccb379f",
+      "businessGatePassed": false,
+      "childTerminationConfirmed": true,
+      "output": {
+        "answer": 3
+      },
+      "validation": {
+        "ok": true,
+        "errors": []
+      },
+      "steps": [
+        {
+          "stepId": "step-1",
+          "agentId": "agent-T1",
+          "agentRevision": "revision-43151af5-5237-4738-b034-07522ccb379f",
+          "status": "completed",
+          "output": {
+            "answer": 3
+          },
+          "validation": {
+            "ok": true,
+            "errors": []
+          },
+          "inputValidation": {
+            "ok": true,
+            "errors": []
+          },
+          "childTerminationConfirmed": true,
+          "actualLoadedRefs": [
+            {
+              "path": "agents/agent-T1/instructions.md",
+              "sha256": "c85c05ad7023b2098524a3396a2b5ee8604912b5542715053bd0b3557a5554cc",
+              "size": 110
+            },
+            {
+              "path": "contracts/agent-T1-input.schema.json",
+              "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+              "size": 116
+            },
+            {
+              "path": "contracts/agent-T1-output.schema.json",
+              "sha256": "a203a42e6075210bc79e86b6adbf24cba7e105b3808f0848ce72354168090d60",
+              "size": 207
+            }
+          ],
+          "effectiveTools": [
+            "structured_output"
+          ]
+        }
+      ],
+      "bundleSha256": "9d8cead9790619e0d959e60923ebde216932193277e6dc7a63e99e849c9dc96e"
+    },
+    "D": {
+      "runId": "framework-3a5862f0-d4d3-44f6-916e-55f1939eac44",
+      "targetId": "workflow-T1",
+      "mode": "training",
+      "purpose": "FRAMEWORK_TRAINING",
+      "status": "completed",
+      "revisionId": "revision-4ec4b386-79bd-4976-a2e2-ee8a7ae3a23a",
+      "workflowRevision": "revision-4ec4b386-79bd-4976-a2e2-ee8a7ae3a23a",
+      "businessGatePassed": false,
+      "childTerminationConfirmed": true,
+      "output": {
+        "answer": 5
+      },
+      "validation": {
+        "ok": true,
+        "errors": []
+      },
+      "steps": [
+        {
+          "stepId": "step-1",
+          "agentId": "agent-T1",
+          "agentRevision": "revision-4ec4b386-79bd-4976-a2e2-ee8a7ae3a23a",
+          "status": "completed",
+          "output": {
+            "answer": 3
+          },
+          "validation": {
+            "ok": true,
+            "errors": []
+          },
+          "inputValidation": {
+            "ok": true,
+            "errors": []
+          },
+          "childTerminationConfirmed": true,
+          "actualLoadedRefs": [
+            {
+              "path": "agents/agent-T1/instructions.md",
+              "sha256": "c85c05ad7023b2098524a3396a2b5ee8604912b5542715053bd0b3557a5554cc",
+              "size": 110
+            },
+            {
+              "path": "contracts/agent-T1-input.schema.json",
+              "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+              "size": 116
+            },
+            {
+              "path": "contracts/agent-T1-output.schema.json",
+              "sha256": "a203a42e6075210bc79e86b6adbf24cba7e105b3808f0848ce72354168090d60",
+              "size": 207
+            }
+          ],
+          "effectiveTools": [
+            "structured_output"
+          ]
+        },
+        {
+          "stepId": "step-2",
+          "agentId": "agent-T2",
+          "agentRevision": "revision-4ec4b386-79bd-4976-a2e2-ee8a7ae3a23a",
+          "status": "completed",
+          "output": {
+            "answer": 5
+          },
+          "validation": {
+            "ok": true,
+            "errors": []
+          },
+          "inputValidation": {
+            "ok": true,
+            "errors": []
+          },
+          "childTerminationConfirmed": true,
+          "actualLoadedRefs": [
+            {
+              "path": "agents/agent-T2/instructions.md",
+              "sha256": "cc09c1726d4c4581c5381f038297252e6be7c725a380d13e9866e188265b3bc2",
+              "size": 110
+            },
+            {
+              "path": "contracts/agent-T2-input.schema.json",
+              "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+              "size": 116
+            },
+            {
+              "path": "contracts/agent-T2-output.schema.json",
+              "sha256": "86638d097ffc912183c24640eed235ad9f5bc0a89a17cb1d659e39a27cb0bd45",
+              "size": 237
+            }
+          ],
+          "effectiveTools": [
+            "structured_output"
+          ]
+        }
+      ],
+      "bundleSha256": "0d7bc7e34b2759088795cc8aca51d0401254c3fff783f8e01c809913f9fa23fd"
+    },
+    "E": {
+      "runId": "framework-d4511fc1-6cd4-4534-8996-3d2a6d1b4984",
+      "targetId": "workflow-T1",
+      "mode": "training",
+      "purpose": "FRAMEWORK_TRAINING",
+      "status": "completed",
+      "revisionId": "revision-72f6ac61-1b3d-4c0b-a9ca-db2ecb23da23",
+      "workflowRevision": "revision-72f6ac61-1b3d-4c0b-a9ca-db2ecb23da23",
+      "businessGatePassed": false,
+      "childTerminationConfirmed": true,
+      "output": {
+        "answer": 7
+      },
+      "validation": {
+        "ok": true,
+        "errors": []
+      },
+      "steps": [
+        {
+          "stepId": "step-1",
+          "agentId": "agent-T1",
+          "agentRevision": "revision-72f6ac61-1b3d-4c0b-a9ca-db2ecb23da23",
+          "status": "completed",
+          "output": {
+            "answer": 3
+          },
+          "validation": {
+            "ok": true,
+            "errors": []
+          },
+          "inputValidation": {
+            "ok": true,
+            "errors": []
+          },
+          "childTerminationConfirmed": true,
+          "actualLoadedRefs": [
+            {
+              "path": "agents/agent-T1/instructions.md",
+              "sha256": "c85c05ad7023b2098524a3396a2b5ee8604912b5542715053bd0b3557a5554cc",
+              "size": 110
+            },
+            {
+              "path": "contracts/agent-T1-input.schema.json",
+              "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+              "size": 116
+            },
+            {
+              "path": "contracts/agent-T1-output.schema.json",
+              "sha256": "a203a42e6075210bc79e86b6adbf24cba7e105b3808f0848ce72354168090d60",
+              "size": 207
+            }
+          ],
+          "effectiveTools": [
+            "structured_output"
+          ]
+        },
+        {
+          "stepId": "step-2",
+          "agentId": "agent-T2",
+          "agentRevision": "revision-72f6ac61-1b3d-4c0b-a9ca-db2ecb23da23",
+          "status": "completed",
+          "output": {
+            "answer": 5
+          },
+          "validation": {
+            "ok": true,
+            "errors": []
+          },
+          "inputValidation": {
+            "ok": true,
+            "errors": []
+          },
+          "childTerminationConfirmed": true,
+          "actualLoadedRefs": [
+            {
+              "path": "agents/agent-T2/instructions.md",
+              "sha256": "cc09c1726d4c4581c5381f038297252e6be7c725a380d13e9866e188265b3bc2",
+              "size": 110
+            },
+            {
+              "path": "contracts/agent-T2-input.schema.json",
+              "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+              "size": 116
+            },
+            {
+              "path": "contracts/agent-T2-output.schema.json",
+              "sha256": "86638d097ffc912183c24640eed235ad9f5bc0a89a17cb1d659e39a27cb0bd45",
+              "size": 237
+            }
+          ],
+          "effectiveTools": [
+            "structured_output"
+          ]
+        },
+        {
+          "stepId": "step-3",
+          "agentId": "agent-T3",
+          "agentRevision": "revision-72f6ac61-1b3d-4c0b-a9ca-db2ecb23da23",
+          "status": "completed",
+          "output": {
+            "answer": 7
+          },
+          "validation": {
+            "ok": true,
+            "errors": []
+          },
+          "inputValidation": {
+            "ok": true,
+            "errors": []
+          },
+          "childTerminationConfirmed": true,
+          "actualLoadedRefs": [
+            {
+              "path": "agents/agent-T3/instructions.md",
+              "sha256": "ace9c3083429b9f3fbb691e8e31426797548a4360c4401065f868d42ec1c9865",
+              "size": 110
+            },
+            {
+              "path": "contracts/agent-T3-input.schema.json",
+              "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+              "size": 116
+            },
+            {
+              "path": "contracts/agent-T3-output.schema.json",
+              "sha256": "32781758fd854a11e6eed10695991c3f8c2152f2ca65e2fe7f750c4df3c8bddd",
+              "size": 237
+            }
+          ],
+          "effectiveTools": [
+            "structured_output"
+          ]
+        }
+      ],
+      "bundleSha256": "6f640713379370e2893f23d236281054cae9bc75da58d0965237c1823d66d04d"
+    },
+    "F": {
+      "runId": "framework-2cd9b916-b5c0-4942-b965-4993774f7249",
+      "targetId": "workflow-T1",
+      "mode": "training",
+      "purpose": "FRAMEWORK_TRAINING",
+      "status": "completed",
+      "revisionId": "revision-e90f9ba0-6018-47d0-b216-8c4f72ca51c7",
+      "workflowRevision": "revision-e90f9ba0-6018-47d0-b216-8c4f72ca51c7",
+      "businessGatePassed": false,
+      "childTerminationConfirmed": true,
+      "output": {
+        "answer": 5
+      },
+      "validation": {
+        "ok": true,
+        "errors": []
+      },
+      "steps": [
+        {
+          "stepId": "step-1",
+          "agentId": "agent-T3",
+          "agentRevision": "revision-e90f9ba0-6018-47d0-b216-8c4f72ca51c7",
+          "status": "completed",
+          "output": {
+            "answer": 7
+          },
+          "validation": {
+            "ok": true,
+            "errors": []
+          },
+          "inputValidation": {
+            "ok": true,
+            "errors": []
+          },
+          "childTerminationConfirmed": true,
+          "actualLoadedRefs": [
+            {
+              "path": "agents/agent-T3/instructions.md",
+              "sha256": "ace9c3083429b9f3fbb691e8e31426797548a4360c4401065f868d42ec1c9865",
+              "size": 110
+            },
+            {
+              "path": "contracts/agent-T3-input.schema.json",
+              "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+              "size": 116
+            },
+            {
+              "path": "contracts/agent-T3-output.schema.json",
+              "sha256": "32781758fd854a11e6eed10695991c3f8c2152f2ca65e2fe7f750c4df3c8bddd",
+              "size": 237
+            }
+          ],
+          "effectiveTools": [
+            "structured_output"
+          ]
+        },
+        {
+          "stepId": "step-2",
+          "agentId": "agent-T1",
+          "agentRevision": "revision-e90f9ba0-6018-47d0-b216-8c4f72ca51c7",
+          "status": "completed",
+          "output": {
+            "answer": 3
+          },
+          "validation": {
+            "ok": true,
+            "errors": []
+          },
+          "inputValidation": {
+            "ok": true,
+            "errors": []
+          },
+          "childTerminationConfirmed": true,
+          "actualLoadedRefs": [
+            {
+              "path": "agents/agent-T1/instructions.md",
+              "sha256": "c85c05ad7023b2098524a3396a2b5ee8604912b5542715053bd0b3557a5554cc",
+              "size": 110
+            },
+            {
+              "path": "contracts/agent-T1-input.schema.json",
+              "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+              "size": 116
+            },
+            {
+              "path": "contracts/agent-T1-output.schema.json",
+              "sha256": "a203a42e6075210bc79e86b6adbf24cba7e105b3808f0848ce72354168090d60",
+              "size": 207
+            }
+          ],
+          "effectiveTools": [
+            "structured_output"
+          ]
+        },
+        {
+          "stepId": "step-3",
+          "agentId": "agent-T2",
+          "agentRevision": "revision-e90f9ba0-6018-47d0-b216-8c4f72ca51c7",
+          "status": "completed",
+          "output": {
+            "answer": 5
+          },
+          "validation": {
+            "ok": true,
+            "errors": []
+          },
+          "inputValidation": {
+            "ok": true,
+            "errors": []
+          },
+          "childTerminationConfirmed": true,
+          "actualLoadedRefs": [
+            {
+              "path": "agents/agent-T2/instructions.md",
+              "sha256": "cc09c1726d4c4581c5381f038297252e6be7c725a380d13e9866e188265b3bc2",
+              "size": 110
+            },
+            {
+              "path": "contracts/agent-T2-input.schema.json",
+              "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+              "size": 116
+            },
+            {
+              "path": "contracts/agent-T2-output.schema.json",
+              "sha256": "86638d097ffc912183c24640eed235ad9f5bc0a89a17cb1d659e39a27cb0bd45",
+              "size": 237
+            }
+          ],
+          "effectiveTools": [
+            "structured_output"
+          ]
+        }
+      ],
+      "bundleSha256": "d521266d8c6d32be050e459be9fa50deecfa40c81dddd03ac6c0f49308120011"
+    },
+    "Gtraining": {
+      "runId": "framework-54590fd9-215d-454e-bdd4-d56baa238b33",
+      "targetId": "workflow-T5",
+      "mode": "training",
+      "purpose": "FRAMEWORK_TRAINING",
+      "status": "completed",
+      "revisionId": "revision-b1562c9c-9813-47fd-9664-57c8ffaeef5a",
+      "workflowRevision": "revision-b1562c9c-9813-47fd-9664-57c8ffaeef5a",
+      "businessGatePassed": false,
+      "childTerminationConfirmed": true,
+      "output": {
+        "answer": 5
+      },
+      "validation": {
+        "ok": true,
+        "errors": []
+      },
+      "steps": [
+        {
+          "stepId": "step-1",
+          "agentId": "agent-T3",
+          "agentRevision": "revision-b1562c9c-9813-47fd-9664-57c8ffaeef5a",
+          "status": "completed",
+          "output": {
+            "answer": 7
+          },
+          "validation": {
+            "ok": true,
+            "errors": []
+          },
+          "inputValidation": {
+            "ok": true,
+            "errors": []
+          },
+          "childTerminationConfirmed": true,
+          "actualLoadedRefs": [
+            {
+              "path": "agents/agent-T3/instructions.md",
+              "sha256": "ace9c3083429b9f3fbb691e8e31426797548a4360c4401065f868d42ec1c9865",
+              "size": 110
+            },
+            {
+              "path": "contracts/agent-T3-input.schema.json",
+              "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+              "size": 116
+            },
+            {
+              "path": "contracts/agent-T3-output.schema.json",
+              "sha256": "32781758fd854a11e6eed10695991c3f8c2152f2ca65e2fe7f750c4df3c8bddd",
+              "size": 237
+            }
+          ],
+          "effectiveTools": [
+            "structured_output"
+          ]
+        },
+        {
+          "stepId": "step-2",
+          "agentId": "agent-T1",
+          "agentRevision": "revision-b1562c9c-9813-47fd-9664-57c8ffaeef5a",
+          "status": "completed",
+          "output": {
+            "answer": 3
+          },
+          "validation": {
+            "ok": true,
+            "errors": []
+          },
+          "inputValidation": {
+            "ok": true,
+            "errors": []
+          },
+          "childTerminationConfirmed": true,
+          "actualLoadedRefs": [
+            {
+              "path": "agents/agent-T1/instructions.md",
+              "sha256": "c85c05ad7023b2098524a3396a2b5ee8604912b5542715053bd0b3557a5554cc",
+              "size": 110
+            },
+            {
+              "path": "contracts/agent-T1-input.schema.json",
+              "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+              "size": 116
+            },
+            {
+              "path": "contracts/agent-T1-output.schema.json",
+              "sha256": "a203a42e6075210bc79e86b6adbf24cba7e105b3808f0848ce72354168090d60",
+              "size": 207
+            }
+          ],
+          "effectiveTools": [
+            "structured_output"
+          ]
+        },
+        {
+          "stepId": "step-3",
+          "agentId": "agent-T2",
+          "agentRevision": "revision-b1562c9c-9813-47fd-9664-57c8ffaeef5a",
+          "status": "completed",
+          "output": {
+            "answer": 5
+          },
+          "validation": {
+            "ok": true,
+            "errors": []
+          },
+          "inputValidation": {
+            "ok": true,
+            "errors": []
+          },
+          "childTerminationConfirmed": true,
+          "actualLoadedRefs": [
+            {
+              "path": "agents/agent-T2/instructions.md",
+              "sha256": "cc09c1726d4c4581c5381f038297252e6be7c725a380d13e9866e188265b3bc2",
+              "size": 110
+            },
+            {
+              "path": "contracts/agent-T2-input.schema.json",
+              "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+              "size": 116
+            },
+            {
+              "path": "contracts/agent-T2-output.schema.json",
+              "sha256": "86638d097ffc912183c24640eed235ad9f5bc0a89a17cb1d659e39a27cb0bd45",
+              "size": 237
+            }
+          ],
+          "effectiveTools": [
+            "structured_output"
+          ]
+        }
+      ],
+      "bundleSha256": "8b2c47f625e56c0ffaa37d5769693b475d30ed035930644dc7a50ec477539fe7"
+    },
+    "Gpublished": {
+      "runId": "framework-50d1f194-86ba-44e4-ad6e-49c2f7a7f920",
+      "targetId": "workflow-T5",
+      "mode": "published",
+      "purpose": "FRAMEWORK_REPLAY",
+      "status": "completed",
+      "revisionId": "revision-b1562c9c-9813-47fd-9664-57c8ffaeef5a",
+      "workflowRevision": "revision-b1562c9c-9813-47fd-9664-57c8ffaeef5a",
+      "businessGatePassed": false,
+      "childTerminationConfirmed": true,
+      "output": {
+        "answer": 5
+      },
+      "validation": {
+        "ok": true,
+        "errors": []
+      },
+      "steps": [
+        {
+          "stepId": "step-1",
+          "agentId": "agent-T3",
+          "agentRevision": "revision-b1562c9c-9813-47fd-9664-57c8ffaeef5a",
+          "status": "completed",
+          "output": {
+            "answer": 7
+          },
+          "validation": {
+            "ok": true,
+            "errors": []
+          },
+          "inputValidation": {
+            "ok": true,
+            "errors": []
+          },
+          "childTerminationConfirmed": true,
+          "actualLoadedRefs": [
+            {
+              "path": "agents/agent-T3/instructions.md",
+              "sha256": "ace9c3083429b9f3fbb691e8e31426797548a4360c4401065f868d42ec1c9865",
+              "size": 110
+            },
+            {
+              "path": "contracts/agent-T3-input.schema.json",
+              "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+              "size": 116
+            },
+            {
+              "path": "contracts/agent-T3-output.schema.json",
+              "sha256": "32781758fd854a11e6eed10695991c3f8c2152f2ca65e2fe7f750c4df3c8bddd",
+              "size": 237
+            }
+          ],
+          "effectiveTools": [
+            "structured_output"
+          ]
+        },
+        {
+          "stepId": "step-2",
+          "agentId": "agent-T1",
+          "agentRevision": "revision-b1562c9c-9813-47fd-9664-57c8ffaeef5a",
+          "status": "completed",
+          "output": {
+            "answer": 3
+          },
+          "validation": {
+            "ok": true,
+            "errors": []
+          },
+          "inputValidation": {
+            "ok": true,
+            "errors": []
+          },
+          "childTerminationConfirmed": true,
+          "actualLoadedRefs": [
+            {
+              "path": "agents/agent-T1/instructions.md",
+              "sha256": "c85c05ad7023b2098524a3396a2b5ee8604912b5542715053bd0b3557a5554cc",
+              "size": 110
+            },
+            {
+              "path": "contracts/agent-T1-input.schema.json",
+              "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+              "size": 116
+            },
+            {
+              "path": "contracts/agent-T1-output.schema.json",
+              "sha256": "a203a42e6075210bc79e86b6adbf24cba7e105b3808f0848ce72354168090d60",
+              "size": 207
+            }
+          ],
+          "effectiveTools": [
+            "structured_output"
+          ]
+        },
+        {
+          "stepId": "step-3",
+          "agentId": "agent-T2",
+          "agentRevision": "revision-b1562c9c-9813-47fd-9664-57c8ffaeef5a",
+          "status": "completed",
+          "output": {
+            "answer": 5
+          },
+          "validation": {
+            "ok": true,
+            "errors": []
+          },
+          "inputValidation": {
+            "ok": true,
+            "errors": []
+          },
+          "childTerminationConfirmed": true,
+          "actualLoadedRefs": [
+            {
+              "path": "agents/agent-T2/instructions.md",
+              "sha256": "cc09c1726d4c4581c5381f038297252e6be7c725a380d13e9866e188265b3bc2",
+              "size": 110
+            },
+            {
+              "path": "contracts/agent-T2-input.schema.json",
+              "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+              "size": 116
+            },
+            {
+              "path": "contracts/agent-T2-output.schema.json",
+              "sha256": "86638d097ffc912183c24640eed235ad9f5bc0a89a17cb1d659e39a27cb0bd45",
+              "size": 237
+            }
+          ],
+          "effectiveTools": [
+            "structured_output"
+          ]
+        }
+      ],
+      "bundleSha256": "8b2c47f625e56c0ffaa37d5769693b475d30ed035930644dc7a50ec477539fe7"
+    }
+  },
+  "artifacts": {
+    "candidateProject": "Training_Materials/framework/projects/agent-trainer/current.json",
+    "nativeBindings": [
+      "Training_Materials/framework/control/bindings/session-c8583eac-c9fc-49fa-b565-debaa0b52bd9.json",
+      "Training_Materials/framework/control/bindings/session-10f58a0c-c9af-45b9-adf0-5ad0589f98f7.json"
+    ],
+    "frozenVersion": "Training_Materials/framework/projects/agent-trainer/versions/frozen-85e70b63-d20a-4570-bbe5-68c90deea6f3/version.json",
+    "release": "publish/versions/release-80b3d739-627b-4b27-b643-828d2066e7ea/release.json",
+    "releaseVerification": "publish/versions/release-80b3d739-627b-4b27-b643-828d2066e7ea/verification.json",
+    "publishedRuns": [
+      "publish/runs/framework-ee0630b3-46ac-4477-8c7e-8c0e4732aa41/framework-run.json",
+      "publish/runs/framework-50d1f194-86ba-44e4-ad6e-49c2f7a7f920/framework-run.json"
+    ]
+  },
+  "d7": {
+    "status": "passed_with_real_native_host_and_environment_note",
+    "checkpointFiles": [
+      "docs/checkpoints/agent-trainer-d1-20260929.json",
+      "docs/checkpoints/agent-trainer-d2-20260929.json",
+      "docs/checkpoints/agent-trainer-d3-20260929.json",
+      "docs/checkpoints/agent-trainer-d4-20260929.json",
+      "docs/checkpoints/agent-trainer-d5-20260929.json",
+      "docs/checkpoints/agent-trainer-d6-20260929.json"
+    ],
+    "checkpointCommits": {
+      "D1": "003f8620da2eb45f5cbe35ec297617f27e48d3aa",
+      "D2": "af210995713b12b7cd4a39c5da1c081b18fe80fd",
+      "D3": "8215eb0d804cb664f0580813f42db1141282c1c3",
+      "D4": "af63308cea15e4e9d577543329893960b2c94de6",
+      "D5": "6fbe3e9f2d853d9df19d6403da8d973eb3eae99c",
+      "D6": "d054e3a4adbffbe6034ad4e01072754ef212546d",
+      "D7": "0dfe7c4"
+    },
+    "tests": [
+      {
+        "command": "node --test --test-isolation=none plugins/dsh-ptc-control-plane/test/empty-system-d1-d2.test.mjs",
+        "passed": 4
+      },
+      {
+        "command": "node --test --test-isolation=none plugins/dsh-ptc-control-plane/test/agent-trainer-session-tool.test.mjs",
+        "passed": 1
+      },
+      {
+        "command": "node --test --test-isolation=none plugins/dsh-ptc-control-plane/test/agent-trainer-output-bindings.test.mjs",
+        "passed": 6
+      },
+      {
+        "command": "node --test --test-isolation=none plugins/dsh-ptc-control-plane/test/agent-trainer-d5-d6.test.mjs",
+        "passed": 2
+      },
+      {
+        "command": "node --test --test-isolation=none plugins/dsh-ptc-control-plane/test/agent-trainer-acceptance-a-g.test.mjs",
+        "passed": 2
+      },
+      {
+        "command": "node --test --test-isolation=none plugins/dsh-ptc-control-plane/test/trainer-runtime.test.mjs",
+        "passed": 5
+      },
+      {
+        "command": "real DSH host: /api/ptc-control/trainer/context + debug route check",
+        "passed": 2
+      }
+    ],
+    "knownEnvironmentLimitations": [
+      "Windows node --test default worker spawning returns EPERM; isolation=none is the passing direct runner."
+    ],
+    "realNative": {
+      "sessions": [
+        "session-c8583eac-c9fc-49fa-b565-debaa0b52bd9",
+        "session-10f58a0c-c9af-45b9-adf0-5ad0589f98f7"
+      ],
+      "bindingToolCount": 9,
+      "childTerminationConfirmed": true,
+      "validationOk": true,
+      "compareEvidence": true
+    },
+    "hashContract": "所有 evidence 与发布文件均使用 SHA-256 小写 64 位十六进制。",
+    "hostChecks": {
+      "contextHttpStatus": 200,
+      "debugRouteHttpStatus": 404,
+      "frozenBundlesVerified": 5,
+      "htmlScriptSyntax": true,
+      "trainerHostSyntax": true,
+      "userPort3080ContextHttpStatus": 200,
+      "validationPort3090ContextHttpStatus": 200
+    },
+    "activeSuite": {
+      "command": "node --test --test-concurrency=1 --test-reporter=tap <all active tests excluding all.test.mjs and archived framework-published-run/framework-rehearsal-manager/framework-rehearsal>",
+      "tests": 373,
+      "passed": 373,
+      "failed": 0
+    },
+    "fullSuite": {
+      "tests": 390,
+      "passed": 374,
+      "failed": 16,
+      "excludedArchivedTests": [
+        "framework-published-run.test.mjs",
+        "framework-rehearsal-manager.test.mjs",
+        "framework-rehearsal.test.mjs"
+      ],
+      "reason": "AGENTS.md keeps the former seven-stage business/rehearsal flow archived and the active registry empty; those tests require the retired stage registry."
+    }
+  }
+}

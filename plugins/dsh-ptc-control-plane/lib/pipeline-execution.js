@@ -14,6 +14,9 @@ import { compileTrainingProject } from './training-compile.js';
 import { createBusinessOutputHashRecord } from './business-output-contract.js';
 import { TRAINING_MODEL_CHOICES } from './training-model.js';
 
+const DEFAULT_GATE_TIMEOUT_MS = 30_000;
+const BUSINESS_GATE_TIMEOUT_MS = 120_000;
+
 const read = file => JSON.parse(fs.readFileSync(file, 'utf8').replace(/^\uFEFF/, ''));
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const sameItems = (a, b) => JSON.stringify([...a].sort()) === JSON.stringify([...b].sort());
@@ -77,6 +80,10 @@ export function createNativePipelineAdapters(root, materials, dftDispatcher, sta
   const runId = materials.runId;
   const directory = assertSafeRunPath(root, trainingAddressBook(runId).runRoot);
   const command = options.runHostCommand ?? runHostCommand;
+  const hostCommandTimeoutMs = options.hostCommandTimeoutMs ?? DEFAULT_GATE_TIMEOUT_MS;
+  if (!Number.isFinite(hostCommandTimeoutMs) || hostCommandTimeoutMs <= 0 || hostCommandTimeoutMs > BUSINESS_GATE_TIMEOUT_MS) {
+    throw new Error('host command timeout exceeds execution contract');
+  }
   const dftGate = options.runDftGate ?? runDftGate;
   const verify = options.verifyMaterials ?? (async () => {
     const profileBindings = Object.fromEntries(['schematic-expert', 'dft-expert'].flatMap(role => {
@@ -108,7 +115,9 @@ export function createNativePipelineAdapters(root, materials, dftDispatcher, sta
   }
   async function python(args, request) {
     notCancelled(request.signal);
-    const result = await command('python', ['-X', 'utf8', ...args], { cwd: root, signal: request.signal, timeoutMs: 30_000 });
+    const result = await command('python', ['-X', 'utf8', ...args], {
+      cwd: root, signal: request.signal, timeoutMs: hostCommandTimeoutMs, maxTimeoutMs: hostCommandTimeoutMs,
+    });
     notCancelled(request.signal);
     if (result.status !== 'passed' || result.exitCode !== 0) {
       sealed(`${request.stage}-command-failure`, { stage: request.stage, commandResult: result });
@@ -397,11 +406,13 @@ export function createPipelineExecutionManager(workspaceRoot, dftDispatcher, sta
             return record.state;
           }
           const adapters = (options.createAdapters ?? createNativePipelineAdapters)(root, materials, dftDispatcher, stageDispatcher,
-            { modelChoice, forceBusinessDftModel: options.requiredPurpose === 'business-training',
-              requireBusinessOutputContract: options.requiredPurpose === 'business-training' });
+            { modelChoice, requiredPurpose: options.requiredPurpose, forceBusinessDftModel: options.requiredPurpose === 'business-training',
+              requireBusinessOutputContract: options.requiredPurpose === 'business-training',
+              hostCommandTimeoutMs: options.requiredPurpose === 'business-training' ? BUSINESS_GATE_TIMEOUT_MS : DEFAULT_GATE_TIMEOUT_MS });
+          const gateTimeoutMs = options.requiredPurpose === 'business-training' ? BUSINESS_GATE_TIMEOUT_MS : DEFAULT_GATE_TIMEOUT_MS;
           record.controller = (options.createEngine ?? createTrainingPipeline)({ workspaceRoot: root, runId, testItems,
             sourceRoles: ['schematic-expert', 'dft-expert'], ...adapters, onState: progress => update(record, progress),
-            dispatchTimeoutMs: 8 * 60_000, gateTimeoutMs: 30_000 });
+            dispatchTimeoutMs: 8 * 60_000, gateTimeoutMs });
           if (record.paused) { record.controller.pause(); return record.state; }
           await record.controller.start();
         } catch (error) {

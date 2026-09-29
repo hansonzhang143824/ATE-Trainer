@@ -36,7 +36,7 @@ function scriptProcess(binary, args, { cwd, input, signal, timeoutMs }) {
   });
 }
 
-/** A mounts framework-worker; this adapter creates scoped worker parents.
+/** A mounts the standard DSH preset; this adapter creates scoped worker parents.
  * Registered script tools use fixed interpreters and bundle-owned script bytes. */
 export function createDshFrameworkAdapter(ctx, { workspaceRoot, pythonExecutable = 'python', validateJson } = {}) {
   const store = createRunStore(workspaceRoot);
@@ -134,9 +134,9 @@ export function createDshFrameworkAdapter(ctx, { workspaceRoot, pythonExecutable
         }));
         onEvent({ type: 'parent-creating', phase: 'session-create' });
         parent = await ctx.agents.create({ sessionId: parentSessionId, signal,
-          meta: { cwd, agentPreset: 'framework-worker' }, agentOptions: { ...model.options, provider: model.provider, model: model.model },
+          meta: { cwd, agentPreset: 'standard' }, agentOptions: { ...model.options, provider: model.provider, model: model.model },
           setup: async agentCtx => {
-            await ctx.agentPresets.mount(agentCtx, 'framework-worker');
+            await ctx.agentPresets.mount(agentCtx, 'standard');
           },
         });
         if (signal.aborted) throw new Error('framework run stopped during parent creation');
@@ -181,3 +181,4 @@ export function createDshFrameworkAdapter(ctx, { workspaceRoot, pythonExecutable
     },
   };
 }
+

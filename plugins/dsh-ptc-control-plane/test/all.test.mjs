@@ -47,3 +47,4 @@ import './workflow-status.test.mjs';
 import './workflow-template.test.mjs';
 import './workflow-template-run.test.mjs';
 import './trainer-runtime.test.mjs';
+import './empty-system-d1-d2.test.mjs';

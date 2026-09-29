@@ -13,7 +13,8 @@ const message = error => String(error?.message ?? error);
  * spawn/platform and smaller budgets support deterministic in-process tests. */
 export async function runHostCommand(executable, args, options = {}) {
   const { cwd, signal, spawn = nativeSpawn, platform = process.platform } = options;
-  const timeoutMs = positiveBudget(options.timeoutMs ?? 30_000, 30_000, 'host command budget');
+  const maxTimeoutMs = positiveBudget(options.maxTimeoutMs ?? 30_000, 120_000, 'maximum host command budget');
+  const timeoutMs = positiveBudget(options.timeoutMs ?? 30_000, maxTimeoutMs, 'host command budget');
   const killTimeoutMs = positiveBudget(options.killTimeoutMs ?? 3000, 3000, 'tree termination budget');
   const drainTimeoutMs = positiveBudget(options.drainTimeoutMs ?? 1000, 1000, 'child close budget');
   const maxOutputBytes = positiveBudget(options.maxOutputBytes ?? MAX_OUTPUT_BYTES, MAX_OUTPUT_BYTES, 'host output limit');

@@ -7,6 +7,11 @@ const ACTIVE = new Map();
 const ID = /^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/;
 const ROLE = /^[a-z][a-z0-9-]{1,63}$/;
 const TERMINAL = new Set(['completed', 'blocked', 'cancelled']);
+// Business INPUT_SYNC validates a large, run-local material snapshot and can
+// legitimately exceed the smoke gate budget.  The business manager selects
+// this larger bounded budget explicitly; smoke and framework runs stay at the
+// historical 30-second limit.
+const MAX_GATE_TIMEOUT_MS = 120_000;
 const clone = (value) => structuredClone(value);
 function fail(message) { throw new Error(`training pipeline: ${message}`); }
 function safePath(root, relative = '') {
@@ -72,7 +77,7 @@ export function createTrainingPipeline({ workspaceRoot, runId, testItems, source
   if (!ID.test(runId) || /[. ]$/.test(runId) || /^(con|prn|aux|nul|com[1-9]|lpt[1-9])(\.|$)/i.test(runId)) fail('invalid runId');
   if (typeof dispatchStage !== 'function' || typeof runStageGate !== 'function') fail('real dispatch and gate adapters are required');
   if (!Number.isFinite(dispatchTimeoutMs) || dispatchTimeoutMs <= 0 || dispatchTimeoutMs > 8 * 60_000
-    || !Number.isFinite(gateTimeoutMs) || gateTimeoutMs <= 0 || gateTimeoutMs > 30_000) fail('timeouts exceed execution contract');
+    || !Number.isFinite(gateTimeoutMs) || gateTimeoutMs <= 0 || gateTimeoutMs > MAX_GATE_TIMEOUT_MS) fail('timeouts exceed execution contract');
   const root = safePath(path.resolve(workspaceRoot), `Training_Materials/runs/${runId}`);
   if (ACTIVE.has(root)) fail('run already has an active pipeline controller');
   const contextFile = safePath(root, 'run.json');

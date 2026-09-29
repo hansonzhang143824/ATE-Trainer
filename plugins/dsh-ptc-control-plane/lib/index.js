@@ -42,6 +42,53 @@ function json(response, status, body) {
   response.end(JSON.stringify(body));
 }
 
+/**
+ * Allow the white static Trainer page (served on 8123) to invoke the
+ * legacy business/state endpoints hosted by DSH on 3080.  The Trainer API
+ * already has this boundary; these older handlers need the same narrow
+ * loopback CORS contract so the formal white UI can exercise BUSINESS_ONLY.
+ */
+function withWorkbenchCors(handler) {
+  return async (request, response) => {
+    const origin = String(request.headers?.origin ?? '');
+    const host = String(request.headers?.host ?? '');
+    let allowed = !origin;
+    if (origin) {
+      try {
+        const parsed = new URL(origin);
+        allowed = parsed.protocol === 'http:' && !parsed.username && !parsed.password
+          && (parsed.host === host || (parsed.hostname === '127.0.0.1' && parsed.port === '8123'));
+      } catch {
+        allowed = false;
+      }
+    }
+    if (!allowed) {
+      response.writeHead(403, {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Cache-Control': 'no-store',
+      });
+      response.end(JSON.stringify({ error: 'origin_forbidden' }));
+      return;
+    }
+    if (request.method === 'OPTIONS') {
+      response.writeHead(204, {
+        'Access-Control-Allow-Origin': origin,
+        'Access-Control-Allow-Methods': 'GET, HEAD, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Accept, Content-Type',
+        'Access-Control-Max-Age': '300',
+        'Cache-Control': 'no-store',
+      });
+      response.end();
+      return;
+    }
+    if (origin && typeof response.setHeader === 'function') {
+      response.setHeader('Access-Control-Allow-Origin', origin);
+      response.setHeader('Vary', 'Origin');
+    }
+    return handler(request, response);
+  };
+}
+
 export function createStateHandler(workspaceRoot) {
   return async (request, response) => {
     if (request.method !== 'GET' && request.method !== 'HEAD') {
@@ -760,12 +807,12 @@ export function apply(ctx, config = {}) {
       const unregisterState = webCtx.webServer.register({
         kind: 'exact',
         path: '/api/ptc-control/state',
-        handler: createStateHandler(workspaceRoot),
+        handler: withWorkbenchCors(createStateHandler(workspaceRoot)),
       });
       const unregisterTraining = webCtx.webServer.register({
         kind: 'exact',
         path: '/api/ptc-control/training-runs',
-        handler: createTrainingRunHandler(workspaceRoot),
+        handler: withWorkbenchCors(createTrainingRunHandler(workspaceRoot)),
       });
       const unregisterAgentProfiles = ['clone', 'revision'].map(action => webCtx.webServer.register({
         kind: 'exact', path: `/api/ptc-control/agent-profiles/${action}`,
@@ -843,7 +890,7 @@ export function apply(ctx, config = {}) {
       }));
        const unregisterBusinessPipelines = ['execute', 'control'].map(action => webCtx.webServer.register({
          kind: 'exact', path: `/api/ptc-control/business/training-pipelines/${action}`,
-         handler: createBusinessPipelineHandler(businessPipelines, action),
+         handler: withWorkbenchCors(createBusinessPipelineHandler(businessPipelines, action)),
        }));
       const unregisterRehearsals = ['execute', 'control'].map(action => webCtx.webServer.register({
         kind: 'exact', path: `/api/ptc-control/framework-rehearsals/${action}`,
