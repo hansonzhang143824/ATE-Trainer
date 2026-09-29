@@ -1,0 +1,9 @@
+{
+  "stage": "D3",
+  "status": "passed",
+  "scope": "agent-creation-and-persistence",
+  "agentIds": ["agent-T1", "agent-T2", "agent-T3"],
+  "candidateRevisions": ["revision-e6a4ec2e-547b-4622-b97a-ca96be1355b2", "revision-b001a99f-4fc3-4e3f-8478-4fdbd93812b6", "revision-f7b21979-8326-4d14-a65a-4e2af8e2af1f"],
+  "runEvidence": ["Training_Materials/runs/framework-a988a655-21b4-4898-93a0-9a082198891d/framework-run.json", "Training_Materials/runs/framework-c87b035e-e425-4725-b500-82763857fbf4/framework-run.json"],
+  "assertions": ["agent manifests and contracts are persisted", "runs carry agentId and agentRevision", "outputs are JSON validated"]
+}
