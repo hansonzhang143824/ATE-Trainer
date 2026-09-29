@@ -1,0 +1,8 @@
+{
+  "stage": "D2",
+  "status": "passed",
+  "scope": "empty-registry-white-entry",
+  "uiEvidence": {"entry": "http://127.0.0.1:3080/agent-trainer", "actualClicks": ["新建 Agent", "新建工作流", "训练模式", "发布模式", "工程模式"], "createdIds": ["agent-T1", "workflow-T1"]},
+  "apiEvidence": "Training_Materials/framework/projects/agent-trainer/current.json",
+  "test": "node plugins/dsh-ptc-control-plane/test/empty-system-d1-d2.test.mjs"
+}
