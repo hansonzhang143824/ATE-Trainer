@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "kind": "trainer-native-session-evidence",
+  "mode": "training",
+  "projectId": "agent-trainer",
+  "agentId": "agent-T1",
+  "sessionId": "white-native-6f875840-4e24-4fa3-9ec8-cd63dfd7615c",
+  "presetId": "agent-trainer",
+  "hostType": "standalone-localhost-explicit-offline-adapter",
+  "bindingArtifact": "Training_Materials/framework/control/bindings/white-native-6f875840-4e24-4fa3-9ec8-cd63dfd7615c.json",
+  "toolSequence": [
+    {"tool": "trainer_context", "status": "completed", "candidateRevision": "revision-e6a4ec2e-547b-4622-b97a-ca96be1355b2"},
+    {"tool": "trainer_assets", "status": "completed", "targetAgentId": "agent-T1"},
+    {"tool": "trainer_apply_changes", "status": "completed", "changeSetId": "change-0e4843d-1668-4962-a5f5-40b6ece15c95", "newRevision": "revision-f8966862-e129-405a-b64c-cb4e2b2238f2"},
+    {"tool": "trainer_apply_changes", "status": "completed", "changeSetId": "change-374a6496-ece1-4ead-90d2-c448bd82c804", "newRevision": "revision-78200dc7-4d7c-4404-bffe-a3b5880dc04d"}
+  ],
+  "ordinarySessionReuse": false,
+  "businessGatePassed": false
+}

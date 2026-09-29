@@ -11,6 +11,7 @@ import * as releases from '../lib/trainer-release.js';
 import { createFrameworkRunner } from '../lib/framework-agent-run.js';
 import { createTrainerService } from '../lib/trainer-service.js';
 import { validateJson } from '../lib/trainer-schema.js';
+import { createSyntheticTrainerFixture } from '../lib/trainer-synthetic-fixture.js';
 
 function request(body, headers = { 'content-type': 'application/json' }) {
   const input = Readable.from([JSON.stringify(body)]);
@@ -51,17 +52,19 @@ test('trainer runtime is opt-in and registers the complete page API when enabled
     const enabled = mounted(root, true);
     assert.deepEqual(enabled.injected, ['webServer', 'agents', 'agentDefaultModel', 'agentPresets', 'subagents', 'tools', 'sessions', 'sessionPersistence']);
     const trainer = enabled.routes.filter(route => route.path.startsWith('/api/ptc-control/trainer/'));
-    assert.equal(trainer.length, 15);
+    assert.equal(trainer.length, 17);
     assert.equal(trainer.find(route => route.path.endsWith('/context'))?.kind, 'exact');
+    assert.equal(trainer.find(route => route.path.endsWith('/session-workspace'))?.kind, 'exact');
+    assert.equal(trainer.find(route => route.path.endsWith('/session-tool'))?.kind, 'exact');
     const contextRoute = trainer.find(route => route.path.endsWith('/context'));
     const context = request({});
     await contextRoute.handler(context.input, context.response);
     assert.equal(context.writes[0].status, 200);
     const payload = JSON.parse(context.writes[1].body);
     assert.equal(payload.ok, true);
-    assert.equal(payload.value.project.projectId, 'synthetic-lab');
-    assert.equal(payload.value.project.agents.length > 0, true);
-    assert.equal(payload.value.project.workflows.length > 0, true);
+    assert.equal(payload.value.project.projectId, 'agent-trainer');
+    assert.deepEqual(payload.value.project.agents, []);
+    assert.deepEqual(payload.value.project.workflows, []);
     enabled.dispose?.();
   } finally { fs.rmSync(root, { recursive: true, force: true }); }
 });
@@ -85,6 +88,7 @@ test('trainer service runs a registered workflow through the real runner boundar
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'ptc-trainer-run-'));
   let child = 0;
   try {
+    await projects.ensureTrainerProject(root, { projectId: 'synthetic-lab', seed: createSyntheticTrainerFixture() });
     const adapter = { async dispatch({ step, input, onStart }) {
       const childSessionId = `synthetic-child-${++child}`;
       onStart({ childSessionId, parentSessionId: 'synthetic-parent' });
@@ -124,6 +128,38 @@ test('trainer service runs a registered workflow through the real runner boundar
   } finally { fs.rmSync(root, { recursive: true, force: true }); }
 });
 
+
+
+test('engineering mode exposes Agents bound by a published workflow', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'ptc-trainer-published-binding-'));
+  try {
+    await projects.ensureTrainerProject(root, { projectId: 'synthetic-lab', seed: createSyntheticTrainerFixture() });
+    const adapter = { async dispatch() { throw new Error('dispatch not used'); } };
+    const runner = createFrameworkRunner({ workspaceRoot: root, adapter,
+      verifyBundle: bundles.verifyBundle, validateJson });
+    const service = createTrainerService({ workspaceRoot: root, runner,
+      repositories: {
+        ...projects, ...bundles, ...releases,
+        listReleases: () => ({ projectId: 'synthetic-lab', releases: [], active: [
+          { targetKind: 'workflow', targetId: 'lab-pair', releaseId: 'release-published-workflow' },
+        ] }),
+        loadReleaseBundle: () => ({ steps: [
+          { stepId: 'produce', agentId: 'lab-producer' },
+          { stepId: 'consume', agentId: 'lab-consumer' },
+        ] }),
+      },
+      modelResolver: () => ({ provider: 'fake', model: 'fake' }),
+    });
+    const context = await service.invoke('context', { projectId: 'synthetic-lab', mode: 'engineering' }, { kind: 'page' });
+    assert.equal(context.ok, true, JSON.stringify(context));
+    assert.deepEqual(context.value.project.agents.map(item => item.agentId).sort(), ['lab-consumer', 'lab-producer']);
+    assert.deepEqual(context.value.project.workflows.map(item => item.workflowId), ['lab-pair']);
+    const binding = await service.invoke('bind-session', {
+      projectId: 'synthetic-lab', mode: 'engineering', targetKind: 'agent', targetId: 'lab-producer', presetId: 'framework-observer',
+    }, { kind: 'page' });
+    assert.equal(binding.ok, true, JSON.stringify(binding));
+  } finally { fs.rmSync(root, { recursive: true, force: true }); }
+});
 
 test('Agent optimization records an independent 2+3 candidate run', async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'ptc-trainer-optimization-'));

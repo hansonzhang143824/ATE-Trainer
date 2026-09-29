@@ -1,0 +1,239 @@
+{
+  "schemaVersion": 1,
+  "kind": "framework-run",
+  "runId": "framework-c87b035e-e425-4725-b500-82763857fbf4",
+  "requestId": "white-run-83afcd53-cace-4050-b2b6-c73ddf4713c0",
+  "projectId": "agent-trainer",
+  "targetKind": "workflow",
+  "targetId": "workflow-T1",
+  "revisionId": "revision-b001a99f-4fc3-4e3f-8478-4fdbd93812b6",
+  "workflowRevision": "revision-b001a99f-4fc3-4e3f-8478-4fdbd93812b6",
+  "bundleSha256": "7dfbf6d993c29a566cbbe01b1c3dee3e776973adfbb9f0016ca7e721b646915b",
+  "model": {
+    "provider": "deepseek-official",
+    "model": "deepseek-v4-flash"
+  },
+  "mode": "training",
+  "purpose": "FRAMEWORK_TRAINING",
+  "status": "completed",
+  "startedAt": "2026-09-29T15:40:52.755Z",
+  "updatedAt": "2026-09-29T15:41:02.227Z",
+  "completedAt": "2026-09-29T15:41:02.217Z",
+  "derivedFromRunId": null,
+  "changeSetId": null,
+  "releaseId": null,
+  "businessGatePassed": false,
+  "cancellationRequested": false,
+  "childTerminationConfirmed": true,
+  "output": {
+    "answer": 7
+  },
+  "validation": {
+    "ok": true,
+    "errors": []
+  },
+  "error": null,
+  "steps": [
+    {
+      "stepId": "step-1",
+      "agentId": "agent-T1",
+      "agentRevision": "revision-b001a99f-4fc3-4e3f-8478-4fdbd93812b6",
+      "status": "completed",
+      "parentSessionId": "framework-parent-framework-c87b035e-e425-4725-b500-82763857fbf4-step-1",
+      "childSessionId": "de3e65d9-3ebc-4abe-828e-bd7f0d443c58",
+      "childTerminationConfirmed": true,
+      "actualLoadedRefs": [
+        {
+          "path": "agents/agent-T1/instructions.md",
+          "sha256": "c85c05ad7023b2098524a3396a2b5ee8604912b5542715053bd0b3557a5554cc",
+          "size": 110
+        },
+        {
+          "path": "contracts/agent-T1-input.schema.json",
+          "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+          "size": 116
+        },
+        {
+          "path": "contracts/agent-T1-output.schema.json",
+          "sha256": "2c9bcb5169d38a6b8cf16323fa99b5e6188ea9001ba444241c5eea86d646a397",
+          "size": 237
+        }
+      ],
+      "input": {
+        "receivedValue": 8
+      },
+      "inputValidation": {
+        "ok": true,
+        "errors": []
+      },
+      "inputArtifact": {
+        "path": "Training_Materials/runs/framework-c87b035e-e425-4725-b500-82763857fbf4/step-1.input.json",
+        "sha256": "d2fa0e0361867e51f185cc86a8e60b40314a3ceac184f14465a4a2c8fbb55fa1"
+      },
+      "startedAt": "2026-09-29T15:40:52.797Z",
+      "model": {
+        "provider": "deepseek-official",
+        "model": "deepseek-v4-flash"
+      },
+      "effectiveTools": [
+        "structured_output"
+      ],
+      "toolSchemasSha256": "7c3299fdd262d26808374e602939e7dc6e89e8e8a0c77fec6507cc50c1a9fc26",
+      "output": {
+        "answer": 3
+      },
+      "outputArtifact": {
+        "path": "Training_Materials/runs/framework-c87b035e-e425-4725-b500-82763857fbf4/step-1.output.json",
+        "sha256": "d1acf5aab8e04ad8ba25c118da509a106442803cc85ead3ae9ba780e087f52da"
+      },
+      "validation": {
+        "ok": true,
+        "errors": []
+      },
+      "completedAt": "2026-09-29T15:40:55.868Z"
+    },
+    {
+      "stepId": "step-2",
+      "agentId": "agent-T2",
+      "agentRevision": "revision-b001a99f-4fc3-4e3f-8478-4fdbd93812b6",
+      "status": "completed",
+      "parentSessionId": "framework-parent-framework-c87b035e-e425-4725-b500-82763857fbf4-step-2",
+      "childSessionId": "e1602b0a-83c7-40f3-9647-d28c3b1dd0a4",
+      "childTerminationConfirmed": true,
+      "actualLoadedRefs": [
+        {
+          "path": "agents/agent-T2/instructions.md",
+          "sha256": "cc09c1726d4c4581c5381f038297252e6be7c725a380d13e9866e188265b3bc2",
+          "size": 110
+        },
+        {
+          "path": "contracts/agent-T2-input.schema.json",
+          "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+          "size": 116
+        },
+        {
+          "path": "contracts/agent-T2-output.schema.json",
+          "sha256": "86638d097ffc912183c24640eed235ad9f5bc0a89a17cb1d659e39a27cb0bd45",
+          "size": 237
+        }
+      ],
+      "input": {
+        "answer": 3
+      },
+      "inputValidation": {
+        "ok": true,
+        "errors": []
+      },
+      "inputArtifact": {
+        "path": "Training_Materials/runs/framework-c87b035e-e425-4725-b500-82763857fbf4/step-2.input.json",
+        "sha256": "d1acf5aab8e04ad8ba25c118da509a106442803cc85ead3ae9ba780e087f52da"
+      },
+      "startedAt": "2026-09-29T15:40:55.895Z",
+      "model": {
+        "provider": "deepseek-official",
+        "model": "deepseek-v4-flash"
+      },
+      "effectiveTools": [
+        "structured_output"
+      ],
+      "toolSchemasSha256": "7c3299fdd262d26808374e602939e7dc6e89e8e8a0c77fec6507cc50c1a9fc26",
+      "output": {
+        "answer": 5
+      },
+      "outputArtifact": {
+        "path": "Training_Materials/runs/framework-c87b035e-e425-4725-b500-82763857fbf4/step-2.output.json",
+        "sha256": "4718f932ddb775f100ad5474970063f049336ea1a61dac4b76138fe6c5c64f5a"
+      },
+      "validation": {
+        "ok": true,
+        "errors": []
+      },
+      "completedAt": "2026-09-29T15:40:59.264Z"
+    },
+    {
+      "stepId": "step-3",
+      "agentId": "agent-T3",
+      "agentRevision": "revision-b001a99f-4fc3-4e3f-8478-4fdbd93812b6",
+      "status": "completed",
+      "parentSessionId": "framework-parent-framework-c87b035e-e425-4725-b500-82763857fbf4-step-3",
+      "childSessionId": "d6367ce5-88d7-4bfb-a5b6-a601be7d1076",
+      "childTerminationConfirmed": true,
+      "actualLoadedRefs": [
+        {
+          "path": "agents/agent-T3/instructions.md",
+          "sha256": "ace9c3083429b9f3fbb691e8e31426797548a4360c4401065f868d42ec1c9865",
+          "size": 110
+        },
+        {
+          "path": "contracts/agent-T3-input.schema.json",
+          "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+          "size": 116
+        },
+        {
+          "path": "contracts/agent-T3-output.schema.json",
+          "sha256": "32781758fd854a11e6eed10695991c3f8c2152f2ca65e2fe7f750c4df3c8bddd",
+          "size": 237
+        }
+      ],
+      "input": {
+        "answer": 5
+      },
+      "inputValidation": {
+        "ok": true,
+        "errors": []
+      },
+      "inputArtifact": {
+        "path": "Training_Materials/runs/framework-c87b035e-e425-4725-b500-82763857fbf4/step-3.input.json",
+        "sha256": "4718f932ddb775f100ad5474970063f049336ea1a61dac4b76138fe6c5c64f5a"
+      },
+      "startedAt": "2026-09-29T15:40:59.286Z",
+      "model": {
+        "provider": "deepseek-official",
+        "model": "deepseek-v4-flash"
+      },
+      "effectiveTools": [
+        "structured_output"
+      ],
+      "toolSchemasSha256": "7c3299fdd262d26808374e602939e7dc6e89e8e8a0c77fec6507cc50c1a9fc26",
+      "output": {
+        "answer": 7
+      },
+      "outputArtifact": {
+        "path": "Training_Materials/runs/framework-c87b035e-e425-4725-b500-82763857fbf4/step-3.output.json",
+        "sha256": "ad5c8c3b23e6587a3ef5f107879083d9163550e1f9d70ef8e0591e2bb433627e"
+      },
+      "validation": {
+        "ok": true,
+        "errors": []
+      },
+      "completedAt": "2026-09-29T15:41:02.206Z"
+    }
+  ],
+  "bundleArtifact": {
+    "path": "Training_Materials/runs/framework-c87b035e-e425-4725-b500-82763857fbf4/execution-bundle.json",
+    "sha256": "3d4b0763cafb6d7898dc469a907ae0439b4dfc3ec1ba9342fc12e4ae34fd945c"
+  },
+  "lastEvent": {
+    "phase": "terminal",
+    "seq": 48,
+    "runId": "framework-c87b035e-e425-4725-b500-82763857fbf4",
+    "at": "2026-09-29T15:41:02.217Z",
+    "type": "completed",
+    "status": "completed"
+  },
+  "controls": {
+    "pause": {
+      "allowed": false,
+      "reason": "No later step to pause"
+    },
+    "resume": {
+      "allowed": false,
+      "reason": "Only a paused run can resume"
+    },
+    "stop": {
+      "allowed": false,
+      "reason": "Run is terminal or already stopping"
+    }
+  },
+  "testResults": []
+}

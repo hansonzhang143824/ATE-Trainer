@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-b18b2837-4bd1-4939-9a70-1554579924da",
+  "baseRevision": "revision-9d6a613e-926c-4375-8c33-fdbfac679047",
+  "appliedRevision": "revision-deae861a-2d64-414c-b51d-25c4ec0a837b",
+  "requestId": "reset-empty-20260929",
+  "reason": "Reset generated demo material so the formal Agent Trainer starts blank",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-deae861a-2d64-414c-b51d-25c4ec0a837b",
+    "changeSetId": "change-b18b2837-4bd1-4939-9a70-1554579924da",
+    "diff": [
+      {
+        "path": "agents/lab-consumer/agent.json",
+        "oldSha256": "9d293dbcc2ad8865f653c5fee64d812f6b4de173b937ac96d215c33fc14edea1",
+        "newSha256": null,
+        "before": "{\n  \"agentId\": \"lab-consumer\",\n  \"name\": \"Synthetic consumer\",\n  \"instructionsRef\": \"agents/lab-consumer/instructions.md\",\n  \"skillRefs\": [],\n  \"toolIds\": [],\n  \"inputSchemaRef\": \"contracts/consumer-input.schema.json\",\n  \"outputSchemaRef\": \"contracts/consumer-output.schema.json\"\n}\n",
+        "after": null,
+        "kind": "asset"
+      },
+      {
+        "path": "agents/lab-consumer/instructions.md",
+        "oldSha256": "5e5210df585422959105426b1b2c5e786551b9adb92579df1e621cc0b02cbc4b",
+        "newSha256": null,
+        "before": "Return JSON receivedValue exactly equal to input.receivedValue. Do not invent a fixed answer.\n",
+        "after": null,
+        "kind": "asset"
+      },
+      {
+        "path": "agents/lab-producer/agent.json",
+        "oldSha256": "87d88f69ae1c8ef5ca4e60ef960dd30fc98e2b6a79bb53812826b2b4b43a8d07",
+        "newSha256": null,
+        "before": "{\n  \"agentId\": \"lab-producer\",\n  \"name\": \"Synthetic producer\",\n  \"instructionsRef\": \"agents/lab-producer/instructions.md\",\n  \"skillRefs\": [\n    \"lab-marker\"\n  ],\n  \"toolIds\": [\n    \"lab-marker\"\n  ],\n  \"inputSchemaRef\": \"contracts/producer-input.schema.json\",\n  \"outputSchemaRef\": \"contracts/producer-output.schema.json\"\n}\n",
+        "after": null,
+        "kind": "asset"
+      },
+      {
+        "path": "agents/lab-producer/instructions.md",
+        "oldSha256": "b534df4c54e7425f58c9d7e7acd54cc6badc256e8f9eb8996205693bd3b6efbb",
+        "newSha256": null,
+        "before": "Return JSON value equal to input.seed + 1. Read the lab-marker Skill and its reference. Call lab-marker for its scriptMarker. Return value, marker (from reference), and scriptMarker (from tool).\n",
+        "after": null,
+        "kind": "asset"
+      },
+      {
+        "path": "contracts/consumer-input.schema.json",
+        "oldSha256": "3e0b5c3c00cdbccd8e06af35bd007f8803da885fac4b41a79f15639d2c52fb90",
+        "newSha256": null,
+        "before": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"receivedValue\": {\n      \"type\": \"integer\"\n    }\n  },\n  \"required\": [\n    \"receivedValue\"\n  ],\n  \"additionalProperties\": false\n}\n",
+        "after": null,
+        "kind": "validation"
+      },
+      {
+        "path": "contracts/consumer-output.schema.json",
+        "oldSha256": "3e0b5c3c00cdbccd8e06af35bd007f8803da885fac4b41a79f15639d2c52fb90",
+        "newSha256": null,
+        "before": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"receivedValue\": {\n      \"type\": \"integer\"\n    }\n  },\n  \"required\": [\n    \"receivedValue\"\n  ],\n  \"additionalProperties\": false\n}\n",
+        "after": null,
+        "kind": "validation"
+      },
+      {
+        "path": "contracts/producer-input.schema.json",
+        "oldSha256": "393a9027909b23f4ab632170948b4426a746452503accaba47ce40e07fdc4e38",
+        "newSha256": null,
+        "before": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"seed\": {\n      \"type\": \"integer\"\n    }\n  },\n  \"required\": [\n    \"seed\"\n  ],\n  \"additionalProperties\": false\n}\n",
+        "after": null,
+        "kind": "validation"
+      },
+      {
+        "path": "contracts/producer-output.schema.json",
+        "oldSha256": "a6c35945f603698100ddefd281825e50c823f53f49acec79cf9eac80d481d982",
+        "newSha256": null,
+        "before": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"value\": {\n      \"type\": \"integer\"\n    },\n    \"marker\": {\n      \"type\": \"string\"\n    },\n    \"scriptMarker\": {\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\n    \"value\",\n    \"marker\",\n    \"scriptMarker\"\n  ],\n  \"additionalProperties\": false\n}\n",
+        "after": null,
+        "kind": "validation"
+      },
+      {
+        "path": "skills/lab-marker/SKILL.md",
+        "oldSha256": "767f923585c5544e273af06c5bf1f2287e5af1a20c8ff5c180a2b8c8da1e5df2",
+        "newSha256": null,
+        "before": "Load references/marker.json to obtain marker. Invoke declared lab-marker tool to obtain scriptMarker.\n",
+        "after": null,
+        "kind": "asset"
+      },
+      {
+        "path": "skills/lab-marker/references/marker.json",
+        "oldSha256": "e3d91c8e40176f6725a64eb1f6f1061724d7a1d7d6333d147f7bc228544512b9",
+        "newSha256": null,
+        "before": "{\n  \"marker\": \"v1\"\n}\n",
+        "after": null,
+        "kind": "asset"
+      },
+      {
+        "path": "skills/lab-marker/scripts/marker.mjs",
+        "oldSha256": "107e236c0330acb33bc39cdd32bac71915fbe7d03e945364f14a9745976d782b",
+        "newSha256": null,
+        "before": "process.stdout.write(JSON.stringify({scriptMarker:\"script-v1\"}));\n",
+        "after": null,
+        "kind": "asset"
+      },
+      {
+        "path": "skills/lab-marker/skill.json",
+        "oldSha256": "3250ab07be5ab052f902f3280ff83656a1b006eb708687e15995c5f272ae0104",
+        "newSha256": null,
+        "before": "{\n  \"skillId\": \"lab-marker\",\n  \"entryRef\": \"skills/lab-marker/SKILL.md\",\n  \"referenceRefs\": [\n    \"skills/lab-marker/references/marker.json\"\n  ],\n  \"scriptRefs\": [\n    \"skills/lab-marker/scripts/marker.mjs\"\n  ]\n}\n",
+        "after": null,
+        "kind": "asset"
+      },
+      {
+        "path": "tests/lab-pair.json",
+        "oldSha256": "775ba110e58c8438f857ae8e788d0e76bcd5f3d5a2567000f827e0e19cf43d86",
+        "newSha256": null,
+        "before": "{\n  \"testId\": \"lab-pair\",\n  \"targetKind\": \"workflow\",\n  \"targetId\": \"lab-pair\",\n  \"cases\": [\n    {\n      \"input\": {\n        \"seed\": 7\n      },\n      \"expected\": {\n        \"receivedValue\": 8\n      }\n    },\n    {\n      \"input\": {\n        \"seed\": 19\n      },\n      \"expected\": {\n        \"receivedValue\": 20\n      }\n    }\n  ]\n}\n",
+        "after": null,
+        "kind": "validation"
+      },
+      {
+        "path": "tools/lab-marker.json",
+        "oldSha256": "b57dd57d31b0895e53d8a92dc24704fa4dbca3acf0584df03b51e62f9a0cc5f0",
+        "newSha256": null,
+        "before": "{\n  \"toolId\": \"lab-marker\",\n  \"adapter\": \"node-script\",\n  \"adapterVersion\": \"1\",\n  \"scriptRef\": \"skills/lab-marker/scripts/marker.mjs\",\n  \"parameters\": {\n    \"type\": \"object\",\n    \"additionalProperties\": false\n  },\n  \"timeoutMs\": 5000,\n  \"interpreter\": \"node>=20\"\n}\n",
+        "after": null,
+        "kind": "asset"
+      },
+      {
+        "path": "workflows/lab-pair.json",
+        "oldSha256": "29d0224d443c3d8e8c6c64ab0000bdff482b6914e19a0522dc427e1357bbce9e",
+        "newSha256": null,
+        "before": "{\n  \"workflowId\": \"lab-pair\",\n  \"name\": \"Synthetic producer → consumer\",\n  \"steps\": [\n    {\n      \"stepId\": \"produce\",\n      \"agentId\": \"lab-producer\",\n      \"inputBindings\": {\n        \"/seed\": {\n          \"source\": \"input\",\n          \"pointer\": \"/seed\"\n        }\n      },\n      \"timeoutMs\": 120000\n    },\n    {\n      \"stepId\": \"consume\",\n      \"agentId\": \"lab-consumer\",\n      \"inputBindings\": {\n        \"/receivedValue\": {\n          \"source\": \"step\",\n          \"stepId\": \"produce\",\n          \"pointer\": \"/value\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "after": null,
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

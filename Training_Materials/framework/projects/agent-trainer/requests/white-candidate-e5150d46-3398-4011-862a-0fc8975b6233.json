@@ -1,0 +1,46 @@
+{
+  "fingerprint": "0601a6d5636f021f900ab1a87889cf982f7f584ba566e4880999f9e4865d410c",
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-b92bb99a-0706-470f-9fb3-a3bccf02ae2d",
+    "changeSetId": "change-3773b508-4629-4031-abd1-45e54526b7ce",
+    "diff": [
+      {
+        "path": "agents/agent-T3/instructions.md",
+        "oldSha256": null,
+        "newSha256": "adec41af34e562509279bc44c0f07d0e221c059b66c3be92c356d92948837495",
+        "before": null,
+        "after": "agent-T3 的候选 Agent。请按输入输出合同执行当前任务，并返回可验证的 JSON。\n",
+        "kind": "asset"
+      },
+      {
+        "path": "agents/agent-T3/agent.json",
+        "oldSha256": null,
+        "newSha256": "e45f407015681117d66e2c7e673770205a53190a40c6d38ee2a5e5d342202b3c",
+        "before": null,
+        "after": "{\n  \"agentId\": \"agent-T3\",\n  \"name\": \"agent-T3\",\n  \"instructionsRef\": \"agents/agent-T3/instructions.md\",\n  \"skillRefs\": [],\n  \"toolIds\": [],\n  \"inputSchemaRef\": \"contracts/agent-T3-input.schema.json\",\n  \"outputSchemaRef\": \"contracts/agent-T3-output.schema.json\"\n}\n",
+        "kind": "asset"
+      },
+      {
+        "path": "contracts/agent-T3-input.schema.json",
+        "oldSha256": null,
+        "newSha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+        "before": null,
+        "after": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"additionalProperties\": true\n}\n",
+        "kind": "validation"
+      },
+      {
+        "path": "contracts/agent-T3-output.schema.json",
+        "oldSha256": null,
+        "newSha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+        "before": null,
+        "after": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"additionalProperties\": true\n}\n",
+        "kind": "validation"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

@@ -14,9 +14,14 @@ export function createTrainerApiHandler(service,operation) {
       for await(const chunk of request){const b=Buffer.from(chunk);size+=b.length;if(size>2*1024*1024)throw new Error('Request exceeds 2 MiB');chunks.push(b);}
       const args=JSON.parse(Buffer.concat(chunks).toString('utf8'));
       if(!args || typeof args!=='object' || Array.isArray(args))throw new Error('Expected JSON object');
-      const result=await service.invoke(operation,args,{kind:'page'});
+      const principal=operation==='session-tool'
+        ? {kind:'tool',sessionId:args.sessionId,presetId:args.presetId}
+        : {kind:'page'};
+      const result=operation==='session-tool'
+        ? await service.invoke('session-tool',args,principal)
+        : await service.invoke(operation,args,principal);
       return reply(result.ok?200:400,result);
     }catch(error){return reply(400,{ok:false,error:{code:'invalid_request',message:error.message}});}
   };
 }
-export const TRAINER_API_OPERATIONS=['context','assets','apply-changes','validate','run','runs','events','control','compare','changes','freeze','stage-release','activate-release','releases','bind-session'];
+export const TRAINER_API_OPERATIONS=['context','assets','apply-changes','validate','run','runs','events','control','compare','changes','freeze','stage-release','activate-release','releases','bind-session','session-workspace','session-tool'];

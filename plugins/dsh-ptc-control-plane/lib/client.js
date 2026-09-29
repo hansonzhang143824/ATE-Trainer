@@ -609,6 +609,15 @@ window.__ModuleLoader__.load({
 		  catch { /* Session still opens; it will simply not be reused after refresh. */ }
 		}
 
+		function sessionPreset(binding) {
+		  const session = binding?.session ?? binding;
+		  const events = Array.isArray(session?.events) ? session.events : [];
+		  for (let i = events.length - 1; i >= 0; i -= 1) {
+		    if (events[i]?.type === 'agent-preset/selected') return events[i].data?.agentPreset;
+		  }
+		  return session?.header?.agentPreset;
+		}
+
 		function waitForBinding(sessions, sessionId) {
 		  const ready = sessions.binding(sessionId);
 		  if (ready !== undefined) return Promise.resolve(ready);
@@ -628,15 +637,19 @@ window.__ModuleLoader__.load({
 		}
 
 		/** Create or reopen a genuine DSH conversation rooted in its server-approved workspace. */
-		async function openPtcNativeSession(scope, workspace, { key, title }) {
+		async function openPtcNativeSession(scope, workspace, { key, title, agentPreset = 'standard' }) {
 		  const api = typeof scope?.get === 'function' ? scope.get('connection')?.api : scope?.connection?.api;
 		  if (!api?.agentPresets?.list || !api?.sessions?.create || !scope?.sessions || !scope?.workspaces) {
 		    throw new Error('DSH 原生会话服务尚未注入；请确认本机 DSH 已加载会话与工作区服务。');
 		  }
 		  const remembered = existingSessionId(key);
-		  if (remembered && scope.sessions.binding(remembered) !== undefined) {
-		    scope.sessions.open(remembered);
-		    return { sessionId: remembered, reused: true };
+		  if (remembered) {
+		    const rememberedBinding = scope.sessions.binding(remembered);
+		    if (rememberedBinding !== undefined && sessionPreset(rememberedBinding) === agentPreset) {
+		      scope.sessions.open(remembered);
+		      return { sessionId: remembered, reused: true };
+		    }
+		    try { window.localStorage.removeItem(`${SESSION_KEY_PREFIX}${key}`); } catch { /* stale mapping is disposable */ }
 		  }
 
 		  const target = await scope.workspaces.create({ path: workspace.path });
@@ -645,10 +658,10 @@ window.__ModuleLoader__.load({
 		  }
 		  const roster = requireOk((await api.agentPresets.list({})).result, '读取 DSH Agent 预设');
 		  const presets = Array.isArray(roster?.presets) ? roster.presets : [];
-		  const preset = presets.find(item => !item.broken && item.id === 'standard')
-		    ?? presets.find(item => !item.broken && item.id === 'code')
-		    ?? presets.find(item => !item.broken && item.isDefault);
-		  if (!preset) throw new Error('DSH 没有可用的 standard/code Agent 预设');
+		  const preset = presets.find(item => !item.broken && item.id === agentPreset)
+		    ?? (agentPreset === 'standard' ? presets.find(item => !item.broken && item.id === 'code') : null)
+		    ?? (agentPreset === 'standard' ? presets.find(item => !item.broken && item.isDefault) : null);
+		  if (!preset) throw new Error(`DSH 没有可用的 ${agentPreset} Agent 预设；不会回退到普通会话。`);
 		  const created = requireOk((await api.sessions.create({ workspaceId: target.workspaceId, agentPreset: preset.id })).result, '创建 DSH 会话');
 		  if (typeof created?.sessionId !== 'string' || !created.sessionId) throw new Error('DSH 没有返回 sessionId');
 		  const binding = await waitForBinding(scope.sessions, created.sessionId);
@@ -870,6 +883,16 @@ window.__ModuleLoader__.load({
 		  };
 		}
 
+		async function trainerPagePost(operation, input) {
+		  const response = await fetch(`/api/ptc-control/trainer/${operation}`, {
+		    method: 'POST', headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+		    credentials: 'same-origin', body: JSON.stringify(input),
+		  });
+		  const payload = await response.json().catch(() => ({}));
+		  if (!response.ok || payload.ok === false) throw new Error(payload.error?.message ?? payload.detail ?? `Trainer ${operation} failed`);
+		  return payload.value ?? payload;
+		}
+
 		/**
 		 * PTC control-plane client: read-only panel components.
 		 *
@@ -899,11 +922,11 @@ window.__ModuleLoader__.load({
 		const PANEL_CSS = String.raw`
 		.ptc-cp-host, .ptc-cp-host * { box-sizing: border-box; }
 		.ptc-cp-host .ptc-cp-panel {
-		  position: fixed; z-index: 2147483000; top: 82px; right: 16px;
-		  width: min(1050px, calc(100vw - 32px)); max-height: calc(100vh - 100px);
-		  overflow: auto; overscroll-behavior: contain; color: #eef3fa;
-		  background: #182231; border: 1px solid #43536a; border-radius: 14px;
-		  box-shadow: 0 18px 50px #0009; font: 13px/1.48 system-ui, "Microsoft YaHei", sans-serif;
+		  position: fixed; z-index: 2147483000; top: 18px; right: 16px;
+		  width: min(1480px, calc(100vw - 32px)); max-height: calc(100vh - 36px);
+		  overflow: auto; overscroll-behavior: contain; color: #233044;
+		  background: #fff; border: 1px solid #dfe4eb; border-radius: 12px;
+		  box-shadow: 0 12px 32px #24334a18; font: 13px/1.45 "Segoe UI", "Microsoft YaHei", sans-serif;
 		  overflow-wrap: anywhere;
 		}
 		.ptc-cp-host .ptc-cp-panel[open] {
@@ -913,87 +936,107 @@ window.__ModuleLoader__.load({
 		.ptc-cp-host .ptc-cp-panel:not([open]) { width: max-content; max-width: calc(100vw - 32px); overflow: visible; }
 		.ptc-cp-host .ptc-cp-panel > summary {
 		  display: block; list-style: none; cursor: pointer; padding: 11px 15px;
-		  background: #24446d; color: #fff; font-weight: 700; border-radius: 13px;
+		  background: #fff; color: #233044; font-weight: 700; border-radius: 12px 12px 0 0;
 		}
 		.ptc-cp-host .ptc-cp-panel > summary::-webkit-details-marker { display: none; }
 		.ptc-cp-host .ptc-cp-panel[open] > summary {
-		  position: sticky; top: 0; z-index: 1; border-radius: 13px 13px 0 0;
-		  border-bottom: 1px solid #566c87;
+		  position: sticky; top: 0; z-index: 1; border-radius: 12px 12px 0 0;
+		  border-bottom: 1px solid #e5e9ef;
 		}
 		.ptc-cp-host .ptc-cp-panel > :not(summary) { margin-left: 14px; margin-right: 14px; }
 		.ptc-cp-host .ptc-cp-panel > .ptc-cp-header { margin-top: 14px; font-size: 17px; font-weight: 700; }
+		.ptc-cp-host .ptc-cp-bridge-actions { display:flex; align-items:center; gap:9px; margin-top:8px; margin-bottom:6px; }
+		.ptc-cp-host .ptc-cp-bridge-actions button { color:#285db7; border-color:#b8cbed; background:#f7faff; }
+		.ptc-cp-host .ptc-cp-bridge-actions .ptc-cp-open-white-trainer { display:inline-block; color:#285db7; border:1px solid #b8cbed; background:#f7faff; border-radius:7px; padding:7px 10px; cursor:pointer; text-decoration:none; white-space:normal; }
+		.ptc-cp-host .ptc-cp-bridge-actions .ptc-cp-open-white-trainer:hover { background:#edf4ff; color:#285db7; }
+		.ptc-cp-host .ptc-cp-bridge-actions span { font-size:11px; }
 		.ptc-cp-host .ptc-cp-panel > .ptc-cp-view { margin-bottom: 16px; }
 		.ptc-cp-host .ptc-cp-status { display: grid; gap: 5px; margin-top: 8px; margin-bottom: 12px; }
 		.ptc-cp-host .ptc-cp-row { display: flex; gap: 8px; justify-content: space-between; min-width: 0; }
-		.ptc-cp-host .ptc-cp-label { flex: 0 0 auto; color: #afc1d7; }
-		.ptc-cp-host .ptc-cp-value { text-align: right; min-width: 0; overflow-wrap: anywhere; }
+		.ptc-cp-host .ptc-cp-label { flex: 0 0 auto; color: #657186; }
+		.ptc-cp-host .ptc-cp-value { text-align: right; min-width: 0; overflow-wrap: anywhere; color: #233044; }
 		.ptc-cp-host .ptc-cp-tabs { display: flex; gap: 7px; margin-bottom: 12px; }
 		.ptc-cp-host .ptc-cp-panel button, .ptc-cp-host .ptc-cp-panel select,
 		.ptc-cp-host .ptc-cp-panel input, .ptc-cp-host .ptc-cp-panel textarea {
 		  max-width: 100%; font: inherit;
 		}
 		.ptc-cp-host .ptc-cp-panel button {
-		  border: 1px solid #647d9d; background: #2b4463; color: #fff;
-		  border-radius: 7px; padding: 6px 9px; cursor: pointer;
+		  border: 1px solid #d5dce6; background: #fff; color: #4e5d73;
+		  border-radius: 7px; padding: 7px 10px; cursor: pointer;
 		  white-space: normal; text-align: left;
 		}
-		.ptc-cp-host .ptc-cp-panel button:hover:not(:disabled) { background: #365d89; }
+		.ptc-cp-host .ptc-cp-panel button:hover:not(:disabled) { background: #edf4ff; color: #285db7; }
 		.ptc-cp-host .ptc-cp-panel button:disabled { opacity: .48; cursor: not-allowed; }
-		.ptc-cp-host .ptc-cp-tab-active { background: #2a72b9 !important; border-color: #76b9f5 !important; }
+		.ptc-cp-host .ptc-cp-tab-active { background: #2d60c8 !important; border-color: #2d60c8 !important; color: #fff !important; font-weight: 600; }
 		.ptc-cp-host .ptc-cp-panel select, .ptc-cp-host .ptc-cp-panel input,
 		.ptc-cp-host .ptc-cp-panel textarea {
-		  min-width: 0; background: #101a27; color: #f5f8fd;
-		  border: 1px solid #536783; border-radius: 6px; padding: 6px;
+		  min-width: 0; background: #fff; color: #233044;
+		  border: 1px solid #d5dce6; border-radius: 6px; padding: 6px;
 		}
 		.ptc-cp-host .ptc-cp-training-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 13px; }
 		.ptc-cp-host .ptc-cp-training-actions label { grid-column: 1 / -1; display: grid; gap: 3px; }
 		.ptc-cp-host .ptc-cp-training-actions label select { width: 100%; }
 		.ptc-cp-host .ptc-cp-smoke-controls {
 		  display: grid; gap: 7px; margin: 12px 0; padding: 12px;
-		  border: 1px solid #526782; border-radius: 10px; background: #202f42;
+		  border: 1px solid #dfe5ec; border-radius: 10px; background: #f8faff;
 		}
 		.ptc-cp-host .ptc-cp-smoke-controls p { margin: 0 0 5px; }
 		.ptc-cp-host .ptc-cp-smoke-controls button { width: 100%; }
 		.ptc-cp-host .ptc-cp-run {
-		  margin: 10px 0; padding: 10px; background: #202b3b;
-		  border: 1px solid #455b75; border-radius: 9px;
+		  margin: 10px 0; padding: 10px; background: #fbfcfe;
+		  border: 1px solid #e0e6ee; border-radius: 9px;
 		}
 		.ptc-cp-host .ptc-cp-run .ptc-cp-row { display: block; }
-		.ptc-cp-host .ptc-cp-run .ptc-cp-label { display: block; color: #a9c8ed; font-weight: 700; }
+		.ptc-cp-host .ptc-cp-run .ptc-cp-label { display: block; color: #526581; font-weight: 700; }
 		.ptc-cp-host .ptc-cp-run .ptc-cp-value { display: block; text-align: left; }
-		.ptc-cp-host .ptc-cp-panel details:not(.ptc-cp-panel) { margin: 10px 0; padding: 7px; border: 1px solid #43536a; border-radius: 7px; }
+		.ptc-cp-host .ptc-cp-panel details:not(.ptc-cp-panel) { margin: 10px 0; padding: 7px; border: 1px solid #e1e7ef; border-radius: 7px; }
 		.ptc-cp-host .ptc-cp-panel pre { white-space: pre-wrap; overflow-wrap: anywhere; }
 		.ptc-cp-host .ptc-cp-error { color: #ffb9b9; margin: 7px 0; }
-		.ptc-cp-host .ptc-cp-notice { color: #abebc8; margin: 9px 0; }
+		.ptc-cp-host .ptc-cp-notice { color: #187344; margin: 9px 0; }
 		.ptc-cp-host .ptc-cp-workbench { min-width: 0; }
 		.ptc-cp-host .ptc-cp-mode-tabs, .ptc-cp-host .ptc-cp-subtabs { display:flex; flex-wrap:wrap; gap:7px; margin:10px 0; }
-		.ptc-cp-host .ptc-cp-layout { display:grid; grid-template-columns:minmax(190px,230px) minmax(0,1fr); gap:18px; }
-		.ptc-cp-host .ptc-cp-roster { display:grid; align-content:start; gap:5px; max-height:55vh; overflow:auto; }
-		.ptc-cp-host .ptc-cp-roster button { width:100%; }
+		.ptc-cp-host .ptc-cp-layout { display:grid; grid-template-columns:minmax(190px,232px) minmax(0,1fr) minmax(260px,350px); gap:18px; align-items:start; }
+		.ptc-cp-host .ptc-cp-roster { display:grid; align-content:start; gap:4px; max-height:62vh; overflow:auto; padding:8px 0; }
+		.ptc-cp-host .ptc-cp-roster button { width:100%; text-align:left; }
+		.ptc-cp-host .ptc-cp-roster-column { min-width:0; padding:4px 8px 10px 0; border-right:1px solid #e5e9ef; }
+		.ptc-cp-host .ptc-cp-side-title { padding:0 12px 8px; color:#93a0b3; font-size:10px; letter-spacing:1.35px; text-transform:uppercase; font-weight:700; }
+		.ptc-cp-host .ptc-cp-side-group { margin-top:20px; }
+		.ptc-cp-host .ptc-cp-side-title-with-count { display:flex; justify-content:space-between; align-items:center; }
+		.ptc-cp-host .ptc-cp-side-count { padding:2px 7px; border-radius:99px; background:#e8f0fc; color:#4d73b3; font-size:10px; letter-spacing:0; }
+		.ptc-cp-host .ptc-cp-side-nav { display:flex; align-items:center; width:100%; min-width:0; gap:7px; }
+		.ptc-cp-host .ptc-cp-side-nav .ptc-cp-side-symbol { flex:0 0 auto; color:#70819a; font-size:14px; }
+		.ptc-cp-host .ptc-cp-side-nav .ptc-cp-side-label { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 		.ptc-cp-host .ptc-cp-workspace-main { min-width:0; }
-		.ptc-cp-host .ptc-cp-agent-status { display:flex; align-items:center; gap:8px; padding:7px; border:1px solid #43536a; border-radius:8px; margin:5px 0; }
+		.ptc-cp-host .ptc-cp-agent-status { display:flex; align-items:center; gap:8px; padding:8px; border:1px solid #dfe5ec; border-radius:8px; margin:5px 0; background:#fff; }
 		.ptc-cp-host .ptc-cp-agent-status span:first-child { flex:1; }
-		.ptc-cp-host .ptc-cp-stage-status { margin:8px 0; padding:9px; background:#202b3b; border:1px solid #43536a; border-radius:8px; }
+		.ptc-cp-host .ptc-cp-stage-status { margin:8px 0; padding:9px; background:#f7f9fc; border:1px solid #e3e8ef; border-radius:8px; }
 		.ptc-cp-host .ptc-cp-stage-status ol { margin:7px 0; padding-left:22px; }
 		.ptc-cp-host .ptc-cp-stage-status li { padding:3px 0; }
 		.ptc-cp-host .ptc-cp-workflow-select { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:5px 10px; margin:10px 0; }
 		.ptc-cp-host .ptc-cp-workflow-select label { display:flex; gap:7px; align-items:center; }
-		.ptc-cp-host .ptc-cp-session-card, .ptc-cp-host .ptc-cp-publish-card { padding:12px; border:1px solid #526782; border-radius:10px; background:#202f42; margin:10px 0; }
-		.ptc-cp-host .ptc-cp-resource-panel { margin:9px 0; padding:10px; border:1px solid #526782; border-radius:8px; background:#172638; }
+		.ptc-cp-host .ptc-cp-session-card, .ptc-cp-host .ptc-cp-publish-card { padding:12px; border:1px solid #dfe5ec; border-radius:10px; background:#fff; margin:10px 0; }
+		.ptc-cp-host .ptc-cp-resource-panel { margin:9px 0; padding:10px; border:1px solid #e3e8ef; border-radius:8px; background:#f7f9fc; }
+		.ptc-cp-host .ptc-cp-inspector { min-width:0; padding:4px 0 10px 16px; border-left:1px solid #e5e9ef; }
+		.ptc-cp-host .ptc-cp-inspector h3 { margin:0 0 4px; font-size:15px; }
+		.ptc-cp-host .ptc-cp-inspector-sub { margin:0 0 12px; color:#7b8799; font-size:12px; }
+		.ptc-cp-host .ptc-cp-inspector-card { padding:12px; border:1px solid #dfe5ed; border-radius:9px; background:#fff; margin-bottom:11px; }
+		.ptc-cp-host .ptc-cp-lock-note { padding:8px 9px; border-radius:7px; background:#f3f5f8; color:#718096; font-size:11px; margin-bottom:11px; }
+		.ptc-cp-host .ptc-cp-inspector-list { margin:8px 0 0; padding-left:17px; color:#52627a; font-size:11px; }
 		.ptc-cp-host .ptc-cp-resource-group { margin:9px 0; }
 		.ptc-cp-host .ptc-cp-resource-group h4 { margin:5px 0; }
 		.ptc-cp-host .ptc-cp-resource-group ul { margin:4px 0; padding-left:20px; }
 		.ptc-cp-host .ptc-cp-resource-group li { display:flex; gap:8px; justify-content:space-between; padding:3px 5px; border-radius:4px; }
-		.ptc-cp-host .ptc-cp-resource-used { color:#b7f4c5; background:#173d2a; }
-		.ptc-cp-host .ptc-cp-resource-unused { color:#c4cfdd; }
-		.ptc-cp-host .ptc-cp-resource-badge { flex:0 0 auto; color:#9fb2c8; font-size:11px; }
-		.ptc-cp-host .ptc-cp-resource-used .ptc-cp-resource-badge { color:#8ff0a8; font-weight:700; }
+		.ptc-cp-host .ptc-cp-resource-used { color:#187344; background:#eaf8ef; }
+		.ptc-cp-host .ptc-cp-resource-unused { color:#718096; }
+		.ptc-cp-host .ptc-cp-resource-badge { flex:0 0 auto; color:#7b8799; font-size:11px; }
+		.ptc-cp-host .ptc-cp-resource-used .ptc-cp-resource-badge { color:#187344; font-weight:700; }
 		@media (max-width: 600px) {
-		  .ptc-cp-host .ptc-cp-panel { top: 58px; right: 8px; width: calc(100vw - 16px); max-height: calc(100vh - 66px); }
+		  .ptc-cp-host .ptc-cp-panel { top: 8px; right: 8px; width: calc(100vw - 16px); max-height: calc(100vh - 16px); }
 		  .ptc-cp-host .ptc-cp-panel[open] { inset: 4px; width: calc(100vw - 8px); max-height: calc(100vh - 8px); }
 		  .ptc-cp-host .ptc-cp-training-actions { grid-template-columns: 1fr; }
 		  .ptc-cp-host .ptc-cp-workbench { min-width:0; width:calc(100vw - 32px); }
 		  .ptc-cp-host .ptc-cp-layout { grid-template-columns:1fr; }
+		  .ptc-cp-host .ptc-cp-roster-column, .ptc-cp-host .ptc-cp-inspector { border:0; padding:0; }
 		  .ptc-cp-host .ptc-cp-roster { grid-template-columns:repeat(2,minmax(0,1fr)); max-height:28vh; }
 		}
 		`;
@@ -1757,9 +1800,23 @@ window.__ModuleLoader__.load({
 		  let content;
 		  if (mode === 'training') {
 		    content = createElement('div', { className: 'ptc-cp-workbench' },
-		      createElement(BusinessTrainingControls, { state, store }),
-		      createElement('div', { className: 'ptc-cp-layout' }, agentList,
+		      createElement('div', { className: 'ptc-cp-layout' },
+		      createElement('aside', { className: 'ptc-cp-roster-column', 'data-testid': 'ptc-cp-agent-sidebar' },
+		        createElement('div', { className: 'ptc-cp-side-group' },
+		          createElement('div', { className: 'ptc-cp-side-title ptc-cp-side-title-with-count' },
+		            createElement('span', null, 'AGENTS'),
+		            createElement('span', { className: 'ptc-cp-side-count' }, String(ARITHMETIC_PROFILES.length))),
+		          agentList),
+		        createElement('div', { className: 'ptc-cp-side-group' },
+		          createElement('div', { className: 'ptc-cp-side-title ptc-cp-side-title-with-count' },
+		            createElement('span', null, '工作流'),
+		            createElement('span', { className: 'ptc-cp-side-count' }, '1')),
+		          createElement('button', { type: 'button', className: `ptc-cp-side-nav ${trainingMode === 'workflow' ? 'ptc-cp-tab-active' : ''}`,
+		            onClick: () => setTrainingMode('workflow'), 'data-testid': 'ptc-cp-workflow-sidebar' },
+		            createElement('span', { className: 'ptc-cp-side-symbol' }, '⌘'),
+		            createElement('span', { className: 'ptc-cp-side-label' }, templateName || 'ATE PTC 工作流')))),
 		      createElement('main', { className: 'ptc-cp-workspace-main' },
+		        createElement(BusinessTrainingControls, { state, store }),
 		        createElement('div', { className: 'ptc-cp-subtabs' },
 		          button('single', '单 Agent 训练', trainingMode === 'agent', () => setTrainingMode('agent')),
 		          button('workflow', 'Agent 工作流训练', trainingMode === 'workflow', () => setTrainingMode('workflow'))),
@@ -1829,6 +1886,21 @@ window.__ModuleLoader__.load({
 		            frozenCandidate ? createElement('div', { className: 'ptc-cp-notice', 'data-testid': 'ptc-cp-frozen-candidate' },
 		              `已冻结待发布：${frozenCandidate.releaseId} · SHA-256 ${frozenCandidate.bundleDigest}`) : null,
 		            createElement('p', null, '通过标准：整链每个 child receipt 的 JSON answer 都是数字 3，Captain 验证通过；结果仅为 SMOKE_ONLY。'))),
+		      createElement('aside', { className: 'ptc-cp-inspector', 'data-testid': 'ptc-cp-agent-inspector' },
+		        createElement('h3', null, PROFILE_LABELS[selectedProfile] ?? selectedProfile),
+		        createElement('p', { className: 'ptc-cp-inspector-sub' }, 'Agent 配置与执行状态'),
+		        createElement('div', { className: 'ptc-cp-lock-note' }, '训练模式可编辑草稿；发布与工程模式使用冻结版本。'),
+		        createElement('div', { className: 'ptc-cp-inspector-card' },
+		          createElement(StatusRow, { label: 'Agent ID', value: selectedProfile }),
+		          createElement(StatusRow, { label: '工作流候选', value: `${workflowProfiles.length} 个` }),
+		          createElement(StatusRow, { label: '最新运行', value: selectedProfileRun?.status ?? '未运行' }),
+		          createElement('ul', { className: 'ptc-cp-inspector-list' },
+		            createElement('li', null, '输入：1+2 等于几'),
+		            createElement('li', null, '输出：JSON answer=3'),
+		            createElement('li', null, '范围：SMOKE_ONLY'))),
+		        selectedProfileRun ? createElement('div', { className: 'ptc-cp-inspector-card' },
+		          createElement('strong', null, '最近验收'),
+		          createElement('p', null, `${selectedProfileRun.runId} · ${selectedProfileRun.outcome?.smokePassed === true ? '通过' : selectedProfileRun.status}`)) : null),
 		        notice ? createElement('div', { className: 'ptc-cp-notice', role: 'status' }, notice) : null));
 		  } else if (mode === 'publish') {
 		    content = createElement('section', { className: 'ptc-cp-publish-card', 'data-testid': 'ptc-cp-publish-mode' },
@@ -1910,6 +1982,63 @@ window.__ModuleLoader__.load({
 		    return () => store.stop();
 		  }, [store]);
 
+		  useEffect(() => {
+		    const trainerWorkbenchOrigins = new Set([
+		      window.location.origin,
+		      'http://127.0.0.1:8123',
+		      'http://localhost:8123',
+		    ]);
+		    const trainerStorageRequestPrefix = 'dsh-agent-trainer-bridge:request:';
+		    const trainerStorageResponsePrefix = 'dsh-agent-trainer-bridge:response:';
+		    const onWorkbenchMessage = async event => {
+		      const data = event?.data;
+		      // The formal white prototype is sometimes served by the local static
+		      // preview on :8123. Keep the same-origin check for normal DSH tabs, but
+		      // explicitly allow that trusted local origin for a window.opener bridge.
+		      if (!trainerWorkbenchOrigins.has(event.origin) || data?.type !== 'dsh-agent-trainer-open-session') return;
+		      const reply = payload => event.source?.postMessage({ type: 'dsh-agent-trainer-session-result', bridgeId: data.bridgeId, ...payload }, event.origin);
+		      try {
+		        if (!sessionServices) throw new Error('DSH 原生会话服务尚未注入，请从 DSH ATE Trainer 按钮打开白色工作台。');
+		        const request = data.request;
+		        if (!request || !['agent', 'workflow'].includes(request.targetKind) || typeof request.targetId !== 'string') throw new Error('Trainer 会话目标不完整');
+		        const workspace = await trainerPagePost('session-workspace', request);
+		        const title = data.title || `Agent Trainer · ${request.targetId}`;
+		        const opened = await openPtcNativeSession(sessionServices, { path: workspace.path || workspace.cwd }, {
+		          key: ptcSessionKey(request.targetKind, `trainer:${request.targetId}:${request.selectedRunId || 'none'}`), title, agentPreset: 'agent-trainer',
+		        });
+		        const binding = await trainerPagePost('bind-session', {
+		          ...request, sessionId: opened.sessionId, presetId: 'agent-trainer', selectedRunId: request.selectedRunId || null,
+		        });
+		        reply({ ok: true, sessionId: opened.sessionId, binding, title });
+		      } catch (error) {
+		        reply({ ok: false, error: error?.message ?? String(error) });
+		      }
+		    };
+		    window.addEventListener('message', onWorkbenchMessage);
+		    const channel = typeof BroadcastChannel === 'function' ? new BroadcastChannel('dsh-agent-trainer-bridge') : null;
+		    const onChannelMessage = event => onWorkbenchMessage({ origin: window.location.origin, data: event.data,
+		      source: { postMessage: payload => channel?.postMessage(payload) } });
+		    channel?.addEventListener('message', onChannelMessage);
+		    const onStorageMessage = event => {
+		      if (!event.key?.startsWith(trainerStorageRequestPrefix) || !event.newValue) return;
+		      let data;
+		      try { data = JSON.parse(event.newValue); } catch { return; }
+		      if (!data?.bridgeId || data.type !== 'dsh-agent-trainer-open-session') return;
+		      const responseKey = `${trainerStorageResponsePrefix}${data.bridgeId}`;
+		      const source = { postMessage: payload => {
+		        try { window.localStorage.setItem(responseKey, JSON.stringify(payload)); } catch { /* storage is best effort */ }
+		      } };
+		      void onWorkbenchMessage({ origin: window.location.origin, data, source });
+		    };
+		    window.addEventListener('storage', onStorageMessage);
+		    return () => {
+		      window.removeEventListener('message', onWorkbenchMessage);
+		      window.removeEventListener('storage', onStorageMessage);
+		      channel?.removeEventListener('message', onChannelMessage);
+		      channel?.close();
+		    };
+		  }, [sessionServices]);
+
 		  const switchTo = (next) => {
 		    setView(next);
 		    if (typeof onNavigate === "function") onNavigate(next);
@@ -1939,29 +2068,14 @@ window.__ModuleLoader__.load({
 		    { className: "ptc-cp-panel", "data-testid": "ptc-cp-panel" },
 		    createElement("summary", null, "PTC 控制面 · 点击展开/收起"),
 		    createElement("div", { className: "ptc-cp-header", key: "header" }, t("panel.title")),
+		    createElement("div", { className: "ptc-cp-bridge-actions", key: "bridge" },
+		      createElement("a", { href: "/agent-trainer", target: "_blank", rel: "opener", className: "ptc-cp-open-white-trainer", "data-testid": "ptc-cp-open-white-trainer" }, "打开白色 Agent Trainer"),
+		      createElement("span", { className: "ptc-cp-label" }, "正式产品界面 / 唯一验收入口")),
 		    createElement(
 		      "div",
-		      { className: "ptc-cp-status", key: "status" },
-		      createElement(StatusRow, { label: t("status.identity"), value: state.identity, testId: "ptc-cp-identity" }),
-		      createElement(StatusRow, {
-		        label: t("status.activeRelease"),
-		        value: release
-		          ? `${release.releaseId ?? "—"} (${release.manifestDigest ?? "—"})`
-		          : t("status.noRelease"),
-		        testId: "ptc-cp-active-release"
-		      }),
-		      createElement(StatusRow, {
-		        label: t("status.trainingRuns"),
-		        value: String(state.trainingRuns.length),
-		        testId: "ptc-cp-training-runs"
-		      }),
-		      createElement(StatusRow, {
-		        label: t("status.delivery"),
-		        value: state.delivery === null ? t("delivery.none") : state.delivery.batchId,
-		        testId: "ptc-cp-delivery-summary"
-		      })
+		      { className: "ptc-cp-host-capability", key: "status" },
+		      "DSH 原生会话桥接已启用；训练、发布和工程操作请在白色 Agent Trainer 中完成。"
 		    ),
-		      createElement(PtcWorkbench, { state, store, sessionServices, key: 'workbench' }),
 		    error
 		      ? createElement(
 		          "div",

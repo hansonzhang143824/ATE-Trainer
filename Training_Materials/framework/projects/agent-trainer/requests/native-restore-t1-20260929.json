@@ -1,0 +1,30 @@
+{
+  "fingerprint": "1b09af145bb2a809a509a44f2fe0de8a99fbdc503e5787b2f65726d3a1be1a96",
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-78200dc7-4d7c-4404-bffe-a3b5880dc04d",
+    "changeSetId": "change-374a6496-ece1-4ead-90d2-c448bd82c804",
+    "diff": [
+      {
+        "path": "agents/agent-T1/instructions.md",
+        "oldSha256": "f5586614613209a1741b4d030374e9ca1278180d952baccc4183a573873725f3",
+        "newSha256": "c85c05ad7023b2098524a3396a2b5ee8604912b5542715053bd0b3557a5554cc",
+        "before": "You are agent-T1. Solve exactly 2+3. Return JSON only with numeric field answer equal to 5. Do not add prose.\n",
+        "after": "You are agent-T1. Solve exactly 1+2. Return JSON only with numeric field answer equal to 3. Do not add prose.\n",
+        "kind": "asset"
+      },
+      {
+        "path": "contracts/agent-T1-output.schema.json",
+        "oldSha256": "86638d097ffc912183c24640eed235ad9f5bc0a89a17cb1d659e39a27cb0bd45",
+        "newSha256": "2c9bcb5169d38a6b8cf16323fa99b5e6188ea9001ba444241c5eea86d646a397",
+        "before": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": {\n      \"type\": \"number\",\n      \"const\": 5\n    }\n  },\n  \"required\": [\n    \"answer\"\n  ],\n  \"additionalProperties\": false\n}\n",
+        "after": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": {\n      \"type\": \"number\",\n      \"const\": 3\n    }\n  },\n  \"required\": [\n    \"answer\"\n  ],\n  \"additionalProperties\": false\n}\n",
+        "kind": "validation"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

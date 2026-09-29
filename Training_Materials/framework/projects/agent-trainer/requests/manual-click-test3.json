@@ -1,0 +1,46 @@
+{
+  "fingerprint": "ce716276e20c8e1836c808870e48cb742dd2c3585ad17c7619ba823ebd26ca5a",
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-02259eb3-8ced-47e3-af45-cbd594a19ef4",
+    "changeSetId": "change-8ab36c6f-dbe0-4642-955a-3343100d8fb3",
+    "diff": [
+      {
+        "path": "agents/custom-agent-1/instructions.md",
+        "oldSha256": null,
+        "newSha256": "131cd59f038726d94912a3f8a59caf6b467f1b9945cc29471388463c341bee7c",
+        "before": null,
+        "after": "新建 Agent 1 的候选指令。\n",
+        "kind": "asset"
+      },
+      {
+        "path": "agents/custom-agent-1/agent.json",
+        "oldSha256": null,
+        "newSha256": "5776d061514cc9af42392bd57bbf21bc77f4a49219af562e6b6e9700fa59ce7c",
+        "before": null,
+        "after": "{\"agentId\":\"custom-agent-1\",\"name\":\"新建 Agent 1\",\"instructionsRef\":\"agents/custom-agent-1/instructions.md\",\"skillRefs\":[],\"toolIds\":[],\"inputSchemaRef\":\"contracts/custom-agent-1-input.schema.json\",\"outputSchemaRef\":\"contracts/custom-agent-1-output.schema.json\"}\n",
+        "kind": "asset"
+      },
+      {
+        "path": "contracts/custom-agent-1-input.schema.json",
+        "oldSha256": null,
+        "newSha256": "4f9b09efdd06853bfc238fa5ebc2eef2f832f66cd2a17650d8181db66512a2db",
+        "before": null,
+        "after": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"additionalProperties\":true}\n",
+        "kind": "validation"
+      },
+      {
+        "path": "contracts/custom-agent-1-output.schema.json",
+        "oldSha256": null,
+        "newSha256": "4f9b09efdd06853bfc238fa5ebc2eef2f832f66cd2a17650d8181db66512a2db",
+        "before": null,
+        "after": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"additionalProperties\":true}\n",
+        "kind": "validation"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

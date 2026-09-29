@@ -1,0 +1,152 @@
+{
+  "files": [
+    {
+      "content": "{\n  \"agentId\": \"agent-T1\",\n  \"name\": \"agent-T1\",\n  \"instructionsRef\": \"agents/agent-T1/instructions.md\",\n  \"skillRefs\": [],\n  \"toolIds\": [],\n  \"inputSchemaRef\": \"contracts/agent-T1-input.schema.json\",\n  \"outputSchemaRef\": \"contracts/agent-T1-output.schema.json\"\n}\n",
+      "path": "agents/agent-T1/agent.json",
+      "sha256": "c5b4a93cabde20b95394a1f3fd5f5edb43823a5ae45c8bd5c12a245f08ab5ee8",
+      "size": 264
+    },
+    {
+      "content": "You are agent-T1. Solve exactly 1+2. Return JSON only with numeric field answer equal to 3. Do not add prose.\n",
+      "path": "agents/agent-T1/instructions.md",
+      "sha256": "c85c05ad7023b2098524a3396a2b5ee8604912b5542715053bd0b3557a5554cc",
+      "size": 110
+    },
+    {
+      "content": "{\n  \"agentId\": \"agent-T2\",\n  \"name\": \"agent-T2\",\n  \"instructionsRef\": \"agents/agent-T2/instructions.md\",\n  \"skillRefs\": [],\n  \"toolIds\": [],\n  \"inputSchemaRef\": \"contracts/agent-T2-input.schema.json\",\n  \"outputSchemaRef\": \"contracts/agent-T2-output.schema.json\"\n}\n",
+      "path": "agents/agent-T2/agent.json",
+      "sha256": "870d9f7d1cd120ae8421cdce3734a55aa05845928e3e384bea88e9545a41edf5",
+      "size": 264
+    },
+    {
+      "content": "You are agent-T2. Solve exactly 2+3. Return JSON only with numeric field answer equal to 5. Do not add prose.\n",
+      "path": "agents/agent-T2/instructions.md",
+      "sha256": "cc09c1726d4c4581c5381f038297252e6be7c725a380d13e9866e188265b3bc2",
+      "size": 110
+    },
+    {
+      "content": "{\n  \"agentId\": \"agent-T3\",\n  \"name\": \"agent-T3\",\n  \"instructionsRef\": \"agents/agent-T3/instructions.md\",\n  \"skillRefs\": [],\n  \"toolIds\": [],\n  \"inputSchemaRef\": \"contracts/agent-T3-input.schema.json\",\n  \"outputSchemaRef\": \"contracts/agent-T3-output.schema.json\"\n}\n",
+      "path": "agents/agent-T3/agent.json",
+      "sha256": "e45f407015681117d66e2c7e673770205a53190a40c6d38ee2a5e5d342202b3c",
+      "size": 264
+    },
+    {
+      "content": "You are agent-T3. Solve exactly 3+4. Return JSON only with numeric field answer equal to 7. Do not add prose.\n",
+      "path": "agents/agent-T3/instructions.md",
+      "sha256": "ace9c3083429b9f3fbb691e8e31426797548a4360c4401065f868d42ec1c9865",
+      "size": 110
+    },
+    {
+      "content": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"additionalProperties\": true\n}\n",
+      "path": "contracts/agent-T1-input.schema.json",
+      "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+      "size": 116
+    },
+    {
+      "content": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": {\n      \"type\": \"number\",\n      \"const\": 3\n    }\n  },\n  \"required\": [\n    \"answer\"\n  ],\n  \"additionalProperties\": false\n}\n",
+      "path": "contracts/agent-T1-output.schema.json",
+      "sha256": "2c9bcb5169d38a6b8cf16323fa99b5e6188ea9001ba444241c5eea86d646a397",
+      "size": 237
+    },
+    {
+      "content": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"additionalProperties\": true\n}\n",
+      "path": "contracts/agent-T2-input.schema.json",
+      "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+      "size": 116
+    },
+    {
+      "content": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": {\n      \"type\": \"number\",\n      \"const\": 5\n    }\n  },\n  \"required\": [\n    \"answer\"\n  ],\n  \"additionalProperties\": false\n}\n",
+      "path": "contracts/agent-T2-output.schema.json",
+      "sha256": "86638d097ffc912183c24640eed235ad9f5bc0a89a17cb1d659e39a27cb0bd45",
+      "size": 237
+    },
+    {
+      "content": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"additionalProperties\": true\n}\n",
+      "path": "contracts/agent-T3-input.schema.json",
+      "sha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+      "size": 116
+    },
+    {
+      "content": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": {\n      \"type\": \"number\",\n      \"const\": 7\n    }\n  },\n  \"required\": [\n    \"answer\"\n  ],\n  \"additionalProperties\": false\n}\n",
+      "path": "contracts/agent-T3-output.schema.json",
+      "sha256": "32781758fd854a11e6eed10695991c3f8c2152f2ca65e2fe7f750c4df3c8bddd",
+      "size": 237
+    },
+    {
+      "content": "{\n  \"workflowId\": \"workflow-T1\",\n  \"name\": \"workflow-T1\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"agent-T3\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    },\n    {\n      \"stepId\": \"step-2\",\n      \"agentId\": \"agent-T1\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"step\",\n          \"stepId\": \"step-1\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    },\n    {\n      \"stepId\": \"step-3\",\n      \"agentId\": \"agent-T2\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"step\",\n          \"stepId\": \"step-2\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+      "path": "workflows/workflow-T1.json",
+      "sha256": "7fe35e643afa2032c50e14bafa744f1d768453c370ce2bce42ca2ebf9919d8b1",
+      "size": 749
+    }
+  ],
+  "model": {
+    "model": "deepseek-v4-flash",
+    "provider": "deepseek-official"
+  },
+  "projectId": "agent-trainer",
+  "revisionId": "revision-f54820f5-9e63-4d63-8810-207a5842eead",
+  "runtimeApiVersion": "trainer-api-v1",
+  "schemaVersion": 1,
+  "skills": {},
+  "steps": [
+    {
+      "agentId": "agent-T3",
+      "agentRevision": "revision-f54820f5-9e63-4d63-8810-207a5842eead",
+      "inputBindings": {
+        "": {
+          "pointer": "",
+          "source": "input"
+        }
+      },
+      "inputSchemaRef": "contracts/agent-T3-input.schema.json",
+      "instructionsRef": "agents/agent-T3/instructions.md",
+      "outputSchemaRef": "contracts/agent-T3-output.schema.json",
+      "skillRefs": [],
+      "stepId": "step-1",
+      "timeoutMs": 120000,
+      "toolIds": []
+    },
+    {
+      "agentId": "agent-T1",
+      "agentRevision": "revision-f54820f5-9e63-4d63-8810-207a5842eead",
+      "inputBindings": {
+        "": {
+          "pointer": "",
+          "source": "step",
+          "stepId": "step-1"
+        }
+      },
+      "inputSchemaRef": "contracts/agent-T1-input.schema.json",
+      "instructionsRef": "agents/agent-T1/instructions.md",
+      "outputSchemaRef": "contracts/agent-T1-output.schema.json",
+      "skillRefs": [],
+      "stepId": "step-2",
+      "timeoutMs": 120000,
+      "toolIds": []
+    },
+    {
+      "agentId": "agent-T2",
+      "agentRevision": "revision-f54820f5-9e63-4d63-8810-207a5842eead",
+      "inputBindings": {
+        "": {
+          "pointer": "",
+          "source": "step",
+          "stepId": "step-2"
+        }
+      },
+      "inputSchemaRef": "contracts/agent-T2-input.schema.json",
+      "instructionsRef": "agents/agent-T2/instructions.md",
+      "outputSchemaRef": "contracts/agent-T2-output.schema.json",
+      "skillRefs": [],
+      "stepId": "step-3",
+      "timeoutMs": 120000,
+      "toolIds": []
+    }
+  ],
+  "targetId": "workflow-T1",
+  "targetKind": "workflow",
+  "tests": [],
+  "tools": {},
+  "workflowRevision": "revision-f54820f5-9e63-4d63-8810-207a5842eead",
+  "bundleSha256": "578f391d176c75976639974a1401fa45b0ad905860e8949279f11cbe87bd2d7d"
+}

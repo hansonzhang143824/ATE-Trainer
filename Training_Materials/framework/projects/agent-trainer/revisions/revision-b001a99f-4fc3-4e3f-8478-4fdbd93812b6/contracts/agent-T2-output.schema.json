@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "answer": {
+      "type": "number",
+      "const": 5
+    }
+  },
+  "required": [
+    "answer"
+  ],
+  "additionalProperties": false
+}

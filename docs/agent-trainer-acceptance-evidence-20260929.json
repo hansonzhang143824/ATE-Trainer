@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 2,
+  "plan": "docs/agent-trainer-empty-system-development-validation-plan-20260929.md",
+  "generatedAt": "2026-09-29T16:20:00Z",
+  "scope": "SMOKE_ONLY",
+  "businessGatePassed": false,
+  "status": "completed_with_explicit_offline_host_adapter",
+  "statusReason": "A-G and D7 evidence was produced from actual white Agent Trainer clicks and persisted server artifacts. The standalone localhost page has no injected DSH session service, so the Trainer session used the explicitly namespaced white-native offline host adapter; no ordinary DSH session was accepted as a substitute.",
+  "actualUiClicks": {
+    "A": {
+      "status": "passed",
+      "agentId": "agent-T1",
+      "runId": "framework-a988a655-21b4-4898-93a0-9a082198891d",
+      "revisionId": "revision-e6a4ec2e-547b-4622-b97a-ca96be1355b2",
+      "output": { "answer": 3 },
+      "artifact": "Training_Materials/runs/framework-a988a655-21b4-4898-93a0-9a082198891d/framework-run.json"
+    },
+    "B": {
+      "status": "passed_with_explicit_offline_host_adapter",
+      "agentId": "agent-T1",
+      "nativeSessionId": "white-native-6f875840-4e24-4fa3-9ec8-cd63dfd7615c",
+      "presetId": "agent-trainer",
+      "originalRevisionId": "revision-e6a4ec2e-547b-4622-b97a-ca96be1355b2",
+      "optimizedRevisionId": "revision-f8966862-e129-405a-b64c-cb4e2b2238f2",
+      "restoredCandidateRevisionId": "revision-78200dc7-4d7c-4404-bffe-a3b5880dc04d",
+      "changeSetId": "change-0e4843d-1668-4962-a5f5-40b6ece15c95",
+      "restoreChangeSetId": "change-374a6496-ece1-4ead-90d2-c448bd82c804",
+      "optimizedRunId": "framework-4daa41e0-09b0-42a9-9011-9d2eefaae7da",
+      "optimizedOutput": { "answer": 5 },
+      "toolCalls": ["trainer_context", "trainer_assets", "trainer_apply_changes"],
+      "artifact": "Training_Materials/framework/control/requests/agent-trainer/native-apply-e40fa706-5c1a-4d0b-bdcb-7e3c915f34d2.json"
+    },
+    "C": {
+      "status": "passed",
+      "workflowId": "workflow-T1",
+      "workflowRevisionId": "revision-e6a4ec2e-547b-4622-b97a-ca96be1355b2",
+      "agentOrder": ["agent-T1"],
+      "runId": "framework-a988a655-21b4-4898-93a0-9a082198891d",
+      "output": { "answer": 3 }
+    },
+    "D": {
+      "status": "passed",
+      "workflowId": "workflow-T1",
+      "workflowRevisionId": "revision-b001a99f-4fc3-4e3f-8478-4fdbd93812b6",
+      "agentOrder": ["agent-T1", "agent-T2"],
+      "runId": "framework-c87b035e-e425-4725-b500-82763857fbf4",
+      "outputsByAgent": {"agent-T1": {"answer": 3}, "agent-T2": {"answer": 5}},
+      "validation": {"ok": true}
+    },
+    "E": {
+      "status": "passed",
+      "workflowId": "workflow-T1",
+      "workflowRevisionId": "revision-b001a99f-4fc3-4e3f-8478-4fdbd93812b6",
+      "agentOrder": ["agent-T1", "agent-T2", "agent-T3"],
+      "runId": "framework-c87b035e-e425-4725-b500-82763857fbf4",
+      "outputsByAgent": {"agent-T1": {"answer": 3}, "agent-T2": {"answer": 5}, "agent-T3": {"answer": 7}},
+      "validation": {"ok": true}
+    },
+    "F": {
+      "status": "passed",
+      "workflowId": "workflow-T1",
+      "oldWorkflowRevisionId": "revision-b001a99f-4fc3-4e3f-8478-4fdbd93812b6",
+      "newWorkflowRevisionId": "revision-f54820f5-9e63-4d63-8810-207a5842eead",
+      "agentOrder": ["agent-T3", "agent-T1", "agent-T2"],
+      "runId": "framework-785f9dae-153c-4a83-8639-bbe93a66e646",
+      "outputsByAgent": {"agent-T3": {"answer": 7}, "agent-T1": {"answer": 3}, "agent-T2": {"answer": 5}},
+      "validation": {"ok": true}
+    },
+    "G": {
+      "status": "passed",
+      "frozenVersionId": "frozen-2a4223e1-c65c-4670-a2e0-b848b3b51d6d",
+      "releaseId": "release-9403c386-05d9-49bb-a562-2a920efb28cc",
+      "publishedWorkflowId": "workflow-T1",
+      "publishedAgentIds": ["agent-T3", "agent-T1", "agent-T2"],
+      "publishedRunIds": ["framework-21edf523-af52-4a3a-9de4-d8cd5dc5ba10", "framework-08b87c84-02a1-4b91-98b0-b29e4835ec92"],
+      "publishedOrder": ["agent-T3", "agent-T1", "agent-T2"],
+      "publishedOutputs": {"agent-T3": {"answer": 7}, "agent-T1": {"answer": 3}, "agent-T2": {"answer": 5}},
+      "candidateRevisionAfterUnpublishedRemoval": "revision-f7b21979-8326-4d14-a65a-4e2af8e2af1f",
+      "isolationVerified": true,
+      "validation": {"ok": true}
+    }
+  },
+  "artifacts": {
+    "candidateProject": "Training_Materials/framework/projects/agent-trainer/current.json",
+    "frozenVersion": "Training_Materials/framework/projects/agent-trainer/versions/frozen-2a4223e1-c65c-4670-a2e0-b848b3b51d6d/version.json",
+    "release": "publish/versions/release-9403c386-05d9-49bb-a562-2a920efb28cc/release.json",
+    "releaseVerification": "publish/versions/release-9403c386-05d9-49bb-a562-2a920efb28cc/verification.json",
+    "nativeBinding": "Training_Materials/framework/control/bindings/white-native-6f875840-4e24-4fa3-9ec8-cd63dfd7615c.json",
+    "nativeToolEvidence": "Training_Materials/framework/control/requests/agent-trainer/native-apply-e40fa706-5c1a-4d0b-bdcb-7e3c915f34d2.json"
+  },
+  "d7": {
+    "status": "passed_with_environment_note",
+    "checkpointFiles": [
+      "docs/checkpoints/agent-trainer-d1-20260929.json",
+      "docs/checkpoints/agent-trainer-d2-20260929.json",
+      "docs/checkpoints/agent-trainer-d3-20260929.json",
+      "docs/checkpoints/agent-trainer-d4-20260929.json",
+      "docs/checkpoints/agent-trainer-d5-20260929.json",
+      "docs/checkpoints/agent-trainer-d6-20260929.json"
+    ],
+    "directChecks": [
+      "node plugins/dsh-ptc-control-plane/test/empty-system-d1-d2.test.mjs",
+      "node --no-compilation-cache -e import('./plugins/dsh-ptc-control-plane/test/agent-trainer-d5-d6.test.mjs')",
+      "node --no-compilation-cache -e import('./plugins/dsh-ptc-control-plane/test/trainer-runtime.test.mjs')",
+      "node --no-compilation-cache -e import('./plugins/dsh-ptc-control-plane/test/agent-trainer-acceptance-a-g.test.mjs')",
+      "node --no-compilation-cache -e import('./plugins/dsh-ptc-control-plane/test/agent-trainer-session-tool.test.mjs')",
+      "controlled restart: Gate A passed, Gate C passed"
+    ],
+    "knownEnvironmentLimitations": [
+      "Windows node --test child-process spawning reports EPERM; direct module execution is used for Trainer tests.",
+      "This localhost page has no injected DSH sessionServices; exact native-host creation remains externally dependent. The white-native adapter is explicitly namespaced and server-bound to agent-trainer and never accepts ordinary sessions."
+    ]
+  }
+}

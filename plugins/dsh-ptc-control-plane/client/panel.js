@@ -5,6 +5,16 @@ import { createTrainingRunRequest, executeTrainingRunRequest, executeBusinessTra
 import { openPtcNativeSession, ptcSessionKey } from "./native-sessions.js";
 import { workflowStatusSummary } from './workflow-status.js';
 
+async function trainerPagePost(operation, input) {
+  const response = await fetch(`/api/ptc-control/trainer/${operation}`, {
+    method: 'POST', headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    credentials: 'same-origin', body: JSON.stringify(input),
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || payload.ok === false) throw new Error(payload.error?.message ?? payload.detail ?? `Trainer ${operation} failed`);
+  return payload.value ?? payload;
+}
+
 /**
  * PTC control-plane client: read-only panel components.
  *
@@ -57,6 +67,11 @@ const PANEL_CSS = String.raw`
 }
 .ptc-cp-host .ptc-cp-panel > :not(summary) { margin-left: 14px; margin-right: 14px; }
 .ptc-cp-host .ptc-cp-panel > .ptc-cp-header { margin-top: 14px; font-size: 17px; font-weight: 700; }
+.ptc-cp-host .ptc-cp-bridge-actions { display:flex; align-items:center; gap:9px; margin-top:8px; margin-bottom:6px; }
+.ptc-cp-host .ptc-cp-bridge-actions button { color:#285db7; border-color:#b8cbed; background:#f7faff; }
+.ptc-cp-host .ptc-cp-bridge-actions .ptc-cp-open-white-trainer { display:inline-block; color:#285db7; border:1px solid #b8cbed; background:#f7faff; border-radius:7px; padding:7px 10px; cursor:pointer; text-decoration:none; white-space:normal; }
+.ptc-cp-host .ptc-cp-bridge-actions .ptc-cp-open-white-trainer:hover { background:#edf4ff; color:#285db7; }
+.ptc-cp-host .ptc-cp-bridge-actions span { font-size:11px; }
 .ptc-cp-host .ptc-cp-panel > .ptc-cp-view { margin-bottom: 16px; }
 .ptc-cp-host .ptc-cp-status { display: grid; gap: 5px; margin-top: 8px; margin-bottom: 12px; }
 .ptc-cp-host .ptc-cp-row { display: flex; gap: 8px; justify-content: space-between; min-width: 0; }
@@ -1089,6 +1104,63 @@ export function PtcControlPanel({ store, t, onNavigate, sessionServices }) {
     return () => store.stop();
   }, [store]);
 
+  useEffect(() => {
+    const trainerWorkbenchOrigins = new Set([
+      window.location.origin,
+      'http://127.0.0.1:8123',
+      'http://localhost:8123',
+    ]);
+    const trainerStorageRequestPrefix = 'dsh-agent-trainer-bridge:request:';
+    const trainerStorageResponsePrefix = 'dsh-agent-trainer-bridge:response:';
+    const onWorkbenchMessage = async event => {
+      const data = event?.data;
+      // The formal white prototype is sometimes served by the local static
+      // preview on :8123. Keep the same-origin check for normal DSH tabs, but
+      // explicitly allow that trusted local origin for a window.opener bridge.
+      if (!trainerWorkbenchOrigins.has(event.origin) || data?.type !== 'dsh-agent-trainer-open-session') return;
+      const reply = payload => event.source?.postMessage({ type: 'dsh-agent-trainer-session-result', bridgeId: data.bridgeId, ...payload }, event.origin);
+      try {
+        if (!sessionServices) throw new Error('DSH 原生会话服务尚未注入，请从 DSH ATE Trainer 按钮打开白色工作台。');
+        const request = data.request;
+        if (!request || !['agent', 'workflow'].includes(request.targetKind) || typeof request.targetId !== 'string') throw new Error('Trainer 会话目标不完整');
+        const workspace = await trainerPagePost('session-workspace', request);
+        const title = data.title || `Agent Trainer · ${request.targetId}`;
+        const opened = await openPtcNativeSession(sessionServices, { path: workspace.path || workspace.cwd }, {
+          key: ptcSessionKey(request.targetKind, `trainer:${request.targetId}:${request.selectedRunId || 'none'}`), title, agentPreset: 'agent-trainer',
+        });
+        const binding = await trainerPagePost('bind-session', {
+          ...request, sessionId: opened.sessionId, presetId: 'agent-trainer', selectedRunId: request.selectedRunId || null,
+        });
+        reply({ ok: true, sessionId: opened.sessionId, binding, title });
+      } catch (error) {
+        reply({ ok: false, error: error?.message ?? String(error) });
+      }
+    };
+    window.addEventListener('message', onWorkbenchMessage);
+    const channel = typeof BroadcastChannel === 'function' ? new BroadcastChannel('dsh-agent-trainer-bridge') : null;
+    const onChannelMessage = event => onWorkbenchMessage({ origin: window.location.origin, data: event.data,
+      source: { postMessage: payload => channel?.postMessage(payload) } });
+    channel?.addEventListener('message', onChannelMessage);
+    const onStorageMessage = event => {
+      if (!event.key?.startsWith(trainerStorageRequestPrefix) || !event.newValue) return;
+      let data;
+      try { data = JSON.parse(event.newValue); } catch { return; }
+      if (!data?.bridgeId || data.type !== 'dsh-agent-trainer-open-session') return;
+      const responseKey = `${trainerStorageResponsePrefix}${data.bridgeId}`;
+      const source = { postMessage: payload => {
+        try { window.localStorage.setItem(responseKey, JSON.stringify(payload)); } catch { /* storage is best effort */ }
+      } };
+      void onWorkbenchMessage({ origin: window.location.origin, data, source });
+    };
+    window.addEventListener('storage', onStorageMessage);
+    return () => {
+      window.removeEventListener('message', onWorkbenchMessage);
+      window.removeEventListener('storage', onStorageMessage);
+      channel?.removeEventListener('message', onChannelMessage);
+      channel?.close();
+    };
+  }, [sessionServices]);
+
   const switchTo = (next) => {
     setView(next);
     if (typeof onNavigate === "function") onNavigate(next);
@@ -1118,29 +1190,14 @@ export function PtcControlPanel({ store, t, onNavigate, sessionServices }) {
     { className: "ptc-cp-panel", "data-testid": "ptc-cp-panel" },
     createElement("summary", null, "PTC 控制面 · 点击展开/收起"),
     createElement("div", { className: "ptc-cp-header", key: "header" }, t("panel.title")),
+    createElement("div", { className: "ptc-cp-bridge-actions", key: "bridge" },
+      createElement("a", { href: "/agent-trainer", target: "_blank", rel: "opener", className: "ptc-cp-open-white-trainer", "data-testid": "ptc-cp-open-white-trainer" }, "打开白色 Agent Trainer"),
+      createElement("span", { className: "ptc-cp-label" }, "正式产品界面 / 唯一验收入口")),
     createElement(
       "div",
-      { className: "ptc-cp-status", key: "status" },
-      createElement(StatusRow, { label: t("status.identity"), value: state.identity, testId: "ptc-cp-identity" }),
-      createElement(StatusRow, {
-        label: t("status.activeRelease"),
-        value: release
-          ? `${release.releaseId ?? "—"} (${release.manifestDigest ?? "—"})`
-          : t("status.noRelease"),
-        testId: "ptc-cp-active-release"
-      }),
-      createElement(StatusRow, {
-        label: t("status.trainingRuns"),
-        value: String(state.trainingRuns.length),
-        testId: "ptc-cp-training-runs"
-      }),
-      createElement(StatusRow, {
-        label: t("status.delivery"),
-        value: state.delivery === null ? t("delivery.none") : state.delivery.batchId,
-        testId: "ptc-cp-delivery-summary"
-      })
+      { className: "ptc-cp-host-capability", key: "status" },
+      "DSH 原生会话桥接已启用；训练、发布和工程操作请在白色 Agent Trainer 中完成。"
     ),
-      createElement(PtcWorkbench, { state, store, sessionServices, key: 'workbench' }),
     error
       ? createElement(
           "div",

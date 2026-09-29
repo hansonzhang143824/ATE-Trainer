@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-9bb4f056-0c51-4220-8022-ee8280d63da9",
+  "baseRevision": "revision-39d7fdda-8b0e-42a7-b8bd-4c60da97d8fa",
+  "appliedRevision": "revision-a4f3dff1-e014-4706-a113-191bc7a0416d",
+  "requestId": "white-candidate-82ea8ce5-99ce-4c5d-96e5-18eb6525a567",
+  "reason": "用户通过白色 Agent Trainer 新建候选 Agent",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-a4f3dff1-e014-4706-a113-191bc7a0416d",
+    "changeSetId": "change-9bb4f056-0c51-4220-8022-ee8280d63da9",
+    "diff": [
+      {
+        "path": "agents/agent-T2/instructions.md",
+        "oldSha256": null,
+        "newSha256": "afab1cce3c509ccd091799e097cdc904bdbcea689e6e330c5ceb3da02fe39a6b",
+        "before": null,
+        "after": "agent-T2 的候选 Agent。请按输入输出合同执行当前任务，并返回可验证的 JSON。\n",
+        "kind": "asset"
+      },
+      {
+        "path": "agents/agent-T2/agent.json",
+        "oldSha256": null,
+        "newSha256": "870d9f7d1cd120ae8421cdce3734a55aa05845928e3e384bea88e9545a41edf5",
+        "before": null,
+        "after": "{\n  \"agentId\": \"agent-T2\",\n  \"name\": \"agent-T2\",\n  \"instructionsRef\": \"agents/agent-T2/instructions.md\",\n  \"skillRefs\": [],\n  \"toolIds\": [],\n  \"inputSchemaRef\": \"contracts/agent-T2-input.schema.json\",\n  \"outputSchemaRef\": \"contracts/agent-T2-output.schema.json\"\n}\n",
+        "kind": "asset"
+      },
+      {
+        "path": "contracts/agent-T2-input.schema.json",
+        "oldSha256": null,
+        "newSha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+        "before": null,
+        "after": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"additionalProperties\": true\n}\n",
+        "kind": "validation"
+      },
+      {
+        "path": "contracts/agent-T2-output.schema.json",
+        "oldSha256": null,
+        "newSha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+        "before": null,
+        "after": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"additionalProperties\": true\n}\n",
+        "kind": "validation"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "fingerprint": "4826bdc56ffeb89e124b1b64d00158dbb72e7c5b4acd51eddbdeb0e92b9e4da0",
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-132e7ccb-ad10-4c91-a9f6-9722ad4ad382",
+    "changeSetId": "change-6265719d-01a6-49a8-b808-9442f96e781e",
+    "diff": [
+      {
+        "path": "workflows/workflow-T1.json",
+        "oldSha256": "2a0c63a091d0b5f05bc1c083212adcdd3e8a0fdeed88adea214c800f5a129eab",
+        "newSha256": "fcb334416d7a995b9977e37e9c959fddda1eb61774c1a8a3e39e5d8a052ca300",
+        "before": "{\n  \"workflowId\": \"workflow-T1\",\n  \"name\": \"workflow-T1\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"agent-T3\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "after": "{\n  \"workflowId\": \"workflow-T1\",\n  \"name\": \"workflow-T1\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"agent-T3\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    },\n    {\n      \"stepId\": \"step-2\",\n      \"agentId\": \"agent-T1\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"step\",\n          \"stepId\": \"step-1\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

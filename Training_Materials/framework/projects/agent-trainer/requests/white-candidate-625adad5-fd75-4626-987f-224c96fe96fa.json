@@ -1,0 +1,22 @@
+{
+  "fingerprint": "807b3d7a632d15ff1cd9013d395346ea45cb851df7823cea7c592a528641b0b6",
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-05f7788c-eba0-476a-87a4-c629fb0c70b9",
+    "changeSetId": "change-07c79fd4-542b-4a1e-bbf5-1c72c1a97c74",
+    "diff": [
+      {
+        "path": "workflows/custom-workflow-1.json",
+        "oldSha256": null,
+        "newSha256": "b20861f48ca00291262e10f2bd49a0eafedab89beeb361e55606b8c0569276fa",
+        "before": null,
+        "after": "{\n  \"workflowId\": \"custom-workflow-1\",\n  \"name\": \"新工作流 1\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"custom-agent-1\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

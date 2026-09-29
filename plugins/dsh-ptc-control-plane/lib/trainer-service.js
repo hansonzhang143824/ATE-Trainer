@@ -4,8 +4,9 @@ import { createHash, randomUUID } from 'node:crypto';
 
 const MUTATIONS = new Set(['apply-changes', 'run', 'control', 'freeze', 'stage-release', 'activate-release']);
 const TRAINING = new Set(['apply-changes', 'freeze']);
-const PAGE_ONLY = new Set(['freeze', 'stage-release', 'activate-release', 'bind-session']);
+const PAGE_ONLY = new Set(['freeze', 'stage-release', 'activate-release', 'bind-session', 'session-workspace']);
 const TOOL_PRESETS = new Set(['agent-trainer', 'framework-expert', 'framework-observer']);
+export const DEFAULT_TRAINER_PROJECT_ID = 'agent-trainer';
 const clone = value => JSON.parse(JSON.stringify(value));
 function fail(code, message, details) { throw Object.assign(new Error(message), { code, details }); }
 function stable(value) {
@@ -44,7 +45,7 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
     const args = clone(supplied || {});
     if (principal?.kind === 'page') {
       if (!['training', 'published', 'engineering'].includes(args.mode || 'training')) fail('invalid_mode', 'Unknown workbench mode');
-      return { args: { mode: 'training', projectId: 'synthetic-lab', ...args }, binding: null };
+      return { args: { mode: 'training', projectId: DEFAULT_TRAINER_PROJECT_ID, ...args }, binding: null };
     }
     if (principal?.kind !== 'tool' || !TOOL_PRESETS.has(principal.presetId)) fail('forbidden', 'A dedicated framework session is required');
     if (PAGE_ONLY.has(operation)) fail('page_action_required', 'Freeze and release require an explicit workbench action');
@@ -72,10 +73,40 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
     if (args.presetId === 'framework-expert' && (args.targetKind !== 'agent' || args.mode !== 'training')) fail('invalid_binding', 'Expert requires a training agent target');
     const project = await call('ensureTrainerProject', { projectId: args.projectId });
     const items = args.targetKind === 'agent' ? project.agents : project.workflows;
-    if (!(items || []).some(item => (item.agentId || item.workflowId) === args.targetId)) fail('target_missing', 'Target is not registered');
+    let registered = (items || []).some(item => (item.agentId || item.workflowId) === args.targetId);
+    let releases = null;
+    if (!registered && args.mode !== 'training') {
+      releases = await call('listReleases', { projectId: args.projectId });
+      registered = (releases.active || []).some(item => item.targetKind === args.targetKind && item.targetId === args.targetId);
+      if (!registered && args.targetKind === 'agent') {
+        for (const workflowRelease of (releases.active || []).filter(item => item.targetKind === 'workflow')) {
+          const workflowBundle = await call('loadReleaseBundle', {
+            projectId: args.projectId, releaseId: workflowRelease.releaseId,
+            targetKind: 'workflow', targetId: workflowRelease.targetId,
+          });
+          if ((workflowBundle.steps || []).some(step => step.agentId === args.targetId)) { registered = true; break; }
+        }
+      }
+    }
+    if (!registered) fail('target_missing', 'Target is not registered');
     if (args.mode !== 'training') {
-      const releases = await call('listReleases', { projectId: args.projectId });
-      const active = (releases.active || []).some(item => item.targetKind === args.targetKind && item.targetId === args.targetId);
+      releases ||= await call('listReleases', { projectId: args.projectId });
+      let active = (releases.active || []).some(item => item.targetKind === args.targetKind && item.targetId === args.targetId);
+      // A workflow release freezes its ordered Agent references. Those bound
+      // Agents are published as part of that workflow, even when the page did
+      // not create separate Agent release pointers. Keep the binding boundary
+      // aligned with the engineering registry view.
+      if (!active && args.targetKind === 'agent') {
+        for (const workflowRelease of (releases.active || []).filter(item => item.targetKind === 'workflow')) {
+          const workflowBundle = await call('loadReleaseBundle', {
+            projectId: args.projectId,
+            releaseId: workflowRelease.releaseId,
+            targetKind: 'workflow',
+            targetId: workflowRelease.targetId,
+          });
+          if ((workflowBundle.steps || []).some(step => step.agentId === args.targetId)) { active = true; break; }
+        }
+      }
       if (!active) fail('release_not_active', 'No active release for this target');
     }
     const key = createHash('sha256').update(stable([args.projectId,args.mode,args.presetId,args.targetKind,args.targetId])).digest('hex');
@@ -103,6 +134,53 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
     if (binding && binding.presetId !== 'agent-trainer' && (run.targetId !== binding.targetId || run.targetKind !== binding.targetKind)) fail('target_forbidden', 'Run belongs to another target');
     return run;
   }
+  function bundleFile(bundle, relative) {
+    return (bundle.files || []).find(file => file.path === relative)?.content ?? null;
+  }
+  async function publishedProject(sourceProject, active) {
+    const agents = new Map();
+    const workflows = new Map();
+    for (const release of active || []) {
+      const bundle = await call('loadReleaseBundle', {
+        projectId: sourceProject.projectId, releaseId: release.releaseId,
+        targetKind: release.targetKind, targetId: release.targetId,
+      });
+      if (release.targetKind === 'workflow') {
+        const rawWorkflow = bundleFile(bundle, `workflows/${release.targetId}.json`);
+        let workflow = null;
+        try { workflow = rawWorkflow ? JSON.parse(rawWorkflow) : null; } catch { /* verified bundle will reject malformed JSON */ }
+        workflows.set(release.targetId, {
+          workflowId: release.targetId,
+          name: workflow?.name || release.targetId,
+          revisionId: bundle.workflowRevision ?? bundle.revisionId,
+          releaseId: release.releaseId,
+        });
+        for (const step of bundle.steps || []) {
+          if (!step.agentId || agents.has(step.agentId)) continue;
+          const rawAgent = bundleFile(bundle, `agents/${step.agentId}/agent.json`);
+          let agent = null;
+          try { agent = rawAgent ? JSON.parse(rawAgent) : null; } catch { /* bundle verification handles malformed JSON */ }
+          agents.set(step.agentId, {
+            agentId: step.agentId,
+            name: agent?.name || step.agentId,
+            revisionId: step.agentRevision ?? null,
+            releaseId: release.releaseId,
+          });
+        }
+      } else if (release.targetKind === 'agent') {
+        const rawAgent = bundleFile(bundle, `agents/${release.targetId}/agent.json`);
+        let agent = null;
+        try { agent = rawAgent ? JSON.parse(rawAgent) : null; } catch { /* bundle verification handles malformed JSON */ }
+        agents.set(release.targetId, {
+          agentId: release.targetId,
+          name: agent?.name || release.targetId,
+          revisionId: bundle.revisionId,
+          releaseId: release.releaseId,
+        });
+      }
+    }
+    return { ...sourceProject, revisionId: null, agents: [...agents.values()], workflows: [...workflows.values()] };
+  }
   async function execute(operation, args, binding) {
     if (operation === 'bind-session') return bind(args);
     id(args.projectId, 'projectId');
@@ -111,24 +189,79 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
     const target = { projectId: args.projectId, targetKind: args.targetKind, targetId: args.targetId };
     switch (operation) {
       case 'bind-session': return bind(args);
+      case 'session-workspace': {
+        if (!['agent', 'workflow'].includes(args.targetKind)) fail('invalid_binding', 'Trainer workspace requires an agent or workflow target');
+        id(args.targetId, 'targetId');
+        const project = await call('ensureTrainerProject', { projectId: args.projectId });
+        const items = args.targetKind === 'agent' ? project.agents : project.workflows;
+        let registered = (items || []).some(item => (item.agentId || item.workflowId) === args.targetId);
+        if (!registered && args.mode !== 'training') {
+          const releases = await call('listReleases', { projectId: args.projectId });
+          registered = (releases.active || []).some(item => item.targetKind === args.targetKind && item.targetId === args.targetId);
+          if (!registered && args.targetKind === 'agent') {
+            for (const workflowRelease of (releases.active || []).filter(item => item.targetKind === 'workflow')) {
+              const workflowBundle = await call('loadReleaseBundle', {
+                projectId: args.projectId, releaseId: workflowRelease.releaseId,
+                targetKind: 'workflow', targetId: workflowRelease.targetId,
+              });
+              if ((workflowBundle.steps || []).some(step => step.agentId === args.targetId)) { registered = true; break; }
+            }
+          }
+        }
+        if (!registered) fail('target_missing', 'Target is not registered');
+        if (args.mode !== 'training') {
+          const active = (await call('listReleases', { projectId: args.projectId })).active || [];
+          if (!active.some(item => item.targetKind === args.targetKind && item.targetId === args.targetId)) fail('release_not_active', 'No active release for this target');
+        }
+        const key = createHash('sha256').update(stable([args.projectId, args.mode, args.targetKind, args.targetId])).digest('hex');
+        const cwd = path.join(storage, 'sessions', key);
+        fs.mkdirSync(cwd, { recursive: true });
+        return { projectId: args.projectId, mode: args.mode, targetKind: args.targetKind, targetId: args.targetId,
+          candidateRevision: project.revisionId, path: cwd, cwd };
+      }
       case 'context': {
         const sourceProject = await call('ensureTrainerProject', { projectId: args.projectId });
         const frozenVersions = repositories.listFrozenVersions ? (await call('listFrozenVersions',{projectId:args.projectId})).versions : [];
-        const active = args.mode === 'engineering'
-          ? (await call('listReleases', { projectId: args.projectId })).active || [] : null;
-        const activeIds = active ? new Set(active.map(item => `${item.targetKind}:${item.targetId}`)) : null;
-        const project = activeIds ? { ...sourceProject,
-          agents: (sourceProject.agents || []).filter(item => activeIds.has(`agent:${item.agentId}`)),
-          workflows: (sourceProject.workflows || []).filter(item => activeIds.has(`workflow:${item.workflowId}`)),
-        } : sourceProject;
+        const releaseState = args.mode === 'engineering'
+          ? await call('listReleases', { projectId: args.projectId }) : null;
+        const active = Array.isArray(releaseState?.active) ? releaseState.active : [];
+        // Engineering mode is always projected from active release bundles;
+        // never fall back to the mutable candidate registry.
+        const project = args.mode === 'engineering' ? await publishedProject(sourceProject, active) : sourceProject;
         return { project, binding, frozenVersions, candidateRevision: project.revisionId, mode: args.mode,
           selectedRun: args.selectedRunId ? await ownedRun(args, binding) : null,
           capabilities: { edit: args.mode === 'training' && (!binding || binding.presetId === 'agent-trainer'), freeze: !binding && args.mode === 'training' } };
       }
-      case 'assets': return call('readAssets', args);
+      case 'assets': {
+        if (args.mode === 'engineering') {
+          const active = (await call('listReleases', { projectId: args.projectId })).active || [];
+          const files = Object.create(null);
+          for (const release of active) {
+            const bundle = await call('loadReleaseBundle', { projectId: args.projectId, releaseId: release.releaseId,
+              targetKind: release.targetKind, targetId: release.targetId });
+            for (const file of bundle.files || []) files[file.path] = file.content;
+          }
+          return { projectId: args.projectId, revisionId: null, files };
+        }
+        return call('readAssets', args);
+      }
       case 'apply-changes':
         if (args.linkedRunId) await ownedRun({...args,runId:args.linkedRunId},binding);
-        return call('applyChanges', args);
+        {
+          const result = await call('applyChanges', args);
+          // Keep a native Trainer session's binding pointed at the revision it
+          // just committed.  Without this receipt the session would continue
+          // to advertise an old candidate while subsequent trainer_run calls
+          // silently resolved the new one.
+          if (binding) {
+            const current = getBinding(binding.sessionId);
+            if (current) atomic(bindingFile(binding.sessionId), {
+              ...current, candidateRevision: result.revisionId,
+              bindingRevision: current.bindingRevision + 1,
+            });
+          }
+          return result;
+        }
       case 'changes': return call('readChangeSet', args);
       case 'validate': {
         const model = await modelResolver(args);
@@ -167,8 +300,17 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
           const saved=await call('applyChanges',args);
           args={...args,revisionId:saved.revisionId};
         }
-        if (args.runId) { const run = await ownedRun(args); bundle = run.bundle; if (!bundle) fail('run_bundle_unavailable', 'Run snapshot is unavailable'); }
-        else bundle = await call('resolveBundle', { ...args, model: await modelResolver(args) });
+        // A candidate may only be frozen after a completed validation run for
+        // the exact candidate target. Resolving a bundle without evidence
+        // would let an untested or partially authored workflow enter release.
+        if (!args.runId) fail('validation_required', 'Freeze requires a completed validation run');
+        const run = await ownedRun(args);
+        if (run.status !== 'completed' || run.validation?.ok !== true
+          || run.projectId !== args.projectId || run.targetKind !== args.targetKind || run.targetId !== args.targetId) {
+          fail('validation_required', 'Freeze requires a completed validation run for this exact target');
+        }
+        bundle = run.bundle;
+        if (!bundle) fail('run_bundle_unavailable', 'Run snapshot is unavailable');
         return call('freezeTarget', { ...target, revisionId: args.revisionId, bundle });
       }
       case 'stage-release': return call('stageRelease', { ...args, runEvidence: await ownedRun(args) });
@@ -184,6 +326,17 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
     }
   }
   async function invoke(operation, input, principal) {
+    if (operation === 'session-tool') {
+      const toolOperation = input?.toolOperation;
+      if (!['context', 'assets', 'runs', 'events', 'apply-changes', 'validate', 'run', 'control', 'compare'].includes(toolOperation)) {
+        return errorResult(Object.assign(new Error('Unknown Trainer session tool'), { code: 'unknown_tool' }));
+      }
+      const { sessionId, presetId, ...toolInput } = input || {};
+      if (typeof sessionId !== 'string' || typeof presetId !== 'string') {
+        return errorResult(Object.assign(new Error('Trainer session tool requires sessionId and presetId'), { code: 'session_unbound' }));
+      }
+      return invoke(toolOperation, toolInput, { kind: 'tool', sessionId, presetId });
+    }
     try {
       const { args, binding } = await authorize(operation, input, principal);
       if (!MUTATIONS.has(operation)) return { ok: true, value: await (operation === 'bind-session' ? serial(() => execute(operation, args, binding)) : execute(operation, args, binding)) };
