@@ -1,8 +1,8 @@
 # Agent Trainer 空白系统开发与验证计划
 
-版本：2026-09-29  
-范围：空白 Agent Trainer 基础控制体系  
-验收入口：白色 Agent Trainer 页面  
+版本：2026-09-29
+范围：空白 Agent Trainer 基础控制体系
+验收入口：白色 Agent Trainer 页面
 排除范围：真实业务流、半导体业务规则、八位历史专家的活动执行
 
 ## 1. 目标与范围
