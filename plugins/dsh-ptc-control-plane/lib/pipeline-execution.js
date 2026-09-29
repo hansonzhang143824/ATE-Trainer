@@ -11,6 +11,7 @@ import {
   finalProductHashes,
 } from './training-execution.js';
 import { compileTrainingProject } from './training-compile.js';
+import { createBusinessOutputHashRecord } from './business-output-contract.js';
 import { TRAINING_MODEL_CHOICES } from './training-model.js';
 
 const read = file => JSON.parse(fs.readFileSync(file, 'utf8').replace(/^\uFEFF/, ''));
@@ -164,8 +165,16 @@ export function createNativePipelineAdapters(root, materials, dftDispatcher, sta
     const finalReports = [];
     for (const tm of request.testItems) { notCancelled(request.signal); finalReports.push(await dftGate(root, tm, materials)); }
     if (finalReports.some(report => report.status !== 'ready' || report.exitCode !== 0)) throw new Error('DFT terminal gate did not pass');
+    const outputHashes = options.requireBusinessOutputContract === true
+      ? createBusinessOutputHashRecord({ workspaceRoot: root, runId, testItems: request.testItems,
+        outputRoot: materials.dftRoot,
+        sourceInputSha256: finalReports.find(report => report.canonicalInput?.sha256)?.canonicalInput?.sha256,
+        profileId: materials.ownerProfiles?.['dft-expert'] ?? null,
+        profileRevision: materials.profileRevisions?.['dft-expert'] ?? null })
+      : null;
     return sealed('INPUT_SYNC-dft', { role: 'dft-expert', status: 'done', testItems: request.testItems, mode,
-      childResult: result, reports: finalReports, finalProducts: finalProductHashes(root, request.testItems, materials) });
+      childResult: result, reports: finalReports, finalProducts: finalProductHashes(root, request.testItems, materials),
+      businessOutputHashes: outputHashes?.evidencePath ?? null, businessOutputHashesSha256: outputHashes?.evidenceSha256 ?? null });
   }
   async function sourceSchematic(request) {
     const args = ['scripts/training_schematic.py', '--run-root', directory,
@@ -348,7 +357,10 @@ export function createPipelineExecutionManager(workspaceRoot, dftDispatcher, sta
       update(record, { status: 'preparing', reason: 'freezing private training materials' });
       const completion = (async () => {
         try {
-          const materials = await (options.prepareMaterials ?? preparePipelineMaterials)(root, runId, testItems);
+          const materials = await (options.prepareMaterials ?? preparePipelineMaterials)(root, runId, testItems, {
+            profileBindings: located.state.target?.agentBindings,
+            workflowBinding: located.state.target?.workflowBinding,
+          });
           if (record.cancelled) return record.state;
           if (materials?.runId !== runId || !Array.isArray(materials.testItems) || !sameItems(materials.testItems, testItems)) throw new Error('prepared pipeline identity differs');
           if (statisticOnly) {
@@ -377,7 +389,8 @@ export function createPipelineExecutionManager(workspaceRoot, dftDispatcher, sta
             return record.state;
           }
           const adapters = (options.createAdapters ?? createNativePipelineAdapters)(root, materials, dftDispatcher, stageDispatcher,
-            { modelChoice, forceBusinessDftModel: options.requiredPurpose === 'business-training' });
+            { modelChoice, forceBusinessDftModel: options.requiredPurpose === 'business-training',
+              requireBusinessOutputContract: options.requiredPurpose === 'business-training' });
           record.controller = (options.createEngine ?? createTrainingPipeline)({ workspaceRoot: root, runId, testItems,
             sourceRoles: ['schematic-expert', 'dft-expert'], ...adapters, onState: progress => update(record, progress),
             dispatchTimeoutMs: 8 * 60_000, gateTimeoutMs: 30_000 });

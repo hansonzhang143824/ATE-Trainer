@@ -3,6 +3,8 @@ id: ptc-dft-expert
 displayName: PTC DFT Expert
 presetId: ptc-dft-expert
 executionClass: input-dft
+executionAdapter: ptc-dft
+capabilityContract: ptc-dft-business-v1
 stage: INPUT_SYNC
 ownerRole: dft-expert
 # The label the host renders for this expert's child session. It is DISPLAY text
@@ -18,3 +20,8 @@ writable:
   - project/DALI/ErrorLog/dft-expert.log
 requiredGates:
   - scripts/validate_dft_outputs.py
+
+# Business-only profile revision: 2026-09-27
+# Revision id: dft-business-input-sync-20260927
+# Current-day runtime revision: 2026-09-28
+# Revision id: dft-business-input-sync-20260928

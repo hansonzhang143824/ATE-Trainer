@@ -7,7 +7,7 @@ import { prepareTrainingMaterials, verifyTrainingMaterials } from './training-ma
 import { trainingAddressBook } from './training-paths.js';
 import { signTrainingReceipt, verifyTrainingReceipt } from './training-guard.js';
 import { assertSafeRunPath } from './run-context.js';
-import { resolveAgentProfile } from './agent-profile-runtime.js';
+import { resolveAgentProfile, assertDftExecutionCapability } from './agent-profile-runtime.js';
 import { createBusinessOutputHashRecord } from './business-output-contract.js';
 
 const execFile = promisify(execFileCallback);
@@ -368,12 +368,8 @@ export async function executeTrainingRun(workspaceRoot, input, options = {}) {
   const profileId = initial.target.profileId;
   const profile = resolveAgentProfile(root, profileId,
     initial.target.profileRevision ? { revisionId: initial.target.profileRevision } : {});
-  // The existing business adapter is DFT-shaped. A cloned DFT profile is
-  // equivalent when its config declares the same execution class; unrelated
-  // profiles still fail closed before any material is written.
-  if (profileId !== 'ptc-dft-expert' && profile.executionClass !== 'input-dft') {
-    throw new Error(`training execution supports only input-dft profiles; profile ${profileId} does not declare executionClass input-dft`);
-  }
+  // Capability is configuration-driven; the profile id is never a grant.
+  assertDftExecutionCapability(profile);
   if (initial.status !== 'created') throw new Error(`training run is not startable from status ${initial.status}`);
   fs.writeFileSync(lockFile, `${process.pid}\n`, { encoding: 'utf8', flag: 'wx' });
   const now = options.now instanceof Date ? options.now : new Date();

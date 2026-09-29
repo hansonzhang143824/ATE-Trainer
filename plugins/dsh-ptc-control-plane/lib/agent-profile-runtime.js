@@ -60,7 +60,7 @@ function parseProfileYaml(file) {
   let text = '';
   try { text = fs.readFileSync(file, 'utf8').replace(/^\uFEFF/, ''); } catch { return {}; }
   const fields = {};
-  for (const name of ['id', 'displayName', 'executionClass', 'stage', 'ownerRole', 'presetId']) {
+  for (const name of ['id', 'displayName', 'executionClass', 'executionAdapter', 'capabilityContract', 'stage', 'ownerRole', 'presetId']) {
     const match = text.match(new RegExp(`^${name}\\s*:\\s*([^#\\r\\n]+)`, 'mi'));
     if (match) fields[name] = match[1].trim().replace(/^['"]|['"]$/g, '');
   }
@@ -101,6 +101,8 @@ function manifestValue(profileRoot, profileId, revisionId, baseProfileId = profi
     contentDigest,
     files,
     executionClass: profile.executionClass ?? null,
+    executionAdapter: profile.executionAdapter ?? null,
+    capabilityContract: profile.capabilityContract ?? null,
     ownerRole: profile.ownerRole ?? null,
     generatedAt: new Date().toISOString(),
   };
@@ -166,6 +168,17 @@ export function readAgentProfileManifest(workspaceRoot, profileId, options = {})
     profileRevision: manifest.revisionId,
     displayName: profile.displayName ?? profileId,
   });
+}
+
+/** Require the configured DFT adapter contract; profile identity is not a capability grant. */
+export function assertDftExecutionCapability(profile) {
+  if (!profile || profile.executionClass !== 'input-dft'
+      || (profile.executionAdapter !== undefined && profile.executionAdapter !== null && profile.executionAdapter !== 'ptc-dft')
+      || (profile.capabilityContract !== undefined && profile.capabilityContract !== null && profile.capabilityContract !== 'ptc-dft-business-v1')) {
+    const profileId = profile?.profileId ?? 'unknown';
+    throw new Error(`profile ${profileId} is not configured for ptc-dft execution; training execution supports only configured input-dft profiles`);
+  }
+  return profile;
 }
 
 /** Resolve any configured profile id; no built-in profile allow-list is used. */

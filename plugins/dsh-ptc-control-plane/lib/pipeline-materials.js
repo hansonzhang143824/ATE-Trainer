@@ -6,6 +6,7 @@ import { promisify } from 'node:util';
 import { prepareTrainingMaterials, verifyTrainingMaterials } from './training-materials.js';
 import { assertSafeRunPath } from './run-context.js';
 import { trainingAddressBook } from './training-paths.js';
+import { resolveAgentProfile } from './agent-profile-runtime.js';
 
 const execFile = promisify(execFileCallback);
 const DIGEST = /^[a-f0-9]{64}$/;
@@ -178,11 +179,11 @@ function walk(root, { draft = false, vs = false } = {}) {
 }
 function pipelineFingerprint(manifest) {
   return sha(JSON.stringify({ runId: manifest.runId, testItems: manifest.testItems, baseCacheKey: manifest.baseCacheKey,
-    approvedConfiguration: manifest.approvedConfiguration, ownerProfiles: manifest.ownerProfiles, addressBook: manifest.addressBook,
+    workflowBinding: manifest.workflowBinding, profileRevisions: manifest.profileRevisions ?? {}, profileDigests: manifest.profileDigests ?? {}, approvedConfiguration: manifest.approvedConfiguration, ownerProfiles: manifest.ownerProfiles, addressBook: manifest.addressBook,
     files: manifest.files.map(({ source, snapshotPath, baselinePath, mutable, sha256, size, kind }) => ({ source, snapshotPath, baselinePath, mutable, sha256, size, kind })), generatedFiles: manifest.generatedFiles, snapshotPaths: manifest.snapshotPaths, projectReferences: manifest.projectReferences, missingOptional: manifest.missingOptional }));
 }
 function resultOf(base, manifest) { return freeze({ ...base, ...manifest.addressBook, pipelineManifestFile: `${base.runRoot}/pipeline-material-manifest.json`,
-  pipelineCacheKey: manifest.pipelineCacheKey, ownerProfiles: manifest.ownerProfiles, snapshotPaths: manifest.snapshotPaths,
+  pipelineCacheKey: manifest.pipelineCacheKey, ownerProfiles: manifest.ownerProfiles, profileRevisions: manifest.profileRevisions ?? {}, profileDigests: manifest.profileDigests ?? {}, workflowBinding: manifest.workflowBinding ?? null, snapshotPaths: manifest.snapshotPaths,
   missingOptional: manifest.missingOptional, approvedConfiguration: manifest.approvedConfiguration }); }
 
 /**
@@ -216,7 +217,11 @@ export async function preparePipelineMaterials(workspaceRoot, runId, testItems, 
   if (exists(manifestPath)) {
     const manifest = readJson(manifestPath);
     if (manifest.schemaVersion !== 1 || manifest.kind !== 'ptc-pipeline-materials' || manifest.runId !== runId
-        || JSON.stringify(manifest.testItems) !== JSON.stringify(tms) || manifest.baseCacheKey !== base.cacheKey
+        || JSON.stringify(manifest.testItems) !== JSON.stringify(tms)
+        || JSON.stringify(manifest.workflowBinding ?? null) !== JSON.stringify(options.workflowBinding ?? null)
+        || JSON.stringify(manifest.profileRevisions ?? {}) !== JSON.stringify(Object.fromEntries(Object.entries(options.profileBindings ?? {}).map(([role, value]) => [role, value?.profileRevision ?? null])))
+        || Object.keys(options.profileBindings ?? {}).some(role => !manifest.profileDigests?.[role])
+        || manifest.baseCacheKey !== base.cacheKey
         || manifest.pipelineCacheKey !== pipelineFingerprint(manifest)) throw new Error('pipeline snapshot identity or fingerprint differs');
     for (const entry of manifest.files) {
       const file = assertSafeRunPath(root, entry.snapshotPath);
@@ -232,6 +237,30 @@ export async function preparePipelineMaterials(workspaceRoot, runId, testItems, 
   for (const file of ['Project_Info.json', 'scripts/project_info.py', 'scripts/validate_expert_roster.py', 'team/ptc/ptc_stage_registry.json']) assertSafeRunPath(root, file);
   const inspected = JSON.parse(await python(root, INSPECT, [root], limits));
   const info = inspected.projectInfo;
+  if (options.profileBindings !== undefined) {
+    if (!options.profileBindings || typeof options.profileBindings !== 'object' || Array.isArray(options.profileBindings)) throw new Error('pipeline profileBindings must be an object');
+    const allowed = new Set(['schematic-expert', 'dft-expert']);
+    const next = { ...inspected.ownerProfiles };
+    const revisions = { ...(inspected.profileRevisions ?? {}) };
+    const digests = { ...(inspected.profileDigests ?? {}) };
+    for (const [role, binding] of Object.entries(options.profileBindings)) {
+      if (!allowed.has(role) || !binding || typeof binding.profileId !== 'string') throw new Error(`invalid pipeline profile binding for ${role}`);
+      const profileId = binding.profileId;
+      const resolved = resolveAgentProfile(root, profileId,
+        binding.profileRevision ? { revisionId: binding.profileRevision, requireManifest: true } : {});
+      const profileFile = assertSafeRunPath(root, `team/expert-profiles/${profileId}/profile.yaml`);
+      const text = fs.readFileSync(profileFile, 'utf8');
+      const owner = new RegExp(`^ownerRole\\s*:\\s*([^\\s#\\"']+)`, 'mi').exec(text)?.[1];
+      if (owner !== role) throw new Error(`profile ownerRole mismatch: ${profileId}`);
+      if (role === 'dft-expert' && (!/^executionClass\\s*:\\s*input-dft/m.test(text) || !/^executionAdapter\\s*:\\s*ptc-dft/m.test(text) || !/^capabilityContract\\s*:\\s*ptc-dft-business-v1/m.test(text))) throw new Error(`profile ${profileId} is not configured for ptc-dft execution`);
+      next[role] = profileId;
+      revisions[role] = resolved.profileRevision ?? null;
+      digests[role] = resolved.contentDigest ?? null;
+    }
+    inspected.ownerProfiles = next;
+    inspected.profileRevisions = revisions;
+    inspected.profileDigests = digests;
+  }
   if (!DIGEST.test(inspected.projectInfoSha256) || typeof info.inputs?.program !== 'string' || !info.inputs.program.trim()) throw new Error('approved program root is missing');
   if (typeof info.inputs.dft !== 'string' || path.basename(info.inputs.dft.replaceAll('\\', '/')) !== 'Dali_testmode.xlsx') throw new Error('approved DFT locator does not match the training workbook');
   const programRoot = safeAny(path.resolve(root, info.inputs.program));
@@ -314,7 +343,7 @@ export async function preparePipelineMaterials(workspaceRoot, runId, testItems, 
   const addressBook = { runRoot: address.runRoot, input, inputSyncRoot: `${address.runRoot}/input-sync`, outputRoot: `${address.runRoot}/input-sync`, dftRoot: base.dftRoot,
     schematicRoot: `${address.runRoot}/input-sync/schematic`, errorRoot: `${address.runRoot}/errorLog`, verificationRoot: base.verificationRoot,
     registerRoot, registerSources, intentResolutions, trials, knowledgeRoot, rulesRoot, libraryRoot,
-    registry, profileRoots, approvedProjectInfoPath, originalProjectConfigPath, projectInfoPath, vsProjectRoot, vsBaselineRoot,
+    registry, profileRoots, profileRevisions: inspected.profileRevisions ?? {}, profileDigests: inspected.profileDigests ?? {}, workflowBinding: options.workflowBinding ?? null, approvedProjectInfoPath, originalProjectConfigPath, projectInfoPath, vsProjectRoot, vsBaselineRoot,
     programSourceRoot, immutableProgramSourceRoot: `${vsBaselineRoot}/${programName}`, vsProjects, vsSolutions,
     specFiles: files.filter((entry) => entry.snapshotPath.toLowerCase().endsWith('.spec')).map((entry) => entry.snapshotPath),
     tregFiles: files.filter((entry) => entry.snapshotPath.toLowerCase().endsWith('.treg')).map((entry) => entry.snapshotPath) };
@@ -339,8 +368,8 @@ export async function preparePipelineMaterials(workspaceRoot, runId, testItems, 
   const generatedFiles = [{ snapshotPath: projectInfoPath, sha256: sha(fs.readFileSync(path.join(root, projectInfoPath))), view: 'exact-bytes' }];
   const snapshotPaths = Object.fromEntries(copied.map(({ source, snapshotPath }) => [source, snapshotPath]));
   for (const entry of baseManifest.files) snapshotPaths[path.resolve(root, entry.source)] ??= entry.path;
-  const manifest = { schemaVersion: 1, kind: 'ptc-pipeline-materials', runId, testItems: tms, createdAt: new Date().toISOString(),
-    baseMaterialManifest: base.manifestFile, baseCacheKey: base.cacheKey, approvedConfiguration, ownerProfiles: inspected.ownerProfiles,
+  const manifest = { schemaVersion: 1, kind: 'ptc-pipeline-materials', runId, testItems: tms, workflowBinding: options.workflowBinding ?? null, createdAt: new Date().toISOString(),
+    baseMaterialManifest: base.manifestFile, baseCacheKey: base.cacheKey, profileRevisions: inspected.profileRevisions ?? {}, profileDigests: inspected.profileDigests ?? {}, approvedConfiguration, ownerProfiles: inspected.ownerProfiles,
     addressBook, files: copied, generatedFiles, snapshotPaths, missingOptional, limits, projectReferences,
     exclusions: { directories: [...EXCLUDED_DIRS], extensions: [...EXCLUDED_EXTENSIONS], draft: ['versions', 'status.json'] } };
   manifest.pipelineCacheKey = pipelineFingerprint(manifest);

@@ -111,6 +111,7 @@ function listTrainingRuns(workspaceRoot, limit = 100) {
 
 const BUSINESS_AGENT_CATALOG = Object.freeze({
   'ptc-dft-expert': {
+    kind: 'dft',
     displayName: 'DFT Expert',
     inputs: [
       'Training_Materials/runs/<runId>/input/Dali_testmode.xlsx',
@@ -139,6 +140,7 @@ const BUSINESS_AGENT_CATALOG = Object.freeze({
     ],
   },
   'ptc-schematic-expert': {
+    kind: 'schematic',
     displayName: 'Schematic Expert',
     inputs: [
       'Training_Materials/runs/<runId>/input/Dali-SCH.csv',
@@ -171,46 +173,47 @@ const BUSINESS_AGENT_CATALOG = Object.freeze({
 });
 
 function listBusinessAgentCatalog(workspaceRoot, runs) {
-  return Object.entries(BUSINESS_AGENT_CATALOG).map(([profileId, definition]) => {
+  const catalog = { ...BUSINESS_AGENT_CATALOG };
+  const profilesRoot = path.join(workspaceRoot, 'team', 'expert-profiles');
+  try {
+    for (const entry of fs.readdirSync(profilesRoot, { withFileTypes: true })) {
+      if (!entry.isDirectory() || catalog[entry.name]) continue;
+      const profileFile = path.join(profilesRoot, entry.name, 'profile.yaml');
+      const text = (() => { try { return fs.readFileSync(profileFile, 'utf8'); } catch { return ''; } })();
+      const owner = /^ownerRole\s*:\s*([^#\r\n]+)/mi.exec(text)?.[1]?.trim();
+      const displayName = /^displayName\s*:\s*([^#\r\n]+)/mi.exec(text)?.[1]?.trim() || entry.name;
+      if (owner === 'dft-expert' && (!/^executionClass\s*:\s*input-dft/m.test(text)
+          || !/^executionAdapter\s*:\s*ptc-dft/m.test(text)
+          || !/^capabilityContract\s*:\s*ptc-dft-business-v1/m.test(text))) continue;
+      const base = owner === 'dft-expert' ? BUSINESS_AGENT_CATALOG['ptc-dft-expert']
+        : owner === 'schematic-expert' ? BUSINESS_AGENT_CATALOG['ptc-schematic-expert'] : null;
+      if (base) catalog[entry.name] = { ...base, kind: base.kind, displayName, skills: base.skills.map(item => item.replace(/ptc-(?:dft|schematic)-expert/, entry.name)) };
+    }
+  } catch { /* an empty profile catalog is rendered as no available Agent */ }
+  return Object.entries(catalog).map(([profileId, definition]) => {
+    const isDft = definition.kind === 'dft';
+    const isSchematic = !isDft;
     const candidates = runs.filter(run => run.purpose === 'business-training' && (
       (run.target?.kind === 'profile' && run.target.profileId === profileId)
-      || (profileId === 'ptc-dft-expert' && run.target?.kind === 'pipeline'
-        && run.target.fromStage === 'INPUT_SYNC')
-      || (profileId === 'ptc-schematic-expert' && run.target?.kind === 'pipeline'
-        && run.target.fromStage === 'INPUT_SYNC')));
+      || (run.target?.kind === 'pipeline' && run.issueOwners?.some(owner => owner.profileId === profileId))
+      || (profileId === 'ptc-dft-expert' && run.target?.kind === 'pipeline' && run.target.fromStage === 'INPUT_SYNC')
+      || (profileId === 'ptc-schematic-expert' && run.target?.kind === 'pipeline' && run.target.fromStage === 'INPUT_SYNC')));
     const latest = candidates[0] ?? null;
     const runId = latest?.runId ?? null;
     const runRoot = runId ? path.join(workspaceRoot, 'Training_Materials', 'runs', runId) : null;
     const hasEvidence = relative => Boolean(runRoot && fs.existsSync(path.join(runRoot, relative)));
-    // The business pipeline writes role-specific evidence names.  A blocked
-    // model review still counts as "used" when that role's source packet was
-    // prepared and dispatched; the panel must show the materials loaded by
-    // this run instead of depending on the old terminal-only filenames.
     const hasAnyEvidence = (...relativePaths) => relativePaths.some(hasEvidence);
-    const used = profileId === 'ptc-dft-expert'
+    const used = isDft
       ? Boolean(latest && (latest.target?.kind === 'profile'
         ? hasAnyEvidence('evidence/dft-terminal.json', 'evidence/dft-preflight.json', 'evidence/dft-review-input.json')
         : hasAnyEvidence('evidence/pipeline-INPUT_SYNC-dft.json', 'evidence/pipeline-INPUT_SYNC-dft-child.json', 'evidence/dft-review-input.json')))
-      : Boolean(latest && hasAnyEvidence(
-        'evidence/pipeline-INPUT_SYNC-schematic.json',
-        'evidence/INPUT_SYNC-schematic-expert-lifecycle.json',
-        'input-sync/schematic/schematic-receipt.json',
-      ));
-    const outputs = profileId === 'ptc-dft-expert' && latest?.target?.kind === 'pipeline'
+      : Boolean(latest && hasAnyEvidence('evidence/pipeline-INPUT_SYNC-schematic.json', 'evidence/INPUT_SYNC-schematic-expert-lifecycle.json', 'input-sync/schematic/schematic-receipt.json'));
+    const outputs = isDft && latest?.target?.kind === 'pipeline'
       ? definition.outputs.map(pathname => pathname.endsWith('/evidence/dft-terminal.json')
-        ? pathname.replace('/evidence/dft-terminal.json', '/evidence/pipeline-INPUT_SYNC-dft.json')
-        : pathname)
-      : definition.outputs;
-    return {
-      profileId,
-      displayName: definition.displayName,
-      latestRunId: runId,
-      latestRunStatus: latest?.status ?? null,
-      inputs: definition.inputs.map(pathname => ({ path: pathname, used })),
-      outputs: outputs.map(pathname => ({ path: pathname, used })),
-      skills: definition.skills.map(pathname => ({ path: pathname, used })),
-      scripts: definition.scripts.map(pathname => ({ path: pathname, used })),
-    };
+        ? pathname.replace('/evidence/dft-terminal.json', '/evidence/pipeline-INPUT_SYNC-dft.json') : pathname) : definition.outputs;
+    return { profileId, kind: definition.kind, displayName: definition.displayName, latestRunId: runId, latestRunStatus: latest?.status ?? null,
+      inputs: definition.inputs.map(pathname => ({ path: pathname, used })), outputs: outputs.map(pathname => ({ path: pathname, used })),
+      skills: definition.skills.map(pathname => ({ path: pathname, used })), scripts: definition.scripts.map(pathname => ({ path: pathname, used })) };
   });
 }
 

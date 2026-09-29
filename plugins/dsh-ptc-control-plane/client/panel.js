@@ -660,12 +660,16 @@ function BusinessTrainingControls({ state, store }) {
   };
   const launchDft = () => void act(async () => {
     if (!items) throw new Error('请输入有效的 TM 编号，例如 TM109');
-    const created = await createTrainingRunRequest({ kind: 'profile', profileId: 'ptc-dft-expert' }, { purpose: 'business-training' });
+    const created = await createTrainingRunRequest({ kind: 'profile', profileId: selectedAgentId }, { purpose: 'business-training' });
     return executeBusinessTrainingRunRequest(created.runId, items, { modelChoice });
   });
   const launchInputSync = () => void act(async () => {
     if (!items) throw new Error('请输入有效的 TM 编号，例如 TM109');
-    const created = await createTrainingRunRequest({ kind: 'pipeline', fromStage: 'INPUT_SYNC', toStage: 'INPUT_SYNC' }, { purpose: 'business-training' });
+    const created = await createTrainingRunRequest({ kind: 'pipeline', fromStage: 'INPUT_SYNC', toStage: 'INPUT_SYNC',
+      workflowId: 'tm109-input-sync', workflowRevision: 'business-v1', agentBindings: {
+        'schematic-expert': { profileId: 'ptc-schematic-expert' },
+        'dft-expert': { profileId: selectedAgentId },
+      } }, { purpose: 'business-training' });
     return executeBusinessPipelineRequest(created.runId, items, { modelChoice });
   });
   const controlInputSync = action => void act(() => controlBusinessPipelineRequest(latestInputSync?.runId, action));
@@ -678,6 +682,8 @@ function BusinessTrainingControls({ state, store }) {
       latestInputSync.outcome?.mode ?? '等待终态', latestInputSync.outcome?.stage ? `当前 ${latestInputSync.outcome.stage}` : null]
       .filter(Boolean).join(' · ')
     : '';
+  const businessAgents = Array.isArray(state.businessAgents) ? state.businessAgents : [];
+  const selectedAgent = businessAgents.find(agent => agent.profileId === selectedAgentId) ?? businessAgents[0] ?? null;
   const inputSyncStatus = latestInputSync ? createElement('div', { className: 'ptc-cp-stage-status', 'data-testid': 'ptc-cp-business-input-sync-status' },
     inputSyncStatusText,
     ...inputSyncControls) : null;
@@ -686,6 +692,9 @@ function BusinessTrainingControls({ state, store }) {
     createElement('p', null, '这里才会读取冻结到本次 Training_Materials/runs/<runId> 的业务材料：原理图先由固定 host 解析器生成七项产物，再由原理图 Agent 做只读语义审查；审查通过后才进入 DFT，由 DFT Agent 处理并做语义审查。结果只写本次训练运行目录，不发布业务版本。'),
     createElement('label', null, 'TM 编号 ', createElement('input', { value: testItem, disabled: busy,
       onChange: event => setTestItem(event.target.value), 'data-testid': 'ptc-cp-business-test-items' })),
+    createElement('label', null, '业务 DFT Agent ', createElement('select', { value: selectedAgentId, disabled: busy,
+      onChange: event => setSelectedAgentId(event.target.value), 'data-testid': 'ptc-cp-business-agent' },
+      ...businessAgents.filter(agent => agent.kind === 'dft').map(agent => createElement('option', { key: agent.profileId, value: agent.profileId }, `${agent.displayName} · ${agent.profileId}`)))),
     createElement('label', null, '模型 ', createElement('select', { value: modelChoice, disabled: busy,
       onChange: event => setModelChoice(event.target.value), 'data-testid': 'ptc-cp-business-model' },
       createElement('option', { value: 'default' }, '默认模型'),
@@ -700,8 +709,6 @@ function BusinessTrainingControls({ state, store }) {
     inputSyncStatus,
     notice ? createElement('div', { className: 'ptc-cp-notice', role: 'status' }, notice) : null,
   ];
-  const businessAgents = Array.isArray(state.businessAgents) ? state.businessAgents : [];
-  const selectedAgent = businessAgents.find(agent => agent.profileId === selectedAgentId) ?? businessAgents[0] ?? null;
   const resourceTabs = createElement('div', { className: 'ptc-cp-subtabs', role: 'tablist' },
     createElement('button', { type: 'button', className: page === 'run' ? 'ptc-cp-tab-active' : '',
       onClick: () => setPage('run'), 'data-testid': 'ptc-cp-business-page-run' }, '运行记录'),

@@ -22,6 +22,29 @@ function writeExclusiveJson(file, value) {
   fs.writeFileSync(file, `${JSON.stringify(value, null, 2)}\n`, { encoding: 'utf8', flag: 'wx' });
 }
 
+function normalizeAgentBindings(workspaceRoot, target) {
+  if (target?.agentBindings === undefined) return undefined;
+  if (!target.agentBindings || typeof target.agentBindings !== 'object' || Array.isArray(target.agentBindings)) {
+    throw new Error('pipeline agentBindings must be an object');
+  }
+  const allowedRoles = new Set(['schematic-expert', 'dft-expert']);
+  const bindings = {};
+  for (const [role, value] of Object.entries(target.agentBindings)) {
+    if (!allowedRoles.has(role) || !value || typeof value !== 'object' || Array.isArray(value)
+        || typeof value.profileId !== 'string' || !PROFILE_ID.test(value.profileId)) {
+      throw new Error(`invalid pipeline Agent binding for ${role}`);
+    }
+    const profile = resolveAgentProfile(workspaceRoot, value.profileId,
+      value.profileRevision ? { revisionId: value.profileRevision } : {});
+    if (profile.ownerRole !== role) throw new Error(`profile ${value.profileId} ownerRole must be ${role}`);
+    if (role === 'dft-expert' && profile.executionClass !== 'input-dft') {
+      throw new Error(`profile ${value.profileId} is not configured for input-dft execution`);
+    }
+    bindings[role] = { profileId: value.profileId, profileRevision: profile.profileRevision };
+  }
+  return Object.freeze(bindings);
+}
+
 function normalizeTarget(workspaceRoot, target) {
   if (target?.kind === 'profile') {
     if (typeof target.profileId !== 'string' || !PROFILE_ID.test(target.profileId)) {
@@ -52,7 +75,28 @@ function normalizeTarget(workspaceRoot, target) {
     if (from === -1 || to === -1 || from > to) {
       throw new Error('pipeline training requires an ordered stage range');
     }
-    return Object.freeze({ kind: 'pipeline', fromStage, toStage, stages: stages.slice(from, to + 1) });
+    const normalized = { kind: 'pipeline', fromStage, toStage, stages: stages.slice(from, to + 1) };
+    const agentBindings = normalizeAgentBindings(workspaceRoot, target);
+    if (agentBindings) normalized.agentBindings = agentBindings;
+    if (target.workflowId !== undefined || target.workflowRevision !== undefined) {
+      if (typeof target.workflowId !== 'string' || !/^[a-z][a-z0-9-]{1,63}$/.test(target.workflowId)
+          || typeof target.workflowRevision !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/.test(target.workflowRevision)) {
+        throw new Error('pipeline workflow binding requires workflowId and workflowRevision');
+      }
+      if (!agentBindings?.['schematic-expert'] || !agentBindings?.['dft-expert']) {
+        throw new Error('workflow binding requires schematic-expert and dft-expert Agent bindings');
+      }
+      normalized.workflowBinding = {
+        workflowId: target.workflowId,
+        workflowRevision: target.workflowRevision,
+        steps: [
+          { order: 1, role: 'schematic-expert', profileId: agentBindings['schematic-expert'].profileId, profileRevision: agentBindings['schematic-expert'].profileRevision },
+          { order: 2, role: 'dft-expert', profileId: agentBindings['dft-expert'].profileId, profileRevision: agentBindings['dft-expert'].profileRevision },
+        ],
+        handoff: 'schematic-output-to-dft-input',
+      };
+    }
+    return Object.freeze(normalized);
   }
   throw new Error('target.kind must be profile or pipeline');
 }

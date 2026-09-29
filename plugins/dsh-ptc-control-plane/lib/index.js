@@ -28,7 +28,7 @@ import { createFrameworkRehearsalManager } from './framework-rehearsal-manager.j
 import { createFrameworkRehearsalAdapters, openFrameworkRehearsalSnapshot, verifyFrameworkChain } from './framework-rehearsal.js';
 import { stageFrameworkRelease, activateStagedFrameworkRelease, loadFrameworkRelease, verifyFrameworkRuntimeCompatibility } from './framework-release.js';
 import { createFrameworkPublishedRun } from './framework-published-run.js';
-import { resolveAgentProfile, cloneAgentProfile, createAgentProfileRevision } from './agent-profile-runtime.js';
+import { resolveAgentProfile, assertDftExecutionCapability, cloneAgentProfile, createAgentProfileRevision } from './agent-profile-runtime.js';
 import { mountTrainerHost } from './trainer-host.js';
 
 export const name = 'dsh-ptc-control-plane';
@@ -206,9 +206,7 @@ export function createBusinessTrainingExecutionHandler(workspaceRoot, dispatcher
       }
       const profile = resolveAgentProfile(workspaceRoot, state.target.profileId,
         state.target.profileRevision ? { revisionId: state.target.profileRevision } : {});
-      if (state.target.profileId !== 'ptc-dft-expert' && profile.executionClass !== 'input-dft') {
-        throw new Error(`profile ${state.target.profileId} is not configured for input-dft execution`);
-      }
+      assertDftExecutionCapability(profile);
       const result = await (options.executeTrainingRun ?? executeTrainingRun)(workspaceRoot,
         { runId: input.runId, testItems: input.testItems }, {
           forceModelReview: true,

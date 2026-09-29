@@ -26,6 +26,8 @@ const executeTrainingRun = (root, input, options = {}) => executeRealTrainingRun
 function workspace() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'ptc-training-execution-'));
   fs.mkdirSync(path.join(root, 'team/expert-profiles/ptc-dft-expert'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'team/expert-profiles/ptc-dft-expert/profile.yaml'),
+    'id: ptc-dft-expert\nexecutionClass: input-dft\nexecutionAdapter: ptc-dft\ncapabilityContract: ptc-dft-business-v1\nownerRole: dft-expert\n');
   return root;
 }
 

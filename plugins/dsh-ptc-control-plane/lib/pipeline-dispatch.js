@@ -16,6 +16,15 @@ function atomic(root, file, value) {
 }
 const readJson = file => JSON.parse(fs.readFileSync(file, 'utf8').replace(/^\uFEFF/, ''));
 const digest = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
+function snapshotProfileDigest(root, manifest, profileRoot) {
+  const files = (manifest.files ?? []).filter(entry => {
+    const file = path.resolve(root, entry.snapshotPath);
+    return file !== profileRoot && file.startsWith(`${profileRoot}${path.sep}`) && path.basename(file) !== 'agent-manifest.json' && path.basename(file) !== 'status.json';
+  }).map(entry => ({ path: path.relative(profileRoot, path.resolve(root, entry.snapshotPath)).split(path.sep).join('/'), bytes: entry.size, sha256: entry.sha256 }))
+    .sort((a, b) => a.path.localeCompare(b.path));
+  return digest(Buffer.from(`${JSON.stringify(files, null, 2)}\n`, 'utf8'));
+}
+
 const sameItems = (a, b) => Array.isArray(a) && Array.isArray(b)
   && JSON.stringify([...a].sort()) === JSON.stringify([...b].sort());
 
@@ -142,10 +151,13 @@ function bindRequest(root, request, suppliedMaterials) {
     pipelineCacheKey: manifest.pipelineCacheKey, ownerProfiles: manifest.ownerProfiles };
   if (materials.runId !== runId || !sameItems(materials.testItems, manifest.testItems)
       || materials.pipelineCacheKey !== manifest.pipelineCacheKey
+      || JSON.stringify(materials.workflowBinding ?? null) !== JSON.stringify(manifest.workflowBinding ?? null)
+      || JSON.stringify(materials.profileRevisions ?? {}) !== JSON.stringify(manifest.profileRevisions ?? {})
+      || JSON.stringify(materials.profileDigests ?? {}) !== JSON.stringify(manifest.profileDigests ?? {})
       || !Array.isArray(testItems) || !testItems.length || new Set(testItems).size !== testItems.length
       || testItems.some(tm => !/^TM\d+$/.test(tm) || !manifest.testItems.includes(tm))
       || (sourceReview && !sameItems(testItems, manifest.testItems))) throw new Error('stage test items or material identity differ from frozen pipeline');
-  for (const key of ['input', 'dftRoot', 'schematicRoot', 'trials', 'registerRoot', 'knowledgeRoot', 'programSourceRoot', 'profileRoots']) {
+  for (const key of ['input', 'dftRoot', 'schematicRoot', 'trials', 'registerRoot', 'knowledgeRoot', 'libraryRoot', 'programSourceRoot', 'profileRoots', 'workflowBinding', 'profileRevisions', 'profileDigests']) {
     if (JSON.stringify(materials[key]) !== JSON.stringify(manifest.addressBook?.[key])) throw new Error('stage address book differs from frozen pipeline');
   }
   const registryFile = assertSafeRunPath(root, path.join(runRoot, 'pipeline-registry.json'));
@@ -158,6 +170,11 @@ function bindRequest(root, request, suppliedMaterials) {
   }
   const profileId = manifest.ownerProfiles?.[role];
   if (!profileId || materials.ownerProfiles?.[role] !== profileId) throw new Error('missing frozen pipeline profile mapping');
+  const workflowStep = manifest.workflowBinding?.steps?.find(step => step.role === role);
+  if (manifest.workflowBinding && (!workflowStep || workflowStep.profileId !== profileId
+      || workflowStep.profileRevision !== (manifest.profileRevisions?.[role] ?? null))) {
+    throw new Error('workflow step binding differs from frozen Agent mapping');
+  }
   const profileRoot = assertSafeRunPath(root, path.resolve(root, materials.profileRoots?.[profileId] ?? ''));
   const relativeProfile = path.relative(path.join(runRoot, 'profiles'), profileRoot);
   if (!relativeProfile || relativeProfile.startsWith('..') || path.isAbsolute(relativeProfile)) throw new Error('profile is not a private snapshot');
@@ -166,8 +183,11 @@ function bindRequest(root, request, suppliedMaterials) {
   const instructionsBytes = fs.readFileSync(instructionsFile);
   const profileSha256 = digest(instructionsBytes);
   if (entries.length !== 1 || entries[0].mutable || entries[0].sha256 !== profileSha256) throw new Error('frozen pipeline profile bytes differ');
+  const profileDigest = snapshotProfileDigest(root, manifest, profileRoot);
+  if (materials.profileDigests?.[role] && materials.profileDigests[role] !== profileDigest) throw new Error('frozen pipeline profile content digest differs');
+  const profileRevision = materials.profileRevisions?.[role] ?? null;
   const instructions = new TextDecoder('utf-8', { fatal: true }).decode(instructionsBytes);
-  return { runRoot, materials, registry, profileId, profileRoot, instructions, profileSha256, sourceReview };
+  return { runRoot, materials, registry, profileId, profileRevision, profileDigest, profileRoot, instructions, profileSha256, sourceReview };
 }
 
 /** One real generic stage child. Source parsers and compile remain host adapters. */
@@ -182,7 +202,7 @@ export function createPipelineDispatcher(ctx, workspaceRoot, options = {}) {
       if (!materials) throw new Error('missing frozen pipeline profile mapping');
       const bound = bindRequest(root, request, materials);
       const selection = resolveTrainingModelChoice(request.modelChoice, ctx.agentDefaultModel.currentSelection());
-      const { runRoot, registry, profileId, profileRoot, instructions, profileSha256, sourceReview } = bound;
+      const { runRoot, registry, profileId, profileRevision, profileDigest, profileRoot, instructions, profileSha256, sourceReview } = bound;
       const dispatchId = `${runId}:${stage}:${role}:1`;
       const receiptFile = path.join(runRoot, 'receipts', `${stage}-${role}.json`);
       const terminalFile = path.join(runRoot, 'receipts', `${stage}-${role}-terminal.json`);
@@ -201,7 +221,7 @@ export function createPipelineDispatcher(ctx, workspaceRoot, options = {}) {
       const label = stageDispatchLabel(runId, stage, role);
       let receipt = { schemaVersion: 1, kind: 'ptc-training-stage', runId, stage, role, profileId, gate,
         testItems, dispatchId, registryDigest, label, parentSessionId, childSessionId: null,
-        profileSha256, modelChoice: selection.choice, modelProvider: selection.provider, modelName: selection.model,
+        profileSha256, profileRevision, profileDigest, modelChoice: selection.choice, modelProvider: selection.provider, modelName: selection.model,
         pipelineCacheKey: materials.pipelineCacheKey, createdAt: new Date().toISOString() };
       // Reserve this identity across dispatcher instances/processes. An atomic
       // replacement is safe for updates, but would overwrite another starter's
@@ -266,7 +286,7 @@ export function createPipelineDispatcher(ctx, workspaceRoot, options = {}) {
         receipt = { ...receipt, childSessionId: child.id, dispatchedAt: new Date().toISOString() };
         atomic(root, receiptFile, signStageReceipt(receipt));
         const result = await lifecycle.race(child.result, { label: 'child.result', trackSettlement: true });
-        const terminal = { schemaVersion: 1, kind: 'ptc-training-stage-terminal', runId, stage, gate, profileId, profileSha256,
+        const terminal = { schemaVersion: 1, kind: 'ptc-training-stage-terminal', runId, stage, gate, profileId, profileRevision, profileDigest, profileSha256,
           pipelineCacheKey: materials.pipelineCacheKey, dispatchId, registryDigest, role, testItems, childSessionId: child.id,
           modelChoice: selection.choice, modelProvider: selection.provider, modelName: selection.model,
           status: result?.stopReason === 'completed' && result?.structured?.status === 'done'
@@ -276,7 +296,7 @@ export function createPipelineDispatcher(ctx, workspaceRoot, options = {}) {
         return terminal;
       } catch (error) {
         lifecycle.cancel(error);
-        const terminal = { schemaVersion: 1, kind: 'ptc-training-stage-terminal', runId, stage, gate, profileId, profileSha256,
+        const terminal = { schemaVersion: 1, kind: 'ptc-training-stage-terminal', runId, stage, gate, profileId, profileRevision, profileDigest, profileSha256,
           pipelineCacheKey: materials.pipelineCacheKey, dispatchId, registryDigest, role, testItems, childSessionId: receipt.childSessionId, status: 'blocked',
           modelChoice: selection.choice, modelProvider: selection.provider, modelName: selection.model,
           stopReason: error instanceof TrainingCancellationError ? error.stopReason : 'error', reason: error.message };
@@ -290,7 +310,7 @@ export function createPipelineDispatcher(ctx, workspaceRoot, options = {}) {
     },
     recover(request) {
       const role = request.owner;
-      const { runRoot, profileId, profileSha256, materials } = bindRequest(root, request);
+      const { runRoot, profileId, profileRevision, profileDigest, profileSha256, materials } = bindRequest(root, request);
       const file = assertSafeRunPath(root, path.join(runRoot, 'receipts', `${request.stage}-${role}-terminal.json`));
       const terminal = readJson(file);
       const receipt = readJson(assertSafeRunPath(root, path.join(runRoot, 'receipts', `${request.stage}-${role}.json`)));
@@ -311,6 +331,7 @@ export function createPipelineDispatcher(ctx, workspaceRoot, options = {}) {
           || !sameItems(receipt.testItems, terminal.testItems)
           || terminal.schemaVersion !== 1 || terminal.kind !== 'ptc-training-stage-terminal'
           || terminal.stage !== request.stage || terminal.gate !== request.gate || terminal.profileId !== profileId
+          || terminal.profileRevision !== profileRevision || terminal.profileDigest !== profileDigest
           || terminal.profileSha256 !== profileSha256 || terminal.pipelineCacheKey !== materials.pipelineCacheKey
           || (terminal.status !== 'done' && terminal.status !== 'blocked')
           || (terminal.status === 'done' && (!terminal.childSessionId || terminal.result?.stopReason !== 'completed'
