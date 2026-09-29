@@ -214,3 +214,5 @@ D7/正式 Trainer 运行时已实现：恢复并接入 `trainer-api`、`trainer-
 ### 本轮 Git checkpoint
 
 待本轮精确文件验证通过后创建并推送 checkpoint，包含客户端 kind 修复、pipeline identity/digest/replay 修复、回归测试和本补录；不会加入工作区中其他既有修改或运行产物。
+
+本轮 checkpoint 已完成并推送：commit `9a959dd231b228ecc74000456fcc0ffaee3e737f`，远程 `origin/master` 已核验为同一提交。
