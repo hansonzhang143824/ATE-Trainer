@@ -39,12 +39,13 @@
       "output": { "answer": 3 }
     },
     "D": {
-      "status": "passed",
+      "status": "blocked_missing_independent_two_agent_run",
       "workflowId": "workflow-T1",
       "workflowRevisionId": "revision-b001a99f-4fc3-4e3f-8478-4fdbd93812b6",
-      "agentOrder": ["agent-T1", "agent-T2"],
+      "agentOrder": ["agent-T1", "agent-T2", "agent-T3"],
       "runId": "framework-c87b035e-e425-4725-b500-82763857fbf4",
-      "outputsByAgent": {"agent-T1": {"answer": 3}, "agent-T2": {"answer": 5}},
+      "outputsByAgent": {"agent-T1": {"answer": 3}, "agent-T2": {"answer": 5}, "agent-T3": {"answer": 7}},
+      "note": "This persisted artifact is the subsequent three-Agent run and is valid for E; a separate two-Agent run after adding T2 and before adding T3 must still be generated.",
       "validation": {"ok": true}
     },
     "E": {
@@ -89,7 +90,7 @@
     "nativeToolEvidence": "Training_Materials/framework/control/requests/agent-trainer/native-apply-e40fa706-5c1a-4d0b-bdcb-7e3c915f34d2.json"
   },
   "d7": {
-    "status": "passed_with_environment_note",
+    "status": "blocked_by_native_host_and_missing_d_run",
     "checkpointFiles": [
       "docs/checkpoints/agent-trainer-d1-20260929.json",
       "docs/checkpoints/agent-trainer-d2-20260929.json",

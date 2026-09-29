@@ -76,7 +76,9 @@ test('A-G acceptance artifacts prove persisted Agent Trainer behavior', () => {
   }
 
   const evidence = readJson('docs/agent-trainer-acceptance-evidence-20260929.json');
+  assert.equal(evidence.actualUiClicks.D.status, 'blocked_missing_independent_two_agent_run');
   assert.equal(evidence.actualUiClicks.G.isolationVerified, true);
+  assert.equal(evidence.d7.status, 'blocked_by_native_host_and_missing_d_run');
   assert.equal(evidence.d7.checkpointFiles.length, 6);
   for (const checkpoint of evidence.d7.checkpointFiles) assert.ok(fs.existsSync(path.join(root, checkpoint)), checkpoint);
 });
