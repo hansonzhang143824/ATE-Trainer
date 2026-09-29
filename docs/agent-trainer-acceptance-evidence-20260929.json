@@ -106,6 +106,7 @@
       "node --no-compilation-cache -e import('./plugins/dsh-ptc-control-plane/test/agent-trainer-session-tool.test.mjs')",
       "controlled restart: Gate A passed, Gate C passed"
     ],
+    "restartEvidence": "C:/Users/nvt10241/AppData/Local/Temp/dsh-plugin-restart-20260929-222852",
     "knownEnvironmentLimitations": [
       "Windows node --test child-process spawning reports EPERM; direct module execution is used for Trainer tests.",
       "This localhost page has no injected DSH sessionServices; exact native-host creation remains externally dependent. The white-native adapter is explicitly namespaced and server-bound to agent-trainer and never accepts ordinary sessions."
