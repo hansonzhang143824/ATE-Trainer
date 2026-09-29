@@ -218,7 +218,12 @@ export function createPipelineDispatcher(ctx, workspaceRoot, options = {}) {
       // real-business model enough room to submit the verdict; keep the
       // default model's bounded 2048 contract unchanged.
       const agentOptions = { provider: selection.provider, model: selection.model,
-        maxTokens: sourceReview && selection.choice === 'deepseek-v4-flash' ? 4096 : sourceReview ? 2048 : 8192 };
+        maxTokens: sourceReview && selection.choice === 'deepseek-v4-flash' ? 8192 : sourceReview ? 2048 : 8192 };
+      // A semantic review that stops only because the provider exhausted its
+      // output budget is recoverable.  Give that one case a single larger
+      // retry; all other incomplete/blocked results remain fail-closed.
+      const sourceReviewRetryTokens = sourceReview ? 16384 : agentOptions.maxTokens;
+      const maxReviewAttempts = sourceReview ? 2 : 1;
       const parentSessionId = `session-training-${runId}-${stage}-${role}`;
       const label = stageDispatchLabel(runId, stage, role);
       let receipt = { schemaVersion: 1, kind: 'ptc-training-stage', runId, stage, role, profileId, gate,
@@ -262,6 +267,9 @@ export function createPipelineDispatcher(ctx, workspaceRoot, options = {}) {
           this.timer = setTimeout(() => lifecycle.cancel(`no permitted stage tool started for ${toolIdleMs} ms`, { stopReason: 'timeout' }), toolIdleMs);
         } };
       active.set(dispatchId, record);
+      let reviewAttempts = 0;
+      let retriedAfterMaxTokens = false;
+      const reviewAttemptLog = [];
       try {
         const parent = await lifecycle.race(() => ctx.agents.create({ sessionId: parentSessionId,
           meta: { cwd: root, agentPreset: 'ate-ptc' }, agentOptions,
@@ -269,30 +277,50 @@ export function createPipelineDispatcher(ctx, workspaceRoot, options = {}) {
         }), { label: 'parent.create', disposeLate: value => value.dispose?.() });
         await lifecycle.race(() => parent.agent.whenIdle(), { label: 'parent.idle' });
         const schematicReviewFacts = sourceReview ? buildSchematicReviewFacts(root, materials, testItems) : null;
-        const child = await lifecycle.race(() => ctx.subagents.start('spawn', {
-          label, parent: parent.agent, signal: lifecycle.signal, agentOptions,
-          // Schematic review receives a bounded, host-generated evidence
-          // packet. It is deliberately tool-free so the review cannot hang on
-          // a missing parent read tool; host products remain immutable and the
-          // stage gate still verifies every byte independently.
-          maxDepth: 1, toolFilter: { allow: sourceReview ? [] : ['read', 'write'] },
-          persona: `You are a frozen draft PTC TRAINING specialist, not a Captain.\n${instructions}\n\nNATIVE HOST OVERRIDE: use only the injected private run address book. Do not dispatch, advance, access production paths or run shell commands. The host independently executes the registry gate after your output is complete. Do not claim that host gate already passed. Return blocked for unsupported or conflicting source facts. ${sourceReview ? 'No tools are available for this bounded semantic review; reason only from the host-generated evidence packet.' : 'Start the first permitted material tool promptly; the host cancels after 60 seconds without a tool start.'}`,
-          prompt: [{ type: 'text', text: `Run ${runId}; stage ${stage}; owner ${role}; TMs ${testItems.join(', ')}.\nFrozen materials: ${JSON.stringify({ input: materials.input, dftRoot: materials.dftRoot, schematicRoot: materials.schematicRoot, trials: materials.trials, registerRoot: materials.registerRoot, knowledgeRoot: materials.knowledgeRoot, programSourceRoot: materials.programSourceRoot, profileRoot })}\nHost-computed SHA-256 facts (copy exact values; never guess): ${JSON.stringify(request.hostFacts ?? [])}\n${sourceReview
+        const promptText = `Run ${runId}; stage ${stage}; owner ${role}; TMs ${testItems.join(', ')}.\nFrozen materials: ${JSON.stringify({ input: materials.input, dftRoot: materials.dftRoot, schematicRoot: materials.schematicRoot, trials: materials.trials, registerRoot: materials.registerRoot, knowledgeRoot: materials.knowledgeRoot, programSourceRoot: materials.programSourceRoot, profileRoot })}\nHost-computed SHA-256 facts (copy exact values; never guess): ${JSON.stringify(request.hostFacts ?? [])}\n${sourceReview
             ? `The host generated the seven schematic products under ${materials.schematicRoot} and checked them with the original deterministic schematic gate. This is a BOUNDED semantic review for EVERY assigned TM, not a second parser or exhaustive graph reconstruction. No tools are available in this review; use only the following host-generated evidence packet and the frozen DFT conditions. Do not run a gate yourself; the host performs final validation after your structured response. Compare three concrete facts: source-port identity/count, DUT Kelvin identity/count, and one relay path plus its ON/NC state for a pin ACTUALLY INVOLVED in the assigned TM. Do not choose an unrelated board-level path as the TM's evidence; a separate unrelated hazard may be reported as a warning, but not as this TM's contradiction unless the same electrical route or required state affects the TM. Apply the frozen project relay policy correctly: G6K pins 1/8 are coil, pins 2-7 are signal; default NC contact pairs are 2-3 and 7-6, SetOn pairs are 3-4 and 6-5. Compare relay states within the SAME route scenario: the same relay in different alternative routes is not by itself a contradiction. A confirmed TP-to-pin short establishes endpoint net equivalence, not a bypass of upstream relays. CRITICAL RESPONSE BUDGET: do not emit a reasoning narrative, enumerate names, or perform field-by-field arithmetic. Trust the host-declared counts and compare only the supplied line windows. Call structured_output as the next action after reading the packet. Put exactly three concise findings (each <=240 characters) with source/product line references in outputs; outputs are findings, not file paths. Keep reason <=800 characters. Return structured done only if all three comparisons are supported without conflict; otherwise structured blocked with the exact missing fact or conflict. Do not claim final host validation. Host evidence packet: ${JSON.stringify(schematicReviewFacts)}`
-            : `Write this stage's outputs for EVERY assigned TM under its trial directory. Stage contract outputs: ${JSON.stringify(registry.stages[stage].outputs)}. Host gate: ${gate}. Existing signed inputs must stay byte-identical. Implementation may edit only the private source copy, never the approved source original. Respond done only when all requested artifacts are ready for host validation; otherwise blocked with exact reason.`}` }],
-          outputSchema: { type: 'object', properties: { status: { type: 'string', enum: ['done', 'blocked'] }, reason: { type: 'string' }, outputs: { type: 'array', items: { type: 'string' } } }, required: ['status'], additionalProperties: false },
-        }), { label: 'child.start', disposeLate: value => { Promise.resolve(value.result).catch(() => {}); return value.dispose?.(); } });
-        if (typeof child.id !== 'string' || !child.id) throw new Error('stage child has no bound session id');
-        record.childSessionId = child.id;
-        if (!sourceReview) record.armToolDeadline();
-        receipt = { ...receipt, childSessionId: child.id, dispatchedAt: new Date().toISOString() };
-        atomic(root, receiptFile, signStageReceipt(receipt));
-        const result = await lifecycle.race(child.result, { label: 'child.result', trackSettlement: true });
+            : `Write this stage's outputs for EVERY assigned TM under its trial directory. Stage contract outputs: ${JSON.stringify(registry.stages[stage].outputs)}. Host gate: ${gate}. Existing signed inputs must stay byte-identical. Implementation may edit only the private source copy, never the approved source original. Respond done only when all requested artifacts are ready for host validation; otherwise blocked with exact reason.`}`;
+        let child = null;
+        let result = null;
+        for (let attempt = 1; attempt <= maxReviewAttempts; attempt += 1) {
+          reviewAttempts = attempt;
+          const attemptOptions = attempt === 1 ? agentOptions : { ...agentOptions, maxTokens: sourceReviewRetryTokens };
+          const attemptPrompt = attempt === 1 ? promptText : `${promptText}\nRETRY: the previous attempt reached the output token limit before structured_output. Do not repeat analysis; call structured_output immediately with exactly three concise findings and a short reason.`;
+          child = await lifecycle.race(() => ctx.subagents.start('spawn', {
+            label: `${label}:attempt-${attempt}`, parent: parent.agent, signal: lifecycle.signal, agentOptions: attemptOptions,
+            // Schematic review receives a bounded, host-generated evidence
+            // packet. It is deliberately tool-free so the review cannot hang on
+            // a missing parent read tool; host products remain immutable and the
+            // stage gate still verifies every byte independently.
+            maxDepth: 1, toolFilter: { allow: sourceReview ? [] : ['read', 'write'] },
+            persona: `You are a frozen draft PTC TRAINING specialist, not a Captain.\n${instructions}\n\nNATIVE HOST OVERRIDE: use only the injected private run address book. Do not dispatch, advance, access production paths or run shell commands. The host independently executes the registry gate after your output is complete. Do not claim that host gate already passed. Return blocked for unsupported or conflicting source facts. ${sourceReview ? 'No tools are available for this bounded semantic review; reason only from the host-generated evidence packet.' : 'Start the first permitted material tool promptly; the host cancels after 60 seconds without a tool start.'}`,
+            prompt: [{ type: 'text', text: attemptPrompt }],
+            outputSchema: { type: 'object', properties: { status: { type: 'string', enum: ['done', 'blocked'] }, reason: { type: 'string' }, outputs: { type: 'array', items: { type: 'string' } } }, required: ['status'], additionalProperties: false },
+          }), { label: `child.start.attempt-${attempt}`, disposeLate: value => { Promise.resolve(value.result).catch(() => {}); return value.dispose?.(); } });
+          if (typeof child.id !== 'string' || !child.id) throw new Error('stage child has no bound session id');
+          record.childSessionId = child.id;
+          if (!sourceReview) record.armToolDeadline();
+          receipt = { ...receipt, childSessionId: child.id, dispatchedAt: new Date().toISOString(), reviewAttempts, retriedAfterMaxTokens };
+          atomic(root, receiptFile, signStageReceipt(receipt));
+          result = await lifecycle.race(child.result, { label: `child.result.attempt-${attempt}`, trackSettlement: true });
+          reviewAttemptLog.push({ attempt, childSessionId: child.id, stopReason: result?.stopReason ?? null, maxTokens: attemptOptions.maxTokens });
+          receipt = { ...receipt, reviewAttempts, retriedAfterMaxTokens, reviewAttemptLog };
+          atomic(root, receiptFile, signStageReceipt(receipt));
+          const stopReason = String(result?.stopReason ?? '').toLowerCase();
+          const budgetExhausted = ['max-tokens', 'max_tokens', 'length'].includes(stopReason);
+          if (!(sourceReview && budgetExhausted && attempt < maxReviewAttempts)) break;
+          retriedAfterMaxTokens = true;
+          child.dispose?.();
+        }
+        const status = result?.stopReason === 'completed' && result?.structured?.status === 'done'
+          && (!sourceReview || hasSourceReviewEvidence(result)) ? 'done' : 'blocked';
+        const reason = status === 'blocked'
+          ? (result?.structured?.reason ?? `${sourceReview ? 'semantic review child' : 'stage child'} stopped: ${result?.stopReason ?? 'unknown'}`)
+          : undefined;
         const terminal = { schemaVersion: 1, kind: 'ptc-training-stage-terminal', runId, stage, gate, profileId, profileRevision, profileDigest, profileSha256,
           pipelineCacheKey: materials.pipelineCacheKey, dispatchId, registryDigest, role, testItems, childSessionId: child.id,
-          modelChoice: selection.choice, modelProvider: selection.provider, modelName: selection.model,
-          status: result?.stopReason === 'completed' && result?.structured?.status === 'done'
-            && (!sourceReview || hasSourceReviewEvidence(result)) ? 'done' : 'blocked',
+          modelChoice: selection.choice, modelProvider: selection.provider, modelName: selection.model, reviewAttempts, retriedAfterMaxTokens, reviewAttemptLog,
+          status, stopReason: result?.stopReason ?? null, ...(reason ? { reason } : {}),
           result, finishedAt: new Date().toISOString() };
         atomic(root, terminalFile, signStageReceipt(terminal));
         return terminal;
@@ -300,7 +328,7 @@ export function createPipelineDispatcher(ctx, workspaceRoot, options = {}) {
         lifecycle.cancel(error);
         const terminal = { schemaVersion: 1, kind: 'ptc-training-stage-terminal', runId, stage, gate, profileId, profileRevision, profileDigest, profileSha256,
           pipelineCacheKey: materials.pipelineCacheKey, dispatchId, registryDigest, role, testItems, childSessionId: receipt.childSessionId, status: 'blocked',
-          modelChoice: selection.choice, modelProvider: selection.provider, modelName: selection.model,
+          modelChoice: selection.choice, modelProvider: selection.provider, modelName: selection.model, reviewAttempts, retriedAfterMaxTokens, reviewAttemptLog,
           stopReason: error instanceof TrainingCancellationError ? error.stopReason : 'error', reason: error.message };
         atomic(root, terminalFile, signStageReceipt(terminal));
         return terminal;

@@ -91,6 +91,55 @@ test('explicit training model choice is bound to child and signed stage receipts
   assert.equal(json(f.terminal).modelName, 'deepseek-v4-flash');
 });
 
+test('source semantic review retries once after token exhaustion and keeps the run fail-closed', async () => {
+  const f = fixture('INPUT_SYNC');
+  write(path.join(f.runRoot, 'state.json'), { runId: f.request.runId, modelChoice: 'deepseek-v4-flash' });
+  const observations = [];
+  const { ctx } = context();
+  let attempts = 0;
+  ctx.subagents.start = async (_provider, options) => {
+    observations.push(options);
+    attempts += 1;
+    const result = attempts === 1 ? { stopReason: 'max-tokens' } : reviewed;
+    return { id: `fixture-child-${attempts}`, result: Promise.resolve(result), dispose() {} };
+  };
+  const dispatcher = createPipelineDispatcher(ctx, f.root);
+  const terminal = await dispatcher.dispatch({ ...f.request, modelChoice: 'deepseek-v4-flash' }, f.materials);
+  assert.equal(terminal.status, 'done');
+  assert.equal(terminal.reviewAttempts, 2);
+  assert.equal(terminal.retriedAfterMaxTokens, true);
+  assert.deepEqual(terminal.reviewAttemptLog.map(entry => ({ attempt: entry.attempt, stopReason: entry.stopReason, maxTokens: entry.maxTokens })), [
+    { attempt: 1, stopReason: 'max-tokens', maxTokens: 8192 },
+    { attempt: 2, stopReason: 'completed', maxTokens: 16384 },
+  ]);
+  assert.equal(observations.length, 2);
+  assert.equal(observations[0].agentOptions.maxTokens, 8192);
+  assert.equal(observations[1].agentOptions.maxTokens, 16384);
+  assert.doesNotMatch(observations[0].prompt[0].text, /RETRY:/);
+  assert.match(observations[1].prompt[0].text, /RETRY:.*output token limit/i);
+  assert.equal(dispatcher.recover({ ...f.request, modelChoice: 'deepseek-v4-flash' }).status, 'done');
+});
+
+test('source semantic review does not retry a completed blocked verdict', async () => {
+  const f = fixture('INPUT_SYNC');
+  const observations = [];
+  const { ctx } = context();
+  ctx.subagents.start = async (_provider, options) => {
+    observations.push(options);
+    return { id: 'fixture-child-blocked', result: Promise.resolve({
+      stopReason: 'completed', structured: { status: 'blocked', reason: 'missing relay comparison' },
+    }), dispose() {} };
+  };
+  const terminal = await createPipelineDispatcher(ctx, f.root).dispatch(f.request, f.materials);
+  assert.equal(terminal.status, 'blocked');
+  assert.equal(terminal.stopReason, 'completed');
+  assert.equal(terminal.reason, 'missing relay comparison');
+  assert.equal(terminal.reviewAttempts, 1);
+  assert.equal(terminal.retriedAfterMaxTokens, false);
+  assert.match(terminal.reason, /missing relay comparison/);
+  assert.equal(observations.length, 1);
+});
+
 test('pipeline dispatcher refuses changed owner, gate, registry, mode, profile bytes and unassigned TMs before model creation', async () => {
   const cases = [
     f => { f.request.owner = 'other-expert'; },
