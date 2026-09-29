@@ -2,8 +2,8 @@
   "stage": "D6",
   "status": "passed",
   "scope": "release-and-engineering-isolation",
-  "frozenVersionId": "frozen-2a4223e1-c65c-4670-a2e0-b848b3b51d6d",
-  "releaseId": "release-9403c386-05d9-49bb-a562-2a920efb28cc",
-  "publishedRuns": ["publish/runs/framework-21edf523-af52-4a3a-9de4-d8cd5dc5ba10/framework-run.json", "publish/runs/framework-08b87c84-02a1-4b91-98b0-b29e4835ec92/framework-run.json"],
+  "frozenVersionId": "frozen-bed69174-cca1-4a0c-8ef0-838494a91487",
+  "releaseId": "release-95a32837-bd2e-4929-9364-4d9c2165091d",
+  "publishedRuns": ["publish/runs/framework-7712f931-9f9e-4cf9-beca-982c4f3f71f9/framework-run.json", "publish/runs/framework-4ca40d40-433e-4b04-a7e2-a3a7420e8d70/framework-run.json"],
   "assertions": ["release contains immutable hashes", "engineering runs use mode published", "candidate removal of agent-T2 did not alter published order or output", "businessGatePassed remains false"]
 }

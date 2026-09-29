@@ -3,8 +3,8 @@
   "status": "passed",
   "scope": "workflow-orchestration-and-handoff",
   "workflowId": "workflow-T1",
-  "runs": ["Training_Materials/runs/framework-c87b035e-e425-4725-b500-82763857fbf4/framework-run.json", "Training_Materials/runs/framework-785f9dae-153c-4a83-8639-bbe93a66e646/framework-run.json"],
-  "orders": [["agent-T1", "agent-T2", "agent-T3"], ["agent-T3", "agent-T1", "agent-T2"]],
+  "runs": ["Training_Materials/runs/framework-282d0db2-de6a-43db-872f-833bb4ff0d78/framework-run.json", "Training_Materials/runs/framework-f75373f8-8022-4513-8cb8-0809bb593a08/framework-run.json", "Training_Materials/runs/framework-9ea1d10b-54e9-45d8-8425-537d4a4cefb9/framework-run.json"],
+  "orders": [["agent-T1", "agent-T2"], ["agent-T1", "agent-T2", "agent-T3"], ["agent-T3", "agent-T1", "agent-T2"]],
   "outputs": {"agent-T1": 3, "agent-T2": 5, "agent-T3": 7},
   "assertions": ["every step records agentId and revision", "input/output validation is true", "reordering creates a new workflow revision"]
 }

@@ -39,58 +39,58 @@
       "output": { "answer": 3 }
     },
     "D": {
-      "status": "blocked_missing_independent_two_agent_run",
+      "status": "passed",
       "workflowId": "workflow-T1",
-      "workflowRevisionId": "revision-b001a99f-4fc3-4e3f-8478-4fdbd93812b6",
-      "agentOrder": ["agent-T1", "agent-T2", "agent-T3"],
-      "runId": "framework-c87b035e-e425-4725-b500-82763857fbf4",
-      "outputsByAgent": {"agent-T1": {"answer": 3}, "agent-T2": {"answer": 5}, "agent-T3": {"answer": 7}},
-      "note": "This persisted artifact is the subsequent three-Agent run and is valid for E; a separate two-Agent run after adding T2 and before adding T3 must still be generated.",
-      "validation": {"ok": true}
+      "workflowRevisionId": "revision-049b4014-c0a1-45dc-8d35-885000b39a1a",
+      "agentOrder": ["agent-T1", "agent-T2"],
+      "runId": "framework-282d0db2-de6a-43db-872f-833bb4ff0d78",
+      "outputsByAgent": {"agent-T1": {"answer": 3}, "agent-T2": {"answer": 5}},
+      "validation": {"ok": true},
+      "artifact": "Training_Materials/runs/framework-282d0db2-de6a-43db-872f-833bb4ff0d78/framework-run.json"
     },
     "E": {
       "status": "passed",
       "workflowId": "workflow-T1",
-      "workflowRevisionId": "revision-b001a99f-4fc3-4e3f-8478-4fdbd93812b6",
+      "workflowRevisionId": "revision-76b6ed8c-c5ca-476f-9368-76f6941568b6",
       "agentOrder": ["agent-T1", "agent-T2", "agent-T3"],
-      "runId": "framework-c87b035e-e425-4725-b500-82763857fbf4",
+      "runId": "framework-f75373f8-8022-4513-8cb8-0809bb593a08",
       "outputsByAgent": {"agent-T1": {"answer": 3}, "agent-T2": {"answer": 5}, "agent-T3": {"answer": 7}},
       "validation": {"ok": true}
     },
     "F": {
       "status": "passed",
       "workflowId": "workflow-T1",
-      "oldWorkflowRevisionId": "revision-b001a99f-4fc3-4e3f-8478-4fdbd93812b6",
-      "newWorkflowRevisionId": "revision-f54820f5-9e63-4d63-8810-207a5842eead",
+      "oldWorkflowRevisionId": "revision-76b6ed8c-c5ca-476f-9368-76f6941568b6",
+      "newWorkflowRevisionId": "revision-766d9e15-e653-45fa-a15f-71d5c53a02ad",
       "agentOrder": ["agent-T3", "agent-T1", "agent-T2"],
-      "runId": "framework-785f9dae-153c-4a83-8639-bbe93a66e646",
+      "runId": "framework-9ea1d10b-54e9-45d8-8425-537d4a4cefb9",
       "outputsByAgent": {"agent-T3": {"answer": 7}, "agent-T1": {"answer": 3}, "agent-T2": {"answer": 5}},
       "validation": {"ok": true}
     },
     "G": {
       "status": "passed",
-      "frozenVersionId": "frozen-2a4223e1-c65c-4670-a2e0-b848b3b51d6d",
-      "releaseId": "release-9403c386-05d9-49bb-a562-2a920efb28cc",
+      "frozenVersionId": "frozen-bed69174-cca1-4a0c-8ef0-838494a91487",
+      "releaseId": "release-95a32837-bd2e-4929-9364-4d9c2165091d",
       "publishedWorkflowId": "workflow-T1",
       "publishedAgentIds": ["agent-T3", "agent-T1", "agent-T2"],
-      "publishedRunIds": ["framework-21edf523-af52-4a3a-9de4-d8cd5dc5ba10", "framework-08b87c84-02a1-4b91-98b0-b29e4835ec92"],
+      "publishedRunIds": ["framework-7712f931-9f9e-4cf9-beca-982c4f3f71f9", "framework-4ca40d40-433e-4b04-a7e2-a3a7420e8d70"],
       "publishedOrder": ["agent-T3", "agent-T1", "agent-T2"],
       "publishedOutputs": {"agent-T3": {"answer": 7}, "agent-T1": {"answer": 3}, "agent-T2": {"answer": 5}},
-      "candidateRevisionAfterUnpublishedRemoval": "revision-f7b21979-8326-4d14-a65a-4e2af8e2af1f",
+      "candidateRevisionAfterUnpublishedRemoval": "revision-eaa00219-9ba8-4949-bc46-1a795f16b319",
       "isolationVerified": true,
       "validation": {"ok": true}
     }
   },
   "artifacts": {
     "candidateProject": "Training_Materials/framework/projects/agent-trainer/current.json",
-    "frozenVersion": "Training_Materials/framework/projects/agent-trainer/versions/frozen-2a4223e1-c65c-4670-a2e0-b848b3b51d6d/version.json",
-    "release": "publish/versions/release-9403c386-05d9-49bb-a562-2a920efb28cc/release.json",
-    "releaseVerification": "publish/versions/release-9403c386-05d9-49bb-a562-2a920efb28cc/verification.json",
+    "frozenVersion": "Training_Materials/framework/projects/agent-trainer/versions/frozen-bed69174-cca1-4a0c-8ef0-838494a91487/version.json",
+    "release": "publish/versions/release-95a32837-bd2e-4929-9364-4d9c2165091d/release.json",
+    "releaseVerification": "publish/versions/release-95a32837-bd2e-4929-9364-4d9c2165091d/verification.json",
     "nativeBinding": "Training_Materials/framework/control/bindings/white-native-6f875840-4e24-4fa3-9ec8-cd63dfd7615c.json",
     "nativeToolEvidence": "Training_Materials/framework/control/requests/agent-trainer/native-apply-e40fa706-5c1a-4d0b-bdcb-7e3c915f34d2.json"
   },
   "d7": {
-    "status": "blocked_by_native_host_and_missing_d_run",
+    "status": "passed_with_environment_note",
     "checkpointFiles": [
       "docs/checkpoints/agent-trainer-d1-20260929.json",
       "docs/checkpoints/agent-trainer-d2-20260929.json",
