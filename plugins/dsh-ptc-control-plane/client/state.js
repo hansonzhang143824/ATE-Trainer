@@ -434,6 +434,7 @@ function normalizeBusinessAgent(raw) {
     .map(item => ({ path: item.path, used: item.used === true })) : [];
   return {
     profileId: text(record.profileId, 'unknown-agent'),
+    kind: text(record.kind, 'agent'),
     displayName: text(record.displayName, 'Agent'),
     latestRunId: optionalText(record.latestRunId),
     latestRunStatus: optionalText(record.latestRunStatus),

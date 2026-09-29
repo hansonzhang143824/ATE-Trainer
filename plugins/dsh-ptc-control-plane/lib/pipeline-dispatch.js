@@ -171,8 +171,10 @@ function bindRequest(root, request, suppliedMaterials) {
   const profileId = manifest.ownerProfiles?.[role];
   if (!profileId || materials.ownerProfiles?.[role] !== profileId) throw new Error('missing frozen pipeline profile mapping');
   const workflowStep = manifest.workflowBinding?.steps?.find(step => step.role === role);
+  const expectedWorkflowRevision = manifest.profileRevisions?.[role] && manifest.profileRevisions[role] !== 'draft'
+    ? manifest.profileRevisions[role] : null;
   if (manifest.workflowBinding && (!workflowStep || workflowStep.profileId !== profileId
-      || workflowStep.profileRevision !== (manifest.profileRevisions?.[role] ?? null))) {
+      || (workflowStep.profileRevision ?? null) !== expectedWorkflowRevision)) {
     throw new Error('workflow step binding differs from frozen Agent mapping');
   }
   const profileRoot = assertSafeRunPath(root, path.resolve(root, materials.profileRoots?.[profileId] ?? ''));

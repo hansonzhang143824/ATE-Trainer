@@ -201,3 +201,16 @@ D7/正式 Trainer 运行时已实现：恢复并接入 `trainer-api`、`trainer-
 ### D4 补充修复：legacy profile 工作流绑定
 
 工作流冻结器现在区分两类 profile：内置历史 profile 没有 sealed manifest 时只冻结 `profileId`，复制/版本化 profile 有 manifest 时冻结 `profileRevision` 和 content digest。这样保持旧 profile 可运行，同时保证复制 Agent 的替换必须经过真实 revision 校验。focused training-run、pipeline-materials、agent-profile-runtime 测试通过。
+## 2026-09-29 目标模式最终开发记录
+
+本轮完成了动态 Agent 与工作流替换的运行时闭环：业务能力从 profile 配置解析，复制 Agent 可以声明完整 DFT 能力并通过 `executionClass`、`executionAdapter`、`capabilityContract` 进入同一工作流；pipeline 创建、复用、dispatch、terminal verification 使用同一份冻结 profile identity。legacy profile 没有 sealed revision 时仍兼容 `draft`，有冻结 manifest 时则比较实际 revision 和 content digest。
+
+同时修复了冻结 profile digest 的来源：digest 现在针对实际复制到 pipeline frozen 目录的 on-disk bytes 计算，避免源 profile 与冻结副本不一致。执行适配器会根据材料中的 owner profile 与 revision 重建验证绑定，工作流步骤比较也统一 legacy draft 语义。客户端重新构建后，业务 DFT selector 会保留 `kind`，因此可选择复制的 DFT Agent。
+
+验证完成项：5 个 pipeline-materials 测试、31 个 pipeline dispatch/execution 测试、3 个业务输出 contract 测试、4 个 engineering release filter 测试以及此前的 5 个 runtime focused tests 全部通过；真实 TM109 clone workflow 在 DeepSeek V4 Flash 下完成并生成 gate、terminal、semantic review、YAML/JSON 与 SHA-256 记录；发布冻结版本经工程模式按钮复跑完成 7 个阶段和 evolution auxiliary smoke。
+
+未改变的边界：SMOKE_ONLY 仍只接受注册表 arithmetic child，BUSINESS_ONLY 仍为独立 opt-in 训练路径；业务训练结果没有被发布为 smoke release，工程模式不能写入冻结目录。下一步若要把 BUSINESS_ONLY 变成可发布业务版本，必须另行做 business release decision 和完整 business gate，不由本轮目标模式自动完成。
+
+### 本轮 Git checkpoint
+
+待本轮精确文件验证通过后创建并推送 checkpoint，包含客户端 kind 修复、pipeline identity/digest/replay 修复、回归测试和本补录；不会加入工作区中其他既有修改或运行产物。

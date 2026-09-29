@@ -218,3 +218,36 @@ SMOKE_ONLY 基线 release `smoke-20260924t003644499z-58e16ff6` 的历史八专�
 ### 工作流按钮第 1 次真实验证（2026-09-29）
 
 computer use 点击工作流按钮生成 `training-20260929t011949z-008c4aaa`。运行身份、`workflowId: tm109-input-sync`、`workflowRevision: business-v1` 和 schematic→DFT 两个绑定已写入 state；运行在材料准备前因 legacy profile 被错误要求 `versions/draft/manifest.json` 而阻断。该结果已定位为实现缺陷，修复后需重新点击同一按钮，验收条件仍为完整 pipeline terminal、TM109 hash record 和 completed 状态。
+## 2026-09-29 目标模式最终开发与验收补录
+
+### 本轮实现
+
+- Agent 选择器保留并传递 `kind` 字段，业务页能够区分普通 Agent 与 DFT Agent。computer use 已实际打开业务 DFT 下拉框并选择 `TM109 DFT Copy v2 · tm109-dft-copy-v2`。
+- 动态 DFT 能力判断改为读取 Agent 完整配置中的 `executionClass`、`executionAdapter`、`capabilityContract`，不再把 `ptc-dft-expert` 当作唯一可执行身份。
+- 工作流复用时解析 legacy `draft` revision，再与冻结快照比较；执行验证会从冻结材料重建 `profileBindings` 与 `workflowBinding`，并把 legacy `draft` 归一为缺省版本。
+- 冻结材料的 profile digest 改为对实际复制到冻结目录的文件计算 SHA-256，地址簿、manifest 与复验使用同一组字节证据。
+- 新增 pipeline material identity 回归测试，覆盖绑定流水线复用时的 legacy revision 场景。
+
+### 自动化验证
+
+- `pipeline-materials.test.mjs`：5/5 通过。
+- `pipeline-dispatch.test.mjs` 与 `pipeline-execution.test.mjs`：31/31 通过。
+- 此前的 `training-run`、`pipeline-materials`、`agent-profile-runtime` focused tests：5/5 通过；业务输出 contract tests：3/3 通过；工程发布过滤 `trainer-runtime.test.mjs`：4/4 通过。
+- 相关 JavaScript 文件均通过 `node --check`。
+
+### computer use 验收
+
+- BUSINESS_ONLY 真实业务按钮使用 clone Agent 和 `DeepSeek V4 Flash` 完成：
+  - run：`training-20260929t025454z-5cd76117`
+  - workflow：`tm109-input-sync` / `business-v1`
+  - schematic：`ptc-schematic-expert`；DFT：`tm109-dft-copy-v2` / `business-tm109-v1`
+  - `pipeline-progress.json`：`completed`；INPUT_SYNC gate：`passed`；exitCode：0
+  - TM109 产物：`dft-meta.json`、`dft-conditions.yaml`、`dft-semantic-review.json`
+  - 产物哈希：`92b2b2915f4b74066e9534194684ace3518d300792eb4221e3882ccb072fac27`、`5bf84bf18cc2e53f8438fbc8f233fef8f4adb5c3dcb2f20dfa5e7724769cc8a7`、`ba5e878fa522c509ac2055860e6bb18f93e588a2416ebfc8ba352ae627d2cb2c`
+  - hash record：`Training_Materials/runs/training-20260929t025454z-5cd76117/evidence/tm109-output-hashes.json`，文件 SHA-256 `dfe3978e721d2bdee83de55fbcaae8d2829a7988ac147dccb4b9bf8adb680f38`
+  - gate receipt SHA-256：`65d0ad2087fae5f9fb9c90bf762bd399f3f0998a69dd27263816b6203c6a6c12`
+- 默认模型的一次真实业务点击 `training-20260929t024559z-8c523041` 因外部模型超时被阻塞；切换 DeepSeek V4 Flash 后同一业务按钮完成，前者保留为外部依赖超时证据，不作为代码失败。
+- 工程模式按钮已实际点击。页面显示固定 workflow release，并提供只读冻结模板；服务端 context 回归确认仅返回 active release 中的 workflow，未发布 Agent 返回空列表，显式绑定未发布 Agent 返回 `release_not_active`。
+- 工程模式中实际点击“复跑冻结版本 1+2 SMOKE_ONLY”，run `published-smoke-20260929t030512353z-9354d300` 最终 `completed`：7 个 registry stages 全部 completed，evolution auxiliary answer=3，所有任务 captain verified，范围仍为 `SMOKE_ONLY` 且 `businessGatePassed=false`。
+
+BUSINESS_ONLY 运行只作为训练证据，继续保存在 `Training_Materials/runs/<runId>/`，没有写入或激活 smoke release；发布态复跑只使用冻结快照并写入 `publish/runs/<runId>/`。

@@ -79,7 +79,15 @@ export function createNativePipelineAdapters(root, materials, dftDispatcher, sta
   const command = options.runHostCommand ?? runHostCommand;
   const dftGate = options.runDftGate ?? runDftGate;
   const verify = options.verifyMaterials ?? (async () => {
-    const checked = await preparePipelineMaterials(root, runId, materials.testItems);
+    const profileBindings = Object.fromEntries(['schematic-expert', 'dft-expert'].flatMap(role => {
+      const profileId = materials.ownerProfiles?.[role];
+      if (!profileId) return [];
+      const revision = materials.profileRevisions?.[role];
+      return [[role, { profileId, ...(revision && revision !== 'draft' ? { profileRevision: revision } : {}) }]];
+    }));
+    const checked = await preparePipelineMaterials(root, runId, materials.testItems, {
+      profileBindings, workflowBinding: materials.workflowBinding,
+    });
     if (checked.pipelineCacheKey !== materials.pipelineCacheKey) throw new Error('pipeline material identity changed');
   });
   let hostFacts = [];

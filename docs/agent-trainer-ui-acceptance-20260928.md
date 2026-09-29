@@ -67,3 +67,11 @@
 本轮 computer-use 证明了业务按钮的受理、禁用、运行记录和真实模型 dispatch；业务最终通过和复制 Agent 在页面下拉中的可选显示，待服务以最新源码正常重启后再完成一次闭环验收。
 
 第 2 个业务按钮也已实际点击，页面进入 disabled 状态并创建 `training-20260929t011949z-008c4aaa`。state 已证明工作流 ID、revision、handoff 和两个 Agent binding 被写入；本次在材料准备前暴露 legacy `draft` manifest 绑定缺陷，修复后需要再次点击并以 completed terminal/hash record 收口。
+## 2026-09-29 目标模式最终 computer-use 验收
+
+1. 在 PTC 控制面选择业务 DFT Agent，下拉框实际显示并可选 `DFT Expert · ptc-dft-expert` 与 `TM109 DFT Copy v2 · tm109-dft-copy-v2`；选择 clone 后点击“运行真实 原理图 → DFT INPUT_SYNC”。
+2. 选择 `DeepSeek V4 Flash` 后，页面产生 `training-20260929t025454z-5cd76117`。页面运行记录显示 INPUT_SYNC completed；本地 `state.json`、pipeline terminal、gate receipt、semantic review 和 TM109 hash record 均闭合，门禁为 passed。
+3. 点击“工程模式”，页面切换到固定版本和只读发布态，显示 `workflow-release-20260924t035419911z-0ea5159a` 及冻结 smoke release。未发布 Agent 不出现在工程候选，服务端拒绝未发布绑定。
+4. 在工程模式点击“复跑冻结版本 1+2 SMOKE_ONLY”，页面先显示 running，随后显示 `published-smoke-20260929t030512353z-9354d300 · completed · SMOKE_ONLY · 业务门禁未通过`。本次复跑的 7 个阶段和 evolution auxiliary 都有 `answer=3` 回执。
+
+结论：原型交互保持不变，业务 clone Agent 可以进入真实 INPUT_SYNC 工作流；工程模式只读消费冻结发布版本；smoke replay 与 BUSINESS_ONLY 训练分别落在各自目录和边界内。默认模型那次超时已通过切换 DeepSeek V4 Flash 重试并保留为外部依赖证据。

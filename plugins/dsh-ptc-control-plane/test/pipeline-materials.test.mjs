@@ -86,6 +86,28 @@ test('pipeline snapshot copies approved private sources, every draft owner and i
   assert.deepEqual(fs.readFileSync(path.join(root, 'Project_Info.json')), original);
 });
 
+test('reusing a bound pipeline resolves legacy draft profile revisions before identity comparison', async (t) => {
+  const { root } = fixture(t);
+  write(root, 'team/expert-profiles/ptc-dft-expert/profile.yaml', 'id: ptc-dft-expert\nownerRole: dft-expert\nexecutionClass: input-dft\nexecutionAdapter: ptc-dft\ncapabilityContract: ptc-dft-business-v1\n');
+  const profileBindings = {
+    'schematic-expert': { profileId: 'ptc-schematic-expert' },
+    'dft-expert': { profileId: 'ptc-dft-expert' },
+  };
+  const workflowBinding = {
+    workflowId: 'tm109-input-sync', workflowRevision: 'business-v1',
+    steps: [
+      { order: 1, role: 'schematic-expert', profileId: 'ptc-schematic-expert' },
+      { order: 2, role: 'dft-expert', profileId: 'ptc-dft-expert' },
+    ],
+    handoff: 'schematic-output-to-dft-input',
+  };
+  const options = { profileBindings, workflowBinding };
+  const first = await preparePipelineMaterials(root, 'pipeline-bound', ['TM109'], options);
+  assert.deepEqual(first.profileRevisions, { 'dft-expert': 'draft', 'schematic-expert': 'draft' });
+  const reused = await preparePipelineMaterials(root, 'pipeline-bound', ['TM109'], options);
+  assert.equal(reused.pipelineCacheKey, first.pipelineCacheKey);
+});
+
 test('changed approval or owner mapping blocks snapshot without production writes', async (t) => {
   const { root, info } = fixture(t);
   info.inputs.program = path.join(root, 'unapproved');
