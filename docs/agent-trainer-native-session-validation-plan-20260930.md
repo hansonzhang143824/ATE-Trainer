@@ -179,3 +179,7 @@ publish/runs/<runId>/framework-run.json
 - 每次重测必须生成新的时间戳和 evidence batch，旧批次保留，不覆盖。
 - 最终 PASS 需要 Gate 0–6 全部通过、每个点击动作都有证据、native transcript 与服务端 run/revision 能互相对应，并由 Git 提交记录实现和验证结果。
 
+## 11. 原生模型选择核对（追加）
+
+绑定文件中的 `nativeModelSelection` 只是 Trainer 服务要求的模型快照；DSH 原生窗口还必须以实际请求 ledger 和窗口模型选择器核对最终路由。若窗口初始模型与绑定快照不同，必须在原生窗口实际点击模型选择器切换到 `DeepSeek-V4-Flash`，再发送一条消息并检查 ledger 的 `provider/model/modelSource`，否则模型 Gate 不通过。当前一次工作流验证已证明：初始宿主实际为 `zai-coding-cn/glm-5.3-flash`，点击选择 `DeepSeek-V4-Flash` 后实际 ledger 变为 `deepseek-official/deepseek-v4-flash`；该差异仍需决定是否在入口代码中自动消除，不能用绑定文件的期望值代替实际请求证据。
+

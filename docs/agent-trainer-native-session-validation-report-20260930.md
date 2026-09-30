@@ -58,6 +58,12 @@ preset: agent-trainer · target: agent/agent-T1
 
 同一原生窗口随后实际发送固定 smoke 输入 `1+2等于几，把答案写在JSON里`，收到合法 JSON `{ "answer" :  3 }`；原生界面显示本轮用时 6 秒、首 token 5.2 秒、64 tok/s。该结果只证明当前 Agent 的原生调用链可用，仍按 `SMOKE_ONLY` / `businessGatePassed:false` 解释，不代表业务能力或发布已通过。
 
+### 工作流原生会话
+
+通过 Trainer 页面实际点击工作流“新工作流 1”→“在 Trainer 中训练当前工作流”，DSH 打开工作区 `ATE Trainer · workflow:custom-workflow-1`，session 为 `session-7bda7999-35ca-49a5-b214-16ad2598b609`。原生输入先调用 `trainer_context`/`trainer_runs`，随后调用 `trainer_validate` 和 `trainer_run`；事件流显示 step-1 至 step-4 全部完成，`childTerminationConfirmed=true`。真实步骤输出为 `3 → 231 → 3 → 3`，最终 `{ "answer":3,"mode":"SMOKE_ONLY","businessGatePassed":false }`，run 为 `framework-9b806116-73cf-496a-a8e8-183bb6dff7e0`。
+
+模型核对发现：绑定文件期望 `deepseek-official/deepseek-v4-flash`，但工作流原生窗口初始实际请求为 `zai-coding-cn/glm-5.3-flash`；在原生模型选择器实际点击 `DeepSeek-V4-Flash` 后，下一轮真实 ledger 变为 `deepseek-official/deepseek-v4-flash`，回复用时 1 秒、首 token 1.4 秒、429 tok/s。入口默认模型是否自动切换仍是未完成项，不能把“绑定期望”当成“默认实际”。
+
 ### Agent 原生会话
 
 从 DSH 的“打开 ATE Trainer”直达入口进入白色 Agent Trainer，再点击“打开当前专家原生会话”。DSH 宿主显示真实窗口标题 `Agent Trainer · agent-T1`，preset 为 `agent-trainer`。在 DSH 原生输入框中发送上下文读取指令，真实事件包含 `trainer_context`，原生回复返回了当前 agent、candidate revision 和运行状态。

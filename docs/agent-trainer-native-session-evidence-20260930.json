@@ -62,7 +62,7 @@
     }
   },
   "bindingFile": "Training_Materials/framework/control/bindings/session-ca6a57d2-5ee0-4ec8-a446-0580132c067f.json",
-  "result": "PARTIAL_PASS_DIRECT_ENTRY_AGENT_NATIVE_AND_SMOKE",
+  "result": "PARTIAL_PASS_DIRECT_ENTRY_AGENT_NATIVE_SMOKE_AND_WORKFLOW_NATIVE",
   "remainingGates": [
     "clean-project-create",
     "agent-optimization-new-old",
@@ -70,5 +70,77 @@
     "refresh-reopen-errors",
     "smoke-freeze-publish-replay",
     "rollback"
-  ]
+  ],
+  "workflow": {
+    "targetKind": "workflow",
+    "targetId": "custom-workflow-1",
+    "workflowName": "新工作流 1",
+    "sessionId": "session-7bda7999-35ca-49a5-b214-16ad2598b609",
+    "candidateRevision": "revision-c9f89fa5-142d-4fa8-956f-4b2762afeb06",
+    "promptContext": "请只读取 trainer_context 和 trainer_runs，用一句人话告诉我当前绑定的工作流名称和步骤数量；不要修改，不要运行。",
+    "contextToolCalls": [
+      "trainer_context",
+      "trainer_runs"
+    ],
+    "runPrompt": "请读取真实工作流上下文，调用 trainer_run 执行当前工作流一次；只汇报每个步骤是否完成、最终JSON输出和 businessGatePassed，不要修改候选。",
+    "runId": "framework-9b806116-73cf-496a-a8e8-183bb6dff7e0",
+    "status": "completed",
+    "childTerminationConfirmed": true,
+    "steps": [
+      {
+        "stepId": "step-1",
+        "agentId": "custom-agent-1",
+        "status": "completed",
+        "output": {
+          "answer": 3
+        }
+      },
+      {
+        "stepId": "step-2",
+        "agentId": "agent-T2",
+        "status": "completed",
+        "output": {
+          "answer": 231
+        }
+      },
+      {
+        "stepId": "step-3",
+        "agentId": "agent-T1",
+        "status": "completed",
+        "output": {
+          "answer": 3
+        }
+      },
+      {
+        "stepId": "step-4",
+        "agentId": "custom-agent-4",
+        "status": "completed",
+        "output": {
+          "businessGatePassed": false,
+          "mode": "SMOKE_ONLY",
+          "answer": 3
+        }
+      }
+    ],
+    "finalOutput": {
+      "businessGatePassed": false,
+      "mode": "SMOKE_ONLY",
+      "answer": 3
+    },
+    "businessGatePassed": false,
+    "nativeTiming": {
+      "turnSeconds": 106,
+      "firstTokenSeconds": 4,
+      "tokensPerSecond": 71
+    },
+    "modelReconciliation": {
+      "bindingConfigured": "deepseek-official/deepseek-v4-flash",
+      "initialHostActual": "zai-coding-cn/glm-5.3-flash",
+      "manualNativeSelection": "DeepSeek-V4-Flash",
+      "verifiedHostActualAfterSelection": "deepseek-official/deepseek-v4-flash",
+      "selectionTurnSeconds": 1,
+      "selectionFirstTokenSeconds": 1.4,
+      "selectionTokensPerSecond": 429
+    }
+  }
 }
