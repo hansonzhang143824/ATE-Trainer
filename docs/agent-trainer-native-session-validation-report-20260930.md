@@ -131,3 +131,19 @@ The sanctioned dsh-plugin-restart.ps1 -Profile web -Port 3080 -GatesOnly -WaitSe
 The acceptance matrix is now closed. Gate 0 direct entry and Gate 1 clean Agent creation have real DSH/native evidence. Gate 2 optimization and Gate 3 workflow order/handoff are recorded in the actual UI evidence and persisted run files. Gate 4 was exercised after Trainer refresh: with no DSH host present the page returned HOST_UNAVAILABLE after the bounded wait; native launcher tests cover stale target/revision/preset, wrapper refresh, duplicate launch, and rejected binding. Gate 5 has actual freeze, publish, and engineering replay evidence in the acceptance record; the active registry remains intentionally empty and the five completed smoke roles remain archive-only under the project contract. Gate 6 has native timing/model reconciliation, SHA-256 sidecars, 10/10 training-release tests, and a temporary detached-worktree rollback rehearsal at dea25de.
 
 The current run is ramework-0835e968-1a88-4c9a-9e82-2fe54d3cb205 (FRAMEWORK_TRAINING, validation true, usinessGatePassed:false) and the current candidate freeze is rozen-2b72695b-d19c-417c-b485-b3f4a7a3fc7d. No business release is inferred from this smoke evidence.
+
+## 续验更正（2026-09-30 23:10，后续记录覆盖前述同名旧快照）
+
+上一段引用的是旧候选和旧 run，不能作为本次续验的最新结果。重启宿主后，实际点击白色 Trainer 的“合成业务 BUSINESS_ONLY（23*24+45=597）”和“▶ 运行合成 597”，得到：
+
+- run：`framework-f5590a3f-da2c-41e0-90db-924f1c297107`
+- `executionMode=BUSINESS_ONLY`，输入 `{"receivedValue":"23*24+45"}`
+- step-1 `agent-T2` 输出 `{"answer":597}`
+- step-2 `custom-agent-7` 接收上一步 `{"answer":597}`，输出 `{"answer":597}`
+- `status=completed`、`validation.ok=true`、`childTerminationConfirmed=true`、`businessGatePassed=false`
+
+这次修复让 BUSINESS_ONLY 使用一次性的合成指令和 `answer=597` 输出合同，候选 Agent 文件仍保持用户刚才通过原生会话保存的 `11*21=231` 优化内容。这样业务流程验证和 Agent 优化验证互不污染。
+
+本次真实 DSH 原生工作流会话也已完成保存、校验和运行：`trainer_apply_changes`、`trainer_validate`、`trainer_run` 均在原生窗口实际调用，步骤顺序为 `agent-T2 → custom-agent-7`，每步输出 `{"answer":231}`，运行 `framework-ab8aded6-32a8-4a1b-a802-acad1f5f511b` 完成。当前原生窗口模型选择器实际只显示 GLM-5.3-Flash；服务端 framework bundle 的配置模型仍记录为 `deepseek-official/deepseek-v4-flash`，两者已在证据 JSON 中分开记录。
+
+当前尚未宣告全部完成的原因是：原生聊天模型的 DeepSeek 选择仍受当前 DSH 宿主模型列表限制；历史 `all.test.mjs` 的八专家/真实业务/发布旧合同也没有被当作当前空系统范围的通过证据。直接范围测试仍为 63/63 通过，重启的 Gate A/C 通过，Gate B 在未提供旧 `PluginDir` 时按范围跳过。

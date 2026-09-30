@@ -295,6 +295,7 @@ export function createFrameworkRunner({ workspaceRoot, adapter, now = () => new 
         projectId: bundle.projectId, targetKind: bundle.targetKind, targetId: bundle.targetId, revisionId: bundle.revisionId,
         workflowRevision: bundle.workflowRevision ?? null,
         bundleSha256: bundle.bundleSha256, model: clone(bundle.model), mode: input.mode,
+        executionMode: input.executionMode ?? 'FRAMEWORK_TRAINING',
         purpose: input.mode === 'published' ? 'FRAMEWORK_REPLAY' : (optimization ? 'agent-optimization' : 'FRAMEWORK_TRAINING'), status: 'queued',
         startedAt: now(), updatedAt: now(), completedAt: null, derivedFromRunId: input.derivedFromRunId ?? null,
         changeSetId: input.changeSetId ?? null, releaseId: input.releaseId ?? null, businessGatePassed: false,

@@ -1,6 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { createHash, randomUUID } from 'node:crypto';
+import { trainerSha } from './trainer-project.js';
+import { bundleManifestBytes } from './trainer-bundle.js';
 
 const MUTATIONS = new Set(['apply-changes', 'run', 'control', 'freeze', 'stage-release', 'activate-release']);
 const TRAINING = new Set(['apply-changes', 'freeze']);
@@ -8,6 +10,44 @@ const PAGE_ONLY = new Set(['freeze', 'stage-release', 'activate-release', 'bind-
 const TOOL_PRESETS = new Set(['agent-trainer', 'framework-expert', 'framework-observer']);
 export const DEFAULT_TRAINER_PROJECT_ID = 'agent-trainer';
 const clone = value => JSON.parse(JSON.stringify(value));
+const SYNTHETIC_BUSINESS_OUTPUT_SCHEMA = JSON.stringify({
+  $schema: 'https://json-schema.org/draft/2020-12/schema',
+  type: 'object',
+  properties: { answer: { type: 'number', const: 597 } },
+  required: ['answer'],
+  additionalProperties: false,
+}, null, 2) + '\n';
+const SYNTHETIC_BUSINESS_INSTRUCTIONS = [
+  '# Synthetic BUSINESS_ONLY verification',
+  'This is a synthetic acceptance run, not real semiconductor business execution.',
+  'Ignore the candidate Agent task and evaluate the supplied synthetic expression.',
+  'For input.receivedValue equal to "23*24+45", calculate 23*24+45 = 597.',
+  'If the input already contains answer: 597 from an upstream step, preserve it.',
+  'Return JSON only: {"answer":597}. The answer must be the JSON number 597.',
+].join('\n') + '\n';
+
+/**
+ * BUSINESS_ONLY in the current user scope is a deterministic synthetic
+ * plumbing check. It must not inherit an Agent's optimization instruction
+ * (for example, 11*21=231), otherwise the button would claim to test 597
+ * while actually testing a different candidate task. Rewrite only the
+ * transient execution bundle; the candidate files remain unchanged.
+ */
+function syntheticBusinessBundle(bundle) {
+  const outputRefs = new Set((bundle.steps || []).map(step => step.outputSchemaRef).filter(Boolean));
+  const instructionRefs = new Set((bundle.steps || []).map(step => step.instructionsRef).filter(Boolean));
+  const files = bundle.files.map(file => {
+    let content = file.content;
+    if (instructionRefs.has(file.path)) content = SYNTHETIC_BUSINESS_INSTRUCTIONS;
+    if (outputRefs.has(file.path)) content = SYNTHETIC_BUSINESS_OUTPUT_SCHEMA;
+    if (content === file.content) return file;
+    const bytes = Buffer.from(content);
+    return { ...file, content, size: bytes.length, sha256: trainerSha(bytes) };
+  });
+  const rewritten = { ...bundle, files };
+  rewritten.bundleSha256 = trainerSha(bundleManifestBytes(rewritten));
+  return rewritten;
+}
 function fail(code, message, details) { throw Object.assign(new Error(message), { code, details }); }
 function stable(value) {
   if (Array.isArray(value)) return `[${value.map(stable).join(',')}]`;
@@ -308,14 +348,18 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
           if (!active) fail('release_not_active','No active release for this target');
           args={...args,releaseId:active.releaseId};
         }
-        const bundle = args.mode === 'training'
+        const resolvedBundle = args.mode === 'training'
           ? await call('resolveBundle', { ...args, model: await modelResolver(args) })
           : await call('loadReleaseBundle', args);
-        const resolved = bundle.bundle || bundle;
+        const baseBundle = resolvedBundle.bundle || resolvedBundle;
+        const resolved = args.executionMode === 'BUSINESS_ONLY'
+          ? syntheticBusinessBundle(baseBundle)
+          : baseBundle;
         if (resolved.projectId !== args.projectId) fail('bundle_project_mismatch', 'Bundle project mismatch');
         const started=await runner.startRun({ runId: args._runId, requestId: args.requestId, bundle: resolved,
           input: args.input || {}, mode: args.mode === 'training' ? 'training' : 'published',
-          purpose: args.purpose, derivedFromRunId: args.derivedFromRunId, changeSetId: args.changeSetId, releaseId: bundle.releaseId || args.releaseId });
+          purpose: args.purpose, executionMode: args.executionMode, derivedFromRunId: args.derivedFromRunId,
+          changeSetId: args.changeSetId, releaseId: resolvedBundle.releaseId || args.releaseId });
         if (binding) {
           const current=getBinding(binding.sessionId);
           atomic(bindingFile(binding.sessionId),{...current,selectedRunId:started.runId,bindingRevision:current.bindingRevision+1});

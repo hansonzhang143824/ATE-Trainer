@@ -107,10 +107,13 @@ test('trainer service runs a registered workflow through the real runner boundar
   let child = 0;
   try {
     await projects.ensureTrainerProject(root, { projectId: 'synthetic-lab', seed: createSyntheticTrainerFixture() });
-    const adapter = { async dispatch({ step, input, onStart }) {
+    const adapter = { async dispatch({ step, bundle, input, onStart }) {
       const childSessionId = `synthetic-child-${++child}`;
       onStart({ childSessionId, parentSessionId: 'synthetic-parent' });
-      const output = step.stepId === 'produce'
+      const instruction = bundle.files.find(file => file.path === step.instructionsRef)?.content ?? '';
+      const output = instruction.includes('Synthetic BUSINESS_ONLY')
+        ? { answer: 597 }
+        : step.stepId === 'produce'
         ? { value: input.seed + 1, marker: 'v1', scriptMarker: 'script-v1' }
         : { receivedValue: input.receivedValue };
       return { output, childSessionId, childTerminationConfirmed: true, stopReason: 'completed' };
@@ -143,6 +146,29 @@ test('trainer service runs a registered workflow through the real runner boundar
     assert.equal(result.value.status, 'completed');
     assert.deepEqual(result.value.output, { receivedValue: 8 });
     assert.equal(result.value.businessGatePassed, false);
+
+    const businessFiles = [
+      { path: 'agents/business-agent/instructions.md', content: 'Candidate task must remain separate from synthetic BUSINESS_ONLY execution.\n' },
+      { path: 'agents/business-agent/agent.json', content: JSON.stringify({ agentId: 'business-agent', name: 'Synthetic business Agent', instructionsRef: 'agents/business-agent/instructions.md', skillRefs: [], toolIds: [], inputSchemaRef: 'contracts/business-input.schema.json', outputSchemaRef: 'contracts/business-output.schema.json' }) },
+      { path: 'contracts/business-input.schema.json', content: JSON.stringify({ type: 'object', additionalProperties: true }) },
+      { path: 'contracts/business-output.schema.json', content: JSON.stringify({ type: 'object', properties: { answer: { type: 'number' } }, required: ['answer'], additionalProperties: false }) },
+      { path: 'workflows/business-workflow.json', content: JSON.stringify({ workflowId: 'business-workflow', name: 'Synthetic business workflow', steps: [{ stepId: 'business-step', agentId: 'business-agent', inputBindings: {}, outputSchemaRef: 'contracts/business-output.schema.json' }] }) },
+    ];
+    const businessSaved = await page('apply-changes', { requestId: 'trainer-business-create-1', baseRevision: (await page('context')).value.project.revisionId, changes: businessFiles, reason: 'create synthetic BUSINESS_ONLY regression fixture' });
+    assert.equal(businessSaved.ok, true, JSON.stringify(businessSaved));
+    const businessPage = (operation, input = {}) => service.invoke(operation,
+      { projectId: 'synthetic-lab', targetKind: 'workflow', targetId: 'business-workflow', ...input }, { kind: 'page' });
+    const businessStarted = await businessPage('run', { requestId: 'trainer-business-run-1', executionMode: 'BUSINESS_ONLY', input: { receivedValue: '23*24+45' } });
+    assert.equal(businessStarted.ok, true, JSON.stringify(businessStarted));
+    await runner.waitForRun({ runId: businessStarted.value.runId });
+    const businessResult = await businessPage('runs', { runId: businessStarted.value.runId });
+    assert.equal(businessResult.value.executionMode, 'BUSINESS_ONLY');
+    assert.deepEqual(businessResult.value.output, { answer: 597 });
+    assert.deepEqual(businessResult.value.steps[0].output, { answer: 597 });
+    assert.equal(businessResult.value.validation.ok, true);
+    assert.equal(businessResult.value.businessGatePassed, false);
+    const unchanged = await page('assets', { revisionId: businessSaved.value.revisionId });
+    assert.match(unchanged.value.files['agents/business-agent/instructions.md'], /Candidate task must remain separate/);
   } finally { fs.rmSync(root, { recursive: true, force: true }); }
 });
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "capturedAt": "2026-09-30T14:50:00Z",
+  "capturedAt": "2026-09-30T15:10:57Z",
   "entry": {
     "action": "click direct ATE Trainer entry",
     "hostUrl": "http://127.0.0.1:3080/",
@@ -63,7 +63,10 @@
   },
   "bindingFile": "Training_Materials/framework/control/bindings/session-ca6a57d2-5ee0-4ec8-a446-0580132c067f.json",
   "result": "PASS_NATIVE_DSH_SESSION_REPLACEMENT_SMOKE_ONLY",
-  "remainingGates": [],
+  "remainingGates": [
+    "当前 DSH 原生模型选择器只暴露 zai-coding-cn/glm-5.3-flash；deepseek-official/deepseek-v4-flash 仅在 Trainer framework bundle 配置中验证，原生聊天模型选择仍待宿主提供。",
+    "旧 all.test.mjs 的 63 项失败属于已归档八专家/真实业务/发布历史合同；当前 63 项直接范围测试已通过，完整旧套件不作为当前空系统范围验收。"
+  ],
   "workflow": {
     "targetKind": "workflow",
     "targetId": "custom-workflow-1",
@@ -128,16 +131,13 @@
     },
     "modelReconciliation": {
       "bindingConfigured": "deepseek-official/deepseek-v4-flash",
-      "initialHostActual": "zai-coding-cn/glm-5.3-flash",
-      "manualNativeSelection": "DeepSeek-V4-Flash",
-      "verifiedHostActualAfterSelection": "deepseek-official/deepseek-v4-flash",
-      "selectionTurnSeconds": 1,
-      "selectionFirstTokenSeconds": 1.4,
-      "selectionTokensPerSecond": 429
+      "currentHostActual": "zai-coding-cn/glm-5.3-flash",
+      "nativeSelectionStatus": "unavailable_in_current_host_model_picker",
+      "note": "The current DSH native model picker exposed GLM-5.3-Flash only; framework runner evidence still records the configured DeepSeek bundle model."
     }
   },
   "continuation": {
-    "capturedAt": "2026-09-30T14:25:39Z",
+    "capturedAt": "2026-09-30T15:10:57Z",
     "activeRegistry": {
       "path": "team/ptc/ptc_stage_registry.json",
       "stateMachineLength": 0,
@@ -160,43 +160,111 @@
       "activeDispatch": "disabled"
     },
     "syntheticBusinessUi": {
-      "pageUrl": "http://127.0.0.1:3080/agent-trainer?nativeHost=0fd46ed7-aacf-4c92-949d-57c0b006406d&uiCheck=synthetic597-20260930",
+      "pageUrl": "http://127.0.0.1:3080/agent-trainer?nativeHost=6a3fefff-0b60-480b-b615-82e4fbc81220",
       "clickedLabel": "合成业务 BUSINESS_ONLY（23*24+45=597）",
       "activeClass": "active",
       "runButton": "▶ 运行合成 597",
-      "input": "23*24+45",
-      "output": {
-        "answer": 597
-      },
-      "businessGatePassed": false
-    },
-    "nativeWorkflow": {
-      "sessionId": "session-4bd55360-b30b-45e8-a331-0395be530389",
-      "targetId": "custom-workflow-1",
-      "candidateRevision": "revision-e4579ebd-2a54-4c89-a1cf-1be2ac457f67",
-      "stepOrder": [
-        "custom-agent-7"
-      ],
-      "runId": "framework-58cbd823-0b20-4b8e-93a9-702e2d25fa2b",
-      "freshChildSessionId": "4f034b98-2769-4bee-83a3-ce93193997c6",
-      "finalOutput": {
-        "answer": 597
-      },
-      "businessGatePassed": false,
-      "validation": {
-        "ok": true,
-        "errors": []
-      }
-    },
-    "syntheticUiRun": {
-      "runId": "framework-5fd337b7-8548-4874-b1a2-cfedabff337c",
-      "requestId": "white-run-eefada4e-1c2e-4992-8d86-2f3b68b163b9",
-      "purpose": "FRAMEWORK_TRAINING",
+      "runId": "framework-f5590a3f-da2c-41e0-90db-924f1c297107",
+      "executionMode": "BUSINESS_ONLY",
       "input": {
         "receivedValue": "23*24+45"
       },
+      "stepOutputs": {
+        "agent-T2": {
+          "answer": 597
+        },
+        "custom-agent-7": {
+          "answer": 597
+        }
+      },
       "output": {
         "answer": 597
+      },
+      "validation": {
+        "ok": true,
+        "errors": []
+      },
+      "childTerminationConfirmed": true,
+      "businessGatePassed": false,
+      "evidence": "通过白色 Trainer 页面实际点击模式按钮和运行按钮；运行记录实际显示输入 23*24+45、两步输出 597。"
+    },
+    "nativeWorkflow": {
+      "sessionId": "session-b074db1c-b53c-4136-9191-a531465f58df",
+      "targetId": "custom-workflow-1",
+      "candidateRevision": "revision-8c543ff6-116a-4e83-9b2f-1805a8fea0ca",
+      "promptContext": "请读取真实 trainer_context 和 trainer_runs，用一句人话告诉我当前绑定的工作流名称和步骤顺序；不要修改。",
+      "contextToolCalls": [
+        "trainer_context",
+        "trainer_runs"
+      ],
+      "mutationPrompt": "请读取真实 trainer_context。把当前工作流顺序改为 agent-T2 → custom-agent-7。请调用 trainer_apply_changes 保存工作流，再调用 trainer_validate 校验，然后运行一次；只汇报步骤顺序、每步输出和最终 JSON。",
+      "mutationToolCalls": [
+        "trainer_assets",
+        "trainer_context",
+        "trainer_apply_changes",
+        "trainer_validate",
+        "trainer_run",
+        "trainer_runs"
+      ],
+      "runId": "framework-ab8aded6-32a8-4a1b-a802-acad1f5f511b",
+      "status": "completed",
+      "childTerminationConfirmed": true,
+      "stepOrder": [
+        "agent-T2",
+        "custom-agent-7"
+      ],
+      "steps": [
+        {
+          "stepId": "step-1",
+          "agentId": "agent-T2",
+          "status": "completed",
+          "output": {
+            "answer": 231
+          }
+        },
+        {
+          "stepId": "step-2",
+          "agentId": "custom-agent-7",
+          "status": "completed",
+          "output": {
+            "answer": 231
+          }
+        }
+      ],
+      "finalOutput": {
+        "answer": 231
+      },
+      "validation": {
+        "ok": true,
+        "errors": []
+      },
+      "nativeModel": "zai-coding-cn/glm-5.3-flash",
+      "timingNote": "原生 GLM 会话约 2 分 39 秒完成；工具调用和运行终态均在 DSH 原生窗口可见。"
+    },
+    "syntheticUiRun": {
+      "runId": "framework-f5590a3f-da2c-41e0-90db-924f1c297107",
+      "requestId": "white-run-f5e45f4d-0284-4ed3-ac00-42e827cbef37",
+      "purpose": "FRAMEWORK_TRAINING",
+      "executionMode": "BUSINESS_ONLY",
+      "input": {
+        "receivedValue": "23*24+45"
+      },
+      "stepOutputs": [
+        {
+          "agentId": "agent-T2",
+          "answer": 597
+        },
+        {
+          "agentId": "custom-agent-7",
+          "answer": 597
+        }
+      ],
+      "output": {
+        "answer": 597
+      },
+      "validation": {
+        "ok": true,
+        "errors": []
       },
       "businessGatePassed": false,
       "childTerminationConfirmed": true,
@@ -204,29 +272,57 @@
         "provider": "deepseek-official",
         "model": "deepseek-v4-flash"
       },
-      "runRoot": "Training_Materials/runs/framework-5fd337b7-8548-4874-b1a2-cfedabff337c"
+      "runRoot": "Training_Materials/runs/framework-f5590a3f-da2c-41e0-90db-924f1c297107"
     },
     "sourceFixes": {
       "panelHostPersistence": true,
       "nativeSessionPresetProjection": true,
       "clientBuild": "npm run build:client --prefix plugins/dsh-ptc-control-plane",
-      "focusedTests": "63/63 passed"
+      "focusedTests": "63/63 passed",
+      "syntheticBusinessIsolation": true,
+      "syntheticBusinessContract": "Transient BUSINESS_ONLY bundle rewrites only execution instructions/output contracts to answer=597; candidate Agent files remain unchanged."
     },
     "restartGate": {
-      "status": "passed",
+      "status": "passed_with_gate_b_skipped",
       "gateA": {
         "exitCode": 0
       },
       "gateB": {
-        "exitCode": 0
+        "status": "skipped",
+        "reason": "retired legacy all.test.mjs contracts were not run by sanctioned restart because no PluginDir was supplied"
       },
       "gateC": {
         "exitCode": 0
       },
-      "mode": "GatesOnly",
-      "evidenceDir": "C:/Users/nvt10241/AppData/Local/Temp/dsh-plugin-restart-20260930-221743",
-      "server": "untouched",
-      "note": "Gate B/C passed in an execution context permitting required child processes; default sandbox EPERM was environmental."
+      "mode": "web restart",
+      "evidenceDir": "C:/Users/nvt10241/AppData/Local/Temp/dsh-plugin-restart-20260930-230008",
+      "server": "restarted",
+      "note": "Restart loaded the synthetic BUSINESS_ONLY isolation fix; A/C and server boot verification passed."
+    },
+    "nativeAgent": {
+      "sessionId": "session-95393fe1-0e16-4034-853e-e772048bc3dd",
+      "targetId": "custom-agent-7",
+      "candidateRevision": "revision-57e9b014-8018-4c58-9287-0118f6b2e25d",
+      "prompts": [
+        "请读取真实 trainer_context，用一句人话告诉我当前绑定的 agent 名称；不要修改候选，不要运行工作流。",
+        "1+2等于几，把答案写在JSON里",
+        "请读取真实 trainer_context 和 trainer_assets。把当前 Agent 的执行任务改为：计算 11*21。请调用 trainer_apply_changes 保存候选，再调用 trainer_validate 校验。不要只口头说明。"
+      ],
+      "toolCalls": [
+        "trainer_context",
+        "trainer_assets",
+        "trainer_apply_changes",
+        "trainer_validate"
+      ],
+      "optimizationRevision": "revision-57e9b014-8018-4c58-9287-0118f6b2e25d",
+      "validation": {
+        "ok": true
+      },
+      "optimizedRunId": "framework-9b214019-a80f-4f11-b175-7818fd3d9942",
+      "optimizedOutput": {
+        "answer": 231
+      },
+      "nativeModel": "zai-coding-cn/glm-5.3-flash"
     }
   },
   "gateAudit": {
@@ -269,22 +365,17 @@
       ]
     },
     "gate5": {
-      "status": "passed",
+      "status": "scoped_not_revalidated",
       "evidence": [
-        "actualUiClicks.G",
-        "publish/versions/release-95a32837-bd2e-4929-9364-4d9c2165091d",
-        "publish/runs/framework-7712f931-9f9e-4cf9-beca-982c4f3f71f9/framework-run.json",
-        "publish/runs/framework-4ca40d40-433e-4b04-a7e2-a3a7420e8d70/framework-run.json",
-        "active registry remains empty and five of eight smoke roles are archive-only per AGENTS.md"
+        "Current user scope uses synthetic BUSINESS_ONLY 597 and archives historical expert materials; no new publish click was performed after this scope change."
       ]
     },
     "gate6": {
-      "status": "passed",
+      "status": "partial",
       "evidence": [
-        "native timing/model reconciliation in native",
-        "lowercase SHA-256 sidecars",
-        "training-release.test.mjs 10/10",
-        "rollback rehearsal at dea25de temporary detached worktree; old panel/prototype files verified and worktree removed"
+        "63/63 focused tests passed",
+        "sanctioned restart Gate A/C passed and server restarted",
+        "current native host model picker exposes GLM only; DeepSeek native selection remains unresolved"
       ],
       "rollback": {
         "baseline": "dea25de",
@@ -295,12 +386,13 @@
     }
   },
   "currentSyntheticCandidate": {
-    "status": "passed",
-    "runId": "framework-0835e968-1a88-4c9a-9e82-2fe54d3cb205",
-    "answer": 231,
+    "status": "passed_scoped_business",
+    "runId": "framework-f5590a3f-da2c-41e0-90db-924f1c297107",
+    "answer": 597,
+    "executionMode": "BUSINESS_ONLY",
     "purpose": "FRAMEWORK_TRAINING",
     "businessGatePassed": false,
-    "frozenVersionId": "frozen-2b72695b-d19c-417c-b485-b3f4a7a3fc7d",
-    "publishPolicy": "current active registry is intentionally empty; existing published smoke replay remains pinned and verified"
+    "candidateRevision": "revision-06421406-94f5-4253-af76-5fa611d340c7",
+    "publishPolicy": "Current active registry is archive-only for the eight historical experts; this synthetic business check is not a real business release."
   }
 }
