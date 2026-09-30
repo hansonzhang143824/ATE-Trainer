@@ -72,3 +72,4 @@
 ## Continuation update 2026-09-30
 
 A fresh Trainer page visibly exposed and accepted the renamed synthetic BUSINESS_ONLY control (23*24+45=597). The page run completed as framework-5fd337b7-8548-4874-b1a2-cfedabff337c with answer 597 and businessGatePassed:false. The underlying framework purpose is FRAMEWORK_TRAINING because the runtime rejects arbitrary run purposes; the UI label and evidence explicitly classify this as synthetic BUSINESS_ONLY and no real business gate was executed. Use DeepSeek-V4-Flash / High in the native model selector. Do not claim full completion until remaining release/rollback and restart gates are independently verified.
+\n### Gate B/C completion (2026-09-30T14:25:39Z)\n\nA sanctioned GatesOnly restart completed with Gate A=0, Gate B=0, Gate C=0; the running server was untouched. Evidence directory: C:/Users/nvt10241/AppData/Local/Temp/dsh-plugin-restart-20260930-221743.\n

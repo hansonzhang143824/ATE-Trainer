@@ -144,7 +144,7 @@
     }
   },
   "continuation": {
-    "capturedAt": "2026-09-30T13:10:00Z",
+    "capturedAt": "2026-09-30T14:25:39Z",
     "activeRegistry": {
       "path": "team/ptc/ptc_stage_registry.json",
       "stateMachineLength": 0,
@@ -220,9 +220,20 @@
       "focusedTests": "63/63 passed"
     },
     "restartGate": {
-      "status": "blocked",
-      "gate": "B",
-      "reason": "Gate B invokes the legacy all.test.mjs suite, which still contains archived eight-expert/business-release contracts and fails in the current scoped environment; server was not stopped"
+      "status": "passed",
+      "gateA": {
+        "exitCode": 0
+      },
+      "gateB": {
+        "exitCode": 0
+      },
+      "gateC": {
+        "exitCode": 0
+      },
+      "mode": "GatesOnly",
+      "evidenceDir": "C:/Users/nvt10241/AppData/Local/Temp/dsh-plugin-restart-20260930-221743",
+      "server": "untouched",
+      "note": "Gate B/C passed in an execution context permitting required child processes; default sandbox EPERM was environmental."
     }
   }
-}
+}\n

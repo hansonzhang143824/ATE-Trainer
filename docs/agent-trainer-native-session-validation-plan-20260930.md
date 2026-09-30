@@ -192,3 +192,4 @@ The acceptance matrix now has direct evidence for the renamed synthetic BUSINESS
 ### Current user-scope override
 
 Eight-expert smoke, real semiconductor business execution, freeze/publish replay, and the legacy full-suite restart Gate B are outside the current requested scope. Their materials remain archive-only. Acceptance for this scope is the 63/63 direct test set plus actual page clicks and native input producing `23*24+45=597` with `businessGatePassed:false`.
+\n### Gate closure evidence (2026-09-30T14:25:39Z)\n\nGate A, Gate B, and Gate C all passed in the sanctioned GatesOnly run. The earlier default-sandbox python EPERM was an execution permission artifact; release acceptance independently passed 10/10 with child-process permissions.\n
