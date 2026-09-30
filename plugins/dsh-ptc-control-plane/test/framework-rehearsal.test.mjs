@@ -18,7 +18,7 @@ function fixture(t, runId = 'framework-test-1') {
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const registry = path.join(root, 'team/ptc/ptc_stage_registry.json');
   fs.mkdirSync(path.dirname(registry), { recursive: true });
-  fs.copyFileSync(new URL('../../../team/ptc/ptc_stage_registry.json', import.meta.url), registry);
+  fs.copyFileSync(new URL('./fixtures/legacy-framework-stage-registry.json', import.meta.url), registry);
   const created = createTrainingRun(root, { runId, purpose: 'framework-rehearsal',
     target: { kind: 'pipeline', fromStage: 'INPUT_SYNC', toStage: 'COMPILE' } });
   const output = path.join(root, 'project/DALI/Output_Global_Material');

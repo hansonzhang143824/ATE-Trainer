@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "project": "TEST_FRAMEWORK_FIXTURE",
+  "entrypoint": "scripts/ate_ptc_batch_runner.py",
+  "stateMachine": [
+    "INPUT_SYNC",
+    "STRATEGY",
+    "METHOD",
+    "RULE_REVIEW_METHOD",
+    "IMPLEMENTATION",
+    "RULE_REVIEW_IMPLEMENTATION",
+    "COMPILE",
+    "COMPLETE"
+  ],
+  "stages": {
+    "INPUT_SYNC": {
+      "owner": "captain",
+      "gate": "scripts/test_input_sync.py",
+      "families": [
+        "all"
+      ],
+      "outputs": []
+    },
+    "STRATEGY": {
+      "owner": "test-strategy-architect",
+      "gate": "scripts/test_strategy.py",
+      "families": [
+        "all"
+      ],
+      "outputs": []
+    },
+    "METHOD": {
+      "owner": "test-method-expert",
+      "gate": "scripts/test_method.py",
+      "families": [
+        "all"
+      ],
+      "outputs": []
+    },
+    "RULE_REVIEW_METHOD": {
+      "owner": "rule-reviewer",
+      "gate": "scripts/test_rule_review_method.py",
+      "families": [
+        "all"
+      ],
+      "outputs": []
+    },
+    "IMPLEMENTATION": {
+      "owner": "ate-implementer",
+      "gate": "scripts/test_implementation.py",
+      "families": [
+        "all"
+      ],
+      "outputs": []
+    },
+    "RULE_REVIEW_IMPLEMENTATION": {
+      "owner": "rule-reviewer",
+      "gate": "scripts/test_rule_review_implementation.py",
+      "families": [
+        "all"
+      ],
+      "outputs": []
+    },
+    "COMPILE": {
+      "owner": "compile-diagnostician",
+      "gate": "scripts/test_compile.py",
+      "families": [
+        "all"
+      ],
+      "outputs": []
+    }
+  },
+  "legacyPolicy": "isolated test fixture only"
+}

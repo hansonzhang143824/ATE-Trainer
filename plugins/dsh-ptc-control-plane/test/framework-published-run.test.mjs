@@ -24,7 +24,7 @@ async function fixture() {
   // protected Windows host has previously stalled after assertions complete.
   const workspaceRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'ptc-published-replay-'));
   for (const name of FRAMEWORK_RUNTIME_FILES) put(path.join(workspaceRoot, name), fs.readFileSync(path.join(repositoryRoot, name)));
-  const registryBytes = fs.readFileSync(path.join(repositoryRoot, 'team/ptc/ptc_stage_registry.json'));
+  const registryBytes = fs.readFileSync(new URL('./fixtures/legacy-framework-stage-registry.json', import.meta.url));
   const registry = JSON.parse(registryBytes);
   put(path.join(workspaceRoot, 'team/ptc/ptc_stage_registry.json'), registryBytes);
   const runId = 'source-rehearsal';
