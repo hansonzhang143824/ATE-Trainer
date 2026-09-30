@@ -217,12 +217,12 @@
       "panelHostPersistence": true,
       "nativeSessionPresetProjection": true,
       "clientBuild": "npm run build:client --prefix plugins/dsh-ptc-control-plane",
-      "focusedTests": "37/37 passed"
+      "focusedTests": "63/63 passed"
     },
     "restartGate": {
       "status": "blocked",
       "gate": "B",
-      "reason": "trainer-runtime.test.mjs expected API keys excluded workspaceRegistry; server was not stopped"
+      "reason": "Gate B invokes the legacy all.test.mjs suite, which still contains archived eight-expert/business-release contracts and fails in the current scoped environment; server was not stopped"
     }
   }
 }

@@ -187,4 +187,8 @@ publish/runs/<runId>/framework-run.json
 
 ## Addendum 2026-09-30
 
-The acceptance matrix now has direct evidence for the renamed synthetic BUSINESS_ONLY control and a completed fresh-child run for 23*24+45=597. Evidence is recorded in docs/agent-trainer-native-session-evidence-20260930.json and its SHA-256 sidecar. The active registry remains empty and the eight-expert receipts remain archive-only. Full restart gate B is still an environment assertion mismatch, so release/restart completion remains open.
+The acceptance matrix now has direct evidence for the renamed synthetic BUSINESS_ONLY control and a completed fresh-child run for 23*24+45=597. Evidence is recorded in docs/agent-trainer-native-session-evidence-20260930.json and its SHA-256 sidecar. The active registry remains empty and the eight-expert receipts remain archive-only. Full restart gate B is outside the current scope because it invokes retired eight-expert/business-release tests; the direct scoped acceptance set is 63/63 passed.
+
+### Current user-scope override
+
+Eight-expert smoke, real semiconductor business execution, freeze/publish replay, and the legacy full-suite restart Gate B are outside the current requested scope. Their materials remain archive-only. Acceptance for this scope is the 63/63 direct test set plus actual page clicks and native input producing `23*24+45=597` with `businessGatePassed:false`.
