@@ -142,5 +142,87 @@
       "selectionFirstTokenSeconds": 1.4,
       "selectionTokensPerSecond": 429
     }
+  },
+  "continuation": {
+    "capturedAt": "2026-09-30T13:10:00Z",
+    "activeRegistry": {
+      "path": "team/ptc/ptc_stage_registry.json",
+      "stateMachineLength": 0,
+      "stagesLength": 0
+    },
+    "eightExpertSmoke": {
+      "archiveManifest": "team/ptc/native-control-plane/archive/SMOKE-EIGHT-20260930/manifest.json",
+      "completedRoles": [
+        "DFT",
+        "schematic",
+        "strategy",
+        "method",
+        "reviewer"
+      ],
+      "notDispatchedRoles": [
+        "implementer",
+        "compile",
+        "evolution"
+      ],
+      "activeDispatch": "disabled"
+    },
+    "syntheticBusinessUi": {
+      "pageUrl": "http://127.0.0.1:3080/agent-trainer?nativeHost=0fd46ed7-aacf-4c92-949d-57c0b006406d&uiCheck=synthetic597-20260930",
+      "clickedLabel": "合成业务 BUSINESS_ONLY（23*24+45=597）",
+      "activeClass": "active",
+      "runButton": "▶ 运行合成 597",
+      "input": "23*24+45",
+      "output": {
+        "answer": 597
+      },
+      "businessGatePassed": false
+    },
+    "nativeWorkflow": {
+      "sessionId": "session-4bd55360-b30b-45e8-a331-0395be530389",
+      "targetId": "custom-workflow-1",
+      "candidateRevision": "revision-e4579ebd-2a54-4c89-a1cf-1be2ac457f67",
+      "stepOrder": [
+        "custom-agent-7"
+      ],
+      "runId": "framework-58cbd823-0b20-4b8e-93a9-702e2d25fa2b",
+      "freshChildSessionId": "4f034b98-2769-4bee-83a3-ce93193997c6",
+      "finalOutput": {
+        "answer": 597
+      },
+      "businessGatePassed": false,
+      "validation": {
+        "ok": true,
+        "errors": []
+      }
+    },
+    "syntheticUiRun": {
+      "runId": "framework-5fd337b7-8548-4874-b1a2-cfedabff337c",
+      "requestId": "white-run-eefada4e-1c2e-4992-8d86-2f3b68b163b9",
+      "purpose": "FRAMEWORK_TRAINING",
+      "input": {
+        "receivedValue": "23*24+45"
+      },
+      "output": {
+        "answer": 597
+      },
+      "businessGatePassed": false,
+      "childTerminationConfirmed": true,
+      "model": {
+        "provider": "deepseek-official",
+        "model": "deepseek-v4-flash"
+      },
+      "runRoot": "Training_Materials/runs/framework-5fd337b7-8548-4874-b1a2-cfedabff337c"
+    },
+    "sourceFixes": {
+      "panelHostPersistence": true,
+      "nativeSessionPresetProjection": true,
+      "clientBuild": "npm run build:client --prefix plugins/dsh-ptc-control-plane",
+      "focusedTests": "37/37 passed"
+    },
+    "restartGate": {
+      "status": "blocked",
+      "gate": "B",
+      "reason": "trainer-runtime.test.mjs expected API keys excluded workspaceRegistry; server was not stopped"
+    }
   }
 }

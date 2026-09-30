@@ -681,6 +681,9 @@ window.__ModuleLoader__.load({
 		  // but it cannot select the dedicated agentPreset, so the low-level call is
 		  // required here.
 		  if (typeof scope.sessions.refresh === 'function') await scope.sessions.refresh();
+		  if (typeof scope.sessions.noteAgentPreset === 'function') {
+		    scope.sessions.noteAgentPreset(created.sessionId, agentPreset);
+		  }
 		  const binding = await waitForBinding(scope.sessions, created.sessionId);
 		  await binding.session.rename(title);
 		  await beforeOpen?.(created.sessionId, false);
@@ -770,6 +773,9 @@ window.__ModuleLoader__.load({
 		    // SessionRuntime. Refresh before waiting so the native opener can resolve
 		    // and select the exact session instead of leaving the host on blank 新会话.
 		    if (typeof scope.sessions.refresh === 'function') await scope.sessions.refresh();
+		    if (typeof scope.sessions.noteAgentPreset === 'function') {
+		      scope.sessions.noteAgentPreset(created.sessionId, request.presetId);
+		    }
 		    await waitForBinding(scope.sessions, created.sessionId);
 		    await openPtcSessionView(scope, created.sessionId);
 		    state.sessions.set(key, created.sessionId);
@@ -997,8 +1003,18 @@ window.__ModuleLoader__.load({
 		  const key = '__dshAteTrainerHostId';
 		  if (typeof window === 'undefined') return crypto.randomUUID();
 		  if (typeof window[key] === 'string' && window[key]) return window[key];
+		  try {
+		    const stored = window.sessionStorage?.getItem(key);
+		    if (stored) {
+		      window[key] = stored;
+		      return stored;
+		    }
+		  } catch { /* session storage may be unavailable in an embedded host */ }
 		  const id = crypto.randomUUID();
-		  try { window[key] = id; } catch { /* a read-only host object is still valid for this mount */ }
+		  try {
+		    window[key] = id;
+		    window.sessionStorage?.setItem(key, id);
+		  } catch { /* a read-only host object is still valid for this mount */ }
 		  return id;
 		}
 

@@ -9,8 +9,18 @@ function stableNativeHostId() {
   const key = '__dshAteTrainerHostId';
   if (typeof window === 'undefined') return crypto.randomUUID();
   if (typeof window[key] === 'string' && window[key]) return window[key];
+  try {
+    const stored = window.sessionStorage?.getItem(key);
+    if (stored) {
+      window[key] = stored;
+      return stored;
+    }
+  } catch { /* session storage may be unavailable in an embedded host */ }
   const id = crypto.randomUUID();
-  try { window[key] = id; } catch { /* a read-only host object is still valid for this mount */ }
+  try {
+    window[key] = id;
+    window.sessionStorage?.setItem(key, id);
+  } catch { /* a read-only host object is still valid for this mount */ }
   return id;
 }
 

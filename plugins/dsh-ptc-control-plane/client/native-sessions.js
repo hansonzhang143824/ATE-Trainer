@@ -87,6 +87,9 @@ export async function openPtcNativeSession(scope, workspace, {
   // but it cannot select the dedicated agentPreset, so the low-level call is
   // required here.
   if (typeof scope.sessions.refresh === 'function') await scope.sessions.refresh();
+  if (typeof scope.sessions.noteAgentPreset === 'function') {
+    scope.sessions.noteAgentPreset(created.sessionId, agentPreset);
+  }
   const binding = await waitForBinding(scope.sessions, created.sessionId);
   await binding.session.rename(title);
   await beforeOpen?.(created.sessionId, false);
@@ -176,6 +179,9 @@ export async function openTrainerNativeSession(scope, request, { post, title, ho
     // SessionRuntime. Refresh before waiting so the native opener can resolve
     // and select the exact session instead of leaving the host on blank 新会话.
     if (typeof scope.sessions.refresh === 'function') await scope.sessions.refresh();
+    if (typeof scope.sessions.noteAgentPreset === 'function') {
+      scope.sessions.noteAgentPreset(created.sessionId, request.presetId);
+    }
     await waitForBinding(scope.sessions, created.sessionId);
     await openPtcSessionView(scope, created.sessionId);
     state.sessions.set(key, created.sessionId);

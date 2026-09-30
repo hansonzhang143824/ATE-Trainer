@@ -109,3 +109,10 @@ preset: agent-trainer · target: agent/agent-T1
 - 八专家 smoke 结果仍按项目约束标记 `SMOKE_ONLY` / `businessGatePassed:false`；本次变更没有重新激活历史 DFT、schematic 或业务 gate。本文记录的 Agent 优化和 workflow training 运行属于训练范围，均保留 `businessGatePassed:false`，不产生发布 release。
 - Agent-T2 的 `11*21=231` 是候选优化验证，不替换八专家 smoke 固定题 `1+2=3`。
 - 上一轮没有执行冻结和发布。`freeze:false` 是原生工具权限边界；本计划要求通过页面按钮验证 smoke 冻结/发布，仍需补做。BUSINESS_ONLY 业务发布继续要求独立决策。
+
+
+## 2026-09-30 continuation: synthetic BUSINESS_ONLY proof
+
+A fresh Trainer page visibly exposed and accepted the renamed synthetic BUSINESS_ONLY control (23*24+45=597). The authoritative UI run was framework-5fd337b7-8548-4874-b1a2-cfedabff337c: input 23*24+45, output {"answer":597}, businessGatePassed:false, childTerminationConfirmed:true, model deepseek-official/deepseek-v4-flash. The native workflow proof remains framework-58cbd823-0b20-4b8e-93a9-702e2d25fa2b with one saved step custom-agent-7 and final answer 597. This is synthetic wiring evidence only; it does not certify semiconductor work or a real business gate.
+
+The five dispatched eight-expert smoke receipts remain archive-only under team/ptc/native-control-plane/archive/SMOKE-EIGHT-20260930/manifest.json. Implementer, compile, and evolution were not dispatched. The active registry is empty. The sanctioned restart reached gate A but gate B remains blocked by the existing workspaceRegistry assertion; the server was not stopped.

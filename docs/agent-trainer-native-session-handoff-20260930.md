@@ -67,3 +67,8 @@
 - 不要把 agent-T1 的已有成功、工作流已有成功、或模型手动切换成功扩大解释为全部通过。
 - 只有当 Gate 0–6 和模型路由项均有可追溯证据、测试结果和 Git 提交时，才更新 Goal 为 complete；否则保持 active，继续修复/重测。
 
+
+
+## Continuation update 2026-09-30
+
+A fresh Trainer page visibly exposed and accepted the renamed synthetic BUSINESS_ONLY control (23*24+45=597). The page run completed as framework-5fd337b7-8548-4874-b1a2-cfedabff337c with answer 597 and businessGatePassed:false. The underlying framework purpose is FRAMEWORK_TRAINING because the runtime rejects arbitrary run purposes; the UI label and evidence explicitly classify this as synthetic BUSINESS_ONLY and no real business gate was executed. Use DeepSeek-V4-Flash / High in the native model selector. Do not claim full completion until remaining release/rollback and restart gates are independently verified.

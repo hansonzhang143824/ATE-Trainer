@@ -183,3 +183,8 @@ publish/runs/<runId>/framework-run.json
 
 绑定文件中的 `nativeModelSelection` 只是 Trainer 服务要求的模型快照；DSH 原生窗口还必须以实际请求 ledger 和窗口模型选择器核对最终路由。若窗口初始模型与绑定快照不同，必须在原生窗口实际点击模型选择器切换到 `DeepSeek-V4-Flash`，再发送一条消息并检查 ledger 的 `provider/model/modelSource`，否则模型 Gate 不通过。当前一次工作流验证已证明：初始宿主实际为 `zai-coding-cn/glm-5.3-flash`，点击选择 `DeepSeek-V4-Flash` 后实际 ledger 变为 `deepseek-official/deepseek-v4-flash`；该差异仍需决定是否在入口代码中自动消除，不能用绑定文件的期望值代替实际请求证据。
 
+
+
+## Addendum 2026-09-30
+
+The acceptance matrix now has direct evidence for the renamed synthetic BUSINESS_ONLY control and a completed fresh-child run for 23*24+45=597. Evidence is recorded in docs/agent-trainer-native-session-evidence-20260930.json and its SHA-256 sidecar. The active registry remains empty and the eight-expert receipts remain archive-only. Full restart gate B is still an environment assertion mismatch, so release/restart completion remains open.

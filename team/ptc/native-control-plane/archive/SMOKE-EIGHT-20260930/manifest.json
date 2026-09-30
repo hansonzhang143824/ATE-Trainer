@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "releaseId": "SMOKE-EIGHT-20260930",
+  "status": "archive-only",
+  "activeRegistry": "team/ptc/ptc_stage_registry.json",
+  "activeRegistryExpected": "empty",
+  "executionPolicy": {
+    "activeSmoke": "disabled",
+    "furtherEightExpertDispatch": "disabled",
+    "archivedRoots": [
+      "Training_Materials/runs/training-20260930t100944z-32934687",
+      "Training_Materials/runs/training-20260930t101906z-17701564",
+      "Training_Materials/runs/training-20260930t102118z-157e0e5e",
+      "Training_Materials/runs/training-20260930t102426z-7a826607",
+      "Training_Materials/runs/training-20260930t102603z-7de1cbff"
+    ]
+  },
+  "profiles": [
+    {
+      "role": "DFT",
+      "status": "completed",
+      "runId": "training-20260930t100944z-32934687",
+      "id": "dft",
+      "mode": "SMOKE_ONLY",
+      "businessGatePassed": false,
+      "answer": 3
+    },
+    {
+      "role": "schematic",
+      "status": "completed",
+      "runId": "training-20260930t101906z-17701564",
+      "id": "schematic",
+      "mode": "SMOKE_ONLY",
+      "businessGatePassed": false,
+      "answer": 3
+    },
+    {
+      "role": "strategy",
+      "status": "completed",
+      "runId": "training-20260930t102118z-157e0e5e",
+      "id": "strategy",
+      "mode": "SMOKE_ONLY",
+      "businessGatePassed": false,
+      "answer": 3
+    },
+    {
+      "role": "method",
+      "status": "completed",
+      "runId": "training-20260930t102426z-7a826607",
+      "id": "method",
+      "mode": "SMOKE_ONLY",
+      "businessGatePassed": false,
+      "answer": 3
+    },
+    {
+      "role": "reviewer",
+      "status": "completed",
+      "runId": "training-20260930t102603z-7de1cbff",
+      "id": "reviewer",
+      "mode": "SMOKE_ONLY",
+      "businessGatePassed": false,
+      "answer": 3
+    },
+    {
+      "reason": "scope-stopped",
+      "id": "implementer",
+      "status": "not-dispatched",
+      "role": "implementer"
+    },
+    {
+      "reason": "scope-stopped",
+      "id": "compile",
+      "status": "not-dispatched",
+      "role": "compile"
+    },
+    {
+      "reason": "scope-stopped",
+      "id": "evolution",
+      "status": "not-dispatched",
+      "role": "evolution"
+    }
+  ],
+  "replacementFlow": {
+    "expression": "23*24+45",
+    "answer": 597,
+    "purpose": "synthetic business-path wiring validation",
+    "mode": "SMOKE_ONLY",
+    "businessGatePassed": false,
+    "releaseEligible": false,
+    "requiresNativeTrainer": true
+  },
+  "historicalRoots": [
+    "team/ptc/native-control-plane/archive/DFT-SCHEMATIC-LEGACY-20260923/",
+    "Training_Materials/runs/"
+  ],
+  "notes": [
+    "Preserve existing smoke receipts and source material; do not delete or rewrite them.",
+    "This manifest does not certify semiconductor work.",
+    "The active smoke registry remains intentionally empty."
+  ]
+}
