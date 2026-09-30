@@ -44,10 +44,8 @@ test('native session helper creates a DSH session in the API-approved workspace 
     const renamed = [];
     const bindings = new Map();
     const scope = {
-      workspaces: { async create(input) { assert.equal(input.path, 'D:/ptc/expert'); return { workspaceId: 'ws-1' }; } },
       get(name) { assert.equal(name, 'connection'); return { api: {
-        agentPresets: { async list(input) { assert.deepEqual(input, {}); return { result: { ok: true, value: { presets: [{ id: 'standard' }] } } }; } },
-        sessions: { async create(input) { assert.deepEqual(input, { workspaceId: 'ws-1', agentPreset: 'standard' });
+        sessions: { async create(input) { assert.deepEqual(input, { cwd: 'D:/ptc/expert', agentPreset: 'standard' });
           bindings.set('s-1', { session: { header: { agentPreset: 'standard' }, async rename(title) { renamed.push(title); } } });
           return { result: { ok: true, value: { sessionId: 's-1' } } }; } },
       } }; },
@@ -80,11 +78,9 @@ test('native session helper discards a remembered session with the wrong preset'
     const opened = [];
     const bindings = new Map([['old', { session: { header: { agentPreset: 'standard' } } }]]);
     const scope = {
-      workspaces: { async create() { return { workspaceId: 'ws-2' }; } },
       get() { return { api: {
-        agentPresets: { async list() { return { result: { ok: true, value: { presets: [{ id: 'agent-trainer' }] } } }; } },
         sessions: { async create(input) {
-          assert.deepEqual(input, { workspaceId: 'ws-2', agentPreset: 'agent-trainer' });
+          assert.deepEqual(input, { cwd: 'D:/ptc/agent', agentPreset: 'agent-trainer' });
           bindings.set('new', { session: { header: { agentPreset: 'agent-trainer' }, async rename() {} } });
           return { result: { ok: true, value: { sessionId: 'new' } } };
         } },

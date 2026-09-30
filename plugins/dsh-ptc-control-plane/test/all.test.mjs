@@ -43,6 +43,7 @@ import './simple-orchestration.test.mjs';
 import './simple-orchestration-source.test.mjs';
 import './training-release.test.mjs';
 import './session-workspaces.test.mjs';
+import './trainer-native-launch.test.mjs';
 import './workflow-status.test.mjs';
 import './workflow-template.test.mjs';
 import './workflow-template-run.test.mjs';

@@ -14,7 +14,7 @@ test('plugin registers exact same-origin state and training routes', () => {
   const events = [];
   const ctx = {
     inject(names, callback) {
-      assert.deepEqual(names, ['webServer', 'agents', 'agentDefaultModel', 'agentPresets', 'subagents', 'tools']);
+      assert.deepEqual(names, ['webServer', 'agents', 'agentDefaultModel', 'agentPresets', 'subagents', 'tools', 'workspaceRegistry']);
       callback({
         webServer: { register(route) { routes.push(route); return () => {}; } },
         tools: { guard(fn) { guards.push(fn); return () => {}; } },

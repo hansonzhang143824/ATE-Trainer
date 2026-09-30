@@ -48,12 +48,12 @@ test('trainer runtime is opt-in and registers the complete page API when enabled
     fs.writeFileSync(path.join(root, 'docs', 'prototypes', 'agent-trainer-user-guide.html'), '<title>从零开始使用 Agent Trainer</title><h2>自己点击验证 Agent 和工作流</h2>');
     fs.writeFileSync(path.join(root, 'docs', 'agent-trainer-empty-system-acceptance-evidence-20260930.json'), '{"status":"passed"}');
     const disabled = mounted(root, false);
-    assert.deepEqual(disabled.injected, ['webServer', 'agents', 'agentDefaultModel', 'agentPresets', 'subagents', 'tools']);
+    assert.deepEqual(disabled.injected, ['webServer', 'agents', 'agentDefaultModel', 'agentPresets', 'subagents', 'tools', 'workspaceRegistry']);
     assert.equal(disabled.routes.some(route => route.path.startsWith('/api/ptc-control/trainer/')), false);
     disabled.dispose?.();
 
     const enabled = mounted(root, true);
-    assert.deepEqual(enabled.injected, ['webServer', 'agents', 'agentDefaultModel', 'agentPresets', 'subagents', 'tools', 'sessions', 'sessionPersistence']);
+    assert.deepEqual(enabled.injected, ['webServer', 'agents', 'agentDefaultModel', 'agentPresets', 'subagents', 'tools', 'workspaceRegistry', 'sessions', 'sessionPersistence']);
     const trainer = enabled.routes.filter(route => route.path.startsWith('/api/ptc-control/trainer/'));
     assert.equal(trainer.length, 18);
     const guideRoute = enabled.routes.find(route => route.path === '/agent-trainer-guide');
