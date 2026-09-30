@@ -2,20 +2,16 @@ import { createElement, useEffect, useState, useSyncExternalStore } from "react"
 import { DraftEditor } from "./draft-editor.js";
 import { TrainingIssueEditor } from './issue-editor.js';
 import { createTrainingRunRequest, executeTrainingRunRequest, executeBusinessTrainingRunRequest, stopTrainingRunRequest, executeTrainingPipelineRequest, executeBusinessPipelineRequest, controlTrainingPipelineRequest, controlBusinessPipelineRequest, executeFrameworkRehearsalRequest, controlFrameworkRehearsalRequest, recoverFrameworkRehearsalRequest, publishFrameworkReleaseRequest, executePublishedFrameworkRequest, controlPublishedFrameworkRequest, executeProfileSmokeRequest, stopProfileSmokeRequest, executeSimpleOrchestrationRequest, controlSimpleOrchestrationRequest, publishTrainingReleaseRequest, freezeTrainingReleaseRequest, activateTrainingReleaseRequest, executeTrainingReleaseRequest, controlTrainingReleaseRequest, parseTrainingTestItems, pipelineTrainingTarget, pipelineControlActions, formatTarget, createPtcSessionWorkspaceRequest, workflowTemplateRequest, workflowTemplateReleaseRequest } from "./state.js";
-import { openPtcNativeSession, ptcSessionKey } from "./native-sessions.js";
+import { openPtcNativeSession, openTrainerNativeSession, ptcSessionKey } from "./native-sessions.js";
 import { workflowStatusSummary } from './workflow-status.js';
 
-// Some DSH host contexts intentionally expose no browser localStorage. Keep a
-// host-lifetime cache so repeated launcher clicks still reuse the session that
-// this panel created, while a target/revision/preset change gets a new key.
-const trainerNativeSessionCaches = globalThis.__dshAgentTrainerNativeSessionCaches ?? (globalThis.__dshAgentTrainerNativeSessionCaches = new WeakMap());
-function trainerNativeSessionCache(scope) {
-  let cache = trainerNativeSessionCaches.get(scope);
-  if (!cache) {
-    cache = new Map();
-    trainerNativeSessionCaches.set(scope, cache);
-  }
-  return cache;
+function stableNativeHostId() {
+  const key = '__dshAteTrainerHostId';
+  if (typeof window === 'undefined') return crypto.randomUUID();
+  if (typeof window[key] === 'string' && window[key]) return window[key];
+  const id = crypto.randomUUID();
+  try { window[key] = id; } catch { /* a read-only host object is still valid for this mount */ }
+  return id;
 }
 
 async function trainerPagePost(operation, input) {
@@ -24,7 +20,7 @@ async function trainerPagePost(operation, input) {
     credentials: 'same-origin', body: JSON.stringify(input),
   });
   const payload = await response.json().catch(() => ({}));
-  if (!response.ok || payload.ok === false) throw new Error(payload.error?.message ?? payload.detail ?? `Trainer ${operation} failed`);
+  if (!response.ok || payload.ok === false) throw Object.assign(new Error(payload.error?.message ?? payload.detail ?? `Trainer ${operation} failed`), { code: payload.error?.code });
   return payload.value ?? payload;
 }
 
@@ -126,6 +122,19 @@ const PANEL_CSS = String.raw`
 .ptc-cp-host .ptc-cp-run .ptc-cp-value { display: block; text-align: left; }
 .ptc-cp-host .ptc-cp-panel details:not(.ptc-cp-panel) { margin: 10px 0; padding: 7px; border: 1px solid #e1e7ef; border-radius: 7px; }
 .ptc-cp-host .ptc-cp-panel pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+.ptc-cp-host .ate-trainer-direct-entry {
+  position: fixed; z-index: 2147483000; top: 18px; right: 16px;
+  display: flex; align-items: center; gap: 10px; max-width: min(520px, calc(100vw - 32px));
+  padding: 10px 12px; color: #233044; background: #fff; border: 1px solid #dfe4eb;
+  border-radius: 10px; box-shadow: 0 12px 32px #24334a18;
+  font: 13px/1.45 "Segoe UI", "Microsoft YaHei", sans-serif;
+}
+.ptc-cp-host .ate-trainer-direct-entry a {
+  display: inline-block; color: #fff; background: #2d60c8; border-radius: 7px;
+  padding: 8px 12px; font-weight: 700; text-decoration: none; white-space: nowrap;
+}
+.ptc-cp-host .ate-trainer-direct-entry a:hover { background: #234fae; }
+.ptc-cp-host .ate-trainer-direct-entry span { color: #657186; }
 .ptc-cp-host .ptc-cp-error { color: #ffb9b9; margin: 7px 0; }
 .ptc-cp-host .ptc-cp-notice { color: #187344; margin: 9px 0; }
 .ptc-cp-host .ptc-cp-workbench { min-width: 0; }
@@ -1111,6 +1120,7 @@ export function PtcControlPanel({ store, t, onNavigate, sessionServices }) {
   const state = store.getSnapshot();
   const error = store.getLastError();
   const [view, setView] = useState("training");
+  const [nativeHostId] = useState(stableNativeHostId);
 
   useEffect(() => {
     store.start();
@@ -1125,69 +1135,47 @@ export function PtcControlPanel({ store, t, onNavigate, sessionServices }) {
     ]);
     const trainerStorageRequestPrefix = 'dsh-agent-trainer-bridge:request:';
     const trainerStorageResponsePrefix = 'dsh-agent-trainer-bridge:response:';
+    const requests = new Map();
     const onWorkbenchMessage = async event => {
       const data = event?.data;
       // The formal white prototype is sometimes served by the local static
       // preview on :8123. Keep the same-origin check for normal DSH tabs, but
       // explicitly allow that trusted local origin for a window.opener bridge.
       if (!trainerWorkbenchOrigins.has(event.origin) || data?.type !== 'dsh-agent-trainer-open-session') return;
-      const reply = payload => event.source?.postMessage({ type: 'dsh-agent-trainer-session-result', bridgeId: data.bridgeId, ...payload }, event.origin);
+      if (data.hostId && data.hostId !== nativeHostId) return;
+      const reply = payload => event.source?.postMessage({ type: 'dsh-agent-trainer-session-result', bridgeId: data.bridgeId, nonce: data.nonce, hostId: nativeHostId, ...payload }, event.origin);
       try {
         if (!sessionServices) throw new Error('HOST_UNAVAILABLE: DSH 原生会话服务尚未注入，请从 DSH ATE Trainer 按钮打开白色工作台。');
         const request = data.request;
         if (!request || !['agent', 'workflow'].includes(request.targetKind) || typeof request.targetId !== 'string') throw new Error('TARGET_INVALID: Trainer 会话目标不完整');
         if (request.presetId && request.presetId !== 'agent-trainer') throw new Error('PRESET_MISMATCH: 原生训练必须使用 agent-trainer preset');
         if (!data.bridgeId || !data.nonce) throw new Error('BRIDGE_INVALID: 缺少 bridgeId 或 nonce');
-        const workspace = await trainerPagePost('session-workspace', request);
         const title = data.title || `Agent Trainer · ${request.targetId}`;
-        const sessionKey = ptcSessionKey(request.targetKind, `trainer:${request.targetId}:${request.candidateRevision || 'draft'}:${request.selectedRunId || 'none'}`);
-        const sessionCache = trainerNativeSessionCache(sessionServices);
-        let opened = sessionCache.get(sessionKey);
-        let reused = false;
-        if (opened?.promise) {
-          opened = await opened.promise;
-          reused = true;
-          try { sessionServices.sessions.open(opened.sessionId); } catch { /* the creator already opened it */ }
-        } else if (opened?.sessionId) {
-          try {
-            sessionServices.sessions.open(opened.sessionId);
-            opened = { ...opened, reused: true };
-            reused = true;
-          } catch {
-            sessionCache.delete(sessionKey);
-            opened = null;
-          }
+        const fingerprint = JSON.stringify(request);
+        let job = requests.get(data.nonce);
+        if (job && job.fingerprint !== fingerprint) throw new Error('BRIDGE_CONFLICT: 同一 nonce 的目标不能改变');
+        if (!job) {
+          job = { fingerprint, promise: openTrainerNativeSession(sessionServices, request, { post: trainerPagePost, title, hostId: nativeHostId }) };
+          requests.set(data.nonce, job);
+          if (requests.size > 200) requests.delete(requests.keys().next().value);
         }
-        if (!opened) {
-          const creation = (async () => {
-            const created = await openPtcNativeSession(sessionServices, { path: workspace.path || workspace.cwd }, {
-              key: sessionKey, title, agentPreset: 'agent-trainer',
-            });
-            const binding = await trainerPagePost('bind-session', {
-              ...request, sessionId: created.sessionId, presetId: 'agent-trainer', selectedRunId: request.selectedRunId || null,
-            });
-            return { ...created, binding };
-          })();
-          sessionCache.set(sessionKey, { promise: creation });
-          try { opened = await creation; } catch (error) { sessionCache.delete(sessionKey); throw error; }
-          sessionCache.set(sessionKey, opened);
-        }
+        const opened = await job.promise;
         const binding = opened.binding;
-        reply({ ok: true, nonce: data.nonce, sessionId: opened.sessionId, binding, title, reused: reused || Boolean(opened.reused), openedAt: new Date().toISOString(), targetKind: request.targetKind, targetId: request.targetId, candidateRevision: request.candidateRevision || null, presetId: 'agent-trainer', scopeOpened: true });
+        reply({ ok: true, sessionId: opened.sessionId, binding, title, reused: opened.reused, openedAt: new Date().toISOString(), targetKind: binding.targetKind, targetId: binding.targetId, candidateRevision: binding.candidateRevision, presetId: binding.presetId, scopeOpened: opened.scopeOpened });
       } catch (error) {
-        reply({ ok: false, error: error?.message ?? String(error) });
+        reply({ ok: false, code: error.code || String(error.message).split(':')[0], error: error?.message ?? String(error) });
       }
     };
     window.addEventListener('message', onWorkbenchMessage);
     const channel = typeof BroadcastChannel === 'function' ? new BroadcastChannel('dsh-agent-trainer-bridge') : null;
-    const onChannelMessage = event => onWorkbenchMessage({ origin: window.location.origin, data: event.data,
+    const onChannelMessage = event => event.data?.hostId === nativeHostId && onWorkbenchMessage({ origin: window.location.origin, data: event.data,
       source: { postMessage: payload => channel?.postMessage(payload) } });
     channel?.addEventListener('message', onChannelMessage);
     const onStorageMessage = event => {
       if (!event.key?.startsWith(trainerStorageRequestPrefix) || !event.newValue) return;
       let data;
       try { data = JSON.parse(event.newValue); } catch { return; }
-      if (!data?.bridgeId || data.type !== 'dsh-agent-trainer-open-session') return;
+      if (!data?.bridgeId || data.type !== 'dsh-agent-trainer-open-session' || data.hostId !== nativeHostId) return;
       const responseKey = `${trainerStorageResponsePrefix}${data.bridgeId}`;
       const source = { postMessage: payload => {
         try { window.localStorage.setItem(responseKey, JSON.stringify(payload)); } catch { /* storage is best effort */ }
@@ -1201,7 +1189,7 @@ export function PtcControlPanel({ store, t, onNavigate, sessionServices }) {
       channel?.removeEventListener('message', onChannelMessage);
       channel?.close();
     };
-  }, [sessionServices]);
+  }, [sessionServices, nativeHostId]);
 
   const switchTo = (next) => {
     setView(next);
@@ -1228,17 +1216,10 @@ export function PtcControlPanel({ store, t, onNavigate, sessionServices }) {
     { className: "ptc-cp-host" },
     createElement("style", { type: "text/css" }, PANEL_CSS),
     createElement(
-    "details",
-    { className: "ptc-cp-panel", "data-testid": "ptc-cp-panel" },
-    createElement("summary", null, "PTC 控制面 · 点击展开/收起"),
-    createElement("div", { className: "ptc-cp-header", key: "header" }, t("panel.title")),
-    createElement("div", { className: "ptc-cp-bridge-actions", key: "bridge" },
-      createElement("a", { href: "/agent-trainer", target: "_blank", rel: "opener", className: "ptc-cp-open-white-trainer", "data-testid": "ptc-cp-open-white-trainer" }, "打开白色 Agent Trainer"),
-      createElement("span", { className: "ptc-cp-label" }, "正式产品界面 / 唯一验收入口")),
-    createElement(
       "div",
-      { className: "ptc-cp-host-capability", key: "status" },
-      "DSH 原生会话桥接已启用；训练、发布和工程操作请在白色 Agent Trainer 中完成。"
+      { className: "ate-trainer-direct-entry", "data-testid": "ate-trainer-direct-entry" },
+      createElement("a", { href: `/agent-trainer?nativeHost=${nativeHostId}`, target: "_blank", rel: "opener", "data-testid": "ate-trainer-open" }, "打开 ATE Trainer"),
+      createElement("span", null, "直接进入 Trainer；原生会话仍由 DSH 宿主承载。")
     ),
     error
       ? createElement(
@@ -1247,6 +1228,5 @@ export function PtcControlPanel({ store, t, onNavigate, sessionServices }) {
           `${t("status.error")}: ${error}`
         )
       : null
-    )
   );
 }

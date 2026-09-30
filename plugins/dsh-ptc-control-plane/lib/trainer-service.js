@@ -65,13 +65,16 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
       const existing=getBinding(args.sessionId);
       if (!existing || !sessionVerifier || !(await sessionVerifier(args.sessionId,existing.presetId))) fail('session_unbound','Session has no verified framework binding');
       const project=await call('readProject',{projectId:existing.projectId});
-      return {...existing,candidateRevision:project.revisionId};
+      return {...existing,currentCandidateRevision:project.revisionId};
     }
     id(args.projectId, 'projectId'); id(args.targetId, 'targetId');
     if (!['agent', 'workflow'].includes(args.targetKind) || !TOOL_PRESETS.has(args.presetId)) fail('invalid_binding', 'Invalid target or preset');
     if (args.presetId === 'framework-observer' && args.mode === 'training') fail('invalid_binding', 'Observer requires published or engineering mode');
     if (args.presetId === 'framework-expert' && (args.targetKind !== 'agent' || args.mode !== 'training')) fail('invalid_binding', 'Expert requires a training agent target');
     const project = await call('ensureTrainerProject', { projectId: args.projectId });
+    if (args.mode === 'training' && args.candidateRevision && args.candidateRevision !== project.revisionId) {
+      fail('stale_candidate', 'Candidate changed; refresh the workbench before opening a session');
+    }
     const items = args.targetKind === 'agent' ? project.agents : project.workflows;
     let registered = (items || []).some(item => (item.agentId || item.workflowId) === args.targetId);
     let releases = null;
@@ -145,7 +148,13 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
     if (args.presetId !== 'agent-trainer') fail('invalid_binding', 'Native Trainer sessions must use the agent-trainer preset');
     const workspace = await bind({ ...args, sessionId: undefined });
     if (typeof sessionFactory !== 'function') fail('native_host_unavailable', 'The DSH native session factory is unavailable');
-    const sessionId = await sessionFactory({ cwd: workspace.cwd, presetId: args.presetId });
+    const sessionId = await sessionFactory({
+      cwd: workspace.cwd,
+      presetId: args.presetId,
+      targetKind: args.targetKind,
+      targetId: args.targetId,
+      nativeModelSelection: workspace.nativeModelSelection,
+    });
     const binding = await bind({ ...args, sessionId });
     return { sessionId, binding };
   }

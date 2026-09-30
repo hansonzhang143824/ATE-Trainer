@@ -1,7 +1,13 @@
 # Agent Trainer 原生会话替代验证报告
 
 日期：2026-09-30  
-范围：Agent Trainer 白页入口、DSH 原生 Agent 会话、DSH 原生工作流会话、候选优化与运行复核。
+范围：DSH 直接 ATE Trainer 入口、Agent Trainer 工作台、DSH 原生 Agent 会话、DSH 原生工作流会话、候选优化与运行复核。
+
+## 续验审计更正（2026-09-30）
+
+本报告是部分验证记录，不能作为 Gate 0–6 全部 PASS 的证明。上一轮宣告全部完成过早，当前继续验收。已定位的代码缺口包括：先打开原生窗口再绑定 Trainer、复用缓存未重新核对服务端绑定、消息响应未检查 nonce 和来源、多宿主广播可重复处理、缓存键缺少 project/mode。修复后必须重新进行点击验证。
+
+待补证据：干净项目现场创建、工作流原生顺序修改、刷新/宿主重开/过期和错误绑定、八专家 smoke 冻结发布与工程回放、回滚演练。直接入口和 Agent 原生会话已有带时间、原生 AX 和 SHA-256 的新证据，但不能替代其余 Gate。
 
 ## 交付与回滚证据
 
@@ -21,17 +27,40 @@
 | `node --check plugins/dsh-ptc-control-plane/client/panel.js` | 通过 |
 | `node --check plugins/dsh-ptc-control-plane/lib/client.js` | 通过 |
 | `npm run build:client` | 通过；生成 bundle 与源码一致 |
-| 原生会话、bundle、客户端状态、空系统定向测试 | 28/28 通过 |
+| 原生会话 launcher 定向测试 | 11/11 通过（`--test-isolation=none`） |
+| 空系统与直接 ATE Trainer 入口定向测试 | 4/4 通过（`--test-isolation=none`） |
 | 根目录 A-G 证据测试 | 2/2 通过 |
 | 白页残留 `session.prompt` / `session.history` / textarea | 未发现 |
 
-插件完整测试集共 377 项，其中 317 项通过、60 项失败。失败项集中在本机既有环境和历史业务 fixture：`spawnSync python EPERM`、缺失的 stage registry fixture、业务源/发布 fixture 不完整等；与本次三个原生会话文件无关。原生会话相关定向测试和浏览器点击验收均通过。
+上一轮插件完整测试集共 377 项，其中 317 项通过、60 项失败。输出包含 `spawnSync python EPERM`、stage registry 和发布 fixture 错误。尚未在相同环境对照基线重跑，不能把全部失败归为历史问题或断言与本次改动无关。本轮两个定向文件在 `--test-isolation=none` 下共 15/15 通过；普通隔离模式仍受当前 Windows `spawn EPERM` 限制，不能把它当作通过。定向测试也不能代替本计划的完整点击验收。
 
 ## 点击式正向验收
 
+### 直接 ATE Trainer 入口（本轮新增）
+
+DSH 宿主页面实际显示单层入口“打开 ATE Trainer”，链接指向带当前 `nativeHost` 的 `/agent-trainer` 工作台；入口旁标注“直接进入 Trainer；原生会话仍由 DSH 宿主承载”。没有先展开 PTC 面板的第二次点击。点击后白页显示候选 revision 和 Agent/工作流选择器，说明入口替换已经接入实际 DSH 插槽。
+
+本轮实际点击 `agent-T1` →“打开当前专家原生会话”，白页回执为：
+
+```text
+已请求 DSH 宿主打开原生会话 · agent · agent-T1 · session session-ca6a57d2-5ee0-4ec8-a446-0580132c067f
+训练入口已切换到 DSH 原生会话
+preset: agent-trainer · target: agent/agent-T1
+```
+
+随后在真实 DSH 原生输入框中发送：
+
+```text
+请只读取 trainer_context，用一句人话告诉我当前绑定的是哪个 agent；不要修改候选，不要运行工作流。
+```
+
+宿主实际产生 `trainer_context · {}` 工具调用，原生回复为“当前绑定的是 agent-T1 这个 agent（项目 agent-trainer，训练模式，候选版本 revision-c9f89fa5…）”，并显示 `用时 11 秒、首 token 4.9 秒、66 tok/s`。绑定文件为 `Training_Materials/framework/control/bindings/session-ca6a57d2-5ee0-4ec8-a446-0580132c067f.json`，包含 9 个 Trainer 工具和 `deepseek-official/deepseek-v4-flash` 的服务端模型选择。完整点击与输入记录见 `docs/agent-trainer-native-session-evidence-20260930.json`；该文件保存后计算小写 SHA-256。
+
+同一原生窗口随后实际发送固定 smoke 输入 `1+2等于几，把答案写在JSON里`，收到合法 JSON `{ "answer" :  3 }`；原生界面显示本轮用时 6 秒、首 token 5.2 秒、64 tok/s。该结果只证明当前 Agent 的原生调用链可用，仍按 `SMOKE_ONLY` / `businessGatePassed:false` 解释，不代表业务能力或发布已通过。
+
 ### Agent 原生会话
 
-从 DSH PTC 面板点击打开白色 Agent Trainer，再点击“打开当前专家原生会话”。DSH 宿主显示真实窗口标题 `Agent Trainer · agent-T2 — DeepSeek Harness`，preset 为 `agent-trainer`。在 DSH 原生输入框中发送上下文读取指令，真实事件包含 `trainer_context` 和 `trainer_assets`，DeepSeek 返回了当前 agent、candidate revision 和运行状态。
+从 DSH 的“打开 ATE Trainer”直达入口进入白色 Agent Trainer，再点击“打开当前专家原生会话”。DSH 宿主显示真实窗口标题 `Agent Trainer · agent-T1`，preset 为 `agent-trainer`。在 DSH 原生输入框中发送上下文读取指令，真实事件包含 `trainer_context`，原生回复返回了当前 agent、candidate revision 和运行状态。
 
 随后在同一个原生窗口输入优化指令，要求把 Agent 改成计算 `11*21`，并要求调用 `trainer_apply_changes`、`trainer_validate`。真实结果：
 
@@ -65,7 +94,7 @@
 
 在没有 DSH opener 的独立白页中，实际点击“打开当前专家原生会话”，等待 15 秒后显示：
 
-> DSH 宿主未在 15 秒内确认原生窗口，请从 DSH PTC 面板重新打开。
+> DSH 宿主未在 15 秒内确认原生窗口，请从 DSH“打开 ATE Trainer”入口重新打开。
 
 页面没有白页输入框、没有本地 transcript，也没有静默伪造成功。
 
@@ -73,4 +102,4 @@
 
 - 八专家 smoke 结果仍按项目约束标记 `SMOKE_ONLY` / `businessGatePassed:false`；本次变更没有重新激活历史 DFT、schematic 或业务 gate。本文记录的 Agent 优化和 workflow training 运行属于训练范围，均保留 `businessGatePassed:false`，不产生发布 release。
 - Agent-T2 的 `11*21=231` 是候选优化验证，不替换八专家 smoke 固定题 `1+2=3`。
-- 当前会话 `freeze:false`，因此本次没有执行冻结和发布；发布仍需按独立发布决策完成 smoke 全链证据后进行。
+- 上一轮没有执行冻结和发布。`freeze:false` 是原生工具权限边界；本计划要求通过页面按钮验证 smoke 冻结/发布，仍需补做。BUSINESS_ONLY 业务发布继续要求独立决策。

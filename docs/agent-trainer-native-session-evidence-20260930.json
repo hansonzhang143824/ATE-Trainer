@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-09-30T08:42:54Z",
+  "entry": {
+    "action": "click direct ATE Trainer entry",
+    "hostUrl": "http://127.0.0.1:3080/",
+    "entryLabel": "打开 ATE Trainer",
+    "trainerUrl": "http://127.0.0.1:3080/agent-trainer?nativeHost=4ea33107-8f1d-4f29-bb05-313270683055",
+    "nativeHost": "4ea33107-8f1d-4f29-bb05-313270683055",
+    "intermediatePtcPanelClick": false,
+    "visibleCopy": "直接进入 Trainer；原生会话仍由 DSH 宿主承载。"
+  },
+  "clicks": [
+    {
+      "sequence": 1,
+      "control": "agent-T1",
+      "action": "click target selector"
+    },
+    {
+      "sequence": 2,
+      "control": "打开当前专家原生会话",
+      "action": "click native launcher"
+    }
+  ],
+  "launcher": {
+    "targetKind": "agent",
+    "targetId": "agent-T1",
+    "projectId": "agent-trainer",
+    "mode": "training",
+    "presetId": "agent-trainer",
+    "candidateRevision": "revision-c9f89fa5-142d-4fa8-956f-4b2762afeb06",
+    "sessionId": "session-ca6a57d2-5ee0-4ec8-a446-0580132c067f",
+    "statusText": "训练入口已切换到 DSH 原生会话"
+  },
+  "native": {
+    "sessionId": "session-ca6a57d2-5ee0-4ec8-a446-0580132c067f",
+    "workspaceTitle": "ATE Trainer · agent:agent-T1",
+    "preset": "agent-trainer",
+    "input": "请只读取 trainer_context，用一句人话告诉我当前绑定的是哪个 agent；不要修改候选，不要运行工作流。",
+    "toolCalls": [
+      {
+        "name": "trainer_context",
+        "arguments": {}
+      }
+    ],
+    "assistantText": "当前绑定的是 agent-T1 这个 agent（项目 agent-trainer，训练模式，候选版本 revision-c9f89fa5…）。",
+    "timing": {
+      "turnSeconds": 11,
+      "firstTokenSeconds": 4.9,
+      "tokensPerSecond": 66
+    },
+    "evidence": "真实 DSH 输入框、用户消息、trainer_context 工具调用、原生回复和终态 AX 可见",
+    "smoke": {
+      "input": "1+2等于几，把答案写在JSON里",
+      "assistantText": "{ \"answer\" :  3 }",
+      "timing": {
+        "turnSeconds": 6,
+        "firstTokenSeconds": 5.2,
+        "tokensPerSecond": 64
+      },
+      "toolCalls": []
+    }
+  },
+  "bindingFile": "Training_Materials/framework/control/bindings/session-ca6a57d2-5ee0-4ec8-a446-0580132c067f.json",
+  "result": "PARTIAL_PASS_DIRECT_ENTRY_AGENT_NATIVE_AND_SMOKE",
+  "remainingGates": [
+    "clean-project-create",
+    "agent-optimization-new-old",
+    "workflow-order-handoff",
+    "refresh-reopen-errors",
+    "smoke-freeze-publish-replay",
+    "rollback"
+  ]
+}

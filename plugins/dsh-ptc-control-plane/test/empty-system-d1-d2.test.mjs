@@ -71,14 +71,17 @@ test('D2 page context exposes the empty registry and cannot run a missing workfl
   } finally { fs.rmSync(root, { recursive: true, force: true }); }
 });
 
-test('D2 white page starts blank and PTC panel only exposes the bridge entry', () => {
+test('D2 white page starts blank and DSH exposes a direct ATE Trainer entry', () => {
   const page = read('docs/prototypes/agent-trainer-repair-prototype.html');
   assert.match(page, /const agents=\{\};/);
   assert.match(page, /workflow:null/);
   assert.match(page, /empty:true/);
   assert.doesNotMatch(page, /ptc-dft-expert|ptc-schematic-expert|Offline-Coding-Flow/);
   const panel = read('plugins/dsh-ptc-control-plane/client/panel.js');
-  assert.match(panel, /ptc-cp-open-white-trainer/);
-  assert.match(panel, /ptc-cp-host-capability/);
-  assert.doesNotMatch(panel.slice(panel.lastIndexOf('return createElement(')), /PtcWorkbench/);
+  assert.match(panel, /ate-trainer-direct-entry/);
+  assert.match(panel, /打开 ATE Trainer/);
+  assert.match(panel, /stableNativeHostId/);
+  const rendered = panel.slice(panel.lastIndexOf('return createElement('));
+  assert.doesNotMatch(rendered, /ptc-cp-panel|ptc-cp-open-white-trainer|PTC 控制面/);
+  assert.doesNotMatch(rendered, /PtcWorkbench/);
 });

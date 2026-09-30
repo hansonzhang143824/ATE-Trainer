@@ -8,6 +8,8 @@
 
 本版本把真实 DSH 原生会话设为唯一训练聊天入口。用户在白色 Agent Trainer 页面选择 Agent 或工作流后，点击“打开原生会话”，系统把用户带到 DSH 的原生会话窗口；用户在该原生窗口中输入训练指令，Trainer 通过真实工具读取上下文、修改候选、校验、运行并返回原生消息和工具事件。
 
+追加需求（2026-09-30）：DSH 显示直接可点击的“打开 ATE Trainer”入口，替代原先需要先展开的 PTC 面板。用户点击一次即可进入 Trainer 工作台；选择 Agent 或工作流后，仍由对应按钮打开 DSH 原生训练会话。该入口调整加入本计划，原有开发目标和 Gate 0–6 验收要求保持不变。
+
 白色页面保留目标选择、候选 revision、运行结果、冻结/发布和错误状态等工作台功能。它不再提供一个看起来像聊天窗口的替代输入框，也不直接调用 `session.prompt`、`session.history` 来模拟训练对话。白色页面只负责发送一次原生会话启动请求，并显示跳转状态和可核对的 ID。
 
 “SMOKE_ONLY”与用户的业务优化训练必须分开：
@@ -35,8 +37,8 @@
 | 组件 | 职责 | 不允许承担的职责 |
 |---|---|---|
 | 白色 Agent Trainer 页 | 选择目标、显示候选/运行状态，发起带 nonce 的 native-session 请求 | 伪造聊天、直接轮询或提交原生消息 |
-| DSH PTC 宿主 `panel.js`/`client.js` | 校验来源和请求，创建或复用会话，绑定目标，调用 `scope.sessions.open`，回传结果 | 修改候选内容、替白页生成训练结论 |
-| `openPtcNativeSession` | 按 project、target、preset 复用或创建真实 DSH session，等待绑定并打开窗口 | 通过白页 iframe 或离线适配器冒充原生窗口 |
+| DSH ATE Trainer 入口 `panel.js`/`client.js` | 直接打开工作台；校验来源和请求，创建或复用会话，绑定目标，调用 `scope.sessions.open`，回传结果 | 修改候选内容、替白页生成训练结论 |
+| `openTrainerNativeSession` | 按 project、mode、target、revision、run、preset 复用或创建真实 DSH session，核对服务端绑定并打开窗口 | 通过白页 iframe 或离线适配器冒充原生窗口 |
 | `trainer-service.js` | 创建绑定、提供 Trainer 工具、写入 revision/run 证据 | 负责可见窗口跳转 |
 | DSH 原生会话 | 承载用户输入、模型流式回复、Trainer 工具调用及工具结果 | 使用白页摘要作为训练证据 |
 
@@ -54,20 +56,22 @@
   "candidateRevision": "revision-...",
   "selectedRunId": null,
   "presetId": "agent-trainer",
-  "mode": "training|agent-optimization|SMOKE_ONLY",
+  "mode": "training|published|engineering",
   "source": "agent-trainer-white-shell"
 }
 ```
 
-宿主成功完成 `session-workspace`、`openPtcNativeSession`、`bind-session` 和 `scope.sessions.open` 后返回 `dsh-agent-trainer-session-result`，包含 `bridgeId`、`nonce`、`sessionId`、`targetKind`、`targetId`、`candidateRevision`、`presetId`、`openedAt` 和 `reused`。失败返回稳定错误码，例如 `HOST_UNAVAILABLE`、`ORIGIN_REJECTED`、`TARGET_MISMATCH`、`STALE_SESSION`、`OPEN_FAILED`。
+这里的 mode 表示工作台和会话权限模式；算术 smoke 与候选优化的执行范围另行记录，不通过混用会话 mode 伪装 smoke。
+
+宿主先通过 `session-workspace` 核对 revision。新会话由 `open-native-session` 在服务端创建、挂入 DSH 工作区并完成 Trainer 绑定，客户端刷新会话列表；复用会话先读取服务端绑定，再以当前 bindingRevision 重新核对绑定。两条路径都在真实 `scope.sessions.open` 选中目标会话后返回 `dsh-agent-trainer-session-result`，包含 `bridgeId`、`nonce`、`sessionId`、`targetKind`、`targetId`、`candidateRevision`、`presetId`、`openedAt` 和 `reused`。失败返回稳定错误码，例如 `HOST_UNAVAILABLE`、`ORIGIN_REJECTED`、`TARGET_MISMATCH`、`STALE_SESSION`、`OPEN_FAILED`。
 
 重复 nonce 必须幂等；同一目标、revision、preset 可以复用同一 session；目标、revision 或 preset 不匹配时必须拒绝旧 session 并重新创建或要求用户重新打开。
 
 ### 3.3 通讯顺序
 
-1. 用户从 DSH PTC 面板进入 Agent Trainer 白页，保留 opener、BroadcastChannel 和允许的 host origin。
+1. 用户在 DSH 直接点击“打开 ATE Trainer”进入工作台，保留 opener、BroadcastChannel、宿主标识和允许的 host origin；无需展开 PTC 面板。
 2. 用户点击 Agent 或工作流的“打开原生会话”。白页生成 nonce，仅发送 bridge 请求并显示“正在打开 DSH 原生会话”。
-3. 宿主校验 origin、project、target、revision 和 preset，调用 `openPtcNativeSession`。
+3. 宿主校验 origin、project、target、revision 和 preset，调用 `openTrainerNativeSession`，确保真实会话已挂入 DSH 工作区、Trainer 绑定完成且客户端能查到会话。
 4. 宿主完成真实 `scope.sessions.open(sessionId)`，再通过桥接返回 session ID 和绑定信息。
 5. DSH 原生会话显示标题、模型和 Trainer 工具。用户在这里输入训练指令；工具事件和 assistant 流式消息成为聊天证据。
 6. 白页在用户返回后读取服务端的 revision/run/publish 证据，供复核和发布按钮使用。
@@ -83,9 +87,10 @@
 
 ### D1：恢复并加固宿主桥接
 
+- 将 DSH 的 PTC 展开面板替换为“打开 ATE Trainer”直达入口；保留宿主处理原生会话启动请求的能力。
 - 复用 `client.js`/`panel.js` 的 `postMessage`、BroadcastChannel、localStorage fallback 监听。
 - 将 `openPtcNativeSession` 的结果包装成稳定响应，加入 nonce 幂等、origin allowlist、目标/preset/revision 校验。
-- 确认调用顺序严格为：session workspace → 创建/复用 → 等待 binding → bind-session → `scope.sessions.open` → result。
+- 确认调用顺序严格为：核对 workspace/revision → 创建并挂入工作区/复用 → 服务端绑定 → 刷新客户端会话列表 → 等待本地 binding → `scope.sessions.open` → result。
 - 明确 fallback 只用于消息传输容错，不能把白页 session 当成原生窗口。
 - 退出条件：宿主日志能看到 bridge request、`scope.sessions.open` 和 result，重复请求不会创建重复会话。
 
@@ -139,7 +144,7 @@
 
 | 风险 | 处理 |
 |---|---|
-| standalone 页面没有 `sessionServices` | 显示 `HOST_UNAVAILABLE`，要求从 DSH PTC 面板打开，不使用离线聊天替代 |
+| standalone 页面没有 `sessionServices` | 显示 `HOST_UNAVAILABLE`，要求从 DSH“打开 ATE Trainer”入口打开，不使用离线聊天替代 |
 | 只创建后端 session 未切换 UI | 把 `scope.sessions.open(sessionId)` 作为成功必要条件，缺失即失败 |
 | DeepSeek 回复慢或无流式事件 | 在原生窗口记录首个 chunk、turn/end 和宿主日志，超时给出 OPEN/STREAM_TIMEOUT，不在白页伪造结果 |
 | 旧 session 绑定到新目标 | 每次恢复校验 target/revision/preset，错误则拒绝复用 |

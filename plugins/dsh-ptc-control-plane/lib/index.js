@@ -32,7 +32,7 @@ import { resolveAgentProfile, assertDftExecutionCapability, cloneAgentProfile, c
 import { mountTrainerHost } from './trainer-host.js';
 
 export const name = 'dsh-ptc-control-plane';
-export const inject = ['webServer', 'agents', 'agentDefaultModel', 'agentPresets', 'subagents', 'tools'];
+export const inject = ['webServer', 'agents', 'agentDefaultModel', 'agentPresets', 'subagents', 'tools', 'workspaceRegistry'];
 
 function json(response, status, body) {
   response.writeHead(status, {

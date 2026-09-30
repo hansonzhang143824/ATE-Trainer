@@ -43,12 +43,24 @@ export function mountTrainerHost(ctx, config) {
       if (!agent?.ctx?.tools?.schemas) return null;
       return agent.ctx.tools.schemas(agent).map(tool => tool.name).filter(name => Object.hasOwn(TRAINER_TOOL_OPERATIONS, name));
     },
-    sessionFactory: async ({ cwd, presetId }) => {
+    sessionFactory: async ({ cwd, presetId, nativeModelSelection, targetKind, targetId }) => {
+      const model = nativeModelSelection || { provider: 'deepseek-official', model: 'deepseek-v4-flash' };
+      const workspaceRegistry = ctx.workspaceRegistry || ctx.get?.('workspaceRegistry');
+      if (!workspaceRegistry?.create) {
+        throw Object.assign(new Error('The DSH workspace registry is unavailable'), { code: 'native_host_unavailable' });
+      }
+      // The native session list is workspace-backed. Creating an agent directly
+      // only persists its log; it does not make the session selectable in the
+      // host sidebar. Adopt the Trainer cwd first, then attach the new session
+      // through the same registry boundary used by DSH's session.create API.
+      const workspace = await workspaceRegistry.create(cwd, `ATE Trainer · ${targetKind}:${targetId}`);
       const created = await ctx.agents.create({
         sessionId: `session-${randomUUID()}`,
         meta: { cwd, agentPreset: presetId },
+        agentOptions: { provider: model.provider, model: model.model },
         setup: async agentCtx => { await ctx.agentPresets.mount(agentCtx, presetId); },
       });
+      await workspace.attachSession(created.agent.id);
       return created.agent.id;
     },
   });

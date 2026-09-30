@@ -8,6 +8,8 @@
 
 本计划验收 Agent、工作流、原生跳转、训练优化、恢复、错误处理、smoke、冻结、发布和工程回放。白色页面是选择/复核工作台，DSH 原生会话是唯一训练聊天窗口。
 
+追加入口验收（2026-09-30）：DSH 直接显示“打开 ATE Trainer”，不再要求展开 PTC 面板。点击一次进入 Trainer 工作台，并继续验证 Agent 与工作流的原生会话按钮；原 Gate 0–6 保持为整体通过条件。
+
 以下任一项失败即阻断发布：
 
 - 点击按钮后没有进入真实 DSH 原生会话，或只在白页显示模拟 transcript。
@@ -24,8 +26,8 @@
 
 ### 2.1 前置条件
 
-1. 使用 DSH 桌面端，打开 PTC 控制面板；不要直接把 localhost 页面作为 native 能力证明。
-2. 从 PTC 面板点击“打开 Agent Trainer”进入白页，确认 opener、host origin 和 bridge channel 存在。
+1. 使用当前 DSH 宿主，确认“打开 ATE Trainer”直达入口可见，且没有必须先展开的 PTC 控制面板；不要把独立 localhost 页面作为 native 能力证明。
+2. 在 DSH 点击“打开 ATE Trainer”进入工作台，确认 opener、host origin、nativeHost 和启动消息 channel 存在。
 3. 准备一个干净的候选项目；每次创建、保存、打开、加入、排序、冻结和发布都必须现场点击，不能把已有状态当作创建证据。
 4. 记录测试时间、浏览器 tab、DSH host、目标 ID、candidate revision 和当前模式。
 
@@ -54,13 +56,14 @@ publish/runs/<runId>/framework-run.json
 
 **步骤**
 
-1. 在 DSH PTC 面板点击“打开 Agent Trainer”。
+1. 在 DSH 直接点击“打开 ATE Trainer”，不得先展开 PTC 面板或点击第二层 Trainer 链接。
 2. 在白页确认项目为 `agent-trainer`，模式切换可见，当前候选 revision 可见。
 3. 记录白页地址、host origin、bridge channel 和截图。
 
 **预期**
 
 - 页面由 DSH 宿主打开，能收到 bridge 请求；直接从 standalone localhost 打开时若无宿主，页面显示 `HOST_UNAVAILABLE`，不出现可训练的模拟聊天。
+- 宿主显示 ATE Trainer 直接入口，点击一次进入工作台；Agent 与工作流两个训练入口仍能打开真实原生会话。
 - 当前版本与回滚点对应的变更记录可查；本次实现前基线为 `dea25de`。
 
 ## 4. Gate 1：Agent 原生会话和基础 smoke
@@ -131,7 +134,7 @@ publish/runs/<runId>/framework-run.json
 ### 4.1 刷新与重开
 
 1. 在已有 native session 时刷新白页，再点击同一目标的“打开原生会话”。
-2. 关闭并重新打开 DSH PTC 面板，重复打开同一目标。
+2. 关闭并重新打开 DSH 宿主页，从“打开 ATE Trainer”直达入口进入，重复打开同一目标。
 
 预期：复用仍有效且绑定正确的 session，或创建清晰标记的新 session；不出现重复窗口、空 transcript 或错误目标。
 

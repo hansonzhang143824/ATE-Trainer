@@ -137,7 +137,7 @@
         :n.status==='opening'
           ?'<div class="native-session-empty">正在等待 DSH 宿主执行 session-workspace → bind-session → scope.sessions.open。请不要在此页面输入训练内容。</div>'
           :n.status==='error'
-            ?`<div class="native-session-empty"><b>未能打开原生会话</b><p>${esc(n.error||'宿主没有返回可用会话。')}</p><p>请从 DSH PTC 面板重新打开白色 Agent Trainer，再重试。</p></div>`
+            ?`<div class="native-session-empty"><b>未能打开原生会话</b><p>${esc(n.error||'宿主没有返回可用会话。')}</p><p>请从 DSH 的 ATE Trainer 入口重新打开此页面，再重试。</p></div>`
             :'<div class="native-session-empty">点击“打开当前专家原生会话”或“在 Trainer 中训练当前工作流”后，训练消息会在 DSH 原生窗口中发送。</div>';
       host.innerHTML=detail;
       document.querySelector('#close-native-session').textContent=n.status==='opened'?'清除本页状态':'关闭提示';
@@ -146,11 +146,54 @@
     function liveMode(){return state.product==='engineering'?'engineering':state.product==='release'?'published':'training'}
     function liveTarget(kind){const wf=currentWorkflow();if(kind==='agent')return {targetKind:'agent',agentId:state.selected,targetId:state.selected};const workflowId=wf?.workflowId||wf?.id;return {targetKind:'workflow',workflowId,targetId:workflowId};}
     function nativeSessionRequest(kind){const target=liveTarget(kind);return {...target,projectId:'agent-trainer',mode:liveMode(),candidateRevision:state.liveContext?.candidateRevision||null,selectedRunId:state.liveRun?.runId||null,presetId:'agent-trainer'} }
-    const nativeBridge={pending:new Map(),channel:null,ready:false,requestPrefix:'dsh-agent-trainer-bridge:request:',responsePrefix:'dsh-agent-trainer-bridge:response:'};
-    function settleNativeBridge(data){if(!data||data.type!=='dsh-agent-trainer-session-result'||!data.bridgeId)return;const pending=nativeBridge.pending.get(data.bridgeId);if(!pending)return;nativeBridge.pending.delete(data.bridgeId);window.clearTimeout(pending.timer);try{window.localStorage.removeItem(`${nativeBridge.responsePrefix}${data.bridgeId}`)}catch{};if(data.ok===false)pending.reject(new Error(data.error||'DSH 宿主拒绝打开原生会话'));else pending.resolve(data)}
-    function initNativeBridge(){if(nativeBridge.ready)return;nativeBridge.ready=true;window.addEventListener('message',event=>settleNativeBridge(event.data));if(typeof BroadcastChannel==='function'){nativeBridge.channel=new BroadcastChannel('dsh-agent-trainer-bridge');nativeBridge.channel.addEventListener('message',event=>settleNativeBridge(event.data))}window.addEventListener('storage',event=>{if(!event.key?.startsWith(nativeBridge.responsePrefix)||!event.newValue)return;try{settleNativeBridge(JSON.parse(event.newValue))}catch{}})}
-    function sendNativeBridge(request,title){initNativeBridge();const bridgeId=crypto.randomUUID(),nonce=crypto.randomUUID(),payload={type:'dsh-agent-trainer-open-session',bridgeId,nonce,title,request:{...request,bridgeId,nonce}};return new Promise((resolve,reject)=>{const timer=window.setTimeout(()=>{nativeBridge.pending.delete(bridgeId);reject(new Error('DSH 宿主未在 15 秒内确认原生窗口，请从 DSH PTC 面板重新打开。'))},15000);nativeBridge.pending.set(bridgeId,{resolve,reject,timer});let delivered=false;try{if(window.opener&&!window.opener.closed){window.opener.postMessage(payload,'*');delivered=true}}catch{}try{if(window.parent&&window.parent!==window){window.parent.postMessage(payload,'*');delivered=true}}catch{}try{nativeBridge.channel?.postMessage(payload);delivered=true}catch{}try{window.localStorage.setItem(`${nativeBridge.requestPrefix}${bridgeId}`,JSON.stringify(payload));delivered=true}catch{}if(!delivered){window.clearTimeout(timer);nativeBridge.pending.delete(bridgeId);reject(new Error('当前页面没有可用的 DSH 宿主桥接；请从 DSH PTC 面板打开。'))}})}
-    async function openNativeSession(targetKind){const target=nativeSessionRequest(targetKind),name=targetKind==='workflow'?currentWorkflow()?.name||target.targetId:selected()?.name||target.targetId,title=targetKind==='workflow'?`Agent Trainer · 工作流 · ${name}`:`Agent Trainer · ${name}`;if(!target.targetId)return showToast('当前模式没有可用的 Agent 或工作流。');if(state.product==='engineering'&&((targetKind==='workflow'||targetKind==='trainer')&&!publishedWorkflowNames().includes(state.workflow)||targetKind==='agent'&&!publishedAgentIds().includes(state.selected)))return showToast('工程模式只能打开已发布工作流及其绑定 Agent。');state.nativeSession={status:'opening',kind:targetKind==='trainer'?'workflow':targetKind,targetId:target.targetId,title,sessionId:null,binding:null,bridgeId:null,messages:[]};render();try{const opened=await sendNativeBridge(target,title);if(!opened.sessionId)throw new Error('DSH 宿主没有返回 sessionId');state.nativeSession={status:'opened',kind:targetKind==='trainer'?'workflow':targetKind,targetId:target.targetId,title,sessionId:opened.sessionId,binding:opened.binding||null,bridgeId:opened.bridgeId||null,nonce:opened.nonce||null,reused:Boolean(opened.reused),openedAt:opened.openedAt||new Date().toISOString(),messages:[]};render();try{window.opener?.focus()}catch{};showToast(`已切换到 DSH 原生会话：${opened.sessionId}`)}catch(error){state.nativeSession={...state.nativeSession,status:'error',error:error?.message||String(error),messages:[]};render();showToast(`原生会话未打开：${error?.message||error}`)}}    function render(){renderSidebar();renderProduct();renderWorkflow();renderInspector();renderRecords();renderLog();renderSession()}
+    const nativeBridge={pending:new Map(),channel:null,ready:false,hostId:new URLSearchParams(location.search).get('nativeHost'),hostOrigin:(location.port==='8123'||location.protocol==='file:')?'http://127.0.0.1:3080':location.origin,requestPrefix:'dsh-agent-trainer-bridge:request:',responsePrefix:'dsh-agent-trainer-bridge:response:'};
+    function clearNativeBridge(bridgeId){const pending=nativeBridge.pending.get(bridgeId);if(!pending)return;nativeBridge.pending.delete(bridgeId);window.clearTimeout(pending.timer);window.clearTimeout(pending.fallback);try{window.localStorage.removeItem(`${nativeBridge.requestPrefix}${bridgeId}`);window.localStorage.removeItem(`${nativeBridge.responsePrefix}${bridgeId}`)}catch{}}
+    function settleNativeBridge(data){
+      if(data?.type!=='dsh-agent-trainer-session-result')return;
+      const pending=nativeBridge.pending.get(data.bridgeId);
+      if(!pending||pending.nonce!==data.nonce||(nativeBridge.hostId&&data.hostId!==nativeBridge.hostId))return;
+      clearNativeBridge(data.bridgeId);
+      if(data.ok===false)return pending.reject(new Error(data.error||'OPEN_FAILED: DSH 宿主拒绝打开原生会话'));
+      const binding=data.binding,request=pending.request;
+      if(!data.sessionId||!data.scopeOpened||binding?.sessionId!==data.sessionId||!['projectId','mode','targetKind','targetId','presetId'].every(field=>binding?.[field]===request[field])||(request.mode==='training'&&binding.candidateRevision!==request.candidateRevision)||(binding.selectedRunId||null)!==(request.selectedRunId||null))return pending.reject(new Error('TARGET_MISMATCH: 原生窗口返回了不匹配的绑定'));
+      pending.resolve(data);
+    }
+    function initNativeBridge(){
+      if(nativeBridge.ready)return;nativeBridge.ready=true;
+      window.addEventListener('message',event=>{if(event.origin===nativeBridge.hostOrigin&&(event.source===window.opener||(window.parent!==window&&event.source===window.parent)))settleNativeBridge(event.data)});
+      if(typeof BroadcastChannel==='function'){nativeBridge.channel=new BroadcastChannel('dsh-agent-trainer-bridge');nativeBridge.channel.addEventListener('message',event=>{if(nativeBridge.hostId)settleNativeBridge(event.data)})}
+      window.addEventListener('storage',event=>{if(!nativeBridge.hostId||!event.key?.startsWith(nativeBridge.responsePrefix)||!event.newValue)return;try{settleNativeBridge(JSON.parse(event.newValue))}catch{}});
+    }
+    function sendNativeBridge(request,title){
+      initNativeBridge();const bridgeId=crypto.randomUUID(),nonce=crypto.randomUUID(),payload={type:'dsh-agent-trainer-open-session',bridgeId,nonce,hostId:nativeBridge.hostId,title,request};
+      return new Promise((resolve,reject)=>{
+      const timer=window.setTimeout(()=>{clearNativeBridge(bridgeId);reject(new Error('HOST_UNAVAILABLE: DSH 宿主未在 120 秒内确认原生窗口，请确认 DSH 仍在运行后重试。'))},120000);
+        const pending={resolve,reject,timer,nonce,request};nativeBridge.pending.set(bridgeId,pending);
+        let delivered=false;
+        try{if(window.opener&&!window.opener.closed){window.opener.postMessage(payload,nativeBridge.hostOrigin);delivered=true}else if(window.parent!==window){window.parent.postMessage(payload,nativeBridge.hostOrigin);delivered=true}}catch{}
+        const fallback=()=>{if(!nativeBridge.pending.has(bridgeId)||!nativeBridge.hostId)return;try{nativeBridge.channel?.postMessage(payload)}catch{}try{window.localStorage.setItem(`${nativeBridge.requestPrefix}${bridgeId}`,JSON.stringify(payload))}catch{}};
+        if(nativeBridge.hostId)pending.fallback=window.setTimeout(fallback,delivered?1000:0);
+        else if(!delivered){clearNativeBridge(bridgeId);reject(new Error('HOST_UNAVAILABLE: 请从 DSH 的 ATE Trainer 入口打开此页面。'))}
+      });
+    }
+    async function openNativeSession(targetKind){
+      if(state.nativeSession.status==='opening')return;
+      const kind=targetKind==='agent'?'agent':'workflow',token=crypto.randomUUID();
+      state.nativeSession={status:'opening',kind,targetId:liveTarget(kind).targetId,token,messages:[]};render();
+      try{
+        await loadLiveContext();
+        if(state.liveError)throw new Error(state.liveError);
+        if(state.nativeSession.token!==token)return;
+        const target=nativeSessionRequest(kind),name=kind==='workflow'?currentWorkflow()?.name||target.targetId:selected()?.name||target.targetId,title=kind==='workflow'?`Agent Trainer · 工作流 · ${name}`:`Agent Trainer · ${name}`;
+        if(!target.targetId)throw new Error('TARGET_INVALID: 当前模式没有可用目标');
+        state.nativeSession={...state.nativeSession,targetId:target.targetId,title};render();
+        const opened=await sendNativeBridge(target,title);
+        if(state.nativeSession.token!==token||liveMode()!==target.mode)return;
+        state.nativeSession={status:'opened',kind,targetId:target.targetId,title,...opened,messages:[]};render();
+        try{window.opener?.focus()}catch{}showToast(`已打开 DSH 原生会话：${opened.sessionId}`);
+      }catch(error){if(state.nativeSession.token!==token)return;state.nativeSession={...state.nativeSession,status:'error',error:error.message};render();showToast(`原生会话未打开：${error.message}`)}
+    }
+    function render(){renderSidebar();renderProduct();renderWorkflow();renderInspector();renderRecords();renderLog();renderSession()}
     function clearStaleNativeSession(targetKind,targetId){const n=state.nativeSession;if(!['opening','open','opened'].includes(n.status))return;const same=(targetKind==='agent'&&n.kind==='agent'&&n.targetId===targetId)||(targetKind==='workflow'&&(n.kind==='workflow'||n.kind==='trainer')&&n.targetId===targetId);if(!same)state.nativeSession={status:'closed',kind:null,targetId:null,title:'',sessionId:null,messages:[]}}
     function selectAgent(id){if(!agents[id]||state.product==='engineering'&&!publishedAgentIds().includes(id))return;clearStaleNativeSession('agent',id);state.selected=id;state.recordAgent=id;state.view='agents';render()}function selectWorkflow(name){if(!workflows[name]||state.product==='engineering'&&!publishedWorkflowNames().includes(name))return;const wf=workflows[name];clearStaleNativeSession('workflow',wf.workflowId||wf.id);state.workflow=name;state.view='workflow';if(wf.steps.length&&!wf.steps.includes(state.selected))state.selected=wf.steps[0];state.recordAgent=state.selected;render()}function moveAgent(id,delta){if(!isTraining())return showToast('当前产品模式只读。');const i=agentOrder.indexOf(id),n=i+delta;if(n<0||n>=agentOrder.length)return;[agentOrder[i],agentOrder[n]]=[agentOrder[n],agentOrder[i]];render()}function candidateRevision(){return state.liveContext?.candidateRevision||null}
     async function persistCandidateChanges(changes,reason){if(!candidateRevision())throw new Error('正式 Trainer registry 尚未加载，无法保存候选。');const result=await trainerPost('/api/ptc-control/trainer/apply-changes',{projectId:'agent-trainer',mode:'training',requestId:trainerRequestId('white-candidate'),baseRevision:candidateRevision(),reason,changes});await loadLiveContext();return result}
@@ -227,6 +270,7 @@
           workflows[item.name||manifest.name||id]={id,workflowId:id,name:item.name||manifest.name||id,manifest,steps,businessPipeline:manifest.businessPipeline||null,releaseId:item.releaseId||null,revision:context.candidateRevision||'draft'}; workflowOrder.push(item.name||manifest.name||id);
         }
         state.liveContext=context; state.liveAssets=files; state.empty=agentOrder.length===0&&workflowOrder.length===0;
+        state.liveError=null;
         state.publishedAgents=state.product==='engineering'?agentOrder.slice():[]; state.publishedWorkflows=state.product==='engineering'?workflowOrder.slice():[];
         state.workflow=workflowOrder.includes(state.workflow)?state.workflow:(workflowOrder[0]||null); state.selected=agentOrder.includes(state.selected)?state.selected:(agentOrder[0]||null); state.recordAgent=state.selected;
         render(); showToast(`已加载 Trainer registry · ${agentOrder.length} 个 Agent · ${workflowOrder.length} 条工作流`);

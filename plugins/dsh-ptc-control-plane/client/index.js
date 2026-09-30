@@ -11,10 +11,9 @@
  * The package entry (owned by the integrator) re-exports these and declares
  * the matching `dsh.client.inject` host packages in package.json.
  *
- * This skeleton only READS state from GET /api/ptc-control/state (see
- * lib/control-state.js for the schemaVersion 1 contract) and mounts a
- * read-only panel through the native client slot registry. It performs no
- * writes and registers no commands.
+ * The native client slot mounts the ATE Trainer direct entry. The entry keeps
+ * the DSH host available so the Trainer can open real native sessions without
+ * exposing a second PTC panel click.
  */
 import { createElement } from "react";
 import { createPtcStateStore } from "./state.js";
@@ -26,7 +25,7 @@ export const PTC_CONTROL_PLANE_LOCALE_NAMESPACE = "ptc-control-plane";
 /** Locale dictionaries (zh / en), mirroring the agent-teams pattern. */
 export const localeDictionaries = {
   zh: {
-    "panel.title": "PTC 控制面",
+    "panel.title": "ATE Trainer",
     "status.identity": "当前身份",
     "status.activeRelease": "活动 Release",
     "status.trainingRuns": "训练运行",
@@ -53,7 +52,7 @@ export const localeDictionaries = {
     "delivery.updatedAt": "更新时间"
   },
   en: {
-    "panel.title": "PTC Control Plane",
+    "panel.title": "ATE Trainer",
     "status.identity": "Identity",
     "status.activeRelease": "Active release",
     "status.trainingRuns": "Training runs",
@@ -86,7 +85,7 @@ export const inject = ["slots", "locale"];
 
 /** Slot mount point proven to exist in the current DSH web client. */
 export const SHELL_SLOT_NAME = "shell.overlay";
-export const PANEL_SLOT_ID = "ptc-control-plane";
+export const PANEL_SLOT_ID = "ate-trainer-direct-entry";
 
 /**
  * Install the plugin into a DSH client context.
@@ -105,7 +104,7 @@ export function apply(ctx) {
     const Panel = ({ t }) => createElement(PtcControlPanel, { store, t, sessionServices });
     ctx.slots.inject(SHELL_SLOT_NAME, () => ctx.slots.register(
       { name: SHELL_SLOT_NAME, id: PANEL_SLOT_ID, order: 90,
-        label: "PTC control plane", locale: PTC_CONTROL_PLANE_LOCALE_NAMESPACE }, Panel));
+        label: "ATE Trainer", locale: PTC_CONTROL_PLANE_LOCALE_NAMESPACE }, Panel));
   };
 
   // Native slot injection: the host places the panel in its overlay region.
