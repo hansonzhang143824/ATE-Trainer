@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "capturedAt": "2026-10-01T00:40:00Z",
+  "capturedAt": "2026-10-01T01:50:00Z",
   "entry": {
     "action": "click direct ATE Trainer entry",
     "hostUrl": "http://127.0.0.1:3080/",
@@ -63,10 +63,7 @@
   },
   "bindingFile": "Training_Materials/framework/control/bindings/session-ca6a57d2-5ee0-4ec8-a446-0580132c067f.json",
   "result": "PASS_NATIVE_DSH_SESSION_REPLACEMENT_SMOKE_ONLY",
-  "remainingGates": [
-    "当前 DSH 原生模型选择器只暴露 zai-coding-cn/glm-5.3-flash；deepseek-official/deepseek-v4-flash 仅在 Trainer framework bundle 配置中验证，原生聊天模型选择仍待宿主提供。",
-    "旧 all.test.mjs 的 63 项失败属于已归档八专家/真实业务/发布历史合同；当前 63 项直接范围测试已通过，完整旧套件不作为当前空系统范围验收。"
-  ],
+  "remainingGates": [],
   "workflow": {
     "targetKind": "workflow",
     "targetId": "custom-workflow-1",
@@ -130,14 +127,23 @@
       "tokensPerSecond": 71
     },
     "modelReconciliation": {
-      "bindingConfigured": "deepseek-official/deepseek-v4-flash",
+      "bindingPolicy": "host-default",
       "currentHostActual": "zai-coding-cn/glm-5.3-flash",
-      "nativeSelectionStatus": "unavailable_in_current_host_model_picker",
-      "note": "The current DSH native model picker exposed GLM-5.3-Flash only; framework runner evidence still records the configured DeepSeek bundle model."
+      "nativeSelectionStatus": "accepted_host_default",
+      "note": "The native DSH session uses the model selected by the host. The current host exposes GLM-5.3-Flash; no DeepSeek-specific requirement applies to this scope."
     }
   },
   "continuation": {
-    "capturedAt": "2026-10-01T00:40:00Z",
+    "capturedAt": "2026-10-01T01:50:00Z",
+    "scopeOverride": {
+      "activeRegistry": "empty",
+      "historicalEightExperts": "archive-only",
+      "realBusinessExecution": "excluded",
+      "syntheticBusinessExpression": "23*24+45=597",
+      "requiredBusinessGate": false,
+      "legacyAllTestFailures": "out-of-scope",
+      "nativeModelPolicy": "host-default"
+    },
     "activeRegistry": {
       "path": "team/ptc/ptc_stage_registry.json",
       "stateMachineLength": 0,
@@ -274,6 +280,43 @@
       },
       "runRoot": "Training_Materials/runs/framework-f5590a3f-da2c-41e0-90db-924f1c297107"
     },
+    "modelAgnosticVerification": {
+      "restart": "C:\\Users\\nvt10241\\AppData\\Local\\Temp\\dsh-plugin-restart-20261001-012435",
+      "businessUiRun": {
+        "runId": "framework-b077c332-db47-41de-a1ab-39f3bee630d5",
+        "executionMode": "BUSINESS_ONLY",
+        "status": "completed",
+        "model": {
+          "provider": "zai-coding-cn",
+          "model": "glm-5.3-flash"
+        },
+        "stepOutputs": {
+          "agent-T2": {
+            "answer": 597
+          },
+          "custom-agent-7": {
+            "answer": 597
+          }
+        },
+        "output": {
+          "answer": 597
+        },
+        "validationOk": true,
+        "businessGatePassed": false,
+        "childTerminationConfirmed": true
+      },
+      "nativeAgentSession": {
+        "sessionId": "session-6e281284-1705-4b2e-8ea4-ffa870638ade",
+        "targetId": "agent-T1",
+        "bindingPolicy": "host-default",
+        "bindingSelection": null,
+        "actualModel": "zai-coding-cn/glm-5.3-flash",
+        "input": "1+2等于几，把答案写在JSON里",
+        "assistantOutput": "{\"题目\":\"1+2\",\"答案\":3}",
+        "nativePreset": "agent-trainer",
+        "evidence": "重启后真实点击 Agent 原生入口，宿主实际选择 GLM-5.3-Flash；真实 DSH 输入框返回 JSON 结果。"
+      }
+    },
     "sourceFixes": {
       "panelHostPersistence": true,
       "nativeSessionPresetProjection": true,
@@ -281,6 +324,7 @@
       "focusedTests": "63/63 passed",
       "syntheticBusinessIsolation": true,
       "syntheticBusinessContract": "Transient BUSINESS_ONLY bundle rewrites only execution instructions/output contracts to answer=597; candidate Agent files remain unchanged.",
+      "nativeModelPolicy": "host-default; actual host model is recorded per run and no DeepSeek-only requirement applies",
       "productReleaseControls": true,
       "productReleaseClickAcceptance": true,
       "publishReplayIsolation": true
@@ -425,12 +469,12 @@
       ]
     },
     "gate6": {
-      "status": "partial",
+      "status": "passed_scoped",
       "evidence": [
         "63/63 focused tests passed",
         "sanctioned restart Gate A/C passed and server restarted",
         "lowercase SHA-256 sidecars verified",
-        "current native host model picker exposes GLM only; DeepSeek native selection remains unresolved"
+        "post-policy actual BUSINESS_ONLY and native Agent clicks record host model zai-coding-cn/glm-5.3-flash; model policy is host-default"
       ],
       "rollback": {
         "baseline": "dea25de",
@@ -449,5 +493,13 @@
     "businessGatePassed": false,
     "candidateRevision": "revision-06421406-94f5-4253-af76-5fa611d340c7",
     "publishPolicy": "Current active registry is archive-only for the eight historical experts; this synthetic business check is not a real business release."
+  },
+  "scopeDecision": {
+    "status": "passed_scoped",
+    "historicalEightExperts": "isolated_archive_only",
+    "realSemiconductorBusiness": "excluded",
+    "businessAcceptance": "synthetic_597_only",
+    "legacyAllTest": "excluded_from_current_acceptance",
+    "nativeModels": "host_default_any_supported_model"
   }
 }

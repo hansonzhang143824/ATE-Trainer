@@ -142,9 +142,9 @@
 
 ### D8：原生模型路由闭环（追加）
 
-- 原生会话创建时写入期望 `nativeModelSelection`，并在真实 DSH 输入后从 runtime ledger 核对实际 provider/model。
-- 如果 DSH 宿主当前模型覆盖了绑定要求，入口必须提供明确的模型切换路径；在实际原生输入复验前不得声称 DeepSeek 已生效。
-- 退出条件：Agent、工作流和发布回放至少各有一条原生请求显示实际 `deepseek-official/deepseek-v4-flash`，或者文档明确记录用户选择模型的必要步骤和原因。
+- 原生会话由 DSH 宿主选择实际模型；绑定只记录 `nativeModelPolicy: host-default`，不把某个 provider/model 写成强制要求。
+- 原生输入后的 runtime ledger 仍须记录实际 provider/model，便于追溯；模型可以是宿主当前可用的 GLM、DeepSeek 或其他受支持模型。
+- 退出条件：Agent、工作流和合成业务验收各有原生/运行证据，并记录实际宿主模型；当前范围不要求 DeepSeek 专属路由。
 
 ## 5. 风险和处置
 
@@ -167,4 +167,8 @@
 4. Agent 优化和 workflow 修改能产生新 revision/changeSet/run，并保留旧 revision 对照。
 5. smoke、发布、工程回放遵守 `AGENTS.md` 的固定合同和写入边界。
 6. 验收计划中的点击门槛、恢复、错误和隔离用例全部有证据。
+
+## 7. 当前用户范围覆盖（2026-10-01）
+
+当前系统是空 registry 的新 Trainer。历史八专家仅隔离保存资料，不进入当前注册表、训练、发布或回放；历史真实半导体业务流程不执行，业务流程验收固定使用合成表达式 `23*24+45=597`，结果必须为 `businessGatePassed:false`。旧 `all.test.mjs` 中依赖八专家、DFT/schematic 真实业务和旧发布合同的用例不属于当前完成条件。模型同样不锁定 DeepSeek，原生会话跟随 DSH 宿主实际可用的默认模型。
 

@@ -22,6 +22,13 @@ function presetOf(session) {
 
 export function mountTrainerHost(ctx, config) {
   const workspaceRoot = path.resolve(config.trainerWorkspaceRoot || config.workspaceRoot);
+  const hostModel = () => {
+    const selection = ctx.agentDefaultModel?.currentSelection?.();
+    if (!selection || typeof selection.provider !== 'string' || typeof selection.model !== 'string') {
+      throw Object.assign(new Error('The DSH host did not expose a current default model'), { code: 'native_model_unavailable' });
+    }
+    return { provider: selection.provider, model: selection.model };
+  };
   const adapter = createDshFrameworkAdapter(ctx, { workspaceRoot, validateJson });
   const runner = createFrameworkRunner({ workspaceRoot, adapter, verifyBundle: bundles.verifyBundle, validateJson });
   runner.reconcileInterrupted();
@@ -29,7 +36,7 @@ export function mountTrainerHost(ctx, config) {
     workspaceRoot,
     runner,
     repositories: { ...projects, ...bundles, ...releases },
-    modelResolver: async () => ({ provider: 'deepseek-official', model: 'deepseek-v4-flash' }),
+    modelResolver: async () => hostModel(),
     sessionVerifier: async (sessionId, presetId) => {
       const agent = ctx.agents.get(sessionId);
       if (agent) return ctx.agentPresets.composedPreset(agent.ctx) === presetId && presetOf(agent.session) === presetId;
@@ -44,7 +51,7 @@ export function mountTrainerHost(ctx, config) {
       return agent.ctx.tools.schemas(agent).map(tool => tool.name).filter(name => Object.hasOwn(TRAINER_TOOL_OPERATIONS, name));
     },
     sessionFactory: async ({ cwd, presetId, nativeModelSelection, targetKind, targetId }) => {
-      const model = nativeModelSelection || { provider: 'deepseek-official', model: 'deepseek-v4-flash' };
+      const model = nativeModelSelection || hostModel();
       const workspaceRegistry = ctx.workspaceRegistry || ctx.get?.('workspaceRegistry');
       if (!workspaceRegistry?.create) {
         throw Object.assign(new Error('The DSH workspace registry is unavailable'), { code: 'native_host_unavailable' });

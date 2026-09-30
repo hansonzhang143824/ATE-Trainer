@@ -159,7 +159,10 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
     if (!fs.existsSync(path.join(cwd, 'AGENTS.md'))) fs.writeFileSync(path.join(cwd, 'AGENTS.md'), instructions);
     const result = { projectId: args.projectId, targetKind: args.targetKind, targetId: args.targetId,
       presetId: args.presetId, mode: args.mode, selectedRunId: args.selectedRunId || null,
-      nativeModelSelection: {provider:'deepseek-official',model:'deepseek-v4-flash'},
+      // The native DSH host owns model selection.  Keep the binding explicit
+      // about that policy without claiming a provider/model that the host did
+      // not actually select for this session.
+      nativeModelPolicy: 'host-default', nativeModelSelection: null,
       candidateRevision: project.revisionId, bindingSchemaVersion: 1, cwd };
     if (!args.sessionId) return { ...result, bindingRevision: 0 };
     if (!sessionVerifier || !(await sessionVerifier(args.sessionId, args.presetId))) fail('session_identity_mismatch', 'Native session must use the requested dedicated preset');

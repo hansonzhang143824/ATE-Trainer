@@ -181,7 +181,16 @@ publish/runs/<runId>/framework-run.json
 
 ## 11. 原生模型选择核对（追加）
 
-绑定文件中的 `nativeModelSelection` 只是 Trainer 服务要求的模型快照；DSH 原生窗口还必须以实际请求 ledger 和窗口模型选择器核对最终路由。若窗口初始模型与绑定快照不同，必须在原生窗口实际点击模型选择器切换到 `DeepSeek-V4-Flash`，再发送一条消息并检查 ledger 的 `provider/model/modelSource`，否则模型 Gate 不通过。当前一次工作流验证已证明：初始宿主实际为 `zai-coding-cn/glm-5.3-flash`，点击选择 `DeepSeek-V4-Flash` 后实际 ledger 变为 `deepseek-official/deepseek-v4-flash`；该差异仍需决定是否在入口代码中自动消除，不能用绑定文件的期望值代替实际请求证据。
+绑定文件不再指定固定 provider/model，而是记录 `nativeModelPolicy=host-default`。DSH 原生窗口仍须以实际请求 ledger 记录最终 `provider/model/modelSource`；当前宿主实际使用 `zai-coding-cn/glm-5.3-flash` 即通过，不要求切换到 DeepSeek。不能用绑定策略代替实际请求事实。
+
+## 12. 当前用户范围覆盖（2026-10-01）
+
+本节覆盖前文针对旧项目的冲突项：
+
+- 八专家 smoke 资料只保留在 archive，当前 registry 为空，不创建、不训练、不发布八专家。
+- 真实半导体 DFT/schematic 工作流不执行；`BUSINESS_ONLY` 只用 `23*24+45=597` 验证按钮、候选隔离、fresh child、校验和运行链路，且 `businessGatePassed:false`。
+- 旧 `all.test.mjs` 的八专家、DFT/schematic、真实业务和历史发布用例是范围外，不作为当前失败项。
+- 原生模型采用 `host-default` 策略。验收记录实际 provider/model，但不要求 DeepSeek；当前宿主显示并实际使用 `zai-coding-cn/glm-5.3-flash` 即满足模型条件。
 
 
 
