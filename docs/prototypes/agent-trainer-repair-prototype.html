@@ -80,7 +80,7 @@
       document.querySelector('#page-subtitle').textContent=wf?('当前工作流：'+(wf.name||state.workflow)+' · '+wf.steps.length+' 个 Agent 按顺序执行'):'正式项目无默认 Agent/工作流，可在训练模式中创建';
       const live=typeof liveFrameworkRun==='function'?liveFrameworkRun():null;
       document.querySelector('#scope').textContent=live?`framework-run · ${live.steps?.length||wf?.steps?.length||0} workflow steps`:state.exec==='smoke'?'framework-run · 当前工作流':'workflow-business · 业务训练证据';
-      document.querySelector('#mode-help').textContent=live?'当前运行读取注册 Agent 的 instructions、输入/输出 schema 和 Skill/脚本；失败会按步骤显示。':state.exec==='smoke'?'合成 597 验证：按当前工作流顺序派发 fresh child，输入 23*24+45；只保留 JSON answer=597。':'workflow-business：按当前工作流顺序读取真实材料、Skill 与脚本；业务证据只留训练目录。';
+      document.querySelector('#mode-help').textContent=live?'当前运行读取注册 Agent 的 instructions、输入/输出 schema 和 Skill/脚本；失败会按步骤显示。':state.exec==='smoke'?'合成 597 验证：按当前工作流顺序派发 fresh child，输入 23*24+45；只保留 JSON answer=597。':'合成 BUSINESS_ONLY：按当前工作流顺序派发 fresh child，输入 23*24+45；不读取真实业务材料或执行真实 gate。';
       document.querySelector('#contract').textContent=live?'FRAMEWORK_TRAINING：按当前工作流顺序派发 Agent，并在每一步校验输入/输出合同。':state.exec==='smoke'?'SYNTHETIC_597：当前工作流使用注册 Agent 的 instructions、输入/输出 schema 和 fresh child。':'合成业务 BUSINESS_ONLY：只使用合成输入，不执行真实业务 gate。';
       document.querySelector('#handoff').textContent=live?'当前工作流：'+(wf?.name||state.workflow||'未选择')+' · Agent 间输入/输出按注册合同交接。':state.exec==='smoke'?'当前工作流按注册输入/输出合同交接；运行后逐步显示实际状态。':'当前工作流：'+(wf?.name||state.workflow||'未选择')+' · Agent 间输入/输出按注册约定交接。';
       if(!wf){steps.innerHTML=state.product==='engineering'?'<div class="empty-panel">工程模式没有可用的已发布工作流。请先在训练模式完成工作流与 Agent 发布。</div>':'<div class="empty-panel">当前没有工作流。训练模式下点击左侧“新建工作流”，再从 Agent 列表加入步骤。</div>';return}
