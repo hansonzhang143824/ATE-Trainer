@@ -637,18 +637,6 @@ window.__ModuleLoader__.load({
 		}
 
 		/** Create or reopen a genuine DSH conversation rooted in its server-approved workspace. */
-		// Some DSH host contexts intentionally expose no browser localStorage. Keep a
-		// host-lifetime cache so repeated launcher clicks still reuse the session that
-		// this panel created, while a target/revision/preset change gets a new key.
-		const trainerNativeSessionCaches = globalThis.__dshAgentTrainerNativeSessionCaches ?? (globalThis.__dshAgentTrainerNativeSessionCaches = new WeakMap());
-		function trainerNativeSessionCache(scope) {
-		  let cache = trainerNativeSessionCaches.get(scope);
-		  if (!cache) {
-		    cache = new Map();
-		    trainerNativeSessionCaches.set(scope, cache);
-		  }
-		  return cache;
-		}
 		async function openPtcNativeSession(scope, workspace, { key, title, agentPreset = 'standard' }) {
 		  const api = typeof scope?.get === 'function' ? scope.get('connection')?.api : scope?.connection?.api;
 		  if (!api?.agentPresets?.list || !api?.sessions?.create || !scope?.sessions || !scope?.workspaces) {
@@ -893,6 +881,19 @@ window.__ModuleLoader__.load({
 		    handoffFrom: current && previous && previous !== current ? previous.profileId ?? previous.role ?? null : null,
 		    currentStatus: current?.status ?? null,
 		  };
+		}
+
+		// Some DSH host contexts intentionally expose no browser localStorage. Keep a
+		// host-lifetime cache so repeated launcher clicks still reuse the session that
+		// this panel created, while a target/revision/preset change gets a new key.
+		const trainerNativeSessionCaches = globalThis.__dshAgentTrainerNativeSessionCaches ?? (globalThis.__dshAgentTrainerNativeSessionCaches = new WeakMap());
+		function trainerNativeSessionCache(scope) {
+		  let cache = trainerNativeSessionCaches.get(scope);
+		  if (!cache) {
+		    cache = new Map();
+		    trainerNativeSessionCaches.set(scope, cache);
+		  }
+		  return cache;
 		}
 
 		async function trainerPagePost(operation, input) {
@@ -2042,7 +2043,7 @@ window.__ModuleLoader__.load({
 		            });
 		            const binding = await trainerPagePost('bind-session', {
 		              ...request, sessionId: created.sessionId, presetId: 'agent-trainer', selectedRunId: request.selectedRunId || null,
-	            });
+		            });
 		            return { ...created, binding };
 		          })();
 		          sessionCache.set(sessionKey, { promise: creation });
