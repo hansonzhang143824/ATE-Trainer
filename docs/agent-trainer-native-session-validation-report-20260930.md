@@ -147,3 +147,17 @@ The current run is ramework-0835e968-1a88-4c9a-9e82-2fe54d3cb205 (FRAMEWORK_TRA
 本次真实 DSH 原生工作流会话也已完成保存、校验和运行：`trainer_apply_changes`、`trainer_validate`、`trainer_run` 均在原生窗口实际调用，步骤顺序为 `agent-T2 → custom-agent-7`，每步输出 `{"answer":231}`，运行 `framework-ab8aded6-32a8-4a1b-a802-acad1f5f511b` 完成。当前原生窗口模型选择器实际只显示 GLM-5.3-Flash；服务端 framework bundle 的配置模型仍记录为 `deepseek-official/deepseek-v4-flash`，两者已在证据 JSON 中分开记录。
 
 当前尚未宣告全部完成的原因是：原生聊天模型的 DeepSeek 选择仍受当前 DSH 宿主模型列表限制；历史 `all.test.mjs` 的八专家/真实业务/发布旧合同也没有被当作当前空系统范围的通过证据。直接范围测试仍为 63/63 通过，重启的 Gate A/C 通过，Gate B 在未提供旧 `PluginDir` 时按范围跳过。
+
+## 发布隔离续验（2026-10-01 00:40）
+
+本轮补做了计划 Gate 5 中此前缺失的实际页面点击链路：
+
+1. 在训练模式点击“▶ 运行当前工作流”，得到 `framework-5f0ce56b-3acd-45d4-b7ae-f0fbd2531539`，状态 `completed`。
+2. 点击“冻结候选”，生成 `frozen-9319cc9c-ad9f-46e0-b97b-497bb41dfa66`。
+3. 点击“发布审核”，再点击“发布 SMOKE 快照”，页面自动进入工程模式，显示已发布 3 个工作流和 4 个 Agent，生成 release `release-ad91f02f-27cc-4e5f-b7e3-9f1ea8408a58`。
+4. 点击“▶ 运行已发布工作流”，得到 `publish/runs/framework-d2727bfc-cd22-4f1b-9930-62b86f92f4f6`，`mode=published`、`purpose=FRAMEWORK_REPLAY`、`businessGatePassed=false`。
+5. 返回训练模式，点击“保存候选”，得到未发布候选 `revision-cb830b1f-00a1-477b-8eae-20be95d9c40b`；再切回工程模式点击“▶ 运行已发布工作流”，得到 `publish/runs/framework-c8f8f63f-de1e-46f0-a8b1-d609c3bebacf`。
+
+两次工程运行的 `releaseId` 均为 `release-ad91f02f-27cc-4e5f-b7e3-9f1ea8408a58`，`bundleSha256` 均为 `189a89606f087c61a0260d35c067c7761d74f7781f97b1ea092ddc55aefcb08b`，输出均为 `{"answer":231}`。候选 revision 与发布 bundle 的 Agent-T2 指令内容不同，说明未发布候选没有污染工程回放。上述每一步均由真实页面按钮触发，运行证据和页面状态已写入 evidence JSON 及 SHA-256 sidecar。
+
+当前剩余项只有两项：原生 DSH 聊天模型选择器在本宿主只显示 GLM-5.3-Flash，DeepSeek 原生选择无法由当前宿主证明；历史 `all.test.mjs` 仍包含已归档八专家与真实业务发布旧合同，当前直接范围 63/63 已通过。

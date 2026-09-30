@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "capturedAt": "2026-09-30T15:10:57Z",
+  "capturedAt": "2026-10-01T00:40:00Z",
   "entry": {
     "action": "click direct ATE Trainer entry",
     "hostUrl": "http://127.0.0.1:3080/",
@@ -137,7 +137,7 @@
     }
   },
   "continuation": {
-    "capturedAt": "2026-09-30T15:10:57Z",
+    "capturedAt": "2026-10-01T00:40:00Z",
     "activeRegistry": {
       "path": "team/ptc/ptc_stage_registry.json",
       "stateMachineLength": 0,
@@ -280,7 +280,10 @@
       "clientBuild": "npm run build:client --prefix plugins/dsh-ptc-control-plane",
       "focusedTests": "63/63 passed",
       "syntheticBusinessIsolation": true,
-      "syntheticBusinessContract": "Transient BUSINESS_ONLY bundle rewrites only execution instructions/output contracts to answer=597; candidate Agent files remain unchanged."
+      "syntheticBusinessContract": "Transient BUSINESS_ONLY bundle rewrites only execution instructions/output contracts to answer=597; candidate Agent files remain unchanged.",
+      "productReleaseControls": true,
+      "productReleaseClickAcceptance": true,
+      "publishReplayIsolation": true
     },
     "restartGate": {
       "status": "passed_with_gate_b_skipped",
@@ -323,6 +326,54 @@
         "answer": 231
       },
       "nativeModel": "zai-coding-cn/glm-5.3-flash"
+    },
+    "productReleaseControls": {
+      "controls": [
+        "训练模式",
+        "发布审核",
+        "工程模式"
+      ],
+      "trainingRunId": "framework-5f0ce56b-3acd-45d4-b7ae-f0fbd2531539",
+      "trainingStatus": "completed",
+      "freezeClicked": true,
+      "frozenVersionId": "frozen-9319cc9c-ad9f-46e0-b97b-497bb41dfa66",
+      "releaseReviewClicked": true,
+      "publishClicked": true,
+      "releaseId": "release-ad91f02f-27cc-4e5f-b7e3-9f1ea8408a58",
+      "releaseBundleSha256": "189a89606f087c61a0260d35c067c7761d74f7781f97b1ea092ddc55aefcb08b",
+      "businessGatePassed": false,
+      "engineeringAgentCount": 4,
+      "engineeringWorkflowCount": 3,
+      "evidence": "通过真实页面按钮完成冻结、发布审核和工程模式切换；工程模式只显示发布快照绑定的 Agent/工作流。"
+    },
+    "publishedReplay": {
+      "releaseId": "release-ad91f02f-27cc-4e5f-b7e3-9f1ea8408a58",
+      "firstRun": {
+        "runId": "framework-d2727bfc-cd22-4f1b-9930-62b86f92f4f6",
+        "mode": "published",
+        "purpose": "FRAMEWORK_REPLAY",
+        "status": "completed",
+        "bundleSha256": "189a89606f087c61a0260d35c067c7761d74f7781f97b1ea092ddc55aefcb08b",
+        "output": {
+          "answer": 231
+        },
+        "businessGatePassed": false
+      },
+      "unpublishedCandidateRevision": "revision-cb830b1f-00a1-477b-8eae-20be95d9c40b",
+      "secondRun": {
+        "runId": "framework-c8f8f63f-de1e-46f0-a8b1-d609c3bebacf",
+        "mode": "published",
+        "purpose": "FRAMEWORK_REPLAY",
+        "status": "completed",
+        "bundleSha256": "189a89606f087c61a0260d35c067c7761d74f7781f97b1ea092ddc55aefcb08b",
+        "output": {
+          "answer": 231
+        },
+        "businessGatePassed": false
+      },
+      "samePinnedBundle": true,
+      "candidateDidNotAffectEngineering": true,
+      "evidence": "训练模式实际点击保存候选后，工程模式实际点击运行；两次 publish/runs 的 releaseId 和 bundleSha256 完全一致。"
     }
   },
   "gateAudit": {
@@ -365,9 +416,12 @@
       ]
     },
     "gate5": {
-      "status": "scoped_not_revalidated",
+      "status": "passed_scoped",
       "evidence": [
-        "Current user scope uses synthetic BUSINESS_ONLY 597 and archives historical expert materials; no new publish click was performed after this scope change."
+        "实际点击冻结候选并生成 frozen-9319cc9c-ad9f-46e0-b97b-497bb41dfa66",
+        "实际点击发布审核和发布 SMOKE 快照，生成 release-ad91f02f-27cc-4e5f-b7e3-9f1ea8408a58",
+        "实际点击工程模式运行两次，publish runs framework-d2727bfc... 和 framework-c8f8f63f... 共用同一 release/bundle SHA",
+        "训练模式保存 revision-cb830b1f 后工程回放仍使用 pinned release，未发布候选未生效"
       ]
     },
     "gate6": {
@@ -375,6 +429,7 @@
       "evidence": [
         "63/63 focused tests passed",
         "sanctioned restart Gate A/C passed and server restarted",
+        "lowercase SHA-256 sidecars verified",
         "current native host model picker exposes GLM only; DeepSeek native selection remains unresolved"
       ],
       "rollback": {
