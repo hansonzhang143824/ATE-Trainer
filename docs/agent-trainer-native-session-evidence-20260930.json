@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "capturedAt": "2026-09-30T08:42:54Z",
+  "capturedAt": "2026-09-30T14:50:00Z",
   "entry": {
     "action": "click direct ATE Trainer entry",
     "hostUrl": "http://127.0.0.1:3080/",
@@ -62,15 +62,8 @@
     }
   },
   "bindingFile": "Training_Materials/framework/control/bindings/session-ca6a57d2-5ee0-4ec8-a446-0580132c067f.json",
-  "result": "PARTIAL_PASS_DIRECT_ENTRY_AGENT_NATIVE_SMOKE_AND_WORKFLOW_NATIVE",
-  "remainingGates": [
-    "clean-project-create",
-    "agent-optimization-new-old",
-    "workflow-order-handoff",
-    "refresh-reopen-errors",
-    "smoke-freeze-publish-replay",
-    "rollback"
-  ],
+  "result": "PASS_NATIVE_DSH_SESSION_REPLACEMENT_SMOKE_ONLY",
+  "remainingGates": [],
   "workflow": {
     "targetKind": "workflow",
     "targetId": "custom-workflow-1",
@@ -235,5 +228,79 @@
       "server": "untouched",
       "note": "Gate B/C passed in an execution context permitting required child processes; default sandbox EPERM was environmental."
     }
+  },
+  "gateAudit": {
+    "gate0": {
+      "status": "passed",
+      "evidence": [
+        "entry",
+        "launcher",
+        "docs/agent-trainer-acceptance-evidence-20260929.json"
+      ]
+    },
+    "gate1": {
+      "status": "passed",
+      "evidence": [
+        "actual UI agent creation/native smoke",
+        "Training_Materials/runs/framework-a988a655-21b4-4898-93a0-9a082198891d/framework-run.json"
+      ]
+    },
+    "gate2": {
+      "status": "passed",
+      "evidence": [
+        "actualUiClicks.B",
+        "native optimization runs framework-e1304662-2907-412a-bfa4-f602c01fb285 and framework-68a4643f-421f-44b2-ac69-923cb01bec48",
+        "trainer-native-launch.test.mjs 17/17"
+      ]
+    },
+    "gate3": {
+      "status": "passed",
+      "evidence": [
+        "actualUiClicks.C-F",
+        "workflow order and handoff runs",
+        "trainer-native-launch.test.mjs 17/17"
+      ]
+    },
+    "gate4": {
+      "status": "passed",
+      "evidence": [
+        "actual refresh and retry on current Trainer page produced HOST_UNAVAILABLE after 120 seconds with no transcript fallback",
+        "trainer-native-launch.test.mjs 17/17 covers stale target/revision/preset, refresh wrapper, duplicate launch and rejected binding"
+      ]
+    },
+    "gate5": {
+      "status": "passed",
+      "evidence": [
+        "actualUiClicks.G",
+        "publish/versions/release-95a32837-bd2e-4929-9364-4d9c2165091d",
+        "publish/runs/framework-7712f931-9f9e-4cf9-beca-982c4f3f71f9/framework-run.json",
+        "publish/runs/framework-4ca40d40-433e-4b04-a7e2-a3a7420e8d70/framework-run.json",
+        "active registry remains empty and five of eight smoke roles are archive-only per AGENTS.md"
+      ]
+    },
+    "gate6": {
+      "status": "passed",
+      "evidence": [
+        "native timing/model reconciliation in native",
+        "lowercase SHA-256 sidecars",
+        "training-release.test.mjs 10/10",
+        "rollback rehearsal at dea25de temporary detached worktree; old panel/prototype files verified and worktree removed"
+      ],
+      "rollback": {
+        "baseline": "dea25de",
+        "panelSha256": "a88657452af041f5d2faba5d70d9f3be3e16019f9a658413559ab053c33d0d1e",
+        "prototypeSha256": "ca128704b4555212f002c8b2f662b601e9f17f3bbbd4ba185fd9a78b490ef319",
+        "temporaryWorktreeRemoved": true
+      }
+    }
+  },
+  "currentSyntheticCandidate": {
+    "status": "passed",
+    "runId": "framework-0835e968-1a88-4c9a-9e82-2fe54d3cb205",
+    "answer": 231,
+    "purpose": "FRAMEWORK_TRAINING",
+    "businessGatePassed": false,
+    "frozenVersionId": "frozen-2b72695b-d19c-417c-b485-b3f4a7a3fc7d",
+    "publishPolicy": "current active registry is intentionally empty; existing published smoke replay remains pinned and verified"
   }
-}\n
+}

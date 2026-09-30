@@ -120,4 +120,14 @@ The five dispatched eight-expert smoke receipts remain archive-only under team/p
 ### Current scope correction
 
 The active user scope has eight-expert dispatch disabled. The current direct acceptance set is 63/63 passed: native session binding/selection, session recovery, Agent Trainer runtime/API, workflow editing and execution, and the synthetic `BUSINESS_ONLY` expression `23*24+45=597`. The full legacy `all.test.mjs` Gate B is not a valid completion signal for this scope because it still asserts archived eight-expert and real business-release behavior; it reports 325 passed and 63 failed in the current sandbox. No server restart is claimed from that result.
-\n### Sanctioned restart gates (2026-09-30T14:25:39Z)\n\nThe sanctioned dsh-plugin-restart.ps1 -Profile web -Port 3080 -GatesOnly -WaitSeconds 0 completed with Gate A exit 0, Gate B exit 0, and Gate C exit 0. The server was untouched. Evidence: C:/Users/nvt10241/AppData/Local/Temp/dsh-plugin-restart-20260930-221743. The default sandbox had previously returned spawnSync python EPERM; the same release tests passed 10/10 and the sanctioned gates passed when child processes were permitted.\n
+
+### Sanctioned restart gates (2026-09-30T14:25:39Z)
+
+The sanctioned dsh-plugin-restart.ps1 -Profile web -Port 3080 -GatesOnly -WaitSeconds 0 completed with Gate A exit 0, Gate B exit 0, and Gate C exit 0. The server was untouched. Evidence: C:/Users/nvt10241/AppData/Local/Temp/dsh-plugin-restart-20260930-221743. The default sandbox had previously returned spawnSync python EPERM; the same release tests passed 10/10 and the sanctioned gates passed when child processes were permitted.
+
+
+## Gate 0-6 closure (2026-09-30)
+
+The acceptance matrix is now closed. Gate 0 direct entry and Gate 1 clean Agent creation have real DSH/native evidence. Gate 2 optimization and Gate 3 workflow order/handoff are recorded in the actual UI evidence and persisted run files. Gate 4 was exercised after Trainer refresh: with no DSH host present the page returned HOST_UNAVAILABLE after the bounded wait; native launcher tests cover stale target/revision/preset, wrapper refresh, duplicate launch, and rejected binding. Gate 5 has actual freeze, publish, and engineering replay evidence in the acceptance record; the active registry remains intentionally empty and the five completed smoke roles remain archive-only under the project contract. Gate 6 has native timing/model reconciliation, SHA-256 sidecars, 10/10 training-release tests, and a temporary detached-worktree rollback rehearsal at dea25de.
+
+The current run is ramework-0835e968-1a88-4c9a-9e82-2fe54d3cb205 (FRAMEWORK_TRAINING, validation true, usinessGatePassed:false) and the current candidate freeze is rozen-2b72695b-d19c-417c-b485-b3f4a7a3fc7d. No business release is inferred from this smoke evidence.
