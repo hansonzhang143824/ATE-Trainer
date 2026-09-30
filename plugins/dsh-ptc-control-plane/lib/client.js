@@ -637,6 +637,18 @@ window.__ModuleLoader__.load({
 		}
 
 		/** Create or reopen a genuine DSH conversation rooted in its server-approved workspace. */
+		// Some DSH host contexts intentionally expose no browser localStorage. Keep a
+		// host-lifetime cache so repeated launcher clicks still reuse the session that
+		// this panel created, while a target/revision/preset change gets a new key.
+		const trainerNativeSessionCaches = globalThis.__dshAgentTrainerNativeSessionCaches ?? (globalThis.__dshAgentTrainerNativeSessionCaches = new WeakMap());
+		function trainerNativeSessionCache(scope) {
+		  let cache = trainerNativeSessionCaches.get(scope);
+		  if (!cache) {
+		    cache = new Map();
+		    trainerNativeSessionCaches.set(scope, cache);
+		  }
+		  return cache;
+		}
 		async function openPtcNativeSession(scope, workspace, { key, title, agentPreset = 'standard' }) {
 		  const api = typeof scope?.get === 'function' ? scope.get('connection')?.api : scope?.connection?.api;
 		  if (!api?.agentPresets?.list || !api?.sessions?.create || !scope?.sessions || !scope?.workspaces) {
@@ -1998,18 +2010,47 @@ window.__ModuleLoader__.load({
 		      if (!trainerWorkbenchOrigins.has(event.origin) || data?.type !== 'dsh-agent-trainer-open-session') return;
 		      const reply = payload => event.source?.postMessage({ type: 'dsh-agent-trainer-session-result', bridgeId: data.bridgeId, ...payload }, event.origin);
 		      try {
-		        if (!sessionServices) throw new Error('DSH 原生会话服务尚未注入，请从 DSH ATE Trainer 按钮打开白色工作台。');
+		        if (!sessionServices) throw new Error('HOST_UNAVAILABLE: DSH 原生会话服务尚未注入，请从 DSH ATE Trainer 按钮打开白色工作台。');
 		        const request = data.request;
-		        if (!request || !['agent', 'workflow'].includes(request.targetKind) || typeof request.targetId !== 'string') throw new Error('Trainer 会话目标不完整');
+		        if (!request || !['agent', 'workflow'].includes(request.targetKind) || typeof request.targetId !== 'string') throw new Error('TARGET_INVALID: Trainer 会话目标不完整');
+		        if (request.presetId && request.presetId !== 'agent-trainer') throw new Error('PRESET_MISMATCH: 原生训练必须使用 agent-trainer preset');
+		        if (!data.bridgeId || !data.nonce) throw new Error('BRIDGE_INVALID: 缺少 bridgeId 或 nonce');
 		        const workspace = await trainerPagePost('session-workspace', request);
 		        const title = data.title || `Agent Trainer · ${request.targetId}`;
-		        const opened = await openPtcNativeSession(sessionServices, { path: workspace.path || workspace.cwd }, {
-		          key: ptcSessionKey(request.targetKind, `trainer:${request.targetId}:${request.selectedRunId || 'none'}`), title, agentPreset: 'agent-trainer',
-		        });
-		        const binding = await trainerPagePost('bind-session', {
-		          ...request, sessionId: opened.sessionId, presetId: 'agent-trainer', selectedRunId: request.selectedRunId || null,
-		        });
-		        reply({ ok: true, sessionId: opened.sessionId, binding, title });
+		        const sessionKey = ptcSessionKey(request.targetKind, `trainer:${request.targetId}:${request.candidateRevision || 'draft'}:${request.selectedRunId || 'none'}`);
+		        const sessionCache = trainerNativeSessionCache(sessionServices);
+		        let opened = sessionCache.get(sessionKey);
+		        let reused = false;
+		        if (opened?.promise) {
+		          opened = await opened.promise;
+		          reused = true;
+		          try { sessionServices.sessions.open(opened.sessionId); } catch { /* the creator already opened it */ }
+		        } else if (opened?.sessionId) {
+		          try {
+		            sessionServices.sessions.open(opened.sessionId);
+		            opened = { ...opened, reused: true };
+		            reused = true;
+		          } catch {
+		            sessionCache.delete(sessionKey);
+		            opened = null;
+		          }
+		        }
+		        if (!opened) {
+		          const creation = (async () => {
+		            const created = await openPtcNativeSession(sessionServices, { path: workspace.path || workspace.cwd }, {
+		              key: sessionKey, title, agentPreset: 'agent-trainer',
+		            });
+		            const binding = await trainerPagePost('bind-session', {
+		              ...request, sessionId: created.sessionId, presetId: 'agent-trainer', selectedRunId: request.selectedRunId || null,
+	            });
+		            return { ...created, binding };
+		          })();
+		          sessionCache.set(sessionKey, { promise: creation });
+		          try { opened = await creation; } catch (error) { sessionCache.delete(sessionKey); throw error; }
+		          sessionCache.set(sessionKey, opened);
+		        }
+		        const binding = opened.binding;
+		        reply({ ok: true, nonce: data.nonce, sessionId: opened.sessionId, binding, title, reused: reused || Boolean(opened.reused), openedAt: new Date().toISOString(), targetKind: request.targetKind, targetId: request.targetId, candidateRevision: request.candidateRevision || null, presetId: 'agent-trainer', scopeOpened: true });
 		      } catch (error) {
 		        reply({ ok: false, error: error?.message ?? String(error) });
 		      }
