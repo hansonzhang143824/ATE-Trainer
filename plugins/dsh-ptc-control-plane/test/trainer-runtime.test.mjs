@@ -44,6 +44,9 @@ function mounted(workspaceRoot, trainerEnabled) {
 test('trainer runtime is opt-in and registers the complete page API when enabled', async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'ptc-trainer-route-'));
   try {
+    fs.mkdirSync(path.join(root, 'docs', 'prototypes'), { recursive: true });
+    fs.writeFileSync(path.join(root, 'docs', 'prototypes', 'agent-trainer-user-guide.html'), '<title>从零开始使用 Agent Trainer</title><h2>自己点击验证 Agent 和工作流</h2>');
+    fs.writeFileSync(path.join(root, 'docs', 'agent-trainer-empty-system-acceptance-evidence-20260930.json'), '{"status":"passed"}');
     const disabled = mounted(root, false);
     assert.deepEqual(disabled.injected, ['webServer', 'agents', 'agentDefaultModel', 'agentPresets', 'subagents', 'tools']);
     assert.equal(disabled.routes.some(route => route.path.startsWith('/api/ptc-control/trainer/')), false);
@@ -53,6 +56,21 @@ test('trainer runtime is opt-in and registers the complete page API when enabled
     assert.deepEqual(enabled.injected, ['webServer', 'agents', 'agentDefaultModel', 'agentPresets', 'subagents', 'tools', 'sessions', 'sessionPersistence']);
     const trainer = enabled.routes.filter(route => route.path.startsWith('/api/ptc-control/trainer/'));
     assert.equal(trainer.length, 18);
+    const guideRoute = enabled.routes.find(route => route.path === '/agent-trainer-guide');
+    assert.equal(guideRoute?.kind, 'exact');
+    const guide = request({});
+    guide.input.method = 'GET';
+    await guideRoute.handler(guide.input, guide.response);
+    assert.equal(guide.writes[0].status, 200);
+    assert.match(String(guide.writes[1].body), /从零开始使用 Agent Trainer/);
+    assert.match(String(guide.writes[1].body), /自己点击验证 Agent 和工作流/);
+    const evidenceRoute = enabled.routes.find(route => route.path === '/agent-trainer-evidence.json');
+    assert.equal(evidenceRoute?.kind, 'exact');
+    const evidence = request({});
+    evidence.input.method = 'GET';
+    await evidenceRoute.handler(evidence.input, evidence.response);
+    assert.equal(evidence.writes[0].status, 200);
+    assert.deepEqual(JSON.parse(String(evidence.writes[1].body)), { status: 'passed' });
     assert.equal(trainer.find(route => route.path.endsWith('/context'))?.kind, 'exact');
     assert.equal(trainer.find(route => route.path.endsWith('/session-workspace'))?.kind, 'exact');
     assert.equal(trainer.find(route => route.path.endsWith('/session-tool'))?.kind, 'exact');

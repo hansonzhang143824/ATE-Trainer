@@ -59,9 +59,36 @@ export function mountTrainerHost(ctx, config) {
     handler: createTrainerApiHandler(service, operation),
   }));
   const workbenchPath = path.resolve(workspaceRoot, 'docs/prototypes/agent-trainer-repair-prototype.html');
+  const guidePath = path.resolve(workspaceRoot, 'docs/prototypes/agent-trainer-user-guide.html');
+  const evidencePath = path.resolve(workspaceRoot, 'docs/agent-trainer-empty-system-acceptance-evidence-20260930.json');
+  const serveHtml = (filePath, title) => (request, response) => {
+    if (request.method !== 'GET' && request.method !== 'HEAD') {
+      response.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+      response.end('Method Not Allowed');
+      return;
+    }
+    try {
+      const html = fs.readFileSync(filePath);
+      response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
+      if (request.method === 'HEAD') response.end(); else response.end(html);
+    } catch (error) {
+      response.writeHead(503, { 'Content-Type': 'text/plain; charset=utf-8' });
+      response.end(`${title} unavailable: ${error.message}`);
+    }
+  };
   const workbenchRoute = ctx.webServer.register({
     kind: 'exact',
     path: '/agent-trainer',
+    handler: serveHtml(workbenchPath, 'Agent Trainer'),
+  });
+  const guideRoute = ctx.webServer.register({
+    kind: 'exact',
+    path: '/agent-trainer-guide',
+    handler: serveHtml(guidePath, 'Agent Trainer guide'),
+  });
+  const evidenceRoute = ctx.webServer.register({
+    kind: 'exact',
+    path: '/agent-trainer-evidence.json',
     handler: (request, response) => {
       if (request.method !== 'GET' && request.method !== 'HEAD') {
         response.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
@@ -69,17 +96,19 @@ export function mountTrainerHost(ctx, config) {
         return;
       }
       try {
-        const html = fs.readFileSync(workbenchPath);
-        response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
-        if (request.method === 'HEAD') response.end(); else response.end(html);
+        const evidence = fs.readFileSync(evidencePath);
+        response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
+        if (request.method === 'HEAD') response.end(); else response.end(evidence);
       } catch (error) {
         response.writeHead(503, { 'Content-Type': 'text/plain; charset=utf-8' });
-        response.end(`Agent Trainer unavailable: ${error.message}`);
+        response.end(`Agent Trainer evidence unavailable: ${error.message}`);
       }
     },
   });
   return () => {
     workbenchRoute?.();
+    guideRoute?.();
+    evidenceRoute?.();
     for (const dispose of routes) dispose?.();
     disposeRuntime();
     const listed = runner.listRuns({ projectId: DEFAULT_TRAINER_PROJECT_ID, limit: 1000 });
