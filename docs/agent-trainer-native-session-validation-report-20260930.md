@@ -71,6 +71,6 @@
 
 ## 边界说明
 
-- 所有上述运行仍按项目约束标记 `SMOKE_ONLY` / `businessGatePassed:false`；本次变更没有重新激活历史 DFT、schematic 或业务 gate。
+- 八专家 smoke 结果仍按项目约束标记 `SMOKE_ONLY` / `businessGatePassed:false`；本次变更没有重新激活历史 DFT、schematic 或业务 gate。本文记录的 Agent 优化和 workflow training 运行属于训练范围，均保留 `businessGatePassed:false`，不产生发布 release。
 - Agent-T2 的 `11*21=231` 是候选优化验证，不替换八专家 smoke 固定题 `1+2=3`。
 - 当前会话 `freeze:false`，因此本次没有执行冻结和发布；发布仍需按独立发布决策完成 smoke 全链证据后进行。
