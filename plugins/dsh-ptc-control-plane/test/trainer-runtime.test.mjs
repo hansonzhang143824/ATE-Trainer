@@ -111,7 +111,9 @@ test('trainer service runs a registered workflow through the real runner boundar
       const childSessionId = `synthetic-child-${++child}`;
       onStart({ childSessionId, parentSessionId: 'synthetic-parent' });
       const instruction = bundle.files.find(file => file.path === step.instructionsRef)?.content ?? '';
-      const output = instruction.includes('Synthetic BUSINESS_ONLY')
+      const output = instruction.includes('Synthetic SMOKE_ONLY')
+        ? { answer: 3 }
+        : instruction.includes('Synthetic BUSINESS_ONLY')
         ? { answer: 597 }
         : step.stepId === 'produce'
         ? { value: input.seed + 1, marker: 'v1', scriptMarker: 'script-v1' }
@@ -146,6 +148,16 @@ test('trainer service runs a registered workflow through the real runner boundar
     assert.equal(result.value.status, 'completed');
     assert.deepEqual(result.value.output, { receivedValue: 8 });
     assert.equal(result.value.businessGatePassed, false);
+
+    const smokeStarted = await page('run', { requestId: 'trainer-smoke-run-1', executionMode: 'SMOKE_ONLY', input: { receivedValue: '1+2' } });
+    assert.equal(smokeStarted.ok, true, JSON.stringify(smokeStarted));
+    await runner.waitForRun({ runId: smokeStarted.value.runId });
+    const smokeResult = await page('runs', { runId: smokeStarted.value.runId });
+    assert.equal(smokeResult.value.executionMode, 'SMOKE_ONLY');
+    assert.equal(smokeResult.value.status, 'completed', JSON.stringify(smokeResult.value));
+    assert.deepEqual(smokeResult.value.output, { answer: 3 });
+    assert.equal(smokeResult.value.businessGatePassed, false);
+    assert.ok(smokeResult.value.steps.every(step => step.output && step.output.answer === 3));
 
     const businessFiles = [
       { path: 'agents/business-agent/instructions.md', content: 'Candidate task must remain separate from synthetic BUSINESS_ONLY execution.\n' },

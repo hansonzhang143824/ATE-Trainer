@@ -10,6 +10,26 @@ const PAGE_ONLY = new Set(['freeze', 'stage-release', 'activate-release', 'bind-
 const TOOL_PRESETS = new Set(['agent-trainer', 'framework-expert', 'framework-observer']);
 export const DEFAULT_TRAINER_PROJECT_ID = 'agent-trainer';
 const clone = value => JSON.parse(JSON.stringify(value));
+const SYNTHETIC_INPUT_SCHEMA = JSON.stringify({
+  $schema: 'https://json-schema.org/draft/2020-12/schema',
+  type: 'object',
+  additionalProperties: true,
+}, null, 2) + '\n';
+const SYNTHETIC_SMOKE_OUTPUT_SCHEMA = JSON.stringify({
+  $schema: 'https://json-schema.org/draft/2020-12/schema',
+  type: 'object',
+  properties: { answer: { type: 'number', const: 3 } },
+  required: ['answer'],
+  additionalProperties: false,
+}, null, 2) + '\n';
+const SYNTHETIC_SMOKE_INSTRUCTIONS = [
+  '# Synthetic SMOKE_ONLY verification',
+  'This is a synthetic framework smoke run, not semiconductor business execution.',
+  'Ignore the candidate Agent task and solve the fixed arithmetic prompt.',
+  'For input.receivedValue equal to "1+2", calculate 1+2 = 3.',
+  'If the input already contains answer: 3 from an upstream step, preserve it.',
+  'Return JSON only: {"answer":3}. The answer must be the JSON number 3.',
+].join('\n') + '\n';
 const SYNTHETIC_BUSINESS_OUTPUT_SCHEMA = JSON.stringify({
   $schema: 'https://json-schema.org/draft/2020-12/schema',
   type: 'object',
@@ -33,20 +53,46 @@ const SYNTHETIC_BUSINESS_INSTRUCTIONS = [
  * while actually testing a different candidate task. Rewrite only the
  * transient execution bundle; the candidate files remain unchanged.
  */
-function syntheticBusinessBundle(bundle) {
+function rewriteSyntheticBundle(bundle, instructions, inputSchema, outputSchema) {
   const outputRefs = new Set((bundle.steps || []).map(step => step.outputSchemaRef).filter(Boolean));
   const instructionRefs = new Set((bundle.steps || []).map(step => step.instructionsRef).filter(Boolean));
+  const inputRefs = new Set((bundle.steps || []).map(step => step.inputSchemaRef).filter(Boolean));
   const files = bundle.files.map(file => {
     let content = file.content;
-    if (instructionRefs.has(file.path)) content = SYNTHETIC_BUSINESS_INSTRUCTIONS;
-    if (outputRefs.has(file.path)) content = SYNTHETIC_BUSINESS_OUTPUT_SCHEMA;
+    if (instructionRefs.has(file.path)) content = instructions;
+    if (inputRefs.has(file.path)) content = inputSchema;
+    if (outputRefs.has(file.path)) content = outputSchema;
+    if (bundle.targetKind === 'workflow' && file.path === `workflows/${bundle.targetId}.json`) {
+      const workflow = JSON.parse(content);
+      workflow.steps = workflow.steps.map((step, index) => ({
+        ...step,
+        inputBindings: index === 0
+          ? { '': { source: 'input', pointer: '' } }
+          : { '': { source: 'step', stepId: workflow.steps[index - 1].stepId, pointer: '' } },
+      }));
+      content = `${JSON.stringify(workflow, null, 2)}\n`;
+    }
     if (content === file.content) return file;
     const bytes = Buffer.from(content);
     return { ...file, content, size: bytes.length, sha256: trainerSha(bytes) };
   });
-  const rewritten = { ...bundle, files };
+  const steps = bundle.targetKind === 'workflow'
+    ? (bundle.steps || []).map((step, index) => ({
+      ...step,
+      inputBindings: index === 0
+        ? { '': { source: 'input', pointer: '' } }
+        : { '': { source: 'step', stepId: bundle.steps[index - 1].stepId, pointer: '' } },
+    }))
+    : bundle.steps;
+  const rewritten = { ...bundle, files, steps };
   rewritten.bundleSha256 = trainerSha(bundleManifestBytes(rewritten));
   return rewritten;
+}
+function syntheticSmokeBundle(bundle) {
+  return rewriteSyntheticBundle(bundle, SYNTHETIC_SMOKE_INSTRUCTIONS, SYNTHETIC_INPUT_SCHEMA, SYNTHETIC_SMOKE_OUTPUT_SCHEMA);
+}
+function syntheticBusinessBundle(bundle) {
+  return rewriteSyntheticBundle(bundle, SYNTHETIC_BUSINESS_INSTRUCTIONS, SYNTHETIC_INPUT_SCHEMA, SYNTHETIC_BUSINESS_OUTPUT_SCHEMA);
 }
 function fail(code, message, details) { throw Object.assign(new Error(message), { code, details }); }
 function stable(value) {
@@ -357,7 +403,9 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
         const baseBundle = resolvedBundle.bundle || resolvedBundle;
         const resolved = args.executionMode === 'BUSINESS_ONLY'
           ? syntheticBusinessBundle(baseBundle)
-          : baseBundle;
+          : args.executionMode === 'SMOKE_ONLY'
+            ? syntheticSmokeBundle(baseBundle)
+            : baseBundle;
         if (resolved.projectId !== args.projectId) fail('bundle_project_mismatch', 'Bundle project mismatch');
         const started=await runner.startRun({ runId: args._runId, requestId: args.requestId, bundle: resolved,
           input: args.input || {}, mode: args.mode === 'training' ? 'training' : 'published',
