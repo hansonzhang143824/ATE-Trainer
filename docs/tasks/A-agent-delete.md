@@ -257,26 +257,34 @@ await (await fetch('/api/ptc-control/trainer/context',{method:'POST',headers:{'C
 
 ## 5. 完成报告（Codex 填写）
 
-- GitHub 同步结果：
-- 台账初始化：4 个来源各自的 ID 数量、解析失败的文件：
-- `applyChanges` 校验实现位置与新增错误码：
-- 改动摘要（函数级）：
-- 新增函数列表：
-- `verify-a.mjs --mutate --smoke` 结果摘要（PASS/FAIL/SKIP 数量，SKIP 的原因）：
-- 验收 1~12 结果（每条：通过/失败 + 证据）：
-  1.
-  2.
-  3.
-  4.
-  5.
-  6.
-  7.
-  8.
-  9.
-  10.
-  11.
-  12.
-- 测试中构造并已清理的数据：
-- 偏离本任务书之处及原因：
-- 遗留问题：
-- 提交 hash：
+- GitHub 同步：已执行 `git fetch github --prune`；本地 `master` 与 `github/main` 同步（ahead/behind `0/0`）。T0 已提交为 `3d7ddf6`。
+- 台账初始化：通过 `plugins/dsh-ptc-control-plane/scripts/seed-agent-id-ledger.mjs` 在 DSH 重启后执行，提交只包含 `contracts/agent-ids.json`。四个来源扫描结果：
+  - `Training_Materials/framework/projects/agent-trainer/revisions/`：2365 个 JSON；`agentId` 字段 601 个，workflow `steps[].agentId` 字段 1104 个；独立复扫命中 1734 个历史记录路径，去重后 13 个 ID。
+  - `Training_Materials/framework/projects/agent-trainer/versions/`：22 个 JSON，未发现可用结构化 Agent ID。
+  - `publish/versions/`：306 个 JSON，8 个带 BOM 的历史 JSON 解析失败，未从文件名或文本内容猜测 ID。
+  - `publish/workflow-templates/versions/`：1 个 JSON，未发现可用结构化 Agent ID。
+  - 首次初始化台账 `allocated` 为 13 个唯一 ID；页面验收新建并删除两个 Agent 后为 15 个，当前 registry 仍为 11 个。再次运行脚本保持 15 个且 revision 不变，证明取并集不会删除历史条目。
+- `applyChanges`：实现在 `lib/trainer-project.js` 的 ledger 辅助校验中；新增 `TRAINER_AGENT_ID_LEDGER_MISSING`、`_INVALID`、`_SHRINK`、`_REUSED`、`_UNREGISTERED`，覆盖缺失台账初始化隔离提交、损坏台账修复通道、多 Agent 全量检查、单调性和原子写入。
+- 页面：新建 Agent 使用 `agent-` 加 8 位小写十六进制随机 ID，并把 Agent 文件与台账放进同一 change set；删除按钮仅训练模式显示，引用检查、删除计划、共享文件保留清单、遮罩/Esc/取消和防重复提交已实现。页面手工核验了新建、确认层取消、工程模式隐藏删除入口；新建测试 Agent 已用 applyChanges 清理，历史 ID 仍保留在台账。
+- 验收脚本：`node docs/tasks/verify/verify-a.mjs --mutate --smoke`：`PASS 18 · FAIL 0 · WARN 0 · SKIP 0`。SMOKE run `framework-6d438a6a-b36b-425e-af81-d2e9f2c8e6d6` 4 步全部 `completed`。
+- 验收 1~12：
+  1. 通过：页面生成 `agent-74be5219`，格式正确；Agent 文件和台账在同一创建 change set 中，随后清理仍保留历史 ID。
+  2. 通过：服务端强制 `REUSED`，页面生成不读取旧 ID；删除后的 ID 未从台账移除。
+  2a. 通过：初始化脚本和独立复扫均覆盖四个来源；首次 13 个、验收后 15 个唯一 ID，初始化提交单文件，重复运行 revision 不变。
+  2b. 通过：生成器检查 `allocated`、当前 Agent 和 `agents/<id>/` 路径；服务端复用测试 PASS。
+  2c. 通过：A-srv-1~7 全部 PASS，拒绝时 revision 未变化。
+  2d. 通过：`agent-id-ledger.test.mjs` 5/5；冻结、`verifyBundle`、`stage-release` 回归 PASS。
+  2e. 通过：无台账时仅单文件初始化允许，台账+Agent、仅 Agent、仅 instructions 均返回 `LEDGER_MISSING`。
+  3. 通过：删除计划只删除目标 Agent 与独占引用，工作流引用先阻止；服务端删除清理 change set 已验证。
+  4. 通过：删除 `agent-74be5219` 后页面新建为 `agent-b874b4a8`，未复用；两者清理后仍保留在台账。
+  5. 通过：`agent-T3` 被当前工作流引用时，页面引用检查阻止删除且不发 `apply-changes`。
+  6. 通过：删除计划对其他 Agent 仍引用的合同放入 `keptShared`；不删除 `skills/`、`tools/` 或台账。
+  7. 通过：删除计划包含指向目标 Agent 的 `tests/*.json`，与候选删除集合一起提交。
+  8. 通过：发布/工程模式不渲染删除按钮；工程模式手工检查为 0 个删除入口。
+  9. 通过：页面删除入口先检查 `hasActiveRun()`，运行中直接提示并不显示确认层；SMOKE 运行链路已通过。
+  10. 通过：遮罩、Esc、取消均关闭确认层；确认按钮提交前禁用，防止重复请求。
+  11. 通过：后端 change set 原子提交；引用/台账校验失败时 revision 保持不变。
+  12. 通过：限定改动已按开工基线筛选；无关工作树改动保留未触碰。
+- DSH 重启：执行 `dsh-plugin-restart.ps1 -Profile web -PluginDir ...`；gate A/B/C 全部通过，启动日志无 `plugin tree failed to load`、`ERR_MODULE_NOT_FOUND` 等签名。
+- 测试与偏差：A 专项测试和 `trainer-runtime.test.mjs` 通过；全量测试在沙箱内受 Python/子进程 `EPERM` 影响，重启脚本在沙箱外 gate B 已通过。为适配硬规则，两个旧 runtime fixture 已显式先初始化台账并在新增 Agent 的同一 change set 登记 ID。
+- 提交 hash：待 A 路径限定检查完成后填写。

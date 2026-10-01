@@ -23,6 +23,14 @@ function request(body, headers = { 'content-type': 'application/json' }) {
   }, writes };
 }
 
+
+function initializeAgentLedger(root, projectId) {
+  const project = projects.readProject(root, { projectId });
+  const files = projects.readAssets(root, { projectId, revisionId: project.revisionId }).files;
+  const allocated = Object.entries(files).filter(([file]) => /^agents\/[^/]+\/agent\.json$/.test(file)).map(([, content]) => JSON.parse(content).agentId);
+  return projects.applyChanges(root, { projectId, requestId: `seed-ledger-${projectId}`, baseRevision: project.revisionId, reason: '初始化 Agent ID 台账', changes: [{ path: 'contracts/agent-ids.json', content: `${JSON.stringify({ schemaVersion: 1, allocated }, null, 2)}\n` }] });
+}
+
 function mounted(workspaceRoot, trainerEnabled) {
   const routes = []; let dispose; let injected;
   const ctx = {
@@ -107,6 +115,7 @@ test('trainer service runs a registered workflow through the real runner boundar
   let child = 0;
   try {
     await projects.ensureTrainerProject(root, { projectId: 'synthetic-lab', seed: createSyntheticTrainerFixture() });
+    initializeAgentLedger(root, 'synthetic-lab');
     const adapter = { async dispatch({ step, bundle, input, onStart }) {
       const childSessionId = `synthetic-child-${++child}`;
       onStart({ childSessionId, parentSessionId: 'synthetic-parent' });
@@ -130,12 +139,15 @@ test('trainer service runs a registered workflow through the real runner boundar
     const context = await page('context');
     assert.equal(context.ok, true);
     assert.equal(context.value.project.workflows.some(item => item.workflowId === 'lab-pair'), true);
+    const currentAssets = projects.readAssets(root, { projectId: 'synthetic-lab', revisionId: context.value.project.revisionId }).files;
+    const allocated = Object.entries(currentAssets).filter(([file]) => /^agents\/[^/]+\/agent\.json$/.test(file)).map(([, content]) => JSON.parse(content).agentId);
     const changes = [
       { path: 'agents/lab-extra/instructions.md', content: 'Return the supplied value unchanged.\n' },
       { path: 'contracts/extra-input.schema.json', content: JSON.stringify({ type: 'object', properties: { value: { type: 'integer' } }, required: ['value'], additionalProperties: false }) },
       { path: 'contracts/extra-output.schema.json', content: JSON.stringify({ type: 'object', properties: { value: { type: 'integer' } }, required: ['value'], additionalProperties: false }) },
       { path: 'agents/lab-extra/agent.json', content: JSON.stringify({ agentId: 'lab-extra', name: 'Synthetic extra', instructionsRef: 'agents/lab-extra/instructions.md', skillRefs: [], toolIds: [], inputSchemaRef: 'contracts/extra-input.schema.json', outputSchemaRef: 'contracts/extra-output.schema.json' }) },
       { path: 'workflows/lab-extra.json', content: JSON.stringify({ workflowId: 'lab-extra', name: 'Synthetic extra workflow', steps: [{ stepId: 'single', agentId: 'lab-extra', inputBindings: {}, outputSchemaRef: 'contracts/extra-output.schema.json' }] }) },
+      { path: 'contracts/agent-ids.json', content: `${JSON.stringify({ schemaVersion: 1, allocated: [...allocated, 'lab-extra'] }, null, 2)}\n` },
     ];
     const saved = await page('apply-changes', { requestId: 'trainer-create-1', baseRevision: context.value.project.revisionId, changes, reason: 'create synthetic Agent and workflow' });
     assert.equal(saved.ok, true, JSON.stringify(saved));
@@ -166,7 +178,11 @@ test('trainer service runs a registered workflow through the real runner boundar
       { path: 'contracts/business-output.schema.json', content: JSON.stringify({ type: 'object', properties: { answer: { type: 'number' } }, required: ['answer'], additionalProperties: false }) },
       { path: 'workflows/business-workflow.json', content: JSON.stringify({ workflowId: 'business-workflow', name: 'Synthetic business workflow', steps: [{ stepId: 'business-step', agentId: 'business-agent', inputBindings: {}, outputSchemaRef: 'contracts/business-output.schema.json' }] }) },
     ];
-    const businessSaved = await page('apply-changes', { requestId: 'trainer-business-create-1', baseRevision: (await page('context')).value.project.revisionId, changes: businessFiles, reason: 'create synthetic BUSINESS_ONLY regression fixture' });
+    const businessContext = await page('context');
+    const businessAssets = projects.readAssets(root, { projectId: 'synthetic-lab', revisionId: businessContext.value.project.revisionId }).files;
+    const businessIds = Object.entries(businessAssets).filter(([file]) => /^agents\/[^/]+\/agent\.json$/.test(file)).map(([, content]) => JSON.parse(content).agentId);
+    businessFiles.push({ path: 'contracts/agent-ids.json', content: `${JSON.stringify({ schemaVersion: 1, allocated: [...businessIds, 'business-agent'] }, null, 2)}\n` });
+    const businessSaved = await page('apply-changes', { requestId: 'trainer-business-create-1', baseRevision: businessContext.value.project.revisionId, changes: businessFiles, reason: 'create synthetic BUSINESS_ONLY regression fixture' });
     assert.equal(businessSaved.ok, true, JSON.stringify(businessSaved));
     const businessPage = (operation, input = {}) => service.invoke(operation,
       { projectId: 'synthetic-lab', targetKind: 'workflow', targetId: 'business-workflow', ...input }, { kind: 'page' });
@@ -239,6 +255,7 @@ test('Agent optimization records an independent 2+3 candidate run', async () => 
     const service = createTrainerService({ workspaceRoot: root, runner,
       repositories: { ...projects, ...bundles, ...releases }, modelResolver: () => ({ provider: 'fake', model: 'fake' }) });
     await projects.ensureTrainerProject(root, { projectId: 'optimization-lab', seed: { files: arithmeticFiles } });
+    initializeAgentLedger(root, 'optimization-lab');
     const page = (operation, input = {}) => service.invoke(operation,
       { projectId: 'optimization-lab', targetKind: 'agent', targetId: 'arithmetic-agent', ...input }, { kind: 'page' });
 

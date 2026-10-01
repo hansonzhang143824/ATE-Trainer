@@ -6,9 +6,29 @@ import { assetPath, validateProjectFiles } from './trainer-schema.js';
 export const trainerSha = (value) => createHash('sha256').update(value).digest('hex');
 export const trainerJson = (value) => `${JSON.stringify(value, null, 2)}\n`;
 export function trainerFail(code, message, details) { throw Object.assign(new Error(message), { code, details }); }
+export const AGENT_ID_LEDGER_PATH = 'contracts/agent-ids.json';
+const trainerIdPattern = /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/;
+const reservedTrainerId = /^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/i;
+function isTrainerId(id) { return typeof id === 'string' && trainerIdPattern.test(id) && !reservedTrainerId.test(id); }
 export function trainerId(id) {
-  if (typeof id !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(id) || /^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/i.test(id)) trainerFail('TRAINER_INVALID_ID', 'invalid identifier');
+  if (!isTrainerId(id)) trainerFail('TRAINER_INVALID_ID', 'invalid identifier');
   return id;
+}
+function inspectAgentIdLedger(content) {
+  let value;
+  try { value = JSON.parse(content); } catch { return { ok: false, reason: 'invalid JSON' }; }
+  if (!value || typeof value !== 'object' || Array.isArray(value) || value.schemaVersion !== 1) return { ok: false, reason: 'schemaVersion must be 1' };
+  if (!Array.isArray(value.allocated)) return { ok: false, reason: 'allocated must be an array' };
+  const invalid = value.allocated.filter((id) => !isTrainerId(id));
+  if (invalid.length) return { ok: false, reason: 'allocated contains invalid IDs', invalid };
+  const duplicate = value.allocated.find((id, index) => value.allocated.indexOf(id) !== index);
+  if (duplicate !== undefined) return { ok: false, reason: 'allocated contains duplicate IDs', duplicate };
+  return { ok: true, data: { schemaVersion: 1, allocated: [...value.allocated] } };
+}
+export function parseAgentIdLedger(content) {
+  const result = inspectAgentIdLedger(content);
+  if (!result.ok) trainerFail('TRAINER_AGENT_ID_LEDGER_INVALID', `Agent ID ledger is invalid: ${result.reason}`, result);
+  return result.data;
 }
 /** Check every existing ancestor; new paths may not escape through junctions. */
 export function trainerSafe(root, ...parts) {
@@ -37,7 +57,47 @@ export function trainerLock(root, callback) {
   try { return callback(); } finally { fs.closeSync(fd); fs.unlinkSync(lock); }
 }
 export const trainerProjectRoot = (root, projectId) => trainerSafe(root, 'Training_Materials', 'framework', 'projects', trainerId(projectId));
-function check(files) { const result = validateProjectFiles(files); if (!result.ok) trainerFail('TRAINER_PROJECT_INVALID', 'candidate validation failed', result.errors); return result; }
+function check(files, { allowInvalidLedger = false } = {}) {
+  const result = validateProjectFiles(files);
+  // applyChanges reports the ledger-specific error after this structural check;
+  // project initialization keeps the normal generic validation behavior.
+  const errors = allowInvalidLedger ? result.errors.filter((entry) => entry.path !== AGENT_ID_LEDGER_PATH) : result.errors;
+  if (errors.length) trainerFail('TRAINER_PROJECT_INVALID', 'candidate validation failed', errors);
+  return { ...result, ok: true, errors };
+}
+function newAgentIds(base, next) {
+  const ids = [];
+  for (const p of Object.keys(next)) {
+    const match = p.match(/^agents\/([^/]+)\/agent\.json$/);
+    if (match && !Object.hasOwn(base, p)) ids.push(match[1]);
+  }
+  return [...new Set(ids)];
+}
+function ledgerOnlyChange(changes) { return changes.length === 1 && changes[0].path === AGENT_ID_LEDGER_PATH; }
+function checkAgentIdLedger(base, next, changes) {
+  const nextHasLedger = Object.hasOwn(next, AGENT_ID_LEDGER_PATH);
+  const nextLedger = nextHasLedger ? parseAgentIdLedger(next[AGENT_ID_LEDGER_PATH]) : null;
+  const baseHasLedger = Object.hasOwn(base, AGENT_ID_LEDGER_PATH);
+  const newAgents = newAgentIds(base, next);
+  if (!baseHasLedger) {
+    if (newAgents.length) trainerFail('TRAINER_AGENT_ID_LEDGER_MISSING', 'Agent ID ledger must be initialized in a separate commit before creating Agents', { ids: newAgents });
+    if (!ledgerOnlyChange(changes) || !nextLedger) trainerFail('TRAINER_AGENT_ID_LEDGER_MISSING', 'When the base has no Agent ID ledger, the only allowed commit is a standalone ledger initialization');
+    return;
+  }
+  const baseInspection = inspectAgentIdLedger(base[AGENT_ID_LEDGER_PATH]);
+  if (!baseInspection.ok) {
+    if (ledgerOnlyChange(changes) && nextLedger) return;
+    trainerFail('TRAINER_AGENT_ID_LEDGER_INVALID', 'Agent ID ledger is damaged; submit a standalone ledger repair first', baseInspection);
+  }
+  const baseLedger = baseInspection.data;
+  if (!nextLedger) trainerFail('TRAINER_AGENT_ID_LEDGER_SHRINK', 'Agent ID ledger cannot be deleted');
+  const baseIds = new Set(baseLedger.allocated); const nextIds = new Set(nextLedger.allocated);
+  if (baseLedger.allocated.some((id) => !nextIds.has(id))) trainerFail('TRAINER_AGENT_ID_LEDGER_SHRINK', 'Agent ID ledger allocated entries are append-only');
+  const reused = newAgents.filter((id) => baseIds.has(id));
+  if (reused.length) trainerFail('TRAINER_AGENT_ID_REUSED', 'Agent ID was already allocated and cannot be reused', { ids: reused });
+  const unregistered = newAgents.filter((id) => !nextIds.has(id));
+  if (unregistered.length) trainerFail('TRAINER_AGENT_ID_UNREGISTERED', 'New Agent IDs must be registered in the same change set', { ids: unregistered });
+}
 function writeRevision(directory, revisionId, files, transaction = null) {
   const entries = [];
   for (const p of Object.keys(files).sort()) {
@@ -125,7 +185,8 @@ export function applyChanges(root, input) {
       if (change.content === null) delete files[change.path]; else files[change.path] = change.content;
       if (before !== change.content && !(before === undefined && change.content === null)) diff.push({ path: change.path, oldSha256: before === undefined ? null : trainerSha(Buffer.from(before)), newSha256: change.content === null ? null : trainerSha(Buffer.from(change.content)), before: before ?? null, after: change.content, kind: change.path.startsWith('contracts/') || change.path.startsWith('tests/') ? 'validation' : 'asset' });
     }
-    const validation = check(files);
+    const validation = check(files, { allowInvalidLedger: true });
+    checkAgentIdLedger(readAssets(root, { projectId, revisionId: baseRevision }).files, files, changes);
     const revisionId = diff.length ? `revision-${randomUUID()}` : baseRevision; const changeSetId = `change-${randomUUID()}`;
     const result = { projectId, revisionId, changeSetId, diff, validation };
     if (diff.length) writeRevision(directory, revisionId, files, { requestId, fingerprint, changeSetId });
