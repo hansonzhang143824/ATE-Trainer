@@ -2,16 +2,19 @@
 
 - 执行者：Codex
 - 前置：任务 T0 已完成（见 `docs/tasks/00-PLAN.md` 第 3 节）
-- 完成后：逐条自测「验收标准」1~12，填写末尾「完成报告」，按惯例提交（提交信息 `[A] ...`），然后由 Claude 验收
-- 预计工作量：半天以内
+- 完成后：逐条自测「验收标准」1~12（含 2a~2e），填写末尾「完成报告」，按惯例提交（提交信息 `[A] ...`），然后由 Claude 验收
+- 预计工作量：约 1 天（页面 + `applyChanges` 校验 + 后端测试 + 台账初始化脚本）
 
 ---
 
 ## 0. 开工前（必须）
 
-1. **先做 GitLab 同步**（按项目惯常流程）。同步失败或有冲突时停止，在完成报告中说明。
-2. `git status` 确认工作区干净（T0 已提交）。
-3. 备份将修改的文件：`docs/prototypes/agent-trainer-repair-prototype.html` → 同目录 `agent-trainer-repair-prototype.html.bak-<YYYYMMDD>-taskA`（不提交）。
+> **执行方式**：使用 Codex `/goal` 模式连续执行（启动语句见 `00-PLAN.md` 第 2.4 节）。只有命中 2.4 节的硬停止条件才停下，其余问题自行决策、在完成报告记录后继续。
+
+
+1. **先做 GitHub 同步**（按项目惯常流程）。同步失败或有冲突时停止，在完成报告中说明。
+2. 记录基线：`git status --porcelain > %TEMP%\taskA-status-before.txt`（或等效方式）。**不要求整个工作树干净**——仓库中可能存在与本任务无关的改动，不要提交、还原或修改它们。本任务只允许改动第 2 节列出的路径（见验收 12）。
+3. 备份将修改的文件：`docs/prototypes/agent-trainer-repair-prototype.html`、`plugins/dsh-ptc-control-plane/lib/trainer-project.js` → 各自同目录 `<文件名>.bak-<YYYYMMDD>-taskA`（不提交）。
 
 ---
 
@@ -30,7 +33,7 @@ Agent Trainer 白色工作台：`http://127.0.0.1:3080/agent-trainer`。
   - `contracts/<id>-input.schema.json`
   - `contracts/<id>-output.schema.json`
 
-### 1.1 后端已具备的能力（本任务不改后端）
+### 1.1 后端已具备的能力（本任务只允许改 `applyChanges`，见 2.7）
 
 - `POST /api/ptc-control/trainer/apply-changes`，body `{projectId:'agent-trainer', requestId, baseRevision, reason, changes:[{path, content}]}`：
   - `content: null` = 删除该文件；
@@ -64,14 +67,39 @@ Agent Trainer 白色工作台：`http://127.0.0.1:3080/agent-trainer`。
 
 现状问题：`addAgent` 优先补 `agent-T1/T2/T3` 空缺，再用 `custom-agent-N`，`state.customAgentNo` 每次刷新从 1 开始。有删除后，新 Agent 会拿到已删 Agent 的 ID。
 
-要求：
-1. 新建 Agent ID 格式：`agent-` + 8 位小写十六进制，来源 `crypto.randomUUID().replace(/-/g,'').slice(0,8)`。
-2. 生成后检查：当前 `agents` 中不存在；`state.liveAssets` 中不存在以 `agents/<id>/` 开头的路径。冲突则重新生成，最多 5 次，仍冲突则 toast 报错并中止。
-3. 不需要检查历史 revision 中的 ID（8 位十六进制随机空间约 43 亿，碰撞可忽略），不要为此新增后端接口。
-4. 显示名：`新 Agent N`，N = 当前 Agent 数 + 1（仅显示用，允许重复）。写入 `agent.json.name` 与 `instructions.md` 首行。
-5. 不迁移、不重命名任何已有 Agent（`agent-T1~T3`、`custom-agent-N`、`新建 Agent 1` 等保持原样）。
-6. 侧边栏 Agent 列表、工作流步骤卡片、「步骤状态」面板、运行记录下拉框：**显示 `name`**；在 `title` 属性（hover）或副标题中显示 id。若某处当前显示 id，改为 `name` 后需保证布局不溢出（长名称用 CSS 省略号）。
-7. `state.customAgentNo` 及其相关 `custom-agent-` 分配逻辑可删除；`agent-T1~T3` 的优先分配逻辑必须删除。
+要求（**严格保证**永不复用，不靠概率）：
+
+1. **ID 台账**：在候选资产中新增 `contracts/agent-ids.json`：
+   ```json
+   { "schemaVersion": 1, "allocated": ["agent-T1", "agent-T2", "..."] }
+   ```
+   - `allocated` 记录**曾经分配过的所有** Agent ID，只增不减；删除 Agent 时**不**从台账移除。
+   - 新建 Agent 时，台账更新与 Agent 文件写入放在**同一次** `apply-changes` 中（原子；并发新建会因 `baseRevision` 冲突失败，不会重复分配）。
+2. **台账初始化（一次性，由 Codex 在本任务中执行）**：
+   - **扫描范围（写死，路径均相对仓库根目录 `D:\Newtest\DSH\ATE-Coding-Flow`）**：
+     1. `Training_Materials/framework/projects/agent-trainer/revisions/`
+     2. `Training_Materials/framework/projects/agent-trainer/versions/`
+     3. `publish/versions/`
+     4. `publish/workflow-templates/versions/`
+   - **提取规则（只认结构化字段，禁止对任意字符串做正则搜 ID）**：
+     - Agent 文件：相对路径匹配 `(^|/)agents/([^/]+)/agent\.json$`，JSON 可解析，`agentId` 等于目录名，且通过 `trainerId()`；
+     - 工作流文件：相对路径匹配 `(^|/)workflows/[^/]+\.json$`，取 `steps[].agentId`，且通过 `trainerId()`；
+     - 再并入当前 registry 中的全部 Agent ID。
+   - **排除**：业务 profile（`schematic-expert`、`dft-expert` 等 profileId），它们是另一个命名空间。
+   - **原则**：宁多勿漏。多登记只是预留 ID，无害；漏登记会破坏「不复用」。
+   - 解析失败的文件记录路径后跳过，不中断；按 4 个来源分别统计数量。
+   - 去重排序得到初始 `allocated`。
+   - 通过 `apply-changes` 写入 `contracts/agent-ids.json`（reason：`初始化 Agent ID 台账`）。不要直接改磁盘上的 revision 文件。
+   - 把扫描脚本放在 `plugins/dsh-ptc-control-plane/scripts/seed-agent-id-ledger.mjs`（或项目惯用位置），可重复执行：已有合法台账时与之取并集，不删除条目；已有台账损坏时，以扫描结果重建（这就是 2.7 的修复通道）。
+   - 脚本写入的提交**只包含台账这一个文件**（2.7 规则要求初始化/修复提交不能同时改其他文件）。
+   - 在完成报告中写明扫描到的 ID 数量与来源。
+3. **路径已核实**：`lib/trainer-schema.js` 的 `assetPath()` 当前允许 `contracts/`，不允许 `registry/`，因此本任务固定使用 `contracts/agent-ids.json`，**不得修改后端校验**；在完成报告说明该核对结果。
+4. **新建 ID**：`agent-` + 8 位小写十六进制（`crypto.randomUUID().replace(/-/g,'').slice(0,8)`）；必须同时满足：不在台账 `allocated` 中、不在当前 `agents` 中、`state.liveAssets` 中无 `agents/<id>/` 前缀路径。不满足则重新生成，最多 10 次，仍失败则 toast 报错中止。
+5. **台账缺失时**：页面检测到 `contracts/agent-ids.json` 不存在，则禁止新建 Agent，toast「Agent ID 台账未初始化，请先运行台账初始化脚本」。不要在页面里静默创建空台账（会丢失历史 ID）。
+6. 显示名：`新 Agent N`，N = 当前 Agent 数 + 1（仅显示用，允许重复）。写入 `agent.json.name` 与 `instructions.md` 首行。
+7. 不迁移、不重命名任何已有 Agent（`agent-T1~T3`、`custom-agent-N`、`新建 Agent 1` 等保持原样）。
+8. 侧边栏 Agent 列表、工作流步骤卡片、「步骤状态」面板、运行记录下拉框：**显示 `name`**；在 `title` 属性（hover）或副标题中显示 id。若某处当前显示 id，改为 `name` 后需保证布局不溢出（长名称用 CSS 省略号）。
+9. `state.customAgentNo` 及其相关 `custom-agent-` 分配逻辑可删除；`agent-T1~T3` 的优先分配逻辑必须删除。
 
 ### 2.2 删除入口
 
@@ -90,13 +118,23 @@ Agent Trainer 白色工作台：`http://127.0.0.1:3080/agent-trainer`。
 
 ### 2.4 计算待删除文件（只基于 `state.liveAssets`）
 
-1. 所有以 `agents/<id>/` 开头的路径。
-2. 该 Agent `agent.json` 中的 `inputSchemaRef`、`outputSchemaRef`、`processRef`、`scriptRefs[]` 指向的文件，**仅当**：
-   - 不位于 `skills/`、`tools/` 下；且
-   - 没有任何其他文件引用它。「其他文件」包括：其他 Agent 的 `agent.json`（同上 4 类字段）、`skills/*/skill.json`（`entryRef / referenceRefs / scriptRefs`）、`tools/*.json`（`scriptRef`）、`workflows/*.json` 中 `steps[].outputSchemaRef`。
-3. `tests/*.json` 中 `targetKind === 'agent' && targetId === <id>` 的文件。
-4. 不删除 `skills/`、`tools/` 下任何文件。
-5. 把计算逻辑写成独立纯函数 `agentDeletionPlan(agentId, files, workflowsList)`，返回 `{ blockedBy: [{workflowName, stepIndex}], deletePaths: [...], keptShared: [...] }`，便于测试。
+**引用字段清单必须与后端 `validateProjectFiles`（`lib/trainer-schema.js`）的 `requireRef` 检查完全一致**。开工时先通读该函数，若与下表不一致，以代码为准并在完成报告说明。
+
+| 引用来源 | 字段 |
+|---|---|
+| `agents/*/agent.json` | `instructionsRef`、`inputSchemaRef`、`outputSchemaRef`、`processRef`、`scriptRefs[]`、`skillRefs[]`（→ `skills/<id>/skill.json`）、`toolIds[]`（→ `tools/<id>.json`） |
+| `skills/*/skill.json` | `entryRef`、`referenceRefs[]`、`scriptRefs[]` |
+| `tools/*.json` | `scriptRef` |
+| `workflows/*.json` | `steps[].agentId`（非 frozen → `agents/<id>/agent.json`）、`steps[].outputSchemaRef` |
+| `tests/*.json` | `targetKind/targetId`（→ `agents/<id>/agent.json` 或 `workflows/<id>.json`） |
+
+规则：
+1. 所有以 `agents/<id>/` 开头的路径：删除。若其他资产引用了 `agents/<id>/` 下的某个文件（例如别的 Agent 的 `instructionsRef` 指向它），则**阻止删除**，提示引用方（与 2.3 同样的阻止流程）。
+2. 该 Agent 的 `agent.json` 中**表内全部字段**（含 `instructionsRef`）指向的、位于 `agents/<id>/` 之外的文件：仅当不在 `skills/`、`tools/` 下，且删除后表中**任何其他来源**都不再引用它时才删除；否则放入 `keptShared`。
+3. `tests/*.json` 中 `targetKind === 'agent' && targetId === <id>` 的文件：删除。
+4. 不删除 `skills/`、`tools/` 下任何文件；不删除 `contracts/agent-ids.json`。
+5. **提交前本地预校验**：把删除后的文件集合按上表做一遍引用检查，若仍有悬空引用，不发请求，提示具体悬空的「来源文件 → 字段 → 目标路径」。
+6. 把计算逻辑写成独立纯函数 `agentDeletionPlan(agentId, files, workflowsList)`，返回 `{ blockedBy: [{source, field, target, label}], deletePaths: [...], keptShared: [...] }`（`blockedBy` 同时覆盖工作流步骤引用与其他资产对 `agents/<id>/` 内文件的引用；`label` 为给用户看的描述，如「『新工作流 1』第 3 步」），便于测试。
 
 ### 2.5 确认层
 
@@ -122,11 +160,48 @@ Agent Trainer 白色工作台：`http://127.0.0.1:3080/agent-trainer`。
    - 冲突类错误额外提示「候选已被其他操作更新，请关闭后重试」并调用 `loadLiveContext()`；
    - 不修改本地 `agents` / `workflows`。
 
+### 2.7 服务端台账强校验（`lib/trainer-project.js` → `applyChanges`）
+
+**保证范围**：所有经过 `apply-changes` 的写入（白色页面、原生会话中的 `trainer_apply_changes` 工具、任何直接 API 调用）。直接改磁盘文件不在保证范围内。
+
+**位置**：在 `applyChanges` 中、`check(files)` 之后、写 revision 之前执行。不要放进 `validateProjectFiles`（它无状态，不能比较前后）。定义：`base` = 提交前 revision 的文件集合，`next` = 应用变更后的文件集合，`LEDGER = 'contracts/agent-ids.json'`。
+
+**台账结构校验** `parseLedger(content)`：JSON 可解析；`schemaVersion === 1`；`allocated` 是数组；每个元素是字符串且通过 `trainerId()`；无重复。任一不满足即为「损坏」。
+
+**规则（按顺序判定，命中即返回错误，整个提交不写入）**：
+
+1. `next` 中存在台账且损坏 → `TRAINER_AGENT_ID_LEDGER_INVALID`。
+2. 计算 `newAgents` = `next` 中所有满足「`agents/<id>/agent.json` 存在于 `next`、不存在于 `base`」的 id（**一次提交可能新建多个，全部检查**）。
+3. **base 没有台账**：
+   - 本次提交只要包含任何新建 Agent（`newAgents` 非空）→ `TRAINER_AGENT_ID_LEDGER_MISSING`，**即使 `next` 同时创建了台账也拒绝**；
+   - 允许的唯一提交形态：只新增台账这一个文件（初始化）。初始化提交完成后，下一次提交才允许新建 Agent。
+   - 其他任何提交形态（包括只改 instructions、只删 Agent、只改其他资产，或同时改台账与其他文件）→ `TRAINER_AGENT_ID_LEDGER_MISSING`；必须先提交只含台账的初始化变更。
+4. **base 台账损坏**：
+   - 本次提交**只改台账这一个文件**且 `next` 台账合法 → 允许（修复通道；此时无法解析 base，跳过第 5 条单调性检查）；
+   - 其他任何提交 → `TRAINER_AGENT_ID_LEDGER_INVALID`，`message` 提示先运行台账初始化脚本修复。
+5. **base 台账合法**：
+   - `next` 删除了台账 → `TRAINER_AGENT_ID_LEDGER_SHRINK`；
+   - `next.allocated` 不是 `base.allocated` 的超集 → `TRAINER_AGENT_ID_LEDGER_SHRINK`；
+   - 任一 `newAgents` 中的 id 在 `base.allocated` 中 → `TRAINER_AGENT_ID_REUSED`（`details` 列出 id）；
+   - 任一 `newAgents` 中的 id 不在 `next.allocated` 中 → `TRAINER_AGENT_ID_UNREGISTERED`（`details` 列出 id）。
+6. 修改已有 Agent（`agent.json` 在 base 与 next 中都存在）不受上述规则影响。`ensureTrainerProject` 的 seed 路径不受影响。
+7. 错误通过现有 `trainerFail(code, message, details)` 抛出，页面直接显示后端 `message`。
+
+**已知后果（写入后续事项，本轮不处理）**：将来的「撤销删除」不能靠重建同一 ID，需要单独的显式恢复操作作为例外。
+
+**部署**：`applyChanges` 属插件代码，改完需重启 DSH 才生效（方式与检查项同任务 B 第 4 节：`dsh-plugin-restart.ps1`，检查启动日志无 `plugin tree failed to load`、`ERR_MODULE_NOT_FOUND` 等致命签名）。重启前确认无进行中的运行。台账初始化脚本应在重启**之后**执行（它通过 `apply-changes` 写入，需新校验生效）。
+
+**单元测试**（放在插件 `test/` 下，风格参照现有测试），至少覆盖：
+- base 无台账：只新增台账 → 通过；新增台账 + 新建 Agent → `LEDGER_MISSING`；只新建 Agent → `LEDGER_MISSING`；只改已有 Agent 的 instructions → `LEDGER_MISSING`；
+- base 台账合法：新建 1 个已登记 Agent → 通过；新建 2 个都登记 → 通过；新建 2 个只登记 1 个 → `UNREGISTERED` 且两个都未写入；新建 ID 在 base 台账中 → `REUSED`；删除台账 → `SHRINK`；台账移除某个 ID → `SHRINK`；同一提交删除 Agent A、新建 Agent B → 通过且台账仍含 A；
+- 台账损坏：next 台账损坏（分别覆盖 `schemaVersion` 错、`allocated` 非数组、非法 ID、重复 ID、JSON 无法解析）→ `LEDGER_INVALID`；base 损坏 + 只修台账 → 通过；base 损坏 + 改其他文件 → `LEDGER_INVALID`；
+- **回归**：候选中有合法台账时，`validateProjectFiles` 通过 → 冻结生成 bundle 并通过 `verifyBundle` → `stage-release` 成功。
+
 ---
 
 ## 3. 不要做
 
-- 不改 `plugins/dsh-ptc-control-plane/lib/*.js`、`client/*.js`。若验收中发现后端拒绝合法删除，先在完成报告写明请求、返回、原因分析，**不要自行改后端**。
+- 后端只允许改 `lib/trainer-project.js` 的 `applyChanges`（及为它新增的内部辅助函数）和对应测试。不改 `lib/trainer-schema.js` 的白名单与 `validateProjectFiles`，不改 `client/*.js`，不改其他 `lib/*.js`。若验收中发现后端拒绝合法删除，先在完成报告写明请求、返回、原因分析，**不要扩大后端改动范围**。
 - 不实现撤销删除 / 回收站；不实现删除时自动从工作流移除步骤。
 - 不修改 `refreshLiveRun`、`pollLiveRun`、`resumeActiveLiveRun`、`refreshBusinessRun`、`pollBusinessRun`（T0 刚修复的轮询逻辑）。
 - 不删除工作流、不改工作流删除逻辑（如存在）。
@@ -136,6 +211,8 @@ Agent Trainer 白色工作台：`http://127.0.0.1:3080/agent-trainer`。
 
 ## 4. 验收标准（逐条执行并记录证据）
 
+> **验收脚本**：完成后必须运行 `node docs/tasks/verify/verify-a.mjs --mutate --smoke`（说明见 `docs/tasks/verify/README.md`），结果须无 FAIL，并把输出摘要贴进完成报告。脚本覆盖不到的界面交互项仍按下列各条手工验证。
+
 证据形式：浏览器操作结果 + 接口返回片段（在页面控制台执行 `fetch` 获取），或磁盘文件内容。
 
 查询当前 registry 的控制台片段（供多条验收复用）：
@@ -144,13 +221,21 @@ await (await fetch('/api/ptc-control/trainer/context',{method:'POST',headers:{'C
 ```
 
 1. **新建 ID 格式**：训练模式点「＋ 新建 Agent」，新 Agent ID 匹配 `^agent-[0-9a-f]{8}$`；列表显示「新 Agent N」；`agents/<id>/agent.json` 中 `agentId === <id>`、`name === '新 Agent N'`。记录 ID。
-2. **ID 不复用**：连续新建 3 个 Agent，3 个 ID 互不相同，且都不是 `agent-T1/T2/T3` 或 `custom-agent-*`。
+2. **ID 不复用**：连续新建 3 个 Agent，3 个 ID 互不相同，且都不是 `agent-T1/T2/T3` 或 `custom-agent-*`；每次新建后台账 `allocated` 增加对应 ID，且台账与 Agent 文件出现在**同一个** changeSet 中（查看 `changes/<changeSetId>.json` 的 diff）。
+2a. **台账初始化**：初始化脚本执行后，`allocated` 包含 4 个扫描来源中出现过的全部 Agent ID（完成报告按来源列出数量，抽查 `agent-T1`、`custom-agent-*` 在内）；初始化提交只包含台账一个文件；重复执行脚本不减少条目。
+2b. **台账保证**：用页面控制台把 ID 生成函数临时替换为固定返回某个已删除/历史 ID（如 `agent-T1` 或第 3 条删除的 ID），尝试新建 → 必须被拒绝并重新生成或报错，绝不写入该 ID。测试后恢复。
+2c. **服务端强校验（绕过页面）**：在页面控制台直接调用 `apply-changes`（不经过页面新建流程）：
+    - 用台账中已有的 ID（如一个已删除的 ID）新建 Agent 并同时把它写进台账 → 返回 `TRAINER_AGENT_ID_REUSED`，`current.json` 不变；
+    - 新建一个全新 ID 的 Agent 但不登记台账 → 返回 `TRAINER_AGENT_ID_UNREGISTERED`；
+    - 提交一个缩小的台账 → 返回 `TRAINER_AGENT_ID_LEDGER_SHRINK`。
+2d. **后端单元测试**：2.7 列出的全部测试通过（含冻结 / `verifyBundle` / `stage-release` 回归）。
+2e. **台账缺失保护**：在测试副本或通过 `apply-changes` 临时删除台账后，新建 Agent 被禁止并提示；测试后恢复台账（以 `apply-changes` 写回原内容）。
 3. **删除未被引用的 Agent**：删除第 1 条新建的 Agent：
    - 确认层列出恰好 4 个文件（`agents/<id>/instructions.md`、`agents/<id>/agent.json`、`contracts/<id>-input.schema.json`、`contracts/<id>-output.schema.json`）；
    - 确认后列表中消失；`trainer/context` 返回的 `project.agents` 中无该 ID；
    - `Training_Materials/framework/projects/agent-trainer/current.json` 的 `revisionId` 变化，`changes/` 下新增一条 changeSet，其 `reason` 含该 ID；
    - 旧 revision 目录下该 Agent 文件仍存在。
-4. **删除后新建不复用**：再新建一个 Agent，ID 不等于第 3 条删除的 ID。
+4. **删除后新建不复用**：再新建一个 Agent，ID 不等于第 3 条删除的 ID；台账中被删 ID 仍在。
 5. **被引用时阻止**：尝试删除 `agent-T3`（被「新工作流 1」第 3 步使用）：
    - 出现提示，内容含「新工作流 1」与「第 3 步」；
    - 浏览器网络请求中**没有**发出 `apply-changes`；
@@ -165,15 +250,19 @@ await (await fetch('/api/ptc-control/trainer/context',{method:'POST',headers:{'C
     - 提取页面 `<script>` 内容后 `node --check` 通过；
     - 页面刷新后浏览器控制台无新增 error；
     - 代码中无 `window.confirm`、`alert(`、`prompt(`；
-    - `git diff --stat` 只包含 `docs/prototypes/agent-trainer-repair-prototype.html`（及本任务书的完成报告）。
+    - **限定路径检查**（不要求全仓库干净）：对比开工前记录的 `git status --porcelain`，本任务新增/修改的路径只能是：`docs/prototypes/agent-trainer-repair-prototype.html`、`plugins/dsh-ptc-control-plane/lib/trainer-project.js`、新增的后端测试、台账初始化脚本、`docs/tasks/A-agent-delete.md`（完成报告），以及 `Training_Materials/framework/projects/agent-trainer/` 下由 `apply-changes` 产生的数据（是否纳入版本管理按项目惯例）；
+    - 提交时只 `git add` 上述路径，不得提交开工前已存在的无关改动。
 
 ---
 
 ## 5. 完成报告（Codex 填写）
 
-- GitLab 同步结果：
+- GitHub 同步结果：
+- 台账初始化：4 个来源各自的 ID 数量、解析失败的文件：
+- `applyChanges` 校验实现位置与新增错误码：
 - 改动摘要（函数级）：
 - 新增函数列表：
+- `verify-a.mjs --mutate --smoke` 结果摘要（PASS/FAIL/SKIP 数量，SKIP 的原因）：
 - 验收 1~12 结果（每条：通过/失败 + 证据）：
   1.
   2.
