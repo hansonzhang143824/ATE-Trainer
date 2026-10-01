@@ -207,10 +207,70 @@
     async function addStep(){const wf=currentWorkflow();if(!wf||!isTraining())return showToast('请在训练模式选择工作流。');if(!agentOrder.length)return showToast('请先新建 Agent。');wf.steps.push(state.selected&&agentOrder.includes(state.selected)?state.selected:agentOrder[0]);render();try{await persistWorkflow(state.workflow,wf,'用户通过白色 Agent Trainer 向工作流加入 Agent');showToast('Agent 已加入并保存；允许重复步骤，顺序可继续调整。')}catch(error){wf.steps.pop();render();showToast(`工作流保存失败：${error.message}`)}}
     async function legacyPost(path,body){const base=location.port==='3080'?'':'http://127.0.0.1:3080';const response=await fetch(`${base}${path}`,{method:'POST',headers:{Accept:'application/json','Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify(body)});const payload=await response.json().catch(()=>({}));if(!response.ok)throw new Error(payload.detail||payload.error||`HTTP ${response.status}`);return payload}
     async function legacyState(){const base=location.port==='3080'?'':'http://127.0.0.1:3080';const response=await fetch(`${base}/api/ptc-control/state`,{credentials:'same-origin'});const payload=await response.json().catch(()=>({}));if(!response.ok)throw new Error(payload.detail||payload.error||`HTTP ${response.status}`);return payload}
-    async function refreshBusinessRun(runId,attempt=0){try{const payload=await legacyState();const run=(payload.trainingRuns||[]).find(item=>item.runId===runId);if(run){state.businessRun=run;state.lastRun={id:run.runId,mode:'business',status:run.status||'running'};render();const terminal=['completed','failed','blocked','stopped','cancelled','needs_model'].includes(String(run.status||'').toLowerCase());if(!terminal&&attempt<90)window.setTimeout(()=>void refreshBusinessRun(runId,attempt+1),2000)}else if(attempt<90)window.setTimeout(()=>void refreshBusinessRun(runId,attempt+1),2000)}catch(error){showToast(`业务运行状态读取失败：${error.message}`)}}
-    async function runBusinessPipeline(){const wf=currentWorkflow(),bp=wf?.businessPipeline;if(!bp)return runFrameworkTrainer();const dftProfileId=wf.steps.map(id=>agents[id]?.businessProfileId).find(Boolean)||bp.dftProfileId;if(!dftProfileId)return showToast('当前工作流没有绑定可执行的业务 DFT Agent。');const target={kind:'pipeline',fromStage:'INPUT_SYNC',toStage:'INPUT_SYNC',workflowId:bp.workflowId,workflowRevision:bp.workflowRevision,agentBindings:{'schematic-expert':{profileId:bp.schematicProfileId},'dft-expert':{profileId:dftProfileId}}};state.runSubmitting=true;render();try{const created=await businessPost('/api/ptc-control/training-runs',{target,purpose:'business-training'});const started=await businessPost('/api/ptc-control/business/training-pipelines/execute',{runId:created.runId,testItems:bp.testItems||['TM109'],modelChoice:bp.modelChoice||'deepseek-v4-flash'});const runId=started.runId||created.runId;state.runSubmitting=false;state.businessRun={runId,status:started.status||'preparing',target,artifactRoot:`Training_Materials/runs/${runId}`};state.lastRun={id:runId,mode:'business',status:'running'};state.liveRun=null;render();showToast(`已创建真实 TM109 INPUT_SYNC：${runId}`);void refreshBusinessRun(runId)}catch(error){state.runSubmitting=false;render();showToast(`真实业务运行未创建：${error.message}`)}}
+    // 业务运行轮询：按时间而不是固定次数（原来 90 次×2 秒≈3 分钟就停）。
+    const BUSINESS_RUN_POLL_MAX_MS=60*60*1000, BUSINESS_RUN_NOT_FOUND_MAX_MS=2*60*1000, BUSINESS_RUN_POLL_MAX_ERRORS=5;
+    const businessTerminalStatuses=new Set(['completed','failed','blocked','stopped','cancelled','needs_model']);
+    let businessRunPollToken=0;
+    function pollBusinessRun(runId){const token=++businessRunPollToken;void refreshBusinessRun(runId,{token,startedAt:Date.now(),attempt:0,errors:0})}
+    async function refreshBusinessRun(runId,poll={token:businessRunPollToken,startedAt:Date.now(),attempt:0,errors:0}){
+      if(poll.token!==businessRunPollToken)return;
+      const elapsed=()=>Date.now()-poll.startedAt;
+      const next=extra=>{const delay=Math.min(10000,2000+poll.attempt*500);window.setTimeout(()=>void refreshBusinessRun(runId,{...poll,attempt:poll.attempt+1,...extra}),delay)};
+      try{
+        const payload=await legacyState();
+        if(poll.token!==businessRunPollToken)return;
+        const run=(payload.trainingRuns||[]).find(item=>item.runId===runId);
+        if(run){
+          state.businessRun=run;state.lastRun={id:run.runId,mode:'business',status:run.status||'running'};render();
+          if(businessTerminalStatuses.has(String(run.status||'').toLowerCase()))return;
+          if(elapsed()>BUSINESS_RUN_POLL_MAX_MS)return showToast(`业务运行 ${runId} 超过 60 分钟仍未结束，已停止自动刷新；刷新页面可继续跟踪。`);
+          return next({errors:0});
+        }
+        if(elapsed()>BUSINESS_RUN_NOT_FOUND_MAX_MS)return showToast(`业务运行 ${runId} 在 2 分钟内未出现在状态列表中，已停止自动刷新。`);
+        next({errors:0});
+      }catch(error){
+        if(poll.token!==businessRunPollToken)return;
+        if(poll.errors+1<BUSINESS_RUN_POLL_MAX_ERRORS&&elapsed()<=BUSINESS_RUN_POLL_MAX_MS)return next({errors:poll.errors+1});
+        showToast(`业务运行状态读取失败：${error.message}（刷新页面可继续跟踪）`);
+      }
+    }
+    // 注：不在页面加载时自动接回业务运行——/state 的 trainingRuns 里混有 framework run，状态字段不可靠，会误接已完成的 SMOKE 运行。
+    async function runBusinessPipeline(){const wf=currentWorkflow(),bp=wf?.businessPipeline;if(!bp)return runFrameworkTrainer();const dftProfileId=wf.steps.map(id=>agents[id]?.businessProfileId).find(Boolean)||bp.dftProfileId;if(!dftProfileId)return showToast('当前工作流没有绑定可执行的业务 DFT Agent。');const target={kind:'pipeline',fromStage:'INPUT_SYNC',toStage:'INPUT_SYNC',workflowId:bp.workflowId,workflowRevision:bp.workflowRevision,agentBindings:{'schematic-expert':{profileId:bp.schematicProfileId},'dft-expert':{profileId:dftProfileId}}};state.runSubmitting=true;render();try{const created=await businessPost('/api/ptc-control/training-runs',{target,purpose:'business-training'});const started=await businessPost('/api/ptc-control/business/training-pipelines/execute',{runId:created.runId,testItems:bp.testItems||['TM109'],modelChoice:bp.modelChoice||'deepseek-v4-flash'});const runId=started.runId||created.runId;state.runSubmitting=false;state.businessRun={runId,status:started.status||'preparing',target,artifactRoot:`Training_Materials/runs/${runId}`};state.lastRun={id:runId,mode:'business',status:'running'};state.liveRun=null;render();showToast(`已创建真实 TM109 INPUT_SYNC：${runId}`);pollBusinessRun(runId)}catch(error){state.runSubmitting=false;render();showToast(`真实业务运行未创建：${error.message}`)}}
     function runFrameworkTrainer(){return runTrainerCore()}
-    async function refreshLiveRun(runId,attempt=0){try{const result=await trainerPost('/api/ptc-control/trainer/runs',{projectId:'agent-trainer',runId});const run=result?.run||result;state.liveRun=run;state.lastRun={id:run.runId||runId,mode:state.exec,status:run.status||'unknown'};render();if(!terminalRunStatuses.has(String(run.status||'').toLowerCase())&&attempt<30)window.setTimeout(()=>void refreshLiveRun(runId,attempt+1),1000)}catch(error){showToast(`运行状态读取失败：${error.message}`)}}
+    // 运行状态轮询：按时间而不是固定次数（原来 30 次≈30 秒就停，多步工作流会卡在“运行中”）。
+    const LIVE_RUN_POLL_MAX_MS=15*60*1000, LIVE_RUN_POLL_MAX_ERRORS=5;
+    let liveRunPollToken=0;
+    function pollLiveRun(runId){const token=++liveRunPollToken;void refreshLiveRun(runId,{token,startedAt:Date.now(),attempt:0,errors:0})}
+    async function refreshLiveRun(runId,poll={token:liveRunPollToken,startedAt:Date.now(),attempt:0,errors:0}){
+      if(poll.token!==liveRunPollToken)return;
+      const next=extra=>{const delay=Math.min(5000,1000+poll.attempt*250);window.setTimeout(()=>void refreshLiveRun(runId,{...poll,attempt:poll.attempt+1,...extra}),delay)};
+      try{
+        const result=await trainerPost('/api/ptc-control/trainer/runs',{projectId:'agent-trainer',runId});
+        if(poll.token!==liveRunPollToken)return;
+        const run=result?.run||result;state.liveRun=run;state.lastRun={id:run.runId||runId,mode:state.exec,status:run.status||'unknown'};render();
+        if(terminalRunStatuses.has(String(run.status||'').toLowerCase()))return;
+        if(Date.now()-poll.startedAt>LIVE_RUN_POLL_MAX_MS)return showToast(`运行 ${runId} 超过 15 分钟仍未结束，已停止自动刷新；刷新页面可继续跟踪。`);
+        next({errors:0});
+      }catch(error){
+        if(poll.token!==liveRunPollToken)return;
+        if(poll.errors+1<LIVE_RUN_POLL_MAX_ERRORS&&Date.now()-poll.startedAt<=LIVE_RUN_POLL_MAX_MS)return next({errors:poll.errors+1});
+        showToast(`运行状态读取失败：${error.message}（刷新页面可继续跟踪）`);
+      }
+    }
+    // 页面加载/重新打开时，接回仍在运行的 framework run，避免刷新后看不到进度。
+    async function resumeActiveLiveRun(){
+      try{
+        if(hasActiveRun())return;
+        const result=await trainerPost('/api/ptc-control/trainer/runs',{projectId:'agent-trainer'});
+        const runs=(result?.runs||[]).filter(run=>run?.kind==='framework-run'&&runIsActive(run));
+        runs.sort((a,b)=>String(b.startedAt||'').localeCompare(String(a.startedAt||'')));
+        const run=runs[0];if(!run)return;
+        const wf=Object.values(workflows).find(item=>item.workflowId===run.targetId);if(wf)state.workflow=wf.name;
+        state.exec=run.executionMode==='BUSINESS_ONLY'?'business':'smoke';
+        state.liveRun=run;state.lastRun={id:run.runId,mode:state.exec,status:run.status||'running'};render();
+        showToast(`已接回进行中的运行：${run.runId}`);pollLiveRun(run.runId);
+      }catch(error){console.warn('resumeActiveLiveRun failed',error)}
+    }
     async function runTrainer(){
       if(hasActiveRun())return showToast('当前已有工作流运行进行中，请等待完成后再发起下一次运行。');
       if(state.exec==='business'&&currentWorkflow()?.businessPipeline)return runBusinessPipeline();
@@ -222,7 +282,7 @@
       if(!state.liveContext)return showToast('正式 Trainer registry 尚未加载。');
       const target=liveTarget('workflow');if(!target.targetId)return showToast('当前工作流没有可执行目标。');
       const input=state.exec==='business'?{receivedValue:'23*24+45'}:{receivedValue:'1+2'};state.runSubmitting=true;render();
-      try{const result=await trainerPost('/api/ptc-control/trainer/run',{...target,projectId:'agent-trainer',mode:liveMode(),executionMode:state.exec==='business'?'BUSINESS_ONLY':'SMOKE_ONLY',requestId:trainerRequestId('white-run'),input,purpose:undefined});const started=result?.run||result;state.runSubmitting=false;state.liveRun=started;state.runNo+=1;state.lastRun={id:started.runId||'framework-pending',mode:state.exec,status:started.status||'running'};render();showToast(`已创建真实 Trainer 运行：${started.runId||'未知 runId'}`);if(started.runId)window.setTimeout(()=>void refreshLiveRun(started.runId),1200)}catch(error){state.runSubmitting=false;render();showToast(`运行未创建：${error.message}`)}
+      try{const result=await trainerPost('/api/ptc-control/trainer/run',{...target,projectId:'agent-trainer',mode:liveMode(),executionMode:state.exec==='business'?'BUSINESS_ONLY':'SMOKE_ONLY',requestId:trainerRequestId('white-run'),input,purpose:undefined});const started=result?.run||result;state.runSubmitting=false;state.liveRun=started;state.runNo+=1;state.lastRun={id:started.runId||'framework-pending',mode:state.exec,status:started.status||'running'};render();showToast(`已创建真实 Trainer 运行：${started.runId||'未知 runId'}`);if(started.runId)window.setTimeout(()=>pollLiveRun(started.runId),1200)}catch(error){state.runSubmitting=false;render();showToast(`运行未创建：${error.message}`)}
     }
     async function saveCandidate(){
       if(!isTraining())return showToast('发布 / 工程模式只读。');
@@ -278,7 +338,7 @@
         render(); showToast(`已加载 Trainer registry · ${agentOrder.length} 个 Agent · ${workflowOrder.length} 条工作流`);
       }catch(error){state.liveError=error?.message||String(error);render();showToast(`白色工作台暂未接通正式 DSH：${state.liveError}`)}
     }
-    document.querySelector('#record-agent').addEventListener('change',e=>{state.recordAgent=e.target.value;state.selected=e.target.value;render()});render();void loadLiveContext();
+    document.querySelector('#record-agent').addEventListener('change',e=>{state.recordAgent=e.target.value;state.selected=e.target.value;render()});render();void loadLiveContext().then(resumeActiveLiveRun);
   })();
   </script>
 </body>
