@@ -266,7 +266,7 @@ await (await fetch('/api/ptc-control/trainer/context',{method:'POST',headers:{'C
   - 首次初始化台账 `allocated` 为 13 个唯一 ID；页面验收新建并删除两个 Agent 后为 15 个，当前 registry 仍为 11 个。再次运行脚本保持 15 个且 revision 不变，证明取并集不会删除历史条目。
 - `applyChanges`：实现在 `lib/trainer-project.js` 的 ledger 辅助校验中；新增 `TRAINER_AGENT_ID_LEDGER_MISSING`、`_INVALID`、`_SHRINK`、`_REUSED`、`_UNREGISTERED`，覆盖缺失台账初始化隔离提交、损坏台账修复通道、多 Agent 全量检查、单调性和原子写入。
 - 页面：新建 Agent 使用 `agent-` 加 8 位小写十六进制随机 ID，并把 Agent 文件与台账放进同一 change set；删除按钮仅训练模式显示，引用检查、删除计划、共享文件保留清单、遮罩/Esc/取消和防重复提交已实现。页面手工核验了新建、确认层取消、工程模式隐藏删除入口；新建测试 Agent 已用 applyChanges 清理，历史 ID 仍保留在台账。
-- 验收脚本：`node docs/tasks/verify/verify-a.mjs --mutate --smoke`：`PASS 18 · FAIL 0 · WARN 0 · SKIP 0`。SMOKE run `framework-6d438a6a-b36b-425e-af81-d2e9f2c8e6d6` 4 步全部 `completed`。
+- 验收脚本：`node docs/tasks/verify/verify-a.mjs --mutate --smoke`：`PASS 18 · FAIL 0 · WARN 0 · SKIP 0`。SMOKE run `framework-5730cd5d-80a0-4199-ad26-ee19fd9d7c09` 4 步全部 `completed`。
 - 验收 1~12：
   1. 通过：页面生成 `agent-74be5219`，格式正确；Agent 文件和台账在同一创建 change set 中，随后清理仍保留历史 ID。
   2. 通过：服务端强制 `REUSED`，页面生成不读取旧 ID；删除后的 ID 未从台账移除。
