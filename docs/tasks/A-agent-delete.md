@@ -259,7 +259,7 @@ await (await fetch('/api/ptc-control/trainer/context',{method:'POST',headers:{'C
 
 - GitHub 同步：已执行 `git fetch github --prune`；本地 `master` 与 `github/main` 同步（ahead/behind `0/0`）。T0 已提交为 `3d7ddf6`。
 - 台账初始化：通过 `plugins/dsh-ptc-control-plane/scripts/seed-agent-id-ledger.mjs` 在 DSH 重启后执行，提交只包含 `contracts/agent-ids.json`。四个来源扫描结果：
-  - `Training_Materials/framework/projects/agent-trainer/revisions/`：2365 个 JSON；`agentId` 字段 601 个，workflow `steps[].agentId` 字段 1104 个；独立复扫命中 1734 个历史记录路径，去重后 13 个 ID。
+  - `Training_Materials/framework/projects/agent-trainer/revisions/`：2617 个 JSON；`agentId` 字段 669 个，workflow `steps[].agentId` 字段 1212 个；独立复扫命中 1734 个历史记录路径，去重后 13 个 ID。
   - `Training_Materials/framework/projects/agent-trainer/versions/`：22 个 JSON，未发现可用结构化 Agent ID。
   - `publish/versions/`：306 个 JSON，8 个带 BOM 的历史 JSON 解析失败，未从文件名或文本内容猜测 ID。
   - `publish/workflow-templates/versions/`：1 个 JSON，未发现可用结构化 Agent ID。
