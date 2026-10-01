@@ -287,4 +287,4 @@ await (await fetch('/api/ptc-control/trainer/context',{method:'POST',headers:{'C
   12. 通过：限定改动已按开工基线筛选；无关工作树改动保留未触碰。
 - DSH 重启：执行 `dsh-plugin-restart.ps1 -Profile web -PluginDir ...`；gate A/B/C 全部通过，启动日志无 `plugin tree failed to load`、`ERR_MODULE_NOT_FOUND` 等签名。
 - 测试与偏差：A 专项测试和 `trainer-runtime.test.mjs` 通过；全量测试在沙箱内受 Python/子进程 `EPERM` 影响，重启脚本在沙箱外 gate B 已通过。为适配硬规则，两个旧 runtime fixture 已显式先初始化台账并在新增 Agent 的同一 change set 登记 ID。
-- 提交 hash：待 A 路径限定检查完成后填写。
+- A 实现 提交 hash:`e40df5e`（`[A] 实现 Agent ID 台账与安全删除`）。
