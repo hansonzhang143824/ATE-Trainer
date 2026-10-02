@@ -414,3 +414,81 @@ resolveTarget({ projectId, mode, targetKind, targetId })
 - 在上述数据写入前重新运行 `verify-b.mjs compare`，仍为 `PASS 1 / FAIL 2`，training/published 的 21 处前轮漂移与 engineering 一致的结果未变。补验后最终 `node docs/tasks/verify/verify-b.mjs` 仍为 `PASS 10 / FAIL 0 / WARN 0 / SKIP 0`；此时 2 个 binding 的 `pendingContextChange` 保留为未消费状态，结构检查通过，未伪造为已消费。
 - B6/B12：当前 CUA 浏览器能力只有页面资产和 WebMCP，页面评估环境没有 `localStorage` 对象，也没有受支持的 storage 写 API；因此没有用脚本伪造清除/写入 legacy key。B8 仍按硬停止规则不删除 DSH session 或 binding。
 - 本轮仅新增本报告证据；实现代码、`lib/client.js`、测试与既有提交不变。
+
+## 6.7 第 4 轮（B4）宿主补验（Codex，按 docs/tasks/B5-host-acceptance.md 执行）
+
+> 6.6 节中第 3、4、9 条的「通过」证据不足，以本节真实宿主驱动结果为准。
+
+- 基线：本轮开工前实际 HEAD / github/master / github/main = `8cb9b8ca81198448b11bce97f00b4943b4121fb4`，三者一致；B5 文档预期的 `e630981` 已在此前提交中，未改写历史。开工前 `git status --porcelain` 已保存到 `.tmp-b5-baseline-status.txt`，未提交。
+- 工具：`docs/tasks/verify/verify-b-host.mjs`，独立 Chrome `154.0.8037.92`；A-F 各次 nativeHost 均独立启动，最终 F 为 `6fa09ce4-6b30-4162-9dbf-df2f6e5a8cff`。汇总证据：`docs/tasks/verify/results/verify-b-host.json`；分步证据：`verify-b-host-A.json` 至 `verify-b-host-F.json`；截图目录：`docs/tasks/verify/results/host-shots/2026-10-02T16-00-23-779Z/`（以及各步骤同级时间目录）。
+- 各步骤结果（脚本结果逐项粘贴）：
+  - A：
+    - P-0 预检：DSH 可用、无进行中运行、X 有固定会话 — PASS — S2=session-e4ab77e8-f88d-40a3-8a20-f7da6d4e88d1
+    - P-1 独立浏览器已打开宿主与工作台 — PASS — Chrome/154.0.8037.92 · nativeHost=a6f8458e-7139-41e6-a5b6-097d3bd1f9b4
+    - A-1 B7 再次打开 X：卡片成功 — PASS — 已请求 DSH 宿主打开原生会话 · agent · agent-2abe705b · session session-e4ab77e8-f88d-40a3-8a20-f7da6d4e88d1
+    - A-2 B7 再次打开 X 仍为 S2 且显示「已复用会话」 — PASS — session-e4ab77e8-f88d-40a3-8a20-f7da6d4e88d1 已复用
+    - A-3 B7 S2 的 bindingRevision 加 1 — PASS — 3 → 4
+    - A-4 B7 target-session(X).sessionId = S2 且 previousSessionId = S1 — PASS — {"sessionId":"session-e4ab77e8-f88d-40a3-8a20-f7da6d4e88d1","previousSessionId":"session-ad0b3230-3c3f-450d-a1dd-7de3d30fb04a","createdAt":"2026-10-02T14:35:32.899Z","updatedAt":"2026-10-02T15:48:42.698Z","lastResolvedRevisionId":"revision-94c5bf70-6b0c-4c4d-8d74-c0e54c477ee6","mtimeMs":1790956122700.5852}
+    - A-5 B7 S1 的 bindings 文件仍在且未被改写 — PASS — Training_Materials/framework/control/bindings/session-ad0b3230-3c3f-450d-a1dd-7de3d30fb04a.json
+    - A-6 B7 S1 的 DSH 会话持久化目录仍在（未被删除） — PASS — C:\Users\nvt10241\.dsh\sessions\--D-Newtest-DSH-ATE-Coding-Flow-Training_Materials-framework-control-sessions-6272e8d688ad465363e3e7e463e309b342f867757dab56da91f0f53aca5b4e56--\session-ad0b3230-3c3f-450d-a1dd-7de3d30fb04a
+    - A-7 B7 S1 仍登记在 DSH workspace.json 中 — PASS — C:\Users\nvt10241\.dsh\storages\workspace.json
+    - A-8 E-2 宿主当前会话 = S2（openPtcSessionView 保证） — PASS — 宿主地址 http://127.0.0.1:3080/
+    - 结果：PASS 10 · FAIL 0 · WARN 0 · SKIP 0
+  - B：
+    - P-0 预检：DSH 可用、无进行中运行、X 有固定会话 — PASS — S2=session-e4ab77e8-f88d-40a3-8a20-f7da6d4e88d1
+    - P-1 独立浏览器已打开宿主与工作台 — PASS — Chrome/154.0.8037.92 · nativeHost=80e4992d-e275-4401-ae4b-d4569d8ccfa6
+    - B-1 B9 四次打开均成功 — PASS — ok
+    - B-2 B9 两次打开 W 是同一会话 SW，且第二次显示「已复用会话」 — PASS — SW=session-f9ecedff-217a-4231-a048-d48e6c225134
+    - B-3 B9 预检时 W 没有固定会话 — WARN — 第一次打开新建 session-f9ecedff-217a-4231-a048-d48e6c225134
+    - B-4 B9 中间打开 X 仍为 S2 — PASS — session-e4ab77e8-f88d-40a3-8a20-f7da6d4e88d1
+    - B-5 B9 SW ≠ S2 — PASS — session-f9ecedff-217a-4231-a048-d48e6c225134 ≠ session-e4ab77e8-f88d-40a3-8a20-f7da6d4e88d1
+    - B-6 B9 Z 的会话与 S2、SW 都不同 — PASS — session-adaca03d-d4b2-44d7-8d32-838cd93f4c70
+    - B-7 B9 target-session(W) 指向 SW 且本步骤内已更新 — PASS — {"sessionId":"session-f9ecedff-217a-4231-a048-d48e6c225134","previousSessionId":null,"createdAt":"2026-10-02T15:49:30.493Z","updatedAt":"2026-10-02T15:49:51.826Z","lastResolvedRevisionId":"revision-94c5bf70-6b0c-4c4d-8d74-c0e54c477ee6","mtimeMs":1790956191828.7468}
+    - 结果：PASS 8 · FAIL 0 · WARN 1 · SKIP 0
+  - C：
+    - P-0 预检：DSH 可用、无进行中运行、X 有固定会话 — PASS — S2=session-e4ab77e8-f88d-40a3-8a20-f7da6d4e88d1
+    - P-1 独立浏览器已打开宿主与工作台 — PASS — Chrome/154.0.8037.92 · nativeHost=48a48098-9023-49d8-a55b-98ebf688c096
+    - C-1 B3 运行后再打开 X 仍为 S2（已复用） — PASS — session-e4ab77e8-f88d-40a3-8a20-f7da6d4e88d1
+    - C-2 B3 bindings/S2.json 的 selectedRunId = 新 runId — PASS — framework-e9762868-5971-472a-9281-bab5b285a52b
+    - C-3 B3 bindingRevision 比运行前大 — PASS — 6 → 7
+    - C-4 B3 卡片提示 run 变化 — PASS — 已复用会话，绑定上下文已更新：revision revision-94c5bf70-6b0c-4c4d-8d74-c0e54c477ee6 → revision-94c5bf70-6b0c-4c4d-8d74-c0e54c477ee6；run 无 → framework-e9762868-5971-472a-9281-bab5b285a52b。
+    - C-5 B3 第二次运行后再打开 X：selectedRunId = 第二个 runId — PASS — framework-27f46ea9-ccb9-4e7c-b009-b1c7e2f18209
+    - C-6 B5 合并：pendingContextChange.fromRunId 保留最早值、toRunId 为最新值 — PASS — fromRunId=null toRunId=framework-27f46ea9-ccb9-4e7c-b009-b1c7e2f18209
+    - 结果：PASS 8 · FAIL 0 · WARN 0 · SKIP 0
+  - D：
+    - P-0 预检：DSH 可用、无进行中运行、X 有固定会话 — PASS — S2=session-e4ab77e8-f88d-40a3-8a20-f7da6d4e88d1
+    - P-1 独立浏览器已打开宿主与工作台 — PASS — Chrome/154.0.8037.92 · nativeHost=bbc32a2b-0ad8-4c20-b695-0725ed51197d
+    - D-1 B4 起点：S2 绑定的 candidateRevision = 当前 revision — PASS — revision-94c5bf70-6b0c-4c4d-8d74-c0e54c477ee6
+    - D-2 B4 保存后再打开 X 仍为 S2（已复用） — PASS — session-e4ab77e8-f88d-40a3-8a20-f7da6d4e88d1
+    - D-3 B4 bindings/S2.json 的 candidateRevision = current.json 的 revisionId = 新 revision — PASS — revision-94c5bf70-6b0c-4c4d-8d74-c0e54c477ee6 → revision-d4d35401-a8c2-47b3-a9b3-e3a8396d06b5
+    - D-4 B4 卡片显示 revision 旧 → 新 — PASS — 已复用会话，绑定上下文已更新：revision revision-94c5bf70-6b0c-4c4d-8d74-c0e54c477ee6 → revision-d4d35401-a8c2-47b3-a9b3-e3a8396d06b5；run 无 → 无。
+    - 结果：PASS 6 · FAIL 0 · WARN 0 · SKIP 0
+  - E：
+    - P-0 预检：DSH 可用、无进行中运行、X 有固定会话 — PASS — S2=session-e4ab77e8-f88d-40a3-8a20-f7da6d4e88d1
+    - P-1 独立浏览器已打开宿主与工作台 — PASS — Chrome/154.0.8037.92 · nativeHost=25d785cc-30ab-4884-af40-576d96677a9f
+    - E-1 B6 清理前宿主缓存中有 ptc-native-session: 项 — PASS — 1 项
+    - E-2 B6 清理后为 0 项，刷新后仍为 0 项 — PASS — 0 项
+    - E-3 B6 刷新宿主与工作台后打开 X 仍为 S2（已复用） — PASS — session-e4ab77e8-f88d-40a3-8a20-f7da6d4e88d1
+    - E-4 B6 打开后缓存重新写入 X 的新格式 key = S2 — PASS — ptc-native-session:agent:["agent-trainer","training","agent-2abe705b","agent-trainer"]
+    - 结果：PASS 6 · FAIL 0 · WARN 0 · SKIP 0
+  - F：
+    - P-0 预检：DSH 可用、无进行中运行、X 有固定会话 — PASS — S2=session-e4ab77e8-f88d-40a3-8a20-f7da6d4e88d1
+    - P-1 独立浏览器已打开宿主与工作台 — PASS — Chrome/154.0.8037.92 · nativeHost=6fa09ce4-6b30-4162-9dbf-df2f6e5a8cff
+    - F-1 B12 forget 后 target-session(Z) = null，映射文件已删，binding 文件仍在 — PASS — {"forgotten":true}
+    - F-2 B12(i) 只有旧格式 key 时打开 Z：无报错，结果为「复用」或「新建」之一 — PASS — 分支=新建（宿主未加载旧会话，不满足任务书 2.2 第 3 条复用条件）
+    - F-3 B12(i) 服务端补写 target-session(Z)，sessionId 与本次结果一致 — PASS — {"sessionId":"session-2b0476aa-038e-4ce1-8c68-5ba61525b744","previousSessionId":null,"createdAt":"2026-10-02T16:01:35.598Z","updatedAt":"2026-10-02T16:01:35.598Z","lastResolvedRevisionId":"revision-d4d35401-a8c2-47b3-a9b3-e3a8396d06b5","mtimeMs":1790956895601.2468}
+    - F-4 B12(i) Z 旧会话的 bindings 文件仍在 — PASS — Training_Materials/framework/control/bindings/session-adaca03d-d4b2-44d7-8d32-838cd93f4c70.json
+    - F-5 B12(i) 新建分支未改写旧会话 binding — PASS — sha256 不变
+    - F-6 B12(ii) 新 Agent V 打开前服务端无记录 — PASS — null
+    - F-7 B12(ii) 旧 key 指向别人的会话时：新建会话、无报错、不复用 F — PASS — session-9cf22c7b-d064-4b99-9c55-b3c5b2a70920（F=session-42b70531-18a9-4af9-ac32-88043f940daf）
+    - F-8 B12(ii) target-session(V) 指向新会话 — PASS — {"sessionId":"session-9cf22c7b-d064-4b99-9c55-b3c5b2a70920","previousSessionId":null,"createdAt":"2026-10-02T16:02:12.744Z","updatedAt":"2026-10-02T16:02:12.744Z","lastResolvedRevisionId":"revision-3a4d2c51-2233-4ea4-acf8-59c06bcdd6a3","mtimeMs":1790956932747.4878}
+    - F-9 B12(ii) F 的 bindings 文件未被改写 — PASS — Training_Materials/framework/control/bindings/session-42b70531-18a9-4af9-ac32-88043f940daf.json
+    - 结果：PASS 11 · FAIL 0 · WARN 0 · SKIP 0
+- 关键值：X=`agent-2abe705b`；S2=`session-e4ab77e8-f88d-40a3-8a20-f7da6d4e88d1`；S1=`session-ad0b3230-3c3f-450d-a1dd-7de3d30fb04a`（bindings 未改写：`Training_Materials/framework/control/bindings/session-ad0b3230-3c3f-450d-a1dd-7de3d30fb04a.json`；DSH 持久化目录仍在：`C:Users
+vt10241.dshsessions--D-Newtest-DSH-ATE-Coding-Flow-Training_Materials-framework-control-sessions-6272e8d688ad465363e3e7e463e309b342f867757dab56da91f0f53aca5b4e56--\session-ad0b3230-3c3f-450d-a1dd-7de3d30fb04a`）；SW=`session-f9ecedff-217a-4231-a048-d48e6c225134`；SZ=`session-adaca03d-d4b2-44d7-8d32-838cd93f4c70`；R1=`framework-e9762868-5971-472a-9281-bab5b285a52b`；R2=`framework-27f46ea9-ccb9-4e7c-b009-b1c7e2f18209`；revA=`revision-94c5bf70-6b0c-4c4d-8d74-c0e54c477ee6` → revB=`revision-d4d35401-a8c2-47b3-a9b3-e3a8396d06b5`（`current.json` 同为 revB）；第 12(i) 条分支=`new`，结果会话=`session-2b0476aa-038e-4ce1-8c68-5ba61525b744`；V=`agent-5532a5f0`，V 的会话=`session-9cf22c7b-d064-4b99-9c55-b3c5b2a70920`，F=`session-42b70531-18a9-4af9-ac32-88043f940daf`（F binding 未变）。
+- 第 5 条合并：`pendingContextChange.fromRunId=null`，`toRunId=framework-27f46ea9-ccb9-4e7c-b009-b1c7e2f18209`；连续两次运行分别为 R1、R2，均 completed。
+- 第 8 条：跳过。按 00-PLAN 2.4 硬停止条件 4，不删除 DSH 会话；本轮只验证删除目标映射后的兼容分支，旧会话和 binding 均保留。
+- verify-b.mjs：PASS 10 / FAIL 0 / WARN 0 / SKIP 0。B-file-2 的未消费 pendingContextChange 为结构通过项。
+- 偏离：本轮不改产品代码、不重启 DSH，依 B5 说明未运行 compare；最终只读 verify-b 已通过。初次默认沙箱运行 A 的 Chrome 进程立即退出（exit 4294930433），按 6.1 使用提升权限重跑成功；默认环境首次 `git fetch` 受 `.git/FETCH_HEAD` 权限限制，提升权限重跑成功。A 最终结果为 FAIL 0；B-3 的 1 个 WARN 是 W 首次打开时没有固定会话，脚本按预期新建 SW，不阻断。
+- 数据：未删除任何 DSH 会话或 bindings 文件；F 步骤的 `forget-target-session` 只删除了 Z 的 `target-sessions` 映射，Z 旧 binding 仍在且 sha256 未变；新增测试 Agent V=`agent-5532a5f0` 及其会话保留。
+- 提交 / 推送：本节与 B5 驱动文件一并提交，提交 hash 以最终 `git log` 为准；推送 `github/master`、`github/main` 后复核三者一致且 `git rev-list --left-right --count HEAD...github/main = 0 0`。
