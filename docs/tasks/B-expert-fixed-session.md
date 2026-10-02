@@ -369,3 +369,11 @@ resolveTarget({ projectId, mode, targetKind, targetId })
 - 测试数据与边界：A smoke 构造数据由脚本按自身设计回滚；未删除任何 DSH 会话、binding、revision、冻结版本或 release 文件。新增的 session / target-session 记录保留用于追溯。`*.bak-20261002-taskB4` 为未跟踪备份，不提交。
 - 偏离与遗留：E-2(b) 暴露 DSH 重启 / 新宿主的会话列表 hydration 问题，本轮未修改 DSH 本体（任务范围外）；真实宿主第 3、4、6、7、8、9、11、12 条仍未取得本轮证据。compare 漂移是前轮已记录的 training/published 候选数据变化，不重新 snapshot，也未改写 context 返回。
 - 提交 / 推送：本轮代码、构建产物、测试、页面和本报告已提交为 `618bea9`（`[B4] 修复新开训练会话并补充重启验收证据`）；最终 hash、`github/master`、`github/main` 和 0/0 状态以交付消息为准。
+
+
+## 6.4 第 4 轮继续（workspace hydration 修复）
+
+- 针对 E-2(b) 的新修复：`client/native-sessions.js` 在服务端 target-session 已确认、宿主本地 binding 缺失时，先用 `session-workspace` 返回的服务端路径调用 `scope.workspaces.create({path})`（DSH API 定义为“Register an existing path as a Workspace”，幂等解析），再刷新 `scope.sessions`；refresh 和 workspace 注册仍共享原有 30 秒总 deadline。这样新宿主未选中 Trainer workspace 时可以把持久化会话重新加入列表镜像，不执行 forget 或新建。
+- 新增回归测试：`authoritative reuse registers the server workspace before refreshing a cold host`；聚焦测试现为 `18/18` 通过。正式部署重启产物 `C:\Users\nvt10241\AppData\Local\Temp\dsh-plugin-restart-20261002-200140`：Gate A/B/C=0，插件全量 `403/403`，端口 3080=200，启动日志无致命签名。
+- 部署后 compare 仍因前轮同一 training/published 各 21 处 context 漂移而返回 `PASS 1 / FAIL 2`；自动审查因此拒绝再次打开真实宿主标签，无法取得 E-2(b) 修复后的直接 UI 证据，也无法伪造 E-2(c) 或 B3/B4 手工条目通过。最终 `verify-b.mjs` 仍为 `PASS 10 / FAIL 0`。
+- 当前实现和测试已推送为后续 `[B4]` 提交；E-2(b) hydration 修复是否在真实宿主消除 `NATIVE_SESSION_NOT_LISTED`，需在允许访问宿主后复测。

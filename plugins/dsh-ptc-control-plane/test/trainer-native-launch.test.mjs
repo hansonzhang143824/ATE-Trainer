@@ -199,6 +199,17 @@ function authoritativeFixture(t, { bindError = null } = {}) {
   return { scope, post, calls, get created() { return created; }, open: input => openTrainerNativeSession(scope, { ...request, ...input }, { post, title: 'Agent Trainer' }) };
 }
 
+test('authoritative reuse registers the server workspace before refreshing a cold host', async t => {
+  const f = authoritativeFixture(t);
+  f.scope.workspaces = { async create(input) { f.calls.push(`workspace-create:${input.path}`); f.scope.sessions.binding = id => id === 'session-server-authoritative' ? { session: { header: {} } } : undefined; } };
+  f.scope.sessions.refresh = async () => { f.calls.push('refresh-without-workspace'); };
+  const result = await f.open();
+  assert.equal(result.sessionId, 'session-server-authoritative');
+  assert.equal(result.reused, true);
+  assert.ok(f.calls.some(call => call.startsWith('workspace-create:')));
+  assert.equal(f.created, 0);
+});
+
 test('server target-session is authoritative before local binding refresh', async t => {
   const f = authoritativeFixture(t);
   const result = await f.open();

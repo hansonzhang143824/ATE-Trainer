@@ -32,8 +32,24 @@ function notListed(sessionId, reused = false) {
     { code: 'NATIVE_SESSION_NOT_LISTED', sessionId });
 }
 
-async function refreshForBinding(sessions, sessionId, deadline, reused = false) {
-  if (sessions.binding(sessionId) !== undefined || typeof sessions.refresh !== 'function') return;
+async function refreshForBinding(scope, sessionId, deadline, reused = false, workspacePath = null) {
+  const sessions = scope.sessions;
+  if (sessions.binding(sessionId) !== undefined) return;
+  // A freshly opened host can start with no selected workspace. Registering the
+  // server-approved Trainer workspace is idempotent and lets SessionRuntime's
+  // list mirror include persisted sessions before refresh() runs.
+  if (workspacePath && typeof scope.workspaces?.create === 'function') {
+    let timer;
+    try {
+      await Promise.race([
+        Promise.resolve().then(() => scope.workspaces.create({ path: workspacePath })),
+        new Promise((_, reject) => { timer = window.setTimeout(() => reject(notListed(sessionId, reused)),
+          Math.max(0, Math.min(NATIVE_REFRESH_TIMEOUT_MS, deadline - Date.now()))); }),
+      ]);
+    } finally { window.clearTimeout(timer); }
+    if (sessions.binding(sessionId) !== undefined) return;
+  }
+  if (typeof sessions.refresh !== 'function') return;
   let timer;
   try {
     await Promise.race([
@@ -112,7 +128,7 @@ export async function openPtcNativeSession(scope, workspace, {
   // but it cannot select the dedicated agentPreset, so the low-level call is
   // required here.
   const deadline = Date.now() + NATIVE_READINESS_TIMEOUT_MS;
-  await refreshForBinding(scope.sessions, created.sessionId, deadline);
+  await refreshForBinding(scope, created.sessionId, deadline, false, workspace?.path || workspace?.cwd);
   if (typeof scope.sessions.noteAgentPreset === 'function') {
     scope.sessions.noteAgentPreset(created.sessionId, agentPreset);
   }
@@ -235,7 +251,7 @@ export async function openTrainerNativeSession(scope, request, { post, title, ho
           if (!matchesTarget(binding, request)) throw new Error('TARGET_MISMATCH: 服务端绑定与请求不一致');
           if (!binding.effectiveTools?.includes('trainer_context')) throw new Error('TRAINER_TOOLS_MISSING: 原生会话缺少 Trainer 工具');
           const deadline = Date.now() + NATIVE_READINESS_TIMEOUT_MS;
-          await refreshForBinding(scope.sessions, remembered, deadline, true);
+          await refreshForBinding(scope, remembered, deadline, true, workspace?.path || workspace?.cwd);
           await waitForBinding(scope.sessions, remembered, deadline, true);
           await openPtcSessionView(scope, remembered);
           state.sessions.set(key, remembered);
@@ -267,7 +283,7 @@ export async function openTrainerNativeSession(scope, request, { post, title, ho
     // SessionRuntime. Refresh before waiting so the native opener can resolve
     // and select the exact session instead of leaving the host on blank 新会话.
     const deadline = Date.now() + NATIVE_READINESS_TIMEOUT_MS;
-    await refreshForBinding(scope.sessions, created.sessionId, deadline, created.reused === true);
+    await refreshForBinding(scope, created.sessionId, deadline, created.reused === true, workspace?.path || workspace?.cwd);
     if (typeof scope.sessions.noteAgentPreset === 'function') {
       scope.sessions.noteAgentPreset(created.sessionId, request.presetId);
     }
