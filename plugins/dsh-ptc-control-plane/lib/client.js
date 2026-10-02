@@ -770,9 +770,20 @@ window.__ModuleLoader__.load({
 		      if (['target_missing', 'release_not_active', 'forbidden', 'invalid_binding'].includes(error?.code)) throw error;
 		    }
 		    const remembered = record?.sessionId || (!request.freshSession && (state.sessions.get(key) || existingSessionId(key) || legacy.at(-1)?.sessionId));
-		    const rememberedLocalBinding = remembered ? scope.sessions.binding(remembered) : undefined;
-		    if (remembered && rememberedLocalBinding !== undefined
-		      && sessionPreset(rememberedLocalBinding) === request.presetId) {
+		    // A verified server target-session is authoritative. The browser session
+		    // runtime may not yet have loaded its binding or preset event after a
+		    // server-side factory creates it; do not discard the durable mapping for
+		    // that local cache miss. Refresh first, then bind and open the exact id.
+		    const serverAuthoritative = !!record?.sessionId;
+		    let rememberedLocalBinding = remembered ? scope.sessions.binding(remembered) : undefined;
+		    if (remembered && serverAuthoritative && rememberedLocalBinding === undefined
+		      && typeof scope.sessions.refresh === 'function') {
+		      await scope.sessions.refresh();
+		      rememberedLocalBinding = scope.sessions.binding(remembered);
+		    }
+		    const canTryReuse = remembered && (serverAuthoritative
+		      || (rememberedLocalBinding !== undefined && sessionPreset(rememberedLocalBinding) === request.presetId));
+		    if (canTryReuse) {
 		      try {
 		        let previousBinding = await post('bind-session', {
 		          projectId: request.projectId, mode: request.mode, sessionId: remembered,
@@ -792,6 +803,9 @@ window.__ModuleLoader__.load({
 		          }
 		          if (!matchesTarget(binding, request)) throw new Error('TARGET_MISMATCH: 服务端绑定与请求不一致');
 		          if (!binding.effectiveTools?.includes('trainer_context')) throw new Error('TRAINER_TOOLS_MISSING: 原生会话缺少 Trainer 工具');
+		          if (typeof scope.sessions.refresh === 'function' && scope.sessions.binding(remembered) === undefined) {
+		            await scope.sessions.refresh();
+		          }
 		          await waitForBinding(scope.sessions, remembered);
 		          await openPtcSessionView(scope, remembered);
 		          state.sessions.set(key, remembered);
@@ -804,7 +818,7 @@ window.__ModuleLoader__.load({
 		        if (!['session_unbound', 'session_identity_mismatch', 'target_mismatch'].includes(error.code)) throw error;
 		      }
 		    }
-		    if (remembered) { if (targetApiAvailable) await post('forget-target-session', identity); clearCache(); }
+		    if (remembered && targetApiAvailable && (serverAuthoritative || canTryReuse)) { await post('forget-target-session', identity); clearCache(); }
 
 		    // Browser DSH profiles may omit the public session.create and
 		    // agentPreset.list endpoints.  The Trainer service owns a server-side

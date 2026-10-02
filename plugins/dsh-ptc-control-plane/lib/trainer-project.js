@@ -65,16 +65,44 @@ function check(files, { allowInvalidLedger = false } = {}) {
   if (errors.length) trainerFail('TRAINER_PROJECT_INVALID', 'candidate validation failed', errors);
   return { ...result, ok: true, errors };
 }
-function newAgentIds(base, next) {
+function agentIdsFromFiles(files) {
   const ids = [];
-  for (const p of Object.keys(next)) {
-    const match = p.match(/^agents\/([^/]+)\/agent\.json$/);
-    if (match && !Object.hasOwn(base, p)) ids.push(match[1]);
+  for (const [filePath, content] of Object.entries(files)) {
+    if (!/^agents\/[^/]+\/agent\.json$/.test(filePath)) continue;
+    try {
+      const value = JSON.parse(content);
+      if (isTrainerId(value?.agentId)) ids.push(value.agentId);
+    } catch { /* structural validation reports malformed agent files */ }
   }
-  return [...new Set(ids)];
+  return [...new Set(ids)].sort();
+}
+function newAgentIds(base, next) {
+  const before = new Set(agentIdsFromFiles(base));
+  return agentIdsFromFiles(next).filter((id) => !before.has(id));
 }
 function ledgerOnlyChange(changes) { return changes.length === 1 && changes[0].path === AGENT_ID_LEDGER_PATH; }
-function checkAgentIdLedger(base, next, changes) {
+function historicalLedgerIds(directory, excludedRevision) {
+  const candidates = [];
+  const revisionsRoot = trainerSafe(directory, 'revisions');
+  if (!fs.existsSync(revisionsRoot)) return [];
+  for (const revisionId of fs.readdirSync(revisionsRoot)) {
+    if (revisionId === excludedRevision) continue;
+    const manifestPath = trainerSafe(directory, 'revisions', revisionId, 'revision.json');
+    try {
+      const manifest = trainerRead(directory, 'revisions', revisionId, 'revision.json');
+      const entry = manifest.files?.find((item) => item.path === AGENT_ID_LEDGER_PATH);
+      if (!entry) continue;
+      const bytes = fs.readFileSync(trainerSafe(directory, 'revisions', revisionId, AGENT_ID_LEDGER_PATH));
+      if (bytes.length !== entry.size || trainerSha(bytes) !== entry.sha256) continue;
+      const inspected = inspectAgentIdLedger(bytes.toString('utf8'));
+      if (!inspected.ok) continue;
+      candidates.push({ mtime: fs.statSync(manifestPath).mtimeMs, allocated: inspected.data.allocated });
+    } catch { /* ignore incomplete or corrupt historical revisions */ }
+  }
+  candidates.sort((a, b) => a.mtime - b.mtime);
+  return candidates.length ? candidates[candidates.length - 1].allocated : [];
+}
+function checkAgentIdLedger(directory, base, next, changes, baseRevision) {
   const nextHasLedger = Object.hasOwn(next, AGENT_ID_LEDGER_PATH);
   const nextLedger = nextHasLedger ? parseAgentIdLedger(next[AGENT_ID_LEDGER_PATH]) : null;
   const baseHasLedger = Object.hasOwn(base, AGENT_ID_LEDGER_PATH);
@@ -86,7 +114,12 @@ function checkAgentIdLedger(base, next, changes) {
   }
   const baseInspection = inspectAgentIdLedger(base[AGENT_ID_LEDGER_PATH]);
   if (!baseInspection.ok) {
-    if (ledgerOnlyChange(changes) && nextLedger) return;
+    if (ledgerOnlyChange(changes) && nextLedger) {
+      const required = new Set([...agentIdsFromFiles(base), ...historicalLedgerIds(directory, baseRevision)]);
+      const missing = [...required].filter((id) => !nextLedger.allocated.includes(id));
+      if (missing.length) trainerFail('TRAINER_AGENT_ID_LEDGER_SHRINK', 'Agent ID ledger repair cannot discard current or historical IDs', { ids: missing });
+      return;
+    }
     trainerFail('TRAINER_AGENT_ID_LEDGER_INVALID', 'Agent ID ledger is damaged; submit a standalone ledger repair first', baseInspection);
   }
   const baseLedger = baseInspection.data;
@@ -116,8 +149,12 @@ export function ensureTrainerProject(root, { projectId, seed } = {}) {
     // creating one here would expose historical/demo Agents in the live
     // Trainer registry.
     const files = { ...(seed?.files ?? {}) };
-    if (!Object.hasOwn(files, AGENT_ID_LEDGER_PATH)) {
-      files[AGENT_ID_LEDGER_PATH] = trainerJson({ schemaVersion: 1, allocated: [] });
+    const seedAgentIds = agentIdsFromFiles(files);
+    if (!Object.hasOwn(files, AGENT_ID_LEDGER_PATH)) files[AGENT_ID_LEDGER_PATH] = trainerJson({ schemaVersion: 1, allocated: seedAgentIds });
+    else {
+      const suppliedLedger = parseAgentIdLedger(files[AGENT_ID_LEDGER_PATH]);
+      const missingSeedIds = seedAgentIds.filter((id) => !suppliedLedger.allocated.includes(id));
+      if (missingSeedIds.length) trainerFail('TRAINER_AGENT_ID_LEDGER_INVALID', 'Seed Agent IDs must be registered in the Agent ID ledger', { ids: missingSeedIds });
     }
     check(files);
     const revisionId = `revision-${randomUUID()}`;
@@ -190,7 +227,7 @@ export function applyChanges(root, input) {
       if (before !== change.content && !(before === undefined && change.content === null)) diff.push({ path: change.path, oldSha256: before === undefined ? null : trainerSha(Buffer.from(before)), newSha256: change.content === null ? null : trainerSha(Buffer.from(change.content)), before: before ?? null, after: change.content, kind: change.path.startsWith('contracts/') || change.path.startsWith('tests/') ? 'validation' : 'asset' });
     }
     const validation = check(files, { allowInvalidLedger: true });
-    checkAgentIdLedger(readAssets(root, { projectId, revisionId: baseRevision }).files, files, changes);
+    checkAgentIdLedger(directory, readAssets(root, { projectId, revisionId: baseRevision }).files, files, changes, baseRevision);
     const revisionId = diff.length ? `revision-${randomUUID()}` : baseRevision; const changeSetId = `change-${randomUUID()}`;
     const result = { projectId, revisionId, changeSetId, diff, validation };
     if (diff.length) writeRevision(directory, revisionId, files, { requestId, fingerprint, changeSetId });

@@ -147,3 +147,72 @@ test('native selection rejection or no-op cannot produce success', async t => {
   await assert.rejects(f.open(), /OPEN_FAILED/);
   f.select = true; assert.equal((await f.open()).scopeOpened, true);
 });
+
+
+function authoritativeFixture(t, { bindError = null } = {}) {
+  const previousWindow = globalThis.window;
+  const local = new Map();
+  let current = null;
+  let loaded = false;
+  let created = 0;
+  const calls = [];
+  const serverId = 'session-server-authoritative';
+  let serverBinding = { ...request, sessionId: serverId, bindingRevision: 4, effectiveTools: ['trainer_context'], resolved: { source: 'candidate', revisionId: 'revision-1' } };
+  globalThis.window = { setTimeout, clearTimeout, localStorage: {
+    getItem: key => local.get(key) ?? null,
+    setItem: (key, value) => local.set(key, value),
+    removeItem: key => local.delete(key),
+    get length() { return local.size; },
+    key: index => [...local.keys()][index] ?? null,
+  } };
+  t.after(() => { if (previousWindow === undefined) delete globalThis.window; else globalThis.window = previousWindow; });
+  const scope = {
+    get() { return { api: { sessions: { async create() { throw new Error('unexpected browser create'); } } } }; },
+    sessions: {
+      binding(id) { return id === serverId && loaded ? { session: { header: {} } } : undefined; },
+      async refresh() { calls.push('refresh'); loaded = true; },
+      async open(id) { calls.push(`open:${id}`); current = id; },
+      list: { getSnapshot: () => ({ current }), subscribe: () => () => {} },
+    },
+  };
+  const post = async (operation, input) => {
+    calls.push(operation);
+    if (operation === 'session-workspace') return { path: '/fixture', candidateRevision: 'revision-1' };
+    if (operation === 'target-session') return { sessionId: serverId, binding: serverBinding };
+    if (operation === 'bind-session') {
+      if (bindError) throw Object.assign(new Error(bindError), { code: bindError });
+      if (!input.targetId) return serverBinding;
+      serverBinding = { ...serverBinding, ...input, bindingRevision: serverBinding.bindingRevision + 1 };
+      return serverBinding;
+    }
+    if (operation === 'forget-target-session') return { ok: true };
+    if (operation === 'open-native-session') {
+      created += 1;
+      const id = `session-created-${created}`;
+      serverBinding = { ...input, sessionId: id, bindingRevision: 1, effectiveTools: ['trainer_context'], resolved: { source: 'candidate', revisionId: input.candidateRevision } };
+      loaded = true;
+      scope.sessions.binding = value => value === id ? { session: { header: {} } } : undefined;
+      return { sessionId: id, binding: serverBinding };
+    }
+    throw new Error(`unexpected operation ${operation}`);
+  };
+  return { scope, post, calls, get created() { return created; }, open: input => openTrainerNativeSession(scope, { ...request, ...input }, { post, title: 'Agent Trainer' }) };
+}
+
+test('server target-session is authoritative before local binding refresh', async t => {
+  const f = authoritativeFixture(t);
+  const result = await f.open();
+  assert.equal(result.sessionId, 'session-server-authoritative');
+  assert.equal(result.reused, true);
+  assert.equal(f.created, 0);
+  assert.equal(f.calls.filter(call => call === 'refresh').length, 1);
+  assert.equal(f.calls.filter(call => call === 'forget-target-session').length, 0);
+});
+
+test('only an allowed bind-session identity error forgets and creates', async t => {
+  const f = authoritativeFixture(t, { bindError: 'session_unbound' });
+  const result = await f.open();
+  assert.equal(result.reused, false);
+  assert.equal(f.created, 1);
+  assert.equal(f.calls.filter(call => call === 'forget-target-session').length, 1);
+});

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { createHash } from 'node:crypto';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -46,7 +47,7 @@ function expectCode(fn, code) { assert.throws(fn, (error) => error.code === code
 test('ensureTrainerProject initializes an empty Agent ID ledger', (t) => {
   const f = setup(t);
   const assets = readAssets(f.root, { projectId: f.projectId, revisionId: f.project.revisionId });
-  assert.deepEqual(parseAgentIdLedger(assets.files[AGENT_ID_LEDGER_PATH]), { schemaVersion: 1, allocated: [] });
+  assert.deepEqual(parseAgentIdLedger(assets.files[AGENT_ID_LEDGER_PATH]), { schemaVersion: 1, allocated: ['lab-consumer', 'lab-producer'] });
 });
 
 test('base without a ledger only permits standalone ledger initialization', (t) => {
@@ -98,10 +99,25 @@ test('every newly created Agent is checked in one change set and deletion preser
   assert.deepEqual(parseAgentIdLedger(readAssets(f.root, { projectId: f.projectId }).files[AGENT_ID_LEDGER_PATH]).allocated, [...ids, a, b, 'agent-batch-c']);
 });
 
+function corruptCurrentLedger(root, projectId, content) {
+  const directory = path.join(root, 'Training_Materials', 'framework', 'projects', projectId);
+  const current = JSON.parse(fs.readFileSync(path.join(directory, 'current.json'), 'utf8'));
+  const revisionDir = path.join(directory, 'revisions', current.revisionId);
+  const manifestPath = path.join(revisionDir, 'revision.json');
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  const bytes = Buffer.from(content);
+  fs.writeFileSync(path.join(revisionDir, AGENT_ID_LEDGER_PATH), bytes);
+  const entry = manifest.files.find((item) => item.path === AGENT_ID_LEDGER_PATH);
+  entry.size = bytes.length;
+  entry.sha256 = createHash('sha256').update(bytes).digest('hex');
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n');
+  return current.revisionId;
+}
+
 test('damaged ledger has a standalone repair channel only', (t) => {
+  const f = setup(t, { initialLedger: ledger(['lab-producer', 'lab-consumer']) });
   const malformed = JSON.stringify({ schemaVersion: 2, allocated: ['lab-producer'] });
-  const f = setup(t, { initialLedger: malformed });
-  const base = f.project.revisionId;
+  const base = corruptCurrentLedger(f.root, f.projectId, malformed);
   expectCode(() => applyChanges(f.root, { projectId: f.projectId, requestId: 'bad-edit', baseRevision: base, reason: 'edit while ledger damaged', changes: [{ path: 'agents/lab-producer/instructions.md', content: 'changed\n' }] }), 'TRAINER_AGENT_ID_LEDGER_INVALID');
   const repaired = applyChanges(f.root, { projectId: f.projectId, requestId: 'repair-ledger', baseRevision: base, reason: 'repair Agent ID ledger', changes: [{ path: AGENT_ID_LEDGER_PATH, content: ledger(['lab-producer', 'lab-consumer']) }] });
   assert.notEqual(repaired.revisionId, base);
@@ -127,4 +143,15 @@ test('ledger corruption forms are rejected and freeze/verify/stage release still
   const evidence = { runId: 'ledger-regression-run', projectId: f.projectId, targetKind: 'workflow', targetId: 'lab-pair', bundleSha256: bundle.bundleSha256, workflowRevision: bundle.workflowRevision, status: 'completed', validation: { ok: true }, businessGatePassed: false, steps: bundle.steps.map((step) => ({ stepId: step.stepId, agentId: step.agentId, agentRevision: step.agentRevision, status: 'completed' })) };
   const release = stageRelease(f.root, { projectId: f.projectId, frozenVersionId: frozen.frozenVersionId, runEvidence: evidence });
   assert.equal(release.businessGatePassed, false);
+});
+
+
+test('damaged ledger repair preserves current and latest historical IDs', (t) => {
+  const f = setup(t, { initialLedger: ledger(['lab-producer', 'lab-consumer']) });
+  commit(f.root, f.projectId, 'record retired historical Agent ID', [{ path: AGENT_ID_LEDGER_PATH, content: ledger(['lab-producer', 'lab-consumer', 'agent-historical']) }]);
+  commit(f.root, f.projectId, 'advance revision after historical allocation', [{ path: 'agents/lab-producer/instructions.md', content: 'updated\n' }]);
+  const base = corruptCurrentLedger(f.root, f.projectId, JSON.stringify({ schemaVersion: 2, allocated: [] }));
+  expectCode(() => applyChanges(f.root, { projectId: f.projectId, requestId: 'repair-missing-history', baseRevision: base, reason: 'repair without historical ID', changes: [{ path: AGENT_ID_LEDGER_PATH, content: ledger(['lab-producer', 'lab-consumer']) }] }), 'TRAINER_AGENT_ID_LEDGER_SHRINK');
+  const repaired = applyChanges(f.root, { projectId: f.projectId, requestId: 'repair-with-history', baseRevision: base, reason: 'repair preserving all IDs', changes: [{ path: AGENT_ID_LEDGER_PATH, content: ledger(['lab-producer', 'lab-consumer', 'agent-historical']) }] });
+  assert.notEqual(repaired.revisionId, base);
 });
