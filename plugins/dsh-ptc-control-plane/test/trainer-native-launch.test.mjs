@@ -216,3 +216,39 @@ test('only an allowed bind-session identity error forgets and creates', async t 
   assert.equal(f.created, 1);
   assert.equal(f.calls.filter(call => call === 'forget-target-session').length, 1);
 });
+
+
+const flushLaunch = async () => { for (let i = 0; i < 30; i++) await Promise.resolve(); };
+
+for (const missing of ['refresh never resolves', 'binding never appears']) {
+  test(`authoritative reuse ${missing}: times out, clears pending and retries without forget or factory`, async t => {
+    t.mock.timers.enable({ apis: ['setTimeout', 'Date'] });
+    const f = authoritativeFixture(t);
+    window.setTimeout = globalThis.setTimeout;
+    window.clearTimeout = globalThis.clearTimeout;
+    let subscriptions = 0;
+    f.scope.sessions.list.subscribe = () => { subscriptions++; return () => { subscriptions--; }; };
+    const originalRefresh = f.scope.sessions.refresh;
+    f.scope.sessions.refresh = missing === 'refresh never resolves'
+      ? () => { f.calls.push('blocked-refresh'); return new Promise(() => {}); }
+      : async () => { f.calls.push('empty-refresh'); };
+    const failed = f.open();
+    const assertion = assert.rejects(failed, error => error.code === 'NATIVE_SESSION_NOT_LISTED'
+      && error.sessionId === 'session-server-authoritative' && error.message.includes('请刷新 DSH 页面后重试'));
+    await flushLaunch();
+    t.mock.timers.tick(missing === 'refresh never resolves' ? 10_000 : 30_000);
+    await assertion;
+    assert.equal(subscriptions, 0, 'timeout must unsubscribe the binding listener');
+    assert.equal(f.calls.filter(call => call === 'forget-target-session').length, 0);
+    assert.equal(f.created, 0);
+    const previousReads = f.calls.filter(call => call === 'target-session').length;
+    f.scope.sessions.refresh = originalRefresh;
+    const retried = await f.open();
+    assert.equal(retried.sessionId, 'session-server-authoritative');
+    assert.equal(retried.reused, true);
+    assert.equal(f.calls.filter(call => call === 'target-session').length, previousReads + 1,
+      'retry must issue a new request after the rejected pending promise is cleared');
+    assert.equal(f.calls.filter(call => call === 'forget-target-session').length, 0);
+    assert.equal(f.created, 0);
+  });
+}

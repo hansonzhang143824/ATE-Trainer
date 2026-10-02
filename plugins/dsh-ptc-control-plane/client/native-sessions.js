@@ -24,21 +24,46 @@ function sessionPreset(binding) {
   return session?.header?.agentPreset;
 }
 
-function waitForBinding(sessions, sessionId) {
+const NATIVE_READINESS_TIMEOUT_MS = 30_000;
+const NATIVE_REFRESH_TIMEOUT_MS = 10_000;
+
+function notListed(sessionId, reused = false) {
+  return Object.assign(new Error(`NATIVE_SESSION_NOT_LISTED: 服务端已${reused ? '复用' : '绑定'}会话 ${sessionId}，但宿主会话列表未加载该会话，请刷新 DSH 页面后重试。`),
+    { code: 'NATIVE_SESSION_NOT_LISTED', sessionId });
+}
+
+async function refreshForBinding(sessions, sessionId, deadline, reused = false) {
+  if (sessions.binding(sessionId) !== undefined || typeof sessions.refresh !== 'function') return;
+  let timer;
+  try {
+    await Promise.race([
+      Promise.resolve().then(() => sessions.refresh()),
+      new Promise((_, reject) => { timer = window.setTimeout(() => reject(notListed(sessionId, reused)),
+        Math.max(0, Math.min(NATIVE_REFRESH_TIMEOUT_MS, deadline - Date.now()))); }),
+    ]);
+  } finally { window.clearTimeout(timer); }
+}
+
+function waitForBinding(sessions, sessionId, deadline = Date.now() + NATIVE_READINESS_TIMEOUT_MS, reused = false) {
   const ready = sessions.binding(sessionId);
   if (ready !== undefined) return Promise.resolve(ready);
   return new Promise((resolve, reject) => {
-    const timeout = window.setTimeout(() => {
-      unsubscribe();
-      reject(new Error('DSH 创建了会话，但 60 秒内没有出现在会话列表中。'));
-    }, 60_000);
-    const unsubscribe = sessions.list.subscribe(() => {
-      const binding = sessions.binding(sessionId);
-      if (binding === undefined) return;
+    let unsubscribe = () => {};
+    let settled = false;
+    const finish = (error, binding) => {
+      if (settled) return;
+      settled = true;
       window.clearTimeout(timeout);
       unsubscribe();
-      resolve(binding);
-    });
+      if (error) reject(error); else resolve(binding);
+    };
+    const timeout = window.setTimeout(() => finish(notListed(sessionId, reused)), Math.max(0, deadline - Date.now()));
+    const check = () => {
+      const binding = sessions.binding(sessionId);
+      if (binding !== undefined) finish(null, binding);
+    };
+    unsubscribe = sessions.list.subscribe(check);
+    if (settled) unsubscribe(); else check();
   });
 }
 
@@ -86,11 +111,12 @@ export async function openPtcNativeSession(scope, workspace, {
   // timeout expires.  DSH's high-level sessions.create() has this guarantee,
   // but it cannot select the dedicated agentPreset, so the low-level call is
   // required here.
-  if (typeof scope.sessions.refresh === 'function') await scope.sessions.refresh();
+  const deadline = Date.now() + NATIVE_READINESS_TIMEOUT_MS;
+  await refreshForBinding(scope.sessions, created.sessionId, deadline);
   if (typeof scope.sessions.noteAgentPreset === 'function') {
     scope.sessions.noteAgentPreset(created.sessionId, agentPreset);
   }
-  const binding = await waitForBinding(scope.sessions, created.sessionId);
+  const binding = await waitForBinding(scope.sessions, created.sessionId, deadline);
   await binding.session.rename(title);
   await beforeOpen?.(created.sessionId, false);
   await openPtcSessionView(scope, created.sessionId);
@@ -181,12 +207,7 @@ export async function openTrainerNativeSession(scope, request, { post, title, ho
     // server-side factory creates it; do not discard the durable mapping for
     // that local cache miss. Refresh first, then bind and open the exact id.
     const serverAuthoritative = !!record?.sessionId;
-    let rememberedLocalBinding = remembered ? scope.sessions.binding(remembered) : undefined;
-    if (remembered && serverAuthoritative && rememberedLocalBinding === undefined
-      && typeof scope.sessions.refresh === 'function') {
-      await scope.sessions.refresh();
-      rememberedLocalBinding = scope.sessions.binding(remembered);
-    }
+    const rememberedLocalBinding = remembered ? scope.sessions.binding(remembered) : undefined;
     const canTryReuse = remembered && (serverAuthoritative
       || (rememberedLocalBinding !== undefined && sessionPreset(rememberedLocalBinding) === request.presetId));
     if (canTryReuse) {
@@ -209,10 +230,9 @@ export async function openTrainerNativeSession(scope, request, { post, title, ho
           }
           if (!matchesTarget(binding, request)) throw new Error('TARGET_MISMATCH: 服务端绑定与请求不一致');
           if (!binding.effectiveTools?.includes('trainer_context')) throw new Error('TRAINER_TOOLS_MISSING: 原生会话缺少 Trainer 工具');
-          if (typeof scope.sessions.refresh === 'function' && scope.sessions.binding(remembered) === undefined) {
-            await scope.sessions.refresh();
-          }
-          await waitForBinding(scope.sessions, remembered);
+          const deadline = Date.now() + NATIVE_READINESS_TIMEOUT_MS;
+          await refreshForBinding(scope.sessions, remembered, deadline, true);
+          await waitForBinding(scope.sessions, remembered, deadline, true);
           await openPtcSessionView(scope, remembered);
           state.sessions.set(key, remembered);
           rememberSessionId(key, remembered);
@@ -241,11 +261,12 @@ export async function openTrainerNativeSession(scope, request, { post, title, ho
     // but that does not automatically push the new session into the browser
     // SessionRuntime. Refresh before waiting so the native opener can resolve
     // and select the exact session instead of leaving the host on blank 新会话.
-    if (typeof scope.sessions.refresh === 'function') await scope.sessions.refresh();
+    const deadline = Date.now() + NATIVE_READINESS_TIMEOUT_MS;
+    await refreshForBinding(scope.sessions, created.sessionId, deadline, created.reused === true);
     if (typeof scope.sessions.noteAgentPreset === 'function') {
       scope.sessions.noteAgentPreset(created.sessionId, request.presetId);
     }
-    await waitForBinding(scope.sessions, created.sessionId);
+    await waitForBinding(scope.sessions, created.sessionId, deadline, created.reused === true);
     await openPtcSessionView(scope, created.sessionId);
     state.sessions.set(key, created.sessionId);
     rememberSessionId(key, created.sessionId);
