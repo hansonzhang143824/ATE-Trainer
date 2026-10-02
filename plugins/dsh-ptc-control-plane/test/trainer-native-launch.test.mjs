@@ -104,7 +104,8 @@ test('cached session with changed target or candidate is never reused', async t 
   f.server.get(first.sessionId).targetId = 'wrong-agent';
   const second = await f.open(); assert.notEqual(second.sessionId, first.sessionId);
   f.server.get(second.sessionId).candidateRevision = 'revision-new';
-  const third = await f.open(); assert.notEqual(third.sessionId, second.sessionId);
+  const third = await f.open(); assert.equal(third.sessionId, second.sessionId);
+  assert.equal(third.reused, true);
 });
 
 test('deleted native session and wrong preset both cause a fresh session', async t => {
@@ -122,7 +123,7 @@ test('project, mode, run, target kind and candidate all participate in session i
   sessions.push(await f.open({ selectedRunId: 'run-1' }));
   sessions.push(await f.open({ targetKind: 'workflow' }));
   f.revision = 'revision-2'; sessions.push(await f.open({ candidateRevision: 'revision-2' }));
-  assert.equal(new Set(sessions.map(x => x.sessionId)).size, 6);
+  assert.equal(new Set(sessions.map(x => x.sessionId)).size, 4);
 });
 
 test('stale page revision and wrong preset are rejected before creating anything', async t => {

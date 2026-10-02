@@ -24,4 +24,4 @@ export function createTrainerApiHandler(service,operation) {
     }catch(error){return reply(400,{ok:false,error:{code:'invalid_request',message:error.message}});}
   };
 }
-export const TRAINER_API_OPERATIONS=['context','assets','apply-changes','validate','run','runs','events','control','compare','changes','freeze','stage-release','activate-release','releases','bind-session','open-native-session','session-workspace','session-tool'];
+export const TRAINER_API_OPERATIONS=['context','assets','apply-changes','validate','run','runs','events','control','compare','changes','freeze','stage-release','activate-release','releases','bind-session','open-native-session','session-workspace','session-tool','target-session','forget-target-session'];

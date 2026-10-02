@@ -6,7 +6,7 @@ import { bundleManifestBytes } from './trainer-bundle.js';
 
 const MUTATIONS = new Set(['apply-changes', 'run', 'control', 'freeze', 'stage-release', 'activate-release']);
 const TRAINING = new Set(['apply-changes', 'freeze']);
-const PAGE_ONLY = new Set(['freeze', 'stage-release', 'activate-release', 'bind-session', 'session-workspace', 'open-native-session']);
+const PAGE_ONLY = new Set(['freeze', 'stage-release', 'activate-release', 'bind-session', 'session-workspace', 'open-native-session', 'target-session', 'forget-target-session']);
 const TOOL_PRESETS = new Set(['agent-trainer', 'framework-expert', 'framework-observer']);
 export const DEFAULT_TRAINER_PROJECT_ID = 'agent-trainer';
 const clone = value => JSON.parse(JSON.stringify(value));
@@ -127,6 +127,65 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
     if (typeof repositories[name] !== 'function') fail('operation_unavailable', `Repository operation ${name} is unavailable`);
     return repositories[name](workspaceRoot, args);
   };
+  const targetLocks = new Map();
+  const identity = resolved => Object.fromEntries(['source', 'revisionId', 'frozenVersionId', 'releaseId'].map(k => [k, resolved?.[k] ?? null]));
+  const sameIdentity = (a, b) => stable(identity(a)) === stable(identity(b));
+  const targetKey = args => ['projectId', 'mode', 'targetKind', 'targetId', 'presetId'].map(k => id(args[k], k)).join('|');
+  const targetFile = args => path.join(storage, 'target-sessions', `${createHash('sha256').update(targetKey(args)).digest('hex').slice(0, 32)}.json`);
+
+  async function resolveTarget(args, sourceProject = null, activeReleases = null) {
+    const project = sourceProject || await call('ensureTrainerProject', { projectId: args.projectId });
+    if (args.mode !== 'engineering') {
+      const items = args.targetKind === 'agent' ? project.agents : project.workflows;
+      if (!(items || []).some(item => (item.agentId || item.workflowId) === args.targetId)) return null;
+      return { source: 'candidate', revisionId: project.revisionId, frozenVersionId: null, releaseId: null,
+        via: args.targetKind === 'agent' ? 'direct' : null };
+    }
+    const active = activeReleases || (await call('listReleases', { projectId: args.projectId })).active || [];
+    const direct = active.find(r => r.targetKind === args.targetKind && r.targetId === args.targetId);
+    if (direct) return { source: 'release', revisionId: null, frozenVersionId: null, releaseId: direct.releaseId,
+      via: args.targetKind === 'agent' ? 'direct' : null };
+    if (args.targetKind === 'agent') {
+      for (const release of active.filter(r => r.targetKind === 'workflow')) {
+        const bundle = await call('loadReleaseBundle', { projectId: args.projectId, ...release });
+        if ((bundle.steps || []).some(step => step.agentId === args.targetId)) {
+          return { source: 'release', revisionId: null, frozenVersionId: null, releaseId: release.releaseId, via: 'workflow' };
+        }
+      }
+    }
+    return null;
+  }
+  function upsertTargetSessionUnlocked(args, binding) {
+    const file = targetFile(args);
+    let old = null;
+    try { old = read(file, null); } catch (error) { console.warn('Invalid Trainer target-session record', file, error.message); }
+    const now = new Date().toISOString();
+    atomic(file, { schemaVersion: 1, ...Object.fromEntries(['projectId', 'mode', 'targetKind', 'targetId', 'presetId'].map(k => [k, args[k]])),
+      sessionId: binding.sessionId, lastResolved: binding.resolved, createdAt: old?.createdAt || now, updatedAt: now });
+  }
+  function forgetTargetSessionUnlocked(args) {
+    try { fs.unlinkSync(targetFile(args)); return { forgotten: true }; }
+    catch (error) { if (error.code === 'ENOENT') return { forgotten: false }; throw error; }
+  }
+  async function targetSession(args) {
+    if (args.presetId !== 'agent-trainer') fail('invalid_binding', 'Target sessions require the agent-trainer preset');
+    const file = targetFile(args);
+    let record;
+    try { record = read(file, null); } catch (error) { console.warn('Invalid Trainer target-session record', file, error.message); return null; }
+    const resolved = await resolveTarget(args);
+    if (!record || !resolved) return null;
+    if (!['projectId', 'mode', 'targetKind', 'targetId', 'presetId'].every(k => record[k] === args[k])) return null;
+    const binding = getBinding(record.sessionId);
+    if (!binding || !['projectId', 'mode', 'targetKind', 'targetId', 'presetId'].every(k => binding[k] === args[k])) return null;
+    if (sessionVerifier && !(await sessionVerifier(record.sessionId, args.presetId))) return null;
+    return { ...record, binding, resolved };
+  }
+  function consumePendingContextChangeUnlocked(sessionId) {
+    const current = getBinding(sessionId);
+    const change = current?.pendingContextChange || null;
+    if (change) { delete current.pendingContextChange; atomic(bindingFile(sessionId), current); }
+    return change;
+  }
   async function authorize(operation, supplied, principal) {
     const args = clone(supplied || {});
     if (principal?.kind === 'page') {
@@ -146,7 +205,7 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
     }
     return { args: { ...binding, ...args, projectId: binding.projectId, mode: binding.mode }, binding };
   }
-  async function bind(args) {
+  async function bindUnlocked(args) {
     if (args.sessionId && !args.targetId && !args.presetId) {
       const existing=getBinding(args.sessionId);
       if (!existing || !sessionVerifier || !(await sessionVerifier(args.sessionId,existing.presetId))) fail('session_unbound','Session has no verified framework binding');
@@ -161,6 +220,11 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
     if (args.mode === 'training' && args.candidateRevision && args.candidateRevision !== project.revisionId) {
       fail('stale_candidate', 'Candidate changed; refresh the workbench before opening a session');
     }
+    let resolved = null;
+    if (args.presetId === 'agent-trainer') {
+      resolved = await resolveTarget(args, project);
+      if (!resolved) fail(args.mode === 'engineering' ? 'release_not_active' : 'target_missing', 'Target is not available in this mode');
+    } else {
     const items = args.targetKind === 'agent' ? project.agents : project.workflows;
     let registered = (items || []).some(item => (item.agentId || item.workflowId) === args.targetId);
     let releases = null;
@@ -198,6 +262,7 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
       }
       if (!active) fail('release_not_active', 'No active release for this target');
     }
+    }
     const key = createHash('sha256').update(stable([args.projectId,args.mode,args.presetId,args.targetKind,args.targetId])).digest('hex');
     const cwd = path.join(storage, 'sessions', key);
     fs.mkdirSync(cwd, { recursive: true });
@@ -226,26 +291,60 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
     if (old && (old.projectId !== args.projectId || old.presetId !== args.presetId || old.targetId !== args.targetId || old.targetKind !== args.targetKind || old.mode !== args.mode)) fail('session_binding_conflict', 'Native session identity cannot be reused for another target');
     if (old && args.baseBindingRevision !== old.bindingRevision) fail('binding_conflict', 'Refresh the binding before changing its selected run');
     const binding = { ...result, sessionId: args.sessionId, bindingRevision: (old?.bindingRevision || 0) + 1 };
+    if (resolved) {
+      binding.resolved = resolved;
+      if (old?.pendingContextChange) binding.pendingContextChange = old.pendingContextChange;
+      const before = old?.resolved || { source: old?.mode === 'engineering' ? 'release' : 'candidate',
+        revisionId: old?.mode === 'engineering' ? null : old?.candidateRevision, frozenVersionId: null, releaseId: null };
+      if (old && (!sameIdentity(before, resolved) || (old.selectedRunId || null) !== (binding.selectedRunId || null))) {
+        binding.pendingContextChange = {
+          from: identity(old.pendingContextChange?.from || before), to: identity(resolved),
+          fromRunId: old.pendingContextChange ? old.pendingContextChange.fromRunId : old.selectedRunId || null,
+          toRunId: binding.selectedRunId || null, changedAt: new Date().toISOString(),
+        };
+      }
+      const pending = binding.pendingContextChange;
+      if (pending && sameIdentity(pending.from, pending.to) && pending.fromRunId === pending.toRunId) delete binding.pendingContextChange;
+    }
     if (effectiveTools) {
       binding.effectiveTools = effectiveTools;
       binding.toolCatalogSha256 = createHash('sha256').update(JSON.stringify(effectiveTools)).digest('hex');
     }
     atomic(bindingFile(args.sessionId), binding);
+    if (args.presetId === 'agent-trainer') upsertTargetSessionUnlocked(args, binding);
     return binding;
   }
-  async function openNativeSession(args) {
+  function openNativeSession(args) {
     if (args.presetId !== 'agent-trainer') fail('invalid_binding', 'Native Trainer sessions must use the agent-trainer preset');
-    const workspace = await bind({ ...args, sessionId: undefined });
-    if (typeof sessionFactory !== 'function') fail('native_host_unavailable', 'The DSH native session factory is unavailable');
-    const sessionId = await sessionFactory({
-      cwd: workspace.cwd,
-      presetId: args.presetId,
-      targetKind: args.targetKind,
-      targetId: args.targetId,
-      nativeModelSelection: workspace.nativeModelSelection,
-    });
-    const binding = await bind({ ...args, sessionId });
-    return { sessionId, binding };
+    const key = targetKey(args);
+    if (targetLocks.has(key)) return targetLocks.get(key);
+    const pending = (async () => {
+      const resolved = await resolveTarget(args);
+      if (!resolved) fail('target_missing', 'Target is not available in this mode');
+      const existing = await targetSession(args);
+      if (existing) {
+        const binding = await serial(() => {
+          const old = getBinding(existing.sessionId);
+          return bindUnlocked({ ...args, sessionId: existing.sessionId, baseBindingRevision: old?.bindingRevision });
+        });
+        return { sessionId: existing.sessionId, binding, reused: true, previousResolved: existing.binding.resolved || existing.lastResolved,
+          resolved: binding.resolved, previousSelectedRunId: existing.binding.selectedRunId || null,
+          contextUpdated: !sameIdentity(existing.binding.resolved || existing.lastResolved, binding.resolved)
+            || (existing.binding.selectedRunId || null) !== (binding.selectedRunId || null) ? 'binding-only' : false };
+      }
+      await serial(() => forgetTargetSessionUnlocked(args));
+      const workspace = await serial(() => bindUnlocked({ ...args, sessionId: undefined }));
+      if (typeof sessionFactory !== 'function') fail('native_host_unavailable', 'The DSH native session factory is unavailable');
+      const sessionId = await sessionFactory({ cwd: workspace.cwd, presetId: args.presetId,
+        targetKind: args.targetKind, targetId: args.targetId, nativeModelSelection: workspace.nativeModelSelection });
+      const binding = await serial(() => bindUnlocked({ ...args, sessionId }));
+      return { sessionId, binding, reused: false, previousResolved: null, resolved: binding.resolved,
+        previousSelectedRunId: null, contextUpdated: false };
+    })();
+    targetLocks.set(key, pending);
+    const cleanup = () => { if (targetLocks.get(key) === pending) targetLocks.delete(key); };
+    pending.then(cleanup, cleanup);
+    return pending;
   }
   async function ownedRun(args, binding) {
     const run = await runner.readRun({ runId: id(args.runId || args.selectedRunId, 'runId') });
@@ -301,39 +400,23 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
     return { ...sourceProject, revisionId: null, agents: [...agents.values()], workflows: [...workflows.values()] };
   }
   async function execute(operation, args, binding) {
-    if (operation === 'bind-session') return bind(args);
+    if (operation === 'bind-session') return bindUnlocked(args);
     if (operation === 'open-native-session') return openNativeSession(args);
+    if (operation === 'target-session') return targetSession(args);
+    if (operation === 'forget-target-session') return forgetTargetSessionUnlocked(args);
     id(args.projectId, 'projectId');
     if (TRAINING.has(operation) && args.mode !== 'training') fail('read_only_mode', 'Published and engineering sessions cannot modify candidates or versions');
     if (['stage-release','activate-release'].includes(operation) && args.mode === 'engineering') fail('read_only_mode','Activate versions from the publication page');
     const target = { projectId: args.projectId, targetKind: args.targetKind, targetId: args.targetId };
     switch (operation) {
-      case 'bind-session': return bind(args);
+      case 'bind-session': return bindUnlocked(args);
       case 'open-native-session': return openNativeSession(args);
       case 'session-workspace': {
         if (!['agent', 'workflow'].includes(args.targetKind)) fail('invalid_binding', 'Trainer workspace requires an agent or workflow target');
         id(args.targetId, 'targetId');
         const project = await call('ensureTrainerProject', { projectId: args.projectId });
-        const items = args.targetKind === 'agent' ? project.agents : project.workflows;
-        let registered = (items || []).some(item => (item.agentId || item.workflowId) === args.targetId);
-        if (!registered && args.mode !== 'training') {
-          const releases = await call('listReleases', { projectId: args.projectId });
-          registered = (releases.active || []).some(item => item.targetKind === args.targetKind && item.targetId === args.targetId);
-          if (!registered && args.targetKind === 'agent') {
-            for (const workflowRelease of (releases.active || []).filter(item => item.targetKind === 'workflow')) {
-              const workflowBundle = await call('loadReleaseBundle', {
-                projectId: args.projectId, releaseId: workflowRelease.releaseId,
-                targetKind: 'workflow', targetId: workflowRelease.targetId,
-              });
-              if ((workflowBundle.steps || []).some(step => step.agentId === args.targetId)) { registered = true; break; }
-            }
-          }
-        }
-        if (!registered) fail('target_missing', 'Target is not registered');
-        if (args.mode !== 'training') {
-          const active = (await call('listReleases', { projectId: args.projectId })).active || [];
-          if (!active.some(item => item.targetKind === args.targetKind && item.targetId === args.targetId)) fail('release_not_active', 'No active release for this target');
-        }
+        const resolved = await resolveTarget(args, project);
+        if (!resolved) fail(args.mode === 'engineering' ? 'release_not_active' : 'target_missing', 'Target is not available in this mode');
         const key = createHash('sha256').update(stable([args.projectId, args.mode, args.targetKind, args.targetId])).digest('hex');
         const cwd = path.join(storage, 'sessions', key);
         fs.mkdirSync(cwd, { recursive: true });
@@ -349,7 +432,13 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
         // Engineering mode is always projected from active release bundles;
         // never fall back to the mutable candidate registry.
         const project = args.mode === 'engineering' ? await publishedProject(sourceProject, active) : sourceProject;
-        return { project, binding, frozenVersions, candidateRevision: project.revisionId, mode: args.mode,
+        // Share target availability with native launch without changing the context projection.
+        for (const [kind, items] of [['agent', project.agents], ['workflow', project.workflows]]) {
+          for (const item of items || []) await resolveTarget({ ...args, targetKind: kind, targetId: item.agentId || item.workflowId }, sourceProject, active);
+        }
+        const bindingChanged = binding?.presetId === 'agent-trainer' ? consumePendingContextChangeUnlocked(binding.sessionId) : null;
+        const contextBinding = bindingChanged ? getBinding(binding.sessionId) : binding;
+        return { project, binding: contextBinding, ...(binding?.presetId === 'agent-trainer' ? { bindingChanged } : {}), frozenVersions, candidateRevision: project.revisionId, mode: args.mode,
           selectedRun: args.selectedRunId ? await ownedRun(args, binding) : null,
           capabilities: { edit: args.mode === 'training' && (!binding || binding.presetId === 'agent-trainer'), freeze: !binding && args.mode === 'training' } };
       }
@@ -378,6 +467,7 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
             const current = getBinding(binding.sessionId);
             if (current) atomic(bindingFile(binding.sessionId), {
               ...current, candidateRevision: result.revisionId,
+              ...(current.presetId === 'agent-trainer' ? { resolved: { ...current.resolved, source: 'candidate', revisionId: result.revisionId, frozenVersionId: null, releaseId: null } } : {}),
               bindingRevision: current.bindingRevision + 1,
             });
           }
@@ -466,7 +556,7 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
     }
     try {
       const { args, binding } = await authorize(operation, input, principal);
-      if (!MUTATIONS.has(operation)) return { ok: true, value: await (operation === 'bind-session' ? serial(() => execute(operation, args, binding)) : execute(operation, args, binding)) };
+      if (!MUTATIONS.has(operation)) return { ok: true, value: await ((['bind-session', 'forget-target-session', 'session-workspace'].includes(operation) || (operation === 'context' && binding?.presetId === 'agent-trainer')) ? serial(() => execute(operation, args, binding)) : execute(operation, args, binding)) };
       id(args.requestId, 'requestId');
       return await serial(async () => {
         const fingerprint = createHash('sha256').update(stable({ operation, input: input || {}, projectId: args.projectId, mode: args.mode,
@@ -492,7 +582,7 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
       });
     } catch (error) { return errorResult(error); }
   }
-  return { invoke, getBinding };
+  return { invoke, getBinding, resolveTarget };
 }
 function errorResult(error) {
   return { ok: false, error: { code: error.code || 'trainer_operation_failed', message: error.message || String(error), ...(error.details === undefined ? {} : { details: error.details }) } };

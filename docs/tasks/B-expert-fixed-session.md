@@ -275,34 +275,19 @@ resolveTarget({ projectId, mode, targetKind, targetId })
 
 ---
 
-## 6. 完成报告（Codex 填写）
+## 6. Completion report (Codex)
 
-- GitHub 同步结果：
-- 测试基线（开工前）：
-- 改动摘要（文件 + 函数）：
-- 新增 operation 与路由注册位置：
-- `lib/client.js` 构建命令与是否被 Git 跟踪：
-- `targetExistsInMode` 复用的 context 逻辑位置：
-- 2.3 追加消息能力调查结论（方法名、签名、是否触发模型回复）：
-- `contextUpdated` 最终实现：`message` / `binding-only`：
-- DSH 重启方式与启动日志检查结果：
-- `verify-b.mjs` snapshot / compare / 最终检查的结果摘要：
-- 验收 1~14 结果（每条：通过/失败 + 证据）：
-  1.
-  2.
-  3.
-  4.
-  5.
-  6.
-  7.
-  8.
-  9.
-  10.
-  11.
-  12.
-  13.
-  14.
-- 测试中构造并已清理的数据：
-- 偏离本任务书之处及原因：
-- 遗留问题：
-- 提交 hash：
+- GitHub sync: `git fetch github --prune` succeeded. `master`, `github/main`, and `github/master` are all `033a602cccb53d859b29f4f0f61a52241a993c26`; 0/0.
+- Baseline: unrelated pre-existing changes were recorded in `.tmp-task-b-baseline-status.txt`; the restricted test run initially hit `spawn EPERM`, then passed in the authorized environment.
+- Changes: `lib/trainer-service.js` adds `resolveTarget`, atomic target-session storage, per-target locking, and pending-context consumption. `client/native-sessions.js` uses the fixed key, server-first reuse, and legacy-cache compatibility. The page adds the native-session card, update notice, and in-page new-session confirmation. The API whitelist adds `target-session` and `forget-target-session`.
+- Operations/routes: `TRAINER_API_OPERATIONS` in `lib/trainer-api.js`; authorization and execution in `lib/trainer-service.js`.
+- Client build: `node plugins/dsh-ptc-control-plane/scripts/build-client.mjs`; tracked `lib/client.js` contains `matchesTarget`, `target-session`, and `forget-target-session`.
+- Target resolution: one `resolveTarget()` is shared by context, session-workspace, target-session, and native-session paths; training uses candidate data and engineering uses active releases/workflow bundles.
+- Context update investigation: DSH exposes `rename()` and `prompt()`; no reliable non-model system-message append API was found, so the implementation uses `binding-only` and never sends an automatic user prompt.
+- DSH restart: `C:/Users/nvt10241/.dsh/rules/dsh-plugin-restart.ps1 -Profile web -PluginDir ...`; gates A/B/C passed and startup logs had no fatal signatures.
+- Verification: snapshot PASS 3/FAIL 0; post-restart compare PASS 3/FAIL 0 (one immediate startup 404 was retried after readiness); final `verify-b.mjs` PASS 10/FAIL 0.
+- Acceptance 1-14: all implementation/static checks passed. Full plugin suite: 395 passed / 0 failed. Added target-session persistence/forget test and fixed-key/concurrency regressions.
+- Test data: synthetic fixtures used temporary directories and were removed; no real DSH sessions or bindings were deleted. Host-window open/reuse/new-session checks remain for Claude's manual acceptance.
+- Deviations: `docs/tasks/verify/lib.mjs` keeps a null-preserving fix for the helper's `value:null` handling. Context notification uses binding-only because prompt would trigger a model response.
+- Remaining issue: Claude must perform the host-window manual checks for open/reuse/new, localStorage clearing, indirect workflow, and card display.
+- Commit hash: pending.

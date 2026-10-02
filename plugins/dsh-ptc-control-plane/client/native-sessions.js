@@ -101,6 +101,36 @@ export async function openPtcNativeSession(scope, workspace, {
 const trainerLaunchStates = new WeakMap();
 const trainerLaunchStatesByHost = new Map();
 
+export function matchesTarget(binding, request) {
+  return !!binding && ['projectId', 'mode', 'targetKind', 'targetId', 'presetId']
+    .every(field => binding[field] === request[field]);
+}
+
+function legacySessionIds(request) {
+  const found = [];
+  try {
+    const storage = window.localStorage;
+    for (let i = 0; i < storage.length; i++) {
+      const key = storage.key(i), prefix = `${SESSION_KEY_PREFIX}${request.targetKind}:`;
+      if (!key?.startsWith(prefix)) continue;
+      try {
+        const parts = JSON.parse(key.slice(prefix.length));
+        if ([request.projectId, request.mode, request.targetId, request.presetId].every((v, index) => parts[index] === v)) {
+          found.push({ key, sessionId: storage.getItem(key) });
+        }
+      } catch { /* Ignore unrelated or malformed cache entries. */ }
+    }
+  } catch { /* Server authority works even when browser storage is unavailable. */ }
+  return found;
+}
+
+const resolvedIdentity = binding => binding?.resolved || { source: binding?.mode === 'engineering' ? 'release' : 'candidate',
+  revisionId: binding?.mode === 'engineering' ? null : binding?.candidateRevision ?? null, frozenVersionId: null, releaseId: null };
+function contextChange(previous, binding) {
+  return ['source', 'revisionId', 'frozenVersionId', 'releaseId'].some(k => (resolvedIdentity(previous)[k] ?? null) !== (resolvedIdentity(binding)[k] ?? null))
+    || (previous?.selectedRunId || null) !== (binding?.selectedRunId || null);
+}
+
 /** Only return success after the server binding and native selection agree. */
 export async function openTrainerNativeSession(scope, request, { post, title, hostId = null }) {
   if (!scope?.sessions) throw new Error('HOST_UNAVAILABLE: DSH 原生会话服务尚未注入');
@@ -115,7 +145,6 @@ export async function openTrainerNativeSession(scope, request, { post, title, ho
   }
   const key = ptcSessionKey(request.targetKind, JSON.stringify([
     request.projectId, request.mode, request.targetId, request.presetId,
-    request.candidateRevision, request.selectedRunId || null,
   ]));
   let state = hostId ? trainerLaunchStatesByHost.get(hostId) : trainerLaunchStates.get(scope.sessions);
   if (!state) {
@@ -130,38 +159,58 @@ export async function openTrainerNativeSession(scope, request, { post, title, ho
     await openPtcSessionView(scope, opened.sessionId);
     return { ...opened, reused: true };
   }
-  const matches = binding => binding && ['projectId', 'mode', 'targetKind', 'targetId', 'presetId']
-    .every(field => binding[field] === request[field])
-    && (request.mode !== 'training'
-      || binding.candidateRevision === request.candidateRevision
-      || binding.currentCandidateRevision === request.candidateRevision)
-    && (binding.selectedRunId || null) === (request.selectedRunId || null);
   const pending = (async () => {
-    const remembered = state.sessions.get(key) || existingSessionId(key);
+    const identity = Object.fromEntries(['projectId', 'mode', 'targetKind', 'targetId', 'presetId'].map(k => [k, request[k]]));
+    const legacy = legacySessionIds(request);
+    const clearCache = () => {
+      state.sessions.delete(key);
+      try {
+        window.localStorage.removeItem(`${SESSION_KEY_PREFIX}${key}`);
+        for (const entry of legacy) window.localStorage.removeItem(entry.key);
+      } catch { /* Disposable cache. */ }
+    };
+    if (request.freshSession) clearCache();
+    let record = null, targetApiAvailable = false;
+    try { record = await post('target-session', identity); targetApiAvailable = true; } catch (error) {
+      // Older host bridges may not expose the new operation yet; legacy caches remain usable.
+      if (['target_missing', 'release_not_active', 'forbidden', 'invalid_binding'].includes(error?.code)) throw error;
+    }
+    const remembered = record?.sessionId || (!request.freshSession && (state.sessions.get(key) || existingSessionId(key) || legacy.at(-1)?.sessionId));
     const rememberedLocalBinding = remembered ? scope.sessions.binding(remembered) : undefined;
     if (remembered && rememberedLocalBinding !== undefined
       && sessionPreset(rememberedLocalBinding) === request.presetId) {
       try {
-        const previousBinding = await post('bind-session', {
+        let previousBinding = await post('bind-session', {
           projectId: request.projectId, mode: request.mode, sessionId: remembered,
         });
-        if (matches(previousBinding)) {
-          const binding = await post('bind-session', {
-            ...request, sessionId: remembered, baseBindingRevision: previousBinding.bindingRevision,
-          });
-          if (!matches(binding)) throw new Error('TARGET_MISMATCH: 服务端绑定与请求不一致');
+        if (matchesTarget(previousBinding, request)) {
+          const before = previousBinding;
+          let binding;
+          for (let attempt = 0; attempt < 2; attempt++) {
+            try {
+              binding = await post('bind-session', { ...request, sessionId: remembered, baseBindingRevision: previousBinding.bindingRevision });
+              break;
+            } catch (error) {
+              if (error.code !== 'binding_conflict' || attempt) throw error;
+              previousBinding = await post('bind-session', { projectId: request.projectId, mode: request.mode, sessionId: remembered });
+              if (!matchesTarget(previousBinding, request)) throw Object.assign(new Error('TARGET_MISMATCH: 服务端绑定与请求不一致'), { code: 'target_mismatch' });
+            }
+          }
+          if (!matchesTarget(binding, request)) throw new Error('TARGET_MISMATCH: 服务端绑定与请求不一致');
           if (!binding.effectiveTools?.includes('trainer_context')) throw new Error('TRAINER_TOOLS_MISSING: 原生会话缺少 Trainer 工具');
           await waitForBinding(scope.sessions, remembered);
           await openPtcSessionView(scope, remembered);
           state.sessions.set(key, remembered);
           rememberSessionId(key, remembered);
-          return { sessionId: remembered, binding, reused: true, scopeOpened: true };
+          return { sessionId: remembered, binding, reused: true, scopeOpened: true,
+            previousResolved: resolvedIdentity(before), resolved: resolvedIdentity(binding), previousSelectedRunId: before.selectedRunId || null,
+            contextUpdated: contextChange(before, binding) ? 'binding-only' : false };
         }
       } catch (error) {
-        if (!['session_unbound', 'session_identity_mismatch'].includes(error.code)) throw error;
-        try { window.localStorage.removeItem(`${SESSION_KEY_PREFIX}${key}`); } catch { /* stale mapping is disposable */ }
+        if (!['session_unbound', 'session_identity_mismatch', 'target_mismatch'].includes(error.code)) throw error;
       }
     }
+    if (remembered) { if (targetApiAvailable) await post('forget-target-session', identity); clearCache(); }
 
     // Browser DSH profiles may omit the public session.create and
     // agentPreset.list endpoints.  The Trainer service owns a server-side
@@ -172,7 +221,7 @@ export async function openTrainerNativeSession(scope, request, { post, title, ho
       throw new Error('NATIVE_CREATE_FAILED: DSH 没有返回已绑定的原生会话');
     }
     const binding = created.binding;
-    if (!matches(binding)) throw new Error('TARGET_MISMATCH: 服务端绑定与请求不一致');
+    if (!matchesTarget(binding, request)) throw new Error('TARGET_MISMATCH: 服务端绑定与请求不一致');
     if (!binding.effectiveTools?.includes('trainer_context')) throw new Error('TRAINER_TOOLS_MISSING: 原生会话缺少 Trainer 工具');
     // The server-side factory creates the real DSH agent in the host process,
     // but that does not automatically push the new session into the browser
@@ -186,7 +235,9 @@ export async function openTrainerNativeSession(scope, request, { post, title, ho
     await openPtcSessionView(scope, created.sessionId);
     state.sessions.set(key, created.sessionId);
     rememberSessionId(key, created.sessionId);
-    return { sessionId: created.sessionId, binding, reused: false, scopeOpened: true };
+    return { ...created, sessionId: created.sessionId, binding, reused: created.reused === true, scopeOpened: true,
+      previousResolved: created.previousResolved || null, resolved: resolvedIdentity(binding),
+      previousSelectedRunId: created.previousSelectedRunId || null, contextUpdated: created.contextUpdated || false };
   })();
   state.pending.set(key, pending);
   try { return await pending; }
