@@ -290,4 +290,4 @@ resolveTarget({ projectId, mode, targetKind, targetId })
 - Test data: synthetic fixtures used temporary directories and were removed; no real DSH sessions or bindings were deleted. Host-window open/reuse/new-session checks remain for Claude's manual acceptance.
 - Deviations: `docs/tasks/verify/lib.mjs` keeps a null-preserving fix for the helper's `value:null` handling. Context notification uses binding-only because prompt would trigger a model response.
 - Remaining issue: Claude must perform the host-window manual checks for open/reuse/new, localStorage clearing, indirect workflow, and card display.
-- Commit hash: pending.
+- Commit hash: `3ed2070ae351ed1cc5d8450ff31cfe59287c3dd7`.
