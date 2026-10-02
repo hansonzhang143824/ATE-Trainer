@@ -335,4 +335,4 @@ resolveTarget({ projectId, mode, targetKind, targetId })
   14. 通过：Gate A/B/C（`dsh-plugin-restart.ps1 -GatesOnly`）均 exit 0；端口 3080 返回 200；无 `plugin tree failed to load`、`ERR_MODULE_NOT_FOUND` 等已知致命签名；`lib/client.js` 已重建；页面静态检查与 verify-b 均通过。
 - 验收脚本：本轮最终 `node docs/tasks/verify/verify-b.mjs` 为 `PASS 10 / FAIL 0 / WARN 0 / SKIP 0`；compare 中 training/published 的既有数据漂移保持记录，Claude 已核对为新增 Agent 与 revisionId 变化，不重新 snapshot；engineering 与基线一致。
 - 受影响路径：报告、`client/native-sessions.js`、重建的 `lib/client.js`、`trainer-native-launch.test.mjs`。无会话或 binding 文件删除，无 revision/frozen/release 磁盘直改；其它工作区既有改动未提交。
-- 提交/推送：待本轮 scoped commit 后填写最终 hash；将同时推送 `github/master` 与 `github/main` 并核对 0/0。
+- 提交/推送：本轮修复提交为 `928b52d`（完整 hash 见 Git）；随后以报告提交记录最终推送状态，并同时推送 `github/master` 与 `github/main` 核对 0/0。
