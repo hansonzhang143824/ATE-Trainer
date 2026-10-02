@@ -296,3 +296,4 @@ await (await fetch('/api/ptc-control/trainer/context',{method:'POST',headers:{'C
   - 台账脚本在重启后重新执行：revision revision-de98f1d2-0b30-4d07-81e5-8f91ae3033ed，changeSet change-c40397f2-09d1-4541-9e1a-c48e7e1134e5；四个来源解析失败均为 0。publish/versions/ 扫描 306 个 JSON，agentId / workflow steps[].agentId 字段均为 0，去 BOM 后新增扫描到的 ID 数量为 0；合并当前 registry 与历史扫描后台账为 16 个唯一 ID。
   - 回归测试：node --test test/agent-id-ledger.test.mjs 6/6；node --test test/agent-trainer-d5-d6.test.mjs 2/2；沙箱外 node test/all.test.mjs 394/394 通过，0 失败。
   - 最终验收：node docs/tasks/verify/verify-a.mjs --mutate --smoke 输出 PASS 18 · FAIL 0 · WARN 0 · SKIP 0；SMOKE run framework-5f3721a9-d6ab-4123-b0c7-a13c31c6a4cc，4 步全部 completed。
+- 本次验收修复实现提交 hash：48083b5（[A] 修复验收反馈的台账与删除提示）。
