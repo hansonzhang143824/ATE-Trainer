@@ -404,3 +404,13 @@ resolveTarget({ projectId, mode, targetKind, targetId })
 - 重启 gate：最终 artifact `C:\Users\nvt10241\AppData\Local\Temp\dsh-plugin-restart-20261002-222316` 的 Gate A/B/C 均 exit 0；端口 3080 up，`GET /`=200，启动日志无 `plugin tree failed to load`、`ERR_MODULE_NOT_FOUND` 等已知致命签名。Gate B 当时全量插件测试 `404/404` 通过；最终直接提升环境全量 `plugins/dsh-ptc-control-plane/test/all.test.mjs` 亦为 `404 pass / 0 fail`。
 - 构建与偏离：按仓库实际结构使用 `node plugins/dsh-ptc-control-plane/scripts/build-client.mjs` 重建 `plugins/dsh-ptc-control-plane/lib/client.js`；用户给出的根目录 `scripts/build-client.mjs` 在此仓库不存在，已记录为路径偏离。修改范围为任务限定实现、测试、页面 handler、构建产物及本报告；所有无关工作区改动未暂存。
 - 遗留问题：compare 的两类前轮 context 漂移、B6/B12 的 DevTools 直接 localStorage 手工路径，以及 B8 的破坏性会话删除均按现场和硬停止规则诚实保留；没有修改 revision、冻结版本、release 文件或 Git 历史。
+
+
+## 6.7 B4 后续真实宿主补验（Codex）
+
+- 重新连接当前 DSH 宿主后，宿主会话树仍列出 `ATE Trainer · agent:agent-2abe705b`、`ATE Trainer · agent:agent-70e75253` 与 `ATE Trainer · agent:agent-0e624d84` 等工作区；Trainer 通过当前 nativeHost 正常加载 13 个候选 Agent、6 个工作流。
+- B9 工作流复用：在真实 Trainer 中打开 `workflow-T1`，得到并复用 `session-8c000ae3-9999-4da2-9ac9-2026cc6c6f9b`（binding revision 3→4）；切回 X 仍复用 `session-e4ab77e8-f88d-40a3-8a20-f7da6d4e88d1`（revision 2→3）；切到 Z 得到 `session-adaca03d-d4b2-44d7-8d32-838cd93f4c70`，与 workflow/X 会话不同。
+- B3 真实工作流运行：将 X 临时加入「新工作流 1」，在宿主点击「运行 SMOKE_ONLY」，运行 `framework-3497dc7a-8c38-4e23-b4ef-1bc0dc961896` 的 5/5 步骤均为 `completed`，`businessGatePassed:false`；随后打开 X 仍复用同一 session，binding `selectedRunId` 更新为该 run。X 已从工作流移除，工作流恢复原 4 步。
+- 在上述数据写入前重新运行 `verify-b.mjs compare`，仍为 `PASS 1 / FAIL 2`，training/published 的 21 处前轮漂移与 engineering 一致的结果未变。补验后最终 `node docs/tasks/verify/verify-b.mjs` 仍为 `PASS 10 / FAIL 0 / WARN 0 / SKIP 0`；此时 2 个 binding 的 `pendingContextChange` 保留为未消费状态，结构检查通过，未伪造为已消费。
+- B6/B12：当前 CUA 浏览器能力只有页面资产和 WebMCP，页面评估环境没有 `localStorage` 对象，也没有受支持的 storage 写 API；因此没有用脚本伪造清除/写入 legacy key。B8 仍按硬停止规则不删除 DSH session 或 binding。
+- 本轮仅新增本报告证据；实现代码、`lib/client.js`、测试与既有提交不变。
