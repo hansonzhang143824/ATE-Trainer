@@ -368,4 +368,4 @@ resolveTarget({ projectId, mode, targetKind, targetId })
 - 重启 gate：第一次正式重启产物 `C:\Users\nvt10241\AppData\Local\Temp\dsh-plugin-restart-20261002-192934`，第二次正式重启产物 `C:\Users\nvt10241\AppData\Local\Temp\dsh-plugin-restart-20261002-194828`；两次均 Gate A/B/C=0、port 3080 up、GET /=200、无致命签名。
 - 测试数据与边界：A smoke 构造数据由脚本按自身设计回滚；未删除任何 DSH 会话、binding、revision、冻结版本或 release 文件。新增的 session / target-session 记录保留用于追溯。`*.bak-20261002-taskB4` 为未跟踪备份，不提交。
 - 偏离与遗留：E-2(b) 暴露 DSH 重启 / 新宿主的会话列表 hydration 问题，本轮未修改 DSH 本体（任务范围外）；真实宿主第 3、4、6、7、8、9、11、12 条仍未取得本轮证据。compare 漂移是前轮已记录的 training/published 候选数据变化，不重新 snapshot，也未改写 context 返回。
-- 提交 / 推送：代码提交与报告提交均使用 `[B4]` 前缀；最终 hash、`github/master`、`github/main` 和 0/0 状态以交付消息为准。
+- 提交 / 推送：本轮代码、构建产物、测试、页面和本报告已提交为 `618bea9`（`[B4] 修复新开训练会话并补充重启验收证据`）；最终 hash、`github/master`、`github/main` 和 0/0 状态以交付消息为准。
