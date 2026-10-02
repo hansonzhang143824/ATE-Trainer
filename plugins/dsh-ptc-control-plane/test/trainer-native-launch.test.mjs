@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import fs from 'node:fs';
+import vm from 'node:vm';
 import { openTrainerNativeSession } from '../client/native-sessions.js';
 
 const request = { projectId: 'agent-trainer', mode: 'training', presetId: 'agent-trainer',
@@ -279,3 +281,28 @@ for (const freshSession of [true, false]) {
     } else assert.equal(result.sessionId, 'session-server-authoritative');
   });
 }
+
+// Exercise the actual page click handler with its actual opening-state guard.
+// Launcher-only tests cannot detect a handler that blocks before sending the bridge request.
+test('confirm new training session dispatches a fresh bridge request from an opened card', async () => {
+  const html = fs.readFileSync(new URL('../../../docs/prototypes/agent-trainer-repair-prototype.html', import.meta.url), 'utf8');
+  const opening = html.slice(html.indexOf('    async function openNativeSession('), html.indexOf('    function render(){'));
+  const click = html.split('\n').find(line => line.includes("app.addEventListener('click'"));
+  const sent = [];
+  let listener;
+  const context = { state: { nativeSession: { status: 'opened', kind: 'agent', sessionId: 'session-old', freshConfirm: true } },
+    app: { addEventListener(type, callback) { listener = callback; } },
+    crypto: { randomUUID: () => 'page-token' }, render() {}, loadLiveContext: async () => {},
+    liveTarget: () => ({ targetKind: 'agent', targetId: 'agent-test' }), liveMode: () => 'training',
+    selected: () => ({ name: 'Test agent' }), showToast() {}, window: {},
+    nativeSessionRequest: (kind, freshSession) => ({ targetKind: kind, targetId: 'agent-test', mode: 'training', freshSession }),
+    sendNativeBridge: async request => { sent.push(request); return { sessionId: 'session-new', reused: false }; },
+  };
+  vm.runInNewContext(opening + '\n' + click, context);
+  listener({ target: { closest: () => ({ id: 'new-native-confirm', dataset: {} }) } });
+  for (let i = 0; i < 10; i++) await Promise.resolve();
+  assert.equal(sent.length, 1);
+  assert.equal(sent[0].freshSession, true);
+  assert.equal(context.state.nativeSession.status, 'opened');
+  assert.equal(context.state.nativeSession.sessionId, 'session-new');
+});

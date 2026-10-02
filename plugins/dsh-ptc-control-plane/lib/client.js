@@ -2291,7 +2291,7 @@ window.__ModuleLoader__.load({
 		        }
 		        const opened = await job.promise;
 		        const binding = opened.binding;
-		        reply({ ok: true, sessionId: opened.sessionId, binding, title, reused: opened.reused, openedAt: new Date().toISOString(), targetKind: binding.targetKind, targetId: binding.targetId, candidateRevision: binding.candidateRevision, presetId: binding.presetId, scopeOpened: opened.scopeOpened });
+		        reply({ ok: true, sessionId: opened.sessionId, binding, title, reused: opened.reused, openedAt: new Date().toISOString(), targetKind: binding.targetKind, targetId: binding.targetId, candidateRevision: binding.candidateRevision, presetId: binding.presetId, scopeOpened: opened.scopeOpened, contextUpdated: opened.contextUpdated, previousResolved: opened.previousResolved, resolved: opened.resolved, previousSelectedRunId: opened.previousSelectedRunId });
 		      } catch (error) {
 		        reply({ ok: false, code: error.code || String(error.message).split(':')[0], error: error?.message ?? String(error) });
 		      }

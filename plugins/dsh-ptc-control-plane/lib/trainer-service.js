@@ -290,7 +290,8 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
     const old = getBinding(args.sessionId);
     if (old && (old.projectId !== args.projectId || old.presetId !== args.presetId || old.targetId !== args.targetId || old.targetKind !== args.targetKind || old.mode !== args.mode)) fail('session_binding_conflict', 'Native session identity cannot be reused for another target');
     if (old && args.baseBindingRevision !== old.bindingRevision) fail('binding_conflict', 'Refresh the binding before changing its selected run');
-    const binding = { ...result, sessionId: args.sessionId, bindingRevision: (old?.bindingRevision || 0) + 1 };
+    const binding = { ...result, sessionId: args.sessionId, bindingRevision: (old?.bindingRevision || 0) + 1,
+      ...((args.previousSessionId || old?.previousSessionId) ? { previousSessionId: args.previousSessionId || old.previousSessionId } : {}) };
     if (resolved) {
       binding.resolved = resolved;
       if (old?.pendingContextChange) binding.pendingContextChange = old.pendingContextChange;
@@ -321,7 +322,11 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
     const pending = (async () => {
       const resolved = await resolveTarget(args);
       if (!resolved) fail('target_missing', 'Target is not available in this mode');
-      const existing = await targetSession(args);
+      // A fresh-session request is an explicit replacement. Do not let a
+      // still-present target record win the race with the browser's forget
+      // request; the old DSH session remains intact and is recorded as
+      // previousSessionId on the replacement binding.
+      const existing = args.freshSession ? null : await targetSession(args);
       if (existing) {
         const binding = await serial(() => {
           const old = getBinding(existing.sessionId);
