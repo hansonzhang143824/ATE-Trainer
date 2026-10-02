@@ -336,3 +336,36 @@ resolveTarget({ projectId, mode, targetKind, targetId })
 - 验收脚本：本轮最终 `node docs/tasks/verify/verify-b.mjs` 为 `PASS 10 / FAIL 0 / WARN 0 / SKIP 0`；compare 中 training/published 的既有数据漂移保持记录，Claude 已核对为新增 Agent 与 revisionId 变化，不重新 snapshot；engineering 与基线一致。
 - 受影响路径：报告、`client/native-sessions.js`、重建的 `lib/client.js`、`trainer-native-launch.test.mjs`。无会话或 binding 文件删除，无 revision/frozen/release 磁盘直改；其它工作区既有改动未提交。
 - 提交/推送：本轮修复提交为 `928b52d`（完整 hash 见 Git）；随后以报告提交记录最终推送状态，并同时推送 `github/master` 与 `github/main` 核对 0/0。
+
+
+---
+
+## 6.3 第 4 轮修复（B4）完成报告
+
+- GitHub / 基线：开工前 `git fetch github --prune` 成功；本地 `HEAD`、`github/master`、`github/main` 均为 `d791fb2123020f97c9219f789ecfe164abd59bb9`。无关工作区改动按开工快照保留，未还原、删除或提交。
+- E-1 修复：`client/native-sessions.js` 在 `freshSession:true` 时先读取并保留 `previousSessionId`，调用一次 `forget-target-session`（只删除目标映射），再调用 `open-native-session`；请求携带 `previousSessionId`，服务端绑定与 target-session 记录保留该字段。旧 DSH 会话和旧 binding 文件不删除。页面卡片显示「新建会话（替换 <旧ID>）」；普通打开仍直接复用。
+- E-1 新增测试：`freshSession replaces a valid authoritative record once and retains previousSessionId`；`ordinary open reuses a valid authoritative record without forget or factory`。聚焦 `trainer-native-launch.test.mjs`：17/17 通过。正式重启 Gate B 全量测试包含本轮测试：402/402 通过，0 failed。
+- E-2 提示：`NATIVE_SESSION_NOT_LISTED` 现在包含具体 session ID，并提示刷新 DSH 或点击「新开训练会话」继续。
+- E-2(a) 同一宿主页面：重启后首次打开 X=`agent-2abe705b`，sessionId=`session-0b9d48fd-46a3-450f-81c1-ebc290ed95e4`，卡片「新建会话」、bindingRevision=1；宿主当前工作区文本为 `ATE Trainer · agent:agent-2abe705b`，已切换到该会话。
+- E-2(b) 重新加载宿主与工作台：服务端仍返回同一 sessionId=`session-0b9d48fd-46a3-450f-81c1-ebc290ed95e4`，但新宿主列表没有该 ID；工作台显示完整 `NATIVE_SESSION_NOT_LISTED`，没有自动 forget 或新建，宿主没有切换到目标会话。磁盘证据：`C:\Users\nvt10241\.dsh\sessions\...\session-0b9d48fd-46a3-450f-81c1-ebc290ed95e4\session.jsonl.zstd` 存在，`C:\Users\nvt10241\.dsh\storages\workspace.json` 的 `sessionIds` 仍包含该 ID。DSH `dsh-workspace/README.md:21` 说明重启只调用 `SessionPersistence.list()`，使用 header 的 `id/cwd/createdAt` 重建分组；`dsh-client-runtime/README.md:39` 说明空会话复用还要求列表镜像中的 `blank && cwd && sessionIds.includes(id)`。这表明持久化目录和宿主运行时列表之间仍有 hydration / workspace membership 差异，本轮未改 DSH 本体。
+- E-2(c) 第二次正式重启：重启脚本完整执行，Gate A/B/C 均 exit 0，旧 PID=10108 被停止，3080 重新启动并 `GET /`=200；启动日志无 `plugin tree failed to load`、`ERR_MODULE_NOT_FOUND`、`ERR_PACKAGE_PATH_NOT_EXPORTED`、`input hint must not be empty`。由于 compare 的既有 training/published 漂移触发了自动审查，本轮未继续访问真实宿主页面，因此 c 的 sessionId / 宿主切换结果标为「未执行」，没有伪造通过证据。
+- B 验收 1~14 当前结果：
+  1. 通过：B4 真实宿主首次打开 X 得到 `session-0b9d48fd-46a3-450f-81c1-ebc290ed95e4`，卡片新建、bindingRevision=1。
+  2. 通过（前轮真实宿主证据）：B3 同一宿主连续复用 `session-e9dbff85-4e3d-43bc-90d7-be5752fd88ed`，卡片三次「已复用会话」，bindingRevision 3/4/5，未新增同名会话。
+  3. 待执行：本轮未在宿主中运行包含 X 的工作流后再开；此前 API / 单测覆盖绑定更新。
+  4. 待执行：本轮未在页面编辑 X 并保存候选后再开；此前 API / 单测覆盖 revision 与 pending 更新。
+  5. 通过（API / 单测）：pendingContextChange 设置、消费后清除、再次读取 null；最终自动检查 pending=0。
+  6. 待执行：未清空真实宿主 localStorage 后重新打开；浏览器自动审查在 compare 漂移后阻止继续访问。
+  7. 代码 / 单测通过，宿主 UI 未执行：新开路径已由两项测试确认一次 forget、一次 factory、新 ID、previousSessionId；页面点击未取得真实宿主证据。
+  8. 待用户手工执行：按硬停止条件不删除 DSH 会话或 binding 文件。
+  9. 待执行：未在宿主 UI 交替打开 workflow 与其它 Agent；API 的 target 隔离检查通过。
+  10. 通过（静态/API）：resolveTarget、training/engineering/published 接口和 candidate-only engineering null 检查通过；真实宿主模式隔离未声称完成。
+  11. 待执行：未删除 Agent 或修改工作流引用，避免数据破坏；target-session / ID 不复用由 A/B 自动检查覆盖。
+  12. 待执行：未清空或手工构造真实宿主旧 localStorage key；legacy 分支有客户端测试。
+  13. 通过：正式重启 Gate B `402 passed / 0 failed`，聚焦测试 `17/17`。
+  14. 部分通过：两次正式重启 Gate A/B/C exit 0、端口 200、启动日志无致命签名；页面 `node --check` 通过；`lib/client.js` 已重建；但 compare 漂移与 E-2(b) hydration 问题仍记录为遗留。
+- 验收脚本：改代码前已有 snapshot；两次正式重启后 compare 均显示 training/published 各 21 处同一既有数据漂移、engineering 无差异，未重新 snapshot。最终 `node docs/tasks/verify/verify-b.mjs`：`PASS 10 / FAIL 0 / WARN 0 / SKIP 0`；`node docs/tasks/verify/verify-a.mjs --mutate --smoke`：`PASS 18 / FAIL 0 / WARN 0 / SKIP 0`，SMOKE run `framework-edf23c61-95bb-4684-9e70-52449ea2e5db` 4 步 completed。
+- 重启 gate：第一次正式重启产物 `C:\Users\nvt10241\AppData\Local\Temp\dsh-plugin-restart-20261002-192934`，第二次正式重启产物 `C:\Users\nvt10241\AppData\Local\Temp\dsh-plugin-restart-20261002-194828`；两次均 Gate A/B/C=0、port 3080 up、GET /=200、无致命签名。
+- 测试数据与边界：A smoke 构造数据由脚本按自身设计回滚；未删除任何 DSH 会话、binding、revision、冻结版本或 release 文件。新增的 session / target-session 记录保留用于追溯。`*.bak-20261002-taskB4` 为未跟踪备份，不提交。
+- 偏离与遗留：E-2(b) 暴露 DSH 重启 / 新宿主的会话列表 hydration 问题，本轮未修改 DSH 本体（任务范围外）；真实宿主第 3、4、6、7、8、9、11、12 条仍未取得本轮证据。compare 漂移是前轮已记录的 training/published 候选数据变化，不重新 snapshot，也未改写 context 返回。
+- 提交 / 推送：代码提交与报告提交均使用 `[B4]` 前缀；最终 hash、`github/master`、`github/main` 和 0/0 状态以交付消息为准。

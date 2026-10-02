@@ -161,7 +161,7 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
     try { old = read(file, null); } catch (error) { console.warn('Invalid Trainer target-session record', file, error.message); }
     const now = new Date().toISOString();
     atomic(file, { schemaVersion: 1, ...Object.fromEntries(['projectId', 'mode', 'targetKind', 'targetId', 'presetId'].map(k => [k, args[k]])),
-      sessionId: binding.sessionId, lastResolved: binding.resolved, createdAt: old?.createdAt || now, updatedAt: now });
+      sessionId: binding.sessionId, ...(binding.previousSessionId ? { previousSessionId: binding.previousSessionId } : {}), lastResolved: binding.resolved, createdAt: old?.createdAt || now, updatedAt: now });
   }
   function forgetTargetSessionUnlocked(args) {
     try { fs.unlinkSync(targetFile(args)); return { forgotten: true }; }

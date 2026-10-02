@@ -28,7 +28,7 @@ const NATIVE_READINESS_TIMEOUT_MS = 30_000;
 const NATIVE_REFRESH_TIMEOUT_MS = 10_000;
 
 function notListed(sessionId, reused = false) {
-  return Object.assign(new Error(`NATIVE_SESSION_NOT_LISTED: 服务端已${reused ? '复用' : '绑定'}会话 ${sessionId}，但宿主会话列表未加载该会话，请刷新 DSH 页面后重试。`),
+  return Object.assign(new Error(`NATIVE_SESSION_NOT_LISTED: 服务端已${reused ? '复用' : '绑定'}会话 ${sessionId}，但宿主会话列表未加载该会话，请刷新 DSH 页面后重试，或点击「新开训练会话」继续。`),
     { code: 'NATIVE_SESSION_NOT_LISTED', sessionId });
 }
 
@@ -195,13 +195,17 @@ export async function openTrainerNativeSession(scope, request, { post, title, ho
         for (const entry of legacy) window.localStorage.removeItem(entry.key);
       } catch { /* Disposable cache. */ }
     };
-    if (request.freshSession) clearCache();
     let record = null, targetApiAvailable = false;
     try { record = await post('target-session', identity); targetApiAvailable = true; } catch (error) {
       // Older host bridges may not expose the new operation yet; legacy caches remain usable.
       if (['target_missing', 'release_not_active', 'forbidden', 'invalid_binding'].includes(error?.code)) throw error;
     }
-    const remembered = record?.sessionId || (!request.freshSession && (state.sessions.get(key) || existingSessionId(key) || legacy.at(-1)?.sessionId));
+    const previousSessionId = record?.sessionId || state.sessions.get(key) || existingSessionId(key) || legacy.at(-1)?.sessionId || null;
+    if (request.freshSession) {
+      await post('forget-target-session', identity);
+      clearCache();
+    }
+    const remembered = !request.freshSession && previousSessionId;
     // A verified server target-session is authoritative. The browser session
     // runtime may not yet have loaded its binding or preset event after a
     // server-side factory creates it; do not discard the durable mapping for
@@ -250,7 +254,8 @@ export async function openTrainerNativeSession(scope, request, { post, title, ho
     // agentPreset.list endpoints.  The Trainer service owns a server-side
     // factory in the same DSH context, so it can create and verify the real
     // agent session without relying on those optional browser routes.
-    const created = await post('open-native-session', request);
+    const created = await post('open-native-session', { ...request,
+      ...(request.freshSession && previousSessionId ? { previousSessionId } : {}) });
     if (typeof created?.sessionId !== 'string' || !created.sessionId || !created.binding) {
       throw new Error('NATIVE_CREATE_FAILED: DSH 没有返回已绑定的原生会话');
     }

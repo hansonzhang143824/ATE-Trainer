@@ -234,7 +234,7 @@ for (const missing of ['refresh never resolves', 'binding never appears']) {
       : async () => { f.calls.push('empty-refresh'); };
     const failed = f.open();
     const assertion = assert.rejects(failed, error => error.code === 'NATIVE_SESSION_NOT_LISTED'
-      && error.sessionId === 'session-server-authoritative' && error.message.includes('请刷新 DSH 页面后重试'));
+      && error.sessionId === 'session-server-authoritative' && error.message.includes('新开训练会话'));
     await flushLaunch();
     t.mock.timers.tick(missing === 'refresh never resolves' ? 10_000 : 30_000);
     await assertion;
@@ -250,5 +250,21 @@ for (const missing of ['refresh never resolves', 'binding never appears']) {
       'retry must issue a new request after the rejected pending promise is cleared');
     assert.equal(f.calls.filter(call => call === 'forget-target-session').length, 0);
     assert.equal(f.created, 0);
+  });
+}
+
+for (const freshSession of [true, false]) {
+  test(freshSession ? 'freshSession replaces a valid authoritative record once and retains previousSessionId'
+    : 'ordinary open reuses a valid authoritative record without forget or factory', async t => {
+    const f = authoritativeFixture(t);
+    const result = await f.open({ freshSession });
+    assert.equal(f.created, freshSession ? 1 : 0);
+    assert.equal(f.calls.filter(call => call === 'forget-target-session').length, freshSession ? 1 : 0);
+    assert.equal(result.reused, !freshSession);
+    if (freshSession) {
+      assert.notEqual(result.sessionId, 'session-server-authoritative');
+      assert.equal(result.binding.previousSessionId, 'session-server-authoritative');
+      assert.ok(f.calls.indexOf('forget-target-session') < f.calls.indexOf('open-native-session'));
+    } else assert.equal(result.sessionId, 'session-server-authoritative');
   });
 }
