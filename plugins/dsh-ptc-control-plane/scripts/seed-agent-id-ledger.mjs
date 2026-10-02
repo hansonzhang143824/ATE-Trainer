@@ -51,7 +51,7 @@ for (const relativeRoot of sourceRoots) {
   let workflowFields = 0;
   for (const file of files) {
     let value;
-    try { value = JSON.parse(fs.readFileSync(file, 'utf8')); }
+    try { const raw = fs.readFileSync(file, 'utf8'); value = JSON.parse(raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw); }
     catch (error) { parseFailures.push(`${path.relative(root, file)}: ${error.message}`); continue; }
     const relative = path.relative(root, file).replaceAll(path.sep, '/');
     if (/agents\/[^/]+\/agent\.json$/.test(relative)) {

@@ -115,7 +115,11 @@ export function ensureTrainerProject(root, { projectId, seed } = {}) {
     // and must be injected explicitly by a caller through `seed`; silently
     // creating one here would expose historical/demo Agents in the live
     // Trainer registry.
-    const files = seed?.files ?? {}; check(files);
+    const files = { ...(seed?.files ?? {}) };
+    if (!Object.hasOwn(files, AGENT_ID_LEDGER_PATH)) {
+      files[AGENT_ID_LEDGER_PATH] = trainerJson({ schemaVersion: 1, allocated: [] });
+    }
+    check(files);
     const revisionId = `revision-${randomUUID()}`;
     writeRevision(directory, revisionId, files);
     const project = { projectId, schemaVersion: 1, runtimeApiVersion: 'trainer-api-v1' };

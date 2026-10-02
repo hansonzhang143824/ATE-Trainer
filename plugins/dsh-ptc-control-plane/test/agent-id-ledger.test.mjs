@@ -19,13 +19,22 @@ function agentFiles(id) {
     { path: input, content: schema }, { path: output, content: schema },
   ];
 }
-function setup(t, { initialFiles = null, initialLedger = null } = {}) {
+function removeLedgerFromCurrentRevision(root, projectId, revisionId) {
+  const directory = path.join(root, "Training_Materials", "framework", "projects", projectId, "revisions", revisionId);
+  const manifestPath = path.join(directory, "revision.json");
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  manifest.files = manifest.files.filter(entry => entry.path !== AGENT_ID_LEDGER_PATH);
+  fs.rmSync(path.join(directory, AGENT_ID_LEDGER_PATH), { force: true });
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + String.fromCharCode(10));
+}
+function setup(t, { initialFiles = null, initialLedger = null, legacyWithoutLedger = false } = {}) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'trainer-agent-id-ledger-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const files = initialFiles ?? createSyntheticTrainerFixture().files;
   if (initialLedger !== null) files[AGENT_ID_LEDGER_PATH] = initialLedger;
   const projectId = 'ledger-test';
   const project = ensureTrainerProject(root, { projectId, seed: { files } });
+  if (legacyWithoutLedger) removeLedgerFromCurrentRevision(root, projectId, project.revisionId);
   return { root, projectId, project };
 }
 function commit(root, projectId, reason, changes, requestId = `request-${Math.random().toString(16).slice(2)}`) {
@@ -34,20 +43,26 @@ function commit(root, projectId, reason, changes, requestId = `request-${Math.ra
 }
 function expectCode(fn, code) { assert.throws(fn, (error) => error.code === code, `expected ${code}`); }
 
+test('ensureTrainerProject initializes an empty Agent ID ledger', (t) => {
+  const f = setup(t);
+  const assets = readAssets(f.root, { projectId: f.projectId, revisionId: f.project.revisionId });
+  assert.deepEqual(parseAgentIdLedger(assets.files[AGENT_ID_LEDGER_PATH]), { schemaVersion: 1, allocated: [] });
+});
+
 test('base without a ledger only permits standalone ledger initialization', (t) => {
-  const one = setup(t); const id = 'agent-new-one';
+  const one = setup(t, { legacyWithoutLedger: true }); const id = 'agent-new-one';
   const result = commit(one.root, one.projectId, 'initialize Agent ID ledger', [{ path: AGENT_ID_LEDGER_PATH, content: ledger(['lab-producer', 'lab-consumer']) }]);
   assert.notEqual(result.revisionId, one.project.revisionId);
 
-  const two = setup(t); const base = readProject(two.root, { projectId: two.projectId }).revisionId;
+  const two = setup(t, { legacyWithoutLedger: true }); const base = readProject(two.root, { projectId: two.projectId }).revisionId;
   expectCode(() => applyChanges(two.root, { projectId: two.projectId, requestId: 'init-with-agent', baseRevision: base, reason: 'invalid combined initialization', changes: [{ path: AGENT_ID_LEDGER_PATH, content: ledger(['lab-producer', 'lab-consumer', id]) }, ...agentFiles(id)] }), 'TRAINER_AGENT_ID_LEDGER_MISSING');
   assert.equal(readProject(two.root, { projectId: two.projectId }).revisionId, base);
 
-  const three = setup(t); const baseThree = three.project.revisionId;
+  const three = setup(t, { legacyWithoutLedger: true }); const baseThree = three.project.revisionId;
   expectCode(() => applyChanges(three.root, { projectId: three.projectId, requestId: 'agent-before-init', baseRevision: baseThree, reason: 'invalid Agent creation before initialization', changes: agentFiles(id) }), 'TRAINER_AGENT_ID_LEDGER_MISSING');
   assert.equal(readProject(three.root, { projectId: three.projectId }).revisionId, baseThree);
 
-  const four = setup(t); const baseFour = four.project.revisionId;
+  const four = setup(t, { legacyWithoutLedger: true }); const baseFour = four.project.revisionId;
   expectCode(() => applyChanges(four.root, { projectId: four.projectId, requestId: 'edit-before-init', baseRevision: baseFour, reason: 'invalid edit before initialization', changes: [{ path: 'agents/lab-producer/instructions.md', content: 'changed\n' }] }), 'TRAINER_AGENT_ID_LEDGER_MISSING');
   assert.equal(readProject(four.root, { projectId: four.projectId }).revisionId, baseFour);
 });

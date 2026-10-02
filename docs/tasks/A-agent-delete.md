@@ -174,7 +174,7 @@ Agent Trainer 白色工作台：`http://127.0.0.1:3080/agent-trainer`。
 2. 计算 `newAgents` = `next` 中所有满足「`agents/<id>/agent.json` 存在于 `next`、不存在于 `base`」的 id（**一次提交可能新建多个，全部检查**）。
 3. **base 没有台账**：
    - 本次提交只要包含任何新建 Agent（`newAgents` 非空）→ `TRAINER_AGENT_ID_LEDGER_MISSING`，**即使 `next` 同时创建了台账也拒绝**；
-   - 允许的唯一提交形态：只新增台账这一个文件（初始化）。初始化提交完成后，下一次提交才允许新建 Agent。
+   - 允许的唯一提交形态：base 无台账时只允许单独的台账初始化提交（只新增 `contracts/agent-ids.json`；`ensureTrainerProject` 创建空项目时同时写入 `{"schemaVersion":1,"allocated":[]}`）。初始化提交完成后，下一次提交才允许新建 Agent。
    - 其他任何提交形态（包括只改 instructions、只删 Agent、只改其他资产，或同时改台账与其他文件）→ `TRAINER_AGENT_ID_LEDGER_MISSING`；必须先提交只含台账的初始化变更。
 4. **base 台账损坏**：
    - 本次提交**只改台账这一个文件**且 `next` 台账合法 → 允许（修复通道；此时无法解析 base，跳过第 5 条单调性检查）；
@@ -184,7 +184,7 @@ Agent Trainer 白色工作台：`http://127.0.0.1:3080/agent-trainer`。
    - `next.allocated` 不是 `base.allocated` 的超集 → `TRAINER_AGENT_ID_LEDGER_SHRINK`；
    - 任一 `newAgents` 中的 id 在 `base.allocated` 中 → `TRAINER_AGENT_ID_REUSED`（`details` 列出 id）；
    - 任一 `newAgents` 中的 id 不在 `next.allocated` 中 → `TRAINER_AGENT_ID_UNREGISTERED`（`details` 列出 id）。
-6. 修改已有 Agent（`agent.json` 在 base 与 next 中都存在）不受上述规则影响。`ensureTrainerProject` 的 seed 路径不受影响。
+6. 修改已有 Agent（`agent.json` 在 base 与 next 中都存在）不受上述规则影响。`ensureTrainerProject` 的 seed 路径在创建空项目时会同步写入合法空台账，不绕过常规提交校验。
 7. 错误通过现有 `trainerFail(code, message, details)` 抛出，页面直接显示后端 `message`。
 
 **已知后果（写入后续事项，本轮不处理）**：将来的「撤销删除」不能靠重建同一 ID，需要单独的显式恢复操作作为例外。
@@ -288,3 +288,11 @@ await (await fetch('/api/ptc-control/trainer/context',{method:'POST',headers:{'C
 - DSH 重启：执行 `dsh-plugin-restart.ps1 -Profile web -PluginDir ...`；gate A/B/C 全部通过，启动日志无 `plugin tree failed to load`、`ERR_MODULE_NOT_FOUND` 等签名。
 - 测试与偏差：A 专项测试和 `trainer-runtime.test.mjs` 通过；全量测试在沙箱内受 Python/子进程 `EPERM` 影响，重启脚本在沙箱外 gate B 已通过。为适配硬规则，两个旧 runtime fixture 已显式先初始化台账并在新增 Agent 的同一 change set 登记 ID。
 - A 实现 提交 hash:`e40df5e`（`[A] 实现 Agent ID 台账与安全删除`）。
+
+- 验收修复追加（2026-10-02）：
+  - ensureTrainerProject 现在为没有 seed 台账的空项目写入 contracts/agent-ids.json：{"schemaVersion":1,"allocated":[]} ；2.7 第 3 条已明确为「base 无台账时只允许单独的台账初始化提交」，并保留“同次新建 Agent 仍返回 TRAINER_AGENT_ID_LEDGER_MISSING”。
+  - 页面修复：删除阻止提示的工作流引用显示为「『工作流名』第 N 步」（N 从 1 开始），非工作流引用仍显示来源路径和字段；新建 Agent 默认名使用当前 Agent 数 + 1。页面脚本提取后 node --check 通过。
+  - DSH 重启：重启前活动运行数 0；dsh-plugin-restart.ps1 -Profile web 的 gate A/B/C 全部通过，重启后首页和 /api/ptc-control/state 返回 HTTP 200。
+  - 台账脚本在重启后重新执行：revision revision-de98f1d2-0b30-4d07-81e5-8f91ae3033ed，changeSet change-c40397f2-09d1-4541-9e1a-c48e7e1134e5；四个来源解析失败均为 0。publish/versions/ 扫描 306 个 JSON，agentId / workflow steps[].agentId 字段均为 0，去 BOM 后新增扫描到的 ID 数量为 0；合并当前 registry 与历史扫描后台账为 16 个唯一 ID。
+  - 回归测试：node --test test/agent-id-ledger.test.mjs 6/6；node --test test/agent-trainer-d5-d6.test.mjs 2/2；沙箱外 node test/all.test.mjs 394/394 通过，0 失败。
+  - 最终验收：node docs/tasks/verify/verify-a.mjs --mutate --smoke 输出 PASS 18 · FAIL 0 · WARN 0 · SKIP 0；SMOKE run framework-5f3721a9-d6ab-4123-b0c7-a13c31c6a4cc，4 步全部 completed。

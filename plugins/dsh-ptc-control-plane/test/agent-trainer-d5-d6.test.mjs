@@ -40,6 +40,7 @@ test('D5 fixes workflow order and Agent revisions in each run', async t => {
         { stepId: 'produce-2', agentId: 'lab-producer-2', inputBindings: { '': { source: 'input', pointer: '' } }, timeoutMs: 120000 },
       ] }) },
       { path: 'tests/lab-pair.json', content: JSON.stringify({ testId: 'lab-pair', targetKind: 'workflow', targetId: 'lab-pair', cases: [{ input: { seed: 7 }, expected: { value: 8, marker: 'v1', scriptMarker: 'script-v1' } }] }) },
+      { path: 'contracts/agent-ids.json', content: JSON.stringify({ schemaVersion: 1, allocated: ['lab-producer', 'lab-consumer', 'lab-producer-2'] }, null, 2) + String.fromCharCode(10) },
     ] });
   assert.equal(seeded.ok, true, JSON.stringify(seeded));
   const candidateRevision = seeded.value.revisionId;
