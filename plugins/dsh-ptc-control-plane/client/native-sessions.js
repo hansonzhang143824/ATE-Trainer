@@ -40,13 +40,32 @@ async function refreshForBinding(scope, sessionId, deadline, reused = false, wor
   // list mirror include persisted sessions before refresh() runs.
   if (workspacePath && typeof scope.workspaces?.create === 'function') {
     let timer;
+    let workspaceResult;
     try {
-      await Promise.race([
+      workspaceResult = await Promise.race([
         Promise.resolve().then(() => scope.workspaces.create({ path: workspacePath })),
         new Promise((_, reject) => { timer = window.setTimeout(() => reject(notListed(sessionId, reused)),
           Math.max(0, Math.min(NATIVE_REFRESH_TIMEOUT_MS, deadline - Date.now()))); }),
       ]);
     } finally { window.clearTimeout(timer); }
+    // A cold host may have a persisted session that is not in the browser's
+    // list yet. Adopt the server-approved ID explicitly after registering its
+    // workspace; DSH's create path resumes an existing live/persisted session
+    // and publishes it to the list without minting a replacement ID.
+    const workspaceId = workspaceResult?.value?.workspace?.workspaceId
+      ?? workspaceResult?.workspace?.workspaceId
+      ?? workspaceResult?.workspaceId;
+    if (workspaceId && typeof sessions.create === 'function'
+      && sessions.binding(sessionId) === undefined) {
+      let createTimer;
+      try {
+        await Promise.race([
+          Promise.resolve().then(() => sessions.create({ sessionId, workspaceId })),
+          new Promise((_, reject) => { createTimer = window.setTimeout(() => reject(notListed(sessionId, reused)),
+            Math.max(0, Math.min(NATIVE_REFRESH_TIMEOUT_MS, deadline - Date.now()))); }),
+        ]);
+      } finally { window.clearTimeout(createTimer); }
+    }
     if (sessions.binding(sessionId) !== undefined) return;
   }
   if (typeof sessions.refresh !== 'function') return;
@@ -251,7 +270,7 @@ export async function openTrainerNativeSession(scope, request, { post, title, ho
           if (!matchesTarget(binding, request)) throw new Error('TARGET_MISMATCH: 服务端绑定与请求不一致');
           if (!binding.effectiveTools?.includes('trainer_context')) throw new Error('TRAINER_TOOLS_MISSING: 原生会话缺少 Trainer 工具');
           const deadline = Date.now() + NATIVE_READINESS_TIMEOUT_MS;
-          await refreshForBinding(scope, remembered, deadline, true, workspace?.path || workspace?.cwd);
+          await refreshForBinding(scope, remembered, deadline, true, binding?.cwd || workspace?.path || workspace?.cwd);
           await waitForBinding(scope.sessions, remembered, deadline, true);
           await openPtcSessionView(scope, remembered);
           state.sessions.set(key, remembered);
@@ -283,7 +302,7 @@ export async function openTrainerNativeSession(scope, request, { post, title, ho
     // SessionRuntime. Refresh before waiting so the native opener can resolve
     // and select the exact session instead of leaving the host on blank 新会话.
     const deadline = Date.now() + NATIVE_READINESS_TIMEOUT_MS;
-    await refreshForBinding(scope, created.sessionId, deadline, created.reused === true, workspace?.path || workspace?.cwd);
+    await refreshForBinding(scope, created.sessionId, deadline, created.reused === true, created.binding?.cwd || workspace?.path || workspace?.cwd);
     if (typeof scope.sessions.noteAgentPreset === 'function') {
       scope.sessions.noteAgentPreset(created.sessionId, request.presetId);
     }

@@ -32,13 +32,43 @@ export function mountTrainerHost(ctx, config) {
   const adapter = createDshFrameworkAdapter(ctx, { workspaceRoot, validateJson });
   const runner = createFrameworkRunner({ workspaceRoot, adapter, verifyBundle: bundles.verifyBundle, validateJson });
   runner.reconcileInterrupted();
+  // A persisted Trainer session is not necessarily attached to the fresh DSH
+  // host after a restart.  Reuse must materialize that exact session before
+  // trainer-service verifies its preset and tool catalog; otherwise the
+  // authoritative target record is discarded as "unbound" and the client
+  // falls back to creating a new conversation.
+  const persistedAgentResumes = new Map();
+  const resumePersistedTrainerAgent = async (sessionId, presetId) => {
+    const existing = ctx.agents.get(sessionId);
+    if (existing) return existing;
+    if (typeof ctx.agents.resume !== 'function' || typeof ctx.sessionPersistence?.inspect !== 'function') return null;
+    let pending = persistedAgentResumes.get(sessionId);
+    if (!pending) {
+      pending = (async () => {
+        const inspected = await ctx.sessionPersistence.inspect(sessionId);
+        const headerPreset = inspected?.meta?.agentPreset || inspected?.header?.agentPreset;
+        if (headerPreset !== presetId) return null;
+        const resumed = await ctx.agents.resume({
+          resumeSessionId: sessionId,
+          agentOptions: hostModel(),
+          setup: async agentCtx => { await ctx.agentPresets.mount(agentCtx, presetId); },
+        });
+        return resumed?.agent || null;
+      })();
+      persistedAgentResumes.set(sessionId, pending);
+    }
+    try { return await pending; }
+    finally {
+      if (persistedAgentResumes.get(sessionId) === pending) persistedAgentResumes.delete(sessionId);
+    }
+  };
   const service = createTrainerService({
     workspaceRoot,
     runner,
     repositories: { ...projects, ...bundles, ...releases },
     modelResolver: async () => hostModel(),
     sessionVerifier: async (sessionId, presetId) => {
-      const agent = ctx.agents.get(sessionId);
+      const agent = ctx.agents.get(sessionId) || await resumePersistedTrainerAgent(sessionId, presetId);
       if (agent) return ctx.agentPresets.composedPreset(agent.ctx) === presetId && presetOf(agent.session) === presetId;
       const session = ctx.sessions?.get(sessionId);
       if (session) return presetOf(session) === presetId;
@@ -46,7 +76,7 @@ export function mountTrainerHost(ctx, config) {
       return presetOf(persisted) === presetId;
     },
     sessionToolCatalog: async sessionId => {
-      const agent = ctx.agents.get(sessionId);
+      const agent = ctx.agents.get(sessionId) || await resumePersistedTrainerAgent(sessionId, 'agent-trainer');
       if (!agent?.ctx?.tools?.schemas) return null;
       return agent.ctx.tools.schemas(agent).map(tool => tool.name).filter(name => Object.hasOwn(TRAINER_TOOL_OPERATIONS, name));
     },
