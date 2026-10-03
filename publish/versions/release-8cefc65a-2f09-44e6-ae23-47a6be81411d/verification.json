@@ -1,0 +1,25 @@
+{
+  "runId": "framework-7afc0af7-3d90-44df-9746-3c141d926eed",
+  "projectId": "synthetic-lab",
+  "targetKind": "workflow",
+  "targetId": "lab-pair",
+  "bundleSha256": "c2c2df0a151ac49b18d279c12e6fd50cf85a79b6c58fce3c3e302f3fe1fb00a3",
+  "status": "completed",
+  "validation": {
+    "ok": true,
+    "errors": []
+  },
+  "businessGatePassed": false,
+  "steps": [
+    {
+      "stepId": "produce",
+      "agentId": "lab-producer",
+      "status": "completed"
+    },
+    {
+      "stepId": "consume",
+      "agentId": "lab-consumer",
+      "status": "completed"
+    }
+  ]
+}

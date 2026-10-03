@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-26e2752e-3b82-4ac5-b50e-1bae550f3ae9",
+  "baseRevision": "revision-3f3b9ddc-a765-4e14-83de-3beb1dbd13c2",
+  "appliedRevision": "revision-37cf3aca-5842-488d-8ebc-37643c7d6004",
+  "requestId": "white-candidate-eeb29911-0f02-4526-aa21-a6d70c13d616",
+  "reason": "用户通过白色 Agent Trainer 删除 Agent agent-a0ecc747（新 Agent 1）",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-37cf3aca-5842-488d-8ebc-37643c7d6004",
+    "changeSetId": "change-26e2752e-3b82-4ac5-b50e-1bae550f3ae9",
+    "diff": [
+      {
+        "path": "agents/agent-a0ecc747/agent.json",
+        "oldSha256": "fbca9399c278a39feaddd7be13d5935c40f7cf5d260ab5ef3ecf18720aea8a78",
+        "newSha256": null,
+        "before": "{\n  \"agentId\": \"agent-a0ecc747\",\n  \"name\": \"新 Agent 1\",\n  \"instructionsRef\": \"agents/agent-a0ecc747/instructions.md\",\n  \"skillRefs\": [],\n  \"toolIds\": [],\n  \"inputSchemaRef\": \"contracts/agent-a0ecc747-input.schema.json\",\n  \"outputSchemaRef\": \"contracts/agent-a0ecc747-output.schema.json\"\n}\n",
+        "after": null,
+        "kind": "asset"
+      },
+      {
+        "path": "agents/agent-a0ecc747/instructions.md",
+        "oldSha256": "1797be0a8b470b537206902110eef9df87d081d9bc98c7357d9646a20630d743",
+        "newSha256": null,
+        "before": "新 Agent 1 的候选 Agent。请按输入输出合同执行当前任务，并返回可验证的 JSON。\n",
+        "after": null,
+        "kind": "asset"
+      },
+      {
+        "path": "contracts/agent-a0ecc747-input.schema.json",
+        "oldSha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+        "newSha256": null,
+        "before": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"additionalProperties\": true\n}\n",
+        "after": null,
+        "kind": "validation"
+      },
+      {
+        "path": "contracts/agent-a0ecc747-output.schema.json",
+        "oldSha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+        "newSha256": null,
+        "before": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"additionalProperties\": true\n}\n",
+        "after": null,
+        "kind": "validation"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

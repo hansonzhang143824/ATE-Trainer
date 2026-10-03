@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-34aa609b-86bb-4802-9b95-05fcd107bd20",
+  "baseRevision": "revision-c8620b6f-c92f-46d6-9a63-1b156ed09d99",
+  "appliedRevision": "revision-3aadcf48-da49-45cd-b7b6-2f6e3ab84d92",
+  "requestId": "t2-mul-11x21-apply-001",
+  "reason": "User request: change agent-T2 task from 2+3 to 11*21 and require JSON {\"answer\":231}; update instruction text and output schema const accordingly.",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-3aadcf48-da49-45cd-b7b6-2f6e3ab84d92",
+    "changeSetId": "change-34aa609b-86bb-4802-9b95-05fcd107bd20",
+    "diff": [
+      {
+        "path": "agents/agent-T2/instructions.md",
+        "oldSha256": "2f619a0b56a5c978079f7d0d85e81fcd29e65090a5ec5a85564fc1fe1f78e110",
+        "newSha256": "bac7b52a12012302d598731e25c732f61e528a4b85e5e8550461d599b1588b8a",
+        "before": "You are agent-T2. Solve exactly 2+3. Return JSON only with numeric field answer equal to 5. Do not add prose.\n\n# Candidate saved from white Agent Trainer\n",
+        "after": "You are agent-T2. Solve exactly 11*21. Return JSON only with numeric field answer equal to 231. Do not add prose.\n\n# Candidate saved from white Agent Trainer\n",
+        "kind": "asset"
+      },
+      {
+        "path": "contracts/agent-T2-output.schema.json",
+        "oldSha256": "86638d097ffc912183c24640eed235ad9f5bc0a89a17cb1d659e39a27cb0bd45",
+        "newSha256": "1142a7ba33586006b1f4de570167d3e7598a9ec4259d589472669b9701e3fb77",
+        "before": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": {\n      \"type\": \"number\",\n      \"const\": 5\n    }\n  },\n  \"required\": [\n    \"answer\"\n  ],\n  \"additionalProperties\": false\n}\n",
+        "after": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": {\n      \"type\": \"number\",\n      \"const\": 231\n    }\n  },\n  \"required\": [\n    \"answer\"\n  ],\n  \"additionalProperties\": false\n}\n",
+        "kind": "validation"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

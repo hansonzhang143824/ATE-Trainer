@@ -1,0 +1,20 @@
+schemaVersion: 1
+id: strategy-expert
+displayName: PTC Strategy Expert
+presetId: strategy-expert
+executionClass: strategy-standard
+stage: STRATEGY
+ownerRole: test-strategy-architect
+# The label the host renders for this expert's child session. It is DISPLAY text
+# whose only job is to satisfy the material-boundary recogniser; identity itself
+# comes from the pinned dispatch receipt, never from this string.
+# `<TM>` is replaced by the target TM list.
+runtimeLabel: PTC strategy expert [<TM>]
+readable:
+  - project/DALI/Output_Global_Material/dft/<TM>
+  - project/DALI/Output_Global_Material/schematic
+writable:
+  - <run>/strategy
+  - project/DALI/ErrorLog/strategy-expert.log
+requiredGates:
+  - scripts/validate_strategy_contract.py

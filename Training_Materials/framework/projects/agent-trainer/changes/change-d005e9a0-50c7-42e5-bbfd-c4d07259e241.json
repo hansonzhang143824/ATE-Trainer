@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-d005e9a0-50c7-42e5-bbfd-c4d07259e241",
+  "baseRevision": "revision-ab290253-ca22-4880-93d9-5af1aa02b5a2",
+  "appliedRevision": "revision-aa22cddc-f969-4b0d-8785-4e65c59f7109",
+  "requestId": "white-candidate-98b255ef-e904-4397-b196-c4c4b5e2f81a",
+  "reason": "用户通过白色 Agent Trainer 调整工作流编排",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-aa22cddc-f969-4b0d-8785-4e65c59f7109",
+    "changeSetId": "change-d005e9a0-50c7-42e5-bbfd-c4d07259e241",
+    "diff": [
+      {
+        "path": "workflows/custom-workflow-1.json",
+        "oldSha256": "47c1f1717ce89492938680bbcae98aa6e25cbf0d3cf857352d6f97387351c9a2",
+        "newSha256": "be4ad2a5c8e6e234f1c8128ca834ce12fa9c4ab01257e07864a5ff8b67bd814b",
+        "before": "{\n  \"workflowId\": \"custom-workflow-1\",\n  \"name\": \"新工作流 1\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"custom-agent-7\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000,\n      \"outputBindings\": {\n        \"\": {\n          \"source\": \"output\",\n          \"pointer\": \"\"\n        }\n      }\n    },\n    {\n      \"stepId\": \"step-2\",\n      \"agentId\": \"agent-T2\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"step\",\n          \"stepId\": \"step-1\",\n          \"pointer\": \"\"\n        }\n      },\n      \"outputBindings\": {\n        \"\": {\n          \"source\": \"output\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "after": "{\n  \"workflowId\": \"custom-workflow-1\",\n  \"name\": \"新工作流 1\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"agent-T2\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000,\n      \"outputBindings\": {\n        \"\": {\n          \"source\": \"output\",\n          \"pointer\": \"\"\n        }\n      }\n    },\n    {\n      \"stepId\": \"step-2\",\n      \"agentId\": \"custom-agent-7\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"step\",\n          \"stepId\": \"step-1\",\n          \"pointer\": \"\"\n        }\n      },\n      \"outputBindings\": {\n        \"\": {\n          \"source\": \"output\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

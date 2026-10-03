@@ -1,0 +1,20 @@
+schemaVersion: 1
+id: rule-reviewer
+displayName: PTC Rule Reviewer
+presetId: rule-reviewer
+executionClass: review-readonly
+stage: RULE_REVIEW_METHOD
+# This reviewer owns BOTH review stages: RULE_REVIEW_METHOD and
+# RULE_REVIEW_IMPLEMENTATION (see team/ptc/ptc_stage_registry.json). The
+# dispatcher routes both stages to this profile; the stage recorded on the
+# dispatch receipt is the stage actually being reviewed.
+ownerRole: rule-reviewer
+runtimeLabel: PTC rule reviewer [<TM>]
+readable:
+  - <run>/strategy
+  - <run>/method
+  - <run>/implementation
+writable:
+  - <run>/review
+requiredGates:
+  - scripts/review_method_batch.py

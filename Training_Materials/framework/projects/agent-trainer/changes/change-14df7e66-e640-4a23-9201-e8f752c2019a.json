@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-14df7e66-e640-4a23-9201-e8f752c2019a",
+  "baseRevision": "revision-7c99aa2b-d1d3-4527-860a-6b0912629743",
+  "appliedRevision": "revision-d15f7ac6-4116-4dac-bb49-2efa38d10165",
+  "requestId": "white-candidate-e8d9649f-9b8a-495f-9b2f-6e89bca221aa",
+  "reason": "用户通过白色 Agent Trainer 向工作流加入 Agent",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-d15f7ac6-4116-4dac-bb49-2efa38d10165",
+    "changeSetId": "change-14df7e66-e640-4a23-9201-e8f752c2019a",
+    "diff": [
+      {
+        "path": "workflows/workflow-T1.json",
+        "oldSha256": "33e3d0347817df8dd57d78780a66d6595d608aad694299c05d41261be0906241",
+        "newSha256": "3e62f98e72e7f04738453edead980b596fa5c696132da9d458946b650a27f8ab",
+        "before": "{\n  \"workflowId\": \"workflow-T1\",\n  \"name\": \"workflow-T1\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"agent-T3\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000,\n      \"outputBindings\": {\n        \"\": {\n          \"source\": \"output\",\n          \"pointer\": \"\"\n        }\n      }\n    },\n    {\n      \"stepId\": \"step-2\",\n      \"agentId\": \"agent-T2\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"step\",\n          \"stepId\": \"step-1\",\n          \"pointer\": \"\"\n        }\n      },\n      \"outputBindings\": {\n        \"\": {\n          \"source\": \"output\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    },\n    {\n      \"stepId\": \"step-3\",\n      \"agentId\": \"agent-T1\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"step\",\n          \"stepId\": \"step-2\",\n          \"pointer\": \"\"\n        }\n      },\n      \"outputBindings\": {\n        \"\": {\n          \"source\": \"output\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "after": "{\n  \"workflowId\": \"workflow-T1\",\n  \"name\": \"workflow-T1\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"agent-T3\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000,\n      \"outputBindings\": {\n        \"\": {\n          \"source\": \"output\",\n          \"pointer\": \"\"\n        }\n      }\n    },\n    {\n      \"stepId\": \"step-2\",\n      \"agentId\": \"agent-T2\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"step\",\n          \"stepId\": \"step-1\",\n          \"pointer\": \"\"\n        }\n      },\n      \"outputBindings\": {\n        \"\": {\n          \"source\": \"output\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    },\n    {\n      \"stepId\": \"step-3\",\n      \"agentId\": \"agent-T1\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"step\",\n          \"stepId\": \"step-2\",\n          \"pointer\": \"\"\n        }\n      },\n      \"outputBindings\": {\n        \"\": {\n          \"source\": \"output\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    },\n    {\n      \"stepId\": \"step-4\",\n      \"agentId\": \"agent-T2\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"step\",\n          \"stepId\": \"step-3\",\n          \"pointer\": \"\"\n        }\n      },\n      \"outputBindings\": {\n        \"\": {\n          \"source\": \"output\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

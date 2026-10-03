@@ -1,0 +1,40 @@
+{
+  "runId": "framework-49958265-0483-49fc-ac97-46fac00623ea",
+  "projectId": "agent-trainer",
+  "targetKind": "workflow",
+  "targetId": "custom-workflow-1",
+  "bundleSha256": "0e911c37d4912ee4c66a3a5b2371d052cafb4a73621f678619bcf6bcc7c8bd9e",
+  "workflowRevision": "revision-7a584fe8-a29c-4886-b206-ed01bed17481",
+  "status": "completed",
+  "validation": {
+    "ok": true,
+    "errors": []
+  },
+  "businessGatePassed": false,
+  "steps": [
+    {
+      "stepId": "step-1",
+      "agentId": "agent-T2",
+      "agentRevision": "revision-7a584fe8-a29c-4886-b206-ed01bed17481",
+      "status": "completed"
+    },
+    {
+      "stepId": "step-2",
+      "agentId": "custom-agent-7",
+      "agentRevision": "revision-7a584fe8-a29c-4886-b206-ed01bed17481",
+      "status": "completed"
+    },
+    {
+      "stepId": "step-3",
+      "agentId": "agent-T3",
+      "agentRevision": "revision-7a584fe8-a29c-4886-b206-ed01bed17481",
+      "status": "completed"
+    },
+    {
+      "stepId": "step-4",
+      "agentId": "custom-agent-5",
+      "agentRevision": "revision-7a584fe8-a29c-4886-b206-ed01bed17481",
+      "status": "completed"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-2b9ab38f-06ca-4e0f-b9a0-25e61a5c48d8",
+  "baseRevision": "revision-b9a5f328-43cf-4d8c-a37e-d045d82dc5b7",
+  "appliedRevision": "revision-36ba7f47-1ad9-4021-acba-6e9cae4f5fcf",
+  "requestId": "b2-host-context-revert-20261002",
+  "reason": "B2 cleanup synthetic marker",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-36ba7f47-1ad9-4021-acba-6e9cae4f5fcf",
+    "changeSetId": "change-2b9ab38f-06ca-4e0f-b9a0-25e61a5c48d8",
+    "diff": [
+      {
+        "path": "agents/agent-2abe705b/instructions.md",
+        "oldSha256": "8894eee1c6739dd06061c1a2ff396635c8bfe56ad315ac9245f1c2b4b7386b71",
+        "newSha256": "e88f4bd809f090b2dfb7fdb952e49b1ebeb0035f2591482cd5d4a08b8b5ceaa2",
+        "before": "新 Agent 12 的候选 Agent。请按输入输出合同执行当前任务，并返回可验证的 JSON。\n\nB2 host acceptance marker 2026-10-02.\n",
+        "after": "新 Agent 12 的候选 Agent。请按输入输出合同执行当前任务，并返回可验证的 JSON。\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

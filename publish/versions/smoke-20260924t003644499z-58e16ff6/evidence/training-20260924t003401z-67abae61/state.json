@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "runId": "training-20260924t003401z-67abae61",
+  "status": "completed",
+  "target": {
+    "kind": "pipeline",
+    "fromStage": "INPUT_SYNC",
+    "toStage": "COMPILE",
+    "stages": [
+      "INPUT_SYNC",
+      "STRATEGY",
+      "METHOD",
+      "RULE_REVIEW_METHOD",
+      "IMPLEMENTATION",
+      "RULE_REVIEW_IMPLEMENTATION",
+      "COMPILE"
+    ]
+  },
+  "purpose": "smoke-training",
+  "createdAt": "2026-09-24T00:34:01.461Z",
+  "updatedAt": "2026-09-24T00:35:16.395Z",
+  "outcome": {
+    "mode": "SMOKE_ONLY",
+    "smokePassed": true,
+    "businessGatePassed": false,
+    "reason": null,
+    "stage": null
+  },
+  "finishedAt": "2026-09-24T00:35:16.395Z"
+}

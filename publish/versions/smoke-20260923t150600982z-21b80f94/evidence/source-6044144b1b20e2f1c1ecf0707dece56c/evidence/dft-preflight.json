@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "runId": "source-6044144b1b20e2f1c1ecf0707dece56c",
+  "profileId": "ptc-dft-expert",
+  "mode": "UNCHANGED",
+  "modelDispatched": false,
+  "materialManifest": "Training_Materials/runs/source-6044144b1b20e2f1c1ecf0707dece56c/material-manifest.json",
+  "cacheKey": "43cf2b4dda7b4bb7684d64941e7a9585fa69088f0e01fb93a3cb438cc047a5e5",
+  "cacheCompatible": true,
+  "candidateSources": {
+    "TM109": {
+      "kind": "run",
+      "runId": "training-20260923t144637z-0518ca39",
+      "cacheCompatible": true,
+      "copied": [
+        "dft-meta.json",
+        "dft-conditions.yaml",
+        "dft-semantic-review.json"
+      ]
+    }
+  },
+  "sourceView": null,
+  "finalProducts": {
+    "TM109": {
+      "dft-meta.json": "51301322c56a4bbb9b24f0d20d93c49de7c7108b7df53c83657250257e353211",
+      "dft-conditions.yaml": "854f27b5317f31724139e649b303c2ecee267f55598d3c85743216e51a4d9d42",
+      "dft-semantic-review.json": "e435cdd82f3e6dd5f6f73e87e228e697ac2828f670b73996f6a39b47e69ad01a"
+    }
+  },
+  "reports": [
+    {
+      "tm": "TM109",
+      "exitCode": 0,
+      "role": "dft-expert",
+      "gate": "DFT_OUTPUT",
+      "status": "ready",
+      "canonicalInput": {
+        "path": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\runs\\source-6044144b1b20e2f1c1ecf0707dece56c\\input\\Dali_testmode.xlsx",
+        "sha256": "896770d29f8ae58852e1031c1e6210c5435e52df38e0f6a0fb8fc1836622c04b",
+        "sheet": "OVERVIEW"
+      },
+      "requiredOutputs": [
+        "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\runs\\source-6044144b1b20e2f1c1ecf0707dece56c\\input-sync\\dft\\TM109\\dft-meta.json",
+        "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\runs\\source-6044144b1b20e2f1c1ecf0707dece56c\\input-sync\\dft\\TM109\\dft-conditions.yaml",
+        "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\runs\\source-6044144b1b20e2f1c1ecf0707dece56c\\input-sync\\dft\\TM109\\dft-semantic-review.json"
+      ],
+      "missingOrStaleOutputs": []
+    }
+  ],
+  "checkedAt": "2026-09-23T14:47:20.728Z"
+}

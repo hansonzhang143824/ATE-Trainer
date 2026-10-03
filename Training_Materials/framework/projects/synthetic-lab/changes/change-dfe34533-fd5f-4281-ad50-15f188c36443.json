@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "synthetic-lab",
+  "changeSetId": "change-dfe34533-fd5f-4281-ad50-15f188c36443",
+  "baseRevision": "revision-5112c98a-8279-4961-b103-56167fb2ac88",
+  "appliedRevision": "revision-db349fbb-230a-4ee2-8812-e8a6ee872789",
+  "requestId": "white-candidate-6feca809-6ce6-471f-acb6-ad99c60d8b56",
+  "reason": "用户通过白色 Agent Trainer 新建候选工作流",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "synthetic-lab",
+    "revisionId": "revision-db349fbb-230a-4ee2-8812-e8a6ee872789",
+    "changeSetId": "change-dfe34533-fd5f-4281-ad50-15f188c36443",
+    "diff": [
+      {
+        "path": "workflows/custom-workflow-1.json",
+        "oldSha256": null,
+        "newSha256": "c14eef174875ac6085e1912fafad369b8286f36a70e84997680ad426cf9def90",
+        "before": null,
+        "after": "{\n  \"workflowId\": \"custom-workflow-1\",\n  \"name\": \"新工作流 1\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"arith-optimization-agent\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

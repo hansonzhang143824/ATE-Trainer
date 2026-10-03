@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "runId": "training-20260924t002030z-4b51b34b",
+  "status": "completed",
+  "target": {
+    "kind": "profile",
+    "profileId": "method-expert"
+  },
+  "purpose": "smoke-training",
+  "createdAt": "2026-09-24T00:20:30.268Z",
+  "updatedAt": "2026-09-24T00:20:53.402Z",
+  "startedAt": "2026-09-24T00:20:30.296Z",
+  "modelChoice": "default",
+  "finishedAt": "2026-09-24T00:20:53.402Z",
+  "outcome": {
+    "mode": "SMOKE_ONLY",
+    "smokePassed": true,
+    "businessGatePassed": false,
+    "profileInstructionsValidated": false,
+    "modelDispatched": true,
+    "profileSnapshotSha256": "0e0f9a714428721cf43a2ecc9ee8bca3c66086725d43591a5297f58296777084",
+    "responseSha256": "e6b2ff1a746c93c2d7a9395004c74bada568700e8c9b6ba0c0daebc8ac7b0afe",
+    "childResultSha256": "e6b2ff1a746c93c2d7a9395004c74bada568700e8c9b6ba0c0daebc8ac7b0afe",
+    "reason": null,
+    "evidence": "Training_Materials/runs/training-20260924t002030z-4b51b34b/evidence/profile-smoke.json",
+    "evidenceSha256": "01bbf256fb6dce46ee2e7e86fd25f8d65da07ac23b3e32bb44cf017624696bb2"
+  }
+}

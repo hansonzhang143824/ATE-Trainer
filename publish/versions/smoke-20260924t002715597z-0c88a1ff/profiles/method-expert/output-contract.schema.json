@@ -1,0 +1,26 @@
+{
+  "type": "object",
+  "required": ["tm", "measurementPlan", "testConditions", "trimPlan"],
+  "properties": {
+    "tm": { "type": "string", "minLength": 2 },
+    "measurementPlan": {
+      "type": "object",
+      "required": ["measurementMode", "forceSettling"],
+      "properties": {
+        "measurementMode": { "type": "string" },
+        "forceSettling": { "type": "object" }
+      }
+    },
+    "testConditions": {
+      "type": "array",
+      "items": { "type": "object", "required": ["conditionId"] }
+    },
+    "trimPlan": {
+      "type": "object",
+      "required": ["scanScope"],
+      "properties": {
+        "scanScope": { "type": "string" }
+      }
+    }
+  }
+}

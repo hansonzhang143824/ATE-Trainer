@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-9a034a4b-7d04-45cd-8a8f-40e1092d3a23",
+  "baseRevision": "revision-e11e1d9b-abce-4a11-8139-de1a30655a16",
+  "appliedRevision": "revision-5d67f8c0-97f3-477b-9dca-eb01dda24019",
+  "requestId": "seed-ad45e2da5d2449e5aeda7f6b37630c73",
+  "reason": "初始化 Agent ID 台账",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-5d67f8c0-97f3-477b-9dca-eb01dda24019",
+    "changeSetId": "change-9a034a4b-7d04-45cd-8a8f-40e1092d3a23",
+    "diff": [
+      {
+        "path": "contracts/agent-ids.json",
+        "oldSha256": null,
+        "newSha256": "9922b431ee2b88e01ed0f4c89e1d5cf27a9078df5ee1d9a4be5ae12ec9fc605b",
+        "before": null,
+        "after": "{\n  \"schemaVersion\": 1,\n  \"allocated\": [\n    \"agent-T1\",\n    \"agent-T2\",\n    \"agent-T3\",\n    \"custom-agent-1\",\n    \"custom-agent-10\",\n    \"custom-agent-4\",\n    \"custom-agent-5\",\n    \"custom-agent-6\",\n    \"custom-agent-7\",\n    \"custom-agent-8\",\n    \"custom-agent-9\",\n    \"lab-consumer\",\n    \"lab-producer\"\n  ]\n}\n",
+        "kind": "validation"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

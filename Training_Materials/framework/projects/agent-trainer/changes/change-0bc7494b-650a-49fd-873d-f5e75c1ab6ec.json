@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-0bc7494b-650a-49fd-873d-f5e75c1ab6ec",
+  "baseRevision": "revision-cb830b1f-00a1-477b-8eae-20be95d9c40b",
+  "appliedRevision": "revision-9ff8551f-a118-41d0-ad1d-ffcc763b4227",
+  "requestId": "white-save-5b262a7a-d631-47e1-91e0-bf22fd94b4a0",
+  "reason": "用户通过白色 Agent Trainer 保存候选",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-9ff8551f-a118-41d0-ad1d-ffcc763b4227",
+    "changeSetId": "change-0bc7494b-650a-49fd-873d-f5e75c1ab6ec",
+    "diff": [
+      {
+        "path": "agents/agent-T2/instructions.md",
+        "oldSha256": "4ce894c7b88869ffc5398b2641e9a1604994ec25f4f4068d6d22cc58c2d46cc1",
+        "newSha256": "dabbcd4d0114879841d84f79f6946cb1209a4360ab2b242e0e26189326e400bc",
+        "before": "You are agent-T2. Solve exactly 11*21. Return JSON only with numeric field answer equal to 231. Do not add prose.\n\n# Candidate saved from white Agent Trainer\n\n# Candidate saved from white Agent Trainer\n\n# Candidate saved from white Agent Trainer\n\n# Candidate saved from white Agent Trainer\n",
+        "after": "You are agent-T2. Solve exactly 11*21. Return JSON only with numeric field answer equal to 231. Do not add prose.\n# Candidate saved from white Agent Trainer\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "projectId": "agent-trainer",
+  "targetKind": "agent",
+  "targetId": "agent-T1",
+  "presetId": "agent-trainer",
+  "mode": "training",
+  "selectedRunId": "framework-34807056-f7ab-4c93-a9da-7a59df98567a",
+  "nativeModelSelection": {
+    "provider": "deepseek-official",
+    "model": "deepseek-v4-flash"
+  },
+  "candidateRevision": "revision-acda56d0-3719-45ad-98a8-0c4e4c76e6f0",
+  "bindingSchemaVersion": 1,
+  "cwd": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\framework\\control\\sessions\\44107b2a3e80c37d27a6207c3f4c72cfc2735487df4d0ca4a66d24f14229b7ce",
+  "sessionId": "session-c8583eac-c9fc-49fa-b565-debaa0b52bd9",
+  "bindingRevision": 5,
+  "effectiveTools": [
+    "trainer_apply_changes",
+    "trainer_assets",
+    "trainer_compare",
+    "trainer_context",
+    "trainer_control",
+    "trainer_events",
+    "trainer_run",
+    "trainer_runs",
+    "trainer_validate"
+  ],
+  "toolCatalogSha256": "8234241df8e94381c3bd472b59a4ff8d1f060c2c0014ff8dc0253b0d582f5ce8"
+}

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "runId": "training-20260924t002253z-01da7664",
+  "status": "completed",
+  "target": {
+    "kind": "profile",
+    "profileId": "rule-reviewer"
+  },
+  "purpose": "smoke-training",
+  "createdAt": "2026-09-24T00:22:53.007Z",
+  "updatedAt": "2026-09-24T00:23:15.241Z",
+  "startedAt": "2026-09-24T00:22:53.030Z",
+  "modelChoice": "default",
+  "finishedAt": "2026-09-24T00:23:15.241Z",
+  "outcome": {
+    "mode": "SMOKE_ONLY",
+    "smokePassed": true,
+    "businessGatePassed": false,
+    "profileInstructionsValidated": false,
+    "modelDispatched": true,
+    "profileSnapshotSha256": "eb0f0684aa39a8be72bffd33805b8760349793f9bbb66ecf6ee4dcd09a66ee1d",
+    "responseSha256": "b17b1f7f701275aff50e1a2f5b6215d350e6feee95d567ccf5ae79631f65a14f",
+    "childResultSha256": "b17b1f7f701275aff50e1a2f5b6215d350e6feee95d567ccf5ae79631f65a14f",
+    "reason": null,
+    "evidence": "Training_Materials/runs/training-20260924t002253z-01da7664/evidence/profile-smoke.json",
+    "evidenceSha256": "3d40c9488feb3e7dcdcf1400a1c75ac4b3451186adb0e6e8c0bb313012d22aa5"
+  }
+}

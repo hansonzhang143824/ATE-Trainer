@@ -1,0 +1,34 @@
+{
+  "projectId": "agent-trainer",
+  "targetKind": "agent",
+  "targetId": "agent-0e624d84",
+  "presetId": "agent-trainer",
+  "mode": "training",
+  "selectedRunId": null,
+  "nativeModelPolicy": "host-default",
+  "nativeModelSelection": null,
+  "candidateRevision": "revision-d19a2a73-9b26-4eb4-bdc3-84054320b749",
+  "bindingSchemaVersion": 1,
+  "cwd": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\framework\\control\\sessions\\0736a55a226ea007e486636da7522109fb37e4094e12c11326524bdee900523e",
+  "sessionId": "session-42b70531-18a9-4af9-ac32-88043f940daf",
+  "bindingRevision": 1,
+  "resolved": {
+    "source": "candidate",
+    "revisionId": "revision-d19a2a73-9b26-4eb4-bdc3-84054320b749",
+    "frozenVersionId": null,
+    "releaseId": null,
+    "via": "direct"
+  },
+  "effectiveTools": [
+    "trainer_apply_changes",
+    "trainer_assets",
+    "trainer_compare",
+    "trainer_context",
+    "trainer_control",
+    "trainer_events",
+    "trainer_run",
+    "trainer_runs",
+    "trainer_validate"
+  ],
+  "toolCatalogSha256": "8234241df8e94381c3bd472b59a4ff8d1f060c2c0014ff8dc0253b0d582f5ce8"
+}

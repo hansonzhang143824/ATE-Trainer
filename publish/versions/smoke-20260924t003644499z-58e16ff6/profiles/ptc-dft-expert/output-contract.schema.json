@@ -1,0 +1,287 @@
+﻿{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PTC DFT Expert output contract",
+  "description": "Mirrors the fields scripts/validate_dft_outputs.py enforces. Necessity follows User_input/DFT解析规则.txt: required = Item/Name/Trim/上电处理(vset|iset)/寄存器配置/结果测量; optional = level/Description/ExpectValue/Unit/Dynamic/Helper/de_test. Optional fields are recorded verbatim in rawIntent but do not fail validation.",
+  "type": "object",
+  "required": [
+    "tm",
+    "sourceSha256",
+    "sourceLocation",
+    "rawIntent",
+    "testCondition",
+    "parseStatus",
+    "openItems"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "tm": {
+      "type": "string",
+      "pattern": "^TM[0-9]+$"
+    },
+    "sourceSha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "sourceLocation": {
+      "type": "object",
+      "required": [
+        "sheet",
+        "row"
+      ],
+      "properties": {
+        "sheet": {
+          "type": "string"
+        },
+        "row": {
+          "type": "integer",
+          "minimum": 2
+        }
+      }
+    },
+    "rawIntent": {
+      "type": "object",
+      "description": "field-for-field verbatim copy of the canonical OVERVIEW row, all columns including optional ones"
+    },
+    "testCondition": {
+      "type": "object",
+      "required": [
+        "identity",
+        "isTrim",
+        "powerSequence",
+        "registerFieldIntent",
+        "measurement",
+        "involvedPins"
+      ],
+      "properties": {
+        "identity": {
+          "type": "string",
+          "description": "Name: parameter name; one Item may carry several"
+        },
+        "isTrim": {
+          "type": "boolean",
+          "description": "Trim=Y/Yes => true"
+        },
+        "powerSequence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "cmd",
+              "pin",
+              "value",
+              "pluseTime",
+              "status"
+            ],
+            "properties": {
+              "cmd": {
+                "enum": [
+                  "vset",
+                  "iset"
+                ]
+              },
+              "pin": {
+                "type": "string",
+                "description": "single Pin (vs AGND) or PinA2PinB / PinA_PinB (relative)"
+              },
+              "value": {
+                "type": "number",
+                "description": "vset: V; iset: A; sign per rules file"
+              },
+              "pluseTime": {
+                "type": "string",
+                "description": "100e-6 = direct (ignore); 100e-3 = ramp"
+              },
+              "status": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "power-on stage; stage 0 completes before stage 1"
+              },
+              "rampFrom": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "description": "set when pluseTime=100e-3 or same-Pin same-status run: start = previous stage same-Pin value"
+              }
+            }
+          }
+        },
+        "registerFieldIntent": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "kind",
+              "raw"
+            ],
+            "properties": {
+              "kind": {
+                "enum": [
+                  "field",
+                  "en_tm"
+                ]
+              },
+              "raw": {
+                "type": "string"
+              },
+              "evidence": {
+                "type": "string",
+                "description": "reg_config/<Item>.sv when applicable"
+              }
+            }
+          }
+        },
+        "measurement": {
+          "type": "string",
+          "description": "V(Pin)/I(Pin)/V(PinA_PinB)/V(PinA-PinB)/I(...)/R(...)/Toggle(Pin) per rules file"
+        },
+        "involvedPins": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "expectedValue": {
+          "type": [
+            "string",
+            "number",
+            "null"
+          ]
+        },
+        "unit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "level": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "dynamic": {
+          "type": [
+            "string",
+            "array",
+            "null"
+          ]
+        },
+        "helper": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "deTest": {
+          "type": [
+            "string",
+            "number",
+            "null"
+          ]
+        },
+        "remarks": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "parseStatus": {
+      "enum": [
+        "ok",
+        "selfResolved",
+        "pendingUser"
+      ]
+    },
+    "openItems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "type",
+          "description"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "conflict",
+              "missingField",
+              "unparsable",
+              "pinAlarm"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "sourceLocation": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  },
+  "x-optionalFields": [
+    "expectedValue",
+    "unit",
+    "level",
+    "description",
+    "dynamic",
+    "helper",
+    "deTest",
+    "remarks",
+    "notes"
+  ],
+  "x-artifacts": [
+    "<ROOT>/Output_Global_Material/dft/<TM>/dft-meta.json",
+    "<ROOT>/Output_Global_Material/dft/<TM>/dft-conditions.yaml",
+    "<ROOT>/Output_Global_Material/dft/<TM>/dft-semantic-review.json"
+  ],
+  "x-artifacts-note": "<ROOT> is resolved from the task address book (training=Training_Materials, delivery=project/DALI); the guard enforces via the training bindings allowlist, not via this declaration.",
+  "x-semantic-review": {
+    "type": "object",
+    "required": [
+      "tm",
+      "verdict",
+      "readSources",
+      "reviewedArtifacts"
+    ],
+    "verdict": "PASS",
+    "readSourcesItem": {
+      "sha256": "^[a-f0-9]{64}$",
+      "withinInputRoot": true
+    },
+    "reviewedArtifacts": "数组 [{path, sha256}] 或对象 {文件名: sha256}，sha256 按磁盘字节计算，必须与当前 dft-meta.json / dft-conditions.yaml 实际一致"
+  },
+  "x-dft-parsing-rules": "User_input/DFT解析规则.txt",
+  "x-gate-sync": [
+    "修改01: x-artifacts 改逻辑位 <ROOT>（原 project/DALI 写死路径废除）",
+    "修改02: 顶层 required 新增 sourceLocation（sheet+row）",
+    "修改03: 顶层 required 新增 parseStatus（ok|selfResolved|pendingUser）",
+    "修改04: 顶层 required 新增 openItems（结构化 conflict/missingField/unparsable/pinAlarm）",
+    "修改05: testCondition.required 精简为 6 项（identity/isTrim/powerSequence/registerFieldIntent/measurement/involvedPins）",
+    "修改06: 原 20 项 required 中其余 14 项全部降级 optional（remarks/expectedValue/hasRamp/ramps/helperIntent/scanIntent/dynamicPins/highCurrent/differentialVoltage/internalComparison/referenceValue/notes/powerSequence旧形态/measurement旧形态）",
+    "修改07: powerSequence 结构化为 vset/iset 四元组数组（cmd/pin/value/pluseTime/status + rampFrom）",
+    "修改08: registerFieldIntent 结构化为 field/en_tm 条目数组（按 Item 索引 reg_config）",
+    "修改09: measurement 增加规则文件语法约束",
+    "修改10: 新增 x-dft-parsing-rules 指向解析规则文件（必要/非必须的权威来源）",
+    "修改11: 同步改 scripts/validate_dft_outputs.py——required 集合按本 schema 第5/6项重写、新增 parseStatus/openItems 校验、pendingUser 不得混入 ok；schema 与 gate 必须同一提交落地（镜像原则）",
+    "修改03: rawIntent 校验改为有值字段覆盖——workbook 空单元格不检查（记法自由），键与值比较前做换行归一化（CRLF 视同 LF），有值但 rawIntent 缺失或记空仍判败（防漏读）；dft-conditions.yaml 为语义级对齐——宽松解析 testCondition（单行 JSON、多行嵌套映射、裸标量均可），rawIntent 段仅为渲染不参与校验；dft-semantic-review 的 reviewedArtifacts 接受数组 [{path, sha256}] 或对象 {文件名: sha256} 两种形态，sha256 一律按磁盘字节计算",
+    "修改04: 源指纹互锚——dft-conditions.yaml 的 sourceSha256 字段值必须等于 dft-meta.json 的 sourceSha256（连同 tm 行存在性检查，两者同时满足才通过）；修改05: 待裁定拦截——parseStatus=pendingUser 或 openItems 非空时 gate 不判 ready，放行规则为 openItems 清空且 parseStatus 回到 ok/selfResolved（Action-01，后续将改为 intent-resolutions 覆盖放行）"
+  ]
+}

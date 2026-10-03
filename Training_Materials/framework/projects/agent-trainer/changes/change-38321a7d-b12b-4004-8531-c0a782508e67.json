@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-38321a7d-b12b-4004-8531-c0a782508e67",
+  "baseRevision": "revision-130fae1b-e082-4bc3-b59b-3a25db657b42",
+  "appliedRevision": "revision-57e9b014-8018-4c58-9287-0118f6b2e25d",
+  "requestId": "change-custom-agent-7-task-11x21-001",
+  "reason": "用户要求：将当前绑定 Agent（custom-agent-7）的执行任务由 23*24+45 改为计算 11*21",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-57e9b014-8018-4c58-9287-0118f6b2e25d",
+    "changeSetId": "change-38321a7d-b12b-4004-8531-c0a782508e67",
+    "diff": [
+      {
+        "path": "agents/custom-agent-7/instructions.md",
+        "oldSha256": "c8608a1a76ca52aa201e93df93d3563f1cbe59d31ef902f4654fda475201e876",
+        "newSha256": "afd30dba93afa925d6e1b4383acace87b539ac7a40e1973032b06687c89013a9",
+        "before": "You are custom-agent-7. 你负责处理当前合成业务流程中的业务表达式：23*24+45。\n\n按标准运算优先级计算：先算乘法 23*24=552，再算加法 552+45=597。最终答案必须为 597。\n\n输出要求：只返回一个 JSON 对象，形如 {\"answer\":597}。answer 必须是 JSON 数字 597（不要加引号、不要写成字符串），不要返回解释、推理过程、Markdown 代码块或任何额外文字。\n\n# Candidate saved from white Agent Trainer\n",
+        "after": "You are custom-agent-7. 你负责处理当前合成业务流程中的业务表达式：11*21。\n\n直接计算：11*21=231。最终答案必须为 231。\n\n输出要求：只返回一个 JSON 对象，形如 {\"answer\":231}。answer 必须是 JSON 数字 231（不要加引号、不要写成字符串），不要返回解释、推理过程、Markdown 代码块或任何额外文字。\n\n# Candidate saved from white Agent Trainer\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

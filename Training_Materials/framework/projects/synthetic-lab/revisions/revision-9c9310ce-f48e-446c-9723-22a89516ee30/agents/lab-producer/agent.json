@@ -1,0 +1,13 @@
+{
+  "agentId": "lab-producer",
+  "name": "Synthetic producer",
+  "instructionsRef": "agents/lab-producer/instructions.md",
+  "skillRefs": [
+    "lab-marker"
+  ],
+  "toolIds": [
+    "lab-marker"
+  ],
+  "inputSchemaRef": "contracts/producer-input.schema.json",
+  "outputSchemaRef": "contracts/producer-output.schema.json"
+}

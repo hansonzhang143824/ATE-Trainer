@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-60ddd8f4-5a66-4b8b-aa0e-3436ba33ed10",
+  "baseRevision": "revision-2899496b-af5d-4686-b18f-1c3110e6b97c",
+  "appliedRevision": "revision-659bad50-df1b-470d-915e-379c0ccf1b3a",
+  "requestId": "white-save-cec15a24-74f2-4e53-87bf-2cf1403f7077",
+  "reason": "用户通过白色 Agent Trainer 保存候选",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-659bad50-df1b-470d-915e-379c0ccf1b3a",
+    "changeSetId": "change-60ddd8f4-5a66-4b8b-aa0e-3436ba33ed10",
+    "diff": [
+      {
+        "path": "agents/agent-T2/instructions.md",
+        "oldSha256": "cc09c1726d4c4581c5381f038297252e6be7c725a380d13e9866e188265b3bc2",
+        "newSha256": "2f619a0b56a5c978079f7d0d85e81fcd29e65090a5ec5a85564fc1fe1f78e110",
+        "before": "You are agent-T2. Solve exactly 2+3. Return JSON only with numeric field answer equal to 5. Do not add prose.\n",
+        "after": "You are agent-T2. Solve exactly 2+3. Return JSON only with numeric field answer equal to 5. Do not add prose.\n\n# Candidate saved from white Agent Trainer\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

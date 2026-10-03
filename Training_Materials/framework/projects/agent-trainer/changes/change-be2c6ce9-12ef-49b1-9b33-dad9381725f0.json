@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-be2c6ce9-12ef-49b1-9b33-dad9381725f0",
+  "baseRevision": "revision-eaa00219-9ba8-4949-bc46-1a795f16b319",
+  "appliedRevision": "revision-7fed1f0a-9f9d-473c-b712-8ff761315d1a",
+  "requestId": "native-real-optimization-20260930",
+  "reason": "用户要求 Agent 优化 2+3：将 instructions.md 从求解 1+2=3 改为求解 2+3=5，并将 contracts/agent-T1-output.schema.json 中 answer 的 const 从 3 改为 5；仅修改这两个文件，用于修复原始 run framework-a988a655-21b4-4898-93a0-9a082198891d。",
+  "linkedRunId": "framework-a988a655-21b4-4898-93a0-9a082198891d",
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-7fed1f0a-9f9d-473c-b712-8ff761315d1a",
+    "changeSetId": "change-be2c6ce9-12ef-49b1-9b33-dad9381725f0",
+    "diff": [
+      {
+        "path": "agents/agent-T1/instructions.md",
+        "oldSha256": "c85c05ad7023b2098524a3396a2b5ee8604912b5542715053bd0b3557a5554cc",
+        "newSha256": "f5586614613209a1741b4d030374e9ca1278180d952baccc4183a573873725f3",
+        "before": "You are agent-T1. Solve exactly 1+2. Return JSON only with numeric field answer equal to 3. Do not add prose.\n",
+        "after": "You are agent-T1. Solve exactly 2+3. Return JSON only with numeric field answer equal to 5. Do not add prose.\n",
+        "kind": "asset"
+      },
+      {
+        "path": "contracts/agent-T1-output.schema.json",
+        "oldSha256": "2c9bcb5169d38a6b8cf16323fa99b5e6188ea9001ba444241c5eea86d646a397",
+        "newSha256": "76dc49aae9e8a97943df2b5e2a42b460a91ad7632fbc649a3c989e10149a80c2",
+        "before": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": {\n      \"type\": \"number\",\n      \"const\": 3\n    }\n  },\n  \"required\": [\n    \"answer\"\n  ],\n  \"additionalProperties\": false\n}\n",
+        "after": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"properties\": { \"answer\": { \"type\": \"number\", \"const\": 5 } },\n  \"required\": [\"answer\"],\n  \"additionalProperties\": false\n}\n",
+        "kind": "validation"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

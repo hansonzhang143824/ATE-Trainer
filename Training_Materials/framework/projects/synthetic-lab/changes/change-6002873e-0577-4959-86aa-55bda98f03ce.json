@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "projectId": "synthetic-lab",
+  "changeSetId": "change-6002873e-0577-4959-86aa-55bda98f03ce",
+  "baseRevision": "revision-176f6314-577d-40e2-a692-f50757818a17",
+  "appliedRevision": "revision-c9b32249-a025-4542-81f2-3b1404ce5009",
+  "requestId": "white-business-metadata-11402986-2f8d-43fd-b36c-dea38d992233",
+  "reason": "Bind white TM109 workflow to BUSINESS_ONLY pipeline",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "synthetic-lab",
+    "revisionId": "revision-c9b32249-a025-4542-81f2-3b1404ce5009",
+    "changeSetId": "change-6002873e-0577-4959-86aa-55bda98f03ce",
+    "diff": [
+      {
+        "path": "agents/tm109-dft-copy/agent.json",
+        "oldSha256": "f942e6528b2e9f18bdc6ef40168ff804f751275bd374d8434c3e4e32e6bec306",
+        "newSha256": "3a7c2a13b3a669ffcd6dd15c25a52d9956f8390cb78d881235c09b003784f84d",
+        "before": "{\n  \"agentId\": \"tm109-dft-copy\",\n  \"name\": \"TM109 DFT Copy\",\n  \"instructionsRef\": \"agents/tm109-dft-copy/instructions.md\",\n  \"skillRefs\": [],\n  \"toolIds\": [],\n  \"inputSchemaRef\": \"contracts/tm109-dft-copy-input.schema.json\",\n  \"outputSchemaRef\": \"contracts/tm109-dft-copy-output.schema.json\",\n  \"businessProfileId\": \"ptc-dft-expert\"\n}\n",
+        "after": "{\n  \"agentId\": \"tm109-dft-copy\",\n  \"name\": \"TM109 DFT Copy\",\n  \"instructionsRef\": \"agents/tm109-dft-copy/instructions.md\",\n  \"skillRefs\": [],\n  \"toolIds\": [],\n  \"inputSchemaRef\": \"contracts/tm109-dft-copy-input.schema.json\",\n  \"outputSchemaRef\": \"contracts/tm109-dft-copy-output.schema.json\",\n  \"businessProfileId\": \"tm109-dft-copy-v2\"\n}\n",
+        "kind": "asset"
+      },
+      {
+        "path": "workflows/tm109-replacement-flow.json",
+        "oldSha256": "238079784500fc656c8abc6a347b11647ca0611836a9edfb0626758d2c902716",
+        "newSha256": "2f3816a4895bd1a6fce25908ae890d6f2f2199c43dc254f07a24d8493e2899bf",
+        "before": "{\n  \"workflowId\": \"tm109-replacement-flow\",\n  \"name\": \"TM109 Copy Replacement Flow\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"tm109-dft-copy\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    },\n    {\n      \"stepId\": \"step-2\",\n      \"agentId\": \"tm109-dft-copy\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"step\",\n          \"stepId\": \"step-1\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ],\n  \"businessPipeline\": {\n    \"workflowId\": \"tm109-input-sync\",\n    \"workflowRevision\": \"business-v1\",\n    \"testItems\": [\n      \"TM109\"\n    ],\n    \"schematicProfileId\": \"ptc-schematic-expert\",\n    \"dftProfileId\": \"ptc-dft-expert\",\n    \"modelChoice\": \"deepseek-v4-flash\"\n  }\n}\n",
+        "after": "{\n  \"workflowId\": \"tm109-replacement-flow\",\n  \"name\": \"TM109 Copy Replacement Flow\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"tm109-dft-copy\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    },\n    {\n      \"stepId\": \"step-2\",\n      \"agentId\": \"tm109-dft-copy\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"step\",\n          \"stepId\": \"step-1\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ],\n  \"businessPipeline\": {\n    \"workflowId\": \"tm109-input-sync\",\n    \"workflowRevision\": \"business-v1\",\n    \"testItems\": [\n      \"TM109\"\n    ],\n    \"schematicProfileId\": \"ptc-schematic-expert\",\n    \"dftProfileId\": \"tm109-dft-copy-v2\",\n    \"modelChoice\": \"deepseek-v4-flash\"\n  }\n}\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

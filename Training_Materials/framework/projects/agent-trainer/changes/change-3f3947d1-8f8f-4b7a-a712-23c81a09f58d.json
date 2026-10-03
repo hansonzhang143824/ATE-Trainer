@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-3f3947d1-8f8f-4b7a-a712-23c81a09f58d",
+  "baseRevision": "revision-4f323421-48e1-4503-b0ab-f6a4fc4e3acc",
+  "appliedRevision": "revision-049b4014-c0a1-45dc-8d35-885000b39a1a",
+  "requestId": "white-candidate-97a95f1f-68cc-4adc-aa0f-2a1e43db89b4",
+  "reason": "用户通过白色 Agent Trainer 向工作流加入 Agent",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-049b4014-c0a1-45dc-8d35-885000b39a1a",
+    "changeSetId": "change-3f3947d1-8f8f-4b7a-a712-23c81a09f58d",
+    "diff": [
+      {
+        "path": "workflows/workflow-T1.json",
+        "oldSha256": "731aceb96adcefd266a7da73e5c60c2ae6b6d23b7accb7432dcfe9cf974af668",
+        "newSha256": "4e9a0b9f0bc2f26d16a1d34a4b49d80dc9fadce97e4cbdcf947d0ea03ea4be60",
+        "before": "{\n  \"workflowId\": \"workflow-T1\",\n  \"name\": \"workflow-T1\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"agent-T1\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "after": "{\n  \"workflowId\": \"workflow-T1\",\n  \"name\": \"workflow-T1\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"agent-T1\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    },\n    {\n      \"stepId\": \"step-2\",\n      \"agentId\": \"agent-T2\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"step\",\n          \"stepId\": \"step-1\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

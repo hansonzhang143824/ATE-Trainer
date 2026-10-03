@@ -1,0 +1,43 @@
+{
+  "runId": "framework-dec37660-6a9c-449f-b5fc-c6d0c3b07bad",
+  "projectId": "agent-trainer",
+  "targetKind": "workflow",
+  "targetId": "custom-workflow-1",
+  "bundleSha256": "fd3aa838e44b3de4b3cc891a79932f82bbaa9c3e5ec342b134ad40d4b64e1a16",
+  "executionBundleSha256": "6fd06d5056dfd3c2ed180871d5ac5dbc30b64c470b49d4bcc07908f30792ca07",
+  "sourceBundleSha256": "fd3aa838e44b3de4b3cc891a79932f82bbaa9c3e5ec342b134ad40d4b64e1a16",
+  "workflowRevision": "revision-a23f0cc3-aa19-4151-9c28-5734f35311c0",
+  "executionMode": "SMOKE_ONLY",
+  "status": "completed",
+  "validation": {
+    "ok": true,
+    "errors": []
+  },
+  "businessGatePassed": false,
+  "steps": [
+    {
+      "stepId": "step-1",
+      "agentId": "agent-T2",
+      "agentRevision": "revision-a23f0cc3-aa19-4151-9c28-5734f35311c0",
+      "status": "completed"
+    },
+    {
+      "stepId": "step-2",
+      "agentId": "custom-agent-7",
+      "agentRevision": "revision-a23f0cc3-aa19-4151-9c28-5734f35311c0",
+      "status": "completed"
+    },
+    {
+      "stepId": "step-3",
+      "agentId": "agent-T3",
+      "agentRevision": "revision-a23f0cc3-aa19-4151-9c28-5734f35311c0",
+      "status": "completed"
+    },
+    {
+      "stepId": "step-4",
+      "agentId": "custom-agent-5",
+      "agentRevision": "revision-a23f0cc3-aa19-4151-9c28-5734f35311c0",
+      "status": "completed"
+    }
+  ]
+}

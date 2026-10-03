@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-9e8ab8f7-1a4d-4c2e-adfa-3af7cc2c7e3d",
+  "baseRevision": "revision-fe6d4b17-1767-4e89-ac2a-5f12b4436820",
+  "appliedRevision": "revision-acda56d0-3719-45ad-98a8-0c4e4c76e6f0",
+  "requestId": "t1-instr-oneline-v1",
+  "reason": "User-requested real candidate optimization: replace agent-T1 instructions with the specified single-paragraph wording (2+3, JSON-only numeric answer 5, no prose/fences, Chinese+English input).",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-acda56d0-3719-45ad-98a8-0c4e4c76e6f0",
+    "changeSetId": "change-9e8ab8f7-1a4d-4c2e-adfa-3af7cc2c7e3d",
+    "diff": [
+      {
+        "path": "agents/agent-T1/instructions.md",
+        "oldSha256": "31c592f1e5a987ba779a6cdce81a20e2e3f569d551ed70ba1e530fdcc7aea7b9",
+        "newSha256": "b97ef7e4a9d6960389cf3945658f0fb75f14114e635f0e836fc31136b4c9bc4e",
+        "before": "You are agent-T1.\n1. Solve exactly 2+3.\n2. Return JSON only with numeric field answer equal to 5; no prose or code fences.\n3. Accept Chinese and English prompts.\n",
+        "after": "Agent-T1 computes 2+3. Emit only JSON with numeric answer 5. Never include prose or markdown fences. Handle Chinese and English input.",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "frozenVersionId": "frozen-85e70b63-d20a-4570-bbe5-68c90deea6f3",
+  "bundleSha256": "8b2c47f625e56c0ffaa37d5769693b475d30ed035930644dc7a50ec477539fe7",
+  "revisionId": "revision-b1562c9c-9813-47fd-9664-57c8ffaeef5a",
+  "targetKind": "workflow",
+  "targetId": "workflow-T5",
+  "workflowRevision": "revision-b1562c9c-9813-47fd-9664-57c8ffaeef5a",
+  "agentBindings": [
+    {
+      "stepId": "step-1",
+      "agentId": "agent-T3",
+      "agentRevision": "revision-b1562c9c-9813-47fd-9664-57c8ffaeef5a"
+    },
+    {
+      "stepId": "step-2",
+      "agentId": "agent-T1",
+      "agentRevision": "revision-b1562c9c-9813-47fd-9664-57c8ffaeef5a"
+    },
+    {
+      "stepId": "step-3",
+      "agentId": "agent-T2",
+      "agentRevision": "revision-b1562c9c-9813-47fd-9664-57c8ffaeef5a"
+    }
+  ]
+}

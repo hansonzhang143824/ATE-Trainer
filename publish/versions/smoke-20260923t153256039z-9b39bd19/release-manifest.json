@@ -1,0 +1,637 @@
+{
+  "schemaVersion": 1,
+  "kind": "SMOKE_ONLY",
+  "outputUse": "diagnostic-only",
+  "realBusinessGatesPassed": false,
+  "releaseId": "smoke-20260923t153256039z-9b39bd19",
+  "createdAt": "2026-09-23T15:32:58.279Z",
+  "createdBy": "DSH native training panel",
+  "previousReleaseId": "smoke-20260923t150600982z-21b80f94",
+  "profileIds": [
+    "ate-implementer",
+    "compile-diagnostician",
+    "evolution-expert",
+    "method-expert",
+    "ptc-dft-expert",
+    "ptc-schematic-expert",
+    "rule-reviewer",
+    "strategy-expert"
+  ],
+  "profileRunIds": {
+    "ate-implementer": "training-20260923t144355z-abc1755e",
+    "compile-diagnostician": "training-20260923t144409z-4207c35c",
+    "evolution-expert": "training-20260923t144423z-edca427c",
+    "method-expert": "training-20260923t144320z-58d729cc",
+    "ptc-dft-expert": "training-20260923t153027z-73e1f3a4",
+    "ptc-schematic-expert": "training-20260923t153038z-e24741f0",
+    "rule-reviewer": "training-20260923t144332z-d1533fe6",
+    "strategy-expert": "training-20260923t144306z-928dc828"
+  },
+  "pipelineRunId": "training-20260923t153121z-decde4ac",
+  "roleProfiles": {
+    "dft-expert": "ptc-dft-expert",
+    "schematic-expert": "ptc-schematic-expert",
+    "test-strategy-architect": "strategy-expert",
+    "test-method-expert": "method-expert",
+    "rule-reviewer": "rule-reviewer",
+    "ate-implementer": "ate-implementer",
+    "compile-diagnostician": "compile-diagnostician",
+    "evolution-expert": "evolution-expert"
+  },
+  "stages": [
+    "INPUT_SYNC",
+    "STRATEGY",
+    "METHOD",
+    "RULE_REVIEW_METHOD",
+    "IMPLEMENTATION",
+    "RULE_REVIEW_IMPLEMENTATION",
+    "COMPILE"
+  ],
+  "files": [
+    {
+      "path": "evidence/training-20260923t144306z-928dc828/evidence/profile-smoke-child.json",
+      "sha256": "34be097ad9505945e1192a653b710224a80ec9882ff9f564ab504448c5a36282",
+      "size": 3859
+    },
+    {
+      "path": "evidence/training-20260923t144306z-928dc828/evidence/profile-smoke.json",
+      "sha256": "482b2735c78338864ed7334402268450d17158832bdba066237f71b6bc4ad4da",
+      "size": 1069
+    },
+    {
+      "path": "evidence/training-20260923t144306z-928dc828/profile/instructions.md",
+      "sha256": "6912a5c0e6d4fa5b16fd74d4f5da99e7298185af121373326efc9040910af71e",
+      "size": 12098
+    },
+    {
+      "path": "evidence/training-20260923t144306z-928dc828/profile/output-contract.schema.json",
+      "sha256": "d93e132794982962c7b1db89848b3903078df3573de467f2007e08d782767e90",
+      "size": 857
+    },
+    {
+      "path": "evidence/training-20260923t144306z-928dc828/profile/profile.yaml",
+      "sha256": "bf8570fa78646e3e76ed74d6aa87c6abad4f1f4c574fffb8e56fbcdf55037dad",
+      "size": 735
+    },
+    {
+      "path": "evidence/training-20260923t144306z-928dc828/profile/snapshot.json",
+      "sha256": "29f5311b72a25c5b23eabe95fd04430466a97edaf0604b9cbc72874ca124cd15",
+      "size": 1194
+    },
+    {
+      "path": "evidence/training-20260923t144306z-928dc828/run.json",
+      "sha256": "8a298a6044a789e08b83718303932b8ef526cc395a4fa3f8f0a79ff9a5f89e63",
+      "size": 325
+    },
+    {
+      "path": "evidence/training-20260923t144306z-928dc828/state.json",
+      "sha256": "ba8c24a57372f1036c031367be7a2a4dbb0e3a4010e62f19d580410f8666c5f5",
+      "size": 1079
+    },
+    {
+      "path": "evidence/training-20260923t144320z-58d729cc/evidence/profile-smoke-child.json",
+      "sha256": "d58443fa9f37c341a4892f3524ada90aafa2761bbf7b2fa9915384da3e949e70",
+      "size": 5710
+    },
+    {
+      "path": "evidence/training-20260923t144320z-58d729cc/evidence/profile-smoke.json",
+      "sha256": "2e615d461f46f55b5555205a241a3ae3ce42565f47246cddbed594ada4b5c0bb",
+      "size": 1067
+    },
+    {
+      "path": "evidence/training-20260923t144320z-58d729cc/profile/instructions.md",
+      "sha256": "86ff715f2dae8de5a18bd0859af563a999dfa31165844ef916708c1feb4c9282",
+      "size": 6933
+    },
+    {
+      "path": "evidence/training-20260923t144320z-58d729cc/profile/output-contract.schema.json",
+      "sha256": "3852e4eabf0efe2c42319a6856c03178228f2754dfc8d4bb648ce6a37ffe7270",
+      "size": 674
+    },
+    {
+      "path": "evidence/training-20260923t144320z-58d729cc/profile/profile.yaml",
+      "sha256": "0c78275b8ec5e548fa2ab6eb37b35b536885110673f8157cd03ec1877ed61f28",
+      "size": 588
+    },
+    {
+      "path": "evidence/training-20260923t144320z-58d729cc/profile/snapshot.json",
+      "sha256": "1ebade41729feb46afcb347dc24384996f16038904dbe559b7cbc784b20a7972",
+      "size": 1185
+    },
+    {
+      "path": "evidence/training-20260923t144320z-58d729cc/run.json",
+      "sha256": "eceaea6c4308a61bd5ab58ef7dcf05e37c5bff79aa26ee92be3a45867cae7023",
+      "size": 325
+    },
+    {
+      "path": "evidence/training-20260923t144320z-58d729cc/state.json",
+      "sha256": "f24cc0ed10f7a4fb07c1c7d2a02ef3988cb027d91657d8438a701cd66b1f0256",
+      "size": 1077
+    },
+    {
+      "path": "evidence/training-20260923t144332z-d1533fe6/evidence/profile-smoke-child.json",
+      "sha256": "8e622da3966a1ba5cd0a556be44f9a77252e9f3c4db0648c698e90dac2f356cc",
+      "size": 5990
+    },
+    {
+      "path": "evidence/training-20260923t144332z-d1533fe6/evidence/profile-smoke.json",
+      "sha256": "ef899eec1689a7d11a8dd1109ccea7dccac690d336decdf4fb7be08f647e74ed",
+      "size": 1067
+    },
+    {
+      "path": "evidence/training-20260923t144332z-d1533fe6/profile/instructions.md",
+      "sha256": "6f796dea976dc336ac4b1b3a7429f5234b63399e2326770cfbf3c0afa6da617b",
+      "size": 7649
+    },
+    {
+      "path": "evidence/training-20260923t144332z-d1533fe6/profile/output-contract.schema.json",
+      "sha256": "53ac8a6991dcded6830638889b3a55e2fc06c7f39bbba8da56cde0de801ef12b",
+      "size": 669
+    },
+    {
+      "path": "evidence/training-20260923t144332z-d1533fe6/profile/profile.yaml",
+      "sha256": "3c9b985bb54dcfad28b8f7b547e9c337334f90624a401da0b30b06f6627c42e5",
+      "size": 629
+    },
+    {
+      "path": "evidence/training-20260923t144332z-d1533fe6/profile/snapshot.json",
+      "sha256": "80e6c09617859e0da6f936b9af4f2bc3cbdfa5039e24859af382997bd84c2023",
+      "size": 1185
+    },
+    {
+      "path": "evidence/training-20260923t144332z-d1533fe6/run.json",
+      "sha256": "ae27a86de3903217d90dab85fb166c9a2df93de7012392f79b7d22f801c897bd",
+      "size": 325
+    },
+    {
+      "path": "evidence/training-20260923t144332z-d1533fe6/state.json",
+      "sha256": "1b03900bec18bbc6177c75379f140d0772fd330beaab25a9f2532bd01fbe5c37",
+      "size": 1077
+    },
+    {
+      "path": "evidence/training-20260923t144355z-abc1755e/evidence/profile-smoke-child.json",
+      "sha256": "8cefc5f5f516140393c37b3ef1a1bf0bb2f7a05576f39c68fbc82b70220b7374",
+      "size": 3429
+    },
+    {
+      "path": "evidence/training-20260923t144355z-abc1755e/evidence/profile-smoke.json",
+      "sha256": "240081be1cf8e0a0455a94301648dd3fbef91e694936430bb7abc2ba3ef0004e",
+      "size": 1069
+    },
+    {
+      "path": "evidence/training-20260923t144355z-abc1755e/profile/instructions.md",
+      "sha256": "7c5961cd971df7acf93aa5a1a0955bf52a66abfc4b32dfd797da30914906d857",
+      "size": 8804
+    },
+    {
+      "path": "evidence/training-20260923t144355z-abc1755e/profile/output-contract.schema.json",
+      "sha256": "d8b13a148802129c9ef56b95855f00c22c1cc77c478e4d8189d92355874fc170",
+      "size": 930
+    },
+    {
+      "path": "evidence/training-20260923t144355z-abc1755e/profile/profile.yaml",
+      "sha256": "102b0e7af72783f2479d0b90dd01ea386b87f43fb9c6b6dff9e0683d69585cca",
+      "size": 603
+    },
+    {
+      "path": "evidence/training-20260923t144355z-abc1755e/profile/snapshot.json",
+      "sha256": "cce245abc617b97c519faf2427d78f503f0b9a72b00e1b2ffdcf619efc011b74",
+      "size": 1193
+    },
+    {
+      "path": "evidence/training-20260923t144355z-abc1755e/run.json",
+      "sha256": "cb3fa22004ec75bd616e4c3e42e882f635fad002644aa250a1b0607cd037ccf7",
+      "size": 325
+    },
+    {
+      "path": "evidence/training-20260923t144355z-abc1755e/state.json",
+      "sha256": "42d1e650e673aa6da734f95d82354b37d1403e2f8c8d5e3d8707b7e6cc8fd760",
+      "size": 1079
+    },
+    {
+      "path": "evidence/training-20260923t144409z-4207c35c/evidence/profile-smoke-child.json",
+      "sha256": "15b620e0b48c2580f7cfae6e11cbef4906f8b809e0ca97fa45dccea56670ef6f",
+      "size": 4058
+    },
+    {
+      "path": "evidence/training-20260923t144409z-4207c35c/evidence/profile-smoke.json",
+      "sha256": "fa78654dcfe2108d9d7423dcf742d6c4a0b9c9a1ae8b49afc78967ea621c9dd2",
+      "size": 1075
+    },
+    {
+      "path": "evidence/training-20260923t144409z-4207c35c/profile/instructions.md",
+      "sha256": "13820697d9906d760c3795bcf64efe3d72dd3ba53350c3f88fa4998b7a0b2fbe",
+      "size": 5035
+    },
+    {
+      "path": "evidence/training-20260923t144409z-4207c35c/profile/output-contract.schema.json",
+      "sha256": "79120256fe76191a92d74082de0693c698b280b802c0ee70a5f217dffd6c7c70",
+      "size": 517
+    },
+    {
+      "path": "evidence/training-20260923t144409z-4207c35c/profile/profile.yaml",
+      "sha256": "ac08fbd9e4edadd1e070b63cf6e0993eb3ba35cd45b896345635c8527fcf1077",
+      "size": 537
+    },
+    {
+      "path": "evidence/training-20260923t144409z-4207c35c/profile/snapshot.json",
+      "sha256": "2260dc98a79cd059bfebccf8482323e047172df563ca5dec56cbc4e347bc1283",
+      "size": 1217
+    },
+    {
+      "path": "evidence/training-20260923t144409z-4207c35c/run.json",
+      "sha256": "5be9f17334731dc70f087b141c9112092e3ce57505206fb0d08de45c15336997",
+      "size": 325
+    },
+    {
+      "path": "evidence/training-20260923t144409z-4207c35c/state.json",
+      "sha256": "0b4310c2cef37861384ccac1496446a0c61cb6fbda1bc1146fc5f9f2c28a48d9",
+      "size": 1085
+    },
+    {
+      "path": "evidence/training-20260923t144423z-edca427c/evidence/profile-smoke-child.json",
+      "sha256": "ea5a23ef065aabf19b0b07644397e7ac152e103173bad134a0cb6a244b1ac52c",
+      "size": 3405
+    },
+    {
+      "path": "evidence/training-20260923t144423z-edca427c/evidence/profile-smoke.json",
+      "sha256": "3a0dff61338bc2ef268758a7bb2b15d04b1e4de14b32a4616bab8e251de21f3b",
+      "size": 1070
+    },
+    {
+      "path": "evidence/training-20260923t144423z-edca427c/profile/instructions.md",
+      "sha256": "10dda96ca96608ce3b2d4543bdb6ca3623599f7be2fbd95819d7aaf4313055a6",
+      "size": 2311
+    },
+    {
+      "path": "evidence/training-20260923t144423z-edca427c/profile/output-contract.schema.json",
+      "sha256": "76784db513adeba00d670dd404ba91a8338c2ffe159e9661abc524fb316f4dab",
+      "size": 557
+    },
+    {
+      "path": "evidence/training-20260923t144423z-edca427c/profile/profile.yaml",
+      "sha256": "49c9869683003a721e0561bec870fedc81f0a89b29276dc3a32d2cbe4bf8c5da",
+      "size": 562
+    },
+    {
+      "path": "evidence/training-20260923t144423z-edca427c/profile/snapshot.json",
+      "sha256": "414a1cc9ad2c18542c725f2d6e332c34dab372db88861752a62d4e8d83c470bf",
+      "size": 1197
+    },
+    {
+      "path": "evidence/training-20260923t144423z-edca427c/run.json",
+      "sha256": "d315fcad0486149fcb9acd0cdf043ac36415d4ed03dbb922d33688439cf95337",
+      "size": 325
+    },
+    {
+      "path": "evidence/training-20260923t144423z-edca427c/state.json",
+      "sha256": "5500d3d8515ff47cc164e6f445ea5d19a0c987564124f5b213d42a2927474bb5",
+      "size": 1080
+    },
+    {
+      "path": "evidence/training-20260923t153027z-73e1f3a4/evidence/profile-smoke-child.json",
+      "sha256": "b2e5bf34aaf70408ecd7efff1eb5b08b069f86b4ded0b43078be32578376ce16",
+      "size": 1313
+    },
+    {
+      "path": "evidence/training-20260923t153027z-73e1f3a4/evidence/profile-smoke.json",
+      "sha256": "5aeb778398de8533dbe2ee607270ac3325c821d48fd076540b96ec4086231fe6",
+      "size": 1068
+    },
+    {
+      "path": "evidence/training-20260923t153027z-73e1f3a4/profile/instructions.md",
+      "sha256": "7046fba48d7a51023764e7c85caa5583a4bdf820d1df07229f4d7c10cd063eee",
+      "size": 11740
+    },
+    {
+      "path": "evidence/training-20260923t153027z-73e1f3a4/profile/output-contract.schema.json",
+      "sha256": "00b8f2bfcf6a5e4f531be83ee9b48c4a213feee5dededa226cc166544f895a4a",
+      "size": 9293
+    },
+    {
+      "path": "evidence/training-20260923t153027z-73e1f3a4/profile/profile.yaml",
+      "sha256": "3256959f4bb60241df9598ad691be5d0d1ed4d9275f1ed89ee6cabb8968179dd",
+      "size": 777
+    },
+    {
+      "path": "evidence/training-20260923t153027z-73e1f3a4/profile/snapshot.json",
+      "sha256": "a8f610606887a150b5fe84902703d1272c0e013b26b8f212aa536ac5f41ef622",
+      "size": 1191
+    },
+    {
+      "path": "evidence/training-20260923t153027z-73e1f3a4/run.json",
+      "sha256": "22174a54e050f1f34921e7758d314959187920c0aac34e335dead4974c37c785",
+      "size": 325
+    },
+    {
+      "path": "evidence/training-20260923t153027z-73e1f3a4/state.json",
+      "sha256": "2dc002a60877453dc08a41f4a285ee984111d2d190e199586d2a4d0588edbc39",
+      "size": 1078
+    },
+    {
+      "path": "evidence/training-20260923t153038z-e24741f0/evidence/profile-smoke-child.json",
+      "sha256": "212b2bef245366cbab7067cf5fa9d388d1c426052048d394b258b8cd0210472e",
+      "size": 1990
+    },
+    {
+      "path": "evidence/training-20260923t153038z-e24741f0/evidence/profile-smoke.json",
+      "sha256": "904235bfe8d48cf20b60c14c4cb40e887e83f8b9ce0a18fe090d3396bd234220",
+      "size": 1074
+    },
+    {
+      "path": "evidence/training-20260923t153038z-e24741f0/profile/instructions.md",
+      "sha256": "de1e89d03f585f2270da5f158ff8efe7baa8c911b5c2ef372cb7a09458aeff30",
+      "size": 2882
+    },
+    {
+      "path": "evidence/training-20260923t153038z-e24741f0/profile/output-contract.schema.json",
+      "sha256": "1b1fd85f47d5e74b9639980f564278195356bdc52b6a52b8a1f3708ebe84b68b",
+      "size": 1800
+    },
+    {
+      "path": "evidence/training-20260923t153038z-e24741f0/profile/profile.yaml",
+      "sha256": "d93faa3fd1878e881fbdda97435ce738f1c1acf478cc346ebd9c66fa07cb1e24",
+      "size": 732
+    },
+    {
+      "path": "evidence/training-20260923t153038z-e24741f0/profile/snapshot.json",
+      "sha256": "a05a49e84acea4f891a5e489d0209e37a2ca181c52d7dccaac8d28981e663984",
+      "size": 1214
+    },
+    {
+      "path": "evidence/training-20260923t153038z-e24741f0/run.json",
+      "sha256": "a3395e9ea7a81dd59e7df57bf6a06096a93c16c473ef597c21a0a1d5e8a17a73",
+      "size": 325
+    },
+    {
+      "path": "evidence/training-20260923t153038z-e24741f0/state.json",
+      "sha256": "369f02de8e3b309724f0f13be2334908d2830d200f1b8bfe90d03bc50a4b29c8",
+      "size": 1084
+    },
+    {
+      "path": "evidence/training-20260923t153121z-decde4ac/evidence/roles/COMPILE-compile-diagnostician.json",
+      "sha256": "6e2dda175195351ff06051daac4f8d68bb1f1700a9fb15b97aa52966a2b7de72",
+      "size": 1275
+    },
+    {
+      "path": "evidence/training-20260923t153121z-decde4ac/evidence/roles/IMPLEMENTATION-ate-implementer.json",
+      "sha256": "a36eecbb7c45c40d2c894d73d638f08aa734de5a6bce421b08af58579d918022",
+      "size": 1273
+    },
+    {
+      "path": "evidence/training-20260923t153121z-decde4ac/evidence/roles/INPUT_SYNC-dft-expert.json",
+      "sha256": "f3ae7e2383ee04a3c9b77d08b6bea24742cc1abd22c193dd11c3baabddf91498",
+      "size": 1236
+    },
+    {
+      "path": "evidence/training-20260923t153121z-decde4ac/evidence/roles/INPUT_SYNC-schematic-expert.json",
+      "sha256": "1fdcc837dd6e8beaf4ca04d534706cd790323fcb2aac5f423455386e3533c134",
+      "size": 1266
+    },
+    {
+      "path": "evidence/training-20260923t153121z-decde4ac/evidence/roles/METHOD-test-method-expert.json",
+      "sha256": "5723e79fb9c1d031f5cac5b383b39c0a6fa86907bc71f8a0c66f4f63644ef595",
+      "size": 1251
+    },
+    {
+      "path": "evidence/training-20260923t153121z-decde4ac/evidence/roles/RULE_REVIEW_IMPLEMENTATION-rule-reviewer.json",
+      "sha256": "da45a6898c5d254b5a9a6f7f575873b01377898091157c40535adea7bbc89e4e",
+      "size": 1311
+    },
+    {
+      "path": "evidence/training-20260923t153121z-decde4ac/evidence/roles/RULE_REVIEW_METHOD-rule-reviewer.json",
+      "sha256": "016b837621057266887071260a471b8786a0b676f07cd1a61ae0bd7961c25cd4",
+      "size": 1279
+    },
+    {
+      "path": "evidence/training-20260923t153121z-decde4ac/evidence/roles/SMOKE_AUXILIARY-evolution-expert.json",
+      "sha256": "d848b85a2e464d8be07e637bdee776c4b529958886b6c31942377276cf10f448",
+      "size": 1282
+    },
+    {
+      "path": "evidence/training-20260923t153121z-decde4ac/evidence/roles/STRATEGY-test-strategy-architect.json",
+      "sha256": "4cce8770c591e0951c694428906178d60653f2ab15e5e99cfb0d9878de9015bf",
+      "size": 1281
+    },
+    {
+      "path": "evidence/training-20260923t153121z-decde4ac/run.json",
+      "sha256": "56dd39c8c938039f2813c669272c64285cc194288eb137ca89a7907a2b006786",
+      "size": 325
+    },
+    {
+      "path": "evidence/training-20260923t153121z-decde4ac/simple-orchestration.json",
+      "sha256": "a390e4fd3b067b610ed7b165a51147c215d5f88ab3581cf1b5b8056bd7c41525",
+      "size": 15254
+    },
+    {
+      "path": "evidence/training-20260923t153121z-decde4ac/state.json",
+      "sha256": "9d03a2a40c10bdc57b903fbdcf3552ee59d331102c0e937ba0a666127e71fd74",
+      "size": 682
+    },
+    {
+      "path": "orchestration/ptc_stage_registry.json",
+      "sha256": "5c4f4addfc893b3b5938d2d5f670894c6bec38312a7514478296f0c37e5456ee",
+      "size": 2617
+    },
+    {
+      "path": "profiles/ate-implementer/instructions.md",
+      "sha256": "7c5961cd971df7acf93aa5a1a0955bf52a66abfc4b32dfd797da30914906d857",
+      "size": 8804
+    },
+    {
+      "path": "profiles/ate-implementer/output-contract.schema.json",
+      "sha256": "d8b13a148802129c9ef56b95855f00c22c1cc77c478e4d8189d92355874fc170",
+      "size": 930
+    },
+    {
+      "path": "profiles/ate-implementer/profile.yaml",
+      "sha256": "102b0e7af72783f2479d0b90dd01ea386b87f43fb9c6b6dff9e0683d69585cca",
+      "size": 603
+    },
+    {
+      "path": "profiles/compile-diagnostician/instructions.md",
+      "sha256": "13820697d9906d760c3795bcf64efe3d72dd3ba53350c3f88fa4998b7a0b2fbe",
+      "size": 5035
+    },
+    {
+      "path": "profiles/compile-diagnostician/output-contract.schema.json",
+      "sha256": "79120256fe76191a92d74082de0693c698b280b802c0ee70a5f217dffd6c7c70",
+      "size": 517
+    },
+    {
+      "path": "profiles/compile-diagnostician/profile.yaml",
+      "sha256": "ac08fbd9e4edadd1e070b63cf6e0993eb3ba35cd45b896345635c8527fcf1077",
+      "size": 537
+    },
+    {
+      "path": "profiles/evolution-expert/instructions.md",
+      "sha256": "10dda96ca96608ce3b2d4543bdb6ca3623599f7be2fbd95819d7aaf4313055a6",
+      "size": 2311
+    },
+    {
+      "path": "profiles/evolution-expert/output-contract.schema.json",
+      "sha256": "76784db513adeba00d670dd404ba91a8338c2ffe159e9661abc524fb316f4dab",
+      "size": 557
+    },
+    {
+      "path": "profiles/evolution-expert/profile.yaml",
+      "sha256": "49c9869683003a721e0561bec870fedc81f0a89b29276dc3a32d2cbe4bf8c5da",
+      "size": 562
+    },
+    {
+      "path": "profiles/method-expert/instructions.md",
+      "sha256": "86ff715f2dae8de5a18bd0859af563a999dfa31165844ef916708c1feb4c9282",
+      "size": 6933
+    },
+    {
+      "path": "profiles/method-expert/output-contract.schema.json",
+      "sha256": "3852e4eabf0efe2c42319a6856c03178228f2754dfc8d4bb648ce6a37ffe7270",
+      "size": 674
+    },
+    {
+      "path": "profiles/method-expert/profile.yaml",
+      "sha256": "0c78275b8ec5e548fa2ab6eb37b35b536885110673f8157cd03ec1877ed61f28",
+      "size": 588
+    },
+    {
+      "path": "profiles/ptc-dft-expert/instructions.md",
+      "sha256": "7046fba48d7a51023764e7c85caa5583a4bdf820d1df07229f4d7c10cd063eee",
+      "size": 11740
+    },
+    {
+      "path": "profiles/ptc-dft-expert/output-contract.schema.json",
+      "sha256": "00b8f2bfcf6a5e4f531be83ee9b48c4a213feee5dededa226cc166544f895a4a",
+      "size": 9293
+    },
+    {
+      "path": "profiles/ptc-dft-expert/profile.yaml",
+      "sha256": "3256959f4bb60241df9598ad691be5d0d1ed4d9275f1ed89ee6cabb8968179dd",
+      "size": 777
+    },
+    {
+      "path": "profiles/ptc-schematic-expert/instructions.md",
+      "sha256": "de1e89d03f585f2270da5f158ff8efe7baa8c911b5c2ef372cb7a09458aeff30",
+      "size": 2882
+    },
+    {
+      "path": "profiles/ptc-schematic-expert/output-contract.schema.json",
+      "sha256": "1b1fd85f47d5e74b9639980f564278195356bdc52b6a52b8a1f3708ebe84b68b",
+      "size": 1800
+    },
+    {
+      "path": "profiles/ptc-schematic-expert/profile.yaml",
+      "sha256": "d93faa3fd1878e881fbdda97435ce738f1c1acf478cc346ebd9c66fa07cb1e24",
+      "size": 732
+    },
+    {
+      "path": "profiles/rule-reviewer/instructions.md",
+      "sha256": "6f796dea976dc336ac4b1b3a7429f5234b63399e2326770cfbf3c0afa6da617b",
+      "size": 7649
+    },
+    {
+      "path": "profiles/rule-reviewer/output-contract.schema.json",
+      "sha256": "53ac8a6991dcded6830638889b3a55e2fc06c7f39bbba8da56cde0de801ef12b",
+      "size": 669
+    },
+    {
+      "path": "profiles/rule-reviewer/profile.yaml",
+      "sha256": "3c9b985bb54dcfad28b8f7b547e9c337334f90624a401da0b30b06f6627c42e5",
+      "size": 629
+    },
+    {
+      "path": "profiles/strategy-expert/instructions.md",
+      "sha256": "6912a5c0e6d4fa5b16fd74d4f5da99e7298185af121373326efc9040910af71e",
+      "size": 12098
+    },
+    {
+      "path": "profiles/strategy-expert/output-contract.schema.json",
+      "sha256": "d93e132794982962c7b1db89848b3903078df3573de467f2007e08d782767e90",
+      "size": 857
+    },
+    {
+      "path": "profiles/strategy-expert/profile.yaml",
+      "sha256": "bf8570fa78646e3e76ed74d6aa87c6abad4f1f4c574fffb8e56fbcdf55037dad",
+      "size": 735
+    },
+    {
+      "path": "runtime/plugins/dsh-ptc-control-plane/lib/arithmetic-role-dispatch.js",
+      "sha256": "38d5bdf641caad99f7056b810f8fd93c47ec961828ea07f9cdb7dac0745c4945",
+      "size": 11425
+    },
+    {
+      "path": "runtime/plugins/dsh-ptc-control-plane/lib/profile-training.js",
+      "sha256": "e2fa3be6338dd54896b728edd10368abdb97915e5a67ae0943b7b8e35453c4b8",
+      "size": 13325
+    },
+    {
+      "path": "runtime/plugins/dsh-ptc-control-plane/lib/simple-orchestration-manager.js",
+      "sha256": "e81ab2f59efe7e67fae9e8bb0a5f583e3040e931efec558af2575a0601564683",
+      "size": 4603
+    },
+    {
+      "path": "runtime/plugins/dsh-ptc-control-plane/lib/simple-orchestration.js",
+      "sha256": "74111c85d3daf544c67c7f12b21c710ce441e7b54c471b0cbac61688d8f91bef",
+      "size": 22854
+    },
+    {
+      "path": "runtime/plugins/dsh-ptc-control-plane/lib/training-release.js",
+      "sha256": "0ba56788c4383a14406fbefb50ac223e706a3f09751e285d5da76f36ba936e47",
+      "size": 49765
+    },
+    {
+      "path": "runtime/scripts/prepare_input_sync_v2.py",
+      "sha256": "df7500b1454601e076b06d906a690c58aa6aeee2a0713ddd17ea8f6ae711b820",
+      "size": 3394
+    },
+    {
+      "path": "runtime/scripts/review_method_batch.py",
+      "sha256": "a7098ea1169ef455f6689dac815ea3b736cb18f2e97c67458370d640228210e8",
+      "size": 6311
+    },
+    {
+      "path": "runtime/scripts/run_ptc_incremental_compile.py",
+      "sha256": "ab9945654f45bf31f786cb8a6248b3dc852fd0e8d08a1522d47ce3b15fd48bd7",
+      "size": 1927
+    },
+    {
+      "path": "runtime/scripts/validate_method_contract.py",
+      "sha256": "718c336765aa27b425130d10f019d477ab4535b90044146339fe1aa5c9f782d4",
+      "size": 721
+    },
+    {
+      "path": "runtime/scripts/validate_strategy_contract.py",
+      "sha256": "ec8108188d640ff5e7a9f1043f4a2664792f716589649833d5a02112e4280325",
+      "size": 16915
+    },
+    {
+      "path": "runtime/scripts/verify_implementation_batch.py",
+      "sha256": "849bdae6d50dba10621e9c7df10f911914c783d7f6b4aef73aae6c5711829a16",
+      "size": 12431
+    }
+  ],
+  "bundleDigest": "2e66d1dcf21fae08eb9ee4a3a3af2f600b51e5258175f3c7cc4eeb7e3a8e3d00",
+  "verification": {
+    "kind": "ptc-smoke-evaluation",
+    "status": "passed",
+    "candidateDigest": "2e66d1dcf21fae08eb9ee4a3a3af2f600b51e5258175f3c7cc4eeb7e3a8e3d00",
+    "profileIds": [
+      "ate-implementer",
+      "compile-diagnostician",
+      "evolution-expert",
+      "method-expert",
+      "ptc-dft-expert",
+      "ptc-schematic-expert",
+      "rule-reviewer",
+      "strategy-expert"
+    ],
+    "stages": [
+      "INPUT_SYNC",
+      "STRATEGY",
+      "METHOD",
+      "RULE_REVIEW_METHOD",
+      "IMPLEMENTATION",
+      "RULE_REVIEW_IMPLEMENTATION",
+      "COMPILE"
+    ]
+  }
+}

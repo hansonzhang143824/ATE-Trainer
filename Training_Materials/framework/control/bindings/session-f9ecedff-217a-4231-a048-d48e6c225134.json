@@ -1,0 +1,34 @@
+{
+  "projectId": "agent-trainer",
+  "targetKind": "workflow",
+  "targetId": "custom-workflow-1",
+  "presetId": "agent-trainer",
+  "mode": "training",
+  "selectedRunId": null,
+  "nativeModelPolicy": "host-default",
+  "nativeModelSelection": null,
+  "candidateRevision": "revision-297a4c23-e14d-4e3d-afb9-19a4bf5bdca0",
+  "bindingSchemaVersion": 1,
+  "cwd": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\framework\\control\\sessions\\3027c17ebdac13451c45f9594505bab9b38df2e8db8480bf71e80f148e2bad0a",
+  "sessionId": "session-f9ecedff-217a-4231-a048-d48e6c225134",
+  "bindingRevision": 3,
+  "resolved": {
+    "source": "candidate",
+    "revisionId": "revision-297a4c23-e14d-4e3d-afb9-19a4bf5bdca0",
+    "frozenVersionId": null,
+    "releaseId": null,
+    "via": null
+  },
+  "effectiveTools": [
+    "trainer_apply_changes",
+    "trainer_assets",
+    "trainer_compare",
+    "trainer_context",
+    "trainer_control",
+    "trainer_events",
+    "trainer_run",
+    "trainer_runs",
+    "trainer_validate"
+  ],
+  "toolCatalogSha256": "8234241df8e94381c3bd472b59a4ff8d1f060c2c0014ff8dc0253b0d582f5ce8"
+}

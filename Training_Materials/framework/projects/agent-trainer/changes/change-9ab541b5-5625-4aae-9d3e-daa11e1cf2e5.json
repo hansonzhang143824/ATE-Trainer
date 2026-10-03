@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-9ab541b5-5625-4aae-9d3e-daa11e1cf2e5",
+  "baseRevision": "revision-b000d996-8776-4a7b-bbff-e3b28be0c6e5",
+  "appliedRevision": "revision-21c1971f-1c78-4ed5-af49-435afa36b115",
+  "requestId": "white-candidate-07e3118f-e6c0-4875-b864-f1648e37e395",
+  "reason": "用户通过白色 Agent Trainer 向工作流加入 Agent",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-21c1971f-1c78-4ed5-af49-435afa36b115",
+    "changeSetId": "change-9ab541b5-5625-4aae-9d3e-daa11e1cf2e5",
+    "diff": [
+      {
+        "path": "workflows/workflow-T4.json",
+        "oldSha256": "3ee46b79e042207d51ea3969563121576def6f9ed48a820b53604f563a874ad9",
+        "newSha256": "8f83cd2a426893a5a27ff961366187ea3ade2c81fd339ea30c571a104499fa10",
+        "before": "{\n  \"workflowId\": \"workflow-T4\",\n  \"name\": \"workflow-T4\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"custom-agent-1\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"outputBindings\": {\n        \"\": {\n          \"source\": \"output\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "after": "{\n  \"workflowId\": \"workflow-T4\",\n  \"name\": \"workflow-T4\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"custom-agent-1\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"outputBindings\": {\n        \"\": {\n          \"source\": \"output\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    },\n    {\n      \"stepId\": \"step-2\",\n      \"agentId\": \"agent-T2\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"step\",\n          \"stepId\": \"step-1\",\n          \"pointer\": \"\"\n        }\n      },\n      \"outputBindings\": {\n        \"\": {\n          \"source\": \"output\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

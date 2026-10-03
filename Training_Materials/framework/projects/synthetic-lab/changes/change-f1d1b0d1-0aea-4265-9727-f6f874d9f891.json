@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "synthetic-lab",
+  "changeSetId": "change-f1d1b0d1-0aea-4265-9727-f6f874d9f891",
+  "baseRevision": "revision-37c83020-802c-4f8c-b437-95f885ead604",
+  "appliedRevision": "revision-e226650f-55ba-4def-8d98-e0e531bbd0cb",
+  "requestId": "white-save-d953afe4-eef1-4083-8ee5-3a669459f759",
+  "reason": "用户通过白色 Agent Trainer 保存候选",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "synthetic-lab",
+    "revisionId": "revision-e226650f-55ba-4def-8d98-e0e531bbd0cb",
+    "changeSetId": "change-f1d1b0d1-0aea-4265-9727-f6f874d9f891",
+    "diff": [
+      {
+        "path": "agents/arith-optimization-agent/instructions.md",
+        "oldSha256": "508232fe67c698ae6d50162f1e9393cc0a757da5d9c1dca3adab98d63b05eaad",
+        "newSha256": "c1d888aa8d1ad4872e5b4b3bb59cc60f85c329eea649f914d8fdf8fa89d949bc",
+        "before": "v2 optimized arithmetic training: preserve numeric addition and return a JSON object with value equal to input.a + input.b. For input {\"a\":2,\"b\":3}, return {\"value\":5}.\n\n# Candidate saved from white Agent Trainer\n\n# Candidate saved from white Agent Trainer\n",
+        "after": "v2 optimized arithmetic training: preserve numeric addition and return a JSON object with value equal to input.a + input.b. For input {\"a\":2,\"b\":3}, return {\"value\":5}.\n\n# Candidate saved from white Agent Trainer\n\n# Candidate saved from white Agent Trainer\n\n# Candidate saved from white Agent Trainer\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

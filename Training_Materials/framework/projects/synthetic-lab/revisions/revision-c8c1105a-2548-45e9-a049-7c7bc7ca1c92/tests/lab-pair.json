@@ -1,0 +1,23 @@
+{
+  "testId": "lab-pair",
+  "targetKind": "workflow",
+  "targetId": "lab-pair",
+  "cases": [
+    {
+      "input": {
+        "seed": 7
+      },
+      "expected": {
+        "receivedValue": 8
+      }
+    },
+    {
+      "input": {
+        "seed": 19
+      },
+      "expected": {
+        "receivedValue": 20
+      }
+    }
+  ]
+}

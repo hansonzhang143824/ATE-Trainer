@@ -1,0 +1,25 @@
+{
+  "runId": "framework-f4be7479-b94b-4df4-a715-3ba407f88159",
+  "projectId": "synthetic-lab",
+  "targetKind": "workflow",
+  "targetId": "tm109-replacement-flow",
+  "bundleSha256": "3eb3293caa44fc20da682288c8f319de1d553c9d3020f4fe33d5ff7b31a0d166",
+  "status": "completed",
+  "validation": {
+    "ok": true,
+    "errors": []
+  },
+  "businessGatePassed": false,
+  "steps": [
+    {
+      "stepId": "step-1",
+      "agentId": "tm109-dft-copy",
+      "status": "completed"
+    },
+    {
+      "stepId": "step-2",
+      "agentId": "tm109-dft-copy",
+      "status": "completed"
+    }
+  ]
+}

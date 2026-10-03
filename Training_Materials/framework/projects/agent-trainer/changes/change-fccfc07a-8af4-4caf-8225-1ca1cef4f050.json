@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-fccfc07a-8af4-4caf-8225-1ca1cef4f050",
+  "baseRevision": "revision-e8ba62dc-1e97-4731-a187-5e19f98b9a5b",
+  "appliedRevision": "revision-646bae7d-ae45-415a-b58b-cbdb8108c2f1",
+  "requestId": "t1-instructions-duallang-json-001",
+  "reason": "用户要求：在 2+3 / answer=5 合同不变的前提下，为 agent-T1 的 instructions 增加一句 \"Accept Chinese and English prompts, always return JSON only.\"",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-646bae7d-ae45-415a-b58b-cbdb8108c2f1",
+    "changeSetId": "change-fccfc07a-8af4-4caf-8225-1ca1cef4f050",
+    "diff": [
+      {
+        "path": "agents/agent-T1/instructions.md",
+        "oldSha256": "f5586614613209a1741b4d030374e9ca1278180d952baccc4183a573873725f3",
+        "newSha256": "7a0dd073e0a38af2c34bb195a539ad0bc883061e32f55881304f1f6058f5bca6",
+        "before": "You are agent-T1. Solve exactly 2+3. Return JSON only with numeric field answer equal to 5. Do not add prose.\n",
+        "after": "You are agent-T1. Solve exactly 2+3. Return JSON only with numeric field answer equal to 5. Do not add prose. Accept Chinese and English prompts, always return JSON only.\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

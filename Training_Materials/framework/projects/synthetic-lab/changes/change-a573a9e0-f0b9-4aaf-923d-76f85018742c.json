@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "synthetic-lab",
+  "changeSetId": "change-a573a9e0-f0b9-4aaf-923d-76f85018742c",
+  "baseRevision": "revision-86d019aa-22b9-4018-8e32-a5c43081e118",
+  "appliedRevision": "revision-9379bdbc-8c03-4a82-9e3a-d77b740dd875",
+  "requestId": "white-save-ea2f7c1c-7181-441a-a0a4-c96271c1ebe6",
+  "reason": "用户通过白色 Agent Trainer 保存候选",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "synthetic-lab",
+    "revisionId": "revision-9379bdbc-8c03-4a82-9e3a-d77b740dd875",
+    "changeSetId": "change-a573a9e0-f0b9-4aaf-923d-76f85018742c",
+    "diff": [
+      {
+        "path": "agents/arith-optimization-agent/instructions.md",
+        "oldSha256": "18618d19cc1e38adb69964a854ef48cb94c617e8e80c881f3d5da637c8c44a25",
+        "newSha256": "f05345ac6178baa0b5e79dac66611ebb642b7a8d42ac34a0c12d602cb79ae54c",
+        "before": "v2 optimized arithmetic training: preserve numeric addition and return a JSON object with value equal to input.a + input.b. For input {\"a\":2,\"b\":3}, return {\"value\":5}.\n",
+        "after": "v2 optimized arithmetic training: preserve numeric addition and return a JSON object with value equal to input.a + input.b. For input {\"a\":2,\"b\":3}, return {\"value\":5}.\n\n# Candidate saved from white Agent Trainer\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

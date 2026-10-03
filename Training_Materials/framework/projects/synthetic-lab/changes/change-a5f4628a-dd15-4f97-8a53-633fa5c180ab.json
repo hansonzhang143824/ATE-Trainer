@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "synthetic-lab",
+  "changeSetId": "change-a5f4628a-dd15-4f97-8a53-633fa5c180ab",
+  "baseRevision": "revision-3266b1e5-88e2-4f90-90c7-dd438149957c",
+  "appliedRevision": "revision-f10d29ea-8606-49ef-8904-ef9ba5388830",
+  "requestId": "b056b2d5-f1eb-42f0-9cb2-2f05d7ebea1e",
+  "reason": "创建合成工作流模板",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "synthetic-lab",
+    "revisionId": "revision-f10d29ea-8606-49ef-8904-ef9ba5388830",
+    "changeSetId": "change-a5f4628a-dd15-4f97-8a53-633fa5c180ab",
+    "diff": [
+      {
+        "path": "workflows/tm109-replacement-flow.json",
+        "oldSha256": null,
+        "newSha256": "73dcfc70f55d1ea2e4b41b66cf6f33b0b65f2c19ee3ad889b445deca975168d7",
+        "before": null,
+        "after": "{\n  \"workflowId\": \"tm109-replacement-flow\",\n  \"name\": \"TM109 Copy Replacement Flow\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"tm109-dft-copy\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    },\n    {\n      \"stepId\": \"step-2\",\n      \"agentId\": \"lab-consumer\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"step\",\n          \"stepId\": \"step-1\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

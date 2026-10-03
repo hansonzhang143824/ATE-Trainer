@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "runId": "training-20260924t002517z-c0aaa724",
+  "status": "completed",
+  "target": {
+    "kind": "profile",
+    "profileId": "evolution-expert"
+  },
+  "purpose": "smoke-training",
+  "createdAt": "2026-09-24T00:25:17.282Z",
+  "updatedAt": "2026-09-24T00:25:38.679Z",
+  "startedAt": "2026-09-24T00:25:17.333Z",
+  "modelChoice": "default",
+  "finishedAt": "2026-09-24T00:25:38.679Z",
+  "outcome": {
+    "mode": "SMOKE_ONLY",
+    "smokePassed": true,
+    "businessGatePassed": false,
+    "profileInstructionsValidated": false,
+    "modelDispatched": true,
+    "profileSnapshotSha256": "39396b9dd744a795f06084cfa8ed6347e6cc7339b76e915f3bd267f39989bdb8",
+    "responseSha256": "9ccd9edb66feb41430092ffd2e29b4d12617f7c51155e392a6c3774236813368",
+    "childResultSha256": "9ccd9edb66feb41430092ffd2e29b4d12617f7c51155e392a6c3774236813368",
+    "reason": null,
+    "evidence": "Training_Materials/runs/training-20260924t002517z-c0aaa724/evidence/profile-smoke.json",
+    "evidenceSha256": "6b2e1a4d36b7ab6c61b63d30b45819c884edef310dca8a41dd4f81276db20829"
+  }
+}

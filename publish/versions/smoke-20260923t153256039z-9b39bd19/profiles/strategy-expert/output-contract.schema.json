@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "required": ["tm", "classification", "registerConfiguration", "resourceAllocation"],
+  "properties": {
+    "tm": { "type": "string", "minLength": 2 },
+    "classification": {
+      "type": "object",
+      "required": ["family"],
+      "properties": {
+        "family": { "type": "string", "enum": ["direct_measurement", "scan", "trim"] }
+      }
+    },
+    "registerConfiguration": {
+      "type": "object",
+      "required": ["sourceEvidence"],
+      "properties": {
+        "sourceEvidence": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "resourceAllocation": {
+      "type": "object",
+      "required": ["sourceTable", "relayCombination"],
+      "properties": {
+        "sourceTable": { "type": "string" },
+        "relayCombination": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

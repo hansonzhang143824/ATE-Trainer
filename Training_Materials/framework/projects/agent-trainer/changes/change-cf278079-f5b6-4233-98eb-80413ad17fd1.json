@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-cf278079-f5b6-4233-98eb-80413ad17fd1",
+  "baseRevision": "revision-71aa1cfa-3962-49a1-9dbb-af0b3e544ed3",
+  "appliedRevision": "revision-3f3b9ddc-a765-4e14-83de-3beb1dbd13c2",
+  "requestId": "white-candidate-07b36215-9340-4e48-84da-c32ec3118131",
+  "reason": "用户通过白色 Agent Trainer 新建候选 Agent（同时更新 ID 台账）",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-3f3b9ddc-a765-4e14-83de-3beb1dbd13c2",
+    "changeSetId": "change-cf278079-f5b6-4233-98eb-80413ad17fd1",
+    "diff": [
+      {
+        "path": "agents/agent-a0ecc747/instructions.md",
+        "oldSha256": null,
+        "newSha256": "1797be0a8b470b537206902110eef9df87d081d9bc98c7357d9646a20630d743",
+        "before": null,
+        "after": "新 Agent 1 的候选 Agent。请按输入输出合同执行当前任务，并返回可验证的 JSON。\n",
+        "kind": "asset"
+      },
+      {
+        "path": "agents/agent-a0ecc747/agent.json",
+        "oldSha256": null,
+        "newSha256": "fbca9399c278a39feaddd7be13d5935c40f7cf5d260ab5ef3ecf18720aea8a78",
+        "before": null,
+        "after": "{\n  \"agentId\": \"agent-a0ecc747\",\n  \"name\": \"新 Agent 1\",\n  \"instructionsRef\": \"agents/agent-a0ecc747/instructions.md\",\n  \"skillRefs\": [],\n  \"toolIds\": [],\n  \"inputSchemaRef\": \"contracts/agent-a0ecc747-input.schema.json\",\n  \"outputSchemaRef\": \"contracts/agent-a0ecc747-output.schema.json\"\n}\n",
+        "kind": "asset"
+      },
+      {
+        "path": "contracts/agent-a0ecc747-input.schema.json",
+        "oldSha256": null,
+        "newSha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+        "before": null,
+        "after": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"additionalProperties\": true\n}\n",
+        "kind": "validation"
+      },
+      {
+        "path": "contracts/agent-a0ecc747-output.schema.json",
+        "oldSha256": null,
+        "newSha256": "fef974bf60f425c9b5aac171ab1899026ed0a3c44dc447dd564e66d85f123cbf",
+        "before": null,
+        "after": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"additionalProperties\": true\n}\n",
+        "kind": "validation"
+      },
+      {
+        "path": "contracts/agent-ids.json",
+        "oldSha256": "23590081450f8a61e7ed5f0a7408bffbfe313dab8817d979075403e0bd4ec3ce",
+        "newSha256": "f2feffeef32b185fcf42959a11474744c1be1b2db368099fcec6551d02f934b5",
+        "before": "{\n  \"schemaVersion\": 1,\n  \"allocated\": [\n    \"agent-74be5219\",\n    \"agent-T1\",\n    \"agent-T2\",\n    \"agent-T3\",\n    \"agent-b874b4a8\",\n    \"custom-agent-1\",\n    \"custom-agent-10\",\n    \"custom-agent-4\",\n    \"custom-agent-5\",\n    \"custom-agent-6\",\n    \"custom-agent-7\",\n    \"custom-agent-8\",\n    \"custom-agent-9\",\n    \"lab-consumer\",\n    \"lab-producer\"\n  ]\n}\n",
+        "after": "{\n  \"schemaVersion\": 1,\n  \"allocated\": [\n    \"agent-74be5219\",\n    \"agent-T1\",\n    \"agent-T2\",\n    \"agent-T3\",\n    \"agent-b874b4a8\",\n    \"custom-agent-1\",\n    \"custom-agent-10\",\n    \"custom-agent-4\",\n    \"custom-agent-5\",\n    \"custom-agent-6\",\n    \"custom-agent-7\",\n    \"custom-agent-8\",\n    \"custom-agent-9\",\n    \"lab-consumer\",\n    \"lab-producer\",\n    \"agent-a0ecc747\"\n  ]\n}\n",
+        "kind": "validation"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

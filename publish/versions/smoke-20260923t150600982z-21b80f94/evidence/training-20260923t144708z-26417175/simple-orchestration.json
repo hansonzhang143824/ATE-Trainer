@@ -1,0 +1,314 @@
+{
+  "schemaVersion": 1,
+  "runId": "training-20260923t144708z-26417175",
+  "mode": "SMOKE_ONLY",
+  "status": "completed",
+  "reason": null,
+  "contextDigest": "a2eb80ecd76a6196d57f82d324c7542a9df02ecc917299e79862cb685caf539c",
+  "registryDigest": "5c4f4addfc893b3b5938d2d5f670894c6bec38312a7514478296f0c37e5456ee",
+  "testItems": [
+    "TM109"
+  ],
+  "sourceRoles": [
+    "dft-expert",
+    "schematic-expert"
+  ],
+  "profileBindings": {
+    "dft-expert": {
+      "profileId": "ptc-dft-expert",
+      "profileVersion": "draft-training-20260923t144637z-0518ca39",
+      "profileDigest": "9b29a7f9f1e3a1e120840d5b8d7173365ef202dba8f0d732831c1d27f1f2aae1",
+      "profileSnapshotPath": "Training_Materials/runs/training-20260923t144637z-0518ca39/material-manifest.json"
+    },
+    "schematic-expert": {
+      "profileId": "ptc-schematic-expert",
+      "profileVersion": "draft-training-20260923t121310z-8f068e5e",
+      "profileDigest": "a6baf85de1b27c3b4a102fc67515c15ec6a8998e2c82cd44be6cd56e72d5f6e2",
+      "profileSnapshotPath": "Training_Materials/runs/training-20260923t121310z-8f068e5e/pipeline-material-manifest.json"
+    },
+    "test-strategy-architect": {
+      "profileId": "strategy-expert",
+      "profileVersion": "draft-training-20260923t144306z-928dc828",
+      "profileDigest": "29f5311b72a25c5b23eabe95fd04430466a97edaf0604b9cbc72874ca124cd15",
+      "profileSnapshotPath": "Training_Materials/runs/training-20260923t144306z-928dc828/profile/snapshot.json"
+    },
+    "test-method-expert": {
+      "profileId": "method-expert",
+      "profileVersion": "draft-training-20260923t144320z-58d729cc",
+      "profileDigest": "1ebade41729feb46afcb347dc24384996f16038904dbe559b7cbc784b20a7972",
+      "profileSnapshotPath": "Training_Materials/runs/training-20260923t144320z-58d729cc/profile/snapshot.json"
+    },
+    "rule-reviewer": {
+      "profileId": "rule-reviewer",
+      "profileVersion": "draft-training-20260923t144332z-d1533fe6",
+      "profileDigest": "80e6c09617859e0da6f936b9af4f2bc3cbdfa5039e24859af382997bd84c2023",
+      "profileSnapshotPath": "Training_Materials/runs/training-20260923t144332z-d1533fe6/profile/snapshot.json"
+    },
+    "ate-implementer": {
+      "profileId": "ate-implementer",
+      "profileVersion": "draft-training-20260923t144355z-abc1755e",
+      "profileDigest": "cce245abc617b97c519faf2427d78f503f0b9a72b00e1b2ffdcf619efc011b74",
+      "profileSnapshotPath": "Training_Materials/runs/training-20260923t144355z-abc1755e/profile/snapshot.json"
+    },
+    "compile-diagnostician": {
+      "profileId": "compile-diagnostician",
+      "profileVersion": "draft-training-20260923t144409z-4207c35c",
+      "profileDigest": "2260dc98a79cd059bfebccf8482323e047172df563ca5dec56cbc4e347bc1283",
+      "profileSnapshotPath": "Training_Materials/runs/training-20260923t144409z-4207c35c/profile/snapshot.json"
+    },
+    "evolution-expert": {
+      "profileId": "evolution-expert",
+      "profileVersion": "draft-training-20260923t144423z-edca427c",
+      "profileDigest": "414a1cc9ad2c18542c725f2d6e332c34dab372db88861752a62d4e8d83c470bf",
+      "profileSnapshotPath": "Training_Materials/runs/training-20260923t144423z-edca427c/profile/snapshot.json"
+    }
+  },
+  "smokePassed": true,
+  "businessGatePassed": false,
+  "pauseRequested": false,
+  "createdAt": "2026-09-23T14:47:09.015Z",
+  "updatedAt": "2026-09-23T14:48:53.415Z",
+  "auxiliaryTasks": [
+    {
+      "stage": "SMOKE_AUXILIARY",
+      "role": "evolution-expert",
+      "profileId": "evolution-expert",
+      "profileVersion": "draft-training-20260923t144423z-edca427c",
+      "profileDigest": "414a1cc9ad2c18542c725f2d6e332c34dab372db88861752a62d4e8d83c470bf",
+      "profileSnapshotPath": "Training_Materials/runs/training-20260923t144423z-edca427c/profile/snapshot.json",
+      "status": "completed",
+      "dispatchId": "training-20260923t144708z-26417175:SMOKE_AUXILIARY:evolution-expert:1",
+      "provisional": false,
+      "executionKind": "arithmetic-child",
+      "answer": 3,
+      "captainVerified": true,
+      "childSessionId": "fb7b1ef7-8638-456f-8fd3-2a5d7dc14fcc",
+      "childReceiptId": "a9f80bfe-01a1-44ad-a9d6-7eac8115a954",
+      "childEvidencePath": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\runs\\training-20260923t144708z-26417175\\evidence\\roles\\SMOKE_AUXILIARY-evolution-expert.json",
+      "childEvidenceSha256": "49c8b974faae6a9e9134df70b9dff576a431d836cf255254f097c0ab6821daff"
+    }
+  ],
+  "stages": [
+    {
+      "stage": "INPUT_SYNC",
+      "owner": "captain",
+      "gate": "scripts/prepare_input_sync_v2.py",
+      "status": "completed",
+      "smokePassed": true,
+      "businessGatePassed": false,
+      "businessGateResult": null,
+      "tasks": [
+        {
+          "stage": "INPUT_SYNC",
+          "role": "dft-expert",
+          "profileId": "ptc-dft-expert",
+          "profileVersion": "draft-training-20260923t144637z-0518ca39",
+          "profileDigest": "9b29a7f9f1e3a1e120840d5b8d7173365ef202dba8f0d732831c1d27f1f2aae1",
+          "profileSnapshotPath": "Training_Materials/runs/training-20260923t144637z-0518ca39/material-manifest.json",
+          "status": "completed",
+          "dispatchId": "training-20260923t144708z-26417175:INPUT_SYNC:dft-expert:1",
+          "provisional": false,
+          "executionKind": "dft-delivery",
+          "answer": null,
+          "captainVerified": false,
+          "childSessionId": null,
+          "childReceiptId": "source-6044144b1b20e2f1c1ecf0707dece56c",
+          "childEvidencePath": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\runs\\training-20260923t144708z-26417175\\evidence\\sources\\dft-expert.json",
+          "childEvidenceSha256": "070ca716b483f8a1b8c3b6625f61eb32d79442ded7c7df259ac890a52ce0fe81"
+        },
+        {
+          "stage": "INPUT_SYNC",
+          "role": "schematic-expert",
+          "profileId": "ptc-schematic-expert",
+          "profileVersion": "draft-training-20260923t121310z-8f068e5e",
+          "profileDigest": "a6baf85de1b27c3b4a102fc67515c15ec6a8998e2c82cd44be6cd56e72d5f6e2",
+          "profileSnapshotPath": "Training_Materials/runs/training-20260923t121310z-8f068e5e/pipeline-material-manifest.json",
+          "status": "completed",
+          "dispatchId": "training-20260923t144708z-26417175:INPUT_SYNC:schematic-expert:1",
+          "provisional": true,
+          "executionKind": "statistic-only",
+          "answer": null,
+          "captainVerified": false,
+          "childSessionId": null,
+          "childReceiptId": "source-3730e7c0014d7a18dfb54156280e27f0",
+          "childEvidencePath": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\runs\\training-20260923t144708z-26417175\\evidence\\sources\\schematic-expert.json",
+          "childEvidenceSha256": "a4ae13bb3b5e9b3957c7e8b690b1607df14119b3a621e79e35cd952952ef27ce"
+        }
+      ]
+    },
+    {
+      "stage": "STRATEGY",
+      "owner": "test-strategy-architect",
+      "gate": "scripts/validate_strategy_contract.py",
+      "status": "completed",
+      "smokePassed": true,
+      "businessGatePassed": false,
+      "businessGateResult": null,
+      "tasks": [
+        {
+          "stage": "STRATEGY",
+          "role": "test-strategy-architect",
+          "profileId": "strategy-expert",
+          "profileVersion": "draft-training-20260923t144306z-928dc828",
+          "profileDigest": "29f5311b72a25c5b23eabe95fd04430466a97edaf0604b9cbc72874ca124cd15",
+          "profileSnapshotPath": "Training_Materials/runs/training-20260923t144306z-928dc828/profile/snapshot.json",
+          "status": "completed",
+          "dispatchId": "training-20260923t144708z-26417175:STRATEGY:test-strategy-architect:1",
+          "provisional": false,
+          "executionKind": "arithmetic-child",
+          "answer": 3,
+          "captainVerified": true,
+          "childSessionId": "6b22475e-4752-407c-96db-d233bacab671",
+          "childReceiptId": "2ec199d1-695e-4be3-b86d-69a888d02f45",
+          "childEvidencePath": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\runs\\training-20260923t144708z-26417175\\evidence\\roles\\STRATEGY-test-strategy-architect.json",
+          "childEvidenceSha256": "f0c53dafc04a0792a6f736da2861f823c939b71d732317ceb498de1a615979e5"
+        }
+      ]
+    },
+    {
+      "stage": "METHOD",
+      "owner": "test-method-expert",
+      "gate": "scripts/validate_method_contract.py",
+      "status": "completed",
+      "smokePassed": true,
+      "businessGatePassed": false,
+      "businessGateResult": null,
+      "tasks": [
+        {
+          "stage": "METHOD",
+          "role": "test-method-expert",
+          "profileId": "method-expert",
+          "profileVersion": "draft-training-20260923t144320z-58d729cc",
+          "profileDigest": "1ebade41729feb46afcb347dc24384996f16038904dbe559b7cbc784b20a7972",
+          "profileSnapshotPath": "Training_Materials/runs/training-20260923t144320z-58d729cc/profile/snapshot.json",
+          "status": "completed",
+          "dispatchId": "training-20260923t144708z-26417175:METHOD:test-method-expert:1",
+          "provisional": false,
+          "executionKind": "arithmetic-child",
+          "answer": 3,
+          "captainVerified": true,
+          "childSessionId": "6ddd3c63-211f-4a55-aba8-fca25748a86b",
+          "childReceiptId": "43a38e4d-a244-4b39-8937-2354371d0f29",
+          "childEvidencePath": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\runs\\training-20260923t144708z-26417175\\evidence\\roles\\METHOD-test-method-expert.json",
+          "childEvidenceSha256": "95fac672b5614eaa6e2e206887058f3f74f7da271c3759263928cc8ed3b9fa52"
+        }
+      ]
+    },
+    {
+      "stage": "RULE_REVIEW_METHOD",
+      "owner": "rule-reviewer",
+      "gate": "scripts/review_method_batch.py",
+      "status": "completed",
+      "smokePassed": true,
+      "businessGatePassed": false,
+      "businessGateResult": null,
+      "tasks": [
+        {
+          "stage": "RULE_REVIEW_METHOD",
+          "role": "rule-reviewer",
+          "profileId": "rule-reviewer",
+          "profileVersion": "draft-training-20260923t144332z-d1533fe6",
+          "profileDigest": "80e6c09617859e0da6f936b9af4f2bc3cbdfa5039e24859af382997bd84c2023",
+          "profileSnapshotPath": "Training_Materials/runs/training-20260923t144332z-d1533fe6/profile/snapshot.json",
+          "status": "completed",
+          "dispatchId": "training-20260923t144708z-26417175:RULE_REVIEW_METHOD:rule-reviewer:1",
+          "provisional": false,
+          "executionKind": "arithmetic-child",
+          "answer": 3,
+          "captainVerified": true,
+          "childSessionId": "86927a86-bae4-452c-bd6d-353e3d74d438",
+          "childReceiptId": "e5b805a1-2866-47d5-baf6-767a1d99b873",
+          "childEvidencePath": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\runs\\training-20260923t144708z-26417175\\evidence\\roles\\RULE_REVIEW_METHOD-rule-reviewer.json",
+          "childEvidenceSha256": "78cc3d57b8985c9a481d855ba6d561a421215e25a1c91c71b3de3551fa15b890"
+        }
+      ]
+    },
+    {
+      "stage": "IMPLEMENTATION",
+      "owner": "ate-implementer",
+      "gate": "scripts/verify_implementation_batch.py",
+      "status": "completed",
+      "smokePassed": true,
+      "businessGatePassed": false,
+      "businessGateResult": null,
+      "tasks": [
+        {
+          "stage": "IMPLEMENTATION",
+          "role": "ate-implementer",
+          "profileId": "ate-implementer",
+          "profileVersion": "draft-training-20260923t144355z-abc1755e",
+          "profileDigest": "cce245abc617b97c519faf2427d78f503f0b9a72b00e1b2ffdcf619efc011b74",
+          "profileSnapshotPath": "Training_Materials/runs/training-20260923t144355z-abc1755e/profile/snapshot.json",
+          "status": "completed",
+          "dispatchId": "training-20260923t144708z-26417175:IMPLEMENTATION:ate-implementer:1",
+          "provisional": false,
+          "executionKind": "arithmetic-child",
+          "answer": 3,
+          "captainVerified": true,
+          "childSessionId": "dd5062e7-23c9-4cf6-8fec-4336a50664b7",
+          "childReceiptId": "fe0c6c8d-0020-4ef1-b511-4ed19756942c",
+          "childEvidencePath": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\runs\\training-20260923t144708z-26417175\\evidence\\roles\\IMPLEMENTATION-ate-implementer.json",
+          "childEvidenceSha256": "00b39c8bb53b2453ac48fde40c3ff33324c96c4306cd273ad4595f2b3712261d"
+        }
+      ]
+    },
+    {
+      "stage": "RULE_REVIEW_IMPLEMENTATION",
+      "owner": "rule-reviewer",
+      "gate": "scripts/verify_implementation_batch.py",
+      "status": "completed",
+      "smokePassed": true,
+      "businessGatePassed": false,
+      "businessGateResult": null,
+      "tasks": [
+        {
+          "stage": "RULE_REVIEW_IMPLEMENTATION",
+          "role": "rule-reviewer",
+          "profileId": "rule-reviewer",
+          "profileVersion": "draft-training-20260923t144332z-d1533fe6",
+          "profileDigest": "80e6c09617859e0da6f936b9af4f2bc3cbdfa5039e24859af382997bd84c2023",
+          "profileSnapshotPath": "Training_Materials/runs/training-20260923t144332z-d1533fe6/profile/snapshot.json",
+          "status": "completed",
+          "dispatchId": "training-20260923t144708z-26417175:RULE_REVIEW_IMPLEMENTATION:rule-reviewer:1",
+          "provisional": false,
+          "executionKind": "arithmetic-child",
+          "answer": 3,
+          "captainVerified": true,
+          "childSessionId": "0e9a7b7b-5147-4c50-aea2-7f735e9d0bd9",
+          "childReceiptId": "c900836e-b7f5-4b3f-8f70-663d1dddf994",
+          "childEvidencePath": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\runs\\training-20260923t144708z-26417175\\evidence\\roles\\RULE_REVIEW_IMPLEMENTATION-rule-reviewer.json",
+          "childEvidenceSha256": "74739ef26e417eab7be51a94ee0e8e2ea470e946042bc537737d9e68e013ad29"
+        }
+      ]
+    },
+    {
+      "stage": "COMPILE",
+      "owner": "compile-diagnostician",
+      "gate": "scripts/run_ptc_incremental_compile.py",
+      "status": "completed",
+      "smokePassed": true,
+      "businessGatePassed": false,
+      "businessGateResult": null,
+      "tasks": [
+        {
+          "stage": "COMPILE",
+          "role": "compile-diagnostician",
+          "profileId": "compile-diagnostician",
+          "profileVersion": "draft-training-20260923t144409z-4207c35c",
+          "profileDigest": "2260dc98a79cd059bfebccf8482323e047172df563ca5dec56cbc4e347bc1283",
+          "profileSnapshotPath": "Training_Materials/runs/training-20260923t144409z-4207c35c/profile/snapshot.json",
+          "status": "completed",
+          "dispatchId": "training-20260923t144708z-26417175:COMPILE:compile-diagnostician:1",
+          "provisional": false,
+          "executionKind": "arithmetic-child",
+          "answer": 3,
+          "captainVerified": true,
+          "childSessionId": "cb9e38d5-ed9d-4ea6-99b4-b0d1d650e13e",
+          "childReceiptId": "8f0d3991-2a09-4912-ba49-cf98dc249da2",
+          "childEvidencePath": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\runs\\training-20260923t144708z-26417175\\evidence\\roles\\COMPILE-compile-diagnostician.json",
+          "childEvidenceSha256": "74ee7d23e58e736d57e1b053857b04d309e48f6e9501ce85bf35892a1a4d1f8a"
+        }
+      ]
+    }
+  ]
+}

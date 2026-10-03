@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "projectId": "synthetic-lab",
+  "changeSetId": "change-53454cbf-f9e5-4493-9da1-99a004297333",
+  "baseRevision": "revision-7e2aa442-3d81-4357-8f20-7213dc9e628b",
+  "appliedRevision": "revision-3266b1e5-88e2-4f90-90c7-dd438149957c",
+  "requestId": "862cf31c-efc9-40d7-9fcf-b2332c226c7d",
+  "reason": "创建合成 Agent 模板",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "synthetic-lab",
+    "revisionId": "revision-3266b1e5-88e2-4f90-90c7-dd438149957c",
+    "changeSetId": "change-53454cbf-f9e5-4493-9da1-99a004297333",
+    "diff": [
+      {
+        "path": "agents/tm109-dft-copy/agent.json",
+        "oldSha256": null,
+        "newSha256": "04808b1ef1d468dbf0a7d8f8e130037c466ae09770b99b8fdded0b47ca991b6f",
+        "before": null,
+        "after": "{\n  \"agentId\": \"tm109-dft-copy\",\n  \"name\": \"TM109 DFT Copy\",\n  \"instructionsRef\": \"agents/tm109-dft-copy/instructions.md\",\n  \"skillRefs\": [],\n  \"toolIds\": [],\n  \"inputSchemaRef\": \"contracts/tm109-dft-copy-input.schema.json\",\n  \"outputSchemaRef\": \"contracts/tm109-dft-copy-output.schema.json\"\n}\n",
+        "kind": "asset"
+      },
+      {
+        "path": "agents/tm109-dft-copy/instructions.md",
+        "oldSha256": null,
+        "newSha256": "2a3576f35897387917dd6691f9a90ee37cbb11f457cf60c0b8939d7a8ab5edde",
+        "before": null,
+        "after": "Process the supplied synthetic JSON input and return a JSON object. Do not load business materials.\n",
+        "kind": "asset"
+      },
+      {
+        "path": "contracts/tm109-dft-copy-input.schema.json",
+        "oldSha256": null,
+        "newSha256": "a0311c353aec0c57946a8ca657370a474532175265455995160cfe83d8ce2b4f",
+        "before": null,
+        "after": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\"\n}\n",
+        "kind": "validation"
+      },
+      {
+        "path": "contracts/tm109-dft-copy-output.schema.json",
+        "oldSha256": null,
+        "newSha256": "a0311c353aec0c57946a8ca657370a474532175265455995160cfe83d8ce2b4f",
+        "before": null,
+        "after": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\"\n}\n",
+        "kind": "validation"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

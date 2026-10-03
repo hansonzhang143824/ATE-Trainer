@@ -1,0 +1,36 @@
+{
+  "frozenVersionId": "frozen-c2f9fe08-feb4-4dc1-a3b2-a672be7342c6",
+  "bundleSha256": "9999adf4af65211261ac57199b3f685a6dbff2651aadd1af6b9785b7c667a6fa",
+  "revisionId": "revision-d00f1656-54b3-4f0d-8efb-b228bf40f61f",
+  "targetKind": "workflow",
+  "targetId": "custom-workflow-1",
+  "workflowRevision": "revision-d00f1656-54b3-4f0d-8efb-b228bf40f61f",
+  "agentBindings": [
+    {
+      "stepId": "step-1",
+      "agentId": "agent-T2",
+      "agentRevision": "revision-d00f1656-54b3-4f0d-8efb-b228bf40f61f"
+    },
+    {
+      "stepId": "step-2",
+      "agentId": "custom-agent-7",
+      "agentRevision": "revision-d00f1656-54b3-4f0d-8efb-b228bf40f61f"
+    },
+    {
+      "stepId": "step-3",
+      "agentId": "agent-T3",
+      "agentRevision": "revision-d00f1656-54b3-4f0d-8efb-b228bf40f61f"
+    },
+    {
+      "stepId": "step-4",
+      "agentId": "custom-agent-5",
+      "agentRevision": "revision-d00f1656-54b3-4f0d-8efb-b228bf40f61f"
+    }
+  ],
+  "createdAt": "2026-10-03T11:00:47.955Z",
+  "sequence": 3,
+  "validation": {
+    "runId": "framework-478f206b-05ca-43e7-9bd8-b9b9ff4811e5",
+    "executionMode": "SMOKE_ONLY"
+  }
+}

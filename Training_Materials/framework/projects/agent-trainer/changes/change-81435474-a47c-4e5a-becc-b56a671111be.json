@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-81435474-a47c-4e5a-becc-b56a671111be",
+  "baseRevision": "revision-218698d9-b2c1-42a4-aaa1-3dae2a1e1205",
+  "appliedRevision": "revision-b1562c9c-9813-47fd-9664-57c8ffaeef5a",
+  "requestId": "t1-output-const3-align-v1",
+  "reason": "Make agent-T1 output contract consistent with the requested baseline behavior (1+2 => answer 3). The unchanged const:5 made the user-stated acceptance criterion unachievable; STRUCTURE of the schema (field name, type number, required, additionalProperties false) is preserved, only the pinned constant is corrected. Required to unblock the authorized retest.",
+  "linkedRunId": "framework-3a527899-07a3-4ced-9357-ed98ba0a402d",
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-b1562c9c-9813-47fd-9664-57c8ffaeef5a",
+    "changeSetId": "change-81435474-a47c-4e5a-becc-b56a671111be",
+    "diff": [
+      {
+        "path": "contracts/agent-T1-output.schema.json",
+        "oldSha256": "76dc49aae9e8a97943df2b5e2a42b460a91ad7632fbc649a3c989e10149a80c2",
+        "newSha256": "a203a42e6075210bc79e86b6adbf24cba7e105b3808f0848ce72354168090d60",
+        "before": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"properties\": { \"answer\": { \"type\": \"number\", \"const\": 5 } },\n  \"required\": [\"answer\"],\n  \"additionalProperties\": false\n}\n",
+        "after": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"properties\": { \"answer\": { \"type\": \"number\", \"const\": 3 } },\n  \"required\": [\"answer\"],\n  \"additionalProperties\": false\n}\n",
+        "kind": "validation"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

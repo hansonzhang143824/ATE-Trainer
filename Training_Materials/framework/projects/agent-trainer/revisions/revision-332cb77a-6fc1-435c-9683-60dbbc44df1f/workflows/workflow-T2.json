@@ -1,0 +1,23 @@
+{
+  "workflowId": "workflow-T2",
+  "name": "workflow-T2",
+  "steps": [
+    {
+      "stepId": "step-1",
+      "agentId": "custom-agent-1",
+      "inputBindings": {
+        "": {
+          "source": "input",
+          "pointer": ""
+        }
+      },
+      "outputBindings": {
+        "": {
+          "source": "output",
+          "pointer": ""
+        }
+      },
+      "timeoutMs": 120000
+    }
+  ]
+}

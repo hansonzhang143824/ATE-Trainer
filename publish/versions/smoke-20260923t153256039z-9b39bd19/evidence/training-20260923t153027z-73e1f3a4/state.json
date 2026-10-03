@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "runId": "training-20260923t153027z-73e1f3a4",
+  "status": "completed",
+  "target": {
+    "kind": "profile",
+    "profileId": "ptc-dft-expert"
+  },
+  "purpose": "smoke-training",
+  "createdAt": "2026-09-23T15:30:27.194Z",
+  "updatedAt": "2026-09-23T15:30:48.458Z",
+  "startedAt": "2026-09-23T15:30:27.221Z",
+  "modelChoice": "default",
+  "finishedAt": "2026-09-23T15:30:48.458Z",
+  "outcome": {
+    "mode": "SMOKE_ONLY",
+    "smokePassed": true,
+    "businessGatePassed": false,
+    "profileInstructionsValidated": false,
+    "modelDispatched": true,
+    "profileSnapshotSha256": "a8f610606887a150b5fe84902703d1272c0e013b26b8f212aa536ac5f41ef622",
+    "responseSha256": "b2e5bf34aaf70408ecd7efff1eb5b08b069f86b4ded0b43078be32578376ce16",
+    "childResultSha256": "b2e5bf34aaf70408ecd7efff1eb5b08b069f86b4ded0b43078be32578376ce16",
+    "reason": null,
+    "evidence": "Training_Materials/runs/training-20260923t153027z-73e1f3a4/evidence/profile-smoke.json",
+    "evidenceSha256": "5aeb778398de8533dbe2ee607270ac3325c821d48fd076540b96ec4086231fe6"
+  }
+}

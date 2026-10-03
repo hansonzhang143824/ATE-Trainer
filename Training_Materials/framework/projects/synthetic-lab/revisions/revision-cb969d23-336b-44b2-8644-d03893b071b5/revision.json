@@ -1,0 +1,130 @@
+{
+  "revisionId": "revision-cb969d23-336b-44b2-8644-d03893b071b5",
+  "files": [
+    {
+      "path": "agents/arith-optimization-agent/agent.json",
+      "size": 349,
+      "sha256": "9780087c488a0765a601223367a070947a2ebee01f369da0c697a3c6c50e0c24"
+    },
+    {
+      "path": "agents/arith-optimization-agent/instructions.md",
+      "size": 100,
+      "sha256": "2a3576f35897387917dd6691f9a90ee37cbb11f457cf60c0b8939d7a8ab5edde"
+    },
+    {
+      "path": "agents/lab-consumer/agent.json",
+      "size": 282,
+      "sha256": "9d293dbcc2ad8865f653c5fee64d812f6b4de173b937ac96d215c33fc14edea1"
+    },
+    {
+      "path": "agents/lab-consumer/instructions.md",
+      "size": 94,
+      "sha256": "5e5210df585422959105426b1b2c5e786551b9adb92579df1e621cc0b02cbc4b"
+    },
+    {
+      "path": "agents/lab-producer/agent.json",
+      "size": 322,
+      "sha256": "87d88f69ae1c8ef5ca4e60ef960dd30fc98e2b6a79bb53812826b2b4b43a8d07"
+    },
+    {
+      "path": "agents/lab-producer/instructions.md",
+      "size": 195,
+      "sha256": "b534df4c54e7425f58c9d7e7acd54cc6badc256e8f9eb8996205693bd3b6efbb"
+    },
+    {
+      "path": "agents/tm109-dft-copy/agent.json",
+      "size": 294,
+      "sha256": "04808b1ef1d468dbf0a7d8f8e130037c466ae09770b99b8fdded0b47ca991b6f"
+    },
+    {
+      "path": "agents/tm109-dft-copy/instructions.md",
+      "size": 100,
+      "sha256": "2a3576f35897387917dd6691f9a90ee37cbb11f457cf60c0b8939d7a8ab5edde"
+    },
+    {
+      "path": "contracts/arith-optimization-agent-input.schema.json",
+      "size": 84,
+      "sha256": "a0311c353aec0c57946a8ca657370a474532175265455995160cfe83d8ce2b4f"
+    },
+    {
+      "path": "contracts/arith-optimization-agent-output.schema.json",
+      "size": 84,
+      "sha256": "a0311c353aec0c57946a8ca657370a474532175265455995160cfe83d8ce2b4f"
+    },
+    {
+      "path": "contracts/consumer-input.schema.json",
+      "size": 234,
+      "sha256": "3e0b5c3c00cdbccd8e06af35bd007f8803da885fac4b41a79f15639d2c52fb90"
+    },
+    {
+      "path": "contracts/consumer-output.schema.json",
+      "size": 234,
+      "sha256": "3e0b5c3c00cdbccd8e06af35bd007f8803da885fac4b41a79f15639d2c52fb90"
+    },
+    {
+      "path": "contracts/producer-input.schema.json",
+      "size": 216,
+      "sha256": "393a9027909b23f4ab632170948b4426a746452503accaba47ce40e07fdc4e38"
+    },
+    {
+      "path": "contracts/producer-output.schema.json",
+      "size": 350,
+      "sha256": "a6c35945f603698100ddefd281825e50c823f53f49acec79cf9eac80d481d982"
+    },
+    {
+      "path": "contracts/tm109-dft-copy-input.schema.json",
+      "size": 84,
+      "sha256": "a0311c353aec0c57946a8ca657370a474532175265455995160cfe83d8ce2b4f"
+    },
+    {
+      "path": "contracts/tm109-dft-copy-output.schema.json",
+      "size": 84,
+      "sha256": "a0311c353aec0c57946a8ca657370a474532175265455995160cfe83d8ce2b4f"
+    },
+    {
+      "path": "skills/lab-marker/SKILL.md",
+      "size": 102,
+      "sha256": "767f923585c5544e273af06c5bf1f2287e5af1a20c8ff5c180a2b8c8da1e5df2"
+    },
+    {
+      "path": "skills/lab-marker/references/marker.json",
+      "size": 21,
+      "sha256": "e3d91c8e40176f6725a64eb1f6f1061724d7a1d7d6333d147f7bc228544512b9"
+    },
+    {
+      "path": "skills/lab-marker/scripts/marker.mjs",
+      "size": 66,
+      "sha256": "107e236c0330acb33bc39cdd32bac71915fbe7d03e945364f14a9745976d782b"
+    },
+    {
+      "path": "skills/lab-marker/skill.json",
+      "size": 213,
+      "sha256": "3250ab07be5ab052f902f3280ff83656a1b006eb708687e15995c5f272ae0104"
+    },
+    {
+      "path": "tests/lab-pair.json",
+      "size": 324,
+      "sha256": "775ba110e58c8438f857ae8e788d0e76bcd5f3d5a2567000f827e0e19cf43d86"
+    },
+    {
+      "path": "tools/lab-marker.json",
+      "size": 266,
+      "sha256": "b57dd57d31b0895e53d8a92dc24704fa4dbca3acf0584df03b51e62f9a0cc5f0"
+    },
+    {
+      "path": "workflows/lab-pair.json",
+      "size": 573,
+      "sha256": "29d0224d443c3d8e8c6c64ab0000bdff482b6914e19a0522dc427e1357bbce9e"
+    },
+    {
+      "path": "workflows/tm109-replacement-flow.json",
+      "size": 554,
+      "sha256": "cbdc2644cc989aca7ca1dbeafee385bb6d1ab94f0130efb7eb69073a58e8af7f"
+    }
+  ],
+  "transaction": {
+    "requestId": "162175ba-a71e-4c46-924f-b211ba076ca9",
+    "fingerprint": "e234da3fca873bde5355240465e9a1109995931a6a526a91931ecfb24f1b329a",
+    "changeSetId": "change-1b5c66c1-bd6d-479e-ad1f-91d5121a58a4"
+  }
+}

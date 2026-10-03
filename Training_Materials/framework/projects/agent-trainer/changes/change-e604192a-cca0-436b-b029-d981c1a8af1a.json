@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-e604192a-cca0-436b-b029-d981c1a8af1a",
+  "baseRevision": "revision-8c543ff6-116a-4e83-9b2f-1805a8fea0ca",
+  "appliedRevision": "revision-8c543ff6-116a-4e83-9b2f-1805a8fea0ca",
+  "requestId": "cw1-reorder-t2-then-c7-20260930-a1",
+  "reason": "用户要求将 custom-workflow-1 的步骤顺序定为 agent-T2 → custom-agent-7（与候选现状一致的幂等保存，随后校验并运行）",
+  "linkedRunId": "framework-9b214019-a80f-4f11-b175-7818fd3d9942",
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-8c543ff6-116a-4e83-9b2f-1805a8fea0ca",
+    "changeSetId": "change-e604192a-cca0-436b-b029-d981c1a8af1a",
+    "diff": [],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

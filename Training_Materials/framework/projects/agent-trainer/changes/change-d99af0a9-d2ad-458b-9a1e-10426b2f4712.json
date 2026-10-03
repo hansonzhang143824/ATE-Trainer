@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-d99af0a9-d2ad-458b-9a1e-10426b2f4712",
+  "baseRevision": "revision-de6ada23-647d-4450-8f9d-f8e7234ffeff",
+  "appliedRevision": "revision-8f761889-7868-4aa6-9729-880ae287726a",
+  "requestId": "white-save-79aa5fc4-747e-475e-9fba-08717b7fc1fc",
+  "reason": "用户通过白色 Agent Trainer 保存候选",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-8f761889-7868-4aa6-9729-880ae287726a",
+    "changeSetId": "change-d99af0a9-d2ad-458b-9a1e-10426b2f4712",
+    "diff": [
+      {
+        "path": "agents/custom-agent-4/instructions.md",
+        "oldSha256": "c4a715b0611b2deaf201d2396397c080bd541683ab83eda9998b595da84f5962",
+        "newSha256": "bacac9b3bac62cab7ca9b64a81a9f2fb7819c0300bb4745829ec8ea613b60c55",
+        "before": "custom-agent-4 的候选 Agent。请按输入输出合同执行当前任务，并返回可验证的 JSON。\n",
+        "after": "custom-agent-4 的候选 Agent。请按输入输出合同执行当前任务，并返回可验证的 JSON。\n\n# Candidate saved from white Agent Trainer\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

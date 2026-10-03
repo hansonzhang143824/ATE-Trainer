@@ -1,0 +1,20 @@
+{
+  "runId": "framework-4fbe7474-c301-4a93-8063-3a321cce4b3d",
+  "projectId": "agent-trainer",
+  "targetKind": "workflow",
+  "targetId": "custom-workflow-1",
+  "bundleSha256": "6005b7fad0ffa99c56a4ec9687d771b6d3880cb9411b56ecfd9c832929791265",
+  "status": "completed",
+  "validation": {
+    "ok": true,
+    "errors": []
+  },
+  "businessGatePassed": false,
+  "steps": [
+    {
+      "stepId": "step-1",
+      "agentId": "custom-agent-1",
+      "status": "completed"
+    }
+  ]
+}

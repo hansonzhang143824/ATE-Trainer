@@ -8,3 +8,7 @@
 *.ps1 text eol=crlf
 *.bat text eol=crlf
 *.cmd text eol=crlf
+
+# 运行数据按原始字节保存（证据按磁盘字节做 SHA-256，不做换行转换）
+Training_Materials/framework/** -text
+publish/versions/** -text

@@ -1,0 +1,39 @@
+{
+  "workflowId": "tm109-replacement-flow",
+  "name": "TM109 Copy Replacement Flow",
+  "steps": [
+    {
+      "stepId": "step-1",
+      "agentId": "tm109-dft-copy",
+      "inputBindings": {
+        "": {
+          "source": "input",
+          "pointer": ""
+        }
+      },
+      "timeoutMs": 120000
+    },
+    {
+      "stepId": "step-2",
+      "agentId": "tm109-dft-copy",
+      "inputBindings": {
+        "": {
+          "source": "step",
+          "stepId": "step-1",
+          "pointer": ""
+        }
+      },
+      "timeoutMs": 120000
+    }
+  ],
+  "businessPipeline": {
+    "workflowId": "tm109-input-sync",
+    "workflowRevision": "business-v1",
+    "testItems": [
+      "TM109"
+    ],
+    "schematicProfileId": "ptc-schematic-expert",
+    "dftProfileId": "ptc-dft-expert",
+    "modelChoice": "deepseek-v4-flash"
+  }
+}

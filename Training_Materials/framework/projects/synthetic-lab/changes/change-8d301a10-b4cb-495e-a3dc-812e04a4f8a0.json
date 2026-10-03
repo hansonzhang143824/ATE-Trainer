@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "synthetic-lab",
+  "changeSetId": "change-8d301a10-b4cb-495e-a3dc-812e04a4f8a0",
+  "baseRevision": "revision-fd65e014-9581-4d08-a2bf-562692e40445",
+  "appliedRevision": "revision-ff3a5ea9-dd5c-4d3f-b972-d74431c6c7ae",
+  "requestId": "white-candidate-44f9af5b-e10b-4a15-9bd5-80531600146f",
+  "reason": "用户通过白色 Agent Trainer 向工作流加入 Agent",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "synthetic-lab",
+    "revisionId": "revision-ff3a5ea9-dd5c-4d3f-b972-d74431c6c7ae",
+    "changeSetId": "change-8d301a10-b4cb-495e-a3dc-812e04a4f8a0",
+    "diff": [
+      {
+        "path": "workflows/lab-pair.json",
+        "oldSha256": "29d0224d443c3d8e8c6c64ab0000bdff482b6914e19a0522dc427e1357bbce9e",
+        "newSha256": "ec617c29e8cc7dce14d2df34e2c74c12625dc97003b0401898168862b9549530",
+        "before": "{\n  \"workflowId\": \"lab-pair\",\n  \"name\": \"Synthetic producer → consumer\",\n  \"steps\": [\n    {\n      \"stepId\": \"produce\",\n      \"agentId\": \"lab-producer\",\n      \"inputBindings\": {\n        \"/seed\": {\n          \"source\": \"input\",\n          \"pointer\": \"/seed\"\n        }\n      },\n      \"timeoutMs\": 120000\n    },\n    {\n      \"stepId\": \"consume\",\n      \"agentId\": \"lab-consumer\",\n      \"inputBindings\": {\n        \"/receivedValue\": {\n          \"source\": \"step\",\n          \"stepId\": \"produce\",\n          \"pointer\": \"/value\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "after": "{\n  \"workflowId\": \"lab-pair\",\n  \"name\": \"Synthetic producer → consumer\",\n  \"steps\": [\n    {\n      \"stepId\": \"produce\",\n      \"agentId\": \"lab-producer\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    },\n    {\n      \"stepId\": \"consume\",\n      \"agentId\": \"lab-consumer\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"step\",\n          \"stepId\": \"produce\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    },\n    {\n      \"stepId\": \"step-3\",\n      \"agentId\": \"custom-agent-1\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"step\",\n          \"stepId\": \"consume\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

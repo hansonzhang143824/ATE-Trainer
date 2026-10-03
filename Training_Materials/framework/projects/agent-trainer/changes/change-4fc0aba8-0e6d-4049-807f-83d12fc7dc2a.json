@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-4fc0aba8-0e6d-4049-807f-83d12fc7dc2a",
+  "baseRevision": "revision-ec86c830-5879-4edc-a946-075c0abe98c6",
+  "appliedRevision": "revision-71aa1cfa-3962-49a1-9dbb-af0b3e544ed3",
+  "requestId": "seed-4b32706a82eb4d5e96272a70c635c647",
+  "reason": "初始化 Agent ID 台账",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-71aa1cfa-3962-49a1-9dbb-af0b3e544ed3",
+    "changeSetId": "change-4fc0aba8-0e6d-4049-807f-83d12fc7dc2a",
+    "diff": [
+      {
+        "path": "contracts/agent-ids.json",
+        "oldSha256": "05efe1a0d55bc4fd2c62a20b424cba9d2fbf5723c092cb1a0251d47248f68d55",
+        "newSha256": "23590081450f8a61e7ed5f0a7408bffbfe313dab8817d979075403e0bd4ec3ce",
+        "before": "{\n  \"schemaVersion\": 1,\n  \"allocated\": [\n    \"agent-T1\",\n    \"agent-T2\",\n    \"agent-T3\",\n    \"custom-agent-1\",\n    \"custom-agent-10\",\n    \"custom-agent-4\",\n    \"custom-agent-5\",\n    \"custom-agent-6\",\n    \"custom-agent-7\",\n    \"custom-agent-8\",\n    \"custom-agent-9\",\n    \"lab-consumer\",\n    \"lab-producer\",\n    \"agent-74be5219\",\n    \"agent-b874b4a8\"\n  ]\n}\n",
+        "after": "{\n  \"schemaVersion\": 1,\n  \"allocated\": [\n    \"agent-74be5219\",\n    \"agent-T1\",\n    \"agent-T2\",\n    \"agent-T3\",\n    \"agent-b874b4a8\",\n    \"custom-agent-1\",\n    \"custom-agent-10\",\n    \"custom-agent-4\",\n    \"custom-agent-5\",\n    \"custom-agent-6\",\n    \"custom-agent-7\",\n    \"custom-agent-8\",\n    \"custom-agent-9\",\n    \"lab-consumer\",\n    \"lab-producer\"\n  ]\n}\n",
+        "kind": "validation"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

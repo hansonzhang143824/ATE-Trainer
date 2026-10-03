@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-3ad4d517-2a62-4cf5-b2ab-f75cbe23a5a2",
+  "baseRevision": "revision-5b4d2598-b773-47f4-a14c-30f2c481314d",
+  "appliedRevision": "revision-e09b77bf-dd73-45b4-9cb3-f0a7a7242dfb",
+  "requestId": "white-candidate-3d1af2cd-9a95-4865-afd1-05fab4224560",
+  "reason": "用户通过白色 Agent Trainer 调整工作流编排",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-e09b77bf-dd73-45b4-9cb3-f0a7a7242dfb",
+    "changeSetId": "change-3ad4d517-2a62-4cf5-b2ab-f75cbe23a5a2",
+    "diff": [
+      {
+        "path": "workflows/workflow-T2.json",
+        "oldSha256": "a96556d18e180276fd8d7f5636e222f187847d934e0fe3d9fcfa0a88fa4503c3",
+        "newSha256": "720b6847e23726d4111f6ed8db1188f295a4ea0002663812af3384309f429055",
+        "before": "{\n  \"workflowId\": \"workflow-T2\",\n  \"name\": \"workflow-T2\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"agent-T1\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"outputBindings\": {\n        \"\": {\n          \"source\": \"output\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "after": "{\n  \"workflowId\": \"workflow-T2\",\n  \"name\": \"workflow-T2\",\n  \"steps\": []\n}\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

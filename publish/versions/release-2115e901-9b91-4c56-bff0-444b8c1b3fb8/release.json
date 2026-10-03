@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "runtimeApiVersion": "trainer-api-v1",
+  "projectId": "agent-trainer",
+  "releaseId": "release-2115e901-9b91-4c56-bff0-444b8c1b3fb8",
+  "frozenVersionId": "frozen-50741742-82e3-4a79-bb0a-149129b3eb7d",
+  "targetKind": "workflow",
+  "targetId": "workflow-T5",
+  "revisionId": "revision-51d96e23-8933-4d12-a428-b2a3cb6bf850",
+  "workflowRevision": "revision-51d96e23-8933-4d12-a428-b2a3cb6bf850",
+  "agentBindings": [
+    {
+      "stepId": "step-1",
+      "agentId": "agent-T3",
+      "agentRevision": "revision-51d96e23-8933-4d12-a428-b2a3cb6bf850"
+    },
+    {
+      "stepId": "step-2",
+      "agentId": "agent-T1",
+      "agentRevision": "revision-51d96e23-8933-4d12-a428-b2a3cb6bf850"
+    },
+    {
+      "stepId": "step-3",
+      "agentId": "agent-T2",
+      "agentRevision": "revision-51d96e23-8933-4d12-a428-b2a3cb6bf850"
+    }
+  ],
+  "bundleSha256": "fc8ed759ae5799349bfe3c0145b269cd28ca5b5f2aed008f1c4f7741818cbe22",
+  "evidenceSha256": "4e5dad5114e9671ffbac05072408ddcd74b577d4716e240d3347b9742607cde2",
+  "verifiedRunId": "framework-17fb97ef-2204-40b7-b6aa-8bd77f35c754",
+  "businessGatePassed": false
+}

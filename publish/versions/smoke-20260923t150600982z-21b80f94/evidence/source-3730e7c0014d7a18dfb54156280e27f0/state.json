@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "runId": "source-3730e7c0014d7a18dfb54156280e27f0",
+  "status": "completed",
+  "target": {
+    "kind": "pipeline",
+    "fromStage": "INPUT_SYNC",
+    "toStage": "INPUT_SYNC",
+    "stages": [
+      "INPUT_SYNC"
+    ]
+  },
+  "purpose": "schematic-statistic-only",
+  "createdAt": "2026-09-23T14:47:20.776Z",
+  "updatedAt": "2026-09-23T14:47:56.069Z",
+  "testItems": [
+    "TM109"
+  ],
+  "modelChoice": "default",
+  "outcome": {
+    "mode": "STATISTIC_ONLY",
+    "reason": null,
+    "stage": null,
+    "report": {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\runs\\source-3730e7c0014d7a18dfb54156280e27f0\\evidence\\component-statistic-only.json",
+      "sha256": "613cb6f00b093688f267aa965de141596f2ed676fe97aad64f749a3fa14717a8",
+      "outputPath": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\runs\\source-3730e7c0014d7a18dfb54156280e27f0\\input-sync\\schematic\\Component-Statistic.txt",
+      "outputSha256": "b0cb675cf8a78f04834699bf67ace37a2d8240f1ac8fb6b186689c5999d709de",
+      "gatePassed": false,
+      "modelDispatched": false
+    }
+  },
+  "finishedAt": "2026-09-23T14:47:56.069Z"
+}

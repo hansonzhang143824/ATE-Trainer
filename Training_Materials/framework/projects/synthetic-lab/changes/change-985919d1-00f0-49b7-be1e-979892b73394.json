@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "synthetic-lab",
+  "changeSetId": "change-985919d1-00f0-49b7-be1e-979892b73394",
+  "baseRevision": "revision-f10d29ea-8606-49ef-8904-ef9ba5388830",
+  "appliedRevision": "revision-e556ec04-d8df-4a19-a5eb-1c7e63edec2e",
+  "requestId": "27d556c7-4a97-4b0f-a3ef-3700ea34dbc0",
+  "reason": "编辑工作流步骤",
+  "linkedRunId": "framework-602dbdf7-3821-499c-9ee7-e9a685849861",
+  "result": {
+    "projectId": "synthetic-lab",
+    "revisionId": "revision-e556ec04-d8df-4a19-a5eb-1c7e63edec2e",
+    "changeSetId": "change-985919d1-00f0-49b7-be1e-979892b73394",
+    "diff": [
+      {
+        "path": "workflows/tm109-replacement-flow.json",
+        "oldSha256": "73dcfc70f55d1ea2e4b41b66cf6f33b0b65f2c19ee3ad889b445deca975168d7",
+        "newSha256": "cbdc2644cc989aca7ca1dbeafee385bb6d1ab94f0130efb7eb69073a58e8af7f",
+        "before": "{\n  \"workflowId\": \"tm109-replacement-flow\",\n  \"name\": \"TM109 Copy Replacement Flow\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"tm109-dft-copy\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    },\n    {\n      \"stepId\": \"step-2\",\n      \"agentId\": \"lab-consumer\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"step\",\n          \"stepId\": \"step-1\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "after": "{\n  \"workflowId\": \"tm109-replacement-flow\",\n  \"name\": \"TM109 Copy Replacement Flow\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"tm109-dft-copy\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    },\n    {\n      \"stepId\": \"step-2\",\n      \"agentId\": \"tm109-dft-copy\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"step\",\n          \"stepId\": \"step-1\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

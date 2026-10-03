@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "required": ["stage", "mode", "source", "exitCode", "elapsedSeconds", "sourceSha256"],
+  "properties": {
+    "stage": { "type": "string", "const": "COMPILE" },
+    "mode": { "type": "string", "const": "incremental" },
+    "source": { "type": "string" },
+    "sourceSha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "exitCode": { "type": "integer" },
+    "elapsedSeconds": { "type": "number" },
+    "timeoutSeconds": { "type": "number" },
+    "stdout": { "type": "string" }
+  }
+}

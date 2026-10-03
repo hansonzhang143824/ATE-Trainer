@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "purpose": "schematic-statistic-only",
+  "runId": "source-3730e7c0014d7a18dfb54156280e27f0",
+  "pipelineCacheKey": "83166cb8b60359f5870184a3432db53fdfbadd737a7472ac6fccb44d23609141",
+  "gatePassed": false,
+  "modelDispatched": false,
+  "report": {
+    "role": "schematic-expert",
+    "mode": "STATISTIC_ONLY",
+    "status": "generated",
+    "gate": null,
+    "canonicalInput": {
+      "path": "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\runs\\source-3730e7c0014d7a18dfb54156280e27f0\\input\\Dali-SCH.csv",
+      "sha256": "04b540f83fa00268cb45d118e9229474cc393a87c8af5caf27a2a8ac8188120a"
+    },
+    "requiredOutputs": [
+      "D:\\Newtest\\DSH\\ATE-Coding-Flow\\Training_Materials\\runs\\source-3730e7c0014d7a18dfb54156280e27f0\\input-sync\\schematic\\Component-Statistic.txt"
+    ],
+    "outputSha256": "b0cb675cf8a78f04834699bf67ace37a2d8240f1ac8fb6b186689c5999d709de",
+    "trainingContext": {
+      "runId": "source-3730e7c0014d7a18dfb54156280e27f0",
+      "pipelineCacheKey": "83166cb8b60359f5870184a3432db53fdfbadd737a7472ac6fccb44d23609141"
+    }
+  }
+}

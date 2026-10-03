@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-ac03150a-bb71-4206-be4a-97a1b23edd52",
+  "baseRevision": "revision-40587d82-1d29-4771-bd5b-74ad1456f312",
+  "appliedRevision": "revision-b9a6f930-bbfe-46e0-9a61-d1774c2fc73b",
+  "requestId": "white-save-c179046d-46e6-4725-b4d0-7a11d2f33817",
+  "reason": "用户通过白色 Agent Trainer 保存候选",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-b9a6f930-bbfe-46e0-9a61-d1774c2fc73b",
+    "changeSetId": "change-ac03150a-bb71-4206-be4a-97a1b23edd52",
+    "diff": [
+      {
+        "path": "agents/agent-T3/instructions.md",
+        "oldSha256": "ace9c3083429b9f3fbb691e8e31426797548a4360c4401065f868d42ec1c9865",
+        "newSha256": "b0bb381110381389be5d3a070556bdf9b73f296f480a0aa34a5f234bee224691",
+        "before": "You are agent-T3. Solve exactly 3+4. Return JSON only with numeric field answer equal to 7. Do not add prose.\n",
+        "after": "You are agent-T3. Solve exactly 3+4. Return JSON only with numeric field answer equal to 7. Do not add prose.\n\n# Candidate saved from white Agent Trainer\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "runId": "training-20260924t001008z-d114412e",
+  "status": "completed",
+  "target": {
+    "kind": "profile",
+    "profileId": "ptc-schematic-expert"
+  },
+  "purpose": "smoke-training",
+  "createdAt": "2026-09-24T00:10:08.082Z",
+  "updatedAt": "2026-09-24T00:10:36.121Z",
+  "startedAt": "2026-09-24T00:10:08.201Z",
+  "modelChoice": "default",
+  "finishedAt": "2026-09-24T00:10:36.121Z",
+  "outcome": {
+    "mode": "SMOKE_ONLY",
+    "smokePassed": true,
+    "businessGatePassed": false,
+    "profileInstructionsValidated": false,
+    "modelDispatched": true,
+    "profileSnapshotSha256": "6e6bea4c4081b8a444e7ab3a310b01a1bc6dd5cced19a1597165dd8fb4281e6f",
+    "responseSha256": "40c4336e02363e28edfb87ff75baa68580669b7be059e0d4c59e5fe48bf106a6",
+    "childResultSha256": "40c4336e02363e28edfb87ff75baa68580669b7be059e0d4c59e5fe48bf106a6",
+    "reason": null,
+    "evidence": "Training_Materials/runs/training-20260924t001008z-d114412e/evidence/profile-smoke.json",
+    "evidenceSha256": "ccac658abf12116ff164d1a688ba3d02d8f14ffb8c8f698f65e140efb5ed94e2"
+  }
+}

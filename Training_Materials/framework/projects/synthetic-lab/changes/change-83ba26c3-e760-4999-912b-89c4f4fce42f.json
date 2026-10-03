@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "synthetic-lab",
+  "changeSetId": "change-83ba26c3-e760-4999-912b-89c4f4fce42f",
+  "baseRevision": "revision-cb969d23-336b-44b2-8644-d03893b071b5",
+  "appliedRevision": "revision-90731f26-35b8-4b9d-9c58-ef18c38756f4",
+  "requestId": "5c6dd5e7-4450-4937-9fb2-2e8439daed1b",
+  "reason": "工作台保存候选",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "synthetic-lab",
+    "revisionId": "revision-90731f26-35b8-4b9d-9c58-ef18c38756f4",
+    "changeSetId": "change-83ba26c3-e760-4999-912b-89c4f4fce42f",
+    "diff": [
+      {
+        "path": "agents/arith-optimization-agent/instructions.md",
+        "oldSha256": "2a3576f35897387917dd6691f9a90ee37cbb11f457cf60c0b8939d7a8ab5edde",
+        "newSha256": "0d614031654385304dd6ea1169de8f35dffdc566b63a6a8cde530f088def0c5f",
+        "before": "Process the supplied synthetic JSON input and return a JSON object. Do not load business materials.\n",
+        "after": "v1 arithmetic training: return a JSON object with value equal to input.a + input.b. For input {\"a\":1,\"b\":2}, return {\"value\":3}.\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

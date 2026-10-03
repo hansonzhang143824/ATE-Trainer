@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-31d5b6b9-bd9b-4d3e-9ec8-4dfc775d5f11",
+  "baseRevision": "revision-c75c85fb-d2e6-463e-990f-744c5a605955",
+  "appliedRevision": "revision-7360409d-9019-4185-acd9-c02d3079d2ad",
+  "requestId": "white-candidate-d9f6e990-0d6a-4544-9c73-f10237cedc7b",
+  "reason": "用户通过白色 Agent Trainer 新建候选空工作流",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-7360409d-9019-4185-acd9-c02d3079d2ad",
+    "changeSetId": "change-31d5b6b9-bd9b-4d3e-9ec8-4dfc775d5f11",
+    "diff": [
+      {
+        "path": "workflows/workflow-T3.json",
+        "oldSha256": null,
+        "newSha256": "b252fc3deffd210c77433e12d8d6dadf7a2b36fd1c3b1b77231e25d032da2098",
+        "before": null,
+        "after": "{\n  \"workflowId\": \"workflow-T3\",\n  \"name\": \"workflow-T3\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"custom-agent-1\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"outputBindings\": {\n        \"\": {\n          \"source\": \"output\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

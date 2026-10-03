@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PTC Schematic Expert output contract",
+  "description": "Mirrors what scripts/validate_schematic_outputs.py actually enforces, so the declared contract and the gate cannot drift apart silently.",
+  "type": "object",
+  "required": ["readSources", "parserStatus", "outputs"],
+  "additionalProperties": true,
+  "properties": {
+    "readSources": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["path", "sha256", "insideInputRoot"],
+        "properties": {
+          "path": { "type": "string" },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "insideInputRoot": { "const": true }
+        }
+      }
+    },
+    "parserStatus": { "const": "PASS" },
+    "outputs": {
+      "type": "object",
+      "required": [
+        "SCH-Connect-Map.txt", "SCH-Connect-Map.json",
+        "Component-Statistic.txt", "Components-Statistic.json",
+        "Path-Proofs.txt", "Path-Proofs.json"
+      ],
+      "additionalProperties": { "type": "object", "properties": { "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" } } }
+    }
+  },
+  "x-artifacts": [
+    "project/DALI/Output_Global_Material/schematic/SCH-Connect-Map.txt",
+    "project/DALI/Output_Global_Material/schematic/SCH-Connect-Map.json",
+    "project/DALI/Output_Global_Material/schematic/Component-Statistic.txt",
+    "project/DALI/Output_Global_Material/schematic/Components-Statistic.json",
+    "project/DALI/Output_Global_Material/schematic/Path-Proofs.txt",
+    "project/DALI/Output_Global_Material/schematic/Path-Proofs.json",
+    "project/DALI/Output_Global_Material/schematic/schematic-receipt.json"
+  ],
+  "x-forbidden-inputs": [
+    "project/DALI/schematic-ir.json"
+  ]
+}

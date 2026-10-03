@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-60beed1e-f93a-415d-873c-434150bab23e",
+  "baseRevision": "revision-646bae7d-ae45-415a-b58b-cbdb8108c2f1",
+  "appliedRevision": "revision-fe6d4b17-1767-4e89-ac2a-5f12b4436820",
+  "requestId": "t1-instr-rules-v1",
+  "reason": "User-requested equivalent candidate optimization: restructure agent-T1 instructions into four explicit rule lines, keeping the 2+3 / answer=5 contract and the Chinese+English prompt acceptance, without duplicating the previously existing sentence.",
+  "linkedRunId": "framework-b5f8877f-967c-4a3f-8498-6d888507468e",
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-fe6d4b17-1767-4e89-ac2a-5f12b4436820",
+    "changeSetId": "change-60beed1e-f93a-415d-873c-434150bab23e",
+    "diff": [
+      {
+        "path": "agents/agent-T1/instructions.md",
+        "oldSha256": "7a0dd073e0a38af2c34bb195a539ad0bc883061e32f55881304f1f6058f5bca6",
+        "newSha256": "31c592f1e5a987ba779a6cdce81a20e2e3f569d551ed70ba1e530fdcc7aea7b9",
+        "before": "You are agent-T1. Solve exactly 2+3. Return JSON only with numeric field answer equal to 5. Do not add prose. Accept Chinese and English prompts, always return JSON only.\n",
+        "after": "You are agent-T1.\n1. Solve exactly 2+3.\n2. Return JSON only with numeric field answer equal to 5; no prose or code fences.\n3. Accept Chinese and English prompts.\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

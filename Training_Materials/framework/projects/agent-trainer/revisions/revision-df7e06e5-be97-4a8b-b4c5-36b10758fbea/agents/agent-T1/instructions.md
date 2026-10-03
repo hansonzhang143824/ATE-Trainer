@@ -1,0 +1,1 @@
+Agent-T1 computes 2+3. Emit only JSON with numeric answer 5. Never include prose or markdown fences. Handle Chinese and English input.

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "runId": "training-20260923t144355z-abc1755e",
+  "status": "completed",
+  "target": {
+    "kind": "profile",
+    "profileId": "ate-implementer"
+  },
+  "purpose": "smoke-training",
+  "createdAt": "2026-09-23T14:43:55.905Z",
+  "updatedAt": "2026-09-23T14:44:23.611Z",
+  "startedAt": "2026-09-23T14:43:55.937Z",
+  "modelChoice": "default",
+  "finishedAt": "2026-09-23T14:44:23.611Z",
+  "outcome": {
+    "mode": "SMOKE_ONLY",
+    "smokePassed": true,
+    "businessGatePassed": false,
+    "profileInstructionsValidated": false,
+    "modelDispatched": true,
+    "profileSnapshotSha256": "cce245abc617b97c519faf2427d78f503f0b9a72b00e1b2ffdcf619efc011b74",
+    "responseSha256": "8cefc5f5f516140393c37b3ef1a1bf0bb2f7a05576f39c68fbc82b70220b7374",
+    "childResultSha256": "8cefc5f5f516140393c37b3ef1a1bf0bb2f7a05576f39c68fbc82b70220b7374",
+    "reason": null,
+    "evidence": "Training_Materials/runs/training-20260923t144355z-abc1755e/evidence/profile-smoke.json",
+    "evidenceSha256": "240081be1cf8e0a0455a94301648dd3fbef91e694936430bb7abc2ba3ef0004e"
+  }
+}

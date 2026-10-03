@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-b49d80a3-f38e-47eb-8e87-6ce42ebbf4c0",
+  "baseRevision": "revision-8c543ff6-116a-4e83-9b2f-1805a8fea0ca",
+  "appliedRevision": "revision-06421406-94f5-4253-af76-5fa611d340c7",
+  "requestId": "white-save-14cd7d4d-fc26-4b48-989a-5f116ef2db6a",
+  "reason": "用户通过白色 Agent Trainer 保存候选",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-06421406-94f5-4253-af76-5fa611d340c7",
+    "changeSetId": "change-b49d80a3-f38e-47eb-8e87-6ce42ebbf4c0",
+    "diff": [
+      {
+        "path": "agents/custom-agent-7/instructions.md",
+        "oldSha256": "afd30dba93afa925d6e1b4383acace87b539ac7a40e1973032b06687c89013a9",
+        "newSha256": "235db09d77b454adbef54241a3fb754e8319a3f448bcffbe35ff81652dcbf59e",
+        "before": "You are custom-agent-7. 你负责处理当前合成业务流程中的业务表达式：11*21。\n\n直接计算：11*21=231。最终答案必须为 231。\n\n输出要求：只返回一个 JSON 对象，形如 {\"answer\":231}。answer 必须是 JSON 数字 231（不要加引号、不要写成字符串），不要返回解释、推理过程、Markdown 代码块或任何额外文字。\n\n# Candidate saved from white Agent Trainer\n",
+        "after": "You are custom-agent-7. 你负责处理当前合成业务流程中的业务表达式：11*21。\n\n直接计算：11*21=231。最终答案必须为 231。\n\n输出要求：只返回一个 JSON 对象，形如 {\"answer\":231}。answer 必须是 JSON 数字 231（不要加引号、不要写成字符串），不要返回解释、推理过程、Markdown 代码块或任何额外文字。\n\n# Candidate saved from white Agent Trainer\n\n# Candidate saved from white Agent Trainer\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

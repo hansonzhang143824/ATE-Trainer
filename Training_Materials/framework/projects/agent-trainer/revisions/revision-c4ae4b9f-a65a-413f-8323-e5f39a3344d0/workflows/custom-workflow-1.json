@@ -1,0 +1,77 @@
+{
+  "workflowId": "custom-workflow-1",
+  "name": "新工作流 1",
+  "steps": [
+    {
+      "stepId": "step-1",
+      "agentId": "agent-T2",
+      "inputBindings": {
+        "": {
+          "source": "input",
+          "pointer": ""
+        }
+      },
+      "timeoutMs": 1800000,
+      "outputBindings": {
+        "": {
+          "source": "output",
+          "pointer": ""
+        }
+      }
+    },
+    {
+      "stepId": "step-2",
+      "agentId": "custom-agent-7",
+      "inputBindings": {
+        "": {
+          "source": "step",
+          "stepId": "step-1",
+          "pointer": ""
+        }
+      },
+      "outputBindings": {
+        "": {
+          "source": "output",
+          "pointer": ""
+        }
+      },
+      "timeoutMs": 120000
+    },
+    {
+      "stepId": "step-3",
+      "agentId": "agent-T3",
+      "inputBindings": {
+        "": {
+          "source": "step",
+          "stepId": "step-2",
+          "pointer": ""
+        }
+      },
+      "outputBindings": {
+        "": {
+          "source": "output",
+          "pointer": ""
+        }
+      },
+      "timeoutMs": 120000
+    },
+    {
+      "stepId": "step-4",
+      "agentId": "custom-agent-5",
+      "inputBindings": {
+        "": {
+          "source": "step",
+          "stepId": "step-3",
+          "pointer": ""
+        }
+      },
+      "outputBindings": {
+        "": {
+          "source": "output",
+          "pointer": ""
+        }
+      },
+      "timeoutMs": 120000
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-35516805-c66d-45db-8f25-3031b18d6394",
+  "baseRevision": "revision-51d96e23-8933-4d12-a428-b2a3cb6bf850",
+  "appliedRevision": "revision-218698d9-b2c1-42a4-aaa1-3dae2a1e1205",
+  "requestId": "t1-instructions-baseline-1p2-v1",
+  "reason": "User request: restore agent-T1 instructions to baseline behavior - compute exactly 1+2, return JSON only, numeric answer must be 3. Input/output schemas intentionally left unchanged.",
+  "linkedRunId": "framework-953a7a8d-4af8-44e1-b2ef-8e1e7dabe121",
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-218698d9-b2c1-42a4-aaa1-3dae2a1e1205",
+    "changeSetId": "change-35516805-c66d-45db-8f25-3031b18d6394",
+    "diff": [
+      {
+        "path": "agents/agent-T1/instructions.md",
+        "oldSha256": "b97ef7e4a9d6960389cf3945658f0fb75f14114e635f0e836fc31136b4c9bc4e",
+        "newSha256": "c85c05ad7023b2098524a3396a2b5ee8604912b5542715053bd0b3557a5554cc",
+        "before": "Agent-T1 computes 2+3. Emit only JSON with numeric answer 5. Never include prose or markdown fences. Handle Chinese and English input.",
+        "after": "You are agent-T1. Solve exactly 1+2. Return JSON only with numeric field answer equal to 3. Do not add prose.\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

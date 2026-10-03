@@ -1,0 +1,29 @@
+{
+  "workflowId": "lab-pair",
+  "name": "Synthetic producer → consumer",
+  "steps": [
+    {
+      "stepId": "produce",
+      "agentId": "lab-producer",
+      "inputBindings": {
+        "/seed": {
+          "source": "input",
+          "pointer": "/seed"
+        }
+      },
+      "timeoutMs": 120000
+    },
+    {
+      "stepId": "consume",
+      "agentId": "lab-consumer",
+      "inputBindings": {
+        "/receivedValue": {
+          "source": "step",
+          "stepId": "produce",
+          "pointer": "/value"
+        }
+      },
+      "timeoutMs": 120000
+    }
+  ]
+}

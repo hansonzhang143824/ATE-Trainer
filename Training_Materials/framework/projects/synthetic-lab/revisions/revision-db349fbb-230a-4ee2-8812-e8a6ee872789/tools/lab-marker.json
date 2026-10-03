@@ -1,0 +1,12 @@
+{
+  "toolId": "lab-marker",
+  "adapter": "node-script",
+  "adapterVersion": "1",
+  "scriptRef": "skills/lab-marker/scripts/marker.mjs",
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false
+  },
+  "timeoutMs": 5000,
+  "interpreter": "node>=20"
+}

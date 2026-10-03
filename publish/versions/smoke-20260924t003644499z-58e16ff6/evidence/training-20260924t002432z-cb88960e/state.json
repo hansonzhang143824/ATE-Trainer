@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "runId": "training-20260924t002432z-cb88960e",
+  "status": "completed",
+  "target": {
+    "kind": "profile",
+    "profileId": "compile-diagnostician"
+  },
+  "purpose": "smoke-training",
+  "createdAt": "2026-09-24T00:24:32.750Z",
+  "updatedAt": "2026-09-24T00:25:01.904Z",
+  "startedAt": "2026-09-24T00:24:32.781Z",
+  "modelChoice": "default",
+  "finishedAt": "2026-09-24T00:25:01.904Z",
+  "outcome": {
+    "mode": "SMOKE_ONLY",
+    "smokePassed": true,
+    "businessGatePassed": false,
+    "profileInstructionsValidated": false,
+    "modelDispatched": true,
+    "profileSnapshotSha256": "94f5855fd9a1c3b01dd6a0520ca3fbecd79d74ea9db963ebe5869708446f0b69",
+    "responseSha256": "6cf3a5aef11b5d4f2529fec898356561d062c79bb66d8b2d31fbac2db8411635",
+    "childResultSha256": "6cf3a5aef11b5d4f2529fec898356561d062c79bb66d8b2d31fbac2db8411635",
+    "reason": null,
+    "evidence": "Training_Materials/runs/training-20260924t002432z-cb88960e/evidence/profile-smoke.json",
+    "evidenceSha256": "58d9da1cb0967925cee25ec474d3adf8912648e3443a50cd78ab2d3539399d52"
+  }
+}

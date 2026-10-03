@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-21f82da9-b4de-4dbd-9f21-05ab18b24411",
+  "baseRevision": "revision-acda56d0-3719-45ad-98a8-0c4e4c76e6f0",
+  "appliedRevision": "revision-df7e06e5-be97-4a8b-b4c5-36b10758fbea",
+  "requestId": "white-candidate-5f033b1f-b13c-46c1-8657-c78008b0ac32",
+  "reason": "用户通过白色 Agent Trainer 新建候选空工作流",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-df7e06e5-be97-4a8b-b4c5-36b10758fbea",
+    "changeSetId": "change-21f82da9-b4de-4dbd-9f21-05ab18b24411",
+    "diff": [
+      {
+        "path": "workflows/workflow-T2.json",
+        "oldSha256": null,
+        "newSha256": "720b6847e23726d4111f6ed8db1188f295a4ea0002663812af3384309f429055",
+        "before": null,
+        "after": "{\n  \"workflowId\": \"workflow-T2\",\n  \"name\": \"workflow-T2\",\n  \"steps\": []\n}\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

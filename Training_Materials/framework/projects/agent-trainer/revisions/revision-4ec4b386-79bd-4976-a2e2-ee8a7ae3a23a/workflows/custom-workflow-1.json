@@ -1,0 +1,17 @@
+{
+  "workflowId": "custom-workflow-1",
+  "name": "新工作流 1",
+  "steps": [
+    {
+      "stepId": "step-1",
+      "agentId": "custom-agent-1",
+      "inputBindings": {
+        "": {
+          "source": "input",
+          "pointer": ""
+        }
+      },
+      "timeoutMs": 120000
+    }
+  ]
+}

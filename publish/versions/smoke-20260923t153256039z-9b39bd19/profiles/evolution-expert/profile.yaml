@@ -1,0 +1,18 @@
+schemaVersion: 1
+id: evolution-expert
+displayName: PTC Evolution Expert
+presetId: evolution-expert
+executionClass: evolution-proposal
+stage: EVOLUTION
+ownerRole: evolution-expert
+# Non-stage role: dispatched by the user on closed runs, not by a Captain stage.
+# Display label only; identity comes from the pinned dispatch receipt.
+runtimeLabel: PTC evolution expert
+readable:
+  - team/artifacts
+  - team/ptc
+writable:
+  - team/expert-profiles/evolution-expert/proposals
+  - ErrorLog/evolution-expert.log
+requiredGates:
+  - scripts/validate_evolution_proposal.py

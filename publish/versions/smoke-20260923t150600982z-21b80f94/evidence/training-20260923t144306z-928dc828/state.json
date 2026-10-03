@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "runId": "training-20260923t144306z-928dc828",
+  "status": "completed",
+  "target": {
+    "kind": "profile",
+    "profileId": "strategy-expert"
+  },
+  "purpose": "smoke-training",
+  "createdAt": "2026-09-23T14:43:06.118Z",
+  "updatedAt": "2026-09-23T14:43:46.589Z",
+  "startedAt": "2026-09-23T14:43:06.137Z",
+  "modelChoice": "default",
+  "finishedAt": "2026-09-23T14:43:46.589Z",
+  "outcome": {
+    "mode": "SMOKE_ONLY",
+    "smokePassed": true,
+    "businessGatePassed": false,
+    "profileInstructionsValidated": false,
+    "modelDispatched": true,
+    "profileSnapshotSha256": "29f5311b72a25c5b23eabe95fd04430466a97edaf0604b9cbc72874ca124cd15",
+    "responseSha256": "34be097ad9505945e1192a653b710224a80ec9882ff9f564ab504448c5a36282",
+    "childResultSha256": "34be097ad9505945e1192a653b710224a80ec9882ff9f564ab504448c5a36282",
+    "reason": null,
+    "evidence": "Training_Materials/runs/training-20260923t144306z-928dc828/evidence/profile-smoke.json",
+    "evidenceSha256": "482b2735c78338864ed7334402268450d17158832bdba066237f71b6bc4ad4da"
+  }
+}

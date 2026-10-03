@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-523d30e9-2a2f-47c8-be58-5cb3e6d67c3f",
+  "baseRevision": "revision-f596dcf0-4e52-411a-9c46-8e1d5dc6c2bf",
+  "appliedRevision": "revision-43151af5-5237-4738-b034-07522ccb379f",
+  "requestId": "white-candidate-6068c800-3229-4607-971d-f3eb8043300d",
+  "reason": "用户通过白色 Agent Trainer 调整工作流编排",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-43151af5-5237-4738-b034-07522ccb379f",
+    "changeSetId": "change-523d30e9-2a2f-47c8-be58-5cb3e6d67c3f",
+    "diff": [
+      {
+        "path": "workflows/workflow-T1.json",
+        "oldSha256": "fcb334416d7a995b9977e37e9c959fddda1eb61774c1a8a3e39e5d8a052ca300",
+        "newSha256": "ce0a7b0eafc23504bab878b664ae15873c26ed1beddd1d1a91a9f539928cd369",
+        "before": "{\n  \"workflowId\": \"workflow-T1\",\n  \"name\": \"workflow-T1\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"agent-T3\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    },\n    {\n      \"stepId\": \"step-2\",\n      \"agentId\": \"agent-T1\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"step\",\n          \"stepId\": \"step-1\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000\n    }\n  ]\n}\n",
+        "after": "{\n  \"workflowId\": \"workflow-T1\",\n  \"name\": \"workflow-T1\",\n  \"steps\": [\n    {\n      \"stepId\": \"step-1\",\n      \"agentId\": \"agent-T1\",\n      \"inputBindings\": {\n        \"\": {\n          \"source\": \"input\",\n          \"pointer\": \"\"\n        }\n      },\n      \"timeoutMs\": 120000,\n      \"outputBindings\": {\n        \"\": {\n          \"source\": \"output\",\n          \"pointer\": \"\"\n        }\n      }\n    }\n  ]\n}\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "workflowId": "tm109-replacement-flow",
+  "name": "TM109 Copy Replacement Flow",
+  "steps": [
+    {
+      "stepId": "step-1",
+      "agentId": "tm109-dft-copy",
+      "inputBindings": {
+        "": {
+          "source": "input",
+          "pointer": ""
+        }
+      },
+      "timeoutMs": 120000
+    },
+    {
+      "stepId": "step-2",
+      "agentId": "lab-consumer",
+      "inputBindings": {
+        "": {
+          "source": "step",
+          "stepId": "step-1",
+          "pointer": ""
+        }
+      },
+      "timeoutMs": 120000
+    }
+  ]
+}

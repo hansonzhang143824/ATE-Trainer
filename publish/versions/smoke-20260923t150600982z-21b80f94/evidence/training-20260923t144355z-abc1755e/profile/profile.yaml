@@ -1,0 +1,21 @@
+schemaVersion: 1
+id: ate-implementer
+displayName: PTC Implementer
+presetId: ate-implementer
+executionClass: implementation-standard
+stage: IMPLEMENTATION
+ownerRole: ate-implementer
+# Display label only; identity comes from the pinned dispatch receipt.
+runtimeLabel: PTC implementer [<TM>]
+readable:
+  - <run>/method
+  - <run>/strategy
+  - knowledge/standards/treg.md
+  - approved target source files
+writable:
+  - <run>/implementation
+  - ErrorLog/implementer.log
+  - approved target source files
+requiredGates:
+  - scripts/verify_implementation_batch.py
+  - scripts/write_implementation_deliverable.py

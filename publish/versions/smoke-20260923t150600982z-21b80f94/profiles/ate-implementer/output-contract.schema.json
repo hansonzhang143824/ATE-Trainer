@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "required": ["tm", "stage", "targetRoot", "signedInputs", "changes", "verdict"],
+  "properties": {
+    "tm": { "type": "string", "minLength": 2 },
+    "stage": { "type": "string", "const": "IMPLEMENTATION" },
+    "targetRoot": { "type": "string" },
+    "signedInputs": {
+      "type": "object",
+      "required": ["methodContractSha256"],
+      "properties": {
+        "methodContractSha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "afterSha256", "symbols"],
+        "properties": {
+          "path": { "type": "string" },
+          "afterSha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "symbols": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "verdict": { "type": "string", "enum": ["READY", "BLOCKED"] }
+  }
+}

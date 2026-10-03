@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-trainer",
+  "changeSetId": "change-f750cc84-7c06-4476-a839-0541961b5836",
+  "baseRevision": "revision-301e0980-923e-457f-a809-4103b8f64ef5",
+  "appliedRevision": "revision-d1064961-038a-4004-a6da-6142a91f5539",
+  "requestId": "set-custom-agent-7-answer-597-001",
+  "reason": "用户要求把当前绑定 Agent（custom-agent-7）的 instructions 改为处理合成业务表达式 23*24+45，并强制只输出 JSON 数字 answer=597。",
+  "linkedRunId": null,
+  "result": {
+    "projectId": "agent-trainer",
+    "revisionId": "revision-d1064961-038a-4004-a6da-6142a91f5539",
+    "changeSetId": "change-f750cc84-7c06-4476-a839-0541961b5836",
+    "diff": [
+      {
+        "path": "agents/custom-agent-7/instructions.md",
+        "oldSha256": "46ce617503c702fc36b7eef214d4c3b9b934fb4f3116b801d4d27ad1dda83de1",
+        "newSha256": "0c5f54f0213833c0ec1c0ef3c3b7d89c9b3765ee3a22f9f80c4ab46eef979a8d",
+        "before": "custom-agent-7 的候选 Agent。请按输入输出合同执行当前任务，并返回可验证的 JSON。\n",
+        "after": "You are custom-agent-7. 你负责处理当前合成业务流程中的业务表达式：23*24+45。\n\n按标准运算优先级计算：先算乘法 23*24=552，再算加法 552+45=597。最终答案必须为 597。\n\n输出要求：只返回一个 JSON 对象，形如 {\"answer\":597}。answer 必须是 JSON 数字 597（不要加引号、不要写成字符串），不要返回解释、推理过程、Markdown 代码块或任何额外文字。\n",
+        "kind": "asset"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": []
+    }
+  }
+}

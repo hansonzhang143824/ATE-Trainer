@@ -1,0 +1,41 @@
+{
+  "workflowId": "workflow-T1",
+  "name": "workflow-T1",
+  "steps": [
+    {
+      "stepId": "step-1",
+      "agentId": "agent-T1",
+      "inputBindings": {
+        "": {
+          "source": "input",
+          "pointer": ""
+        }
+      },
+      "timeoutMs": 120000
+    },
+    {
+      "stepId": "step-2",
+      "agentId": "agent-T2",
+      "inputBindings": {
+        "": {
+          "source": "step",
+          "stepId": "step-1",
+          "pointer": ""
+        }
+      },
+      "timeoutMs": 120000
+    },
+    {
+      "stepId": "step-3",
+      "agentId": "agent-T3",
+      "inputBindings": {
+        "": {
+          "source": "step",
+          "stepId": "step-2",
+          "pointer": ""
+        }
+      },
+      "timeoutMs": 120000
+    }
+  ]
+}
