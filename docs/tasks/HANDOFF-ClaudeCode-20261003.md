@@ -49,9 +49,11 @@
 | B 专家固定会话（14 条） | 通过 | `77a7655` | `docs/tasks/B-expert-fixed-session.md`、B5、B6 |
 | C1 业务运行加固（断开旧 TM109 入口、单步超时 1~30 分钟、刷新接回、重启标记中断） | 通过 | `84e3e93` | `docs/tasks/C1-business-run-hardening.md` |
 | D0 冻结与发布盘点 | 数据属实；漏掉了阻断问题（见下） | `ea1ea7c` | `docs/tasks/D0-release-audit.md` |
-| D 冻结与发布完整性 | **功能全部通过；1 项未完成（见 4.1）** | `3c23333`…`06807ca` | `docs/tasks/D-release-integrity.md` |
+| D 冻结与发布完整性 | **通过**（Claude Code 2026-10-03 补交 README 后独立复核：verify-b PASS 10、DF/DS/DO/DP/A/K 结果文件逐条 PASS、冻结与发布文件与候选 revision 逐字节一致、序号锁内分配） | `3c23333`…`06807ca`、`7333917` | `docs/tasks/D-release-integrity.md` |
+| 维护（Claude Code） | 修复 NUL 损坏文档、补交验收程序、`.gitignore`、运行数据备份 | `ece9a47`、`a2270b8`、`09e4686`、`ba9c71c` | `docs/tasks/ISSUE-REGISTER.md` 第 3 节 |
+| E 真实候选运行成为主流程 + 12 项系统问题 | 任务书已定稿，待 Codex 执行 | — | `docs/tasks/E-real-candidate-run.md` |
 
-### 4.1 D 的验收结论（Cowork Claude 已复核）：不通过，问题清单 1 项（非功能）
+### 4.1 D 的验收结论（Cowork Claude 复核，历史记录）：不通过，问题清单 1 项（非功能）——已由 `7333917` 补交，D 判「通过」
 
 - **问题 1**：`docs/tasks/verify/README.md` 中「任务 D 的附加步骤」一节没有提交。证据：磁盘上 README 为 9587 字节、mtime 1791021044805（含 D 一节），而 `.git/index` 中该文件 mtime 仍为 1791002646（C1 时）。任务书第 5 节步骤 7 要求提交它。
 - **修复**：`git add docs/tasks/verify/README.md`，提交信息 `[D] 补交验收程序说明`，推送 master 与 main，确认 0/0。补完即可判「通过」。
@@ -66,33 +68,32 @@
 ## 5. 关键事实与测试数据
 
 - 测试目标：工作流「新工作流 1」= `custom-workflow-1`（步骤：agent-T2、custom-agent-7、agent-T3、custom-agent-5）；Agent X = `agent-2abe705b`（固定会话 S2 `session-e4ab77e8…`，前一个 S1 `session-ad0b3230…`）；Z = `agent-70e75253`。
-- 运行模式：页面 SMOKE / BUSINESS 会把执行包换成 1+2 / 597（`trainer-service.js` 的 `syntheticSmokeBundle` / `syntheticBusinessBundle`）；**训练会话里专家调用 `trainer_run` 时不带 executionMode，执行真实指令**。D 之后，合成运行同时保存真实执行包，冻结 / 发布用的是真实内容。
+- 运行模式（E 之前的现状）：页面 SMOKE / BUSINESS 会把执行包换成 1+2 / 597（`trainer-service.js` 的 `syntheticSmokeBundle` / `syntheticBusinessBundle`）；页面没有第三种运行方式。训练会话里专家调用 `trainer_run` 时不带 executionMode，执行包是真实指令，但专家提示词与子 Agent 身份说明都写着「合成」。D 之后，合成运行同时保存真实执行包，冻结 / 发布用的是真实内容，但验证依据是合成运行。任务 E 改为：普通运行 `CANDIDATE` / `RELEASE` 为主流程，SMOKE / BUSINESS 只作系统验证。
 - 被污染（合成指令）的存量版本：`frozen-cfb09c03…`、`frozen-00f99692…`、`release-53dc2488…`、`release-74077b90…`。已被识别并禁止发布 / 激活，文件保留不动。
 - 冻结与发布数据：冻结在 `Training_Materials/framework/projects/agent-trainer/versions/frozen-*/`；发布在 `publish/versions/release-*/`；激活指针在 `publish/active/agent-trainer/<kind>/<id>.json`。
 - 训练会话专家工具：context / assets / runs / events / apply_changes / validate / run / control / compare；**没有** freeze / stage / activate（这些只在页面）。
 - 脚本工具单次最多 30 秒（`trainer-schema.js`、`framework-dsh-adapter.js`）；单步超时 1~30 分钟。
 
-## 6. 遗留问题（不阻塞，可排期）
+## 6. 遗留问题
 
-1. C1 观察：步骤超时时 `onCancel` 立即把运行置为 failed，子会话终止尚未确认（同目标新运行仍受 `TERMINATION_UNCONFIRMED` 保护）。
-2. 页面初始 `#run-id` 显示「尚未运行 · 运行中」（lastRun 默认无 status）。
-3. B 遗留：DSH 停机期间删掉的会话，重启后首次打开可能复用旧壳。
-4. 删除 Agent 不能撤销；删除 Agent 时不连带移除工作流步骤。
-5. D-5 未做：待审核（staged/review）状态、版本说明、版本对比。
-6. 旧 TM109 流水线代码与路由仍在（入口已断开），系统稳定后清理。
+统一登记在 `docs/tasks/ISSUE-REGISTER.md`（编号 R01…，含状态与证据）。原第 6 节的 6 项对应：1 → R08，2 → R12，3 → R18，4 → R13 / R14（非缺陷），5 → R17，6 → R15。
 
-## 7. 下一步建议（由用户决定顺序）
+## 7. 下一步建议（2026-10-03 更新）
 
-1. 补交 D 的 README（4.1），D 判通过。
-2. 用户原则是「系统完全没问题再做业务」。系统主线（编辑 → 训练会话优化 → 验证 → 冻结 → 发布 → 切回）现在已经打通并验证。可以和用户确认：系统开发是否到此为止，还是先处理第 6 节里的某些项。
-3. 转向真实业务（C2，DFT 解析试点）前需要设计：
-   - 一个开关：BUSINESS_ONLY 不再替换为 597，而是执行真实指令（`trainer-service.js` 中的判断），何时切换由用户决定；
-   - 真实材料（DFT 文件）如何作为运行输入交给 Agent（现在输入只能是调用时传的 JSON）；
-   - 脚本工具 30 秒上限是否需要放宽；
-   - 先读旧 DFT 材料：`_archive`、`Training_Materials` 中 TM109、9/29 的证据。
-4. 冻结真实 Agent 前，先用一次合成验证运行（D 之后的），再冻结，不要用 D 之前的运行。
+1. 用户把 `docs/tasks/E-real-candidate-run.md` 交给 Codex 执行（`/goal` 指令见 Claude Code 会话；要点：只改任务书列出的路径，主流程验收必须在页面点按钮，不得放宽判定，不得改候选 Agent 来迁就验收）。
+2. Codex 报告完成后，Claude Code 按 E 第 9 节验收，并更新问题登记表。
+3. E 通过后，转向真实业务（C2，DFT 解析试点）前还需设计：R11 正式方案（材料目录、路径白名单、大文件处理，参考 E 的 EM 探针结论）；R16 旧 DFT 改动的去留（用户决定）；先读旧 DFT 材料：`_archive`、`Training_Materials` 中 TM109、9/29 的证据。
+4. ~~冻结真实 Agent 前，先用一次合成验证运行再冻结~~（作废：E 之后冻结只认真实候选运行）。
 
-## 8. 验收方法建议
+## 8. 2026-10-03 决策记录（Claude Code 会话）
+
+1. **SMOKE_ONLY / BUSINESS_ONLY 的定位（用户原话见 E 附录 A）**：二者只是系统验证工具；真实流程中 Agent 可以从空开始，通过聊天式训练优化；597 / 1+2 只在验证时使用。当前实现把验证工具做成了主要运行方式——用户、Codex、Claude 三方确认「做偏了」，由任务 E 纠正。
+2. **E 的边界**：见 E 任务书 1.2 节（Codex 原文 + Claude 三条取舍：发布模式普通运行记 `RELEASE`；训练会话只能发起 `CANDIDATE`；以合成运行为依据但内容真实的已有发布版本可切回，只禁止其冻结版本再次发布）。
+3. **用户要求一轮修正一半以上问题，不拆成很多任务**：E 纳入 12 项（R01–R10、R12、R21），占需修正问题的 67%。
+4. **验证数据不进 Git**：运行目录、请求日志、验收结果不进 Git；只保留运行必需的最小内容（Agent 定义、冻结与发布版本、会话绑定由 Git 跟踪）。本机删除验证运行前必须先列清单、说明能否恢复、经用户确认；用户 2026-10-03 只同意删除截图与临时文件，验证运行暂留。
+5. **仓库卫生暂不处理**：`.tmp-dsh-home-validation`（含指向 DSH 安装目录的目录联接，不可直接递归删除）与约 65 个未跟踪条目，用户决定暂不处理（R19）。
+
+## 9. 验收方法建议
 
 - 你既能写计划也能执行。若自己实现，**开发与验收分两个会话**：验收会话只读任务书和验收程序，按任务书第 3 节与「复核方式」判定。
 - 每个任务书沿用现有格式（参照 `docs/tasks/C1-business-run-hardening.md`、`D-release-integrity.md`）：目标原文与硬停止条件 → 现状（代码位置）→ 要交付的行为表 → 实现规格（接口写死）→ 步骤（含通过标准）→ 异常处理表 → 修复流程 → 数据说明 → 复核方式 → 完成报告模板。
