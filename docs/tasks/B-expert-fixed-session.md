@@ -415,9 +415,9 @@ resolveTarget({ projectId, mode, targetKind, targetId })
 - B6/B12：当前 CUA 浏览器能力只有页面资产和 WebMCP，页面评估环境没有 `localStorage` 对象，也没有受支持的 storage 写 API；因此没有用脚本伪造清除/写入 legacy key。B8 仍按硬停止规则不删除 DSH session 或 binding。
 - 本轮仅新增本报告证据；实现代码、`lib/client.js`、测试与既有提交不变。
 
-## 6.7 第 4 轮（B4）宿主补验（Codex，按 docs/tasks/B5-host-acceptance.md 执行）
+## 6.8 第 4 轮（B4）宿主补验（Codex，按 docs/tasks/B5-host-acceptance.md 执行；B5 计划书中称为「6.7」）
 
-> 6.6 节中第 3、4、9 条的「通过」证据不足，以本节真实宿主驱动结果为准。
+> 6.6、6.7 节中第 3、4、9 条的「通过」证据不足，以本节真实宿主驱动结果为准。
 
 - 基线：本轮开工前实际 HEAD / github/master / github/main = `8cb9b8ca81198448b11bce97f00b4943b4121fb4`，三者一致；B5 文档预期的 `e630981` 已在此前提交中，未改写历史。开工前 `git status --porcelain` 已保存到 `.tmp-b5-baseline-status.txt`，未提交。
 - 工具：`docs/tasks/verify/verify-b-host.mjs`，独立 Chrome `154.0.8037.92`；A-F 各次 nativeHost 均独立启动，最终 F 为 `6fa09ce4-6b30-4162-9dbf-df2f6e5a8cff`。汇总证据：`docs/tasks/verify/results/verify-b-host.json`；分步证据：`verify-b-host-A.json` 至 `verify-b-host-F.json`；截图目录：`docs/tasks/verify/results/host-shots/2026-10-02T16-00-23-779Z/`（以及各步骤同级时间目录）。
@@ -484,11 +484,17 @@ resolveTarget({ projectId, mode, targetKind, targetId })
     - F-8 B12(ii) target-session(V) 指向新会话 — PASS — {"sessionId":"session-9cf22c7b-d064-4b99-9c55-b3c5b2a70920","previousSessionId":null,"createdAt":"2026-10-02T16:02:12.744Z","updatedAt":"2026-10-02T16:02:12.744Z","lastResolvedRevisionId":"revision-3a4d2c51-2233-4ea4-acf8-59c06bcdd6a3","mtimeMs":1790956932747.4878}
     - F-9 B12(ii) F 的 bindings 文件未被改写 — PASS — Training_Materials/framework/control/bindings/session-42b70531-18a9-4af9-ac32-88043f940daf.json
     - 结果：PASS 11 · FAIL 0 · WARN 0 · SKIP 0
-- 关键值：X=`agent-2abe705b`；S2=`session-e4ab77e8-f88d-40a3-8a20-f7da6d4e88d1`；S1=`session-ad0b3230-3c3f-450d-a1dd-7de3d30fb04a`（bindings 未改写：`Training_Materials/framework/control/bindings/session-ad0b3230-3c3f-450d-a1dd-7de3d30fb04a.json`；DSH 持久化目录仍在：`C:Users
-vt10241.dshsessions--D-Newtest-DSH-ATE-Coding-Flow-Training_Materials-framework-control-sessions-6272e8d688ad465363e3e7e463e309b342f867757dab56da91f0f53aca5b4e56--\session-ad0b3230-3c3f-450d-a1dd-7de3d30fb04a`）；SW=`session-f9ecedff-217a-4231-a048-d48e6c225134`；SZ=`session-adaca03d-d4b2-44d7-8d32-838cd93f4c70`；R1=`framework-e9762868-5971-472a-9281-bab5b285a52b`；R2=`framework-27f46ea9-ccb9-4e7c-b009-b1c7e2f18209`；revA=`revision-94c5bf70-6b0c-4c4d-8d74-c0e54c477ee6` → revB=`revision-d4d35401-a8c2-47b3-a9b3-e3a8396d06b5`（`current.json` 同为 revB）；第 12(i) 条分支=`new`，结果会话=`session-2b0476aa-038e-4ce1-8c68-5ba61525b744`；V=`agent-5532a5f0`，V 的会话=`session-9cf22c7b-d064-4b99-9c55-b3c5b2a70920`，F=`session-42b70531-18a9-4af9-ac32-88043f940daf`（F binding 未变）。
+- 关键值：X=`agent-2abe705b`；S2=`session-e4ab77e8-f88d-40a3-8a20-f7da6d4e88d1`；S1=`session-ad0b3230-3c3f-450d-a1dd-7de3d30fb04a`（bindings 未改写：`Training_Materials/framework/control/bindings/session-ad0b3230-3c3f-450d-a1dd-7de3d30fb04a.json`；DSH 持久化目录仍在：`C:\Users\nvt10241\.dsh\sessions\--D-Newtest-DSH-ATE-Coding-Flow-Training_Materials-framework-control-sessions-6272e8d688ad465363e3e7e463e309b342f867757dab56da91f0f53aca5b4e56--\session-ad0b3230-3c3f-450d-a1dd-7de3d30fb04a`）；SW=`session-f9ecedff-217a-4231-a048-d48e6c225134`；SZ=`session-adaca03d-d4b2-44d7-8d32-838cd93f4c70`；R1=`framework-e9762868-5971-472a-9281-bab5b285a52b`；R2=`framework-27f46ea9-ccb9-4e7c-b009-b1c7e2f18209`；revA=`revision-94c5bf70-6b0c-4c4d-8d74-c0e54c477ee6` → revB=`revision-d4d35401-a8c2-47b3-a9b3-e3a8396d06b5`（`current.json` 同为 revB）；第 12(i) 条分支=`new`，结果会话=`session-2b0476aa-038e-4ce1-8c68-5ba61525b744`；V=`agent-5532a5f0`，V 的会话=`session-9cf22c7b-d064-4b99-9c55-b3c5b2a70920`，F=`session-42b70531-18a9-4af9-ac32-88043f940daf`（F binding 未变）。
 - 第 5 条合并：`pendingContextChange.fromRunId=null`，`toRunId=framework-27f46ea9-ccb9-4e7c-b009-b1c7e2f18209`；连续两次运行分别为 R1、R2，均 completed。
 - 第 8 条：跳过。按 00-PLAN 2.4 硬停止条件 4，不删除 DSH 会话；本轮只验证删除目标映射后的兼容分支，旧会话和 binding 均保留。
 - verify-b.mjs：PASS 10 / FAIL 0 / WARN 0 / SKIP 0。B-file-2 的未消费 pendingContextChange 为结构通过项。
 - 偏离：本轮不改产品代码、不重启 DSH，依 B5 说明未运行 compare；最终只读 verify-b 已通过。初次默认沙箱运行 A 的 Chrome 进程立即退出（exit 4294930433），按 6.1 使用提升权限重跑成功；默认环境首次 `git fetch` 受 `.git/FETCH_HEAD` 权限限制，提升权限重跑成功。A 最终结果为 FAIL 0；B-3 的 1 个 WARN 是 W 首次打开时没有固定会话，脚本按预期新建 SW，不阻断。
 - 数据：未删除任何 DSH 会话或 bindings 文件；F 步骤的 `forget-target-session` 只删除了 Z 的 `target-sessions` 映射，Z 旧 binding 仍在且 sha256 未变；新增测试 Agent V=`agent-5532a5f0` 及其会话保留。
 - 提交 / 推送：本节与 B5 驱动文件一并提交，提交 hash 以最终 `git log` 为准；推送 `github/master`、`github/main` 后复核三者一致且 `git rev-list --left-right --count HEAD...github/main = 0 0`。
+
+## 6.9 Claude 验收结论（2026-10-03）
+
+- 结论：**任务 B 验收通过**。按 `docs/tasks/00-PLAN.md` 第 1.4 节，本轮迭代（T0 → A → B）结束。
+- 复核基线：`fcb08f1`（HEAD = github/master = github/main）。Claude 逐项对照 `docs/tasks/verify/results/verify-b-host*.json`、`bindings/*.json`、`target-sessions/*.json`、`current.json` 与截图：A~F 共 PASS 49 / FAIL 0 / WARN 1（B-3：「新工作流 1」此前无固定会话，首次打开新建，符合 B5 计划书 4.2 第 4 点）；S1 `session-ad0b3230…` 与 Y 的会话 `session-42b70531…` 的 binding 未改写；`verify-b.mjs` PASS 10 / FAIL 0；context 基线未重写；提交范围符合 B5 计划书第 5 节步骤 9。
+- 第 8 条（在 DSH 中手动删除会话后再打开应自动新建）仍待用户手工执行。
+- 文档整理（Claude）：原第二个「6.7」节更名为 6.8；修正 6.8 节关键值中被转义破坏的 S1 持久化目录路径；新增本节。
