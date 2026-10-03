@@ -110,3 +110,17 @@ node docs/tasks/verify/verify-b-host.mjs --steps A   # 依次执行 A、B、C、
 | H | C1：单步超时真正生效，错误码 `STEP_TIMEOUT`，提示写明哪一步 | 同上 |
 | I | C1：业务运行进行中刷新页面能接回 | 同上 |
 | J1 / J2 | C1：运行暂停后重启 DSH，运行变为 `interrupted`，页面不被挡住（J1 与 J2 之间重启 DSH） | 同上 |
+
+
+## 任务 D 的附加步骤（2026-10-03）
+
+任务书：`docs/tasks/D-release-integrity.md`。按 DF → DS → DO → DP 顺序一次一步运行；DS/DO/DP 读取 DF 写下的 `results/d-state.json`。
+
+| 步骤 | 内容 | 关键检查 |
+|---|---|---|
+| DF | 合成验证运行（SMOKE、BUSINESS）冻结与发布 | 冻结 / 发布文件中的指令 = 候选 revision 真实内容；version.json / release.json 有 createdAt、sequence、验证方式；结束时恢复激活版本与工作流 |
+| DS | 被污染的存量版本 | 列表 contaminated 标识；用它发布 → TRAINER_FROZEN_SYNTHETIC；激活它 → TRAINER_RELEASE_SYNTHETIC；用 D 之前的合成运行冻结 → validation_source_unavailable |
+| DO | 时间与排序 | 按 sequence 从新到旧，旧版本（无 sequence、createdAt 为空）排最后 |
+| DP | 发布审核页 `#version-list` | 版本行、时间 / 时间未知、验证方式、当前激活、合成指令标识；「切回此版本」并切回开工前版本 |
+
+DS 默认使用 D0 盘点中的 ID，可用 `--contaminated-frozen`、`--contaminated-release`、`--clean-frozen`、`--clean-release`、`--legacy-run` 覆盖。
