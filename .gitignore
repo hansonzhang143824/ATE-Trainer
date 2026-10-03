@@ -1,0 +1,23 @@
+# 验证数据：不进入 Git（只在本机保留功能所需的最小内容）
+/Training_Materials/runs/
+/publish/runs/
+/Training_Materials/framework/control/requests/
+/Training_Materials/framework/projects/*/requests/
+/docs/tasks/verify/results/
+
+# 缓存与依赖
+__pycache__/
+*.pyc
+node_modules/
+
+# 备份与 Git 临时索引
+*.bak-*
+/.git-index-*
+/.git-objects-*
+
+# 根目录下的临时文件与日志
+/.tmp-*
+/tmp-*
+/tmp_*
+/*.log
+/*.err
