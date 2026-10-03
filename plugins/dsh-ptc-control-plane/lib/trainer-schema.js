@@ -39,7 +39,7 @@ const businessPipelineDefinition = { type: 'object', required: ['workflowId', 'w
 const workflowDefinition = { type: 'object', required: ['workflowId', 'steps'], properties: { workflowId: id, name: text, businessPipeline: businessPipelineDefinition, steps: {
   type: 'array', minItems: 0, maxItems: 64, items: { type: 'object', required: ['stepId', 'agentId', 'inputBindings'], properties: {
     stepId: id, agentId: id, inputBindings: { type: 'object', additionalProperties: bindingDefinition }, outputBindings: { type: 'object', additionalProperties: outputBindingDefinition }, outputSchemaRef: text,
-    timeoutMs: { type: 'integer', minimum: 1, maximum: 480000 },
+    timeoutMs: { type: 'integer', minimum: 1, maximum: 1800000 },
     agentVersion: { oneOf: [
       { type: 'object', required: ['kind'], properties: { kind: { const: 'candidate' } }, additionalProperties: false },
       { type: 'object', required: ['kind', 'frozenVersionId'], properties: { kind: { const: 'frozen' }, frozenVersionId: id }, additionalProperties: false },
@@ -112,6 +112,12 @@ export function validateProjectFiles(files) {
     if (p.endsWith('.schema.json')) { try { validator(data, files); } catch (e) { errors.push(error(p, e.message)); } continue; }
     if (!data || typeof data !== 'object' || Array.isArray(data)) { errors.push(error(p, 'definition must be an object')); continue; }
     const definition = definitions.find(([pattern]) => pattern.test(p))?.[1];
+    if (/^workflows\/[^/]+\.json$/.test(p) && Array.isArray(data.steps)) {
+      for (const step of data.steps) {
+        if (step.timeoutMs !== undefined && (!Number.isSafeInteger(step.timeoutMs) || step.timeoutMs < 1 || step.timeoutMs > 1800000)) errors.push(error(p, 'invalid timeoutMs'));
+      }
+    }
+    if (/^workflows\/[^/]+\.json$/.test(p) && Object.hasOwn(data, 'businessPipeline')) errors.push(error(p, 'businessPipeline is archived (legacy TM109 pipeline); remove it'));
     if (definition && !definition(data)) { errors.push(...definition.errors.map((e) => error(`${p}${e.instancePath}`, e.message, { keyword: e.keyword, params: e.params }))); continue; }
     if (/^agents\/[^/]+\/agent.json$/.test(p)) {
       if (data.agentId !== p.split('/')[1] || typeof data.name !== 'string') errors.push(error(p, 'agent identity/name mismatch'));
@@ -142,7 +148,7 @@ export function validateProjectFiles(files) {
         if (!step.stepId || seen.has(step.stepId)) errors.push(error(p, 'stepId must be unique'));
         if (step.agentVersion?.kind !== 'frozen') requireRef(`agents/${step.agentId}/agent.json`, p);
         if (step.outputSchemaRef) requireRef(step.outputSchemaRef, p);
-        if (step.timeoutMs !== undefined && (!Number.isSafeInteger(step.timeoutMs) || step.timeoutMs < 1)) errors.push(error(p, 'invalid timeoutMs'));
+        if (step.timeoutMs !== undefined && (!Number.isSafeInteger(step.timeoutMs) || step.timeoutMs < 1 || step.timeoutMs > 1800000)) errors.push(error(p, 'invalid timeoutMs'));
         for (const [dest, binding] of Object.entries(step.inputBindings ?? {})) {
           if (!/^(?:\/(?:[^~]|~[01])*)*$/.test(dest) || !['input', 'step', 'literal'].includes(binding?.source)) errors.push(error(p, 'invalid input binding'));
           if (binding?.source === 'step' && !seen.has(binding.stepId)) errors.push(error(p, 'binding must refer to an earlier step'));

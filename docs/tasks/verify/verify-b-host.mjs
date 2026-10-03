@@ -17,6 +17,8 @@
 //   E  第 6 条（清掉宿主 localStorage 中 ptc-native-session: 项，刷新宿主与工作台后仍复用 S2）
 //   F  第 12 条（旧格式 localStorage key：Z 指向自己的旧会话；新 Agent V 指向别人的会话）
 //   G  第 8 条（Z 的固定会话目录临时移出 ~/.dsh/sessions，再打开 Z 应自动新建；结束后移回）。只在明确要求时运行：--steps G
+//   K/T/H/I/J1/J2  任务 C1（业务运行加固），见 docs/tasks/C1-business-run-hardening.md：
+//      K 旧流水线入口断开与超时上限；T 步骤卡片超时输入；H 超时生效与提示；I 刷新接回；J1 暂停后重启 DSH；J2 重启后已中断
 //
 // 参数：--steps <列表>  --chrome <浏览器路径>  --port <调试端口，默认 9333>  --headless  --keep-open
 //       --x <Agent X，默认 agent-2abe705b>  --workflow <工作流名，默认「新工作流 1」>  --z <Agent Z，默认 agent-70e75253>
@@ -455,8 +457,193 @@ async function stepG(pre) {
   }
 }
 
+// ================================================================== 任务 C1（业务运行加固）
+const RUNS_TERMINAL = new Set(['completed', 'failed', 'cancelled', 'interrupted', 'stopped']);
+const C1_STATE_FILE = path.join(RESULTS, 'c1-restart-state.json');
+async function workflowFile(name) {
+  const wid = await workflowIdByName(name);
+  const rev = (await trainingContext()).candidateRevision;
+  const files = (await must('assets', { mode: MODE, revisionId: rev }))?.files || {};
+  const p = `workflows/${wid}.json`;
+  if (typeof files[p] !== 'string') throw new Error(`候选中没有 ${p}`);
+  return { wid, path: p, rev, text: files[p], json: JSON.parse(files[p]) };
+}
+async function writeWorkflow(p, json, reason) {
+  const rev = (await trainingContext()).candidateRevision;
+  return api('apply-changes', { mode: MODE, requestId: requestId('c1'), baseRevision: rev, reason, changes: [{ path: p, content: `${JSON.stringify(json, null, 2)}\n` }] });
+}
+async function restoreWorkflow(orig, label) {
+  const now = await workflowFile(W_NAME);
+  if (now.text === orig.text) return true;
+  const rev = (await trainingContext()).candidateRevision;
+  const r = await api('apply-changes', { mode: MODE, requestId: requestId('c1-restore'), baseRevision: rev, reason: `verify-b-host ${label}：恢复工作流原内容`, changes: [{ path: orig.path, content: orig.text }] });
+  const after = await workflowFile(W_NAME);
+  note(`${label}.restore`, { ok: r.ok, error: r.error, restored: after.text === orig.text });
+  return after.text === orig.text;
+}
+async function waitRun(runId, { timeoutMs = 15 * 60000, until = run => RUNS_TERMINAL.has(String(run?.status || '').toLowerCase()) } = {}) {
+  const deadline = Date.now() + timeoutMs; let run;
+  for (;;) {
+    const r = await api('runs', { runId }); run = r.value?.run || r.value;
+    if (run && until(run)) return run;
+    if (Date.now() > deadline) throw new Error(`等待运行 ${runId} 超时，最后状态 ${run?.status}`);
+    await sleep(2000);
+  }
+}
+async function startBusinessFromPage(label) {
+  await clickTarget('workflow', W_NAME);
+  await sleep(300);
+  await trainer.eval(`(()=>{const b=document.querySelector('button[data-exec="business"]');if(b&&!b.classList.contains('active'))b.click();return true})()`);
+  const before = await trainer.eval(`document.querySelector('#run-id').textContent`);
+  await clickId('run');
+  const text = await trainer.waitFor(`(()=>{const t=document.querySelector('#run-id').textContent;return /^framework-[A-Za-z0-9-]+ · /.test(t)&&t!==${JSON.stringify(before)}?t:null})()`,
+    { timeoutMs: 60000, label: `${label}：页面出现新的业务运行 ID` });
+  const runId = text.match(/^(framework-[A-Za-z0-9-]+)/)[1];
+  const r = await api('runs', { runId }); const run = r.value?.run || r.value;
+  note(`run.${label}.start`, { runId, executionMode: run?.executionMode ?? null, status: run?.status ?? null });
+  console.log(`  · ${label}: ${runId}`);
+  return runId;
+}
+
+async function stepK() {
+  console.log('\n[K] C1-1：旧 TM109 业务流水线入口已断开');
+  const src = fs.readFileSync(path.join(ROOT, 'docs/prototypes/agent-trainer-repair-prototype.html'), 'utf8');
+  expect('K-1 页面「运行」不再分流到旧业务流水线', !src.includes('return runBusinessPipeline()'), '源码中已无 return runBusinessPipeline()', '页面源码仍含 return runBusinessPipeline()');
+  const wf = await workflowFile(W_NAME);
+  const rev0 = wf.rev;
+  const withLegacy = { ...wf.json, businessPipeline: { workflowId: 'tm109-input-sync', workflowRevision: 'r1', testItems: ['TM109'], schematicProfileId: 'schematic-expert', dftProfileId: 'dft-expert' } };
+  const r = await writeWorkflow(wf.path, withLegacy, 'verify-b-host K：确认带 businessPipeline 的工作流被拒绝');
+  const rev1 = (await trainingContext()).candidateRevision;
+  note('K.legacyWrite', { ok: r.ok, error: r.error, rev0, rev1 });
+  expect('K-2 保存带 businessPipeline 的工作流被服务端拒绝，候选 revision 不变', !r.ok && rev1 === rev0 && /businessPipeline/.test(JSON.stringify(r.error)),
+    short(r.error), `ok=${r.ok} revision ${rev0}→${rev1} error=${short(r.error)}`);
+  if (r.ok) await restoreWorkflow(wf, 'K');
+  const over = { ...wf.json, steps: wf.json.steps.map((st, i) => i === 0 ? { ...st, timeoutMs: 1800001 } : st) };
+  const r2 = await writeWorkflow(wf.path, over, 'verify-b-host K：确认单步超时超过 30 分钟被拒绝');
+  const rev2 = (await trainingContext()).candidateRevision;
+  note('K.overLimit', { ok: r2.ok, error: r2.error });
+  expect('K-3 单步超时 1800001 ms（超过 30 分钟）被服务端拒绝', !r2.ok && rev2 === rev0, short(r2.error), `ok=${r2.ok} error=${short(r2.error)}`);
+  if (r2.ok) await restoreWorkflow(wf, 'K');
+  const max = { ...wf.json, steps: wf.json.steps.map((st, i) => i === 0 ? { ...st, timeoutMs: 1800000 } : st) };
+  const r3 = await writeWorkflow(wf.path, max, 'verify-b-host K：确认单步超时 30 分钟可保存');
+  note('K.atLimit', { ok: r3.ok, error: r3.error });
+  expect('K-4 单步超时 1800000 ms（30 分钟）可以保存', r3.ok, '已保存', short(r3.error));
+  const back = await restoreWorkflow(wf, 'K');
+  expect('K-5 工作流已恢复原内容', back, 'ok', '恢复失败，见证据 K.restore');
+}
+
+async function stepT() {
+  console.log('\n[T] C1-2：步骤卡片上的「超时（分钟）」');
+  const orig = await workflowFile(W_NAME);
+  try {
+    await reloadHostAndTrainer('T');
+    await clickTarget('workflow', W_NAME);
+    await sleep(500);
+    const inputs = await trainer.eval(`[...document.querySelectorAll('input[data-step-timeout]')].map(i=>({index:i.dataset.stepTimeout,value:i.value,min:i.min,max:i.max,disabled:i.disabled}))`);
+    note('T.inputs', inputs);
+    const expectMinutes = orig.json.steps.map(st => String(Math.round((st.timeoutMs ?? 120000) / 60000)));
+    expect('T-1 每个步骤卡片都有超时输入框，显示当前值（分钟），范围 1~30', inputs.length === orig.json.steps.length && inputs.every((x, i) => x.value === expectMinutes[i] && x.min === '1' && x.max === '30' && !x.disabled),
+      JSON.stringify(inputs), `输入框 ${JSON.stringify(inputs)}，期望值 ${JSON.stringify(expectMinutes)}`);
+    const setValue = async (index, value) => trainer.eval(`(()=>{const i=document.querySelector('input[data-step-timeout="${index}"]');if(!i)return false;i.value=${JSON.stringify(String(value))};i.dispatchEvent(new Event('change',{bubbles:true}));return true})()`);
+    await setValue(0, 12);
+    let saved = null;
+    for (let k = 0; k < 40 && !saved; k++) { await sleep(500); const w = await workflowFile(W_NAME); if (w.json.steps[0]?.timeoutMs === 720000) saved = w; }
+    expect('T-2 第 1 步改为 12 分钟后保存为 timeoutMs=720000，其他步骤不变', !!saved && saved.json.steps.slice(1).every((st, i) => (st.timeoutMs ?? null) === (orig.json.steps[i + 1].timeoutMs ?? null)),
+      '720000', `保存结果 ${short(saved?.json?.steps?.map(st => st.timeoutMs))}`);
+    const revBefore = (await trainingContext()).candidateRevision;
+    await setValue(0, 31);
+    await sleep(2500);
+    const toast = await trainer.eval(`document.querySelector('#toast')?.textContent||''`);
+    const revAfter = (await trainingContext()).candidateRevision;
+    const shown = await trainer.eval(`document.querySelector('input[data-step-timeout="0"]')?.value`);
+    note('T.invalid', { toast, revBefore, revAfter, shown });
+    expect('T-3 输入 31 分钟被页面拒绝：提示「超时需为 1~30 分钟」、不保存、输入框恢复为 12', toast.includes('超时需为 1~30 分钟') && revAfter === revBefore && shown === '12', toast, `toast=${toast} revision ${revBefore}→${revAfter} 输入框=${shown}`);
+  } finally {
+    const back = await restoreWorkflow(orig, 'T');
+    expect('T-4 工作流已恢复原内容', back, 'ok', '恢复失败，见证据 T.restore');
+  }
+}
+
+async function stepH() {
+  console.log('\n[H] C1-2：步骤超时真正生效，提示写明是哪一步');
+  const orig = await workflowFile(W_NAME);
+  const firstStep = orig.json.steps[0];
+  try {
+    const tiny = { ...orig.json, steps: orig.json.steps.map((st, i) => i === 0 ? { ...st, timeoutMs: 1000 } : st) };
+    const w = await writeWorkflow(orig.path, tiny, 'verify-b-host H：第 1 步超时临时设为 1 秒');
+    if (!w.ok) throw new Error(`临时设置 1 秒超时失败：${short(w.error)}`);
+    await reloadHostAndTrainer('H');
+    const runId = await startBusinessFromPage('H-run-timeout');
+    const run = await waitRun(runId, { timeoutMs: 5 * 60000 });
+    const stepErr = run.steps?.[0]?.error || null;
+    note('H.run', { runId, status: run.status, error: run.error ?? null, step0: { status: run.steps?.[0]?.status, error: stepErr } });
+    expect('H-1 运行以 failed 结束，错误码 STEP_TIMEOUT', run.status === 'failed' && run.error?.code === 'STEP_TIMEOUT', `${run.status} ${run.error?.code}`, `${run.status} ${short(run.error)}`);
+    expect('H-2 错误信息写明第几步、stepId、agentId 和超时时长', new RegExp(`第 1 步 ${firstStep.stepId}（${firstStep.agentId}）超过\\s*\\S.*未完成`).test(run.error?.message || ''),
+      run.error?.message, `message=${run.error?.message}`);
+    const pageErr = await trainer.waitFor(`document.querySelector('#run-error')?.textContent.includes(${JSON.stringify(firstStep.stepId)})?document.querySelector('#run-error').textContent:null`, { timeoutMs: 30000, label: '#run-error 显示超时信息' }).catch(e => e.message);
+    const runEnabled = await trainer.eval(`!document.querySelector('#run').disabled`);
+    note('H.page', { pageErr, runEnabled });
+    expect('H-3 页面 #run-error 显示该超时信息', typeof pageErr === 'string' && pageErr.includes(firstStep.stepId) && !pageErr.startsWith('等待超时'), pageErr, pageErr);
+    expect('H-4 超时后「运行」按钮可再次点击（不被挡住）', runEnabled === true, 'enabled', 'disabled');
+  } finally {
+    const back = await restoreWorkflow(orig, 'H');
+    expect('H-5 工作流已恢复原内容', back, 'ok', '恢复失败，见证据 H.restore');
+  }
+}
+
+async function stepI() {
+  console.log('\n[I] C1-4：业务运行进行中刷新页面，能接回');
+  await reloadHostAndTrainer('I');
+  const runId = await startBusinessFromPage('I-run');
+  const first = (await api('runs', { runId })).value;
+  await trainer.reload();
+  await waitTrainerReady(trainer);
+  const resumed = await trainer.waitFor(`(()=>{const t=document.querySelector('#run-id').textContent;return t.startsWith(${JSON.stringify(runId)})?t:null})()`, { timeoutMs: 30000, label: '刷新后 #run-id 显示同一运行' }).catch(e => e.message);
+  const blocked = await trainer.eval(`document.querySelector('#run').disabled`);
+  const run = await waitRun(runId);
+  const finalText = await trainer.waitFor(`(()=>{const t=document.querySelector('#run-id').textContent;return t.startsWith(${JSON.stringify(runId)})&&/ · (已完成|失败|已停止)$/.test(t)?t:null})()`, { timeoutMs: 60000, label: '刷新后页面跟到运行结束' }).catch(e => e.message);
+  note('I', { runId, statusAtReload: (first?.run || first)?.status, resumed, blockedWhileRunning: blocked, apiFinal: run.status, finalText, executionMode: run.executionMode });
+  expect('I-1 页面发起的是新框架 BUSINESS_ONLY 运行', run.executionMode === 'BUSINESS_ONLY', run.executionMode, `executionMode=${run.executionMode}`);
+  expect('I-2 刷新后页面自动接回同一运行', typeof resumed === 'string' && resumed.startsWith(runId), resumed, resumed);
+  expect('I-3 接回期间「运行」按钮处于禁用（防止重复运行）', run.status !== 'completed' || blocked === true || /已完成/.test(String(resumed)), `disabled=${blocked}`, `disabled=${blocked}`);
+  expect('I-4 页面跟到运行结束，且与接口状态一致', run.status === 'completed' && typeof finalText === 'string' && finalText.endsWith('已完成'), finalText, `api=${run.status} page=${finalText}`);
+}
+
+async function stepJ1() {
+  console.log('\n[J1] C1-5（第一段）：发起业务运行并暂停，等待重启 DSH');
+  await reloadHostAndTrainer('J1');
+  const runId = await startBusinessFromPage('J1-run');
+  const c = await api('control', { mode: MODE, runId, action: 'pause', requestId: requestId('J1-pause') });
+  let run;
+  try { run = await waitRun(runId, { timeoutMs: 5 * 60000, until: r => ['paused', ...RUNS_TERMINAL].includes(String(r?.status)) }); } catch (e) { run = { status: e.message }; }
+  note('J1', { runId, control: c, status: run.status });
+  expect('J1-1 运行进入 paused（非终态，模拟「DSH 重启时运行未结束」）', run.status === 'paused', run.status, `状态=${run.status} control=${short(c)}`);
+  fs.mkdirSync(RESULTS, { recursive: true });
+  fs.writeFileSync(C1_STATE_FILE, JSON.stringify({ runId, pausedAt: new Date().toISOString() }, null, 2));
+  console.log(`  · 已记录 ${rel(C1_STATE_FILE)}。现在重启 DSH，然后运行 --steps J2`);
+}
+
+async function stepJ2() {
+  console.log('\n[J2] C1-5（第二段）：DSH 重启后，未结束的运行被标为已中断，页面不被挡住');
+  const st = readJson(C1_STATE_FILE);
+  if (!st?.runId) throw new Error(`找不到 ${rel(C1_STATE_FILE)}，请先运行 --steps J1 并重启 DSH`);
+  const run = (await api('runs', { runId: st.runId })).value;
+  const r = run?.run || run;
+  note('J2.run', { runId: st.runId, status: r?.status, error: r?.error ?? null });
+  expect('J2-1 重启后该运行为 interrupted，错误码 HOST_RESTARTED', r?.status === 'interrupted' && r?.error?.code === 'HOST_RESTARTED', `${r?.status} ${r?.error?.code}`, `${r?.status} ${short(r?.error)}`);
+  await clickTarget('workflow', W_NAME);
+  await sleep(1500);
+  const runEnabled = await trainer.eval(`!document.querySelector('#run').disabled`);
+  const runText = await trainer.eval(`document.querySelector('#run-id').textContent`);
+  note('J2.page', { runEnabled, runText });
+  expect('J2-2 页面没有接回已中断的运行，「运行」按钮可用', runEnabled === true && !runText.startsWith(st.runId + ' · 运行中'), `enabled，#run-id=${runText}`, `enabled=${runEnabled} #run-id=${runText}`);
+  const newId = await startBusinessFromPage('J2-rerun');
+  const nr = await waitRun(newId);
+  expect('J2-3 重新发起的业务运行正常完成', nr.status === 'completed', `${newId} completed`, `${newId} ${nr.status}`);
+}
+
 // ------------------------------------------------------------------ main
-const STEP_FNS = { A: stepA, B: stepB, C: stepC, D: stepD, E: stepE, F: stepF, G: stepG };
+const STEP_FNS = { A: stepA, B: stepB, C: stepC, D: stepD, E: stepE, F: stepF, G: stepG, K: stepK, T: stepT, H: stepH, I: stepI, J1: stepJ1, J2: stepJ2 };
 console.log(`任务 B 宿主验收 · ${BASE} · 仓库 ${ROOT} · 步骤 ${STEPS.join(',')}\n`);
 let fatal = null;
 try {

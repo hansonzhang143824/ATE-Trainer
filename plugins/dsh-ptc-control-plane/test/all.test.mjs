@@ -52,3 +52,4 @@ import './empty-system-d1-d2.test.mjs';
 import './agent-id-ledger.test.mjs';
 import './target-session.test.mjs';
 import './trainer-missing-session.test.mjs';
+import './c1-business-hardening.test.mjs';

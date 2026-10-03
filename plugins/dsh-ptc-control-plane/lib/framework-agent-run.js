@@ -7,6 +7,10 @@ import { createRunStore, frameworkId, frameworkSha } from './trainer-run-events.
 const terminal = new Set(['completed', 'failed', 'cancelled', 'interrupted']);
 const clone = value => structuredClone(value);
 const errorInfo = error => ({ code: error.code ?? 'FRAMEWORK_EXECUTION_FAILED', message: String(error.message ?? error), details: error.details ?? null });
+export function formatStepTimeoutMessage({ stepNumber, stepId, agentId, timeoutMs }) {
+  const duration = timeoutMs % 60000 === 0 ? `${timeoutMs / 60000} 分钟` : `${Math.max(1, Math.ceil(timeoutMs / 1000))} 秒`;
+  return `第 ${stepNumber} 步 ${stepId}（${agentId}）超过 ${duration}未完成，已判失败`;
+}
 function fail(code, message, details) { throw Object.assign(new Error(message), { code, details }); }
 function freeze(value) {
   if (value && typeof value === 'object') { Object.freeze(value); Object.values(value).forEach(freeze); }
@@ -187,6 +191,17 @@ export function createFrameworkRunner({ workspaceRoot, adapter, now = () => new 
             run.cancellationRequested = true;
             run.childTerminationConfirmed = false;
             run.status = 'stopping';
+            if (error.stopReason === 'timeout') {
+              error.code = 'STEP_TIMEOUT';
+              error.message = formatStepTimeoutMessage({ stepNumber: index + 1, stepId: step.stepId, agentId: step.agentId, timeoutMs: definition.timeoutMs ?? 300000 });
+              error.details = { stepId: step.stepId, agentId: step.agentId, timeoutMs: definition.timeoutMs ?? 300000 };
+              run.status = 'failed';
+              run.completedAt = now();
+              run.error = errorInfo(error);
+              step.status = 'failed';
+              step.completedAt = now();
+              step.error = errorInfo(error);
+            }
             run.error = errorInfo(error);
             event(entry, 'cancellation-requested', { stepId: step.stepId, phase: 'stopping' });
           },
@@ -259,7 +274,8 @@ export function createFrameworkRunner({ workspaceRoot, adapter, now = () => new 
       run.validation = { ok: false, errors: error.details?.errors ?? [{ code: run.error.code, message: run.error.message }] };
       if (run.cancellationRequested) finishCancellation(entry);
       else { run.status = 'failed'; run.completedAt = now(); }
-      const step = run.steps.find(step => step.status === 'running') ?? run.steps.find(step => step.status === 'pending');
+      const step = run.steps.find(step => step.status === 'running')
+        ?? (entry.timedOut ? run.steps.find(candidate => candidate.stepId === error.details?.stepId) : run.steps.find(candidate => candidate.status === 'pending'));
       if (step) { step.error = errorInfo(error); if (run.status !== 'stopping') { step.status = 'failed'; step.completedAt = now(); } }
       event(entry, 'execution-error', { phase: run.status === 'stopping' ? 'cleanup' : 'terminal', stepId: step?.stepId });
     } finally {

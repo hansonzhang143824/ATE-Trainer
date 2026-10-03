@@ -99,3 +99,14 @@ node docs/tasks/verify/verify-b-host.mjs --steps A   # 依次执行 A、B、C、
 - 参数：`--chrome <浏览器路径>`、`--port <调试端口，默认 9333>`、`--headless`、`--keep-open`、`--x`、`--workflow`、`--z`、`--foreign-session`；环境变量 `CHROME_PATH`、`DSH_HOME`（默认 `~/.dsh`）。
 - 结果：`results/verify-b-host.json`（每次打开的卡片文字、sessionId、binding 与 target-session 关键字段、宿主 console 错误）、`results/verify-b-host-<步骤>.json`、截图 `results/host-shots/<时间>/`。均不提交。
 - 不删除任何 DSH 会话或 bindings 文件；唯一的删除动作是步骤 F 对 Z 调用 `forget-target-session`（只删除映射文件）。
+
+### 第 8 条与任务 C1 的附加步骤（2026-10-03）
+
+| 步骤 | 内容 | 执行计划 |
+|---|---|---|
+| G | B 第 8 条：Z 的固定会话目录临时移出 `~/.dsh/sessions`，再打开 Z 应自动新建；结束时移回 | `docs/tasks/B6-session-removed.md` |
+| K | C1：旧 TM109 流水线入口已断开；单步超时上限 30 分钟 | `docs/tasks/C1-business-run-hardening.md` |
+| T | C1：步骤卡片「超时（分钟）」输入框 | 同上 |
+| H | C1：单步超时真正生效，错误码 `STEP_TIMEOUT`，提示写明哪一步 | 同上 |
+| I | C1：业务运行进行中刷新页面能接回 | 同上 |
+| J1 / J2 | C1：运行暂停后重启 DSH，运行变为 `interrupted`，页面不被挡住（J1 与 J2 之间重启 DSH） | 同上 |
