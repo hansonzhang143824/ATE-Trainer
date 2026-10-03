@@ -16,6 +16,7 @@
 //   D  第 4 条（保存候选后再打开，candidateRevision 更新、卡片显示 revision 旧 → 新）
 //   E  第 6 条（清掉宿主 localStorage 中 ptc-native-session: 项，刷新宿主与工作台后仍复用 S2）
 //   F  第 12 条（旧格式 localStorage key：Z 指向自己的旧会话；新 Agent V 指向别人的会话）
+//   G  第 8 条（Z 的固定会话目录临时移出 ~/.dsh/sessions，再打开 Z 应自动新建；结束后移回）。只在明确要求时运行：--steps G
 //
 // 参数：--steps <列表>  --chrome <浏览器路径>  --port <调试端口，默认 9333>  --headless  --keep-open
 //       --x <Agent X，默认 agent-2abe705b>  --workflow <工作流名，默认「新工作流 1」>  --z <Agent Z，默认 agent-70e75253>
@@ -412,8 +413,50 @@ async function stepF(pre) {
   expect('F-9 B12(ii) F 的 bindings 文件未被改写', fAfter.exists && fAfter.sha256 === fBefore.sha256 && fAfter.mtimeMs === fBefore.mtimeMs, rel(bindingPath(F)), `exists=${fAfter.exists} sha 相同=${fAfter.sha256 === fBefore.sha256} mtime 相同=${fAfter.mtimeMs === fBefore.mtimeMs}`);
 }
 
+// 第 8 条：目标当前的固定会话在 DSH 中「消失」后再打开 → 必须自动新建、无报错、记录更新为新会话。
+// DSH 没有提供删除会话的功能，这里把该会话的持久化目录临时移出 ~/.dsh/sessions（等同于被删除），
+// 验证结束后在 finally 中移回原处，不丢数据。前提：DSH 刚重启过，且重启后没有打开过 Z（会话不在内存中）。
+async function stepG(pre) {
+  console.log('\n[G] 第 8 条：Z 的固定会话被移除后再打开 Z，应自动新建');
+  const SZ = pre.SZ;
+  if (!SZ) throw new Error(`target-session(Z=${Z}) 为 null，没有可移除的固定会话（先按计划书处理）`);
+  const szBinding = readBinding(SZ);
+  const from = findDshSessionDir(SZ);
+  if (!from) throw new Error(`在 ${path.join(DSH_HOME, 'sessions')} 下找不到 ${SZ} 的会话目录，无法执行第 8 条`);
+  const backupRoot = path.join(DSH_HOME, 'b8-removed-sessions', RUN_TAG);
+  const to = path.join(backupRoot, path.basename(path.dirname(from)), path.basename(from));
+  const manifest = path.join(backupRoot, 'manifest.json');
+  fs.mkdirSync(path.dirname(to), { recursive: true });
+  fs.writeFileSync(manifest, JSON.stringify({ sessionId: SZ, from, to, movedAt: new Date().toISOString(), restore: `把 ${to} 移回 ${from}` }, null, 2));
+  fs.renameSync(from, to);
+  note('G.move', { SZ, from, to, manifest });
+  let restored = false;
+  try {
+    expect('G-1 B8 Z 的会话目录已移出 ~/.dsh/sessions（模拟被删除）', !fs.existsSync(from) && fs.existsSync(to), to, `from 仍存在=${fs.existsSync(from)}，to 存在=${fs.existsSync(to)}`);
+    const before = await api('target-session', { mode: MODE, targetKind: 'agent', targetId: Z, presetId: PRESET });
+    note('G.targetSessionAfterMove', before);
+    expect('G-2 B8 移除后查询 target-session(Z)：接口正常返回 null（不报错）', before.ok && before.value === null,
+      'null', `ok=${before.ok} value=${short(before.value)} error=${short(before.error)}`);
+    const r = await openTarget('agent', Z, { label: 'G-open-Z-after-removal' });
+    expect('G-3 B8 再打开 Z：卡片成功、显示「新建会话」、sessionId ≠ 旧会话', r.ok && !r.reused && r.sessionId && r.sessionId !== SZ,
+      `${r.sessionId}（旧 ${SZ}）`, r.ok && r.sessionId === SZ ? `仍复用了旧会话 ${SZ}：说明该会话还在 DSH 进程内存里（重启后被打开过）。重启 DSH 后立即重跑 G` : `ok=${r.ok} reused=${r.reused} sid=${r.sessionId} ${short(r.error, 300)}`);
+    const t = readTarget('agent', Z);
+    expect('G-4 B8 target-session(Z) 更新为新会话', t.exists && t.json.sessionId === r.sessionId && r.sessionId !== SZ, JSON.stringify(targetFields(t)), JSON.stringify(targetFields(t)));
+    const szAfter = readBinding(SZ);
+    expect('G-5 B8 旧会话的 bindings 文件仍在且未被改写', szAfter.exists && szAfter.sha256 === szBinding.sha256, rel(bindingPath(SZ)), `exists=${szAfter.exists} sha 相同=${szAfter.sha256 === szBinding.sha256}`);
+    const r2 = await openTarget('agent', Z, { label: 'G-reopen-Z' });
+    expect('G-6 B8 再次打开 Z 复用新会话', r2.ok && r2.reused && r2.sessionId === r.sessionId, r2.sessionId, `ok=${r2.ok} reused=${r2.reused} sid=${r2.sessionId}`);
+    note('G.ids', { oldSZ: SZ, newSZ: r.sessionId });
+  } finally {
+    if (fs.existsSync(from)) fail('G-7 B8 恢复旧会话目录', `原位置 ${from} 已被重新创建，未覆盖；备份在 ${to}，需人工比对后处理`);
+    else { fs.renameSync(to, from); restored = true; }
+    if (restored) expect('G-7 B8 旧会话目录已移回原处（不丢数据）', fs.existsSync(from) && !fs.existsSync(to), from, `from=${fs.existsSync(from)} to=${fs.existsSync(to)}`);
+    note('G.restore', { restored, from, to });
+  }
+}
+
 // ------------------------------------------------------------------ main
-const STEP_FNS = { A: stepA, B: stepB, C: stepC, D: stepD, E: stepE, F: stepF };
+const STEP_FNS = { A: stepA, B: stepB, C: stepC, D: stepD, E: stepE, F: stepF, G: stepG };
 console.log(`任务 B 宿主验收 · ${BASE} · 仓库 ${ROOT} · 步骤 ${STEPS.join(',')}\n`);
 let fatal = null;
 try {

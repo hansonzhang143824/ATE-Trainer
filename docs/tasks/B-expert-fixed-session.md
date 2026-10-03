@@ -498,3 +498,23 @@ resolveTarget({ projectId, mode, targetKind, targetId })
 - 复核基线：`fcb08f1`（HEAD = github/master = github/main）。Claude 逐项对照 `docs/tasks/verify/results/verify-b-host*.json`、`bindings/*.json`、`target-sessions/*.json`、`current.json` 与截图：A~F 共 PASS 49 / FAIL 0 / WARN 1（B-3：「新工作流 1」此前无固定会话，首次打开新建，符合 B5 计划书 4.2 第 4 点）；S1 `session-ad0b3230…` 与 Y 的会话 `session-42b70531…` 的 binding 未改写；`verify-b.mjs` PASS 10 / FAIL 0；context 基线未重写；提交范围符合 B5 计划书第 5 节步骤 9。
 - 第 8 条（在 DSH 中手动删除会话后再打开应自动新建）仍待用户手工执行。
 - 文档整理（Claude）：原第二个「6.7」节更名为 6.8；修正 6.8 节关键值中被转义破坏的 S1 持久化目录路径；新增本节。
+
+## 6.10 第 8 条：固定会话被删除后自动新建（Codex，按 docs/tasks/B6-session-removed.md 执行）
+
+- 基线：HEAD / github/master / github/main = aa6ed2a8bfd539eae43ce235da0b569f3a714b1b。计划书原先写的 fcb08f1 已有后续报告整理提交 aa6ed2a，本轮未改写历史。
+- 缺陷与修复：DSH PersistenceCoordinator.inspect() 在 live session 存在时会先返回内存对象，单纯捕获 not found 不能识别“磁盘目录已移出但旧会话仍在内存”的情况。trainer-host.js 现在对 SessionPersistence.locate() 的实际日志路径做持久化存在性判断，并区分宿主生命周期内已确认的旧会话与刚创建、尚未落盘的新会话；inspectPersistedSession 仍只把目标 sessionId 的 not found 转为不存在，其他错误继续抛出。回归测试覆盖 stale live shell 与新会话落盘竞态。
+- 测试：trainer-missing-session.test.mjs 最终 3 passed / 0 failed；插件全量最终 407 passed / 0 failed（Gate B 同一套测试，duration_ms 255829.7725）。任务书原始期望为新增 2 个测试；本轮补充 1 个针对真实 live-shell 缺陷的回归用例，偏离已记录。
+- 部署：最后重启产物 C:\Users\nvt10241\AppData\Local\Temp\dsh-plugin-restart-20261003-100211；Gate A/B/C = 0；boot up=True；3080 GET / = 200；启动日志无 plugin tree failed to load、ERR_MODULE_NOT_FOUND、ERR_PACKAGE_PATH_NOT_EXPORTED、input hint must not be empty。最后一次重启前 framework run active=0。客户端未修改，lib/client.js 无需重建。
+- 第 8 条最终 G（2026-10-03T02-06-46-543Z；nativeHost=a0b5ece3-6965-4fca-9393-21fcf966f324）：
+  - ✔ PASS  G-1 B8 Z 的会话目录已移出 ~/.dsh/sessions（模拟被删除） — C:\Users\nvt10241\.dsh\b8-removed-sessions\2026-10-03T02-06-46-543Z\--D-Newtest-DSH-ATE-Coding-Flow-Training_Materials-framework-control-sessions-2ecb8248bdf53fb8298fb08f452429a2e74ef7c1d2ee3e8dd604a1500186bdba--\session-2b0476aa-038e-4ce1-8c68-5ba61525b744
+  - ✔ PASS  G-2 B8 移除后查询 target-session(Z)：接口正常返回 null（不报错） — null
+  - ✔ PASS  G-3 B8 再打开 Z：卡片成功、显示「新建会话」、sessionId ≠ 旧会话 — session-723f8c70-192a-4e38-9776-132f54fe273c（旧 session-2b0476aa-038e-4ce1-8c68-5ba61525b744）
+  - ✔ PASS  G-4 B8 target-session(Z) 更新为新会话 — sessionId=session-723f8c70-192a-4e38-9776-132f54fe273c
+  - ✔ PASS  G-5 B8 旧会话的 bindings 文件仍在且未被改写 — Training_Materials/framework/control/bindings/session-2b0476aa-038e-4ce1-8c68-5ba61525b744.json
+  - ✔ PASS  G-6 B8 再次打开 Z 复用新会话 — session-723f8c70-192a-4e38-9776-132f54fe273c
+  - ✔ PASS  G-7 B8 旧会话目录已移回原处（不丢数据） — C:\Users\nvt10241\.dsh\sessions\--D-Newtest-DSH-ATE-Coding-Flow-Training_Materials-framework-control-sessions-2ecb8248bdf53fb8298fb08f452429a2e74ef7c1d2ee3e8dd604a1500186bdba--\session-2b0476aa-038e-4ce1-8c68-5ba61525b744
+  - 结果：PASS 9 · FAIL 0 · WARN 0 · SKIP 0；证据 docs/tasks/verify/results/verify-b-host-G.json 与 verify-b-host.json。
+- 关键值：旧 SZ=session-2b0476aa-038e-4ce1-8c68-5ba61525b744；新 SZ=session-723f8c70-192a-4e38-9776-132f54fe273c；最终 target-session(Z) 指向新 SZ；旧会话目录已移回原处，旧 binding 文件仍在。G 前曾用 bind-session API 恢复同一个旧 SZ 的 target 映射（bindingRevision 7→8），未创建替代会话；这是因前次失败 G 正常清除了映射而采取的恢复偏离。
+- verify-b.mjs：PASS 10 / FAIL 0。按 B6 说明未重复执行 snapshot/compare；本轮没有改变 context 返回内容。
+- 数据与边界：所有 G 移动均只涉及 Z 的同一个旧会话目录，并在同次运行恢复；未删除任何 DSH 会话目录或 bindings 文件，未移动其他会话，未改写 revision / 冻结版本 / release 文件，未强推或改写 Git 历史。此前失败候选留下的两个未绑定会话目录保留，未作为固定映射使用。
+- 提交 / 推送：本报告随本轮限定路径提交；最终 commit hash、github/master、github/main 与 0/0 同步结果见完成回复。

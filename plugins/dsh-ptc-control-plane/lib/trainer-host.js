@@ -20,6 +20,40 @@ function presetOf(session) {
   return session?.header?.agentPreset;
 }
 
+// DSH SessionPersistence.inspect() rejects with `session "<id>" not found` once a
+// session log no longer exists (for example after the user removed it). For the
+// Trainer that means "this fixed session is gone" (B acceptance 8): verification
+// must answer false so the target is re-created, instead of failing the request.
+export function isMissingPersistedSession(error, sessionId) {
+  const message = String(error?.message ?? '');
+  return /\bnot found\b/i.test(message) && (!sessionId || message.includes(sessionId));
+}
+
+export async function inspectPersistedSession(ctx, sessionId) {
+  if (typeof ctx?.sessionPersistence?.inspect !== 'function') return null;
+  try { return await ctx.sessionPersistence.inspect(sessionId); }
+  catch (error) {
+    if (isMissingPersistedSession(error, sessionId)) return null;
+    throw error;
+  }
+}
+
+export async function verifyPersistedTrainerSession(ctx, sessionId, knownPersistedSessionIds = null) {
+  const authoritative = typeof ctx?.sessionPersistence?.inspect === 'function';
+  const live = ctx?.sessions?.get?.(sessionId);
+  const located = live?.header && typeof ctx?.sessionPersistence?.locate === 'function'
+    ? ctx.sessionPersistence.locate(live.header)
+    : null;
+  if (located?.path && !fs.existsSync(located.path)) {
+    if (knownPersistedSessionIds?.has(sessionId)) return { authoritative: true, persisted: null, exists: false };
+  } else if (located?.path) {
+    knownPersistedSessionIds?.add(sessionId);
+  }
+  const persisted = authoritative ? await inspectPersistedSession(ctx, sessionId) : null;
+  if (persisted && located?.path && fs.existsSync(located.path)) knownPersistedSessionIds?.add(sessionId);
+  return { authoritative, persisted, exists: !authoritative || Boolean(persisted) };
+}
+
 export function mountTrainerHost(ctx, config) {
   const workspaceRoot = path.resolve(config.trainerWorkspaceRoot || config.workspaceRoot);
   const hostModel = () => {
@@ -38,6 +72,7 @@ export function mountTrainerHost(ctx, config) {
   // authoritative target record is discarded as "unbound" and the client
   // falls back to creating a new conversation.
   const persistedAgentResumes = new Map();
+  const knownPersistedSessionIds = new Set();
   const resumePersistedTrainerAgent = async (sessionId, presetId) => {
     const existing = ctx.agents.get(sessionId);
     if (existing) return existing;
@@ -45,7 +80,8 @@ export function mountTrainerHost(ctx, config) {
     let pending = persistedAgentResumes.get(sessionId);
     if (!pending) {
       pending = (async () => {
-        const inspected = await ctx.sessionPersistence.inspect(sessionId);
+        const inspected = await inspectPersistedSession(ctx, sessionId);
+        if (!inspected) return null;
         const headerPreset = inspected?.meta?.agentPreset || inspected?.header?.agentPreset;
         if (headerPreset !== presetId) return null;
         const resumed = await ctx.agents.resume({
@@ -68,11 +104,18 @@ export function mountTrainerHost(ctx, config) {
     repositories: { ...projects, ...bundles, ...releases },
     modelResolver: async () => hostModel(),
     sessionVerifier: async (sessionId, presetId) => {
+      // The DSH workspace catalog can hydrate an in-memory session shell from
+      // workspace.json even after its persisted session log has disappeared.
+      // Persistence is authoritative for fixed-session existence: check it
+      // before trusting those in-memory objects, otherwise B8 reuses a removed
+      // session instead of creating a replacement.
+      const persistence = await verifyPersistedTrainerSession(ctx, sessionId, knownPersistedSessionIds);
+      const { authoritative: hasPersistenceInspector, persisted } = persistence;
+      if (!persistence.exists) return false;
       const agent = ctx.agents.get(sessionId) || await resumePersistedTrainerAgent(sessionId, presetId);
       if (agent) return ctx.agentPresets.composedPreset(agent.ctx) === presetId && presetOf(agent.session) === presetId;
       const session = ctx.sessions?.get(sessionId);
       if (session) return presetOf(session) === presetId;
-      const persisted = await ctx.sessionPersistence?.inspect(sessionId);
       return presetOf(persisted) === presetId;
     },
     sessionToolCatalog: async sessionId => {
