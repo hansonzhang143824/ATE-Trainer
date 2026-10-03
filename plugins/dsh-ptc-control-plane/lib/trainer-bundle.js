@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import { randomUUID } from 'node:crypto';
-import { readAssets, trainerFail, trainerId, trainerJson, trainerProjectRoot, trainerRead, trainerSafe, trainerSha, trainerWrite } from './trainer-project.js';
+import { readAssets, trainerFail, trainerId, trainerJson, trainerLock, trainerProjectRoot, trainerRead, trainerSafe, trainerSha, trainerWrite } from './trainer-project.js';
 import { assetPath, bundleAssetPath, bundleNamespace, validateProjectFiles } from './trainer-schema.js';
 
 function ordered(value) {
@@ -14,6 +14,18 @@ export function bundleManifestBytes(bundle) {
   return Buffer.from(`${JSON.stringify(ordered(manifest))}\n`);
 }
 const sha = (bundle) => trainerSha(bundleManifestBytes(bundle));
+export const SYNTHETIC_INSTRUCTION_RE = /^# Synthetic (SMOKE_ONLY|BUSINESS_ONLY) verification/;
+export function syntheticInstructionRefs(bundle) {
+  const files = new Map((bundle?.files ?? []).map((file) => [file.path, file.content]));
+  const seen = new Set(); const refs = [];
+  for (const step of bundle?.steps ?? []) {
+    const ref = step?.instructionsRef;
+    if (!ref || seen.has(ref)) continue;
+    seen.add(ref);
+    if (SYNTHETIC_INSTRUCTION_RE.test(files.get(ref) ?? '')) refs.push(ref);
+  }
+  return refs;
+}
 function modelCheck(model) {
   if (!model || typeof model.provider !== 'string' || !model.provider || typeof model.model !== 'string' || !model.model) trainerFail('TRAINER_MODEL_REQUIRED', 'resolved provider and model required');
   if (Object.keys(model).some((k) => !['provider', 'model', 'options', 'credentialRef'].includes(k))) trainerFail('TRAINER_MODEL_INVALID', 'model must contain configuration and credential reference only');
@@ -92,6 +104,7 @@ export function resolveBundle(root, input) {
       const version = trainerId(step.agentVersion.frozenVersionId);
       const source = loadFrozenBundle(root, { projectId, frozenVersionId: version });
       if (source.targetKind !== 'agent' || source.targetId !== step.agentId) trainerFail('TRAINER_TARGET_MISMATCH', 'workflow frozen Agent reference differs from source target');
+      if (syntheticInstructionRefs(source).length) trainerFail('TRAINER_FROZEN_SYNTHETIC', '工作流引用的冻结 Agent 包含合成指令');
       frozenDependencies[version] = source.bundleSha256;
       dependencyBundles[source.bundleSha256] = { manifestContent: bundleManifestBytes(source).toString('utf8') };
     }
@@ -196,17 +209,26 @@ function resolveDefinition({ projectId, targetKind, targetId, revisionId, files,
     ...(Object.keys(usedBundles).length ? { dependencyBundles: usedBundles, frozenDependencies: usedFrozen } : {}) };
   return bundle;
 }
-export function freezeTarget(root, { projectId, targetKind, targetId, revisionId, bundle }) {
+export function freezeTarget(root, { projectId, targetKind, targetId, revisionId, bundle, validation = null }) {
   if (!bundle) trainerFail('TRAINER_BUNDLE_REQUIRED', 'freeze requires a resolved bundle with pinned model configuration');
   assertBundle(bundle);
   if (bundle.projectId !== projectId || bundle.targetKind !== targetKind || bundle.targetId !== targetId || (revisionId && bundle.revisionId !== revisionId)) trainerFail('TRAINER_TARGET_MISMATCH', 'freeze target/revision differs from exact bundle');
-  const frozenVersionId = `frozen-${randomUUID()}`; const directory = trainerProjectRoot(root, projectId);
-  trainerWrite(directory, `versions/${frozenVersionId}/bundle-manifest.json`, bundleManifestBytes(bundle));
-  const result = { frozenVersionId, bundleSha256: bundle.bundleSha256, revisionId: bundle.revisionId, targetKind, targetId,
-    workflowRevision: bundle.workflowRevision ?? null,
-    agentBindings: bundle.steps.map(step => ({ stepId: step.stepId, agentId: step.agentId, agentRevision: step.agentRevision ?? null })) };
-  trainerWrite(directory, `versions/${frozenVersionId}/version.json`, trainerJson(result));
-  return result;
+  const directory = trainerProjectRoot(root, projectId);
+  return trainerLock(trainerSafe(directory, 'versions'), () => {
+    const versionsRoot = trainerSafe(directory, 'versions'); let maxSequence = 0;
+    if (fs.existsSync(versionsRoot)) for (const name of fs.readdirSync(versionsRoot).filter((n) => n.startsWith('frozen-'))) {
+      const marker = trainerSafe(versionsRoot, name, 'version.json'); if (!fs.existsSync(marker)) continue;
+      try { maxSequence = Math.max(maxSequence, Number(trainerRead(directory, 'versions', name, 'version.json').sequence) || 0); } catch { /* incomplete entries are not sequence sources */ }
+    }
+    const frozenVersionId = `frozen-${randomUUID()}`;
+    trainerWrite(directory, `versions/${frozenVersionId}/bundle-manifest.json`, bundleManifestBytes(bundle));
+    const result = { frozenVersionId, bundleSha256: bundle.bundleSha256, revisionId: bundle.revisionId, targetKind, targetId,
+      workflowRevision: bundle.workflowRevision ?? null,
+      agentBindings: bundle.steps.map(step => ({ stepId: step.stepId, agentId: step.agentId, agentRevision: step.agentRevision ?? null })),
+      createdAt: new Date().toISOString(), sequence: maxSequence + 1, validation };
+    trainerWrite(directory, `versions/${frozenVersionId}/version.json`, trainerJson(result));
+    return result;
+  });
 }
 export function loadFrozenBundle(root, { projectId, frozenVersionId }) {
   const directory = trainerProjectRoot(root, projectId); trainerId(frozenVersionId);
@@ -236,7 +258,13 @@ export function listFrozenVersions(root, { projectId, targetKind, targetId }) {
     if (!fs.existsSync(marker)) continue;
     const bundle = loadFrozenBundle(root, { projectId, frozenVersionId: name });
     if ((targetKind && bundle.targetKind !== targetKind) || (targetId && bundle.targetId !== targetId)) continue;
-    versions.push({ frozenVersionId: name, bundleSha256: bundle.bundleSha256, revisionId: bundle.revisionId, targetKind: bundle.targetKind, targetId: bundle.targetId });
+    const metadata = trainerRead(directory, 'versions', name, 'version.json');
+    const contaminatedRefs = syntheticInstructionRefs(bundle);
+    versions.push({ frozenVersionId: name, bundleSha256: bundle.bundleSha256, revisionId: bundle.revisionId, targetKind: bundle.targetKind, targetId: bundle.targetId,
+      createdAt: metadata.createdAt ?? null, sequence: metadata.sequence ?? null, validation: metadata.validation ?? null,
+      contaminated: contaminatedRefs.length > 0, contaminatedRefs });
   }
+  versions.sort((a, b) => (Number.isSafeInteger(a.sequence) ? 0 : 1) - (Number.isSafeInteger(b.sequence) ? 0 : 1)
+    || (Number.isSafeInteger(b.sequence) ? b.sequence - a.sequence : a.frozenVersionId.localeCompare(b.frozenVersionId)));
   return { projectId, versions };
 }

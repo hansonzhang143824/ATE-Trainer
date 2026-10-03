@@ -101,7 +101,18 @@ export function createFrameworkRunner({ workspaceRoot, adapter, now = () => new 
     if (record.bundleArtifact?.sha256 !== frameworkSha(bytes)) fail('RUN_BUNDLE_CHANGED', 'stored run bundle bytes changed');
     const bundle = JSON.parse(bytes);
     if (bundle.bundleSha256 !== record.bundleSha256) fail('RUN_BUNDLE_CHANGED', 'stored run bundle identity changed');
-    return { ...record, bundle, controls: controls(record) };
+    let sourceBundle = bundle;
+    if (record.sourceBundleArtifact) {
+      const sourceBytes = fs.readFileSync(store.safe(path.join(dir, 'source-bundle.json')));
+      if (record.sourceBundleArtifact.sha256 !== frameworkSha(sourceBytes)) fail('RUN_BUNDLE_CHANGED', 'stored source bundle changed');
+      sourceBundle = JSON.parse(sourceBytes);
+      if (sourceBundle.bundleSha256 !== record.sourceBundleSha256) fail('RUN_BUNDLE_CHANGED', 'stored source bundle changed');
+    } else if (record.sourceBundleSha256 === undefined) {
+      sourceBundle = ['SMOKE_ONLY', 'BUSINESS_ONLY'].includes(record.executionMode) ? null : bundle;
+    } else if (record.sourceBundleSha256 !== record.bundleSha256) {
+      sourceBundle = null;
+    }
+    return { ...record, bundle, sourceBundle, controls: controls(record) };
   };
   function save(entry) {
     entry.run.updatedAt = now();
@@ -290,6 +301,7 @@ export function createFrameworkRunner({ workspaceRoot, adapter, now = () => new 
       frameworkId(input.runId);
       if (!['training', 'published'].includes(input.mode)) fail('MODE_INVALID', 'framework run mode must be training or published');
       const bundle = freeze(clone(input.bundle));
+      const sourceBundle = input.sourceBundle === undefined ? null : freeze(clone(input.sourceBundle));
       const verify = verifyBundle ?? (await import('./trainer-bundle.js')).verifyBundle;
       const validator = validateJson ?? (await import('./trainer-schema.js')).validateJson;
       const verification = await verify(bundle);
@@ -297,6 +309,14 @@ export function createFrameworkRunner({ workspaceRoot, adapter, now = () => new 
       if (!bundle.steps?.length || new Set(bundle.steps.map(step => step.stepId)).size !== bundle.steps.length) fail('BUNDLE_INVALID', 'steps must have unique identities');
       bundle.steps.forEach(step => frameworkId(step.stepId));
       if (bundle.runtimeApiVersion !== 'trainer-api-v1') fail('BUNDLE_INVALID', 'unsupported runtime API');
+      if (sourceBundle) {
+        const sourceVerification = await verify(sourceBundle);
+        if (sourceVerification === false || sourceVerification?.ok === false) fail('BUNDLE_INVALID', 'source bundle verification failed', sourceVerification);
+        const sameIdentity = ['projectId', 'targetKind', 'targetId', 'revisionId', 'workflowRevision'].every((key) => (sourceBundle[key] ?? null) === (bundle[key] ?? null));
+        const sameSteps = Array.isArray(sourceBundle.steps) && sourceBundle.steps.length === bundle.steps.length
+          && sourceBundle.steps.every((step, index) => ['stepId', 'agentId', 'agentRevision'].every((key) => (step[key] ?? null) === (bundle.steps[index][key] ?? null)));
+        if (!sameIdentity || !sameSteps) fail('SOURCE_BUNDLE_MISMATCH', 'source bundle identity differs from execution bundle');
+      }
       for (const entry of live.values()) if (entry.run.projectId === bundle.projectId && entry.run.targetKind === bundle.targetKind && entry.run.targetId === bundle.targetId && (entry.run.cancellationRequested || entry.finished) && entry.run.childTerminationConfirmed !== true) fail('TERMINATION_UNCONFIRMED', 'previous target child has not confirmed termination');
       const optimization = input.purpose === 'agent-optimization';
       if (optimization && (input.mode !== 'training' || bundle.targetKind !== 'agent'
@@ -311,6 +331,7 @@ export function createFrameworkRunner({ workspaceRoot, adapter, now = () => new 
         projectId: bundle.projectId, targetKind: bundle.targetKind, targetId: bundle.targetId, revisionId: bundle.revisionId,
         workflowRevision: bundle.workflowRevision ?? null,
         bundleSha256: bundle.bundleSha256, model: clone(bundle.model), mode: input.mode,
+        sourceBundleSha256: sourceBundle?.bundleSha256 ?? bundle.bundleSha256, sourceBundleArtifact: null,
         executionMode: input.executionMode ?? 'FRAMEWORK_TRAINING',
         purpose: input.mode === 'published' ? 'FRAMEWORK_REPLAY' : (optimization ? 'agent-optimization' : 'FRAMEWORK_TRAINING'), status: 'queued',
         startedAt: now(), updatedAt: now(), completedAt: null, derivedFromRunId: input.derivedFromRunId ?? null,
@@ -323,6 +344,7 @@ export function createFrameworkRunner({ workspaceRoot, adapter, now = () => new 
       };
       const dir = store.create(run);
       run.bundleArtifact = store.write(dir, 'execution-bundle.json', bundle, true);
+      if (sourceBundle) run.sourceBundleArtifact = store.write(dir, 'source-bundle.json', sourceBundle, true);
       store.write(dir, 'run-input.json', input.input ?? {}, true);
       const entry = { run, dir, bundle, input: clone(input.input ?? {}), validateJson: validator, seq: 0, rawPending: false, finished: false };
       live.set(run.runId, entry);

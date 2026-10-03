@@ -19,9 +19,12 @@
 //   G  第 8 条（Z 的固定会话目录临时移出 ~/.dsh/sessions，再打开 Z 应自动新建；结束后移回）。只在明确要求时运行：--steps G
 //   K/T/H/I/J1/J2  任务 C1（业务运行加固），见 docs/tasks/C1-business-run-hardening.md：
 //      K 旧流水线入口断开与超时上限；T 步骤卡片超时输入；H 超时生效与提示；I 刷新接回；J1 暂停后重启 DSH；J2 重启后已中断
+//   DF/DS/DO/DP  任务 D（冻结与发布完整性），见 docs/tasks/D-release-integrity.md：
+//      DF 合成验证运行冻结/发布真实内容；DS 被污染版本识别与拦截；DO 时间与排序；DP 发布页版本列表与切回（按 DF→DS→DO→DP 顺序）
 //
 // 参数：--steps <列表>  --chrome <浏览器路径>  --port <调试端口，默认 9333>  --headless  --keep-open
 //       --x <Agent X，默认 agent-2abe705b>  --workflow <工作流名，默认「新工作流 1」>  --z <Agent Z，默认 agent-70e75253>
+//       D 步骤：--contaminated-frozen <ids> --contaminated-release <ids> --clean-frozen <id> --clean-release <id> --legacy-run <runId>（默认值为 D0 盘点中的版本与运行）
 //       --foreign-session <F 步骤用作「别人的会话」的 sessionId，默认自动选择已删除 Agent 的会话>
 // 环境变量：TRAINER_BASE、TRAINER_ROOT（见 lib.mjs）、CHROME_PATH、DSH_HOME（默认 ~/.dsh）。
 import fs from 'node:fs';
@@ -473,13 +476,15 @@ async function writeWorkflow(p, json, reason) {
   return api('apply-changes', { mode: MODE, requestId: requestId('c1'), baseRevision: rev, reason, changes: [{ path: p, content: `${JSON.stringify(json, null, 2)}\n` }] });
 }
 async function restoreWorkflow(orig, label) {
-  const now = await workflowFile(W_NAME);
-  if (now.text === orig.text) return true;
-  const rev = (await trainingContext()).candidateRevision;
-  const r = await api('apply-changes', { mode: MODE, requestId: requestId('c1-restore'), baseRevision: rev, reason: `verify-b-host ${label}：恢复工作流原内容`, changes: [{ path: orig.path, content: orig.text }] });
-  const after = await workflowFile(W_NAME);
-  note(`${label}.restore`, { ok: r.ok, error: r.error, restored: after.text === orig.text });
-  return after.text === orig.text;
+  const currentRevision = (await trainingContext()).candidateRevision;
+  const currentFiles = (await must('assets', { mode: MODE, revisionId: currentRevision }))?.files || {};
+  if (currentFiles[orig.path] === orig.text) return true;
+  const r = await api('apply-changes', { mode: MODE, requestId: requestId('c1-restore'), baseRevision: currentRevision, reason: `verify-b-host ${label}：恢复工作流原内容`, changes: [{ path: orig.path, content: orig.text }] });
+  const afterRevision = (await trainingContext()).candidateRevision;
+  const afterFiles = (await must('assets', { mode: MODE, revisionId: afterRevision }))?.files || {};
+  const restored = afterFiles[orig.path] === orig.text;
+  note(`${label}.restore`, { ok: r.ok, error: r.error, restored });
+  return restored;
 }
 async function waitRun(runId, { timeoutMs = 15 * 60000, until = run => RUNS_TERMINAL.has(String(run?.status || '').toLowerCase()) } = {}) {
   const deadline = Date.now() + timeoutMs; let run;
@@ -642,8 +647,241 @@ async function stepJ2() {
   expect('J2-3 重新发起的业务运行正常完成', nr.status === 'completed', `${newId} completed`, `${newId} ${nr.status}`);
 }
 
+// ================================================================== 任务 D（冻结与发布完整性）
+// 见 docs/tasks/D-release-integrity.md。步骤：DF 冻结保存真实内容；DS 被污染版本识别与拦截；DO 版本时间与排序；DP 发布页版本列表与切回。
+// 推荐顺序：DF → DS → DO → DP（DS/DO/DP 读取 DF 写下的 results/d-state.json）。
+const D_STATE_FILE = path.join(RESULTS, 'd-state.json');
+const VERSIONS_DIR = path.join(PROJECT_DIR, 'versions');
+const PUBLISH_DIR = path.join(ROOT, 'publish');
+const SYNTH_RE = /^# Synthetic (SMOKE_ONLY|BUSINESS_ONLY) verification/;
+const list = (name, fallback) => opt(name, fallback).split(',').map(s => s.trim()).filter(Boolean);
+const D_BAD_FROZEN = list('contaminated-frozen', 'frozen-cfb09c03-ecc0-4469-a00b-abdde09aa312,frozen-00f99692-c936-453e-91e5-c0e2c6acb423');
+const D_BAD_RELEASE = list('contaminated-release', 'release-53dc2488-a38b-40e8-887b-fc646ea1730e,release-74077b90-d598-4431-a444-b04ff932147c');
+const D_GOOD_FROZEN = opt('clean-frozen', 'frozen-9319cc9c-ad9f-46e0-b97b-497bb41dfa66');
+const D_GOOD_RELEASE = opt('clean-release', 'release-ad91f02f-27cc-4e5f-b7e3-9f1ea8408a58');
+const D_LEGACY_RUN = opt('legacy-run', 'framework-8a51d10e-199e-4c5e-b76b-bccf5559ed3d');
+const ISO_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/;
+const errCode = r => r?.error?.code || '';
+
+const frozenDisk = id => ({ version: readJson(path.join(VERSIONS_DIR, id, 'version.json'), null), manifest: readJson(path.join(VERSIONS_DIR, id, 'bundle-manifest.json'), null) });
+const releaseDisk = id => ({ release: readJson(path.join(PUBLISH_DIR, 'versions', id, 'release.json'), null), manifest: readJson(path.join(PUBLISH_DIR, 'versions', id, 'bundle-manifest.json'), null) });
+/** Every step's instructions file (and the workflow file) in a stored manifest must equal the candidate revision's bytes. */
+function contentCheck(manifest, revFiles, workflowPath) {
+  if (!manifest) return { ok: false, bad: ['manifest 不存在'] };
+  const inManifest = Object.fromEntries((manifest.files || []).map(f => [f.path, f.content]));
+  const bad = [];
+  for (const step of manifest.steps || []) {
+    const ref = step.instructionsRef; const got = inManifest[ref];
+    if (typeof got !== 'string') { bad.push(`${ref} 不在 manifest 中`); continue; }
+    if (SYNTH_RE.test(got)) bad.push(`${ref} 是合成指令`);
+    else if (got !== revFiles[ref]) bad.push(`${ref} 与候选 revision 内容不同`);
+  }
+  if (workflowPath && inManifest[workflowPath] !== revFiles[workflowPath]) bad.push(`${workflowPath} 与候选 revision 内容不同`);
+  if (!(manifest.steps || []).length) bad.push('manifest 没有步骤');
+  return { ok: bad.length === 0, bad };
+}
+async function releasesState() { return must('releases', { mode: 'published' }); }
+async function activeReleaseFor(wid) { const s = await releasesState(); return (s.active || []).find(p => p.targetKind === 'workflow' && p.targetId === wid)?.releaseId ?? null; }
+async function frozenList() { return (await trainingContext()).frozenVersions || []; }
+async function startApiRun({ mode, executionMode, wid, label }) {
+  const input = executionMode === 'BUSINESS_ONLY' ? { receivedValue: '23*24+45' } : { receivedValue: '1+2' };
+  const r = await api('run', { mode, targetKind: 'workflow', targetId: wid, executionMode, input, requestId: requestId(label) });
+  if (!r.ok) throw new Error(`${label} 发起运行失败：${short(r.error)}`);
+  const runId = (r.value?.run || r.value)?.runId;
+  const run = await waitRun(runId);
+  note(`${label}.run`, { runId, status: run.status, executionMode: run.executionMode, bundleSha256: run.bundleSha256, sourceBundleSha256: run.sourceBundleSha256 ?? null, revisionId: run.revisionId, releaseId: run.releaseId ?? null, error: run.error ?? null });
+  console.log(`  · ${label}: ${runId} ${run.status}`);
+  return run;
+}
+function readDState() { const s = readJson(D_STATE_FILE, null); if (!s?.F1) throw new Error(`没有 ${rel(D_STATE_FILE)}：请先运行 --steps DF`); return s; }
+
+async function stepDF() {
+  console.log('\n[DF] D-1：合成验证运行冻结、发布的是真实指令');
+  const wf0 = await workflowFile(W_NAME);
+  const wid = wf0.wid;
+  const origActive = await activeReleaseFor(wid);
+  note('DF.pre', { wid, origActive, rev: wf0.rev });
+  let F1 = null, F2 = null, REL1 = null;
+  try {
+    const tag = RUN_TAG.slice(11, 19);
+    const changed = { ...wf0.json, name: `${wf0.json.name || W_NAME} · D-${tag}` };
+    const w = await writeWorkflow(wf0.path, changed, 'verify-b-host DF：生成一个待冻结的候选修订');
+    if (!w.ok) throw new Error(`保存候选失败：${short(w.error)}`);
+    const R = (await trainingContext()).candidateRevision;
+    const revFiles = (await must('assets', { mode: MODE, revisionId: R }))?.files || {};
+    expect('DF-1 保存候选得到新 revision', R && R !== wf0.rev, `${wf0.rev} → ${R}`, `revision 未变化：${R}`);
+
+    const run1 = await startApiRun({ mode: MODE, executionMode: 'SMOKE_ONLY', wid, label: 'DF-smoke' });
+    expect('DF-2 SMOKE_ONLY 验证运行完成，记录了替换前的真实执行包（sourceBundleSha256 ≠ bundleSha256）',
+      run1.status === 'completed' && run1.revisionId === R && typeof run1.sourceBundleSha256 === 'string' && run1.sourceBundleSha256 !== run1.bundleSha256,
+      `${run1.runId} source=${String(run1.sourceBundleSha256).slice(0, 12)} exec=${String(run1.bundleSha256).slice(0, 12)}`,
+      `status=${run1.status} revision=${run1.revisionId}（应为 ${R}） source=${run1.sourceBundleSha256} exec=${run1.bundleSha256}`);
+
+    const f1 = await api('freeze', { mode: MODE, targetKind: 'workflow', targetId: wid, runId: run1.runId, requestId: requestId('DF-freeze1') });
+    F1 = f1.value?.frozenVersionId ?? null;
+    const d1 = F1 ? frozenDisk(F1) : {};
+    const c1 = contentCheck(d1.manifest, revFiles, wf0.path);
+    note('DF.freeze1', { ok: f1.ok, error: f1.error, F1, version: d1.version, content: c1 });
+    expect('DF-3 冻结成功，冻结文件中的指令与工作流文件 = 候选 revision 的真实内容（不是合成指令）', f1.ok && c1.ok, `${F1}`, `ok=${f1.ok} ${short(f1.error)} ${c1.bad.join('；')}`);
+    const v1 = d1.version || {};
+    expect('DF-4 version.json 记录 createdAt、sequence、validation{runId, executionMode=SMOKE_ONLY}，bundleSha256 = 运行的 sourceBundleSha256',
+      ISO_RE.test(v1.createdAt || '') && Number.isSafeInteger(v1.sequence) && v1.sequence > 0 && v1.validation?.runId === run1.runId && v1.validation?.executionMode === 'SMOKE_ONLY' && v1.bundleSha256 === run1.sourceBundleSha256 && v1.revisionId === R,
+      `#${v1.sequence} ${v1.createdAt}`, short(v1));
+
+    const run2 = await startApiRun({ mode: MODE, executionMode: 'BUSINESS_ONLY', wid, label: 'DF-business' });
+    const f2 = run2.status === 'completed' ? await api('freeze', { mode: MODE, targetKind: 'workflow', targetId: wid, runId: run2.runId, requestId: requestId('DF-freeze2') }) : { ok: false, error: { message: `运行 ${run2.status}` } };
+    F2 = f2.value?.frozenVersionId ?? null;
+    const d2 = F2 ? frozenDisk(F2) : {};
+    const c2 = contentCheck(d2.manifest, revFiles, wf0.path);
+    note('DF.freeze2', { ok: f2.ok, error: f2.error, F2, version: d2.version, content: c2 });
+    expect('DF-5 BUSINESS_ONLY 验证运行冻结同样保存真实内容，executionMode=BUSINESS_ONLY，序号大于上一个',
+      f2.ok && c2.ok && d2.version?.validation?.executionMode === 'BUSINESS_ONLY' && d2.version?.sequence > v1.sequence,
+      `${F2} #${d2.version?.sequence}`, `ok=${f2.ok} ${short(f2.error)} ${c2.bad.join('；')} version=${short(d2.version)}`);
+
+    const s1 = F1 ? await api('stage-release', { mode: 'published', targetKind: 'workflow', targetId: wid, frozenVersionId: F1, runId: run1.runId, requestId: requestId('DF-stage') }) : { ok: false };
+    REL1 = s1.value?.releaseId ?? null;
+    const r1 = REL1 ? releaseDisk(REL1) : {};
+    const cr = contentCheck(r1.manifest, revFiles, wf0.path);
+    note('DF.stage', { ok: s1.ok, error: s1.error, REL1, release: r1.release, content: cr });
+    const rr = r1.release || {};
+    expect('DF-6 发布版本保存真实内容，release.json 记录 createdAt、sequence、validationMode=SMOKE_ONLY，bundleSha256 = 冻结版本',
+      s1.ok && cr.ok && ISO_RE.test(rr.createdAt || '') && Number.isSafeInteger(rr.sequence) && rr.validationMode === 'SMOKE_ONLY' && rr.bundleSha256 === v1.bundleSha256 && rr.frozenVersionId === F1,
+      `${REL1} #${rr.sequence}`, `ok=${s1.ok} ${short(s1.error)} ${cr.bad.join('；')} release=${short(rr)}`);
+
+    const a1 = REL1 ? await api('activate-release', { mode: 'published', releaseId: REL1, requestId: requestId('DF-activate') }) : { ok: false };
+    const nowActive = await activeReleaseFor(wid);
+    const pub = a1.ok ? await startApiRun({ mode: 'published', executionMode: 'SMOKE_ONLY', wid, label: 'DF-published' }) : null;
+    expect('DF-7 激活该版本后，发布模式 SMOKE_ONLY 运行完成且 releaseId 正确（流程未被破坏）',
+      a1.ok && nowActive === REL1 && pub?.status === 'completed' && pub?.releaseId === REL1,
+      `${pub?.runId} releaseId=${pub?.releaseId}`, `activate ok=${a1.ok} ${short(a1.error)} active=${nowActive} run=${pub?.runId} ${pub?.status} releaseId=${pub?.releaseId}`);
+  } finally {
+    let restored = true;
+    if (origActive && (await activeReleaseFor(wid)) !== origActive) {
+      const back = await api('activate-release', { mode: 'published', releaseId: origActive, requestId: requestId('DF-restore-active') });
+      restored = back.ok && (await activeReleaseFor(wid)) === origActive;
+    }
+    const wfOk = await restoreWorkflow(wf0, 'DF');
+    fs.mkdirSync(RESULTS, { recursive: true });
+    fs.writeFileSync(D_STATE_FILE, JSON.stringify({ at: new Date().toISOString(), wid, origActive, F1, F2, REL1 }, null, 2));
+    expect('DF-8 激活版本与候选工作流已恢复为开工前状态', restored && wfOk, `active=${origActive}`, `active 恢复=${restored} 工作流恢复=${wfOk}`);
+  }
+}
+
+async function stepDS() {
+  console.log('\n[DS] D-2：被合成指令污染的存量版本被识别、不能发布或切回');
+  const st = readDState();
+  const frozen = await frozenList();
+  const byF = Object.fromEntries(frozen.map(v => [v.frozenVersionId, v]));
+  note('DS.frozen', D_BAD_FROZEN.concat([D_GOOD_FROZEN, st.F1]).map(id => ({ id, contaminated: byF[id]?.contaminated ?? '缺失' })));
+  expect('DS-1 冻结列表：被污染的标为 contaminated=true，早期真实版本与 DF 新版本为 false',
+    D_BAD_FROZEN.every(id => byF[id]?.contaminated === true) && byF[D_GOOD_FROZEN]?.contaminated === false && byF[st.F1]?.contaminated === false,
+    D_BAD_FROZEN.join(', '), short(D_BAD_FROZEN.concat([D_GOOD_FROZEN, st.F1]).map(id => [id.slice(0, 15), byF[id]?.contaminated])));
+  const rs = await releasesState();
+  const byR = Object.fromEntries((rs.releases || []).map(r => [r.releaseId, r]));
+  note('DS.releases', D_BAD_RELEASE.concat([D_GOOD_RELEASE, st.REL1]).map(id => ({ id, contaminated: byR[id]?.contaminated ?? '缺失' })));
+  expect('DS-2 发布列表：被污染的标为 contaminated=true，真实版本为 false',
+    D_BAD_RELEASE.every(id => byR[id]?.contaminated === true) && byR[D_GOOD_RELEASE]?.contaminated === false && byR[st.REL1]?.contaminated === false,
+    D_BAD_RELEASE.join(', '), short(D_BAD_RELEASE.concat([D_GOOD_RELEASE, st.REL1]).map(id => [id.slice(0, 16), byR[id]?.contaminated])));
+
+  const countR = (rs.releases || []).length;
+  const s = await api('stage-release', { mode: 'published', targetKind: 'workflow', targetId: st.wid, frozenVersionId: D_BAD_FROZEN[0], runId: D_LEGACY_RUN, requestId: requestId('DS-stage') });
+  const countR2 = ((await releasesState()).releases || []).length;
+  note('DS.stage', { ok: s.ok, error: s.error, countR, countR2 });
+  expect('DS-3 用被污染的冻结版本发布被拒绝（TRAINER_FROZEN_SYNTHETIC），没有新增发布版本',
+    !s.ok && errCode(s) === 'TRAINER_FROZEN_SYNTHETIC' && countR2 === countR, short(s.error), `ok=${s.ok} ${short(s.error)} 发布数 ${countR}→${countR2}`);
+
+  const before = await activeReleaseFor(st.wid);
+  const a = await api('activate-release', { mode: 'published', releaseId: D_BAD_RELEASE[0], requestId: requestId('DS-activate') });
+  const after = await activeReleaseFor(st.wid);
+  note('DS.activate', { ok: a.ok, error: a.error, before, after });
+  if (a.ok && before && after !== before) await api('activate-release', { mode: 'published', releaseId: before, requestId: requestId('DS-restore') });
+  expect('DS-4 激活被污染的发布版本被拒绝（TRAINER_RELEASE_SYNTHETIC），激活指针不变',
+    !a.ok && errCode(a) === 'TRAINER_RELEASE_SYNTHETIC' && after === before, short(a.error), `ok=${a.ok} ${short(a.error)} active ${before}→${after}`);
+
+  const countF = frozen.length;
+  const f = await api('freeze', { mode: MODE, targetKind: 'workflow', targetId: st.wid, runId: D_LEGACY_RUN, requestId: requestId('DS-freeze') });
+  const countF2 = (await frozenList()).length;
+  note('DS.freezeLegacy', { ok: f.ok, error: f.error, countF, countF2 });
+  expect('DS-5 用 D 之前的合成验证运行（未保存真实执行包）冻结被拒绝（validation_source_unavailable），没有新增冻结版本',
+    !f.ok && errCode(f) === 'validation_source_unavailable' && countF2 === countF, short(f.error), `ok=${f.ok} ${short(f.error)} 冻结数 ${countF}→${countF2}`);
+}
+
+function orderCheck(items, idKey) {
+  const seq = items.map(x => (Number.isSafeInteger(x.sequence) ? x.sequence : null));
+  const firstLegacy = seq.indexOf(null);
+  const numbered = firstLegacy < 0 ? seq : seq.slice(0, firstLegacy);
+  const legacyTail = firstLegacy < 0 ? [] : seq.slice(firstLegacy);
+  const desc = numbered.every((v, i) => i === 0 || numbered[i - 1] > v);
+  const tailOk = legacyTail.every(v => v === null);
+  const legacyNoTime = items.filter(x => !Number.isSafeInteger(x.sequence)).every(x => (x.createdAt ?? null) === null);
+  const numberedTime = items.filter(x => Number.isSafeInteger(x.sequence)).every(x => ISO_RE.test(x.createdAt || ''));
+  return { ok: desc && tailOk && legacyNoTime && numberedTime, desc, tailOk, legacyNoTime, numberedTime, order: items.map(x => `${String(x[idKey]).slice(0, 15)}#${x.sequence ?? '-'}`) };
+}
+async function stepDO() {
+  console.log('\n[DO] D-3：版本带时间与序号，按序号从新到旧排列，旧版本排在最后');
+  const st = readDState();
+  const frozen = await frozenList();
+  const of = orderCheck(frozen, 'frozenVersionId');
+  note('DO.frozen', of);
+  const iF2 = frozen.findIndex(v => v.frozenVersionId === st.F2), iF1 = frozen.findIndex(v => v.frozenVersionId === st.F1);
+  expect('DO-1 冻结列表按序号从新到旧，无序号的旧版本在最后且时间为空；DF 的第二个冻结版本排在第一个之前',
+    of.ok && iF2 >= 0 && iF1 > iF2, of.order.slice(0, 4).join(' '), `${short(of)} F2@${iF2} F1@${iF1}`);
+  const rs = await releasesState();
+  const or = orderCheck(rs.releases || [], 'releaseId');
+  note('DO.releases', or);
+  expect('DO-2 发布列表按同样规则排序，DF 的发布版本带序号与时间',
+    or.ok && (rs.releases || []).some(r => r.releaseId === st.REL1 && Number.isSafeInteger(r.sequence)), or.order.slice(0, 4).join(' '), short(or));
+}
+
+async function versionRows() {
+  return trainer.eval(`[...document.querySelectorAll('#version-list [data-version-row]')].map(r=>({kind:r.dataset.kind,id:r.dataset.id,active:r.dataset.active==='true',contaminated:r.dataset.contaminated==='true',text:r.innerText.replace(/\\s+/g,' ').trim(),buttons:[...r.querySelectorAll('button')].map(b=>({text:b.textContent.trim(),disabled:b.disabled,frozen:b.dataset.frozenPublish||null,release:b.dataset.releaseActivate||null}))}))`);
+}
+async function stepDP() {
+  console.log('\n[DP] D-4：发布页版本列表、当前激活标识与「切回此版本」');
+  const st = readDState();
+  const origActive = await activeReleaseFor(st.wid);
+  await trainer.eval(`(()=>{const b=document.querySelector('button[data-product="release"]');b.click();return true})()`);
+  await sleep(1500);
+  await clickTarget('workflow', W_NAME);
+  await trainer.waitFor(`document.querySelector('#version-list [data-version-row][data-id=${JSON.stringify(st.REL1)}]')`, { timeoutMs: 30000, label: '发布模式下出现 DF 发布版本行' });
+  let rows = await versionRows();
+  note('DP.rows', rows.map(r => ({ ...r, text: short(r.text, 160) })));
+  const row = id => rows.find(r => r.id === id);
+  const fr = row(st.F1), rl = row(st.REL1), legacy = row(D_GOOD_RELEASE);
+  expect('DP-1 版本列表含 DF 的冻结与发布版本，显示序号、时间与验证方式；旧版本显示「时间未知」',
+    !!fr && !!rl && /#\d+/.test(fr.text) && !fr.text.includes('时间未知') && fr.text.includes('SMOKE_ONLY') && !!legacy && legacy.text.includes('时间未知'),
+    `${short(fr?.text, 80)} | ${short(legacy?.text, 80)}`, `F1=${short(fr)} REL1=${short(rl)} legacy=${short(legacy)}`);
+  const badRows = D_BAD_FROZEN.concat(D_BAD_RELEASE).map(row).filter(Boolean);
+  expect('DP-2 被污染的版本标为「合成指令」，其按钮全部禁用',
+    badRows.length >= 2 && badRows.every(r => r.contaminated && r.text.includes('合成指令') && r.buttons.every(b => b.disabled)),
+    `${badRows.length} 行`, short(badRows.map(r => [r.id.slice(0, 16), r.contaminated, r.buttons.map(b => b.disabled)])));
+  const act = rows.filter(r => r.kind === 'release' && r.active);
+  expect('DP-3 当前激活的发布版本被标出（唯一一行 data-active=true，显示「当前激活」，切回按钮禁用）',
+    act.length === 1 && act[0].id === origActive && act[0].text.includes('当前激活') && act[0].buttons.every(b => b.disabled),
+    act[0]?.id, short(act.map(r => [r.id, r.text.slice(0, 60)])));
+
+  const click = id => trainer.eval(`(()=>{const b=document.querySelector('button[data-release-activate=${JSON.stringify(id)}]');if(!b)return 'missing';if(b.disabled)return 'disabled';b.click();return 'ok'})()`);
+  try {
+    const c1 = await click(st.REL1);
+    await trainer.waitFor(`(()=>{const r=document.querySelector('#version-list [data-version-row][data-id=${JSON.stringify(st.REL1)}]');return r&&r.dataset.active==='true'})()`, { timeoutMs: 20000, label: '切回后 DF 发布版本成为当前激活' }).catch(() => null);
+    const apiNow = await activeReleaseFor(st.wid);
+    const toast = await trainer.eval(`document.querySelector('#toast')?.textContent||''`);
+    note('DP.switch', { click: c1, apiNow, toast });
+    expect('DP-4 点击 DF 发布版本的「切回此版本」：接口激活指针与页面标识都切换，提示「已切回」',
+      c1 === 'ok' && apiNow === st.REL1 && toast.includes('已切回'), `${apiNow} · ${toast}`, `click=${c1} active=${apiNow} toast=${toast}`);
+  } finally {
+    const c2 = (await activeReleaseFor(st.wid)) === origActive ? 'already' : await click(origActive);
+    await trainer.waitFor(`(()=>{const r=document.querySelector('#version-list [data-version-row][data-id=${JSON.stringify(origActive)}]');return r&&r.dataset.active==='true'})()`, { timeoutMs: 20000, label: '切回开工前的发布版本' }).catch(() => null);
+    const back = await activeReleaseFor(st.wid);
+    rows = await versionRows();
+    note('DP.restore', { click: c2, back });
+    expect('DP-5 再用页面切回开工前的发布版本，激活指针恢复', back === origActive && rows.find(r => r.id === origActive)?.active === true, `${back}`, `click=${c2} active=${back}`);
+    await trainer.eval(`(()=>{const b=document.querySelector('button[data-product="training"]');b&&b.click();return true})()`);
+  }
+}
+
 // ------------------------------------------------------------------ main
-const STEP_FNS = { A: stepA, B: stepB, C: stepC, D: stepD, E: stepE, F: stepF, G: stepG, K: stepK, T: stepT, H: stepH, I: stepI, J1: stepJ1, J2: stepJ2 };
+const STEP_FNS = { A: stepA, B: stepB, C: stepC, D: stepD, E: stepE, F: stepF, G: stepG, K: stepK, T: stepT, H: stepH, I: stepI, J1: stepJ1, J2: stepJ2, DF: stepDF, DS: stepDS, DO: stepDO, DP: stepDP };
 console.log(`任务 B 宿主验收 · ${BASE} · 仓库 ${ROOT} · 步骤 ${STEPS.join(',')}\n`);
 let fatal = null;
 try {

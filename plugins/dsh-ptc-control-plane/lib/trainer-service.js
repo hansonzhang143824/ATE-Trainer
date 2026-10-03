@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createHash, randomUUID } from 'node:crypto';
 import { trainerSha } from './trainer-project.js';
-import { bundleManifestBytes } from './trainer-bundle.js';
+import { bundleManifestBytes, syntheticInstructionRefs } from './trainer-bundle.js';
 
 const MUTATIONS = new Set(['apply-changes', 'run', 'control', 'freeze', 'stage-release', 'activate-release']);
 const TRAINING = new Set(['apply-changes', 'freeze']);
@@ -22,7 +22,7 @@ const SYNTHETIC_SMOKE_OUTPUT_SCHEMA = JSON.stringify({
   required: ['answer'],
   additionalProperties: false,
 }, null, 2) + '\n';
-const SYNTHETIC_SMOKE_INSTRUCTIONS = [
+export const SYNTHETIC_SMOKE_INSTRUCTIONS = [
   '# Synthetic SMOKE_ONLY verification',
   'This is a synthetic framework smoke run, not semiconductor business execution.',
   'Ignore the candidate Agent task and solve the fixed arithmetic prompt.',
@@ -37,7 +37,7 @@ const SYNTHETIC_BUSINESS_OUTPUT_SCHEMA = JSON.stringify({
   required: ['answer'],
   additionalProperties: false,
 }, null, 2) + '\n';
-const SYNTHETIC_BUSINESS_INSTRUCTIONS = [
+export const SYNTHETIC_BUSINESS_INSTRUCTIONS = [
   '# Synthetic BUSINESS_ONLY verification',
   'This is a synthetic acceptance run, not real semiconductor business execution.',
   'Ignore the candidate Agent task and evaluate the supplied synthetic expression.',
@@ -88,10 +88,10 @@ function rewriteSyntheticBundle(bundle, instructions, inputSchema, outputSchema)
   rewritten.bundleSha256 = trainerSha(bundleManifestBytes(rewritten));
   return rewritten;
 }
-function syntheticSmokeBundle(bundle) {
+export function syntheticSmokeBundle(bundle) {
   return rewriteSyntheticBundle(bundle, SYNTHETIC_SMOKE_INSTRUCTIONS, SYNTHETIC_INPUT_SCHEMA, SYNTHETIC_SMOKE_OUTPUT_SCHEMA);
 }
-function syntheticBusinessBundle(bundle) {
+export function syntheticBusinessBundle(bundle) {
   return rewriteSyntheticBundle(bundle, SYNTHETIC_BUSINESS_INSTRUCTIONS, SYNTHETIC_INPUT_SCHEMA, SYNTHETIC_BUSINESS_OUTPUT_SCHEMA);
 }
 function fail(code, message, details) { throw Object.assign(new Error(message), { code, details }); }
@@ -503,6 +503,7 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
             : baseBundle;
         if (resolved.projectId !== args.projectId) fail('bundle_project_mismatch', 'Bundle project mismatch');
         const started=await runner.startRun({ runId: args._runId, requestId: args.requestId, bundle: resolved,
+          ...(args.executionMode === 'BUSINESS_ONLY' || args.executionMode === 'SMOKE_ONLY' ? { sourceBundle: baseBundle } : {}),
           input: args.input || {}, mode: args.mode === 'training' ? 'training' : 'published',
           purpose: args.purpose, executionMode: args.executionMode, derivedFromRunId: args.derivedFromRunId,
           changeSetId: args.changeSetId, releaseId: resolvedBundle.releaseId || args.releaseId });
@@ -531,9 +532,11 @@ export function createTrainerService({ workspaceRoot, runner, repositories, mode
           || run.projectId !== args.projectId || run.targetKind !== args.targetKind || run.targetId !== args.targetId) {
           fail('validation_required', 'Freeze requires a completed validation run for this exact target');
         }
-        bundle = run.bundle;
-        if (!bundle) fail('run_bundle_unavailable', 'Run snapshot is unavailable');
-        return call('freezeTarget', { ...target, revisionId: args.revisionId, bundle });
+        bundle = run.sourceBundle;
+        if (!bundle) fail('validation_source_unavailable', '该验证运行没有保存真实执行包（D 之前的合成运行），请重新运行一次验证后再冻结');
+        if (syntheticInstructionRefs(bundle).length) fail('TRAINER_FROZEN_SYNTHETIC', '执行包包含合成指令，不能冻结');
+        return call('freezeTarget', { ...target, revisionId: args.revisionId, bundle,
+          validation: { runId: run.runId, executionMode: run.executionMode ?? 'FRAMEWORK_TRAINING' } });
       }
       case 'stage-release': return call('stageRelease', { ...args, runEvidence: await ownedRun(args) });
       case 'activate-release': return call('activateRelease', args);
